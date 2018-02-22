@@ -7,6 +7,20 @@ import config from "../../data/SiteConfig"
 import CtaButton from '../components/CtaButton'
 import Navigation from '../components/Layout/Navigation'
 
+/* removed:
+<IndexHeadContainer>
+  <Navigation />
+  <Hero>
+    <h1>{config.siteTitle}</h1>
+    <h4>{config.siteDescription}</h4>
+  </Hero>
+</IndexHeadContainer>
+
+
+<CtaButton to={'/lesson-one'}>See Your First Post</CtaButton>
+
+*/
+
 class Index extends React.Component {
 
   render() {
@@ -16,18 +30,26 @@ class Index extends React.Component {
         <Helmet title={config.siteTitle} />
         <SEO postEdges={postEdges} />
         <main>
-          <IndexHeadContainer>
-            <Navigation />
-            <Hero>
-              <img src={config.siteLogo} width='150px' />
-              <h1>{config.siteTitle}</h1>
-              <h4>{config.siteDescription}</h4>
-            </Hero>
-          </IndexHeadContainer>
+          <Navigation />
           <BodyContainer>
-            <h2>A Gatsby Template for Content</h2>
-            <p>Made for modern documentation sites. Table of Contents automatically generated from markdown files. </p>
-            <CtaButton to={'/lesson-one'}>See Your First Post</CtaButton>
+            <h2>nextstrain</h2>
+            <h3>phylogenetic data analysis & visualisation</h3>
+            <p>{`The nextstrain project is an attempt to make flexible informatic pipelines
+              and visualization tools to track ongoing pathogen evolution as sequence data emerges.`}
+            </p>
+            <p>
+              {`This website contains documentation and tutorials. Nextstrain is usable by anyone via `}
+              <a href="www.nextstrain.org">www.nextstrain.org</a>
+            </p>
+
+            <p>nextstrain is comprised of multiple components</p>
+            <ul>
+              <li>{`Sacra - data collection and cleaning`}</li>
+              <li>{`Flora - data storage`}</li>
+              <li>{`Augur - bioinformatics analysis`}</li>
+              <li>{`Auspice - interactive visualisation`}</li>
+            </ul>
+
           </BodyContainer>
         </main>
       </div>
@@ -64,7 +86,7 @@ export const pageQuery = graphql`
       limit: 2000
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
-      edges { 
+      edges {
         node {
           fields {
             slug

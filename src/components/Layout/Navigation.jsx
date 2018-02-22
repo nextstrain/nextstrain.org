@@ -8,27 +8,28 @@ const NavContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   background: ${props => props.theme.brand};
-  
+  padding: ${props => props.theme.sitePadding};
+
   .nav-link {
     font-size: 1.6rem;
     margin-right: 10px;
     font-weight: 200;
     color: black;
   }
-  
+
   @media screen and (max-width: 600px) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     section {
       margin-bottom: 20px;
     }
-    
+
     span {
       display: none;
     }
-    
+
   }
 `
 
@@ -38,8 +39,10 @@ class Navigation extends React.Component {
     return (
       <NavContainer>
         <section>
-          <Link className='nav-link' to='/' > HOME </Link>
+          <Link className='nav-link' to='/' > N E X T S T R A I N </Link>
+          <span style={{marginLeft: 10, marginRight: 10}}>•</span>
           <Link className='nav-link' to='/lesson-one' > DOCS </Link>
+          <span style={{marginLeft: 10, marginRight: 10}}>•</span>
           <Link className='nav-link' to='/about' > ABOUT </Link>
         </section>
         <span><UserLinks /></span>
