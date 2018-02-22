@@ -1,5 +1,5 @@
 ---
-title: "Lesson One"
+title: "lesson one"
 lesson: 1
 chapter: 1
 cover: "https://unsplash.it/400/300/?random?BoldMage"
@@ -12,25 +12,71 @@ tags:
     - other
 ---
 
+# Sacra
+### Sacra: a data cleaning tool designed for genomic epidemiology datasets.
 
-Spicy jalapeno cupidatat chicken ut filet mignon sausage ut boudin nulla reprehenderit strip steak proident cillum incididunt short loin cow. Pig in pastrami, leberkas eiusmod enim bresaola do. Filet mignon officia quis kevin pork, swine strip steak excepteur hamburger chicken pork chop boudin shankle. Velit chicken pig in cupim kielbasa jerky. Bresaola excepteur veniam, andouille magna brisket aliquip nostrud jerky.
+Sacra is used primarily within [Nextstrain](https://github.com/nextstrain) and replaces functionality previously found in [nextstrain/fauna](https://github.com/nextstrain/fauna).
+**This is under development and not production ready.**
 
-```javascript
-makeArray() {
-    // Hey hey what can I do
-    const foo = []
-    bar.split('').forEach(letter => {
-      foo.push(letter)
-    })
-    return foo
-}
+
+The general idea is to take possibly messy* data of varying input types (FASTA, CSV, JSON, accession numbers, titer tables), collect, clean and merge the data into a JSON output.
+Sacra is idempotent, i.e. `sacra(sacra(file)) == sacra(file)`.
+Uploading to a database is not part of sacra (see [nextstrain/flora](https://github.com/nextstrain/flora)).
+
+
+## Requirements
+* Python 2.7 (todo: make conda stuff)
+
+## Input file types
+* FASTA
+* JSON
+* more to come
+
+
+## How To Run
+### Command line syntax
+Prior to running:
+* move input files into `sacra/input` (e.g.)
+* make sure that directory `sacra/output` (e.g.) exists locally
+
+Running on a `FASTA` or `JSON`:
+* `python src/run.py --files INPUT_FILE_PATHS --outfile OUTPUT_JSON_PATH --pathogen PATHOGEN_NAME OTHER_ARGUMENTS`
+
+```
+optional arguments:
+  -h, --help            show this help message and exit
+  --debug               Enable debugging logging
+  --files [FILES [FILES ...]]
+                        file types: text (list of accessions), FASTA, (to do)
+                        FASTA + CSV, (to do) JSON
+  --pathogen PATHOGEN   This sets the config file
+  --accession_list [ACCESSION_LIST [ACCESSION_LIST ...]]
+                        list of strings to query genbank with
+  --outfile OUTFILE
+  --visualize_call_graph
+                        draw a graph of calls being made
+  --call_graph_fname CALL_GRAPH_FNAME
+                        filename for call graph
+
+entrez:
+  --skip_entrez         Query genbank for all accessions to help clean /
+                        correct metadata data
+
+overwrites:
+  --overwrite_fasta_header OVERWRITE_FASTA_HEADER
+                        Overwrite the config-defined FASTA header
 ```
 
-Pork chop ribeye ut chicken buffalo proident minim leberkas cupim adipisicing burgdoggen incididunt pastrami cupidatat. Prosciutto kevin dolore labore ham, cupidatat pork loin fatback picanha irure ad short ribs duis. Cupidatat excepteur jerky doner, incididunt consectetur turkey pariatur. Culpa consectetur cillum shank ham hock anim pastrami ex tempor eu. Fatback strip steak pig, bacon salami drumstick ut capicola short loin flank.
+### Adding new pathogens
+To performa a Sacra run on a pathogen that is not currently supported
 
-Jowl dolor duis, cupidatat pork tempor nostrud incididunt short loin laborum. Duis nostrud fatback ribeye consequat ad. Proident pancetta ut tempor. Short loin officia eiusmod beef. Sunt tongue pig venison, sint mollit ad excepteur velit adipisicing flank pancetta pariatur. Dolor t-bone swine alcatra fatback ribeye, mollit dolore incididunt ullamco.
+Supported pathogens:
+* Mumps
+* Zika
 
-Spare ribs aute fugiat, pariatur andouille labore nulla exercitation. Aliqua picanha sirloin consequat drumstick sint exercitation pork nisi et. Dolore swine fugiat pork salami proident. Bacon excepteur filet mignon labore pariatur in in nulla magna fugiat prosciutto. Laboris sint ground round, pancetta ipsum in pariatur voluptate fatback andouille velit shoulder flank quis sausage.
-
-Hamburger ham shank est, officia qui capicola proident. Ribeye dolore prosciutto sirloin alcatra. Rump short ribs quis ex fugiat proident incididunt irure t-bone meatball veniam sirloin meatloaf. Tongue anim sint pancetta bresaola sirloin.
-Does your lorem ipsum text long for something a little meatier? Give our generator a try… 
+## How To Run (testing)
+* ensure you have `piglets.fasta`, `piglets_3_accessions.txt`, `mumps.vipr.fasta`, `mumps.fauna_download.fasta` in `sacra/input` (files on slack)
+* `python src/run.py --files input/piglets.fasta --debug --outfile output/piglets.json --pathogen mumps --skip_entrez`
+* `python src/run.py --files input/piglets_3_accessions.txt --debug --outfile output/piglets.json --pathogen mumps --skip_entrez`
+* `python src/run.py --files input/mumps.vipr.fasta --debug --outfile output/piglets.json --pathogen mumps --skip_entrez --visualize_call_graph --overwrite_fasta_header alt1`
+* `python src/run.py --files input/mumps.fauna_download.fasta --debug --outfile output/piglets.json --pathogen mumps --skip_entrez --overwrite_fasta_header fauna`
