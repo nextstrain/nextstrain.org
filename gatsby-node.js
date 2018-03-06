@@ -10,15 +10,10 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
     const parsedFilePath = path.parse(fileNode.relativePath);
     if (
       Object.prototype.hasOwnProperty.call(node, "frontmatter") &&
-      Object.prototype.hasOwnProperty.call(node.frontmatter, "slug")
-    ) {
-      slug = `/${_.kebabCase(node.frontmatter.slug)}`;
-    }
-    if (
-      Object.prototype.hasOwnProperty.call(node, "frontmatter") &&
+      Object.prototype.hasOwnProperty.call(node.frontmatter, "type") &&
       Object.prototype.hasOwnProperty.call(node.frontmatter, "title")
     ) {
-      slug = `/${_.kebabCase(node.frontmatter.title)}`;
+      slug = `/${parsedFilePath.dir}/${_.kebabCase(node.frontmatter.title)}`;
     } else if (parsedFilePath.name !== "index" && parsedFilePath.dir !== "") {
       slug = `/${parsedFilePath.dir}/${parsedFilePath.name}/`;
     } else if (parsedFilePath.dir === "") {
@@ -35,6 +30,7 @@ exports.createPages = ({graphql, boundActionCreators}) => {
 
   return new Promise((resolve, reject) => {
     const postPage = path.resolve("src/templates/post.jsx");
+    const GenericTemplate = path.resolve("src/templates/generic.jsx");
     const lessonPage = path.resolve("src/templates/lesson.jsx")
     const tagPage = path.resolve("src/templates/tag.jsx");
     const categoryPage = path.resolve("src/templates/category.jsx");
@@ -78,10 +74,20 @@ exports.createPages = ({graphql, boundActionCreators}) => {
             categorySet.add(edge.node.frontmatter.category);
           }
 
+          const genericTypes = ['docs', 'tutorial'];
+
           if (edge.node.frontmatter.type === 'post') {
             createPage({
               path: edge.node.fields.slug,
               component: postPage,
+              context: {
+                slug: edge.node.fields.slug
+              }
+            })
+          } else if (genericTypes.indexOf(edge.node.frontmatter.type) !== -1) {
+            createPage({
+              path: edge.node.fields.slug,
+              component: GenericTemplate,
               context: {
                 slug: edge.node.fields.slug
               }

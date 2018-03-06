@@ -1,15 +1,21 @@
 import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components"
-
 import SEO from "../components/SEO/SEO"
 import SiteHeader from '../components/Layout/Header'
 import config from "../../data/SiteConfig"
-import TableOfContents from "../components/Layout/TableOfContents";
 
-export default class LessonTemplate extends React.Component {
+// import TableOfContents from "../components/Layout/TableOfContents";
+
+// <TableOfContents
+//   posts={this.props.data.allPostTitles.edges}
+//   contentsType="lesson"
+//   chapterTitles={config.toCChapters}
+// />
+
+export default class GenericTemplate extends React.Component {
   render() {
-    console.log("lesson template props:", this.props)
+    console.log("genericTemplate props:", this.props)
     const { slug } = this.props.pathContext;
     const postNode = this.props.data.postBySlug;
     const post = postNode.frontmatter;
@@ -29,13 +35,9 @@ export default class LessonTemplate extends React.Component {
           <HeaderContainer>
             <SiteHeader location={this.props.location} />
           </HeaderContainer>
-          <ToCContainer>
-            <TableOfContents
-              posts={this.props.data.allPostTitles.edges}
-              contentsType="lesson"
-              chapterTitles={config.toCChapters}
-            />
-          </ToCContainer>
+          <Sidebar>
+
+          </Sidebar>
           <BodyContainer>
             <div>
               <h1>
@@ -93,7 +95,7 @@ const HeaderContainer = styled.div`
   }
 `
 
-const ToCContainer = styled.div`
+const Sidebar = styled.div`
   grid-column: 1 / 2;
   grid-row: 2 / 3;
   background: ${props => props.theme.lightGrey};
@@ -106,36 +108,36 @@ const ToCContainer = styled.div`
 
 /* eslint no-undef: "off"*/
 export const pageQuery = graphql`
-  query LessonBySlug($slug: String!) {
+  query genericTemplate($slug: String!) {
     allPostTitles: allMarkdownRemark{
-        edges {
-          node {
-            frontmatter {
-              title
-              lesson
-              chapter
-              type
-            }
-            fields {
-              slug
-            }
+      edges {
+        node {
+          frontmatter {
+            title
+            lesson
+            chapter
+            type
+          }
+          fields {
+            slug
           }
         }
       }
-      postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {
-        html
-        timeToRead
-        excerpt
-        frontmatter {
-          title
-          cover
-          date
-          category
-          tags
-        }
-        fields {
-          slug
-        }
+    }
+    postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {
+      html
+      timeToRead
+      excerpt
+      frontmatter {
+        title
+        cover
+        date
+        category
+        tags
       }
+      fields {
+        slug
+      }
+    }
   }
 `;
