@@ -106,7 +106,6 @@ export const pageQuery = graphql`
         node {
           frontmatter {
             title
-            lesson
             chapter
             order
             type
@@ -123,10 +122,7 @@ export const pageQuery = graphql`
       excerpt
       frontmatter {
         title
-        cover
         date
-        category
-        tags
         type
       }
       fields {

@@ -51,10 +51,7 @@ class TableOfContents extends React.Component {
           <LessonContainer key={post.path}>
             <Link to={post.path}>
               <li>
-                <span>
-                  <p>{post.order} &nbsp;</p>
-                  <h6>{post.title}</h6>
-                </span>
+                <h6>{post.title}</h6>
               </li>
             </Link>
           </LessonContainer>

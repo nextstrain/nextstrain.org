@@ -1,5 +1,6 @@
 ---
 title: "Sacra Introduction"
+author: "Barney Potter"
 chapter: "sacra"
 order: 1
 date: "01/01/2017"

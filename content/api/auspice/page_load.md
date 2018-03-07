@@ -1,16 +1,10 @@
 ---
 title: "page load"
+author: "james hadfield"
 chapter: "auspice"
-lesson: 10
 order: 5
-cover: "https://unsplash.it/400/300/?random?BoldMage"
 date: "01/01/2017"
-category: "tech"
-type: "docs"
-tags:
-    - programming
-    - stuff
-    - other
+type: "api"
 ---
 
 * How are query params (`?c=country...`) read on page load?
