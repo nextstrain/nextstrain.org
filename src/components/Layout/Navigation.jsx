@@ -69,15 +69,15 @@ class Navigation extends React.Component {
             <img src={nextstrainLogo} alt="Logo" height='40px' />
           </Link>
           <somespace />
-          <Link className='nav-link' to='about/about-placeholder' > ABOUT </Link>
+          <Link className='nav-link' to='/about/about-placeholder' > ABOUT </Link>
           <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='tutorial/misc/narrative-markdown-description' > TUTORIAL </Link>
+          <Link className='nav-link' to='/tutorial/misc/narrative-markdown-description' > TUTORIAL </Link>
           <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='blog/blog-placeholder' > {"BLOG/REPORTS"} </Link>
+          <Link className='nav-link' to='/blog/blog-placeholder' > {"BLOG/REPORTS"} </Link>
           <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='methods/methods-placeholder' > METHODS </Link>
+          <Link className='nav-link' to='/methods/methods-placeholder' > METHODS </Link>
           <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='api/misc/static-site-notes' > API </Link>
+          <Link className='nav-link' to='/api/misc/static-site-notes' > API </Link>
         </section>
         <span>
           <github>

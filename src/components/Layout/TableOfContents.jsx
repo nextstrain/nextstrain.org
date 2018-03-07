@@ -37,7 +37,7 @@ class TableOfContents extends React.Component {
       postsInChapter.sort((a, b) => a.order > b.order)
     })
 
-    console.log("postsPerChapter", postsPerChapter)
+    // console.log("postsPerChapter", postsPerChapter)
     return {chapterOrdering, postsPerChapter}
   }
 

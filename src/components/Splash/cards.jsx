@@ -46,7 +46,7 @@ const styles = {
   cardMainText: {
     fontFamily: headerFont,
     fontWeight: 500,
-    fontSize: window.innerWidth > 1200 ? 28 : 20,
+    fontSize: 20,
     position: "absolute",
     paddingTop: 10,
     paddingBottom: 10,
@@ -60,7 +60,7 @@ const styles = {
   cardSubText: {
     color: "white",
     fontStyle: "italic",
-    fontSize: window.innerWidth > 1200 ? 28 : 12,
+    fontSize: 12,
     fontWeight: 400,
     lineHeight: 0.3,
     textAlign: "right"

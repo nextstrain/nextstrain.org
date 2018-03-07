@@ -7,5 +7,5 @@ date: "01/01/2017"
 type: "methods"
 ---
 
-_to do_
+## _to do_
 * should have custom sidebar

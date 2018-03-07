@@ -9,7 +9,7 @@ import TableOfContents from "../components/Layout/TableOfContents";
 
 export default class GenericTemplate extends React.Component {
   render() {
-    console.log("genericTemplate props:", this.props)
+    // console.log("genericTemplate props:", this.props)
     const { slug } = this.props.pathContext;
     const postNode = this.props.data.postBySlug;
     const post = postNode.frontmatter;
