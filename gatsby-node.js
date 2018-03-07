@@ -29,9 +29,7 @@ exports.createPages = ({graphql, boundActionCreators}) => {
   const {createPage} = boundActionCreators;
 
   return new Promise((resolve, reject) => {
-    const postPage = path.resolve("src/templates/post.jsx");
     const GenericTemplate = path.resolve("src/templates/generic.jsx");
-    const lessonPage = path.resolve("src/templates/lesson.jsx")
     const tagPage = path.resolve("src/templates/tag.jsx");
     const categoryPage = path.resolve("src/templates/category.jsx");
     resolve(
@@ -74,33 +72,15 @@ exports.createPages = ({graphql, boundActionCreators}) => {
             categorySet.add(edge.node.frontmatter.category);
           }
 
-          const genericTypes = ['docs', 'tutorial'];
-
-          if (edge.node.frontmatter.type === 'post') {
-            createPage({
-              path: edge.node.fields.slug,
-              component: postPage,
-              context: {
-                slug: edge.node.fields.slug
-              }
-            })
-          } else if (genericTypes.indexOf(edge.node.frontmatter.type) !== -1) {
-            createPage({
-              path: edge.node.fields.slug,
-              component: GenericTemplate,
-              context: {
-                slug: edge.node.fields.slug
-              }
-            })
-          } else {
-            createPage({
-              path: edge.node.fields.slug,
-              component: lessonPage,
-              context: {
-                slug: edge.node.fields.slug
-              }
-            })
-          }
+          // const genericTypes = ['docs', 'tutorial'];
+          // if (genericTypes.indexOf(edge.node.frontmatter.type) !== -1) {
+          createPage({
+            path: edge.node.fields.slug,
+            component: GenericTemplate,
+            context: {
+              slug: edge.node.fields.slug
+            }
+          })
         })
 
         const tagList = Array.from(tagSet);

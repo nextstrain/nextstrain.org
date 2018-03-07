@@ -1,7 +1,6 @@
 import React from "react"
 import Link from 'gatsby-link'
 import styled from 'styled-components'
-import UserLinks from '../UserLinks'
 
 const NavContainer = styled.div`
   display: flex;
@@ -47,10 +46,10 @@ class Navigation extends React.Component {
           <span style={{marginLeft: 10, marginRight: 10}}>•</span>
           <Link className='nav-link' to='/' > POSTS </Link>
         </section>
-        <span><UserLinks /></span>
       </NavContainer>
     )
   }
 }
+// <span><UserLinks /></span>
 
 export default Navigation

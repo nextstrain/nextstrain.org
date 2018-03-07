@@ -13,12 +13,6 @@ export default class GenericTemplate extends React.Component {
     const { slug } = this.props.pathContext;
     const postNode = this.props.data.postBySlug;
     const post = postNode.frontmatter;
-    if (!post.id) {
-      post.id = slug;
-    }
-    if (!post.id) {
-      post.category_id = config.postDefaultCategoryID;
-    }
     const contentsType = this.props.data.postBySlug.frontmatter.type;
     return (
       <div>

@@ -15,7 +15,7 @@ class SEO extends Component {
       description = postMeta.description
         ? postMeta.description
         : postNode.excerpt;
-      image = postMeta.cover;
+      image = postMeta.cover || config.siteLogo;
       postURL = config.siteUrl + config.pathPrefix + postPath;
     } else {
       title = config.siteTitle;
@@ -87,16 +87,6 @@ class SEO extends Component {
           property="fb:app_id"
           content={config.siteFBAppID ? config.siteFBAppID : ""}
         />
-
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:creator"
-          content={config.userTwitter ? config.userTwitter : ""}
-        />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={image} />
       </Helmet>
     );
   }
