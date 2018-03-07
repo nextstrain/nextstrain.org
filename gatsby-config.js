@@ -22,7 +22,9 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
-        fonts: [`lato text:400, 400i, 700, 700i`,
+        fonts: [
+          `lato text:300, 500, 700`,
+          `source-code-pro:100,300`,
           `space mono:400,700`,
         ],
       }
@@ -48,6 +50,7 @@ module.exports = {
             resolve: "gatsby-remark-responsive-iframe"
           },
           "gatsby-remark-prismjs",
+          'gatsby-plugin-glamor',
           "gatsby-remark-copy-linked-files",
           "gatsby-remark-autolink-headers"
         ]

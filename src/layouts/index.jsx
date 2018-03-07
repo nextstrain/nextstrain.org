@@ -2,10 +2,13 @@ import React from "react";
 import Helmet from "react-helmet";
 import styled, {ThemeProvider} from "styled-components"
 import config from "../../data/SiteConfig";
-import "./css/index.css";
-import "./css/prism-okaidia.css"
-import theme from './theme'
+import theme from '../theme'
 
+// Import global styles
+import './prism-styles';
+import "./css/index.css";
+// import "./css/prism-okaidia.css"
+import "./css/algolia.css";
 
 export default class MainLayout extends React.Component {
   getLocalTitle() {

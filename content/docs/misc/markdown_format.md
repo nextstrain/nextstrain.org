@@ -8,7 +8,8 @@ type: "docs"
 
 Markdown files in `/content` are automatically consumed and displayed according to the frontmatter, which is found at the start of the markdown file.
 For example, here is the frontmatter for this post:
-```
+
+```yaml
 ---
 title: "narrative markdown description"
 chapter: "misc"

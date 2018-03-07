@@ -26,7 +26,8 @@ body,
 h1, h2, h3, h4, h5, h6,
 p, a,
 li, ul {
-    font-family: 'Avenir', 'Helvetica Neue', sans-serif;
+    font-family: 'Lato', 'Helvetica Neue', sans-serif;
+    font-weight: 300;
 }
 
 h1, h2, h3, h4, h5, h6, p, ul, ol, dl {
@@ -38,8 +39,9 @@ li, li > *, dt, dd {
 }
 
 pre, code {
-    font-family: 'Space Mono', monospace;
+  font-family: 'source-code-pro', 'Menlo', monospace;
 }
+
 
 h1 {font-size: 4rem;}
 h2 {font-size: 3.5rem;}
@@ -49,7 +51,7 @@ h5 {font-size: 2rem;}
 h6 {font-size: 1.6rem;}
 
 p, a, li, dt, dd, tr, th {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 a {
