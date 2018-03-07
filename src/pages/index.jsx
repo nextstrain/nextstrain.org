@@ -4,8 +4,10 @@ import styled from "styled-components"
 
 import SEO from "../components/SEO/SEO"
 import config from "../../data/SiteConfig"
-import CtaButton from '../components/CtaButton'
+// import CtaButton from '../components/CtaButton'
 import Navigation from '../components/Layout/Navigation'
+import Splash from "../components/Splash";
+
 
 /* removed:
 <IndexHeadContainer>
@@ -31,26 +33,7 @@ class Index extends React.Component {
         <SEO postEdges={postEdges} />
         <main>
           <Navigation />
-          <BodyContainer>
-            <h2>nextstrain</h2>
-            <h3>phylogenetic data analysis & visualisation</h3>
-            <p>{`The nextstrain project is an attempt to make flexible informatic pipelines
-              and visualization tools to track ongoing pathogen evolution as sequence data emerges.`}
-            </p>
-            <p>
-              {`This website contains documentation and tutorials. Nextstrain is usable by anyone via `}
-              <a href="www.nextstrain.org">www.nextstrain.org</a>
-            </p>
-
-            <p>nextstrain is comprised of multiple components</p>
-            <ul>
-              <li>{`Sacra - data collection and cleaning`}</li>
-              <li>{`Flora - data storage`}</li>
-              <li>{`Augur - bioinformatics analysis`}</li>
-              <li>{`Auspice - interactive visualisation`}</li>
-            </ul>
-
-          </BodyContainer>
+          <Splash />
         </main>
       </div>
     );
@@ -59,27 +42,26 @@ class Index extends React.Component {
 
 export default Index;
 
-const IndexHeadContainer = styled.div`
-  background: ${props => props.theme.brand};
-  padding: ${props => props.theme.sitePadding};
-  text-align: center;
-`
+// const IndexHeadContainer = styled.div`
+//   background: ${props => props.theme.brand};
+//   padding: ${props => props.theme.sitePadding};
+//   text-align: center;
+// `
+//
+// const Hero = styled.div`
+//   padding: 50px 0;
+//   & > h1 {
+//     font-weight: 600;
+//   }
+// `
+//
+// const BodyContainer = styled.div`
+//   padding: ${props => props.theme.sitePadding};
+//   max-width: ${props => props.theme.contentWidthLaptop};
+//   margin: 0 auto;
+// `
 
-const Hero = styled.div`
-  padding: 50px 0;
-  & > h1 {
-    font-weight: 600;
-  }
-`
-
-const BodyContainer = styled.div`
-  padding: ${props => props.theme.sitePadding};
-  max-width: ${props => props.theme.contentWidthLaptop};
-  margin: 0 auto;
-`
-
-
-/* eslint no-undef: "off"*/
+/* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query IndexQuery {
     allMarkdownRemark(
