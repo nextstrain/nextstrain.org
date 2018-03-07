@@ -14,9 +14,9 @@ export const colors = {
   black: '#000000',
 };
 
-const theme = {
+export const theme = {
   // named colors:
-  brand: '#41B883',
+  brand: '#5097BA',
   accent: '#ADD2EB',
   accentDark: "#35495E",
   lightGrey: '#F6F6F6',
@@ -32,4 +32,11 @@ const theme = {
 
 }
 
-export default theme;
+/* FROM AUSPICE */
+// export const lighterGrey = "rgb(200, 200, 200)";
+// export const darkGrey = "#333";
+// export const medGrey = "#888";
+// export const lightGrey = "#D3D3D3";
+// export const extraLightGrey = "#F1F1F1";
+// export const brandColor = "#5097BA"; // #5DA8A3 (green) or #5097BA (blue)
+// export const sidebarColor = "#F2F2F2"; // #F4F4F4
