@@ -1,7 +1,8 @@
 ---
 title: "Sacra Introduction"
-lesson: 1
-chapter: 1
+chapter: "sacra"
+lesson: 10
+order: 1
 cover: "https://unsplash.it/400/300/?random?BoldMage"
 date: "01/01/2017"
 category: "tech"

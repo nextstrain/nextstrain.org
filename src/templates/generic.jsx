@@ -4,14 +4,8 @@ import styled from "styled-components"
 import SEO from "../components/SEO/SEO"
 import SiteHeader from '../components/Layout/Header'
 import config from "../../data/SiteConfig"
+import TableOfContents from "../components/Layout/TableOfContents";
 
-// import TableOfContents from "../components/Layout/TableOfContents";
-
-// <TableOfContents
-//   posts={this.props.data.allPostTitles.edges}
-//   contentsType="lesson"
-//   chapterTitles={config.toCChapters}
-// />
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -25,6 +19,7 @@ export default class GenericTemplate extends React.Component {
     if (!post.id) {
       post.category_id = config.postDefaultCategoryID;
     }
+    const contentsType = this.props.data.postBySlug.frontmatter.type;
     return (
       <div>
         <Helmet>
@@ -36,7 +31,10 @@ export default class GenericTemplate extends React.Component {
             <SiteHeader location={this.props.location} />
           </HeaderContainer>
           <Sidebar>
-
+            <TableOfContents
+              posts={this.props.data.allPostTitles.edges}
+              contentsType={contentsType}
+            />
           </Sidebar>
           <BodyContainer>
             <div>
@@ -116,6 +114,7 @@ export const pageQuery = graphql`
             title
             lesson
             chapter
+            order
             type
           }
           fields {
@@ -134,6 +133,7 @@ export const pageQuery = graphql`
         date
         category
         tags
+        type
       }
       fields {
         slug

@@ -41,9 +41,11 @@ class Navigation extends React.Component {
         <section>
           <Link className='nav-link' to='/' > N E X T S T R A I N </Link>
           <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='/lesson-one' > DOCS </Link>
+          <Link className='nav-link' to='/docs/sacra/sacra-introduction' > DOCS </Link>
           <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='/about' > ABOUT </Link>
+          <Link className='nav-link' to='/docs/sacra/sacra-introduction' > TUTORIAL </Link>
+          <span style={{marginLeft: 10, marginRight: 10}}>•</span>
+          <Link className='nav-link' to='/docs/sacra/sacra-introduction' > POSTS </Link>
         </section>
         <span><UserLinks /></span>
       </NavContainer>

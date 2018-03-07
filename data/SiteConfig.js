@@ -49,5 +49,7 @@ module.exports = {
   themeColor: "#c62828", // Used for setting manifest and progress theme colors.
   backgroundColor: "#e0e0e0", // Used for setting manifest background color.
   // TODO: Move this literally anywhere better.
-  toCChapters: ["", "Sacra", "Flora", "Augur", "Auspice"] // Used to generate the Table Of Contents. Index 0 should be blank.
+  toCChapters: ["", "Sacra", "Flora", "Augur", "Auspice"], // Used to generate the Table Of Contents. Index 0 should be blank.
+  chapterOrdering: ["sacra", "flora", "augur", "auspice"],
+
 };
