@@ -1,11 +1,9 @@
 import React from "react"
 import Helmet from "react-helmet"
 import styled from "styled-components"
-
 import SEO from "../components/SEO/SEO"
 import config from "../../data/SiteConfig"
-// import CtaButton from '../components/CtaButton'
-import Navigation from '../components/Layout/Navigation'
+import Navigation from '../components/Header'
 import Splash from "../components/Splash";
 
 
@@ -32,7 +30,7 @@ class Index extends React.Component {
         <Helmet title={config.siteTitle} />
         <SEO postEdges={postEdges} />
         <main>
-          <Navigation />
+          <Navigation location={this.props.location} />
           <Splash />
         </main>
       </div>

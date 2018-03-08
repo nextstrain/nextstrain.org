@@ -30,6 +30,8 @@ export const theme = {
   contentWidthLaptop: '850px',
   sitePadding: "25px",
 
+  rainbow10: ["#4042C7", "#4274CE", "#5199B7", "#69B091", "#88BB6C", "#ADBD51", "#CEB541", "#E39B39", "#E56C2F", "#DC2F24"],
+
 }
 
 /* FROM AUSPICE */

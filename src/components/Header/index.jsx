@@ -12,12 +12,16 @@ const NavContainer = styled.div`
   background: ${props => props.theme.brand};
   padding: 15px;
   align-items: center;
-
+  position: absoule;
   .nav-link {
     font-size: 1.6rem;
     margin-right: 10px;
-    font-weight: 300;
-    color: black;
+    font-weight: 500;
+    color: white;
+  }
+
+  .selected-nav {
+    border-bottom: 3px solid white;
   }
 
   somespace {
@@ -59,9 +63,22 @@ const NavContainer = styled.div`
   }
 `
 
+const Dot = (
+  <span style={{marginLeft: 10, marginRight: 10, color: "white"}}>
+    •
+  </span>
+)
+
 class Navigation extends React.Component {
 
+  selClass(name) {
+    return this.props.location.pathname.startsWith(`/${name}`) ?
+      "selected-nav" :
+      ""
+  }
+
   render() {
+    console.log(this.props)
     return (
       <NavContainer>
         <section>
@@ -69,24 +86,24 @@ class Navigation extends React.Component {
             <img src={nextstrainLogo} alt="Logo" height='40px' />
           </Link>
           <somespace />
-          <Link className='nav-link' to='/about/about-placeholder' > ABOUT </Link>
-          <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='/tutorial/misc/narrative-markdown-description' > TUTORIAL </Link>
-          <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='/blog/blog-placeholder' > {"BLOG/REPORTS"} </Link>
-          <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='/methods/methods-placeholder' > METHODS </Link>
-          <span style={{marginLeft: 10, marginRight: 10}}>•</span>
-          <Link className='nav-link' to='/api/misc/static-site-notes' > API </Link>
+          <Link className={`nav-link ${this.selClass("about")}`} to='/about/about-placeholder' > ABOUT </Link>
+          {Dot}
+          <Link className={`nav-link ${this.selClass("tutorial")}`} to='/tutorial/misc/how-to-contribute' > TUTORIAL </Link>
+          {Dot}
+          <Link className={`nav-link ${this.selClass("blog")}`} to='/blog/blog-placeholder' > {"BLOG/REPORTS"} </Link>
+          {Dot}
+          <Link className={`nav-link ${this.selClass("methods")}`} to='/methods/methods-placeholder' > METHODS </Link>
+          {Dot}
+          <Link className={`nav-link ${this.selClass("api")}`} to='/api/misc/static-site-notes' > API </Link>
         </section>
         <span>
           <github>
-            <Link className='nav-link' to='https://github.com/nextstrain' >
+            <a className='nav-link' href='https://github.com/nextstrain' >
               <githubtext>
                 github
               </githubtext>
               <ExternalLinkSvg cssProps={{verticalAlign: 3, color: colors.white}} />
-            </Link>
+            </a>
           </github>
         </span>
       </NavContainer>

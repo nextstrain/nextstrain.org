@@ -8,7 +8,7 @@ import config from "../../../data/SiteConfig"
 // This class should not be used for listing posts, but for chapter based Docs. See PostListing for that.
 // You'll also need to add your chapters to siteConfig
 
-class TableOfContents extends React.Component {
+class Sidebar extends React.Component {
   buildChapters() {
     const type = this.props.contentsType
     const chapterOrdering = config.chapterOrdering;
@@ -47,15 +47,20 @@ class TableOfContents extends React.Component {
 
     for (let i = 0; i < chapterOrdering.length; i++) {
       if (postsPerChapter[i].length) {
-        const items = postsPerChapter[i].map((post) => (
-          <LessonContainer key={post.path}>
-            <Link to={post.path}>
-              <li>
-                <h6>{post.title}</h6>
-              </li>
-            </Link>
-          </LessonContainer>
-        ))
+        const items = postsPerChapter[i].map((post) => {
+          const selStyle = this.props.selected.title === post.title && this.props.selected.chapter === post.chapter ?
+            {borderLeft: "7px solid black", fontWeight: 500, paddingLeft: "7px"} :
+            {}
+          return (
+            <ItemContainer key={post.path}>
+              <Link to={post.path}>
+                <li>
+                  <h6 style={selStyle}>{post.title}</h6>
+                </li>
+              </Link>
+            </ItemContainer>
+          )
+        })
         const chapterName = chapterOrdering[i].toUpperCase();
         chaptersAndItems.push(
           <li key={chapterName} className='chapter'>
@@ -74,16 +79,16 @@ class TableOfContents extends React.Component {
 
   render() {
     return (
-      <TableOfContentsContainer>
+      <SidebarContainer>
         <ul>
           {this.generateItems()}
         </ul>
-      </TableOfContentsContainer>
+      </SidebarContainer>
     )
   }
 }
 
-const TableOfContentsContainer = styled.div`
+const SidebarContainer = styled.div`
   padding: ${props => props.theme.sitePadding};
 
   & > ul, .chapterItems {
@@ -97,7 +102,10 @@ const TableOfContentsContainer = styled.div`
     font-weight: 200;
     margin: 0;
   }
-
+  .sel {
+    border-left: 2px solid black;
+    color: red;
+  }
   .tocHeading {
      font-weight: 200;
      color: ${props => props.theme.brand};
@@ -105,12 +113,13 @@ const TableOfContentsContainer = styled.div`
   }
 `
 
-const LessonContainer = styled.div`
+const ItemContainer = styled.div`
   h6, p {
     color: black;
     margin: 0;
     line-height: 1.5;
   }
+
   li {
     margin: 0;
   }
@@ -123,4 +132,4 @@ const LessonContainer = styled.div`
   }
 `
 
-export default TableOfContents
+export default Sidebar

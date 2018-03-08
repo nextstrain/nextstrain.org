@@ -61,3 +61,15 @@ a {
 a:hover {
     border-bottom: 1px solid black;
 }
+
+blockquote {
+  background: rgba(255,229,100,0.3);
+  border-left-color: #ffe564;
+  border-left-width: 9px;
+  border-left-style: solid;
+  padding: 10px 45px 10px 26px;
+  margin-bottom: 30;
+  margin-top: 20;
+  margin-left: -30;
+  margin-right: -30;
+}

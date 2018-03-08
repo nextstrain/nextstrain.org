@@ -2,9 +2,9 @@ import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components"
 import SEO from "../components/SEO/SEO"
-import SiteHeader from '../components/Layout/Header'
+import Navigation from '../components/Header'
 import config from "../../data/SiteConfig"
-import TableOfContents from "../components/Layout/TableOfContents";
+import Sidebar from "../components/Sidebar";
 
 
 export default class GenericTemplate extends React.Component {
@@ -22,14 +22,15 @@ export default class GenericTemplate extends React.Component {
         <SEO postPath={slug} postNode={postNode} postSEO />
         <BodyGrid>
           <HeaderContainer>
-            <SiteHeader location={this.props.location} />
+            <Navigation location={this.props.location} />
           </HeaderContainer>
-          <Sidebar>
-            <TableOfContents
+          <SidebarContainer>
+            <Sidebar
               posts={this.props.data.allPostTitles.edges}
               contentsType={contentsType}
+              selected={post}
             />
-          </Sidebar>
+          </SidebarContainer>
           <BodyContainer>
             <div>
               <h1>
@@ -87,7 +88,7 @@ const HeaderContainer = styled.div`
   }
 `
 
-const Sidebar = styled.div`
+const SidebarContainer = styled.div`
   grid-column: 1 / 2;
   grid-row: 2 / 3;
   background: ${props => props.theme.lightGrey};
@@ -124,6 +125,7 @@ export const pageQuery = graphql`
         title
         date
         type
+        chapter
       }
       fields {
         slug

@@ -52,7 +52,7 @@ css.global(
   {
     height: 'auto !important',
     margin: '1rem',
-    fontSize: 14,
+    fontSize: 18,
     lineHeight: '20px',
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-word',
