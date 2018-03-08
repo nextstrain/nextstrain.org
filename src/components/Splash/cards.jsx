@@ -1,46 +1,9 @@
 import React from "react";
 import styled from "styled-components"
 // import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png"
+const config = require("../../../data/SiteConfig");
 
 const headerFont = "Lato, Helvetica Neue, Helvetica, sans-serif";
-
-const cards = [
-  {
-    "img": "zika.png",
-    "url": "/zika",
-    "title": "Zika (ZIKV)"
-  },
-  {
-    "img": "ebola.png",
-    "url": "/ebola",
-    "title": "Ebola (EBOV)"
-  },
-  {
-    "img": "dengue.png",
-    "url": "/dengue",
-    "title": "Dengue"
-  },
-  {
-    "img": "seasonalinfluenza.png",
-    "url": "/flu/h3n2/ha/3y",
-    "title": "Seasonal Influenza"
-  },
-  {
-    "img": "avianinfluenza.png",
-    "url": "/avian/h7n9",
-    "title": "Avian Influenza"
-  },
-  {
-    "img": "mumps.jpg",
-    "url": "/mumps",
-    "title": "Mumps"
-  },
-  {
-    "img": "mumps.jpg",
-    "url": "/measles",
-    "title": "Measles"
-  }
-];
 
 const styles = {
   cardMainText: {
@@ -184,7 +147,7 @@ const CardTitle = styled.div`
 export const generateTiles = () => {
   return (
     <Flex>
-      {cards.map((d) => (
+      {config.cards.map((d) => (
         <div key={d.title}>
           <CardOuter>
             <CardInner>
