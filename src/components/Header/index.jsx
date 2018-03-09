@@ -72,6 +72,7 @@ const Dot = (
 class Navigation extends React.Component {
 
   selClass(name) {
+    if (!this.props.location || !this.props.location.pathname) return "";
     return this.props.location.pathname.startsWith(`/${name}`) ?
       "selected-nav" :
       ""
