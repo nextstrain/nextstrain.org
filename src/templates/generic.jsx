@@ -5,7 +5,7 @@ import SEO from "../components/SEO/SEO"
 import Navigation from '../components/Header'
 import config from "../../data/SiteConfig"
 import Sidebar from "../components/Sidebar";
-
+import {colors} from "../theme";
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -13,6 +13,7 @@ export default class GenericTemplate extends React.Component {
     const { slug } = this.props.pathContext;
     const postNode = this.props.data.postBySlug;
     const post = postNode.frontmatter;
+    console.log("post", post)
     const contentsType = this.props.data.postBySlug.frontmatter.type;
     return (
       <div>
@@ -36,6 +37,9 @@ export default class GenericTemplate extends React.Component {
               <h1>
                 {post.title}
               </h1>
+              <AuthorDate>
+                {post.author}  {post.date}
+              </AuthorDate>
               <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </div>
           </BodyContainer>
@@ -99,6 +103,12 @@ const SidebarContainer = styled.div`
   }
 `
 
+const AuthorDate = styled.div`
+  font-size: 2em;
+  font-weight: 100;
+  color: ${colors.subtle};
+`
+
 /* eslint no-undef: "off"*/
 export const pageQuery = graphql`
   query genericTemplate($slug: String!) {
@@ -123,6 +133,7 @@ export const pageQuery = graphql`
       excerpt
       frontmatter {
         title
+        author
         date
         type
         chapter
