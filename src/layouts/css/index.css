@@ -73,3 +73,11 @@ blockquote {
   margin-left: -30;
   margin-right: -30;
 }
+
+li {
+  margin-left: 30px;
+}
+
+li > ul {
+  padding-left: 30px;
+}
