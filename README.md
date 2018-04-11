@@ -31,10 +31,10 @@ Prerequisites:
 * git
 
 ```
-git clone git@github.com:nextstrain/nextstrain.git
-cd nextstrain
+git clone https://github.com/nextstrain/nextstrain.org.git
+cd nextstrain.org
 npm install
-npm run develop
+npm start
 ```
 
 

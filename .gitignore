@@ -1,8 +1,11 @@
-### Node ###
+### npm ###
+package-lock.json
+node_modules/
+npm-debug.log
+
 # Logs
 logs
 *.log
-npm-debug.log*
 
 # Runtime data
 pids
@@ -29,7 +32,6 @@ coverage
 build/Release
 
 # Dependency directories
-node_modules
 jspm_packages
 
 # Optional npm cache directory
@@ -47,7 +49,6 @@ jspm_packages
 # Yarn Integrity file
 .yarn-integrity
 
-
 # Build Files
 public/
 .cache/
@@ -60,3 +61,31 @@ bundle-stats.json
 
 .idea/*
 .idea
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# autosave #
+############
+*~
+
+# IDE #
+#######
+*sublime*
