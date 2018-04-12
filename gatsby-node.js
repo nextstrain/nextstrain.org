@@ -30,6 +30,8 @@ exports.createPages = ({graphql, boundActionCreators}) => {
 
   return new Promise((resolve, reject) => {
     const GenericTemplate = path.resolve("src/templates/generic.jsx");
+    const AboutTemplate = path.resolve("src/templates/about.jsx");
+
     // const tagPage = path.resolve("src/templates/tag.jsx");
     // const categoryPage = path.resolve("src/templates/category.jsx");
     resolve(
@@ -69,9 +71,13 @@ exports.createPages = ({graphql, boundActionCreators}) => {
         //
         //   // const genericTypes = ['api', 'tutorial'];
         //   // if (genericTypes.indexOf(edge.node.frontmatter.type) !== -1) {
+          const component = edge.node.fields.slug.startsWith("/about") ?
+            AboutTemplate :
+            GenericTemplate;
+
           createPage({
             path: edge.node.fields.slug,
-            component: GenericTemplate,
+            component,
             context: {
               slug: edge.node.fields.slug
             }

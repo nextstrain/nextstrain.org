@@ -87,7 +87,7 @@ class Navigation extends React.Component {
             <img src={nextstrainLogo} alt="Logo" height='40px' />
           </Link>
           <somespace />
-          <Link className={`nav-link ${this.selClass("about")}`} to='/about/placeholder' > about </Link>
+          <Link className={`nav-link ${this.selClass("about")}`} to='/about' > about </Link>
           {Dot}
           <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/builds/lassa-build' > docs </Link>
           {Dot}
