@@ -93,7 +93,7 @@ class Navigation extends React.Component {
           {Dot}
           <Link className={`nav-link ${this.selClass("blog")}`} to='/blog/2018/placeholder' > blog </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("reports")}`} to='/reports/01-flu-vaccine-selection/placeholder' > reports </Link>
+          <Link className={`nav-link ${this.selClass("reports")}`} to='/reports/01-flu-vaccine-selection/2017-february' > reports </Link>
           {Dot}
           <Link className={`nav-link ${this.selClass("methods")}`} to='/methods/chapter/placeholder' > methods </Link>
           {Dot}
