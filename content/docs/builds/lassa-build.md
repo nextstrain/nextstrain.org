@@ -1,10 +1,6 @@
 ---
-title: "Lassa build"
 author: "Trevor Bedford"
-order: 1
 date: "04/11/2018"
-type: "docs"
-chapter: "builds"
 ---
 
 # Lassa build

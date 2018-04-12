@@ -1,10 +1,6 @@
 ---
-title: "page load"
 author: "james hadfield"
-chapter: "auspice"
-order: 5
 date: "01/01/2017"
-type: "api"
 ---
 
 * How are query params (`?c=country...`) read on page load?

@@ -39,9 +39,6 @@ exports.createPages = ({graphql, boundActionCreators}) => {
           allMarkdownRemark {
             edges {
               node {
-                frontmatter {
-                  type
-                }
                 fields {
                   slug
                 }

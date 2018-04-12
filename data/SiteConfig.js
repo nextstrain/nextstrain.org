@@ -7,7 +7,6 @@ module.exports = {
   siteDescription: "Real-time tracking of pathogen evolution", // Website description used for RSS feeds/meta description tag.
   userName: "james hadfield", // Username to display in the author segment.
   progressBarColor: "#5097BA",
-  chapterOrdering: ["sacra", "flora", "augur", "auspice"],
   cards: [
     {
       "img": "zika.png",

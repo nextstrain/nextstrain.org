@@ -1,10 +1,6 @@
 ---
-title: "static site notes"
 author: "james hadfield"
-chapter: "misc"
-order: 1
 date: "08/03/2018"
-type: "api"
 ---
 
 ### Config

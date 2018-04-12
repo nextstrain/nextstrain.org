@@ -21,7 +21,7 @@ const NavContainer = styled.div`
   }
 
   .selected-nav {
-    border-bottom: 3px solid white;
+    border-bottom: 2px solid white;
   }
 
   somespace {
@@ -87,15 +87,17 @@ class Navigation extends React.Component {
             <img src={nextstrainLogo} alt="Logo" height='40px' />
           </Link>
           <somespace />
-          <Link className={`nav-link ${this.selClass("about")}`} to='/about/about-placeholder' > ABOUT </Link>
+          <Link className={`nav-link ${this.selClass("about")}`} to='/about/placeholder' > about </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("tutorial")}`} to='/tutorial/misc/how-to-contribute' > TUTORIAL </Link>
+          <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/builds/lassa-build' > docs </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("blog")}`} to='/blog/blog-placeholder' > {"BLOG/REPORTS"} </Link>
+          <Link className={`nav-link ${this.selClass("blog")}`} to='/blog/2018/placeholder' > blog </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("methods")}`} to='/methods/methods-placeholder' > METHODS </Link>
+          <Link className={`nav-link ${this.selClass("reports")}`} to='/reports/01-flu-vaccine-selection/placeholder' > reports </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("api")}`} to='/api/misc/static-site-notes' > API </Link>
+          <Link className={`nav-link ${this.selClass("methods")}`} to='/methods/chapter/placeholder' > methods </Link>
+          {Dot}
+          <Link className={`nav-link ${this.selClass("api")}`} to='/developer/misc/static-site-notes' > developer </Link>
         </section>
         <span>
           <github>

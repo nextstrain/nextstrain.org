@@ -1,10 +1,6 @@
 ---
-title: "Building Zika"
 author: "Barney Potter"
-chapter: "sacra"
-order: 2
 date: "03/27/2018"
-type: "tutorial"
 ---
 
 ### [ViPR sequences](https://www.viprbrc.org/brc/vipr_genome_search.spg?method=ShowCleanSearch&decorator=flavi_zika)
