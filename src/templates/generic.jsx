@@ -6,6 +6,8 @@ import Navigation from '../components/Header'
 import config from "../../data/SiteConfig"
 import Sidebar from "../components/Sidebar";
 import {colors} from "../theme";
+import {parseSlug} from "../utils/parseSlug"
+const _ = require("lodash");
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -13,12 +15,17 @@ export default class GenericTemplate extends React.Component {
     const { slug } = this.props.pathContext;
     const postNode = this.props.data.postBySlug;
     const post = postNode.frontmatter;
-    console.log("post", post)
     const contentsType = this.props.data.postBySlug.frontmatter.type;
+    
+    const selectedSlug = parseSlug(slug);
+    const allSlugs = this.props.data.allSlugs.edges
+      .map((e) => parseSlug(e.node.fields.slug))
+      .filter((d) => d.category === selectedSlug.category)
+    
     return (
       <div>
         <Helmet>
-          <title>{`${post.title} | ${config.siteTitle}`}</title>
+          <title>{`${_.startCase(selectedSlug.title)} | ${config.siteTitle}`}</title>
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
         <BodyGrid>
@@ -27,15 +34,14 @@ export default class GenericTemplate extends React.Component {
           </HeaderContainer>
           <SidebarContainer>
             <Sidebar
-              posts={this.props.data.allPostTitles.edges}
-              contentsType={contentsType}
-              selected={post}
+              selectedSlug={selectedSlug}
+              allSlugs={allSlugs}
             />
           </SidebarContainer>
           <BodyContainer>
             <div>
               <h1>
-                {post.title}
+                {_.startCase(selectedSlug.title)}
               </h1>
               <AuthorDate>
                 {post.author}  {post.date}
@@ -112,15 +118,9 @@ const AuthorDate = styled.div`
 /* eslint no-undef: "off"*/
 export const pageQuery = graphql`
   query genericTemplate($slug: String!) {
-    allPostTitles: allMarkdownRemark{
+    allSlugs: allMarkdownRemark {
       edges {
         node {
-          frontmatter {
-            title
-            chapter
-            order
-            type
-          }
           fields {
             slug
           }
@@ -132,11 +132,8 @@ export const pageQuery = graphql`
       timeToRead
       excerpt
       frontmatter {
-        title
         author
         date
-        type
-        chapter
       }
       fields {
         slug
