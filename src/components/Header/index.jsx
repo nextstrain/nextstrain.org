@@ -89,7 +89,7 @@ class Navigation extends React.Component {
           <somespace />
           <Link className={`nav-link ${this.selClass("about")}`} to='/about' > about </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/builds/lassa-build' > docs </Link>
+          <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/01-builds/lassa-build' > docs </Link>
           {Dot}
           <Link className={`nav-link ${this.selClass("blog")}`} to='/blog/2018/placeholder' > blog </Link>
           {Dot}

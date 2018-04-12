@@ -7,7 +7,7 @@ import config from "../../data/SiteConfig"
 import Sidebar from "../components/Sidebar";
 import {colors} from "../theme";
 import {parseSlug} from "../utils/parseSlug"
-const _ = require("lodash");
+import {formatFileName} from "../utils/formatFileName"
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -25,7 +25,7 @@ export default class GenericTemplate extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>{`${_.startCase(selectedSlug.title)} | ${config.siteTitle}`}</title>
+          <title>{formatFileName(selectedSlug.title)}</title>
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
         <BodyGrid>
@@ -41,7 +41,7 @@ export default class GenericTemplate extends React.Component {
           <BodyContainer>
             <div>
               <h1>
-                {_.startCase(selectedSlug.title)}
+                {formatFileName(selectedSlug.title)}
               </h1>
               <AuthorDate>
                 {post.author}  {post.date}

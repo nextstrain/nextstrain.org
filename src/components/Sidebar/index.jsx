@@ -2,11 +2,12 @@ import React from "react"
 import Link from 'gatsby-link'
 import styled from 'styled-components'
 import config from "../../../data/SiteConfig"
-const _ = require("lodash");
+import {formatFileName} from "../../utils/formatFileName"
 
 // This class should not be used for listing posts, but for chapter based Docs. See PostListing for that.
 
 // TODO: in JSX, split out XX-name when the files have all been renamed
+
 
 class Sidebar extends React.Component {
   generateItems() {
@@ -32,7 +33,7 @@ class Sidebar extends React.Component {
           <ItemContainer key={post.path}>
             <Link to={post.path}>
               <li>
-                <h6 style={selStyle}>{_.startCase(post.title)}</h6>
+                <h6 style={selStyle}>{formatFileName(post.title)}</h6>
               </li>
             </Link>
           </ItemContainer>
@@ -41,7 +42,7 @@ class Sidebar extends React.Component {
       return (
         <li key={chapter.name} className='chapter'>
           <h5 className='tocHeading'>
-            {chapter.name}
+            {formatFileName(chapter.name)}
           </h5>
           <ul className='chapterItems'>
             {postTitles}
