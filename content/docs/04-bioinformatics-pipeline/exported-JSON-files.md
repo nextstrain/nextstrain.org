@@ -10,16 +10,17 @@ This page details their format.
 > Please note - the format of these JSONs are in flux
 
 ### Metadata JSON
-  * `updated {str}` Used in the footer.
+  * `updated {str}` Displayed in the footer.
   * `author_info {obj}`
     * `key -> {title -> str, n -> int}` Displayed when clicking on strains in the tree and also for the authors filter in the footer.
-  * `virus_count {int}`
-  * `defaults {obj}` Used to override the default view of the data. Possible keys/values are:
+  * `virus_count {int}` Total number of tips in the tree. Used in the Info panel & for CSV download.
+  * `defaults {obj}` _optional_ Used to override the default view of the data. Possible keys/values are:
     * `geoResolution`
     * `colorBy`
     * `mapTriplicate {bool}`
   * `title {str}` Displayed in the header
-  * `vaccine_choices {obj}` Keys should be strain names, values are date string (YYYY-MM-DD). Used to display dotted lines between the strain collection date and a cross at this date.
+  * `vaccine_choices {obj}` _optional_
+    * `<strain_name> -> YYYY-MM-DD` The date string is currently unused, but the strain names will show up as a black cross in the tree.
   * `controls {obj}` _to do - are these used by the filters?!?! WHy is this effectively a dup of author_info_
     * `geographic location {obj}` Keys are deme names. Value is the object `{count: INT, subcats: OBJ}`. There is also a key `name -> str`.
     * `authors`
@@ -30,10 +31,10 @@ This page details their format.
     * The `color_map` is an array of arrays, where each array has `[value, hex]`. It can only be used with discrete scales.
     * The `key`
     * The `menuItem`
-  * `seq_author_map` _to do - this should be removed from the JSON_
+  * `seq_author_map` _DEPRECATED_
   * `filters {ARRAY}` a list of colorBy values to use as filters in the footer. Authors should not be specified, that's added automatically. _to do - clean up_
-  * `commit {str}` _currently unused_
-  * `maintainer {array}` Used in the footer. An array of name to be displayed and URL.
+  * `commit {str}` _currently unused because it is always "unknown", but this will be used in the future_
+  * `maintainer {array}` Used in the footer. An array of name to be displayed and URL (both strings).
   * `panels {array}`
   * `geo {obj}` Keys are the values of the colorBy values that are used as map demes, and therefore appear in the geographic resolution dropdown _i'm guessing here - CHECK_. Each value is an object:
     * `{key -> {latitude: FLOAT, longitude: FLOAT}}` keys being the colorBy values.
@@ -42,23 +43,22 @@ This page details their format.
 
 ### Tree JSON
 This has a nested format whereby the JSON describes the root node in the tree, with each child appearing as objects in the `children -> [...]` property of the node. This is the shape of each node object (including terminal nodes).
-  * `tvalue {FLOAT}` _I believe this is not used (attr.num_date is)_
-  * `yvalue {FLOAT}` _this will be removed soon and calculated in auspice_
-  * `xvalue {FLOAT}` The divergence of the node from the root (which is 0.0) _I don't think this is actually used - it's attr.div that gets used?_
+  * `tvalue {FLOAT}` _DEPRECATED_
+  * `yvalue {FLOAT}` _Currently required, but will soon be calculated in auspice_
+  * `xvalue {FLOAT}` _DEPRECATED_
   * `clade {INT}` Value must be unique
   * `strain {STR}` The node name - used by terminal nodes to display strain name. Must be unique.
   * `serum {STR}` _I believe this is unused in nextstrain/auspice_
-  * `muts {ARRAY}` Values are, e.g., "T399C"
-  * `aa_muts {OBJ}` Keys are gene names, values are arrays similar to above (but with amino acids)
+  * `muts {ARRAY}` _optional_ Values are, e.g., "T399C".
+  * `aa_muts {OBJ}` _optional_ Keys are gene names, values are arrays similar to above (but with amino acids)
   * `children {ARRAY}` A list of nodes such as this. Terminal nodes do not have this set. Can be more than 2 in the array (i.e. polytomies are allowed).
   * `attr {obj}` see below.
 
 #### The `attr` key describes an object with required and optional keys.
 
 **Required attribute keys & values**
-  * `num_date {FLOAT}` _I believe this is used to display the temporal tree_
-  * `div {FLOAT}` _I believe this is used to display the non-temporal tree_
-  Each
+  * `num_date {FLOAT}`
+  * `div {FLOAT}` _Cumulative (root = 0, nodes are divergence from root_
 
 
 **Optional attribute keys & values**
@@ -67,7 +67,10 @@ This has a nested format whereby the JSON describes the root node in the tree, w
   * `X_confidence {MULTIPLE}` where x is a colorBy key or `num_date`.
   If `X` is `num_date` then the value is an array consisting of the min & max values to display the confidence interval bar.
   If `X` is a valid colorBy key, then the value is an object consisting of keys being values of that colorBy and values being fractions such that the sum of all values is less than 1.0. This is used to control the opacity of the branch as well as in the info-box when hovered.
-  * `named_clades {ARRAY}` _deprecated_
+
+**Deprecated keys & values**
+  * `named_clades {ARRAY}` _DEPRECATED_
+  * `strain` _DEPRECATED_ (this is set on the node itself, not in `node.attr`)
 
 ### tip frequency JSON (Optional for nextstrain.org)
 ```
