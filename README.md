@@ -40,7 +40,19 @@ npm start
 
 
 ### Deploying this website
-*to do*
+
+To deploy to Heroku set buildpacks with:
+
+```
+heroku buildpacks:set heroku/nodejs
+heroku buildpacks:add https://github.com/heroku/heroku-buildpack-static.git
+```
+
+Deploy can then be updated with just:
+
+```
+git push -f heroku master
+```
 
 ### Nextrain is
 Trevor Bedford, Richard Neher, James Hadfield, Barney Potter, John Huddleston, Sydney Bell, Colin McGill, ...
