@@ -12,23 +12,23 @@ const _ = require("lodash");
 export default class AboutTemplate extends React.Component {
   render() {
     console.log("AboutTemplate")
-    const { slug } = this.props.pathContext;
-    const postNode = this.props.data.postBySlug;
-    const post = postNode.frontmatter;
-    const contentsType = this.props.data.postBySlug.frontmatter.type;
+    // const { slug } = this.props.pathContext;
+    // const postNode = this.props.data.postBySlug;
+    // const post = postNode.frontmatter;
+    // const contentsType = this.props.data.postBySlug.frontmatter.type;
     
     return (
       <div>
         <Helmet>
           <title>{`About Nextstrain`}</title>
         </Helmet>
-        <SEO postPath={slug} postNode={postNode} postSEO />
+        <SEO/>
         <HeaderContainer>
           <Navigation location={this.props.location} />
         </HeaderContainer>
         <BodyContainer>
           <div>
-            <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
+            A B O U T
           </div>
         </BodyContainer>
       </div>
@@ -80,21 +80,3 @@ const AuthorDate = styled.div`
   font-weight: 100;
   color: ${colors.subtle};
 `
-
-/* eslint no-undef: "off"*/
-export const pageQuery = graphql`
-  query aboutTemplate($slug: String!) {
-    postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
-      timeToRead
-      excerpt
-      frontmatter {
-        author
-        date
-      }
-      fields {
-        slug
-      }
-    }
-  }
-`;

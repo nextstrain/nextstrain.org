@@ -30,7 +30,7 @@ exports.createPages = ({graphql, boundActionCreators}) => {
 
   return new Promise((resolve, reject) => {
     const GenericTemplate = path.resolve("src/templates/generic.jsx");
-    const AboutTemplate = path.resolve("src/templates/about.jsx");
+    const AboutPage = path.resolve("src/pages/about.jsx");
 
     // const tagPage = path.resolve("src/templates/tag.jsx");
     // const categoryPage = path.resolve("src/templates/category.jsx");
@@ -55,56 +55,26 @@ exports.createPages = ({graphql, boundActionCreators}) => {
           console.log(result.errors);
           reject(result.errors);
         }
-
-        // const tagSet = new Set();
-        // const categorySet = new Set();
         result.data.allMarkdownRemark.edges.forEach(edge => {
-        //   if (edge.node.frontmatter.tags) {
-        //     edge.node.frontmatter.tags.forEach(tag => {
-        //       tagSet.add(tag);
-        //     });
-        //   }
-        //
-        //   if (edge.node.frontmatter.category) {
-        //     categorySet.add(edge.node.frontmatter.category);
-        //   }
-        //
-        //   // const genericTypes = ['api', 'tutorial'];
-        //   // if (genericTypes.indexOf(edge.node.frontmatter.type) !== -1) {
-          const component = edge.node.fields.slug.startsWith("/about") ?
-            AboutTemplate :
-            GenericTemplate;
-
-          createPage({
-            path: edge.node.fields.slug,
-            component,
-            context: {
-              slug: edge.node.fields.slug
-            }
-          })
+          if (edge.node.fields.slug.startsWith("/about")) {
+            createPage({
+              path: edge.node.fields.slug,
+              component: AboutPage,
+              context: {
+                slug: edge.node.fields.slug
+              }
+            })
+          } else {
+            const component = GenericTemplate;
+            createPage({
+              path: edge.node.fields.slug,
+              component,
+              context: {
+                slug: edge.node.fields.slug
+              }
+            })
+          }
         })
-
-        // const tagList = Array.from(tagSet);
-        // tagList.forEach(tag => {
-        //   createPage({
-        //     path: `/tags/${_.kebabCase(tag)}/`,
-        //     component: tagPage,
-        //     context: {
-        //       tag
-        //     }
-        //   });
-        // });
-        //
-        // const categoryList = Array.from(categorySet);
-        // categoryList.forEach(category => {
-        //   createPage({
-        //     path: `/categories/${_.kebabCase(category)}/`,
-        //     component: categoryPage,
-        //     context: {
-        //       category
-        //     }
-        //   });
-        // });
       })
     );
   });
