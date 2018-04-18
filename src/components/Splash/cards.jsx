@@ -151,7 +151,7 @@ export const generateTiles = () => {
         <div key={d.title}>
           <CardOuter>
             <CardInner>
-              <a href={d.to} target="_blank" onClick={() => console.log("triggerOutboundEvent")}>
+              <a href={`https://app.nextstrain.org${d.url}`}>
                 <CardTitle>
                   {d.title}
                 </CardTitle>
