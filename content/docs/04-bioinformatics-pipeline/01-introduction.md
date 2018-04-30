@@ -1,6 +1,7 @@
 ---
 author: "James Hadfield"
 date: "04/11/2018"
+title: "Introduction to Augur"
 ---
 
 Augur is the informatic processing pipeline to track evolution from sequence and serological data.

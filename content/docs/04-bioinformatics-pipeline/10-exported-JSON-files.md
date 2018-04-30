@@ -1,6 +1,7 @@
 ---
 author: "james hadfield"
 date: "09/03/2018"
+title: "Format of JSON files exported by Augur and consumed by Auspice"
 ---
 
 The data displayed in auspice is derived from JSON files produced by augur.

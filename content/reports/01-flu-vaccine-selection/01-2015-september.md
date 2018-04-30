@@ -1,9 +1,8 @@
 ---
 author: "Trevor Bedford & Richard Neher"
 date: "September 16, 2015"
+title: "Seasonal influenza circulation patterns and future projections"
 ---
-
-# Seasonal influenza circulation patterns and future projections
 
 _This is not meant as a comprehensive report, but is instead intended as particular observations that we've made that may be of relevance. Please also note that observed patterns reflect the GISAID database and may not be entirely representative of underlying dynamics._
 

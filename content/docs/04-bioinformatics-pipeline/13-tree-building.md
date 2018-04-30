@@ -1,6 +1,7 @@
 ---
 author: "James Hadfield"
 date: "04/11/2018"
+title: "Augur Tree Building"
 ---
 Building the tree is a 2 step process: A newick file is created (e.g. with RAxML) and then this is converted into a TimeTree.
 

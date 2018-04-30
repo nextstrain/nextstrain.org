@@ -1,6 +1,7 @@
 ---
 author: "James Hadfield"
 date: "04/11/2018"
+title: "Augur Prepare"
 ---
 
 Prepare takes fauna data as input and applies filtering, subsampling and checking of metadata to produce a single JSON (per segment) which can be analysed by [_process_](process.md).

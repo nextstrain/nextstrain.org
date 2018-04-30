@@ -1,6 +1,8 @@
 ---
 author: "james hadfield"
 date: "01/01/2017"
+title: "Auspice page load code flow"
+
 ---
 
 * How are query params (`?c=country...`) read on page load?

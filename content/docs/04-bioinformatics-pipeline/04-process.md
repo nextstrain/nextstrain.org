@@ -1,6 +1,7 @@
 ---
 author: "James Hadfield"
 date: "04/11/2018"
+title: "Augur process"
 ---
 
 The process scripts (and the Process class) are designed to analyse data one prepared JSON at a time.

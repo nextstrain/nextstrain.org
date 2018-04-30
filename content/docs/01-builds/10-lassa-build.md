@@ -1,9 +1,10 @@
 ---
 author: "Trevor Bedford, James Hadfield"
 date: "04/20/2018"
+title: "Build steps for Lassa Virus"
+
 ---
 
-# Lassa build.
 This build is temporary and in the process of being moved to a more recent version of sacra.
 
 ## Download data from ViPR

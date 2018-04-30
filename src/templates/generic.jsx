@@ -23,11 +23,10 @@ export default class GenericTemplate extends React.Component {
         postOrder: e.node.fields.postOrder
       }))
       .filter((d) => d.category === selectedPostMeta.category)
-
     return (
       <div>
         <Helmet>
-          <title>{formatFileName(selectedPostMeta.title)}</title>
+          <title>{post.title}</title>
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
         <BodyGrid>
@@ -43,7 +42,7 @@ export default class GenericTemplate extends React.Component {
           <BodyContainer>
             <div>
               <h1>
-                {formatFileName(selectedPostMeta.title)}
+                {post.title}
               </h1>
               <AuthorDate>
                 {post.author}  {post.date}
@@ -136,6 +135,7 @@ export const pageQuery = graphql`
       timeToRead
       excerpt
       frontmatter {
+        title
         author
         date
       }

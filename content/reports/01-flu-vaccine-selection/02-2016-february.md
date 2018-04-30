@@ -1,10 +1,8 @@
 ---
 author: "Trevor Bedford & Richard Neher"
 date: "Feb 2016"
+title: "Seasonal influenza circulation patterns and future projections"
 ---
-
-# Seasonal influenza circulation patterns and future projections
-
 
 ## A/H3N2
 

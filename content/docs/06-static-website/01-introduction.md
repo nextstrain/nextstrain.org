@@ -17,7 +17,7 @@ In general, the content is sourced in two ways: markdown-derived pages and stati
 This is the majority of the website, consisting of the blog, documentation, methods and reports pages.
 The files are automatically sourced from the `/content` directory, with each file accessed by it's own URL (see below).
 The markdown content is parsed into HTML and handed to `/templates/generic.jsx` to be rendered.
-The URL is constructed using the markdown file pathname and the content in the frontmatter via the function `onCreateNode` (in `/gatsby-node.js`).
+The URL is constructed using the markdown file pathname via the function `onCreateNode` (in `/gatsby-node.js`).
 For instance, this page is generated from [this markdown file](https://github.com/nextstrain/nextstrain.org/blob/master/content/docs/06-static-website/introduction.md).
 See [this page](./writing-content.md) for more detailed instructions regarding the markdown format.
 

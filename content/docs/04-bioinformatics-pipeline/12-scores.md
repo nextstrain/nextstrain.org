@@ -1,6 +1,7 @@
 ---
 author: "John Huddleston"
 date: "04/11/2018"
+title: "Augur scores"
 ---
 Node-specific scores enable analysis and visual display of pathogenic characteristics such as the number of epitope mutations, age of infected individuals, or the local branching index (LBI).
 We categorize scores into the following groups based on the data source from which they are calculated.

@@ -1,10 +1,8 @@
 ---
 author: "Barney Potter"
 date: "01/01/2017"
+title: "Sacra: a data cleaning tool designed for genomic epidemiology datasets."
 ---
-
-# Sacra
-### Sacra: a data cleaning tool designed for genomic epidemiology datasets.
 
 Sacra is used primarily within [Nextstrain](https://github.com/nextstrain) and replaces functionality previously found in [nextstrain/fauna](https://github.com/nextstrain/fauna).
 **This is under development and not production ready.**

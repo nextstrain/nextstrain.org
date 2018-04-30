@@ -1,6 +1,7 @@
 ---
 author: "James Hadfield / John Huddleston"
 date: "04/11/2018"
+title: "Installing Augur"
 ---
 
 To install augur, clone the git repository and the submodules

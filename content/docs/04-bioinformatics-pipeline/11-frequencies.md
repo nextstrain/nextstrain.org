@@ -1,6 +1,7 @@
 ---
 author: "James Hadfield"
 date: "04/11/2018"
+title: "Augur frequencies"
 ---
 ## Aims & Terminology:
 The change in the frequency of mutations over time (_mutation frequencies_) and the rise and fall of defined clades (_tree_frequencies_) aid in understanding the evolution of influenza and other pathogens.
