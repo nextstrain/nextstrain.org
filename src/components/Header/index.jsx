@@ -79,7 +79,6 @@ class Navigation extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <NavContainer>
         <section>
@@ -89,15 +88,15 @@ class Navigation extends React.Component {
           <somespace />
           <Link className={`nav-link ${this.selClass("about")}`} to='/about' > about </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/01-builds/lassa-build' > docs </Link>
+          <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/builds/zika-build' > docs </Link>
           {Dot}
           <Link className={`nav-link ${this.selClass("blog")}`} to='/blog/2018/placeholder' > blog </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("reports")}`} to='/reports/01-flu-vaccine-selection/2017-february' > reports </Link>
+          <Link className={`nav-link ${this.selClass("reports")}`} to='/reports/flu-vaccine-selection/2017-february' > reports </Link>
           {Dot}
           <Link className={`nav-link ${this.selClass("methods")}`} to='/methods/chapter/placeholder' > methods </Link>
           {Dot}
-          <Link className={`nav-link ${this.selClass("api")}`} to='/developer/misc/static-site-notes' > developer </Link>
+          <Link className={`nav-link ${this.selClass("dev")}`} to='/developer/auspice/page-load' > developer </Link>
         </section>
         <span>
           <github>

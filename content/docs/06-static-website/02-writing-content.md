@@ -6,6 +6,9 @@ title: "How to write markdown content for nextstrain.org"
 
 The website scans all the files in the `/content` directory and automatically builds URLs and the sidebar content from this.
 
+### File name
+This must be in the format `/content/<CATEGORY>/XX-<CHAPTER>/YY-<FILE_NAME>.md` where `XX` and `YY` are integers defining the relative ordering (used in the sidebar, the actual number is never displayed).
+
 ### Frontmatter
 
 The first few lines of the markdown contain the "frontmatter" - here it is for this page:

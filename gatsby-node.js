@@ -1,27 +1,44 @@
 const path = require("path");
-const _ = require("lodash");
+// const _ = require("lodash");
 const webpackLodashPlugin = require("lodash-webpack-plugin");
 
+/* onCreateNode is called on each node and used to update information.
+Here we predominantly use it to set the slug (the URL)
+and the order ([chaper, page])
+NOTE that for static pages, the slug is set in createPages (below)
+NOTE this should probably be moved into createPages */
 exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
-  const {createNodeField} = boundActionCreators;
-  let slug;
+  /* for markdown files, turn (e.g.)
+   * /content/reports/01-flu-vaccine-selection/2015-september into
+   * /content/reports/flu-vaccine-selection/2015-september
+   */
   if (node.internal.type === "MarkdownRemark") {
     const fileNode = getNode(node.parent);
     const parsedFilePath = path.parse(fileNode.relativePath);
-    if (
-      Object.prototype.hasOwnProperty.call(node, "frontmatter") &&
-      Object.prototype.hasOwnProperty.call(node.frontmatter, "type") &&
-      Object.prototype.hasOwnProperty.call(node.frontmatter, "title")
-    ) {
-      slug = `/${parsedFilePath.dir}/${_.kebabCase(node.frontmatter.title)}`;
-    } else if (parsedFilePath.name !== "index" && parsedFilePath.dir !== "") {
-      slug = `/${parsedFilePath.dir}/${parsedFilePath.name}/`;
-    } else if (parsedFilePath.dir === "") {
-      slug = `/${parsedFilePath.name}/`;
-    } else {
-      slug = `/${parsedFilePath.dir}/`;
+    const [section, chapterWithPrefix] = parsedFilePath.dir.split("/")
+    const re = /(\d+)-(.+)/;
+    const chapterGroups = re.exec(chapterWithPrefix)
+    const nameGroups = re.exec(parsedFilePath.name)
+    try {
+      boundActionCreators.createNodeField({
+        node,
+        name: "slug",
+        value: `/${section}/${chapterGroups[2]}/${nameGroups[2]}`
+      });
+      boundActionCreators.createNodeField({
+        node,
+        name: "chapterOrder",
+        value: chapterGroups[1]
+      });
+      boundActionCreators.createNodeField({
+        node,
+        name: "postOrder",
+        value: nameGroups[1]
+      });
+    } catch(err) {
+      console.log("ERROR parsing the paths of ", parsedFilePath)
     }
-    createNodeField({node, name: "slug", value: slug});
+
   }
 };
 

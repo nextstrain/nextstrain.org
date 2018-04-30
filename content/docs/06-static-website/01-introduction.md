@@ -39,3 +39,7 @@ Other styles, specific to certain sections, e.g. the sidebar, the splash page, t
 
 **How are markdown files turned into pages?**
 Markdown files in `/content` are collated via the `MarkdownRemark` gatsby plugin. These can be accessed by a GraphQL query (e.g. in `gatsby-node.js`, `/templates/generic.jsx`). `createPages` in `gatsby-node.js` determines the component (template) which is loaded for each file, while `onCreateNode` modifies the slug (path) - i.e. this sets the appropriate URLs for each page.
+
+
+**What changes need to be made when adding to /content?**
+If it's simply the addition of a new markdown file or a new folder within an existing category (e.g. adding a chapter to `/content/docs`) then nothing further should be needed. The top-level folders in `/content` are hardcoded as entries in the header, so you should change both in tandem.

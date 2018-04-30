@@ -3,7 +3,7 @@ import Helmet from "react-helmet";
 import styled from "styled-components"
 import SEO from "../components/SEO/SEO"
 import Navigation from '../components/Header'
-import config from "../../data/SiteConfig"
+// import config from "../../data/SiteConfig"
 import Sidebar from "../components/Sidebar";
 import {colors} from "../theme";
 import {parseSlug} from "../utils/parseSlug"
@@ -12,20 +12,22 @@ import {formatFileName} from "../utils/formatFileName"
 export default class GenericTemplate extends React.Component {
   render() {
     // console.log("genericTemplate props:", this.props)
-    const { slug } = this.props.pathContext;
+    const { slug } = this.props.pathContext; /* defined by createPages */
     const postNode = this.props.data.postBySlug;
     const post = postNode.frontmatter;
-    const contentsType = this.props.data.postBySlug.frontmatter.type;
-    
-    const selectedSlug = parseSlug(slug);
-    const allSlugs = this.props.data.allSlugs.edges
-      .map((e) => parseSlug(e.node.fields.slug))
-      .filter((d) => d.category === selectedSlug.category)
-    
+    const selectedPostMeta = parseSlug(slug);
+    const otherPostsMeta = this.props.data.allSlugs.edges
+      .map((e) => ({
+        ...parseSlug(e.node.fields.slug),
+        chapterOrder: e.node.fields.chapterOrder,
+        postOrder: e.node.fields.postOrder
+      }))
+      .filter((d) => d.category === selectedPostMeta.category)
+
     return (
       <div>
         <Helmet>
-          <title>{formatFileName(selectedSlug.title)}</title>
+          <title>{formatFileName(selectedPostMeta.title)}</title>
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
         <BodyGrid>
@@ -34,14 +36,14 @@ export default class GenericTemplate extends React.Component {
           </HeaderContainer>
           <SidebarContainer>
             <Sidebar
-              selectedSlug={selectedSlug}
-              allSlugs={allSlugs}
+              selectedPostMeta={selectedPostMeta}
+              otherPostsMeta={otherPostsMeta}
             />
           </SidebarContainer>
           <BodyContainer>
             <div>
               <h1>
-                {formatFileName(selectedSlug.title)}
+                {formatFileName(selectedPostMeta.title)}
               </h1>
               <AuthorDate>
                 {post.author}  {post.date}
@@ -123,6 +125,8 @@ export const pageQuery = graphql`
         node {
           fields {
             slug
+            chapterOrder
+            postOrder
           }
         }
       }

@@ -11,22 +11,40 @@ import {formatFileName} from "../../utils/formatFileName"
 
 class Sidebar extends React.Component {
   generateItems() {
-    const data = this.props.allSlugs
+    /* generate an array where each entry corresponds to a chapter
+    no posts have yeat to be added, but the ordering of chapters is correct */
+    const data = this.props.otherPostsMeta
+      .sort((a, b) => {
+        if (parseInt(a.chapterOrder, 10) < parseInt(b.chapterOrder, 10)) return -1
+        if (parseInt(a.chapterOrder, 10) > parseInt(b.chapterOrder, 10)) return 1
+        return 0
+      })
       .map((d) => d.chapter)
-      .filter((v,i,a)=>a.indexOf(v)===i)
-      .sort() // TO DO
-      .map((chapter) => ({name: chapter, posts: []}))
-    
-    this.props.allSlugs.forEach((slug) => {
-      const idx = data.findIndex((el) => el.name === slug.chapter);
-      data[idx].posts.push({title: slug.title, path: slug.path})
+      .filter((cv,idx,arr)=>arr.indexOf(cv)===idx) /* filter to unique values */
+      .map((d) => ({name: d, posts: []}))
+
+    /* add each post to the correct chapter within data */
+    this.props.otherPostsMeta.forEach((meta) => {
+      const chapterIdx = data.findIndex((el) => el.name === meta.chapter);
+      data[chapterIdx].posts.push({
+        title: meta.title,
+        path: meta.path,
+        order: parseInt(meta.postOrder, 10)
+      })
     })
 
-    data.forEach((d) => {d.posts = d.posts.sort((dd) => dd.title)})
+    /* sort posts within each chapter */
+    data.forEach((d) => {
+      d.posts = d.posts.sort((a, b) => { // eslint-disable-line
+        if (parseInt(a.order, 10) < parseInt(b.order, 10)) return -1
+        if (parseInt(a.order, 10) > parseInt(b.order, 10)) return 1
+        return 0
+      })
+    })
 
     return data.map((chapter) => {
       const postTitles = chapter.posts.map((post) => {
-        const selStyle = this.props.selectedSlug.title === post.title && this.props.selectedSlug.chapter === chapter.name ?
+        const selStyle = this.props.selectedPostMeta.title === post.title && this.props.selectedPostMeta.chapter === chapter.name ?
           {borderLeft: "7px solid black", fontWeight: 500, paddingLeft: "7px"} :
           {}
         return (
