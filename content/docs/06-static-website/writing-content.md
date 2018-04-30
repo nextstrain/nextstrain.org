@@ -1,10 +1,8 @@
 ---
-author: "james hadfield"
-date: "08/03/2018"
+author: "James Hadfield"
+date: "30/04/2018"
+title: "How to write markdown content for nextstrain.org"
 ---
-
-The content of this website is built using markdown files located in the `content` folder. (This entire website is a [github repository](github.com/nextstrain/nextstrain) - that link has instructions on how to build the website locally, and Pull Requests will make it to the live website.) For instance, this page is generated from [this markdown file](https://github.com/nextstrain/nextstrain/blob/master/content/tutorial/misc/how-to-contribute.md).
-
 
 The website scans all the files in the `/content` directory and automatically builds URLs and the sidebar content from this.
 

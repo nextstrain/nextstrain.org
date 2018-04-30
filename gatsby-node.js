@@ -25,15 +25,18 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
   }
 };
 
+/* createPages essentially defines all the URLs and which component gets called to display them */
 exports.createPages = ({graphql, boundActionCreators}) => {
   const {createPage} = boundActionCreators;
 
-  return new Promise((resolve, reject) => {
-    const GenericTemplate = path.resolve("src/templates/generic.jsx");
-    const AboutPage = path.resolve("src/pages/about.jsx");
+  /* statically defined pages (i.e. not generated from GraphQL & markdown) */
+  /* The context is passed as props to the component as well as into the component's GraphQL query. */
+  /* NOTE the splash page is handled elsewhere (it's component is /src/components/Splash/index.jsx) */
+  createPage({path: `/about`, component: path.resolve("src/pages/about/about.jsx")})
+  createPage({path: `/flu`,   component: path.resolve("src/pages/flu/flu.jsx")})
 
-    // const tagPage = path.resolve("src/templates/tag.jsx");
-    // const categoryPage = path.resolve("src/templates/category.jsx");
+  /* dynamically generated pages via allMarkdownRemark plugin processing of markdown files in /content */
+  return new Promise((resolve, reject) => {
     resolve(
       graphql(
         `
@@ -56,24 +59,13 @@ exports.createPages = ({graphql, boundActionCreators}) => {
           reject(result.errors);
         }
         result.data.allMarkdownRemark.edges.forEach(edge => {
-          if (edge.node.fields.slug.startsWith("/about")) {
-            createPage({
-              path: edge.node.fields.slug,
-              component: AboutPage,
-              context: {
-                slug: edge.node.fields.slug
-              }
-            })
-          } else {
-            const component = GenericTemplate;
-            createPage({
-              path: edge.node.fields.slug,
-              component,
-              context: {
-                slug: edge.node.fields.slug
-              }
-            })
-          }
+          createPage({
+            path: edge.node.fields.slug,
+            component: path.resolve("src/templates/generic.jsx"),
+            context: {
+              slug: edge.node.fields.slug
+            }
+          })
         })
       })
     );

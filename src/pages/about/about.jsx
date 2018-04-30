@@ -1,12 +1,12 @@
 import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components"
-import SEO from "../components/SEO/SEO"
-import Navigation from '../components/Header'
-import config from "../../data/SiteConfig"
-import Sidebar from "../components/Sidebar";
-import {colors} from "../theme";
-import {parseSlug} from "../utils/parseSlug"
+import SEO from "../../components/SEO/SEO"
+import Navigation from '../../components/Header'
+import config from "../../../data/SiteConfig"
+import Sidebar from "../../components/Sidebar";
+import {colors} from "../../theme";
+import {parseSlug} from "../../utils/parseSlug"
 const _ = require("lodash");
 
 export default class AboutPage extends React.Component {
@@ -110,22 +110,22 @@ export default class AboutPage extends React.Component {
                 <div className="line"/>
                 <div wrap="wrap" style={{marginTop: 20, justifyContent: "space-around"}}>
                   <a key={1} href="http://www.fredhutch.org/" target="_blank">
-                    <img width="75" src={require("../../static/logos/fred-hutch-logo-small.png")}/>
+                    <img width="75" src={require("../../../static/logos/fred-hutch-logo-small.png")}/>
                   </a>,
                   <a key={2} href="http://www.eb.tuebingen.mpg.de/" target="_blank">
-                    <img width="65" src={require("../../static/logos/max-planck-logo-small.png")}/>
+                    <img width="65" src={require("../../../static/logos/max-planck-logo-small.png")}/>
                   </a>,
                   <a key={3} href="https://www.nih.gov/" target="_blank">
-                    <img width="52" src={require("../../static/logos/nih-logo-small.png")}/>
+                    <img width="52" src={require("../../../static/logos/nih-logo-small.png")}/>
                   </a>,
                   <a key={4} href="https://erc.europa.eu/" target="_blank">
-                    <img width="60" src={require("../../static/logos/erc-logo-small.png")}/>
+                    <img width="60" src={require("../../../static/logos/erc-logo-small.png")}/>
                   </a>,
                   <a key={5} href="https://www.openscienceprize.org/" target="_blank">
-                    <img width="82" src={require("../../static/logos/osp-logo-small.png")}/>
+                    <img width="82" src={require("../../../static/logos/osp-logo-small.png")}/>
                   </a>,
                   <a key={6} href="http://biozentrum.org/" target="_blank">
-                    <img width="85" src={require("../../static/logos/bz_logo.png")}/>
+                    <img width="85" src={require("../../../static/logos/bz_logo.png")}/>
                   </a>
                 </div>
               </div>
