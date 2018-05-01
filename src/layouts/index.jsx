@@ -6,7 +6,7 @@ import {theme} from '../theme'
 
 // Import global styles
 import './prism-styles';
-import "./index.css";
+import "./globals.css";
 
 export default class MainLayout extends React.Component {
   render() {
