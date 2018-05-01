@@ -20,7 +20,7 @@ const TwitterColumn = styled.div`
   flex-wrap: wrap;
 `
 
-export const tweets = () => (
+export const tweets = () => ( // eslint-disable-line
   <TwitterRow>
     <TwitterColumn>
       <blockquote className="twitter-tweet"><p lang="en" dir="ltr">Fascinating…Nextstrain uses genetic data from viruses to help scientists track the spread of disease outbreaks. <a href="https://t.co/6XtBvA5iiO">https://t.co/6XtBvA5iiO</a></p>&mdash; Bill Gates (@BillGates) <a href="https://twitter.com/BillGates/status/841750279972352005">March 14, 2017</a></blockquote>

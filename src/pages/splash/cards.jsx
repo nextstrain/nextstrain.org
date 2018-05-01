@@ -142,7 +142,7 @@ const CardTitle = styled.div`
   color: white;
   background: rgba(0, 0, 0, 0.7);
 `
-{/* <img style={styles.cardImg} src={require(`../../../static/splash_images/${imgRequired}`)} alt={""} /> */}
+/* <img style={styles.cardImg} src={require(`../../../static/splash_images/${imgRequired}`)} alt={""} /> */
 // {generateCard([d.title, ""], d.img, d.url, false)}
 export const generateTiles = () => {
   return (
