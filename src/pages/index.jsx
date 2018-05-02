@@ -3,7 +3,7 @@ import Helmet from "react-helmet"
 import SEO from "../components/SEO/SEO"
 import config from "../../data/SiteConfig"
 import Navigation from '../components/Header'
-import Splash from "./splash";
+import Splash from "../components/splash";
 
 class Index extends React.Component {
   render() {

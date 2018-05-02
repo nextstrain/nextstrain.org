@@ -24,7 +24,7 @@ See [this page](./writing-content.md) for more detailed instructions regarding t
 
 ### Statically defined pages
 These include the splash page, about page, flu page etc.
-The URLs for these are created in the `createPages` function in `/gatsby-node.js`, and simply define a react component to be rendered, usually in `/src/pages`.
+The URLs for these are created in the `createPages` function in `/gatsby-node.js`, and simply define a react component to be rendered, usually in `/src/components`.
 This means you have complete control over the styling and content for these pages, but they are not as simple to write as a markdown file.
 
 ## Styling
