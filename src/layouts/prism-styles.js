@@ -6,7 +6,6 @@
  */
 
 import {css} from 'glamor';
-import {colors} from '../theme';
 
 const prismColors = {
   char: '#D8DEE9',
@@ -36,8 +35,8 @@ css.global(
 });
 
 css.global('.gatsby-highlight', {
-  background: colors.dark,
-  color: colors.white,
+  background: '#282c34',
+  color: '#ffffff',
   borderRadius: 10,
   padding: 15,
   overflow: 'auto',

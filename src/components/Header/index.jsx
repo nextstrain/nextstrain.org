@@ -3,7 +3,6 @@ import Link from 'gatsby-link'
 import styled from 'styled-components'
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png"
 import ExternalLinkSvg from "../Misc/external-link";
-import { colors } from "../../theme";
 
 const NavContainer = styled.div`
   display: flex;
@@ -101,7 +100,7 @@ class Navigation extends React.Component {
               <githubtext>
                 github
               </githubtext>
-              <ExternalLinkSvg cssProps={{verticalAlign: 3, color: colors.black}} />
+              <ExternalLinkSvg cssProps={{verticalAlign: 3, color: '#000000'}} />
             </a>
           </github>
         </span>

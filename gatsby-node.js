@@ -78,7 +78,7 @@ exports.createPages = ({graphql, boundActionCreators}) => {
         result.data.allMarkdownRemark.edges.forEach(edge => {
           createPage({
             path: edge.node.fields.slug,
-            component: path.resolve("src/templates/generic.jsx"),
+            component: path.resolve("src/templates/displayMarkdown.jsx"),
             context: {
               slug: edge.node.fields.slug
             }

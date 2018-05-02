@@ -3,10 +3,6 @@ import Helmet from "react-helmet";
 import styled from "styled-components"
 import SEO from "../../components/SEO/SEO"
 import Navigation from '../../components/Header'
-// import Sidebar from "../components/Sidebar";
-// import {colors} from "../theme";
-// import {parseSlug} from "../utils/parseSlug"
-// const _ = require("lodash");
 
 export default class AboutPage extends React.Component {
   render() {
@@ -41,17 +37,4 @@ const BodyContainer = styled.div`
   overflow: scroll;
   justify-self: center;
   width: 100%;
-  padding: ${props => props.theme.sitePadding};
-  @media screen and (max-width: 600px) {
-    order: 2;
-  }
-
-  & > div {
-    max-width: ${props => props.theme.contentWidthLaptop};
-    margin: auto;
-  }
-
-  & > h1 {
-    color: ${props => props.theme.accentDark};
-  }
 `

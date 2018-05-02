@@ -96,7 +96,8 @@ const UnselectedPostTitle = styled.h6``
 
 const SidebarContainer = styled.div`
   padding: ${props => props.theme.sitePadding};
-
+  background-color: ${props => props.theme.lightGrey};
+  height: 100%;
   & > ul, .chapterItems {
     list-style: none;
     padding: 0;
@@ -114,7 +115,7 @@ const SidebarContainer = styled.div`
   }
   .tocHeading {
      font-weight: 200;
-     color: ${props => props.theme.brand};
+     color: ${props => props.theme.blue};
      margin-bottom: 10px;
   }
 `

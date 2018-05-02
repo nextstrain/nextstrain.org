@@ -1,0 +1,72 @@
+import React from "react";
+import styled from "styled-components"
+
+export const Flex = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+`
+
+export const Bigspacer = styled.div`
+  height: 30px;
+`
+
+export const HeaderContainer = styled.div`
+  z-index: 2;
+`
+
+export const CenteredContent = (props) => (
+  <BodyContainer className="container">
+    <div className="row">
+      <div className="col-md-2" />
+      <div className="col-md-8">
+        {props.children}
+      </div>
+      <div className="col-md-2" />
+    </div>
+  </BodyContainer>
+)
+
+export const RightHandAside = ({title, asideContent, children}) => (
+  <BodyContainer className="container">
+    <div className="row">
+      <div className="col-md-1" />
+      <div className="col-md-7">
+        <h1>{title}</h1>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col-md-1" />
+      <div className="col-md-6">
+        {children}
+      </div>
+      <div className="col-md-1" />
+      <Aside className="col-md-3 aside">
+        {asideContent}
+      </Aside>
+      <div className="col-md-1" />
+    </div>
+  </BodyContainer>
+)
+
+const BodyContainer = styled.div`
+  overflow: scroll;
+  justify-self: center;
+  width: 100%;
+  padding: ${props => props.theme.sitePadding};
+  text-align: justify;
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-weight: 300;
+  color: ${props => props.theme.darkGrey};
+  line-height: ${props => props.theme.niceLineHeight};
+
+  & > h1 {
+    color: ${props => props.theme.accentDark};
+  }
+`
+
+const Aside = styled.div`
+  font-size: 13px;
+`

@@ -2,11 +2,6 @@ import styled from "styled-components"
 import Link from 'gatsby-link'
 import React from "react";
 
-/* these should be centralised */
-const darkGrey = "#333";
-const medGrey = "#888";
-const dataFont = "Lato, Helvetica Neue, Helvetica, sans-serif";
-
 export const Container = styled.div`
   padding-left: 25px;
   padding-right: 25px;
@@ -18,24 +13,14 @@ export const Container = styled.div`
 }
 */
 
-export const Flex = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-`
-
-export const Bigspacer = styled.div`
-  height: 30px;
-`
-
 export const StyledDiv = styled.div`
   text-align: justify;
-  font-size: 16px;
+  font-size: ${props => props.theme.niceFontSize};
   margin-top: 5px;
   margin-bottom: 5px;
   font-weight: 300;
-  color: var(--darkGrey);
-  line-height: 1.42857143;
+  color: ${props => props.theme.darkGrey};
+  line-height: ${props => props.theme.niceLineHeight};
 `
 
 export const H1 = styled.div`
@@ -43,7 +28,7 @@ export const H1 = styled.div`
   font-size: 38px;
   line-height: 32px;
   font-weight: 300;
-  color: ${darkGrey};
+  color: ${props => props.theme.darkGrey};
   min-width: 240px;
   margin-top: 40px;
   margin-bottom: 30px;
@@ -56,9 +41,9 @@ export const CenteredFocusParagraph = styled.p`
   margin-bottom: 20px;
   margin-left: auto;
   text-align: center;
-  font-size: 16;
+  font-size: ${props => props.theme.niceFontSize};
   font-weight: 300;
-  line-height: 1.42857143;
+  line-height: ${props => props.theme.niceLineHeight};
 `
 
 
@@ -68,8 +53,8 @@ const ButtonContainer = styled.button`
   border-radius: 2px;
   cursor: pointer;
   padding: 5px 10px 5px 10px;
-  font-family: ${dataFont};
-  color: ${medGrey};
+  font-family: ${props => props.theme.generalFont};
+  color: ${props => props.theme.medGrey};
   font-weight: 400;
   text-transform: uppercase;
   font-size: 14;
@@ -98,9 +83,9 @@ export const CardOuter = styled.div`
   padding: 15px 0px 15px 0px;
 `
 export const CardTitle = styled.div`
-  font-family: ${dataFont};
+  font-family: ${props => props.theme.generalFont};
   font-weight: 500;
-  font-size: 28;
+  font-size: 26px;
   position: absolute;
   padding: 10px 20px 10px 20px;
   top: 40px;

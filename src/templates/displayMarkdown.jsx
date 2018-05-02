@@ -5,8 +5,8 @@ import SEO from "../components/SEO/SEO"
 import Navigation from '../components/Header'
 // import config from "../../data/SiteConfig"
 import Sidebar from "../components/Sidebar";
-import {colors} from "../theme";
 import {parseSlug} from "../utils/parseSlug"
+import {HeaderContainer, CenteredContent} from "../layouts/generalComponents";
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -28,83 +28,58 @@ export default class GenericTemplate extends React.Component {
           <title>{post.title}</title>
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
-        <BodyGrid>
-          <HeaderContainer>
-            <Navigation location={this.props.location} />
-          </HeaderContainer>
+        <HeaderContainer>
+          <Navigation location={this.props.location} />
+        </HeaderContainer>
+        <SidebarBodyFlexContainer>
           <SidebarContainer>
             <Sidebar
               selectedPostMeta={selectedPostMeta}
               otherPostsMeta={otherPostsMeta}
             />
           </SidebarContainer>
-          <BodyContainer>
-            <div>
+          <ContentContainer>
+            <CenteredContent>
               <PostTitle>{post.title}</PostTitle>
               <PostAuthorSurrounds>
                 <PostAuthor>{post.author}</PostAuthor>
                 <PostDate>{post.date}</PostDate>
               </PostAuthorSurrounds>
-              <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
-            </div>
-          </BodyContainer>
-        </BodyGrid>
+              <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
+            </CenteredContent>
+          </ContentContainer>
+        </SidebarBodyFlexContainer>
       </div>
     );
   }
 }
 
-const BodyGrid = styled.div`
+const SidebarBodyFlexContainer = styled.div`
   height: 100vh;
-  display: grid;
-  grid-template-rows: 50px 1fr;
-  grid-template-columns: 300px 1fr;
-
-  @media screen and (max-width: 600px) {
-    display: flex;
-    flex-direction: column;
-    height: inherit;
-  }
-`
-
-const BodyContainer = styled.div`
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
-  overflow: scroll;
-  justify-self: center;
-  width: 100%;
-  padding: ${props => props.theme.sitePadding};
-  @media screen and (max-width: 600px) {
-    order: 2;
-  }
-
-  & > div {
-    max-width: ${props => props.theme.contentWidthLaptop};
-    margin: auto;
-  }
-
-  & > h1 {
-    color: ${props => props.theme.accentDark};
-  }
-`
-
-const HeaderContainer = styled.div`
-  grid-column: 1 / 3;
-  grid-row: 1 / 2;
-  z-index: 2;
-   @media screen and (max-width: 600px) {
-    order: 1;
-  }
+  overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
+  display: flex;  /*enables flex content for its children*/
+  flex-direction: row;
 `
 
 const SidebarContainer = styled.div`
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
-  background: ${props => props.theme.lightGrey};
-  overflow: scroll;
-   @media screen and (max-width: 600px) {
-    order: 3;
-    overflow: inherit;
+  flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
+  overflow-y: scroll;  /*adds scroll to this container*/
+  width: 300px;
+  min-width: 300px;
+`
+
+const ContentContainer = styled.div`
+  flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
+  overflow-y: scroll;  /*adds scroll to this container*/
+`
+
+const MarkdownContent = styled.div`
+
+  li > ul {
+    padding-left: 30px;
+  }
+  li {
+    margin-left: 30px;
   }
 `
 
@@ -116,9 +91,9 @@ const PostTitle = styled.h1`
 `
 const PostAuthorSurrounds = styled.div`
   min-height: 2rem;
-  font-size: 1.4em;
+  font-size: ${props=>props.theme.niceFontSize};
   font-weight: 100;
-  color: ${colors.subtle};
+  color: ${props=>props.theme.medGrey};
 `
 const PostAuthor = styled.span`
   float: left;
