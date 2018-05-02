@@ -3,7 +3,7 @@ import Helmet from "react-helmet";
 import SEO from "../../components/SEO/SEO"
 import Navigation from '../../components/Header'
 import {HeaderContainer, RightHandAside, Bigspacer} from "../../layouts/generalComponents";
-import {Logos} from "../../layouts/logos";
+import {Logos} from "../../components/logos";
 
 const asideContent = (
   <div>

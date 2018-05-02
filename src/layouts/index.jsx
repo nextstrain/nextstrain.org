@@ -55,12 +55,12 @@ const GlobalStyles = styled.div`\
       font-size: ${props => props.theme.niceFontSize};
   }
 
-  h1 {font-size: 3rem;}
-  h2 {font-size: 2.5rem;}
-  h3 {font-size: 2rem;}
-  h4 {font-size: 1.8rem;}
-  h5 {font-size: 1.6rem;}
-  h6 {font-size: 1.6rem;}
+  h1 {font-size: 3.5rem; font-weight: 500;}
+  h2 {font-size: 2.5rem; font-weight: 500;}
+  h3 {font-size: 2rem; font-weight: 500;}
+  h4 {font-size: 1.8rem; font-weight: 500;}
+  h5 {font-size: 1.6rem; font-weight: 500;}
+  h6 {font-size: 1.6rem; font-weight: 300;}
 
   h1, h2, h3, h4, h5, h6, p, ul, ol, dl {
       margin: 30px 0px 10px 0px;

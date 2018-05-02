@@ -4,7 +4,7 @@ import { generateTiles } from "./cards";
 import Title from "./title";
 import * as Styles from "./styles"
 import {Bigspacer, Flex} from "../../layouts/generalComponents";
-import {Logos} from "../../layouts/logos";
+import {Logos} from "../../components/logos";
 
 class Splash extends React.Component {
   render() {

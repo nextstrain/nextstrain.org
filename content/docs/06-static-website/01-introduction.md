@@ -28,12 +28,23 @@ The URLs for these are created in the `createPages` function in `/gatsby-node.js
 This means you have complete control over the styling and content for these pages, but they are not as simple to write as a markdown file.
 
 ## Styling
-Styles are currently scattered everywhere, but the general aim is to consolidate these into:
-  * `/src/layouts/index.jsx`
-  * `/src/layouts/prism-styles.js` The CSS used for code highlighting
-  * `/src/theme.js` Global colours etc. Injected into the props of every component (now quite sure how).
-  * `/src/layouts/css/index.css` _move this to a glamor file_
-Other styles, specific to certain sections, e.g. the sidebar, the splash page, the navigation header, should be defined via `styled-components` in those directories.
+> The styling needs to be refined and centralized. Currently, the tooling is there, but there is no coherent definition of padding, colours etc.
+
+This site uses a mix of (some) css files and (mostly) [styled-components](https://www.styled-components.com/).
+There is a theme (`src/layouts/theme`) which is available for every styled-component via `${props=>props.theme.X}`.
+This theme should hold most of the colours, paddings etc so that the site is coherent.
+
+#### Global-like CSS & styled-components
+* `layouts/globals.css` contains a very small amount of globally defined CSS on the `html` and `*` elements
+* `layouts/browserCompatability.css` should only contain CSS for older browsers
+* `layouts/bootstrap.css` contains bootstrap grid CSS
+* `layouts/prism.css` contains the CSS used for code highlighting (along with the gatsby-prism-plugin)
+* `layouts/index.jsx` wraps all content in `GlobalStyles` which contains some globally inherited values
+
+#### Styled-components
+Styled-components may be defined within templates / pages if their scope is limited.
+`/layouts/generalComponents` exposes some more general components which multiple views take in.
+
 
 ## Gatsby details
 
