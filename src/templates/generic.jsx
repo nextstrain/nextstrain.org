@@ -7,7 +7,6 @@ import Navigation from '../components/Header'
 import Sidebar from "../components/Sidebar";
 import {colors} from "../theme";
 import {parseSlug} from "../utils/parseSlug"
-import {formatFileName} from "../utils/formatFileName"
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -41,12 +40,11 @@ export default class GenericTemplate extends React.Component {
           </SidebarContainer>
           <BodyContainer>
             <div>
-              <h1>
-                {post.title}
-              </h1>
-              <AuthorDate>
-                {post.author}  {post.date}
-              </AuthorDate>
+              <PostTitle>{post.title}</PostTitle>
+              <PostAuthorSurrounds>
+                <PostAuthor>{post.author}</PostAuthor>
+                <PostDate>{post.date}</PostDate>
+              </PostAuthorSurrounds>
               <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </div>
           </BodyContainer>
@@ -59,7 +57,7 @@ export default class GenericTemplate extends React.Component {
 const BodyGrid = styled.div`
   height: 100vh;
   display: grid;
-  grid-template-rows: 75px 1fr;
+  grid-template-rows: 50px 1fr;
   grid-template-columns: 300px 1fr;
 
   @media screen and (max-width: 600px) {
@@ -110,11 +108,25 @@ const SidebarContainer = styled.div`
   }
 `
 
-const AuthorDate = styled.div`
-  font-size: 2em;
+const PostTitle = styled.h1`
+  background-color: black;
+  color: white;
+  padding: 5px;
+  font-weight: 500;
+`
+const PostAuthorSurrounds = styled.div`
+  min-height: 2rem;
+  font-size: 1.4em;
   font-weight: 100;
   color: ${colors.subtle};
 `
+const PostAuthor = styled.span`
+  float: left;
+`
+const PostDate = styled.span`
+  float: right;
+`
+
 
 /* eslint no-undef: "off"*/
 export const pageQuery = graphql`

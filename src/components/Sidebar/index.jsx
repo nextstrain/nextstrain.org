@@ -44,14 +44,15 @@ class Sidebar extends React.Component {
 
     return data.map((chapter) => {
       const postTitles = chapter.posts.map((post) => {
-        const selStyle = this.props.selectedPostMeta.title === post.title && this.props.selectedPostMeta.chapter === chapter.name ?
-          {borderLeft: "7px solid black", fontWeight: 500, paddingLeft: "7px"} :
-          {}
+        const titleJSX =
+          this.props.selectedPostMeta.title === post.title && this.props.selectedPostMeta.chapter === chapter.name ?
+        (<SelectedPostTitle>{formatFileName(post.title)}</SelectedPostTitle>) :
+        (<UnselectedPostTitle>{formatFileName(post.title)}</UnselectedPostTitle>);
         return (
           <ItemContainer key={post.path}>
             <Link to={post.path}>
               <li>
-                <h6 style={selStyle}>{formatFileName(post.title)}</h6>
+                {titleJSX}
               </li>
             </Link>
           </ItemContainer>
@@ -80,6 +81,18 @@ class Sidebar extends React.Component {
     )
   }
 }
+
+const SelectedPostTitle = styled.h6`
+  border-left: 3px solid black;
+  font-weight: 700;
+  padding-left: 5px;
+  font-size: 1.6rem;
+  color: black;
+  &:hover {
+    border-bottom: 0px;
+  }
+`
+const UnselectedPostTitle = styled.h6``
 
 const SidebarContainer = styled.div`
   padding: ${props => props.theme.sitePadding};

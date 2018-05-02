@@ -4,7 +4,10 @@
   "rules": {
     "react/prefer-stateless-function": "off",
     "react/prop-types": "off",
-    "react/no-danger": "off"
+    "react/no-danger": "off",
+    "import/prefer-default-export": "off",
+    "import/no-dynamic-require": "off",
+    "global-require": "off"
   },
   "settings": {
     "import/core-modules": []

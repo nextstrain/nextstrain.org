@@ -9,19 +9,20 @@ const NavContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  background: ${props => props.theme.brand};
-  padding: 15px;
+  background: #F6F6F6;
+  padding: 5px;
   align-items: center;
-  position: absoule;
+  position: relative;
   .nav-link {
     font-size: 1.6rem;
     margin-right: 10px;
     font-weight: 500;
-    color: white;
+    color: black;
   }
 
   .selected-nav {
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid black;
+    font-weight: 700;
   }
 
   somespace {
@@ -64,7 +65,7 @@ const NavContainer = styled.div`
 `
 
 const Dot = (
-  <span style={{marginLeft: 10, marginRight: 10, color: "white"}}>
+  <span style={{marginLeft: 10, marginRight: 10, color: "black"}}>
     •
   </span>
 )
@@ -98,7 +99,7 @@ class Navigation extends React.Component {
               <githubtext>
                 github
               </githubtext>
-              <ExternalLinkSvg cssProps={{verticalAlign: 3, color: colors.white}} />
+              <ExternalLinkSvg cssProps={{verticalAlign: 3, color: colors.black}} />
             </a>
           </github>
         </span>
