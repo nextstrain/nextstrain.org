@@ -1,54 +1,64 @@
 import React from "react";
-import styled from "styled-components"
-// import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png"
-const config = require("../../../data/SiteConfig");
+import * as Styles from "./styles"
 
-const headerFont = "Lato, Helvetica Neue, Helvetica, sans-serif";
-
-const CardImg = styled.img`
-  object-fit: cover;
-  width: 100%;
-`
-const CardInner = styled.div`
-  box-shadow: 3px 3px 4px 1px rgba(215,215,215,0.85);
-  border-radius: 2px;
-  margin: 5px 10px 5px 10px;
-  cursor: pointer;
-`
-const CardOuter = styled.div`
-  background-color: #FFFFFF;
-  padding: 0;
-  overflow: hidden;
-  position: relative;
-  padding: 15px 0px 15px 0px;
-`
-const CardTitle = styled.div`
-  font-family: ${headerFont};
-  font-weight: 500;
-  font-size: 28;
-  position: absolute;
-  padding: 10px 20px 10px 20px;
-  top: 40px;
-  left: 20px;
-  color: white;
-  background: rgba(0, 0, 0, 0.7);
-`
+const cards = [
+  {
+    img: "zika.png",
+    url: "/zika",
+    title: "Zika"
+  },
+  {
+    img: "ebola.png",
+    url: "/ebola",
+    title: "Ebola"
+  },
+  {
+    img: "lassa.png",
+    url: "/lassa",
+    title: "Lassa"
+  },
+  {
+    img: "dengue.png",
+    url: "/dengue",
+    title: "Dengue"
+  },
+  {
+    img: "seasonalinfluenza.png",
+    url: "/flu/h3n2/ha/3y",
+    title: "Seasonal Influenza"
+  },
+  {
+    img: "avianinfluenza.png",
+    url: "/avian/h7n9",
+    title: "Avian Influenza"
+  },
+  {
+    img: "mumps.jpg",
+    url: "/mumps",
+    title: "Mumps"
+  },
+  {
+    img: "measles.png",
+    url: "/measles",
+    title: "Measles"
+  }
+];
 
 export const generateTiles = () => (
   <div className="row">
-    {config.cards.map((d) => (
+    {cards.map((d) => (
       <div key={d.title}>
         <div className="col-sm-4">
-          <CardOuter>
-            <CardInner>
+          <Styles.CardOuter>
+            <Styles.CardInner>
               <a href={`https://app.nextstrain.org${d.url}`}>
-                <CardTitle>
+                <Styles.CardTitle>
                   {d.title}
-                </CardTitle>
-                <CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} />
+                </Styles.CardTitle>
+                <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} />
               </a>
-            </CardInner>
-          </CardOuter>
+            </Styles.CardInner>
+          </Styles.CardOuter>
         </div>
       </div>
     ))}
