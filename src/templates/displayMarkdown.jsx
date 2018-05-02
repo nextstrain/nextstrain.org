@@ -31,7 +31,7 @@ export default class GenericTemplate extends React.Component {
         <HeaderContainer>
           <Navigation location={this.props.location} />
         </HeaderContainer>
-        <SidebarBodyFlexContainer>
+        <SidebarBodyFlexContainer className="container">
           <SidebarContainer>
             <Sidebar
               selectedPostMeta={selectedPostMeta}
@@ -55,10 +55,11 @@ export default class GenericTemplate extends React.Component {
 }
 
 const SidebarBodyFlexContainer = styled.div`
-  height: 100vh;
+  height: calc(100vh - 50px);
   overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
   display: flex;  /*enables flex content for its children*/
   flex-direction: row;
+  width: 100% !important;
 `
 
 const SidebarContainer = styled.div`

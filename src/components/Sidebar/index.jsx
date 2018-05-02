@@ -107,7 +107,7 @@ const SidebarContainer = styled.div`
   p, h6 {
     display: inline-block;
     font-weight: 200;
-    margin: 0;
+    margin: 0 !important;
   }
   .sel {
     border-left: 2px solid black;

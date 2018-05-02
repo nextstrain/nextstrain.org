@@ -16,7 +16,7 @@ export const HeaderContainer = styled.div`
 `
 
 export const CenteredContent = (props) => (
-  <BodyContainer className="container">
+  <GeneralNiceText>
     <div className="row">
       <div className="col-md-2" />
       <div className="col-md-8">
@@ -24,11 +24,11 @@ export const CenteredContent = (props) => (
       </div>
       <div className="col-md-2" />
     </div>
-  </BodyContainer>
+  </GeneralNiceText>
 )
 
 export const RightHandAside = ({title, asideContent, children}) => (
-  <BodyContainer className="container">
+  <GeneralNiceText className="container">
     <div className="row">
       <div className="col-md-1" />
       <div className="col-md-7">
@@ -46,10 +46,10 @@ export const RightHandAside = ({title, asideContent, children}) => (
       </Aside>
       <div className="col-md-1" />
     </div>
-  </BodyContainer>
+  </GeneralNiceText>
 )
 
-const BodyContainer = styled.div`
+export const GeneralNiceText = styled.div`
   overflow: scroll;
   justify-self: center;
   width: 100%;

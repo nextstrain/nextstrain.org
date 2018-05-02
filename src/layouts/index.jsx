@@ -5,7 +5,7 @@ import config from "../../data/SiteConfig";
 import {theme} from '../layouts/theme'
 
 // Import global styles
-import './prism-styles';
+import './prism.css';
 import "./browserCompatability.css";
 import "./bootstrap.css"
 import "./globals.css"
@@ -74,19 +74,4 @@ const GlobalStyles = styled.div`\
       padding: 5px;
   }
 
-  pre, code {
-    font-family: 'source-code-pro', 'Menlo', monospace;
-  }
-
-  blockquote {
-    background: rgba(255,229,100,0.3);
-    border-left-color: #ffe564;
-    border-left-width: 9px;
-    border-left-style: solid;
-    padding: 10px 45px 10px 26px;
-    margin-bottom: 30;
-    margin-top: 20;
-    margin-left: -30;
-    margin-right: -30;
-  }
 `
