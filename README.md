@@ -37,15 +37,6 @@ npm install
 npm start
 ```
 
-_Though for moment, we're using yarn. Install and run with:_
-
-```
-git clone https://github.com/nextstrain/nextstrain.org.git
-cd nextstrain.org
-yarn install
-yarn start
-```
-
 ### Deploying this website
 
 To deploy to Heroku set buildpacks with:
