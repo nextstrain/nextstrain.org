@@ -28,7 +28,7 @@ class Title extends React.Component {
         marginBottom: 0,
         fontWeight: 300,
         color: medGrey,
-        letterSpacing: "12px"
+        letterSpacing: "-1px"
       }
     };
   }

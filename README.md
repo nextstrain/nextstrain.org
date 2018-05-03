@@ -23,12 +23,10 @@ The other components of nextstrain are:
 
 ### Contributing to this website
 This website is built using [gatsby](https://github.com/gatsbyjs/gatsby/), which uses [react](reactjs.org) and [GraphQL](http://graphql.org/learn/) to build a static website from markdown files.
-To contribute tutorials, blog posts etc all that should be required is to add markdown files to `/content`.
+To contribute tutorials, blog posts etc all that should be required is to add Markdown files to `/content`.
+Instructions for writing Markdown posts can be found at [nextstrain.org/docs/static-website/introduction](https://static.nextstrain.org/docs/static-website/introduction).
 
-Prerequisites:
-* npm (use nvm)
-* Gatsby
-* git
+To build locally you'll need Node, npm and git installed. Then run:
 
 ```
 git clone https://github.com/nextstrain/nextstrain.org.git
@@ -36,6 +34,8 @@ cd nextstrain.org
 npm install
 npm start
 ```
+
+Then go to [http://localhost:8000](localhost:8000) to view content.
 
 ### Deploying this website
 
@@ -52,8 +52,9 @@ Deploy can then be updated with just:
 git push -f heroku master
 ```
 
-### Nextrain is
-Trevor Bedford, Richard Neher, James Hadfield, Barney Potter, John Huddleston, Sydney Bell, Colin McGill, ...
+### Nextstrain built by
+
+Trevor Bedford, Richard Neher, James Hadfield, Barney Potter, John Huddleston, Sidney Bell, Colin MeGill, Emma Hodcroft, Pavel Sagulenko and Charlton Callender.
 
 <div display="flex" align="center">
     <img src="static/logos/fred-hutch-logo.png" alt="Logo" width='200px'/>
