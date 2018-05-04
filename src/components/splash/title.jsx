@@ -32,17 +32,17 @@ class Title extends React.Component {
       }
     };
   }
-  createTitle() {
-    const title = "nextstrain";
+  createTitle(styles) {
+    const title = "Nextstrain";
     return title.split("").map((letter, i) =>
-      <span key={i} style={{color: titleColors[i] }}>{letter}</span>
+      <span key={i} style={{ ...styles.title, ...{color: titleColors[i]} }}>{letter}</span>
     );
   }
   render() {
     const styles = this.getStyles();
     return (
       <span style={{ ...styles.title, ...this.props.style }}>
-        {this.createTitle()}
+        {this.createTitle(styles)}
       </span>
     );
   }

@@ -1,8 +1,8 @@
-import React from "react"
-import Helmet from "react-helmet"
-import SEO from "../components/SEO/SEO"
-import config from "../../data/SiteConfig"
-import Header from '../components/Header'
+import React from "react";
+import Helmet from "react-helmet";
+import SEO from "../components/SEO/SEO";
+import config from "../../data/SiteConfig";
+import Header from '../components/header';
 import Splash from "../components/splash";
 
 class Index extends React.Component {

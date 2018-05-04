@@ -1,7 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
-import SEO from "../../components/SEO/SEO"
-import Header from '../../components/Header'
+import SEO from "../../components/SEO/SEO";
+import Header from '../../components/header';
 import {HeaderContainer, RightHandAside, Bigspacer} from "../../layouts/generalComponents";
 import {Logos} from "../../components/logos";
 

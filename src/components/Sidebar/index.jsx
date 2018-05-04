@@ -96,7 +96,8 @@ const UnselectedPostTitle = styled.h6``
 
 const SidebarContainer = styled.div`
   padding: ${props => props.theme.sitePadding};
-  background-color: ${props => props.theme.lightGrey};
+  background-color: #F6F6F6;
+  box-shadow: -3px 0px 1px -3px rgba(0, 0, 0, 0.5) inset;
   height: 100%;
   & > ul, .chapterItems {
     list-style: none;

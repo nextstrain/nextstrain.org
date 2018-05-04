@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components"
 import SEO from "../../components/SEO/SEO"
-import Header from '../../components/Header'
+import Header from '../../components/header'
 
 export default class AboutPage extends React.Component {
   render() {

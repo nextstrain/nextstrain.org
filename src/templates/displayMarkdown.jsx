@@ -1,11 +1,11 @@
 import React from "react";
 import Helmet from "react-helmet";
-import styled from "styled-components"
-import SEO from "../components/SEO/SEO"
-import Header from '../components/Header'
+import styled from "styled-components";
+import SEO from "../components/SEO/SEO";
+import Header from '../components/header';
 // import config from "../../data/SiteConfig"
 import Sidebar from "../components/Sidebar";
-import {parseSlug} from "../util/parseSlug"
+import {parseSlug} from "../util/parseSlug";
 import {HeaderContainer, CenteredContent} from "../layouts/generalComponents";
 
 export default class GenericTemplate extends React.Component {
