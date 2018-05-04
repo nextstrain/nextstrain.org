@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components"
 import SEO from "../components/SEO/SEO"
-import Navigation from '../components/Header'
+import Header from '../components/Header'
 // import config from "../../data/SiteConfig"
 import Sidebar from "../components/Sidebar";
 import {parseSlug} from "../utils/parseSlug"
@@ -29,7 +29,7 @@ export default class GenericTemplate extends React.Component {
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
         <HeaderContainer>
-          <Navigation location={this.props.location} />
+          <Header location={this.props.location} />
         </HeaderContainer>
         <SidebarBodyFlexContainer className="container">
           <SidebarContainer>

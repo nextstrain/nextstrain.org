@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components"
 import SEO from "../../components/SEO/SEO"
-import Navigation from '../../components/Header'
+import Header from '../../components/Header'
 
 export default class AboutPage extends React.Component {
   render() {
@@ -13,7 +13,7 @@ export default class AboutPage extends React.Component {
         </Helmet>
         <SEO />
         <HeaderContainer>
-          <Navigation location={this.props.location} />
+          <Header location={this.props.location} />
         </HeaderContainer>
         <BodyContainer>
           <div>

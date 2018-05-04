@@ -1,7 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import SEO from "../../components/SEO/SEO"
-import Navigation from '../../components/Header'
+import Header from '../../components/Header'
 import {HeaderContainer, RightHandAside, Bigspacer} from "../../layouts/generalComponents";
 import {Logos} from "../../components/logos";
 
@@ -32,7 +32,7 @@ export default class AboutPage extends React.Component {
         </Helmet>
         <SEO />
         <HeaderContainer>
-          <Navigation location={this.props.location} />
+          <Header location={this.props.location} />
         </HeaderContainer>
         <RightHandAside asideContent={asideContent} title="About">
           <h2>Viral Phylogenies</h2>

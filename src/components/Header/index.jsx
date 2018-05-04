@@ -13,10 +13,11 @@ const NavContainer = styled.div`
   align-items: center;
   position: relative;
   .nav-link {
-    font-size: 1.6rem;
+    font-size: 16px;
     margin-right: 10px;
-    font-weight: 500;
     color: black;
+    font-weight: 400;
+    text-decoration: "none";
   }
 
   .selected-nav {
@@ -25,7 +26,7 @@ const NavContainer = styled.div`
   }
 
   somespace {
-    width: 30px;
+    width: 15px;
   }
 
   section {
@@ -69,7 +70,70 @@ const Dot = (
   </span>
 )
 
-class Navigation extends React.Component {
+class Header extends React.Component {
+
+  getStyles() {
+    return {
+      main: {
+        maxWidth: 960,
+        marginTop: "auto",
+        marginRight: "auto",
+        marginBottom: "auto",
+        marginLeft: "auto",
+        height: 50,
+        justifyContent: "space-between",
+        alignItems: "center",
+        overflow: "hidden",
+        left: 0,
+        zIndex: 1001,
+        transition: "left .3s ease-out"
+      },
+      logo: {
+        paddingLeft: "8px",
+        paddingRight: "8px",
+        paddingTop: "20px",
+        paddingBottom: "20px",
+        color: "#000",
+        cursor: "pointer",
+        textDecoration: "none",
+        fontSize: this.props.minified ? 12 : 16
+      },
+      title: {
+        padding: "0px",
+        color: "#000",
+        textDecoration: "none",
+        fontSize: 20,
+        fontWeight: 400
+      },
+      link: {
+        paddingLeft: this.props.minified ? "6px" : "12px",
+        paddingRight: this.props.minified ? "6px" : "12px",
+        paddingTop: "20px",
+        paddingBottom: "20px",
+        textDecoration: "none",
+        cursor: "pointer",
+        fontSize: this.props.minified ? 12 : 16,
+        ':hover': {
+          color: "#5097BA"
+        }
+      },
+      inactive: {
+        paddingLeft: "8px",
+        paddingRight: "8px",
+        paddingTop: "20px",
+        paddingBottom: "20px",
+        color: "#5097BA",
+        textDecoration: "none",
+        fontSize: this.props.minified ? 12 : 16
+      },
+      alerts: {
+        textAlign: "center",
+        verticalAlign: "middle",
+        width: 70,
+        color: "#5097BA"
+      }
+    };
+  };
 
   selClass(name) {
     if (!this.props.location || !this.props.location.pathname) return "";
@@ -78,32 +142,30 @@ class Navigation extends React.Component {
       ""
   }
 
+  getLogo(styles) {
+    return (
+      <Link to='/' style={styles.logo}>
+        <img alt="Logo" width="40" src={nextstrainLogo}/>
+      </Link>
+    );
+  }
+
   render() {
+    const styles = this.getStyles();
     return (
       <NavContainer>
         <section>
-          <Link to='/' >
-            <img src={nextstrainLogo} alt="Logo" height='40px' />
-          </Link>
+          {this.getLogo(styles)}
           <somespace />
-          <Link className={`nav-link ${this.selClass("about")}`} to='/about' > about </Link>
-          {Dot}
-          <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/builds/zika-build' > docs </Link>
-          {Dot}
-          <Link className={`nav-link ${this.selClass("methods")}`} to='/methods/overview/introduction' > methods </Link>
-          {Dot}
-          <Link className={`nav-link ${this.selClass("reports")}`} to='/reports/flu-vaccine-selection/2017-february' > reports </Link>
+          <somespace />
+          <Link className={`nav-link ${this.selClass("about")}`} to='/about' > About </Link>
+          <somespace />
+          <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/builds/zika-build' > Docs </Link>
+          <somespace />
+          <Link className={`nav-link ${this.selClass("methods")}`} to='/methods/overview/introduction' > Methods </Link>
+          <somespace />
+          <Link className={`nav-link ${this.selClass("reports")}`} to='/reports/flu-vaccine-selection/2017-february' > Reports </Link>
         </section>
-        <span>
-          <github>
-            <a className='nav-link' href='https://github.com/nextstrain' >
-              <githubtext>
-                github
-              </githubtext>
-              <ExternalLinkSvg cssProps={{verticalAlign: 3, color: '#000000'}} />
-            </a>
-          </github>
-        </span>
       </NavContainer>
     )
   }
@@ -114,4 +176,4 @@ class Navigation extends React.Component {
 {Dot}
 <Link className={`nav-link ${this.selClass("dev")}`} to='/developer/auspice/page-load' > developer </Link>
 */
-export default Navigation
+export default Header
