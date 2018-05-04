@@ -2,7 +2,7 @@ import React from "react"
 import Link from 'gatsby-link'
 import styled from 'styled-components'
 import config from "../../../data/SiteConfig"
-import {formatFileName} from "../../utils/formatFileName"
+import {formatFileName} from "../../util/formatFileName"
 
 // This class should not be used for listing posts, but for chapter based Docs. See PostListing for that.
 

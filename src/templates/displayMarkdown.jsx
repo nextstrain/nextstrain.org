@@ -5,7 +5,7 @@ import SEO from "../components/SEO/SEO"
 import Header from '../components/Header'
 // import config from "../../data/SiteConfig"
 import Sidebar from "../components/Sidebar";
-import {parseSlug} from "../utils/parseSlug"
+import {parseSlug} from "../util/parseSlug"
 import {HeaderContainer, CenteredContent} from "../layouts/generalComponents";
 
 export default class GenericTemplate extends React.Component {

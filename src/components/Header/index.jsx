@@ -1,74 +1,8 @@
-import React from "react"
-import Link from 'gatsby-link'
-import styled from 'styled-components'
-import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png"
-import ExternalLinkSvg from "../Misc/external-link";
-
-const NavContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  background: #F6F6F6;
-  padding: 5px;
-  align-items: center;
-  position: relative;
-  .nav-link {
-    font-size: 16px;
-    margin-right: 10px;
-    color: black;
-    font-weight: 400;
-    text-decoration: "none";
-  }
-
-  .selected-nav {
-    border-bottom: 2px solid black;
-    font-weight: 700;
-  }
-
-  somespace {
-    width: 15px;
-  }
-
-  section {
-    display: flex;
-    align-items: center;
-  }
-
-  github {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    font-size: 1.8em;
-  }
-
-  githubtext {
-    margin-right: 2px
-  }
-
-  @media screen and (max-width: 600px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    section {
-      margin-bottom: 10px;
-    }
-
-    span {
-      display: none;
-    }
-
-  }
-`
-
-const Dot = (
-  <span style={{marginLeft: 10, marginRight: 10, color: "black"}}>
-    •
-  </span>
-)
+import React from "react";
+import Link from 'gatsby-link';
+import Flex from "../framework/flex";
+import { titleColors, darkGrey, brandColor } from "../../util/globals";
+import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 
 class Header extends React.Component {
 
@@ -82,6 +16,7 @@ class Header extends React.Component {
         marginLeft: "auto",
         height: 50,
         justifyContent: "space-between",
+        background: "#F6F6F6",
         alignItems: "center",
         overflow: "hidden",
         left: 0,
@@ -103,7 +38,7 @@ class Header extends React.Component {
         color: "#000",
         textDecoration: "none",
         fontSize: 20,
-        fontWeight: 400
+        fontWeight: 500
       },
       link: {
         paddingLeft: this.props.minified ? "6px" : "12px",
@@ -112,68 +47,91 @@ class Header extends React.Component {
         paddingBottom: "20px",
         textDecoration: "none",
         cursor: "pointer",
+        fontWeight: 500,
         fontSize: this.props.minified ? 12 : 16,
         ':hover': {
           color: "#5097BA"
         }
       },
       inactive: {
-        paddingLeft: "8px",
-        paddingRight: "8px",
+        paddingLeft: this.props.minified ? "6px" : "12px",
+        paddingRight: this.props.minified ? "6px" : "12px",
         paddingTop: "20px",
         paddingBottom: "20px",
-        color: "#5097BA",
+        color: brandColor,
         textDecoration: "none",
+        fontWeight: 500,
         fontSize: this.props.minified ? 12 : 16
       },
       alerts: {
         textAlign: "center",
         verticalAlign: "middle",
         width: 70,
-        color: "#5097BA"
+        color: brandColor
       }
     };
-  };
+  }
 
-  selClass(name) {
+  selectedClass(name) {
     if (!this.props.location || !this.props.location.pathname) return "";
-    return this.props.location.pathname.startsWith(`/${name}`) ?
-      "selected-nav" :
-      ""
+    return this.props.location.pathname.startsWith(`/${name}`);
   }
 
   getLogo(styles) {
     return (
-      <Link to='/' style={styles.logo}>
+      <Link to="/" style={styles.logo}>
         <img alt="Logo" width="40" src={nextstrainLogo}/>
       </Link>
+    );
+  }
+
+  getLogoType(styles) {
+    const title = "nextstrain";
+    const rainbowTitle = title.split("").map((letter, i) =>
+      <span key={i} style={{ ...styles.title, ...{color: titleColors[i]} }}>{letter}</span>
+    );
+    return (
+      this.props.minified ?
+        <div/>
+        :
+        <span>
+          {rainbowTitle}
+        </span>
+    );
+  }
+
+  getLink(name, url, selected, styles) {
+    const linkCol = this.props.minified ? "#000" : darkGrey;
+    return (
+      selected ?
+        <div style={{ ...{color: linkCol}, ...styles.inactive }}>{name}</div> :
+        <Link to={url} style={{ ...{color: linkCol}, ...styles.link }}>
+          {name}
+        </Link>
     );
   }
 
   render() {
     const styles = this.getStyles();
     return (
-      <NavContainer>
-        <section>
-          {this.getLogo(styles)}
-          <somespace />
-          <somespace />
-          <Link className={`nav-link ${this.selClass("about")}`} to='/about' > About </Link>
-          <somespace />
-          <Link className={`nav-link ${this.selClass("docs")}`} to='/docs/builds/zika-build' > Docs </Link>
-          <somespace />
-          <Link className={`nav-link ${this.selClass("methods")}`} to='/methods/overview/introduction' > Methods </Link>
-          <somespace />
-          <Link className={`nav-link ${this.selClass("reports")}`} to='/reports/flu-vaccine-selection/2017-february' > Reports </Link>
-        </section>
-      </NavContainer>
-    )
+      <Flex style={styles.main}>
+        {this.getLogo(styles)}
+        {this.getLogoType(styles)}
+        <div style={{flex: 5}}/>
+        {this.getLink("About", "/about", this.selectedClass("about"), styles)}
+        {this.getLink("Docs", "/docs/builds/zika-build", this.selectedClass("docs"), styles)}
+        {this.getLink("Methods", "/methods/overview/introduction", this.selectedClass("methods"), styles)}
+        {this.getLink("Reports", "/reports/flu-vaccine-selection/2017-february", this.selectedClass("reports"), styles)}
+        <div style={{width: this.props.minified ? 20 : 0 }}/>
+      </Flex>
+    );
   }
 }
+
 /* REMOVED HEADERS (these are still available if you know the URL)
 {Dot}
 <Link className={`nav-link ${this.selClass("blog")}`} to='/blog/2018/placeholder' > blog </Link>
 {Dot}
 <Link className={`nav-link ${this.selClass("dev")}`} to='/developer/auspice/page-load' > developer </Link>
 */
-export default Header
+export default Header;
