@@ -14,14 +14,12 @@ class Header extends React.Component {
         marginBottom: "auto",
         marginLeft: "auto",
         height: 50,
-        justifyContent: "flex-start",
-        background: "inherit",
+        justifyContent: "space-between",
         alignItems: "center",
         overflow: "hidden",
         left: 0,
         zIndex: 1001,
-        transition: "left .3s ease-out",
-        boxShadow: '0px -3px 1px -3px rgba(0, 0, 0, 0.5) inset'
+        transition: "left .3s ease-out"
       },
       logo: {
         paddingLeft: "8px",
@@ -40,27 +38,27 @@ class Header extends React.Component {
         paddingBottom: "20px"
       },
       link: {
-        paddingLeft: "12px",
-        paddingRight: "12px",
+        paddingLeft: "6px",
+        paddingRight: "6px",
         paddingTop: "20px",
         paddingBottom: "20px",
         textDecoration: "none",
         cursor: "pointer",
-        fontWeight: 300,
-        fontSize: 18,
+        fontWeight: 500,
+        fontSize: 12,
         ':hover': {
           color: "#5097BA"
         }
       },
       inactive: {
-        paddingLeft: "12px",
-        paddingRight: "12px",
+        paddingLeft: "6px",
+        paddingRight: "6px",
         paddingTop: "20px",
         paddingBottom: "20px",
         color: brandColor,
         textDecoration: "none",
-        fontWeight: 300,
-        fontSize: 18
+        fontWeight: 500,
+        fontSize: 12
       },
       alerts: {
         textAlign: "center",
@@ -112,21 +110,19 @@ class Header extends React.Component {
     return (
       <Flex style={styles.main}>
         {this.getLogo(styles)}
-        {this.getLogoType(styles)}
-        <div style={{flex: 1}}/>
+        <div style={{flex: 5}}/>
         {this.getLink("About", "/about", this.selectedClass("about"), styles)}
         {this.getLink("Docs", "/docs/builds/zika-build", this.selectedClass("docs"), styles)}
-        {this.getLink("Methods", "/methods/overview/introduction", this.selectedClass("methods"), styles)}
-        {this.getLink("Reports", "/reports/flu-vaccine-selection/2017-february", this.selectedClass("reports"), styles)}
+        {this.getLink("Posts", "/reports/flu-vaccine-selection/2017-february", this.selectedClass("reports"), styles)}
+        <div style={{width: 10 }}/>
       </Flex>
     );
   }
 }
 
 /* REMOVED HEADERS (these are still available if you know the URL)
-{Dot}
-<Link className={`nav-link ${this.selClass("blog")}`} to='/blog/2018/placeholder' > blog </Link>
-{Dot}
-<Link className={`nav-link ${this.selClass("dev")}`} to='/developer/auspice/page-load' > developer </Link>
+{this.getLink("Methods", "/methods/overview/introduction", this.selectedClass("methods"), styles)}
+{this.getLink("Blog", "/blog/2018/placeholder", this.selectedClass("blog"), styles)}
+{this.getLink("Developer", "/developer/auspice/page-load", this.selectedClass("developer"), styles)}
 */
 export default Header;

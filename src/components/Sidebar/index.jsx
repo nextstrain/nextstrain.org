@@ -1,8 +1,8 @@
-import React from "react"
-import Link from 'gatsby-link'
-import styled from 'styled-components'
-import config from "../../../data/SiteConfig"
-import {formatFileName} from "../../util/formatFileName"
+import React from "react";
+import Link from 'gatsby-link';
+import styled from 'styled-components';
+import config from "../../../data/SiteConfig";
+import {formatFileName} from "../../util/formatFileName";
 
 // This class should not be used for listing posts, but for chapter based Docs. See PostListing for that.
 
@@ -96,8 +96,6 @@ const UnselectedPostTitle = styled.h6``
 
 const SidebarContainer = styled.div`
   padding: ${props => props.theme.sitePadding};
-  background-color: #F6F6F6;
-  box-shadow: -3px 0px 1px -3px rgba(0, 0, 0, 0.5) inset;
   height: 100%;
   & > ul, .chapterItems {
     list-style: none;
