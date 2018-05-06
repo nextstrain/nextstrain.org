@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import SEO from "../components/SEO/SEO";
 import config from "../../data/SiteConfig";
-import Header from '../components/header';
+import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
 
 class Index extends React.Component {
@@ -13,7 +13,7 @@ class Index extends React.Component {
         <Helmet title={config.siteTitle} />
         <SEO postEdges={postEdges} />
         <main>
-          <Header location={this.props.location} />
+          <NavBar location={this.props.location} />
           <Splash />
         </main>
       </div>

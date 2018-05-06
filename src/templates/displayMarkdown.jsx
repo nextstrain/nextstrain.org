@@ -2,11 +2,10 @@ import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 import SEO from "../components/SEO/SEO";
-import Header from '../components/header';
-// import config from "../../data/SiteConfig"
+import NavBar from '../components/nav-bar';
 import Sidebar from "../components/Sidebar";
 import {parseSlug} from "../util/parseSlug";
-import {HeaderContainer, CenteredContent} from "../layouts/generalComponents";
+import {NavBarContainer, CenteredContent} from "../layouts/generalComponents";
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -30,9 +29,9 @@ export default class GenericTemplate extends React.Component {
         <SEO postPath={slug} postNode={postNode} postSEO />
         <SidebarBodyFlexContainer className="container">
           <SidebarContainer>
-            <HeaderContainer>
-              <Header location={this.props.location} />
-            </HeaderContainer>
+            <NavBarContainer>
+              <NavBar location={this.props.location} />
+            </NavBarContainer>
             <Sidebar
               selectedPostMeta={selectedPostMeta}
               otherPostsMeta={otherPostsMeta}
@@ -68,7 +67,7 @@ const SidebarContainer = styled.div`
   width: 260px;
   min-width: 260px;
   background-color: #F2F2F2;
-  box-shadow: -3px 0px 3px -3px rgba(0, 0, 0, 0.15) inset;  
+  box-shadow: -3px 0px 3px -3px rgba(0, 0, 0, 0.2) inset;
 `
 
 const ContentContainer = styled.div`

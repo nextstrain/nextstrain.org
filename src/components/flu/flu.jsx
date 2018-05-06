@@ -1,8 +1,8 @@
 import React from "react";
 import Helmet from "react-helmet";
-import styled from "styled-components"
-import SEO from "../../components/SEO/SEO"
-import Header from '../../components/header'
+import styled from "styled-components";
+import SEO from "../../components/SEO/SEO";
+import NavBar from '../../components/nav-bar';
 
 export default class AboutPage extends React.Component {
   render() {
@@ -12,9 +12,9 @@ export default class AboutPage extends React.Component {
           <title>{`About Nextstrain`}</title>
         </Helmet>
         <SEO />
-        <HeaderContainer>
-          <Header location={this.props.location} />
-        </HeaderContainer>
+        <NavBarContainer>
+          <NavBar location={this.props.location} />
+        </NavBarContainer>
         <BodyContainer>
           <div>
             F L U
@@ -25,7 +25,7 @@ export default class AboutPage extends React.Component {
   }
 }
 
-const HeaderContainer = styled.div`
+const NavBarContainer = styled.div`
   grid-column: 1 / 3;
   grid-row: 1 / 2;
   z-index: 2;

@@ -4,7 +4,7 @@ import Flex from "../framework/flex";
 import { titleColors, darkGrey, brandColor } from "../../util/globals";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 
-class Header extends React.Component {
+class NavBar extends React.Component {
 
   getStyles() {
     return {
@@ -46,9 +46,7 @@ class Header extends React.Component {
         cursor: "pointer",
         fontWeight: 500,
         fontSize: 12,
-        ':hover': {
-          color: "#5097BA"
-        }
+        textTransform: "uppercase"
       },
       inactive: {
         paddingLeft: "6px",
@@ -58,7 +56,8 @@ class Header extends React.Component {
         color: brandColor,
         textDecoration: "none",
         fontWeight: 500,
-        fontSize: 12
+        fontSize: 12,
+        textTransform: "uppercase"
       },
       alerts: {
         textAlign: "center",
@@ -125,4 +124,4 @@ class Header extends React.Component {
 {this.getLink("Blog", "/blog/2018/placeholder", this.selectedClass("blog"), styles)}
 {this.getLink("Developer", "/developer/auspice/page-load", this.selectedClass("developer"), styles)}
 */
-export default Header;
+export default NavBar;
