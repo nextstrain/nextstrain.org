@@ -12,9 +12,7 @@ export default class AboutPage extends React.Component {
           <title>{`About Nextstrain`}</title>
         </Helmet>
         <SEO />
-        <NavBarContainer>
           <NavBar location={this.props.location} />
-        </NavBarContainer>
         <BodyContainer>
           <div>
             F L U
@@ -25,14 +23,6 @@ export default class AboutPage extends React.Component {
   }
 }
 
-const NavBarContainer = styled.div`
-  grid-column: 1 / 3;
-  grid-row: 1 / 2;
-  z-index: 2;
-   @media screen and (max-width: 600px) {
-    order: 1;
-  }
-`
 const BodyContainer = styled.div`
   overflow: scroll;
   justify-self: center;

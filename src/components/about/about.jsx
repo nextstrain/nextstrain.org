@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import SEO from "../../components/SEO/SEO";
 import NavBar from '../../components/nav-bar';
-import {NavBarContainer, RightHandAside, Bigspacer} from "../../layouts/generalComponents";
+import {RightHandAside, Bigspacer} from "../../layouts/generalComponents";
 import {Logos} from "../../components/logos";
 
 const asideContent = (
@@ -31,9 +31,7 @@ export default class AboutPage extends React.Component {
           <title>{`About Nextstrain`}</title>
         </Helmet>
         <SEO />
-        <NavBarContainer>
-          <NavBar location={this.props.location} />
-        </NavBarContainer>
+        <NavBar location={this.props.location} />
         <RightHandAside asideContent={asideContent} title="About">
           <h2>Viral Phylogenies</h2>
 

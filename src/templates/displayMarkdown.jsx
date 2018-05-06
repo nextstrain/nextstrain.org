@@ -5,7 +5,7 @@ import SEO from "../components/SEO/SEO";
 import NavBar from '../components/nav-bar';
 import Sidebar from "../components/Sidebar";
 import {parseSlug} from "../util/parseSlug";
-import {NavBarContainer, CenteredContent} from "../layouts/generalComponents";
+import {CenteredContent} from "../layouts/generalComponents";
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -29,9 +29,7 @@ export default class GenericTemplate extends React.Component {
         <SEO postPath={slug} postNode={postNode} postSEO />
         <SidebarBodyFlexContainer className="container">
           <SidebarContainer>
-            <NavBarContainer>
-              <NavBar location={this.props.location} />
-            </NavBarContainer>
+            <NavBar location={this.props.location} />
             <Sidebar
               selectedPostMeta={selectedPostMeta}
               otherPostsMeta={otherPostsMeta}

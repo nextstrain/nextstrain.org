@@ -11,10 +11,6 @@ export const Bigspacer = styled.div`
   height: 30px;
 `;
 
-export const NavBarContainer = styled.div`
-  z-index: 2;
-`;
-
 export const CenteredContent = (props) => (
   <GeneralNiceText>
     <div className="row">
