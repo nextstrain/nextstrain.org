@@ -9,6 +9,7 @@ class NavBar extends React.Component {
   getStyles() {
     return {
       main: {
+        maxWidth: 960,
         marginTop: "auto",
         marginRight: "auto",
         marginBottom: "auto",
@@ -27,36 +28,38 @@ class NavBar extends React.Component {
         paddingTop: "20px",
         paddingBottom: "20px",
         color: "#000",
-        cursor: "pointer"
+        cursor: "pointer",
+        textDecoration: "none",
+        fontSize: this.props.minified ? 12 : 16
       },
       title: {
+        padding: "0px",
         color: "#000",
         textDecoration: "none",
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 400,
-        paddingTop: "20px",
-        paddingBottom: "20px"
+        cursor: "pointer"
       },
       link: {
-        paddingLeft: "6px",
-        paddingRight: "6px",
+        paddingLeft: this.props.minified ? "6px" : "12px",
+        paddingRight: this.props.minified ? "6px" : "12px",
         paddingTop: "20px",
         paddingBottom: "20px",
         textDecoration: "none",
         cursor: "pointer",
-        fontWeight: 500,
-        fontSize: 12,
+        fontSize: this.props.minified ? 12 : 16,
+        fontWeight: 400,
         textTransform: "uppercase"
       },
       inactive: {
-        paddingLeft: "6px",
-        paddingRight: "6px",
+        paddingLeft: this.props.minified ? "6px" : "12px",
+        paddingRight: this.props.minified ? "6px" : "12px",
         paddingTop: "20px",
         paddingBottom: "20px",
-        color: brandColor,
+        color: "#5097BA",
         textDecoration: "none",
-        fontWeight: 500,
-        fontSize: 12,
+        fontSize: this.props.minified ? 12 : 16,
+        fontWeight: 400,
         textTransform: "uppercase"
       },
       alerts: {
@@ -87,9 +90,12 @@ class NavBar extends React.Component {
       <span key={i} style={{ ...styles.title, ...{color: titleColors[i]} }}>{letter}</span>
     );
     return (
-      <span>
-        {rainbowTitle}
-      </span>
+      this.props.minified ?
+        <div/>
+        :
+        <Link to="/" style={styles.title}>
+          {rainbowTitle}
+        </Link>
     );
   }
 
@@ -109,11 +115,12 @@ class NavBar extends React.Component {
     return (
       <Flex style={styles.main}>
         {this.getLogo(styles)}
+        {this.getLogoType(styles)}
         <div style={{flex: 5}}/>
         {this.getLink("About", "/about", this.selectedClass("about"), styles)}
         {this.getLink("Docs", "/docs/builds/zika-build", this.selectedClass("docs"), styles)}
         {this.getLink("Posts", "/reports/flu-vaccine-selection/2017-february", this.selectedClass("reports"), styles)}
-        <div style={{width: 10 }}/>
+        <div style={{width: this.props.minified ? 8 : 0 }}/>
       </Flex>
     );
   }

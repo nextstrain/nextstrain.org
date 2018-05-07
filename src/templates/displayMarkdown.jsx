@@ -29,7 +29,7 @@ export default class GenericTemplate extends React.Component {
         <SEO postPath={slug} postNode={postNode} postSEO />
         <SidebarBodyFlexContainer className="container">
           <SidebarContainer>
-            <NavBar location={this.props.location} />
+            <NavBar minified location={this.props.location} />
             <Sidebar
               selectedPostMeta={selectedPostMeta}
               otherPostsMeta={otherPostsMeta}
