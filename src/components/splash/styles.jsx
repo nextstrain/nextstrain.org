@@ -70,7 +70,7 @@ export const FocusParagraph = styled.p`
 `;
 
 export const CenteredWideParagraph = styled.p`
-  max-width: 1080px;
+  max-width: 960px;
   margin-top: 0px;
   margin-right: auto;
   margin-bottom: 0px;
