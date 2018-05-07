@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components"
+import styled from "styled-components";
 
 /* find the tweet, copy the code via click down -> embed tweet,
 paste in here, rename class -> className, and remove the data-lang="en"
@@ -11,14 +11,14 @@ const TwitterRow = styled.div`
   flex-direction: row;
   justify-content: space-around;
   flex-wrap: wrap;
-`
+`;
 
 const TwitterColumn = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   flex-wrap: wrap;
-`
+`;
 
 export const tweets = () => ( // eslint-disable-line
   <TwitterRow>

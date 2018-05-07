@@ -7,8 +7,26 @@ export const Flex = styled.div`
   justify-content: center;
 `;
 
-export const Bigspacer = styled.div`
+export const SmallSpacer = styled.div`
+  height: 5px;
+`;
+
+export const MediumSpacer = styled.div`
+  height: 15px;
+`;
+
+export const BigSpacer = styled.div`
   height: 30px;
+`;
+
+export const HugeSpacer = styled.div`
+  height: 45px;
+`;
+
+export const Line = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #CCC;
 `;
 
 export const CenteredContent = (props) => (
