@@ -68,7 +68,7 @@ const ButtonContainer = styled.button`
 export const CardImg = styled.img`
   object-fit: cover;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
 `;
 
