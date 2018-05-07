@@ -1,10 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-export const Flex = styled.div`
+export const FlexCenter = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
+`;
+
+export const FlexGrid = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
 `;
 
 export const SmallSpacer = styled.div`
@@ -12,15 +19,15 @@ export const SmallSpacer = styled.div`
 `;
 
 export const MediumSpacer = styled.div`
-  height: 15px;
+  height: 10px;
 `;
 
 export const BigSpacer = styled.div`
-  height: 30px;
+  height: 20px;
 `;
 
 export const HugeSpacer = styled.div`
-  height: 45px;
+  height: 40px;
 `;
 
 export const Line = styled.div`
@@ -28,6 +35,17 @@ export const Line = styled.div`
   margin-bottom: 20px;
   border-bottom: 1px solid #CCC;
 `;
+
+export const TeamMember = ({name, image, link}) => (
+  <span style={{whiteSpace: "nowrap"}}>
+    <a href={link} style={{fontWeight: 300, color: "#333", marginLeft: "3px", marginRight: "3px"}}>
+      <img alt="trevor" width="40"
+        style={{marginLeft: "4px", marginRight: "4px", borderRadius: "50%", verticalAlign: "middle"}}
+        src={require("../../static/team/"+image)}/>
+      {name}
+    </a>
+  </span>
+);
 
 export const CenteredContent = (props) => (
   <GeneralNiceText>
@@ -61,7 +79,7 @@ export const RightHandAside = ({title, asideContent, children}) => (
       <div className="col-md-1" />
     </div>
   </GeneralNiceText>
-)
+);
 
 export const GeneralNiceText = styled.div`
   overflow: scroll;

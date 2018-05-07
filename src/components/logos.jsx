@@ -1,5 +1,5 @@
 import React from "react";
-import {BigSpacer, Flex, Line} from "../layouts/generalComponents";
+import {BigSpacer, FlexCenter, Line} from "../layouts/generalComponents";
 
 export const Logos = () => (
   <div className="container">
@@ -8,7 +8,7 @@ export const Logos = () => (
       <div className="col-md-1" />
       <div className="col-md-10">
         <Line />
-        <Flex wrap="wrap" style={{marginTop: 20, justifyContent: "space-around"}}>
+        <FlexCenter wrap="wrap" style={{marginTop: 20, justifyContent: "space-around"}}>
           <a key={1} href="http://www.fredhutch.org/" target="_blank" rel="noopener noreferrer">
             <img alt="logo" width="75" src={require("../../static/logos/fred-hutch-logo-small.png")} />
           </a>
@@ -27,7 +27,7 @@ export const Logos = () => (
           <a key={6} href="http://biozentrum.org/" target="_blank" rel="noopener noreferrer">
             <img alt="logo" width="85" src={require("../../static/logos/bz_logo.png")} />
           </a>
-        </Flex>
+        </FlexCenter>
       </div>
       <div className="col-md-1" />
     </div>

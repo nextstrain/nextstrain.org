@@ -16,8 +16,8 @@ export const theme = {
   smallFontSize: "12px",
 
   /* PADDING ETC */
-  sitePadding: "25px",
-}
+  sitePadding: "25px"
+};
 
 /* FROM AUSPICE */
 // export const lighterGrey = "rgb(200, 200, 200)";
