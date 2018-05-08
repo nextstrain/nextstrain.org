@@ -1,5 +1,5 @@
 import React from "react";
-import * as Styles from "./styles"
+import * as Styles from "./styles";
 
 const cards = [
   {
@@ -63,4 +63,4 @@ export const generateTiles = () => (
       </div>
     ))}
   </div>
-)
+);

@@ -1,16 +1,16 @@
 import React from "react";
-import {Bigspacer, Flex} from "../layouts/generalComponents";
+import {BigSpacer, Flex, Line} from "../layouts/generalComponents";
 
 export const Logos = () => (
   <div className="container">
-    <Bigspacer />
+    <BigSpacer />
     <div className="row">
       <div className="col-md-1" />
       <div className="col-md-10">
-        <div className="line" />
+        <Line />
         <Flex wrap="wrap" style={{marginTop: 20, justifyContent: "space-around"}}>
           <a key={1} href="http://www.fredhutch.org/" target="_blank" rel="noopener noreferrer">
-            <img alt="logo" width="75" src={require("../../static/logos/fred-hutch-logo.png")} />
+            <img alt="logo" width="75" src={require("../../static/logos/fred-hutch-logo-small.png")} />
           </a>
           <a key={2} href="http://www.eb.tuebingen.mpg.de/" target="_blank" rel="noopener noreferrer">
             <img alt="logo" width="65" src={require("../../static/logos/max-planck-logo.png")} />
@@ -31,6 +31,6 @@ export const Logos = () => (
       </div>
       <div className="col-md-1" />
     </div>
-    <Bigspacer />
+    <BigSpacer />
   </div>
 )

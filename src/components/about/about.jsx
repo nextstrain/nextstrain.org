@@ -2,12 +2,12 @@ import React from "react";
 import Helmet from "react-helmet";
 import SEO from "../../components/SEO/SEO";
 import NavBar from '../../components/nav-bar';
-import {RightHandAside, Bigspacer} from "../../layouts/generalComponents";
+import {RightHandAside, BigSpacer} from "../../layouts/generalComponents";
 import {Logos} from "../../components/logos";
 
 const asideContent = (
   <div>
-    <Bigspacer />
+    <BigSpacer />
     Concept by <a href="https://neherlab.org/richard-neher.html">Richard Neher</a> and <a href="http://bedford.io/team/trevor-bedford/">Trevor Bedford</a>.
     <p />
     Built by <a href="https://neherlab.org/richard-neher.html">Richard Neher</a>, <a href="http://bedford.io/team/trevor-bedford/">Trevor Bedford</a>, <a href="http://bedford.io/team/james-hadfield/">James Hadfield</a>, <a href="http://www.colinmegill.com/">Colin Megill</a>, <a href="http://bedford.io/team/sidney-bell/">Sidney Bell</a>, <a href="http://bedford.io/team/john-huddleston/">John Huddleston</a>, <a href="http://bedford.io/team/barney-potter/">Barney Potter</a>, <a href="http://bedford.io/team/charlton-callender/">Charlton Callender</a> and <a href="https://neherlab.org/pavel-sagulenko.html">Pavel Sagulenko</a>.
