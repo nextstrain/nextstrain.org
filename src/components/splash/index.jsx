@@ -10,6 +10,7 @@ class Splash extends React.Component {
   render() {
     return (
       <Styles.Container className="container">
+        <Bigspacer />
         <Flex>
           <Title />
         </Flex>

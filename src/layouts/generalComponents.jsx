@@ -1,19 +1,15 @@
 import React from "react";
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const Flex = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-`
+`;
 
 export const Bigspacer = styled.div`
   height: 30px;
-`
-
-export const HeaderContainer = styled.div`
-  z-index: 2;
-`
+`;
 
 export const CenteredContent = (props) => (
   <GeneralNiceText>
@@ -25,7 +21,7 @@ export const CenteredContent = (props) => (
       <div className="col-md-2" />
     </div>
   </GeneralNiceText>
-)
+);
 
 export const RightHandAside = ({title, asideContent, children}) => (
   <GeneralNiceText className="container">

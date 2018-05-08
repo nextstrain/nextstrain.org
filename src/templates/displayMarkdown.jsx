@@ -1,12 +1,11 @@
 import React from "react";
 import Helmet from "react-helmet";
-import styled from "styled-components"
-import SEO from "../components/SEO/SEO"
-import Navigation from '../components/Header'
-// import config from "../../data/SiteConfig"
+import styled from "styled-components";
+import SEO from "../components/SEO/SEO";
+import NavBar from '../components/nav-bar';
 import Sidebar from "../components/Sidebar";
-import {parseSlug} from "../utils/parseSlug"
-import {HeaderContainer, CenteredContent} from "../layouts/generalComponents";
+import {parseSlug} from "../util/parseSlug";
+import {CenteredContent} from "../layouts/generalComponents";
 
 export default class GenericTemplate extends React.Component {
   render() {
@@ -28,11 +27,9 @@ export default class GenericTemplate extends React.Component {
           <title>{post.title}</title>
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
-        <HeaderContainer>
-          <Navigation location={this.props.location} />
-        </HeaderContainer>
         <SidebarBodyFlexContainer className="container">
           <SidebarContainer>
+            <NavBar minified location={this.props.location} />
             <Sidebar
               selectedPostMeta={selectedPostMeta}
               otherPostsMeta={otherPostsMeta}
@@ -55,7 +52,7 @@ export default class GenericTemplate extends React.Component {
 }
 
 const SidebarBodyFlexContainer = styled.div`
-  height: calc(100vh - 50px);
+  height: calc(100vh);
   overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
   display: flex;  /*enables flex content for its children*/
   flex-direction: row;
@@ -65,8 +62,10 @@ const SidebarBodyFlexContainer = styled.div`
 const SidebarContainer = styled.div`
   flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
   overflow-y: scroll;  /*adds scroll to this container*/
-  width: 300px;
-  min-width: 300px;
+  width: 260px;
+  min-width: 260px;
+  background-color: #F2F2F2;
+  box-shadow: -3px 0px 3px -3px rgba(0, 0, 0, 0.2) inset;
 `
 
 const ContentContainer = styled.div`
