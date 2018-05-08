@@ -1,18 +1,18 @@
 import React from "react";
 import Link from 'gatsby-link';
 import styled from 'styled-components';
-import Flex from "../framework/flex";
-import { titleColors, darkGrey, brandColor } from "../../util/globals";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 
-const NavContainer = styled(Flex)`
+const NavContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   max-width: 960px;
+  height: 50px;
   margin-top: auto;
   margin-right: auto;
   margin-bottom: auto;
   margin-left: auto;
-  justify-content: space-between;
-  align-items: center;
   overflow: hidden;
   left: 0px;
   z-index: 1001;
@@ -34,7 +34,7 @@ const NavLogoCharacter = styled.span`
   font-size: 20px;
   font-weight: 400;
   cursor: pointer;
-  color: ${(props) => props.color};
+  color: ${(props) => props.theme.titleColors[props.colorIndex]};
 `;
 
 const NavLink = styled(Link)`
@@ -47,10 +47,10 @@ const NavLink = styled(Link)`
   font-size: ${(props) => props.minified ? '12px' : '16px'} !important;
   font-weight: 400;
   text-transform: uppercase;
-  color: ${(props) => props.color} !important;
+  color: ${(props) => props.minified ? '#000000' : props.theme.darkGrey} !important;
 `;
 
-const NavLinkInactive = styled.div`
+const NavLinkActive = styled.div`
   padding-left: ${(props) => props.minified ? '6px' : '12px'};
   padding-right: ${(props) => props.minified ? '6px' : '12px'};
   padding-top: 20px;
@@ -59,7 +59,7 @@ const NavLinkInactive = styled.div`
   font-size: ${(props) => props.minified ? '12px' : '16px'};
   font-weight: 400;
   text-transform: uppercase;
-  color: #5097BA;
+  color: ${(props) => props.theme.brandColor};
 `;
 
 class NavBar extends React.Component {
@@ -82,7 +82,7 @@ class NavBar extends React.Component {
   getLogoType() {
     const title = "Nextstrain";
     const rainbowTitle = title.split("").map((letter, i) =>
-      <NavLogoCharacter key={i} color={titleColors[i]}>{letter}</NavLogoCharacter>
+      <NavLogoCharacter key={i} colorIndex={i}>{letter}</NavLogoCharacter>
     );
     return (
       this.props.minified ?
@@ -91,19 +91,17 @@ class NavBar extends React.Component {
         <Link to="/">
           {rainbowTitle}
         </Link>
-
     );
   }
 
   getLink(name, url, selected) {
-    const linkCol = this.props.minified ? "#000" : darkGrey;
     return (
       selected ?
-        <NavLinkInactive minified={this.props.minified}>
+        <NavLinkActive minified={this.props.minified}>
           {name}
-        </NavLinkInactive>
+        </NavLinkActive>
         :
-        <NavLink to={url} color={linkCol} minified={this.props.minified}>
+        <NavLink to={url} minified={this.props.minified}>
           {name}
         </NavLink>
     );

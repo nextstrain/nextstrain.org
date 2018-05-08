@@ -2,11 +2,17 @@
 export const theme = {
   /* NEXTSTRAIN COLOURS */
   rainbow10: ["#4042C7", "#4274CE", "#5199B7", "#69B091", "#88BB6C", "#ADBD51", "#CEB541", "#E39B39", "#E56C2F", "#DC2F24"],
-  lightGrey: '#F6F6F6',
+  titleColors: ["#4377CD", "#5097BA", "#63AC9A", "#7CB879", "#9ABE5C", "#B9BC4A", "#D4B13F", "#E49938", "#E67030", "#DE3C26"],
+
+  extraLightGrey: "#F1F1F1",
+  lightGrey: "#D3D3D3",
   medGrey: "#888",
-  darkGrey: '#333',
+  darkGrey: "#333",
+
   accentDark: "#35495E",
-  blue: '#5097BA',
+  blue: "#5097BA",
+  brandColor: "#5097BA",
+  sidebarColor: "#F2F2F2",
 
   /* FONTS / LINE HEIGHTS ETC */
   niceLineHeight: 1.42857143,
@@ -16,8 +22,8 @@ export const theme = {
   smallFontSize: "12px",
 
   /* PADDING ETC */
-  sitePadding: "25px",
-}
+  sitePadding: "25px"
+};
 
 /* FROM AUSPICE */
 // export const lighterGrey = "rgb(200, 200, 200)";
