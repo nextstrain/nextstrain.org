@@ -12,8 +12,9 @@
   "homepage": "",
   "scripts": {
     "test": "",
-    "start": "node server.transpiled.js",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "server": "node server.transpiled.js",
+    "start": "npm run build && npm run server"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",

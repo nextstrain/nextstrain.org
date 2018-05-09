@@ -1,0 +1,11 @@
+# repositories that will be checked in #
+auspice/
+nextstrain.org/
+
+# build server #
+server.transpiled.js
+
+# misc #
+.DS_Store
+node_modules/
+npm-debug.log
