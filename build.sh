@@ -14,8 +14,8 @@ trap 'errorFound $LINENO' ERR
 # https://devcenter.heroku.com/articles/nodejs-support
 
 echo "Cloning Auspice (branch: server-tidyup) & Static site repos"
-git clone -b server-tidyup --single-branch git@github.com:nextstrain/auspice.git
-git clone -b master --single-branch git@github.com:nextstrain/nextstrain.org.git
+git clone -b server-tidyup --single-branch https://github.com/nextstrain/auspice.git
+git clone -b master --single-branch https://github.com/nextstrain/nextstrain.org.git
 
 echo "Jumping into Auspice"
 cd auspice
