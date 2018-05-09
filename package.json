@@ -1,0 +1,37 @@
+{
+  "name": "play",
+  "version": "0.1.0",
+  "description": "",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "James Hadfield",
+  "license": "MIT",
+  "homepage": "",
+  "scripts": {
+    "test": "",
+    "start": "node server.transpiled.js",
+    "build": "webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "compression-webpack-plugin": "^1.0.0",
+    "express": "^4.13.3",
+    "express-naked-redirect": "^0.1.2",
+    "express-static-gzip": "^0.2.2",
+    "query-string": "^6.1.0",
+    "request": "^2.85.0",
+    "webpack": "^3.5.5",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-markdown": "^2.5.0",
+    "babel-preset-react": "^6.24.1"
+  }
+}
