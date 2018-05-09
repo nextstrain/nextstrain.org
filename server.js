@@ -8,6 +8,7 @@ const charon = require("./auspice/src/server/charon");
 const globals = require("./auspice/src/server/globals");
 
 /* BASIC APP SETUP */
+// NOTE: order of app.get is first come first serve (https://stackoverflow.com/questions/32603818/order-of-router-precedence-in-express-js)
 const app = express();
 app.set('port', process.env.PORT || 5000);
 app.get("/favicon.png", (req, res) => {
@@ -19,6 +20,15 @@ app.use(require('express-naked-redirect')({reverse: true}));
 
 /* GATSBY HANDLING (STATIC) */
 app.use(express.static(path.join(__dirname, "nextstrain.org", "public")))
+// maybe this could be dynamic?!? - scan content?!?
+const gatsbyRoutes = [
+  "/", "/docs*", "/reports*", "/developer*", "/methods*"
+];
+app.get(gatsbyRoutes, (req, res) => {
+  console.log(`Sending ${req.originalUrl} to gatsby as it matches a (hardcoded) gatsby route`)
+  res.sendFile(path.join(__dirname, "nextstrain.org", "public", "index.html"));
+});
+
 
 
 /* AUSPICE STUFF (note that only production builds are allowed -
@@ -29,28 +39,12 @@ app.use(expressStaticGzip(path.join(__dirname, "auspice", "dist")));
 app.get(["/dist*"], (req, res) => {
   res.sendFile(path.join(__dirname, "auspice", req.originalUrl));
 })
-/* there must be a better way?!? */
-app.get([
-  "/flu*",
-  "/WNV*",
-  "/lassa*",
-  "/zika*",
-  "/ebola*",
-  "/mumps*",
-  "/avian*",
-  "/dengue*",
-  "/measels*",
-  "/auspice*" /* this could be a way to access non-hardcoded datasets */
-], (req, res) => {
+/* every route that **hasnt** been caught yet goes to auspice */
+app.get("*", (req, res) => {
   console.log(`Sending ${req.originalUrl} to auspice (it handles the actual route!)`)
   res.sendFile(path.join(__dirname, "auspice", "index.html"));
 })
 
-/* DEFAULT -> GATSBY SPLASH PAGE (there still needs to be a 404 page!) */
-app.get("*", (req, res) => {
-  console.log("hit * - sending static index")
-  res.sendFile(path.join(__dirname, "nextstrain.org", "public", "index.html"));
-});
 
 const server = app.listen(app.get('port'), () => {
   console.log("-----------------------------------");
