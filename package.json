@@ -12,6 +12,7 @@
   "homepage": "",
   "scripts": {
     "test": "",
+    "postinstall": "./build.sh",
     "build": "webpack --config webpack.config.js",
     "server": "node server.transpiled.js",
     "start": "npm run build && npm run server"
