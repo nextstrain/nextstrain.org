@@ -34,8 +34,19 @@ export const H1 = styled.div`
   margin-bottom: 0px;
 `;
 
+export const H2 = styled.div`
+  text-align: center;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+  color: ${(props) => props.theme.darkGrey};
+  min-width: 240px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+`;
+
 export const CenteredFocusParagraph = styled.p`
-  max-width: 600px;
+  max-width: 640px;
   margin-top: 0px;
   margin-right: auto;
   margin-bottom: 0px;
@@ -46,6 +57,29 @@ export const CenteredFocusParagraph = styled.p`
   line-height: ${(props) => props.theme.niceLineHeight};
 `;
 
+export const FocusParagraph = styled.p`
+  max-width: 500px;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  text-align: left;
+  font-size: ${(props) => props.theme.niceFontSize};
+  font-weight: 300;
+  line-height: ${(props) => props.theme.niceLineHeight};
+`;
+
+export const CenteredWideParagraph = styled.p`
+  max-width: 960px;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  text-align: center;
+  font-size: ${(props) => props.theme.niceFontSize};
+  font-weight: 300;
+  line-height: 3.2;
+`;
 
 const ButtonContainer = styled.button`
   border: 1px solid #CCC;
@@ -101,11 +135,11 @@ export const CardTitle = styled.div`
 export class Button extends React.Component {
   render() {
     return (
-      <Link style={{border: 'none'}} to={this.props.to}>
+      <a href={this.props.to}>
         <ButtonContainer>
           {this.props.children}
         </ButtonContainer>
-      </Link>
+      </a>
     );
   }
 }
