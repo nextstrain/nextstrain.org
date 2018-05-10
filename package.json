@@ -17,7 +17,8 @@
   "scripts": {
     "test": "",
     "postinstall": "./buildAuspiceStaticAndServer.sh",
-    "build": "webpack --config webpack.config.js",
+    "build": "./buildAuspiceStaticAndServer.sh",
+    "buildServerOnly": "webpack --config webpack.config.js",
     "server": "node server.transpiled.js",
     "start": "npm run build && npm run server"
   },

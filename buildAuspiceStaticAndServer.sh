@@ -63,6 +63,6 @@ npm run build
 echo "building the server"
 cd ..
 rm auspice/.babelrc # why? you get errors because or node_module pathing and babelrc defined plugins. I don't understand why /auspice/.babelrc is even being looked at!
-npm run build:server
+npm run buildServerOnly
 
 echo "DONE :) Now the Procfile will run the server (via 'npm run server')"
