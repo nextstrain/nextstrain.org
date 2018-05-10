@@ -9,14 +9,22 @@ function errorFound {
 # TRAPS
 trap 'errorFound $LINENO' ERR
 
-# Heroku installs the npm libs for this directory only
-# https://devcenter.heroku.com/articles/nodejs-support
+####################################
+# Prior to this script, heroku will have run npm install to grab node_modules
+# This script will grab (from github) auspice + the static site, and build them
+# Finally it will build the server (which relies on a few files in auspice)
+#
+#
+# It *should* work on your own computer, but the PATH is really tricky on heroku
+# so it may not... (just comment out the lines where we change the path for a local build?!?!)
+#
+#
+####################################
 
-echo "Cloning Auspice (branch: no-static) & Static site repos"
+
+# STEP 1: AUSPICE
+echo "Cloning Auspice (branch: no-static) repo"
 git clone -b no-static --single-branch https://github.com/nextstrain/auspice.git
-git clone -b master --single-branch https://github.com/nextstrain/nextstrain.org.git
-
-# Building Auspice is a nightmare.
 
 echo "Jumping into Auspice"
 cd auspice
@@ -24,20 +32,26 @@ cd auspice
 echo "HACKING PATH"
 OLD_PATH=$PATH
 export PATH=`echo ${PATH} | awk -v RS=: -v ORS=: '/node_modules\/.bin/ {next} {print}'`
-echo "Old Path: ${OLD_PATH}"
-echo "New Path: ${PATH}"
+# echo "Old Path: ${OLD_PATH}"
+# echo "New Path: ${PATH}"
+
 echo "npm install"
-NODE_ENV=development
+NODE_ENV=development # necessary to pull in dev dependencies
 npm install
+NODE_ENV=production
 
 echo "building auspice (npm run build)"
 npm run build
 
 echo "Jumping back to parent directory & resetting PATH"
 cd ..
-env PATH=${OLD_PATH}
+export PATH=${OLD_PATH}
 
-echo "into the Static site"
+
+echo "Cloning the static site"
+git clone -b master --single-branch https://github.com/nextstrain/nextstrain.org.git
+
+echo "Jumping into the Static site"
 cd nextstrain.org
 
 echo "installing from npm"
