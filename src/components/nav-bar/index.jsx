@@ -97,11 +97,11 @@ class NavBar extends React.Component {
   getLink(name, url, selected) {
     return (
       selected ?
-        <NavLinkActive minified={this.props.minified}>
+        <NavLinkActive minified={this.props.minified ? 1 : 0}>
           {name}
         </NavLinkActive>
         :
-        <NavLink to={url} minified={this.props.minified}>
+        <NavLink to={url} minified={this.props.minified ? 1 : 0}>
           {name}
         </NavLink>
     );

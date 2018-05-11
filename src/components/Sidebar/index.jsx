@@ -9,7 +9,6 @@ const structureEdges = require("../../util/structureEdges");
 class Sidebar extends React.Component {
   generateItems(selectedSlugInfo) {
     const [hasChapters, data] = structureEdges.parseEdges(this.props.allNodes, selectedSlugInfo.section);
-    console.log("DATA", data);
     const renderListOfPosts = (listOfPosts, chapterNameOfPost = undefined) => listOfPosts.map((post) => {
       let highlightPost = selectedSlugInfo.title === post.title;
       if (chapterNameOfPost) {
