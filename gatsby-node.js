@@ -49,8 +49,6 @@ exports.createPages = ({graphql, boundActionCreators}) => {
   /* statically defined pages (i.e. not generated from GraphQL & markdown) */
   /* The context is passed as props to the component as well as into the component's GraphQL query. */
   /* NOTE the splash page is handled elsewhere (it's component is /src/components/Splash/index.jsx) */
-  createPage({path: `/about`, component: path.resolve("src/components/about/about.jsx")});
-  createPage({path: `/flu`, component: path.resolve("src/components/flu/flu.jsx")});
 
   /* dynamically generated pages via allMarkdownRemark plugin processing of markdown files in /content */
   /* we also dynamically create redirects, so that, e.g. /docs/ has somewhere to go! */
