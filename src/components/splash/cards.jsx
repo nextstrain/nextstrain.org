@@ -56,7 +56,7 @@ export const generateTiles = () => (
         <div className="col-sm-4">
           <Styles.CardOuter>
             <Styles.CardInner>
-              <a href={`https://app.nextstrain.org${d.url}`}>
+              <a href={`${d.url}`}>
                 <Styles.CardTitle>
                   {d.title}
                 </Styles.CardTitle>
