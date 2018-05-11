@@ -1,6 +1,7 @@
 # repositories that will be checked in #
 auspice/
 static/
+static.tar.gz
 
 # build server #
 server.transpiled.js
