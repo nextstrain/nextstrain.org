@@ -31,7 +31,7 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
     // first try date parsing, YYYY-MM-DD-name.md, then XX-name.md
     const dateMatch = parsedFilePath.name.match(/^\d{4}-\d{2}-\d{2}/);
     if (dateMatch !== null) {
-      post.order = dateMatch[0].split('-').join(''); // typed. Must be string.
+      post.order = "-" + dateMatch[0].split('-').join(''); // typed. Must be string.
       post.name = parsedFilePath.name;
     } else {
       const groups = reIntStart.exec(parsedFilePath.name);
