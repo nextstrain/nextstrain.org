@@ -22,7 +22,7 @@ app.use(require('express-naked-redirect')({reverse: true}));
 app.use(express.static(path.join(__dirname, "static", "public")))
 // maybe this could be dynamic?!? - scan content?!?
 const gatsbyRoutes = [
-  "/", "/docs*", "/reports*", "/developer*", "/methods*"
+  "/", "/about*", "/blog*", "/docs*", "/reports*", "/tutorial*"
 ];
 app.get(gatsbyRoutes, (req, res) => {
   console.log(`Sending ${req.originalUrl} to gatsby as it matches a (hardcoded) gatsby route`)
