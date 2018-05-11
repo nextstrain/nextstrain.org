@@ -24,7 +24,7 @@ trap 'errorFound $LINENO' ERR
 
 # STEP 1: AUSPICE
 echo "Cloning Auspice (branch: no-static) repo"
-git clone -b no-static --single-branch https://github.com/nextstrain/auspice.git
+git clone -b prerelease --single-branch https://github.com/nextstrain/auspice.git
 
 echo "Jumping into Auspice"
 cd auspice
