@@ -8,3 +8,6 @@ html {
     font-family: 'Lato', 'Helvetica Neue', sans-serif;
     font-weight: 300;
 }
+
+/* for debugging: add a border to all other elements on the page */
+/* body * { border: 1px solid red; } */

@@ -64,6 +64,7 @@ const SidebarContainer = styled.div`
   overflow-y: scroll;  /*adds scroll to this container*/
   width: 260px;
   min-width: 260px;
+  max-width: 260px;
   background-color: #F2F2F2;
   box-shadow: -3px 0px 3px -3px rgba(0, 0, 0, 0.2) inset;
 `;
