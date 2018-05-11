@@ -21,7 +21,7 @@ const NavContainer = styled.div`
 
 const NavLogo = styled.div`
   padding-left: 8px;
-  padding-right: 8px;
+  padding-right: 2px;
   padding-top: 0px;
   padding-bottom: 0px;
   cursor: pointer;
@@ -114,8 +114,9 @@ class NavBar extends React.Component {
         {this.getLogoType()}
         <div style={{flex: 5}}/>
         {this.getLink("About", "/about", this.selectedClass("about"))}
-        {this.getLink("Docs", "/docs/builds/zika-build", this.selectedClass("docs"))}
-        {this.getLink("Posts", "/reports/flu-vaccine-selection/2017-february", this.selectedClass("reports"))}
+        {this.getLink("Docs", "/docs", this.selectedClass("docs"))}
+        {this.getLink("Tutorial", "/tutorial", this.selectedClass("tutorial"))}
+        {this.getLink("Blog", "/blog", this.selectedClass("blog"))}
         <div style={{width: this.props.minified ? 8 : 0 }}/>
       </NavContainer>
     );
