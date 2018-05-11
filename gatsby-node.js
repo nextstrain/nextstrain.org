@@ -14,30 +14,59 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
    */
   if (node.internal.type === "MarkdownRemark") {
     const fileNode = getNode(node.parent);
+    const reIntStart = /(\d+)-(.+)/;
     const parsedFilePath = path.parse(fileNode.relativePath);
-    const [section, chapterWithPrefix] = parsedFilePath.dir.split("/");
-    const re = /(\d+)-(.+)/;
-    const chapterGroups = re.exec(chapterWithPrefix);
-    const nameGroups = re.exec(parsedFilePath.name);
-    try {
+    const partsOfPath = parsedFilePath.dir.split("/");
+    /* step1: get the section, chapter (?) and post data & split out the prefix */
+    const section = partsOfPath[0];
+    const chapter = {};
+    const post = {};
+    if (partsOfPath.length === 2) { // CHAPTERS
+      const groups = reIntStart.exec(partsOfPath[1]);
+      chapter.order = groups[1];
+      chapter.name = groups[2];
+    }
+    // first try date parsing, YYYY-MM-DD-name.md, then XX-name.md
+    const dateMatch = parsedFilePath.name.match(/^\d{4}-\d{2}-\d{2}/);
+    if (dateMatch !== null) {
+      post.order = -1 * parseInt(dateMatch[0].split('-').join(''), 10);
+      post.name = parsedFilePath.name;
+    } else {
+      const groups = reIntStart.exec(parsedFilePath.name);
+      post.order = groups[1];
+      post.name = groups[2];
+    }
+    /* step two: modify the node data */
+    if (chapter.name) {
       boundActionCreators.createNodeField({
         node,
         name: "slug",
-        value: `/${section}/${chapterGroups[2]}/${nameGroups[2]}`
+        value: `/${section}/${chapter.name}/${post.name}`
       });
+      console.log(`${parsedFilePath.dir}/${parsedFilePath.name} (CHAPTERS)-> /${section}/${chapter.name}/${post.name}. Chapter order: ${chapter.order}. Post Order: ${post.order}`)
       boundActionCreators.createNodeField({
         node,
         name: "chapterOrder",
-        value: chapterGroups[1]
+        value: chapter.order
       });
+    } else {
       boundActionCreators.createNodeField({
         node,
-        name: "postOrder",
-        value: nameGroups[1]
+        name: "slug",
+        value: `/${section}/${post.name}`
       });
-    } catch (err) {
-      console.log("ERROR parsing the paths of ", parsedFilePath);
+      console.log(`${parsedFilePath.dir}/${parsedFilePath.name} -> /${section}/${post.name}. Post Order: ${post.order}`)
+      boundActionCreators.createNodeField({
+        node,
+        name: "chapterOrder",
+        value: undefined
+      });
     }
+    boundActionCreators.createNodeField({
+      node,
+      name: "postOrder",
+      value: post.order
+    });
 
   }
 };
@@ -85,41 +114,44 @@ exports.createPages = ({graphql, boundActionCreators}) => {
               slug: edge.node.fields.slug
             }
           });
+
+          console.log("created page at", edge.node.fields.slug)
+
           // if it's the first, then create redirects from the chapter and the section levels.
           // Note, you need a seperate redirect for the trailing slash (!)
-          if (parseInt(edge.node.fields.postOrder, 10) === 1) {
-            // CHAPTER eg docs/builds or docs/builds/
-            const chapterPathname = edge.node.fields.slug.split('/').slice(0, 3);
-            createRedirect({
-              fromPath: chapterPathname.join("/"),
-              isPermanent: true,
-              redirectInBrowser: true,
-              toPath: edge.node.fields.slug
-            });
-            createRedirect({
-              fromPath: chapterPathname.join("/") + "/",
-              isPermanent: true,
-              redirectInBrowser: true,
-              toPath: edge.node.fields.slug
-            });
-
-            if (parseInt(edge.node.fields.chapterOrder, 10) === 1) {
-              // SECTION e.g. /docs or /docs/
-              const sectionPathname = edge.node.fields.slug.split('/').slice(0, 2);
-              createRedirect({
-                fromPath: sectionPathname.join("/"),
-                isPermanent: true,
-                redirectInBrowser: true,
-                toPath: edge.node.fields.slug
-              });
-              createRedirect({
-                fromPath: sectionPathname.join("/") + "/",
-                isPermanent: true,
-                redirectInBrowser: true,
-                toPath: edge.node.fields.slug
-              });
-            }
-          }
+          // if (parseInt(edge.node.fields.postOrder, 10) === 1) {
+          //   // CHAPTER eg docs/builds or docs/builds/
+          //   const chapterPathname = edge.node.fields.slug.split('/').slice(0, 3);
+          //   createRedirect({
+          //     fromPath: chapterPathname.join("/"),
+          //     isPermanent: true,
+          //     redirectInBrowser: true,
+          //     toPath: edge.node.fields.slug
+          //   });
+          //   createRedirect({
+          //     fromPath: chapterPathname.join("/") + "/",
+          //     isPermanent: true,
+          //     redirectInBrowser: true,
+          //     toPath: edge.node.fields.slug
+          //   });
+          //
+          //   if (parseInt(edge.node.fields.chapterOrder, 10) === 1) {
+          //     // SECTION e.g. /docs or /docs/
+          //     const sectionPathname = edge.node.fields.slug.split('/').slice(0, 2);
+          //     createRedirect({
+          //       fromPath: sectionPathname.join("/"),
+          //       isPermanent: true,
+          //       redirectInBrowser: true,
+          //       toPath: edge.node.fields.slug
+          //     });
+          //     createRedirect({
+          //       fromPath: sectionPathname.join("/") + "/",
+          //       isPermanent: true,
+          //       redirectInBrowser: true,
+          //       toPath: edge.node.fields.slug
+          //     });
+          //   }
+          // }
         });
       })
     );

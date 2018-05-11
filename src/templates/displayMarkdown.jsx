@@ -4,7 +4,6 @@ import styled from "styled-components";
 import SEO from "../components/SEO/SEO";
 import NavBar from '../components/nav-bar';
 import Sidebar from "../components/Sidebar";
-import {parseSlug} from "../util/parseSlug";
 import {CenteredContent} from "../layouts/generalComponents";
 
 export default class GenericTemplate extends React.Component {
@@ -13,14 +12,6 @@ export default class GenericTemplate extends React.Component {
     const { slug } = this.props.pathContext; /* defined by createPages */
     const postNode = this.props.data.postBySlug;
     const post = postNode.frontmatter;
-    const selectedPostMeta = parseSlug(slug);
-    const otherPostsMeta = this.props.data.allSlugs.edges
-      .map((e) => ({
-        ...parseSlug(e.node.fields.slug),
-        chapterOrder: e.node.fields.chapterOrder,
-        postOrder: e.node.fields.postOrder
-      }))
-      .filter((d) => d.category === selectedPostMeta.category);
     return (
       <div>
         <Helmet>
@@ -31,8 +22,8 @@ export default class GenericTemplate extends React.Component {
           <SidebarContainer>
             <NavBar minified location={this.props.location} />
             <Sidebar
-              selectedPostMeta={selectedPostMeta}
-              otherPostsMeta={otherPostsMeta}
+              selectedSlug={slug}
+              sectionNodes={this.props.data.allSlugs.edges}
             />
           </SidebarContainer>
           <ContentContainer>

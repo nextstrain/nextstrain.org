@@ -1,75 +1,114 @@
 import React from "react";
 import Link from 'gatsby-link';
 import styled from 'styled-components';
-import config from "../../../data/SiteConfig";
 import {formatFileName} from "../../util/formatFileName";
-
-// This class should not be used for listing posts, but for chapter based Docs. See PostListing for that.
-
-// TODO: in JSX, split out XX-name when the files have all been renamed
+import {parseSlug} from "../../util/parseSlug";
 
 
 class Sidebar extends React.Component {
+
+
+  // const selectedPostMeta = parseSlug(slug);
+  // const otherPostsMeta = this.props.data.allSlugs.edges
+  //   .map((e) => ({
+  //     ...parseSlug(e.node.fields.slug),
+  //     chapterOrder: e.node.fields.chapterOrder,
+  //     postOrder: e.node.fields.postOrder
+  //   }))
+  //   .filter((d) => d.category === selectedPostMeta.category);
+
+
   generateItems() {
-    /* generate an array where each entry corresponds to a chapter
-    no posts have yeat to be added, but the ordering of chapters is correct */
-    const data = this.props.otherPostsMeta
-      .sort((a, b) => {
-        if (parseInt(a.chapterOrder, 10) < parseInt(b.chapterOrder, 10)) return -1
-        if (parseInt(a.chapterOrder, 10) > parseInt(b.chapterOrder, 10)) return 1
-        return 0
-      })
-      .map((d) => d.chapter)
-      .filter((cv,idx,arr)=>arr.indexOf(cv)===idx) /* filter to unique values */
-      .map((d) => ({name: d, posts: []}))
+    const selectedSlugInfo = parseSlug(this.props.selectedSlug);
+    const sectionNodesInfo = this.props.sectionNodes.map((e) => ({
+      ...parseSlug(e.node.fields.slug),
+      chapterOrder: e.node.fields.chapterOrder,
+      postOrder: e.node.fields.postOrder
+    }));
+    console.log("nodes (sectionNodesInfo)", sectionNodesInfo)
+
+    const hasChapters = !!selectedSlugInfo.chapter;
+
+    let data = []; /* no chapters by default */
+    if (hasChapters) {
+      /* generate an array where each entry corresponds to a chapter
+      no posts have yeat to be added, but the ordering of chapters is correct */
+      data = sectionNodesInfo
+        .sort((a, b) => {
+          if (parseInt(a.chapterOrder, 10) < parseInt(b.chapterOrder, 10)) return -1;
+          if (parseInt(a.chapterOrder, 10) > parseInt(b.chapterOrder, 10)) return 1;
+          return 0;
+        })
+        .map((d) => d.chapter)
+        .filter((cv, idx, arr) => arr.indexOf(cv)===idx) /* filter to unique values */
+        .map((d) => ({name: d, posts: []}));
+    }
+
 
     /* add each post to the correct chapter within data */
-    this.props.otherPostsMeta.forEach((meta) => {
-      const chapterIdx = data.findIndex((el) => el.name === meta.chapter);
-      data[chapterIdx].posts.push({
+    sectionNodesInfo.forEach((meta) => {
+      const nodeData = {
         title: meta.title,
         path: meta.path,
         order: parseInt(meta.postOrder, 10)
-      })
-    })
+      };
+      if (hasChapters) {
+        const chapterIdx = data.findIndex((el) => el.name === meta.chapter);
+        data[chapterIdx].posts.push(nodeData);
+      } else {
+        data.push(nodeData);
+      }
+    });
 
     /* sort posts within each chapter */
-    data.forEach((d) => {
-      d.posts = d.posts.sort((a, b) => { // eslint-disable-line
-        if (parseInt(a.order, 10) < parseInt(b.order, 10)) return -1
-        if (parseInt(a.order, 10) > parseInt(b.order, 10)) return 1
-        return 0
-      })
-    })
+    const postSorter = (a, b) => {
+      if (parseInt(a.order, 10) < parseInt(b.order, 10)) return -1;
+      if (parseInt(a.order, 10) > parseInt(b.order, 10)) return 1;
+      return 0;
+    };
+    if (hasChapters) {
+      data.forEach((d) => {d.posts = d.posts.sort(postSorter);});
+    } else {
+      data.sort(postSorter);
+    }
 
-    return data.map((chapter) => {
-      const postTitles = chapter.posts.map((post) => {
-        const titleJSX =
-          this.props.selectedPostMeta.title === post.title && this.props.selectedPostMeta.chapter === chapter.name ?
-        (<SelectedPostTitle>{formatFileName(post.title)}</SelectedPostTitle>) :
-        (<UnselectedPostTitle>{formatFileName(post.title)}</UnselectedPostTitle>);
-        return (
-          <ItemContainer key={post.path}>
-            <Link to={post.path}>
-              <li>
-                {titleJSX}
-              </li>
-            </Link>
-          </ItemContainer>
-        )
-      })
+    console.log("DATA", data);
+
+    const renderListOfPosts = (listOfPosts, chapterNameOfPost = undefined) => listOfPosts.map((post) => {
+      let highlightPost = selectedSlugInfo.title === post.title;
+      if (chapterNameOfPost) {
+        if (selectedSlugInfo.chapter !== chapterNameOfPost) highlightPost = false;
+      }
+      const titleJSX = highlightPost ?
+      (<SelectedPostTitle>{formatFileName(post.title)}</SelectedPostTitle>) :
+      (<UnselectedPostTitle>{formatFileName(post.title)}</UnselectedPostTitle>);
       return (
-        <li key={chapter.name} className='chapter'>
-          <h5 className='tocHeading'>
+        <ItemContainer key={post.path}>
+          <Link to={post.path}>
+            <li>
+              {titleJSX}
+            </li>
+          </Link>
+        </ItemContainer>
+      );
+    });
+
+    /* RETURN JSX */
+    if (hasChapters) {
+      return data.map((chapter) => (
+        <li key={chapter.name} className="chapter">
+          <h5 className="tocHeading">
             {formatFileName(chapter.name)}
           </h5>
-          <ul className='chapterItems'>
-            {postTitles}
+          <ul className="chapterItems">
+            {renderListOfPosts(chapter.posts, chapter.name)}
           </ul>
         </li>
-      )
-    })
+      ));
+    }
+    return renderListOfPosts(data);
   }
+
 
   render() {
     return (
@@ -78,12 +117,13 @@ class Sidebar extends React.Component {
           {this.generateItems()}
         </ul>
       </SidebarContainer>
-    )
+    );
   }
 }
 
 const SelectedPostTitle = styled.h6`
   border-left: 3px solid black;
+  text-shadow: 1px 0px 0px black;
   font-weight: 700;
   padding-left: 5px;
   font-size: 1.6rem;
@@ -91,11 +131,11 @@ const SelectedPostTitle = styled.h6`
   &:hover {
     border-bottom: 0px;
   }
-`
-const UnselectedPostTitle = styled.h6``
+`;
+const UnselectedPostTitle = styled.h6``;
 
 const SidebarContainer = styled.div`
-  padding: ${props => props.theme.sitePadding};
+  padding: ${(props) => props.theme.sitePadding};
   height: 100%;
   & > ul, .chapterItems {
     list-style: none;
@@ -114,10 +154,10 @@ const SidebarContainer = styled.div`
   }
   .tocHeading {
      font-weight: 200;
-     color: ${props => props.theme.blue};
+     color: ${(props) => props.theme.blue};
      margin-bottom: 10px;
   }
-`
+`;
 
 const ItemContainer = styled.div`
   h6, p {
@@ -136,6 +176,6 @@ const ItemContainer = styled.div`
       }
     }
   }
-`
+`;
 
-export default Sidebar
+export default Sidebar;
