@@ -1,6 +1,6 @@
 # repositories that will be checked in #
 auspice/
-nextstrain.org/
+static/
 
 # build server #
 server.transpiled.js

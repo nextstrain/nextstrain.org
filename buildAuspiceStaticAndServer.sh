@@ -35,32 +35,31 @@ export PATH=`echo ${PATH} | awk -v RS=: -v ORS=: '/node_modules\/.bin/ {next} {p
 # echo "Old Path: ${OLD_PATH}"
 # echo "New Path: ${PATH}"
 
-echo "npm install"
+echo "Installing auspice dependencies from npm"
 NODE_ENV=development # necessary to pull in dev dependencies
 npm install
 NODE_ENV=production
 
-echo "building auspice (npm run build)"
+echo "Building auspice (npm run build)"
 npm run build
 
 echo "Jumping back to parent directory & resetting PATH"
 cd ..
 export PATH=${OLD_PATH}
 
-
 echo "Cloning the static site"
-git clone -b master --single-branch https://github.com/nextstrain/nextstrain.org.git
+git clone -b master --single-branch https://github.com/nextstrain/static.git
 
-echo "Jumping into the Static site"
-cd nextstrain.org
+echo "Jumping into the static site"
+cd static
 
-echo "installing from npm"
+echo "Installing static dependencies from npm"
 npm install
 
-echo "building gatsby"
+echo "Building static site with Gatsby"
 npm run build
 
-echo "building the server"
+echo "Building the server"
 cd ..
 rm auspice/.babelrc # why? you get errors because or node_module pathing and babelrc defined plugins. I don't understand why /auspice/.babelrc is even being looked at!
 npm run buildServerOnly
