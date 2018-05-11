@@ -7,9 +7,7 @@ const parseSlug = require("../../util/parseSlug");
 const structureEdges = require("../../util/structureEdges");
 
 class Sidebar extends React.Component {
-
-  generateItems() {
-    const selectedSlugInfo = parseSlug.parseSlug(this.props.selectedSlug);
+  generateItems(selectedSlugInfo) {
     const [hasChapters, data] = structureEdges.parseEdges(this.props.allNodes, selectedSlugInfo.section);
     console.log("DATA", data);
     const renderListOfPosts = (listOfPosts, chapterNameOfPost = undefined) => listOfPosts.map((post) => {
@@ -44,25 +42,32 @@ class Sidebar extends React.Component {
         </li>
       ));
     }
-    return renderListOfPosts(data);
+    return (
+      <div style={{paddingTop: "20px"}}>
+        {renderListOfPosts(data)}
+      </div>
+    );
   }
 
 
   render() {
+    const selectedSlugInfo = parseSlug.parseSlug(this.props.selectedSlug);
     return (
       <SidebarContainer>
+        <SectionTitle>{selectedSlugInfo.section.toUpperCase()}</SectionTitle>
         <ul>
-          {this.generateItems()}
+          {this.generateItems(selectedSlugInfo)}
         </ul>
       </SidebarContainer>
     );
   }
 }
 
+const SectionTitle = styled.h3``;
+
 const SelectedPostTitle = styled.h6`
   border-left: 3px solid black;
-  text-shadow: 1px 0px 0px black;
-  font-weight: 700;
+  font-weight: 500 !important;
   padding-left: 5px;
   font-size: 1.6rem;
   color: black;
