@@ -94,6 +94,9 @@ const PostAuthorSurrounds = styled.div`
   font-weight: 100;
   color: ${(props) => props.theme.medGrey};
 `;
+const PostAuthor = styled.span`
+  float: left;
+`;
 const PostDate = styled.span`
   float: right;
 `;

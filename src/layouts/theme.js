@@ -13,6 +13,7 @@ export const theme = {
   blue: "#5097BA",
   brandColor: "#5097BA",
   sidebarColor: "#F2F2F2",
+  errorRed: "rgb(222, 60, 38)",
 
   /* FONTS / LINE HEIGHTS ETC */
   niceLineHeight: 1.42857143,
