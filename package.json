@@ -1,6 +1,6 @@
 {
-  "name": "nextstrain",
-  "description": "Code for nextstrain.org",
+  "name": "static",
+  "description": "Static content for nextstrain.org",
   "version": "1.0.1",
   "author": "james hadfield",
   "dependencies": {
