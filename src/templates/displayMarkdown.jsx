@@ -20,7 +20,7 @@ export default class GenericTemplate extends React.Component {
         chapterOrder: e.node.fields.chapterOrder,
         postOrder: e.node.fields.postOrder
       }))
-      .filter((d) => d.category === selectedPostMeta.category)
+      .filter((d) => d.category === selectedPostMeta.category);
     return (
       <div>
         <Helmet>
@@ -39,8 +39,7 @@ export default class GenericTemplate extends React.Component {
             <CenteredContent>
               <PostTitle>{post.title}</PostTitle>
               <PostAuthorSurrounds>
-                <PostAuthor>{post.author}</PostAuthor>
-                <PostDate>{post.date}</PostDate>
+                <PostDate>last modified {post.date}</PostDate>
               </PostAuthorSurrounds>
               <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </CenteredContent>
@@ -57,7 +56,7 @@ const SidebarBodyFlexContainer = styled.div`
   display: flex;  /*enables flex content for its children*/
   flex-direction: row;
   width: 100% !important;
-`
+`;
 
 const SidebarContainer = styled.div`
   flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
@@ -66,12 +65,12 @@ const SidebarContainer = styled.div`
   min-width: 260px;
   background-color: #F2F2F2;
   box-shadow: -3px 0px 3px -3px rgba(0, 0, 0, 0.2) inset;
-`
+`;
 
 const ContentContainer = styled.div`
   flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
   overflow-y: scroll;  /*adds scroll to this container*/
-`
+`;
 
 const MarkdownContent = styled.div`
 
@@ -81,29 +80,26 @@ const MarkdownContent = styled.div`
   li {
     margin-left: 30px;
   }
-`
+`;
 
 const PostTitle = styled.h1`
   background-color: black;
   color: white;
   padding: 5px;
   font-weight: 500;
-`
+`;
 const PostAuthorSurrounds = styled.div`
   min-height: 2rem;
-  font-size: ${props=>props.theme.niceFontSize};
+  font-size: ${(props) => props.theme.niceFontSize};
   font-weight: 100;
-  color: ${props=>props.theme.medGrey};
-`
-const PostAuthor = styled.span`
-  float: left;
-`
+  color: ${(props) => props.theme.medGrey};
+`;
 const PostDate = styled.span`
   float: right;
-`
+`;
 
 
-/* eslint no-undef: "off"*/
+/* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query genericTemplate($slug: String!) {
     allSlugs: allMarkdownRemark {
