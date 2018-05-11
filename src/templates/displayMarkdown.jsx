@@ -6,12 +6,15 @@ import NavBar from '../components/nav-bar';
 import Sidebar from "../components/Sidebar";
 import {CenteredContent} from "../layouts/generalComponents";
 
+const parseSlug = require("../util/parseSlug");
+
 export default class GenericTemplate extends React.Component {
   render() {
     // console.log("genericTemplate props:", this.props)
     const { slug } = this.props.pathContext; /* defined by createPages */
     const postNode = this.props.data.postBySlug;
     const post = postNode.frontmatter;
+    const showAuthor = ["blog", "reports"].indexOf(parseSlug.parseSlug(slug).section) !== -1;
     return (
       <div>
         <Helmet>
@@ -30,7 +33,14 @@ export default class GenericTemplate extends React.Component {
             <CenteredContent>
               <PostTitle>{post.title}</PostTitle>
               <PostAuthorSurrounds>
-                <PostDate>last modified {post.date}</PostDate>
+                {showAuthor ? (
+                  <div>
+                    <PostAuthor>{post.author}</PostAuthor>
+                    <PostDate>{post.date}</PostDate>
+                  </div>
+                ) : (
+                  <PostDate>last modified {post.date}</PostDate>
+                )}
               </PostAuthorSurrounds>
               <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </CenteredContent>
