@@ -3,6 +3,26 @@ import * as Styles from "./styles";
 
 const cards = [
   {
+    img: "seasonalinfluenza.png",
+    url: "/flu/h3n2/ha/3y",
+    title: "Seasonal Influenza"
+  },
+  {
+    img: "wnv.png",
+    url: "/WNV/NA",
+    title: "West Nile Virus"
+  },
+  {
+    img: "lassa.png",
+    url: "/lassa",
+    title: "Lassa"
+  },
+  {
+    img: "mumps.jpg",
+    url: "/mumps",
+    title: "Mumps"
+  },
+  {
     img: "zika.png",
     url: "/zika",
     title: "Zika"
@@ -13,29 +33,14 @@ const cards = [
     title: "Ebola"
   },
   {
-    img: "lassa.png",
-    url: "/lassa",
-    title: "Lassa"
-  },
-  {
     img: "dengue.png",
     url: "/dengue",
     title: "Dengue"
   },
   {
-    img: "seasonalinfluenza.png",
-    url: "/flu/h3n2/ha/3y",
-    title: "Seasonal Influenza"
-  },
-  {
     img: "avianinfluenza.png",
     url: "/avian/h7n9",
     title: "Avian Influenza"
-  },
-  {
-    img: "mumps.jpg",
-    url: "/mumps",
-    title: "Mumps"
   },
   {
     img: "measles.png",
