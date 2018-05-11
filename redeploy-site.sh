@@ -1,4 +1,4 @@
-# Ping Heroku Platform API to rebuild site
+echo "Pinging Heroku Platform API to rebuild site"
 
 curl -n -X POST https://api.heroku.com/apps/nextstrain-server/builds \
 -d '{"source_blob":{"url":"https://github.com/nextstrain/nextstrain.org/archive/master.tar.gz"}}' \

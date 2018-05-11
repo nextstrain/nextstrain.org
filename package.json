@@ -3,6 +3,34 @@
   "description": "Static content for nextstrain.org",
   "version": "1.0.1",
   "author": "james hadfield",
+  "keywords": [
+    "nextstrain",
+    "bioinformatics",
+    "phylodynamics"
+  ],
+  "license": "MIT",
+  "main": "n/a",
+  "engines": {
+    "node": "9.6.x",
+    "npm": "5.6.x"
+  },
+  "scripts": {
+    "develop": "gatsby develop",
+    "dev": "gatsby develop",
+    "start": "gatsby develop",
+    "serve": "gatsby serve",
+    "build": "gatsby build",
+    "test": "gatsby build",
+    "build:pp": "gatsby build --prefix-paths",
+    "build:gh": "npm run clean && npm run build:pp && gh-pages -d public",
+    "clean": "rm -rf public",
+    "lint:js": "eslint --ext .js,.jsx --ignore-pattern public,static .",
+    "lint:md": "remark content/posts/",
+    "write-good": "write-good $(glob 'content/posts/**/*.md')",
+    "format:js": "prettier '**/*.{js,jsx}' --write",
+    "heroku-postbuild": "gatsby build",
+    "redeploy-site": "./redeploy-site.sh"
+  },
   "dependencies": {
     "babel-plugin-lodash": "^3.2.11",
     "gatsby": "^1.9.256",
@@ -58,31 +86,7 @@
     "stylelint": "^8.0.0",
     "stylelint-config-standard": "^17.0.0",
     "write-good": "^0.11.3"
-  },
-  "keywords": [
-    "nextstrain",
-    "bioinformatics",
-    "phylodynamics"
-  ],
-  "license": "MIT",
-  "main": "n/a",
-  "scripts": {
-    "develop": "gatsby develop",
-    "dev": "gatsby develop",
-    "start": "gatsby develop",
-    "serve": "gatsby serve",
-    "build": "gatsby build",
-    "test": "gatsby build",
-    "build:pp": "gatsby build --prefix-paths",
-    "build:gh": "npm run clean && npm run build:pp && gh-pages -d public",
-    "clean": "rm -rf public",
-    "lint:js": "eslint --ext .js,.jsx --ignore-pattern public,static .",
-    "lint:md": "remark content/posts/",
-    "write-good": "write-good $(glob 'content/posts/**/*.md')",
-    "format:js": "prettier '**/*.{js,jsx}' --write",
-    "heroku-postbuild": "gatsby build",
-    "redeploy-site": "./redeploy-site.sh"
-  },
+  },  
   "remarkConfig": {
     "plugins": [
       "remark-preset-lint-recommended"
