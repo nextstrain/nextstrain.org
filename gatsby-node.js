@@ -1,6 +1,8 @@
 const path = require("path");
 // const _ = require("lodash");
 const webpackLodashPlugin = require("lodash-webpack-plugin");
+const structureEdges = require("./src/util/structureEdges");
+
 
 /* onCreateNode is called on each node and used to update information.
 Here we predominantly use it to set the slug (the URL)
@@ -29,7 +31,7 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
     // first try date parsing, YYYY-MM-DD-name.md, then XX-name.md
     const dateMatch = parsedFilePath.name.match(/^\d{4}-\d{2}-\d{2}/);
     if (dateMatch !== null) {
-      post.order = -1 * parseInt(dateMatch[0].split('-').join(''), 10);
+      post.order = dateMatch[0].split('-').join(''); // typed. Must be string.
       post.name = parsedFilePath.name;
     } else {
       const groups = reIntStart.exec(parsedFilePath.name);
@@ -43,7 +45,7 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
         name: "slug",
         value: `/${section}/${chapter.name}/${post.name}`
       });
-      console.log(`${parsedFilePath.dir}/${parsedFilePath.name} (CHAPTERS)-> /${section}/${chapter.name}/${post.name}. Chapter order: ${chapter.order}. Post Order: ${post.order}`)
+      // console.log(`${parsedFilePath.dir}/${parsedFilePath.name} (CHAPTERS)-> /${section}/${chapter.name}/${post.name}. Chapter order: ${chapter.order}. Post Order: ${post.order}`)
       boundActionCreators.createNodeField({
         node,
         name: "chapterOrder",
@@ -55,11 +57,11 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
         name: "slug",
         value: `/${section}/${post.name}`
       });
-      console.log(`${parsedFilePath.dir}/${parsedFilePath.name} -> /${section}/${post.name}. Post Order: ${post.order}`)
+      // console.log(`${parsedFilePath.dir}/${parsedFilePath.name} -> /${section}/${post.name}. Post Order: ${post.order}`)
       boundActionCreators.createNodeField({
         node,
         name: "chapterOrder",
-        value: undefined
+        value: "00" // this means we don't have chapters! */
       });
     }
     boundActionCreators.createNodeField({
@@ -114,44 +116,50 @@ exports.createPages = ({graphql, boundActionCreators}) => {
               slug: edge.node.fields.slug
             }
           });
+          console.log("created page at", edge.node.fields.slug);
+        });
 
-          console.log("created page at", edge.node.fields.slug)
+        // SET REDIRECTS (e.g. /about -> /about/overview/overview)
+        const sections = result.data.allMarkdownRemark.edges
+          .map((edge) => edge.node.fields.slug.split("/")[1])
+          .filter((cv, idx, arr) => arr.indexOf(cv)===idx); /* filter to unique values */
 
-          // if it's the first, then create redirects from the chapter and the section levels.
-          // Note, you need a seperate redirect for the trailing slash (!)
-          // if (parseInt(edge.node.fields.postOrder, 10) === 1) {
-          //   // CHAPTER eg docs/builds or docs/builds/
-          //   const chapterPathname = edge.node.fields.slug.split('/').slice(0, 3);
-          //   createRedirect({
-          //     fromPath: chapterPathname.join("/"),
-          //     isPermanent: true,
-          //     redirectInBrowser: true,
-          //     toPath: edge.node.fields.slug
-          //   });
-          //   createRedirect({
-          //     fromPath: chapterPathname.join("/") + "/",
-          //     isPermanent: true,
-          //     redirectInBrowser: true,
-          //     toPath: edge.node.fields.slug
-          //   });
-          //
-          //   if (parseInt(edge.node.fields.chapterOrder, 10) === 1) {
-          //     // SECTION e.g. /docs or /docs/
-          //     const sectionPathname = edge.node.fields.slug.split('/').slice(0, 2);
-          //     createRedirect({
-          //       fromPath: sectionPathname.join("/"),
-          //       isPermanent: true,
-          //       redirectInBrowser: true,
-          //       toPath: edge.node.fields.slug
-          //     });
-          //     createRedirect({
-          //       fromPath: sectionPathname.join("/") + "/",
-          //       isPermanent: true,
-          //       redirectInBrowser: true,
-          //       toPath: edge.node.fields.slug
-          //     });
-          //   }
-          // }
+        sections.forEach((section) => {
+          const [hasChapters, data] = structureEdges.parseEdges(result.data.allMarkdownRemark.edges, section);
+          /* create the section redirects */
+          const sectionGoesTo = hasChapters ?
+            data[0].posts[0].path :
+            data[0].path;
+          createRedirect({
+            fromPath: "/" + section,
+            isPermanent: true,
+            redirectInBrowser: true,
+            toPath: sectionGoesTo
+          });
+          createRedirect({
+            fromPath: "/" + section + "/",
+            isPermanent: true,
+            redirectInBrowser: true,
+            toPath: sectionGoesTo
+          });
+          /* potentially create chapter redirects */
+          if (hasChapters) {
+            data.forEach((chapterData) => {
+              const chapterGoesTo = chapterData.posts[0].path;
+              createRedirect({
+                fromPath: "/" + section + "/" + chapterData.name,
+                isPermanent: true,
+                redirectInBrowser: true,
+                toPath: chapterGoesTo
+              });
+              createRedirect({
+                fromPath: "/" + section + "/" + chapterData.name + "/",
+                isPermanent: true,
+                redirectInBrowser: true,
+                toPath: chapterGoesTo
+              });
+            });
+          }
         });
       })
     );

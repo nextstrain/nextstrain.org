@@ -1,7 +1,6 @@
-
-export const parseSlug = (slug) => {
+const parseSlug = (slug) => {
   const fields = slug.split('/');
-  if (fields.length === 2) {
+  if (fields.length === 3) {
     return {
       section: fields[1],
       chapter: undefined,
@@ -16,3 +15,5 @@ export const parseSlug = (slug) => {
     path: slug
   };
 };
+
+exports.parseSlug = parseSlug;

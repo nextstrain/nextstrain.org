@@ -23,7 +23,7 @@ export default class GenericTemplate extends React.Component {
             <NavBar minified location={this.props.location} />
             <Sidebar
               selectedSlug={slug}
-              sectionNodes={this.props.data.allSlugs.edges}
+              allNodes={this.props.data.allSlugs.edges}
             />
           </SidebarContainer>
           <ContentContainer>

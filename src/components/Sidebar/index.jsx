@@ -2,78 +2,16 @@ import React from "react";
 import Link from 'gatsby-link';
 import styled from 'styled-components';
 import {formatFileName} from "../../util/formatFileName";
-import {parseSlug} from "../../util/parseSlug";
 
+const parseSlug = require("../../util/parseSlug");
+const structureEdges = require("../../util/structureEdges");
 
 class Sidebar extends React.Component {
 
-
-  // const selectedPostMeta = parseSlug(slug);
-  // const otherPostsMeta = this.props.data.allSlugs.edges
-  //   .map((e) => ({
-  //     ...parseSlug(e.node.fields.slug),
-  //     chapterOrder: e.node.fields.chapterOrder,
-  //     postOrder: e.node.fields.postOrder
-  //   }))
-  //   .filter((d) => d.category === selectedPostMeta.category);
-
-
   generateItems() {
-    const selectedSlugInfo = parseSlug(this.props.selectedSlug);
-    const sectionNodesInfo = this.props.sectionNodes.map((e) => ({
-      ...parseSlug(e.node.fields.slug),
-      chapterOrder: e.node.fields.chapterOrder,
-      postOrder: e.node.fields.postOrder
-    }));
-    console.log("nodes (sectionNodesInfo)", sectionNodesInfo)
-
-    const hasChapters = !!selectedSlugInfo.chapter;
-
-    let data = []; /* no chapters by default */
-    if (hasChapters) {
-      /* generate an array where each entry corresponds to a chapter
-      no posts have yeat to be added, but the ordering of chapters is correct */
-      data = sectionNodesInfo
-        .sort((a, b) => {
-          if (parseInt(a.chapterOrder, 10) < parseInt(b.chapterOrder, 10)) return -1;
-          if (parseInt(a.chapterOrder, 10) > parseInt(b.chapterOrder, 10)) return 1;
-          return 0;
-        })
-        .map((d) => d.chapter)
-        .filter((cv, idx, arr) => arr.indexOf(cv)===idx) /* filter to unique values */
-        .map((d) => ({name: d, posts: []}));
-    }
-
-
-    /* add each post to the correct chapter within data */
-    sectionNodesInfo.forEach((meta) => {
-      const nodeData = {
-        title: meta.title,
-        path: meta.path,
-        order: parseInt(meta.postOrder, 10)
-      };
-      if (hasChapters) {
-        const chapterIdx = data.findIndex((el) => el.name === meta.chapter);
-        data[chapterIdx].posts.push(nodeData);
-      } else {
-        data.push(nodeData);
-      }
-    });
-
-    /* sort posts within each chapter */
-    const postSorter = (a, b) => {
-      if (parseInt(a.order, 10) < parseInt(b.order, 10)) return -1;
-      if (parseInt(a.order, 10) > parseInt(b.order, 10)) return 1;
-      return 0;
-    };
-    if (hasChapters) {
-      data.forEach((d) => {d.posts = d.posts.sort(postSorter);});
-    } else {
-      data.sort(postSorter);
-    }
-
+    const selectedSlugInfo = parseSlug.parseSlug(this.props.selectedSlug);
+    const [hasChapters, data] = structureEdges.parseEdges(this.props.allNodes, selectedSlugInfo.section);
     console.log("DATA", data);
-
     const renderListOfPosts = (listOfPosts, chapterNameOfPost = undefined) => listOfPosts.map((post) => {
       let highlightPost = selectedSlugInfo.title === post.title;
       if (chapterNameOfPost) {
