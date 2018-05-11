@@ -8,7 +8,7 @@ const cards = [
     title: "Seasonal Influenza"
   },
   {
-    img: "wnv.png",
+    img: "wnv.jpg",
     url: "/WNV/NA",
     title: "West Nile Virus"
   },
