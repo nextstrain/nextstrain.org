@@ -29,7 +29,8 @@
     "write-good": "write-good $(glob 'content/posts/**/*.md')",
     "format:js": "prettier '**/*.{js,jsx}' --write",
     "heroku-postbuild": "gatsby build",
-    "redeploy-site": "./redeploy-site.sh"
+    "redeploy-site": "./redeploy-site.sh",
+    "gzip-and-upload": "./gzip-and-upload.sh"
   },
   "dependencies": {
     "babel-plugin-lodash": "^3.2.11",

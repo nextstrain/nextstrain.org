@@ -4,9 +4,11 @@ node_js:
   - "9"
 install:
   - npm install
+  - pip install --user awscli
 script:
   - npm run build
 after_success:
+  - test $TRAVIS_BRANCH = "master" && npm run gzip-and-upload
   - test $TRAVIS_BRANCH = "master" && npm run redeploy-site
 notifications:
   email:
