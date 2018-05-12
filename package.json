@@ -15,12 +15,11 @@
     "npm": "5.6.x"
   },
   "scripts": {
-    "test": "",
-    "postinstall": "./buildAuspiceStaticAndServer.sh",
-    "build": "./buildAuspiceStaticAndServer.sh",
-    "buildServerOnly": "webpack --config webpack.config.js",
+    "fetch-bundles": "./fetch-bundles.sh",
+    "build": "webpack --config webpack.config.js",
     "server": "node server.transpiled.js",
-    "start": "npm run build && npm run server"
+    "start": "npm run server",
+    "heroku-postbuild": "npm run fetch-bundles && npm run build"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",

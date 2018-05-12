@@ -28,8 +28,3 @@ if [ -d "static" ]; then
 fi
 mkdir static
 tar -xzvf static.tar.gz -C static/
-
-echo "Building server"
-npm run buildServerOnly
-
-echo "DONE :) Now the Procfile will run the server (via 'npm run server')"
