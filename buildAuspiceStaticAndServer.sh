@@ -21,8 +21,6 @@ trap 'errorFound $LINENO' ERR
 #
 ####################################
 
-
-# STEP 1: AUSPICE
 echo "Cloning Auspice (branch: no-static) repo"
 git clone -b prerelease --single-branch https://github.com/nextstrain/auspice.git
 
@@ -47,20 +45,17 @@ echo "Jumping back to parent directory & resetting PATH"
 cd ..
 export PATH=${OLD_PATH}
 
-echo "Cloning the static site"
-git clone -b master --single-branch https://github.com/nextstrain/static.git
+echo "Fetching static site"
+curl https://s3.amazonaws.com/nextstrain-bundles/static.tar.gz --output static.tar.gz
 
-echo "Jumping into the static site"
-cd static
-
-echo "Installing static dependencies from npm"
-npm install
-
-echo "Building static site with Gatsby"
-npm run build
+echo "Uncompressing static site"
+if [ -d "static" ]; then
+  rm -rf static
+fi
+mkdir static
+tar -xzvf static.tar.gz -C static/
 
 echo "Building the server"
-cd ..
 rm auspice/.babelrc # why? you get errors because or node_module pathing and babelrc defined plugins. I don't understand why /auspice/.babelrc is even being looked at!
 npm run buildServerOnly
 
