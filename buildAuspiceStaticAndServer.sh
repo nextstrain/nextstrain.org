@@ -49,7 +49,11 @@ echo "Fetching static site"
 curl https://s3.amazonaws.com/nextstrain-bundles/static.tar.gz --output static.tar.gz
 
 echo "Uncompressing static site"
-tar -xzvf static.tar.gz
+if [ -d "static" ]; then
+  rm -rf static
+fi
+mkdir static
+tar -xzvf static.tar.gz -C static/
 
 echo "Building the server"
 rm auspice/.babelrc # why? you get errors because or node_module pathing and babelrc defined plugins. I don't understand why /auspice/.babelrc is even being looked at!
