@@ -9,54 +9,27 @@ function errorFound {
 # TRAPS
 trap 'errorFound $LINENO' ERR
 
-####################################
-# Prior to this script, heroku will have run npm install to grab node_modules
-# This script will grab (from github) auspice + the static site, and build them
-# Finally it will build the server (which relies on a few files in auspice)
-#
-#
-# It *should* work on your own computer, but the PATH is really tricky on heroku
-# so it may not... (just comment out the lines where we change the path for a local build?!?!)
-#
-#
-####################################
+echo "Fetching auspice"
+curl https://s3.amazonaws.com/nextstrain-bundles/auspice.tar.gz --output auspice.tar.gz
 
-echo "Cloning Auspice (branch: no-static) repo"
-git clone -b prerelease --single-branch https://github.com/nextstrain/auspice.git
+echo "Uncompressing auspice"
+if [ -d "auspice" ]; then
+  rm -rf auspice
+fi
+mkdir auspice
+tar -xzvf auspice.tar.gz -C auspice/
 
-echo "Jumping into Auspice"
-cd auspice
-
-echo "HACKING PATH"
-OLD_PATH=$PATH
-export PATH=`echo ${PATH} | awk -v RS=: -v ORS=: '/node_modules\/.bin/ {next} {print}'`
-# echo "Old Path: ${OLD_PATH}"
-# echo "New Path: ${PATH}"
-
-echo "Installing auspice dependencies from npm"
-NODE_ENV=development # necessary to pull in dev dependencies
-npm install
-NODE_ENV=production
-
-echo "Building auspice (npm run build)"
-npm run build
-
-echo "Jumping back to parent directory & resetting PATH"
-cd ..
-export PATH=${OLD_PATH}
-
-echo "Fetching static site"
+echo "Fetching static"
 curl https://s3.amazonaws.com/nextstrain-bundles/static.tar.gz --output static.tar.gz
 
-echo "Uncompressing static site"
+echo "Uncompressing static"
 if [ -d "static" ]; then
   rm -rf static
 fi
 mkdir static
 tar -xzvf static.tar.gz -C static/
 
-echo "Building the server"
-rm auspice/.babelrc # why? you get errors because or node_module pathing and babelrc defined plugins. I don't understand why /auspice/.babelrc is even being looked at!
+echo "Building server"
 npm run buildServerOnly
 
 echo "DONE :) Now the Procfile will run the server (via 'npm run server')"

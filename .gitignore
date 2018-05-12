@@ -1,6 +1,7 @@
 # repositories that will be checked in #
 auspice/
 static/
+auspice.tar.gz
 static.tar.gz
 
 # build server #
