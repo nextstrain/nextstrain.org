@@ -46,7 +46,6 @@ export const H2 = styled.div`
 `;
 
 export const CenteredFocusParagraph = styled.p`
-  max-width: 640px;
   margin-top: 0px;
   margin-right: auto;
   margin-bottom: 0px;
@@ -58,7 +57,6 @@ export const CenteredFocusParagraph = styled.p`
 `;
 
 export const FocusParagraph = styled.p`
-  max-width: 500px;
   margin-top: 0px;
   margin-right: auto;
   margin-bottom: 0px;
@@ -69,8 +67,7 @@ export const FocusParagraph = styled.p`
   line-height: ${(props) => props.theme.niceLineHeight};
 `;
 
-export const CenteredWideParagraph = styled.p`
-  max-width: 960px;
+export const IconParagraph = styled.p`
   margin-top: 0px;
   margin-right: auto;
   margin-bottom: 0px;
@@ -78,7 +75,38 @@ export const CenteredWideParagraph = styled.p`
   text-align: center;
   font-size: ${(props) => props.theme.niceFontSize};
   font-weight: 300;
-  line-height: 3.2;
+  line-height: 2.5;
+`;
+
+export const WideParagraph = styled.p`
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 14px !important;
+  font-weight: 300;
+  line-height: ${(props) => props.theme.niceLineHeight};
+`;
+
+export const CenteredWideParagraph = styled.p`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  text-align: center;
+  font-size: 14px !important;
+  font-weight: 300;
+  line-height: ${(props) => props.theme.niceLineHeight};
+`;
+
+export const FooterParagraph = styled.p`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: ${(props) => props.theme.smallFontSize} !important;
+  font-weight: 300;
+  text-align: center;
+  color: ${(props) => props.theme.medGrey} !important;
+  line-height: ${(props) => props.theme.niceLineHeight};
 `;
 
 const ButtonContainer = styled.button`
@@ -87,6 +115,7 @@ const ButtonContainer = styled.button`
   border-radius: 3px;
   cursor: pointer;
   padding: 5px 10px 5px 10px;
+  font-size: 16px;
   font-family: ${(props) => props.theme.generalFont};
   color: ${(props) => props.theme.medGrey};
   font-weight: 400;

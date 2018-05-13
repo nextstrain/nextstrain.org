@@ -15,12 +15,16 @@ const TwitterFlex = styled.div`
 `;
 
 export const tweets = () => ( // eslint-disable-line
-  <TwitterFlex>
-    <TweetEmbed id="841750279972352005" />
-    <TweetEmbed id="836714016475078661" />
-    <TweetEmbed id="836624541933694976" />
-    <TweetEmbed id="730892338394959872" />
-  </TwitterFlex>
+  <div className="twitterRow">
+    <div className="twitterColumn">
+      <TweetEmbed id="841750279972352005" />
+      <TweetEmbed id="836624541933694976" />
+    </div>
+    <div className="twitterColumn">
+      <TweetEmbed id="836714016475078661" />
+      <TweetEmbed id="730892338394959872" />
+    </div>
+  </div>
 );
 
 // saved tweets
