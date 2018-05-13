@@ -115,17 +115,14 @@ class NavBar extends React.Component {
         <div style={{flex: 5}}/>
         {this.getLink("About", "/about", this.selectedClass("about"))}
         {this.getLink("Docs", "/docs", this.selectedClass("docs"))}
-        {this.getLink("Tutorial", "/tutorial", this.selectedClass("tutorial"))}
         {this.getLink("Blog", "/blog", this.selectedClass("blog"))}
-        <div style={{width: this.props.minified ? 8 : 0 }}/>
+        <div style={{width: this.props.minified ? 12 : 0 }}/>
       </NavContainer>
     );
   }
 }
 
-/* REMOVED HEADERS (these are still available if you know the URL)
-{this.getLink("Methods", "/methods/overview/introduction", this.selectedClass("methods"), styles)}
-{this.getLink("Blog", "/blog/2018/placeholder", this.selectedClass("blog"), styles)}
-{this.getLink("Developer", "/developer/auspice/page-load", this.selectedClass("developer"), styles)}
-*/
+// include this as part of navbar when help page is complete on static
+// {this.getLink("Help", "/help", styles)}
+
 export default NavBar;
