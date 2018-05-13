@@ -4,12 +4,12 @@ import * as Styles from "./styles";
 const cards = [
   {
     img: "seasonalinfluenza.png",
-    url: "/flu/h3n2/ha/3y",
+    url: "/flu/seasonal",
     title: "Seasonal Influenza"
   },
   {
     img: "wnv.jpg",
-    url: "/WNV/NA",
+    url: "/WNV",
     title: "West Nile Virus"
   },
   {
@@ -39,7 +39,7 @@ const cards = [
   },
   {
     img: "avianinfluenza.png",
-    url: "/avian/h7n9",
+    url: "/flu/avian",
     title: "Avian Influenza"
   },
   {
