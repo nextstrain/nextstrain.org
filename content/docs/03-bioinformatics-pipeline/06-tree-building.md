@@ -1,11 +1,12 @@
 ---
-author: "James Hadfield"
-date: "04/11/2018"
-title: "Augur Tree Building"
+title: "Augur tree building"
+date: "2018-04-11"
 ---
-Building the tree is a 2 step process: A newick file is created (e.g. with RAxML) and then this is converted into a TimeTree.
 
-### step 1: initial phylogeny
+Building the tree is a 2 step process: A Newick file is created (e.g. with RAxML) and then this is converted into a TimeTree.
+
+### Step 1: Initial phylogeny
+
 This is normally created via RAxML however FastTree may also be used. A number of options are available however for the most part the defaults are fine.
 All the keyword arguments in the `build_newick` method of the `Tree` class may be set via the `newick_tree_options` config dictionary. The most common ones are:
 
@@ -16,7 +17,8 @@ By default **RAxML** is run using the GTRCAT model with a single starting tree.
 
 The newick file is saved to `processed/<prefix>.newick`. If this file exists, and the taxa match, then this step is skipped to save time.
 
-### step 2: TimeTree
+### Step 2: TimeTree
+
 TimeTree involves three steps:
 * set up
 * clock filtering (configurable via `config -> clock_filter`)
@@ -32,6 +34,7 @@ TimeTree involves three steps:
 Note that setting `clock_filter` to `False` skips this step.
 
 **timetree_options:**
+
 Available parameters:
 * `Tc` (default `0.02`)
 * `confidence` (see below)

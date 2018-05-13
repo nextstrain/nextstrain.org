@@ -1,7 +1,6 @@
 ---
-author: "James Hadfield"
-date: "30/04/2018"
 title: "How to write markdown content for nextstrain.org"
+date: "2018-04-30"
 ---
 
 The website scans all the files in the `/content` directory and automatically builds URLs and the sidebar content from this.

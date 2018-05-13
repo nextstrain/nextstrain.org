@@ -1,16 +1,18 @@
 ---
-author: "Barney Potter"
-date: "01/01/2017"
-title: "Sacra: a data cleaning tool designed for genomic epidemiology datasets."
+title: "Data cleaning with sacra"
+date: "2018-05-12"
 ---
 
-Sacra is used primarily within [Nextstrain](https://github.com/nextstrain) and replaces functionality previously found in [nextstrain/fauna](https://github.com/nextstrain/fauna).
-**This is under development and not production ready.**
+The sacra module of Nextstrain is used to clean and canonicalize pathogen sequence data. It replaces functionality previously found in fauna. Sacra code is hosted at [github.com/nextstrain/sacra](https://github.com/nextstrain/sacra).
+**Sacra is currently under development and not production ready.**
 
+Fauna remains our working codebase to clean and canonicalize FASTA and Genbank files. It's somewhat unwieldy and requires [RethinkDB](https://www.rethinkdb.com/) to run. Please see [github.com/nextstrain/fauna](https://github.com/nextstrain/fauna) for instructions on use of fauna. We planning to migrate from fauna to sacra over the course of summer 2018.
+
+# Sacra overview
 
 The general idea is to take possibly messy* data of varying input types (FASTA, CSV, JSON, accession numbers, titer tables), collect, clean and merge the data into a JSON output.
 Sacra is idempotent, i.e. `sacra(sacra(file)) == sacra(file)`.
-Uploading to a database is not part of sacra (see [nextstrain/flora](https://github.com/nextstrain/flora)).
+Uploading to a database is not part of sacra (see [flora](https://github.com/nextstrain/flora)).
 
 
 ## Requirements
@@ -55,17 +57,3 @@ overwrites:
   --overwrite_fasta_header OVERWRITE_FASTA_HEADER
                         Overwrite the config-defined FASTA header
 ```
-
-### Adding new pathogens
-To performa a Sacra run on a pathogen that is not currently supported
-
-Supported pathogens:
-* Mumps
-* Zika
-
-## How To Run (testing)
-* ensure you have `piglets.fasta`, `piglets_3_accessions.txt`, `mumps.vipr.fasta`, `mumps.fauna_download.fasta` in `sacra/input` (files on slack)
-* `python src/run.py --files input/piglets.fasta --debug --outfile output/piglets.json --pathogen mumps --skip_entrez`
-* `python src/run.py --files input/piglets_3_accessions.txt --debug --outfile output/piglets.json --pathogen mumps --skip_entrez`
-* `python src/run.py --files input/mumps.vipr.fasta --debug --outfile output/piglets.json --pathogen mumps --skip_entrez --visualize_call_graph --overwrite_fasta_header alt1`
-* `python src/run.py --files input/mumps.fauna_download.fasta --debug --outfile output/piglets.json --pathogen mumps --skip_entrez --overwrite_fasta_header fauna`

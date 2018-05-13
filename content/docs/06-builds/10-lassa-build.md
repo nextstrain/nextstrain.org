@@ -1,7 +1,6 @@
 ---
-author: "Trevor Bedford, James Hadfield"
-date: "04/20/2018"
-title: "Build steps for Lassa Virus"
+title: "Build steps for Lassa virus"
+date: "2018-04-20"
 
 ---
 

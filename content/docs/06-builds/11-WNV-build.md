@@ -1,7 +1,6 @@
 ---
-author: "James Hadfield"
-date: "30/04/2018"
 title: "Build steps for West Nile Virus (North America)"
+date: "2018-04-30"
 ---
 
 This build is not yet public, and the data has not been passed through sacra so there are some ad-hoc steps here.

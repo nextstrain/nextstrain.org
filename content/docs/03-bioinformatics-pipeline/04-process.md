@@ -1,32 +1,32 @@
 ---
-author: "James Hadfield"
-date: "04/11/2018"
 title: "Augur process"
+date: "2018-05-12"
 ---
 
 The process scripts (and the Process class) are designed to analyse data one prepared JSON at a time.
 This allows segmented viruses, or multiple lineages to be analysed independently.
-Similar to [_prepare_](prepare.md), it is designed off a `config` dict that should be all that is needed to run the analysis.
+Similar to [prepare](prepare.md), it is designed off a `config` dict that should be all that is needed to run the analysis.
 For bespoke analysis, a new class may be created which inherits from `Process`.
-Most scripts (see [zika](../zika/zika.process.py) and [flu](../flu/flu.process.py)) use command line arguments to dynamically change the `config` dictionary.
-A number of intermediate files (e.g. trees, alignments) are created as well as JSONs to be visualized in Auspice.
-While _process_ can be computationally expensive, as long as the underlying _prepared JSON_ is unchanged the script should be able to restore itself when you rerun it.
+Most scripts (see [zika](https://github.com/nextstrain/augur/blob/master/builds/zika/zika.process.py) and [flu](https://github.com/nextstrain/augur/blob/master/builds/flu/flu.process.py)) use command line arguments to dynamically change the `config` dictionary.
+A number of intermediate files (e.g. trees, alignments) are created as well as JSONs to be visualized in auspice.
+While process can be computationally expensive, as long as the underlying _prepared JSON_ is unchanged the script should be able to restore itself when you rerun it.
 
-### analysis components
-* align
-* [estimate mutation frequencies](./frequencies.md)
-* [build tree (RAxML)](./phylogenies.md)
-* [TimeTree](./phylogenies.md) - temporal filtering, ancestral reconstruction + node dating.
-* geographical inference
-* [estimate tree frequencies](./frequencies.md)
-* [annotate tree with scores](./scores.md) - calculate sequence- and metadata-based scores for each node in the tree
-* Titer models (See [Neher et al, PNAS, 2016](http://www.pnas.org/content/113/12/E1701.abstract) )
+## Analysis components
+
+* Align
+* [Estimate mutation frequencies](/docs/bioinformatics-pipeline/frequencies)
+* [Tree building with RAxML](/docs/bioinformatics-pipeline/tree-building)
+* TimeTree – temporal filtering, ancestral reconstruction + node dating and geographical inference
+* [Estimate clade frequencies](/docs/bioinformatics-pipeline/frequencies)
+* [Annotate tree with scores](/docs/bioinformatics-pipeline/scores) – calculate sequence and metadata scores for each node in the tree
+* Titer models (see [Neher et al, PNAS, 2016](http://www.pnas.org/content/113/12/E1701.abstract))
 * Identify predetermined clades
-* [Export for auspice](./auspice_output.md)
+* [Export for auspice](/docs/bioinformatics-pipeline/exported-JSON-files)
 
-### Config dict
+## Config dict
 
-##### Basic settings
+### Basic settings
+
 * `dir` the current directory - not _augur_ but the pathogen itself
 * `output` dict with 2 keys: `data` & `auspice`. (Default: `"output": {"data": "processed","auspice": "auspice",}`
   * `data`: progress files intermediate FASTAs, nexus trees etc
@@ -36,7 +36,8 @@ While _process_ can be computationally expensive, as long as the underlying _pre
 * `subprocess_verbosity_level` {int} (default `0`). Control the amount of information displayed during alignment and tree building. Higher numbers -> more output.
 
 
-##### Analysis settings
+### Analysis settings
+
 * `geo_inference` {`False` || array of strings} (Default: `False`) what traits to perform geographic inference (mugration model) upon
 * `geo_inference_options`: {dict}. Keys:
   * `confidence` {bool} (default: `True`) Include (normalized) likelihoods from any geographic inference analysis.
@@ -51,20 +52,21 @@ While _process_ can be computationally expensive, as long as the underlying _pre
 * `epitope_mask_version` {string} the name of an epitope mask defined in the `epitope_mask` file to use for analyses
 * `predictors` {array of strings or dict} a list of attributes annotated to each tree node to use for the fitness model (e.g., `"['ep']"` or `"['cTiter', 'ep']"`) or a dictionary of predictors and their corresponding precalculated model parameters and global standard deviations (e.g., `{'ep': [0.33, 1.31]}`)
 
-##### Auspice output settings
+### Auspice output settings
+
 * `auspice`
-  * `panels` {array} (default: `['tree', 'map', 'entropy']`)
-  * `extra_attr` {array} (default: `[]`)
-  * `date_range`
-  * `analysisSlider`: optional. If specified, this should be a key present in `color_options`, with `type`: continuous
-  * `color_options` (default: `"num_date": {...}, "gt": {...}`)
-    * `<trait name>`
+  - `panels` {array} (default: `['tree', 'map', 'entropy']`)
+  - `extra_attr` {array} (default: `[]`)
+  - `date_range`
+  - `analysisSlider`: optional. If specified, this should be a key present in `color_options`, with `type`: continuous
+  - `color_options` (default: `"num_date": {...}, "gt": {...}`)
+    + `<trait name>`
       * `key`
       *  `legendTitle`: String appearing in Auspice legend
       * `menuItem`: String appearing in Auspice colorBy drop down menu
       * `type`: continuous / integer / discrete
-  * `controls` {dict} (default: `{}`) **THIS IS DEPRECATED AND WILL BE REMOVED SOON**
-    * `geographic_location`
-    * `authors`
-  * `defaults`: {dict} Auspice defaults (exported as-is to the `meta.json` file)
-    * Keys (and the types of their values) may include `colorBy` (string), `geoResolution` (string), `distanceMeasure` (string), `mapTriplicate` (bool)
+  - `controls` {dict} (default: `{}`) **THIS IS DEPRECATED AND WILL BE REMOVED SOON**
+    + `geographic_location`
+    + `authors`
+  - `defaults`: {dict} Auspice defaults (exported as-is to the `meta.json` file)
+    + Keys (and the types of their values) may include `colorBy` (string), `geoResolution` (string), `distanceMeasure` (string), `mapTriplicate` (bool)

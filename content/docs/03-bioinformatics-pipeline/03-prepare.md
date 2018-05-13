@@ -1,24 +1,26 @@
 ---
-author: "James Hadfield"
-date: "04/11/2018"
-title: "Augur Prepare"
+title: "Augur prepare"
+date: "2018-05-12"
 ---
 
-Prepare takes fauna data as input and applies filtering, subsampling and checking of metadata to produce a single JSON (per segment) which can be analysed by [_process_](process.md).
+Prepare takes a sequence data FASTA (and optionally a titer data TSV) from fauna as input and applies filtering, subsampling and checking of metadata to produce a single JSON (per segment) which can be analysed by [process](process).
+
 Prepare scripts define a config dictionary which typically contains all the information needed.
 If you need something a bit more bespoke that can't be done through the config, the idea would be to create a new class which inherits from `Prepare` and use that instead.
 
-For examples see: [zika](../zika/zika.prepare.md) (simple) and [flu](../flu/flu.prepare.md) (more complicated).
+For examples see: [zika](https://github.com/nextstrain/augur/blob/master/builds/zika/zika.prepare.py) (simple) and [flu](https://github.com/nextstrain/augur/blob/master/builds/flu/flu.prepare.py) (more complicated).
 
-### `Config` dictionary
+## `Config` dictionary
+
 The `config` dict is passed to the `Prepare` class.
 Many options have defaults provided, and if so are not required to be in the config file.
 
-#### general settings (including some auspice-specific settings)
+### General settings (including some auspice-specific settings)
+
 * `dir`: the current directory - not _augur_ but the virus itself
 * `file_prefix`: string used to name the JSONs
-* `title`: string used for display in auspice (optional - `file_prefix` used if not specified)
-* `maintainer`: array containing two strings - the name of the maintainer (or twitter handle) and a URL (shown in auspice footer)
+* `title`: string used for display in auspice (optional, `file_prefix` used if not specified)
+* `maintainer`: array containing two strings – the name of the maintainer and a URL (shown in auspice footer)
 * `output_folder`: (default: "prepared") will be created inside the current directory and contgain logs + JSONs.
 * `segments`: array of strings, or `False` if not segmented...
 * `input_format`: (default: fasta) (to do: allow other input formats)
@@ -31,15 +33,14 @@ Many options have defaults provided, and if so are not required to be in the con
 * `require_dates` {bool} (default: True) Should sequences without dates be discarded?
 * `auspice_filters` {list} (default: []) Those ColorBys which auspice should enable as filters. E.g. "region", "country" etc. Authors are handled separately so don't need to be specified here. These values must also be set as `colors` (see below).
 
-#### filtering settings
-* `filters`: {Tuple. Of Tuples. With potentially dictionaries inside. `((a, b), (a, b), ...)`}
-  * `a`: name of filter (string)
-  * `b`: lambda function _or_ dictionary.
+### Filtering settings
 
-If the filter should be applied to each segment identically, just use a lambda (represented by `b` above).
+* `filters`: {Tuple. Of Tuples. With potentially dictionaries inside. `((a, b), (a, b), ...)`}, where
+`a` is the name of filter (string) and `b` is a lambda function _or_ dictionary. If the filter should be applied to each segment identically, just use a lambda (represented by `b` above).
 Some examples:
     * `lambda s: s.attributes['date'] >= datetime(2013,1,1).date()`
     * `s.attributes["host"] not in ["laboratoryderived", "watersample"]`
+
 If the filter is specific to the segment, provide a dictionary of lambdas instead, where the key matches those set in `segments` e.g.
 ```
 {
@@ -54,10 +55,12 @@ To avoid problems here, it's easiest to follow the example in `H7N9`:
   * use the filter `("Dropped Strains", lambda s: s.id not in [fix_names(x) for x in dropped_strains])`
 
 
-#### Complete Genomes & Subsampling
+### Complete Genomes & Subsampling
+
 * `ensure_all_segments`: {bool} (Default: `True`). Should only samples with sequences in each segment be included? (If there's only one segment this doesn't have any effect)
 
-#### subsampling
+### Subsampling
+
 Subsampling is rather complicated in order that most conceivable methods may be employed.
 In essence, there are three components:
 * categorize the sequences, for instance into year-month groupings (the default)
@@ -75,11 +78,12 @@ The following keys are searched in the `subsample` dict of the `config` file:
 * `threshold`: an integer (e.g. take _n_ sequences from each category), _OR_ a lambda with 1 argument: the category (see above) of the given sequence, _OR_ a higher order function which returns such a lambda. Lambda's should return an integer.
 
 
-#### Reference(s)
-The Reference sequences is needed for alignment and identification of genes etc, but it doesn't have to be included in the analysis.
-The format by which they are defined is rather verbose and hopefully will become part of the database in the future.
+### Reference(s)
 
-**For segmented viruses**:
+The Reference sequences is needed for alignment and identification of genes etc, but it doesn't have to be included in the analysis.
+
+#### For segmented viruses
+
   * `references`: {dict} with keys corresponding to `segments`. Each value is a {dict} with keys:
     * `path` {string} path to genbank file
     * `include` {int}
@@ -96,29 +100,30 @@ The format by which they are defined is rather verbose and hopefully will become
     dictionary is given, genes will be mapped from the GenBank names in the keys
     to preferred names in the values.
 
-**For non-segmented viruses:**
-  * `reference`: {dict} with keys `path`, `metadata` etc
+#### For non-segmented viruses
 
-**Reference Genbank File:**
+  * `reference`: {dict} with keys `path`, `metadata`, etc...
+
+#### Reference Genbank File:
+
 The reference file must be genbank and only entries with `gene` defined are taken.
 This is never as trivial as it should be.
 See the references in `H7N9` or `zika` for working examples.
 
+### Colors
 
-#### colours
-Colours are defined for certain fields / traits - normally the same traits that are inferred for nodes in the tree such as `country`, `region`, `host` e.t.c.
+Colors are defined for certain fields / traits – normally the same traits that are inferred for nodes in the tree such as `country`, `region`, `host` etc...
 Default colour maps will be created for any attributes set here, however you can also supply a file containing custom HEX values.
   * `colors`: False or list of traits (appearing in `header_fields`). If traits are selected, then a section in the JSON will be created with traits -> hex values. By default they will be created using the viridis scale.
   * `color_defs`: _file path_ or [_array_, _of_, _file_, _paths_] - tab separated file(s) joining `trait -> name -> color (hex)`.
   Comment lines start with `#`. See `zika/colors.tsv` for an example.
 
-**To do:** Write a script to change these after auspice JSON creation.
+#### Latitude & longitude
 
-#### latitude & longitude
-Similar to colours, these are needed if the data is to be pushed into auspice.
-Unlike colours, a file must be provided.
+Similar to colors, these are needed if the data is to be pushed into auspice.
+Unlike colors, a file must be provided. The `geo_lat_long.tsv` file in `source-data/` is fairly comprehensive.
   * `lat_longs`: _False_ or list of traits (appearing in `header_fields`)
-  * `lat_long_defs` _file path_ or [_array_, _of_, _file_, _paths_] (default: `'../../fauna/source-data/geo_lat_long.tsv'`)
+  * `lat_long_defs` _file path_ or [_array_, _of_, _file_, _paths_] (default: `'../../source-data/geo_lat_long.tsv'`)
   ```
   location	country_code	latitude	longitude
   africa	XX	4.070194	21.824559

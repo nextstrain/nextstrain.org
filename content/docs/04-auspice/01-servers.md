@@ -1,7 +1,6 @@
 ---
-author: "James Hadfield"
-date: "09/05/2018"
 title: "Servers!"
+date: "2018-05-09"
 ---
 
 Serving things is different in different contexts, hopefully this will clear things up!

@@ -1,7 +1,6 @@
 ---
-author: "james hadfield"
-date: "09/03/2018"
-title: "Format of JSON files exported by Augur and consumed by Auspice"
+title: "Format of JSON files exported by augur and consumed by auspice"
+date: "2018-03-09"
 ---
 
 The data displayed in auspice is derived from JSON files produced by augur.
@@ -11,6 +10,7 @@ This page details their format.
 > Please note - the format of these JSONs are in flux
 
 ### Metadata JSON
+
   * `updated {str}` Displayed in the footer.
   * `author_info {obj}`
     * `key -> {title -> str, n -> int}` Displayed when clicking on strains in the tree and also for the authors filter in the footer.
@@ -43,6 +43,7 @@ This page details their format.
     * `{NAME -> {start: INT, end: INT, strand: INT}}` where `NAME` is the gene name or "nuc".
 
 ### Tree JSON
+
 This has a nested format whereby the JSON describes the root node in the tree, with each child appearing as objects in the `children -> [...]` property of the node. This is the shape of each node object (including terminal nodes).
   * `tvalue {FLOAT}` _DEPRECATED_
   * `yvalue {FLOAT}` _Currently required, but will soon be calculated in auspice_
@@ -73,7 +74,8 @@ This has a nested format whereby the JSON describes the root node in the tree, w
   * `named_clades {ARRAY}` _DEPRECATED_
   * `strain` _DEPRECATED_ (this is set on the node itself, not in `node.attr`)
 
-### tip frequency JSON (Optional for nextstrain.org)
+### Tip frequency JSON (optional for nextstrain.org)
+
 ```
 {
   "pivots": [2015.25, 2015.333333, 2015.416667...],
@@ -92,7 +94,8 @@ This has a nested format whereby the JSON describes the root node in the tree, w
 * The frequencies array length must be the same as the pivot array length
 * The `weight` value is currently unused.
 
-### sequence JSON (No longer used by nextstrain.org)
+### Sequence JSON (no longer used by nextstrain.org)
+
 The input sequences are stored in a compressed JSON format as follows:
 ```
 {
@@ -114,7 +117,8 @@ The input sequences are stored in a compressed JSON format as follows:
 }
 ```
 
-### frequency JSON (No longer used by nextstrain.org)
+### Frequency JSON (no longer used by nextstrain.org)
+
 ```
 {
     pivots: [2013, 2013.25, 2013.5 ...],     //interpolation pivots for frequency trajectories
