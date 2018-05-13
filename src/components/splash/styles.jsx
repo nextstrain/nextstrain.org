@@ -46,6 +46,7 @@ export const H2 = styled.div`
 `;
 
 export const CenteredFocusParagraph = styled.p`
+  max-width: 640px; 
   margin-top: 0px;
   margin-right: auto;
   margin-bottom: 0px;

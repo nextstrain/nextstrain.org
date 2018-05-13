@@ -22,15 +22,11 @@ class Splash extends React.Component {
         <Styles.H1> Real-time tracking of virus evolution </Styles.H1>
         <SmallSpacer />
 
-        <div className="row">
-          <div className="col-md-2"/>
-          <div className="col-md-8">
-            <Styles.CenteredFocusParagraph>
-              Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response.
-            </Styles.CenteredFocusParagraph>
-          </div>
-          <div className="col-md-2"/>
-        </div>
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph>
+            Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response.
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter> 
 
         <BigSpacer/>
 
