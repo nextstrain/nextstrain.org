@@ -1,11 +1,12 @@
+/* eslint global-require:"off" */
 import React from "react";
 import {FlexCenter, Line} from "../layouts/generalComponents";
 
 export const Logos = () => (
   <div className="row">
+    <Line style={{marginBottom: 0}}/>
     <div className="col-md-1" />
-    <div className="col-md-10">
-      <Line />
+    <div className="col-md-5">
       <FlexCenter wrap="wrap" style={{marginTop: 20, justifyContent: "space-around"}}>
         <a key={1} href="http://www.fredhutch.org/" target="_blank" rel="noopener noreferrer">
           <img alt="logo" width="75" src={require("../../static/logos/fred-hutch-logo-small.png")} />
@@ -16,6 +17,10 @@ export const Logos = () => (
         <a key={3} href="https://www.nih.gov/" target="_blank" rel="noopener noreferrer">
           <img alt="logo" width="52" src={require("../../static/logos/nih-logo.jpg")} />
         </a>
+      </FlexCenter>
+    </div>
+    <div className="col-md-5">
+      <FlexCenter wrap="wrap" style={{marginTop: 20, justifyContent: "space-around"}}>
         <a key={4} href="https://erc.europa.eu/" target="_blank" rel="noopener noreferrer">
           <img alt="logo" width="60" src={require("../../static/logos/erc-logo.jpg")} />
         </a>
