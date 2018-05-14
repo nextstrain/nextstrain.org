@@ -57,6 +57,7 @@ class Sidebar extends React.Component {
         <ul>
           {this.generateItems(selectedSlugInfo)}
         </ul>
+        <div style={{paddingBottom: "30px"}}/>
       </SidebarContainer>
     );
   }
@@ -65,11 +66,11 @@ class Sidebar extends React.Component {
 const SectionTitle = styled.h3``;
 
 const SelectedPostTitle = styled.h6`
-  border-left: 3px solid black;
+  border-left: 3px solid ${(props) => props.theme.brandColor};
   font-weight: 500 !important;
   padding-left: 5px;
   font-size: 1.6rem;
-  color: black;
+  color: ${(props) => props.theme.brandColor} !important;
   &:hover {
     border-bottom: 0px;
   }
@@ -77,7 +78,8 @@ const SelectedPostTitle = styled.h6`
 const UnselectedPostTitle = styled.h6``;
 
 const SidebarContainer = styled.div`
-  padding: ${(props) => props.theme.sitePadding};
+  padding-left: 25px;
+  padding-top: 5px;
   height: 100%;
   & > ul, .chapterItems {
     list-style: none;
@@ -95,8 +97,8 @@ const SidebarContainer = styled.div`
     color: red;
   }
   .tocHeading {
-     font-weight: 200;
-     color: ${(props) => props.theme.blue};
+     font-weight: 500;
+     color: ${(props) => props.theme.darkGrey};
      margin-bottom: 10px;
   }
 `;
@@ -108,6 +110,12 @@ const ItemContainer = styled.div`
     line-height: 1.5;
   }
 
+  :hover {
+    h6, p {
+        color: ${(props) => props.theme.brandColor};
+    }
+  }
+
   li {
     margin: 0;
   }
@@ -115,6 +123,7 @@ const ItemContainer = styled.div`
     li {
       span {
         border-bottom: 1px solid black;
+        color: ${(props) => props.theme.brandColor};
       }
     }
   }

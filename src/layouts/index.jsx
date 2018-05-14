@@ -1,14 +1,14 @@
 import React from "react";
 import Helmet from "react-helmet";
-import styled, {ThemeProvider} from "styled-components"
+import styled, {ThemeProvider} from "styled-components";
 import config from "../../data/SiteConfig";
-import {theme} from '../layouts/theme'
+import {theme} from '../layouts/theme';
 
 // Import global styles
 import './prism.css';
 import "./browserCompatability.css";
-import "./bootstrap.css"
-import "./globals.css"
+import "./bootstrap.css";
+import "./globals.css";
 
 export default class MainLayout extends React.Component {
   render() {
@@ -34,7 +34,7 @@ const GlobalStyles = styled.div`\
   a {
     text-decoration: none;
     background-color: transparent;
-    color: ${props => props.theme.blue};
+    color: ${(props) => props.theme.blue};
     font-weight: 500;
   }
   a:active,
@@ -70,4 +70,4 @@ const GlobalStyles = styled.div`\
       padding: 5px;
   }
 
-`
+`;
