@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Link from 'gatsby-link';
 import React from "react";
 
 export const Container = styled.div`
@@ -46,7 +45,7 @@ export const H2 = styled.div`
 `;
 
 export const CenteredFocusParagraph = styled.p`
-  max-width: 640px; 
+  max-width: 640px;
   margin-top: 0px;
   margin-right: auto;
   margin-bottom: 0px;

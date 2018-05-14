@@ -1,51 +1,26 @@
 import React from "react";
+import styled from "styled-components";
 
-const browserDimensions = 1000; /* TODO */
 const titleColors = ["#4377CD", "#5097BA", "#63AC9A", "#7CB879", "#9ABE5C", "#B9BC4A", "#D4B13F", "#E49938", "#E67030", "#DE3C26"];
-const titleFont = "Lato, Helvetica Neue, Helvetica, sans-serif";
-const medGrey = "#888";
 
-class Title extends React.Component {
-  getStyles() {
-    let fontSize = 106;
-    if (browserDimensions.width < 500) {
-      fontSize = 84;
-    }
-    if (browserDimensions.width < 450) {
-      fontSize = 78;
-    }
-    if (browserDimensions.width < 400) {
-      fontSize = 72;
-    }
-    if (browserDimensions.width < 350) {
-      fontSize = 66;
-    }
-    return {
-      title: {
-        fontFamily: titleFont,
-        fontSize: fontSize,
-        marginTop: 0,
-        marginBottom: 0,
-        fontWeight: 300,
-        color: medGrey,
-        letterSpacing: "-1px"
-      }
-    };
+const Title = () => (
+  <TitleContainer>
+    {"Nextstrain".split("").map((letter, i) => (<LetterSpan key={i} pos={i}>{letter}</LetterSpan>))}
+  </TitleContainer>
+);
+
+const TitleContainer = styled.div`
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  font-size: 106px;
+  @media (max-width: 800px) {
+    font-size: 82px;
   }
-  createTitle(styles) {
-    const title = "Nextstrain";
-    return title.split("").map((letter, i) =>
-      <span key={i} style={{ ...styles.title, ...{color: titleColors[i]} }}>{letter}</span>
-    );
-  }
-  render() {
-    const styles = this.getStyles();
-    return (
-      <span style={{ ...styles.title, ...this.props.style }}>
-        {this.createTitle(styles)}
-      </span>
-    );
-  }
-}
+`;
+const LetterSpan = styled.span`
+  color: ${(props) => titleColors[props.pos]};
+`;
 
 export default Title;
