@@ -10,7 +10,7 @@ const parseSlug = require("../util/parseSlug");
 
 export default class GenericTemplate extends React.Component {
   constructor(props) {
-    console.log("genericTemplate CONSTRUCTOR")
+    // console.log("genericTemplate CONSTRUCTOR")
     super(props);
     /* window listener to see when width changes cross threshold to toggle sidebar */
     const mql = window.matchMedia(`(min-width: 780px)`);
@@ -54,7 +54,6 @@ export default class GenericTemplate extends React.Component {
     );
   }
   render() {
-    console.log(`sidebarOpen ${this.state.sidebarOpen} mobileDisplay ${this.state.mobileDisplay}`)
     // console.log("genericTemplate props:", this.props)
     const { slug } = this.props.pathContext; /* defined by createPages */
     const postNode = this.props.data.postBySlug;
