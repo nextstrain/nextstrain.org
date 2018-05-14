@@ -30,18 +30,26 @@ export default class GenericTemplate extends React.Component {
       sidebarOpen: !this.state.sidebarOpen
     });
   }
+  //
   renderMobileTogglesAndShading() {
+    const iconSliders = (
+      <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+        <path d="M496 384H160v-16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v16H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h80v16c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-16h336c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm0-160h-80v-16c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v16H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h336v16c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-16h80c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm0-160H288V48c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v16H16C7.2 64 0 71.2 0 80v32c0 8.8 7.2 16 16 16h208v16c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-16h208c8.8 0 16-7.2 16-16V80c0-8.8-7.2-16-16-16z" fill="#FFFFFF"/>
+      </svg>
+    );
+    const iconX = (
+      <svg viewBox="100 90 312 312" xmlns="http://www.w3.org/2000/svg">
+        <path d="M356.5 194.6L295.1 256l61.4 61.4c4.6 4.6 4.6 12.1 0 16.8l-22.3 22.3c-4.6 4.6-12.1 4.6-16.8 0L256 295.1l-61.4 61.4c-4.6 4.6-12.1 4.6-16.8 0l-22.3-22.3c-4.6-4.6-4.6-12.1 0-16.8l61.4-61.4-61.4-61.4c-4.6-4.6-4.6-12.1 0-16.8l22.3-22.3c4.6-4.6 12.1-4.6 16.8 0l61.4 61.4 61.4-61.4c4.6-4.6 12.1-4.6 16.8 0l22.3 22.3c4.7 4.6 4.7 12.1 0 16.8z" fill="#FFFFFF"/>
+      </svg>
+    );
     return (
       <div>
         <MobileToggleIconContainer onClick={this.toggleSidebar}>
-          <MobileToggleIcon>
-            <i className={this.state.sidebarOpen ? "fa fa-close" : "fa fa-sliders"} aria-hidden="true"/>
+          <MobileToggleIcon sidebarOpen={this.state.sidebarOpen}>
+            {this.state.sidebarOpen ? iconX : iconSliders}
           </MobileToggleIcon>
         </MobileToggleIconContainer>
-        <GreyOverlay
-          sidebarOpen={this.state.sidebarOpen}
-          onClick={this.toggleSidebar}
-        />
+        <GreyOverlay sidebarOpen={this.state.sidebarOpen} onClick={this.toggleSidebar}/>
       </div>
     );
   }
@@ -139,15 +147,18 @@ const PostDate = styled.span`
 `;
 const GreyOverlay = styled.div`
   position: absolute;
+  visibility: ${(props) => props.sidebarOpen ? "visible" : "hidden"};
+  opacity: ${(props) => props.sidebarOpen ? "1" : "0"};
   top: 0;
   left: ${(props) => props.sidebarOpen ? props.theme.sidebarWidth : 0};
   width: 100%;
   height: 100%;
-  transition: ${(props) => props.sidebarOpen ? 'visibility 0s ease-out, left 0.3s ease-out, opacity 0.3s ease-out' : 'left 0.3s ease-out, opacity 0.3s ease-out, visibility 0s ease-out 0.3s'};
   background-color: rgba(0,0,0,0.5);
   z-index: 8000;
   cursor: pointer;
+  transition: ${(props) => props.sidebarOpen ? 'visibility 0s ease-out, left 0.3s ease-out, opacity 0.3s ease-out' : 'left 0.3s ease-out, opacity 0.3s ease-out, visibility 0s ease-out 0.3s'};
 `;
+
 const MobileToggleIconContainer = styled.div`
   width: 60px;
   height: 60px;
@@ -160,22 +171,16 @@ const MobileToggleIconContainer = styled.div`
   box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   padding: 0;
-  borderRadius: 45px;
+  border-radius: 45px;
 `;
 const MobileToggleIcon = styled.div`
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: ${(props) => props.sidebarOpen ? "30px" : "25px"};
+  height: ${(props) => props.sidebarOpen ? "30px" : "25px"};
   top: 50%;
   left: 50%;
-  line-height: 30px;
-  text-align: center;
   transform: translate(-50%,-50%);
-  margin-left: auto;
-  margin-right: auto;
-  vertical-align: middle;
-  color: #FFFFFF;
-  font-size: 26px;
+  cursor: pointer;
 `;
 
 /* eslint no-undef: "off" */
