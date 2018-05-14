@@ -1,14 +1,11 @@
 ---
-author: "James Hadfield"
-date: "02/05/2018"
-title: "Overview of bioinformatic methods"
+title: "Methods overview"
+date: "2018-05-02"
 ---
 
 ## Nextstrain Components
-* Data cleaning ([sacra](https://github.com/nextstrain/sacra))
-* Database management scripts ([flora](https://github.com/nextstrain/flora))
-* Bioinformatic processing pipeline ([augur](https://github.com/nextstrain/augur)) that aligns sequences, constructs phylogenies, infers a temporal scale and reconstructs geographic transmission history. The resulting "derived" data is uploaded to servers for visualization.
-* The nextstrain.org website - consisting of the documentation ([this repo](https://github.com/nextstrain/nextstrain.org)) and the interactive visualization app [auspice](https://github.com/nextstrain/auspice).
+
+The Nextstrain architecture consists of three components. We maintain a database (fauna) with associated ingest scripts to scrape publicly available sequences and clean up metadata. Cleaned sequences are passed from the database to our bioinformatic processing pipeline (augur) that aligns sequences, constructs phylogenies, infers a temporal scale and reconstructs geographic transmission history. The informatic scripts are handled offline and are rerun as new data appears in public databases. The resulting processed data is uploaded as a package that is queried by our client-side visualization (auspice). The use of these components is described in [docs](/docs).
 
 
 ## Data Collection
