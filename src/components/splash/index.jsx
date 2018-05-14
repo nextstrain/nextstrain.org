@@ -119,11 +119,30 @@ class Splash extends React.Component {
             </Styles.WideParagraph>
           </div>
         </div>
-
         <div className="row">
           <div className="col-md-12">
             <Styles.FooterParagraph>
-              Splash page images stylised in Lunapic. Zika drawing by David Goodwill, Dengue EM by Zhang et al, Ebola EM by Frederick Murphy / CDC, Influenza images by Cynthia Goldsmith / Thomas Rowe / CDC.
+              {`Splash page images stylised in `}
+              <a href="http://www.lunapic.com/">Lunapic</a>
+              {`. `}
+              <a href="https://en.wikipedia.org/wiki/Zika_virus#/media/File:197-Zika_Virus-ZikaVirus.tif">Zika drawing</a>
+              {` by David Goodwill, `}
+              <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC156766/figure/cdg270f4/">Dengue EM</a>
+              {` by Zhang `}<i>et al., </i>
+              <a href="https://commons.wikimedia.org/wiki/Ebola#/media/File:Ebola_virus_em.png">Ebola EM</a>
+              {` by Frederick Murphy / CDC, `}
+              <a href="https://commons.wikimedia.org/wiki/File:Influenza_virus_particle_color.jpg">Seasonal Influenza</a>
+              {`, `}
+              <a href="https://commons.wikimedia.org/wiki/File:Lassa_virus.JPG">Lassa</a>
+              {` and `}
+              <a href="https://phil.cdc.gov/Details.aspx?pid=10701">West Nile Virus</a>
+              {` images by Cynthia Goldsmith / CDC, `}
+              <a href="https://phil.cdc.gov/details.aspx?pid=15670">Avian Influenza (A/H7N9)</a>
+              {` by Cynthia Goldsmith and Thomas Rowe / CDC, `}
+              <a href="https://phil.cdc.gov/Details.aspx?pid=1874">Mumps</a>
+              {` by the CDC, `}
+              <a href="http://www.tau.ac.il/lifesci/departments/biotech/members/rozenblatt/fig3.html">Measles</a>
+              {` by Shmuel Rozenblatt.`}
             </Styles.FooterParagraph>
           </div>
         </div>

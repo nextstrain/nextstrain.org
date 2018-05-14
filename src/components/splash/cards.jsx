@@ -43,7 +43,7 @@ const cards = [
     title: "Avian Influenza"
   },
   {
-    img: "measles.png",
+    img: "measles.jpg",
     url: "/measles",
     title: "Measles"
   }
