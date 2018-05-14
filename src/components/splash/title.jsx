@@ -15,7 +15,7 @@ const TitleContainer = styled.div`
   font-weight: 300;
   letter-spacing: -1px;
   font-size: 106px;
-  @media (max-width: 800px) {
+  @media (max-width: 780px) {
     font-size: 82px;
   }
 `;
