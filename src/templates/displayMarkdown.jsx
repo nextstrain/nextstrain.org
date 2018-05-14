@@ -9,7 +9,44 @@ import { CenteredContainer, MarkdownContent } from "../layouts/generalComponents
 const parseSlug = require("../util/parseSlug");
 
 export default class GenericTemplate extends React.Component {
+  constructor(props) {
+    console.log("genericTemplate CONSTRUCTOR")
+    super(props);
+    /* window listener to see when width changes cross threshold to toggle sidebar */
+    const mql = window.matchMedia(`(min-width: 780px)`);
+    mql.addListener(() => this.setState({
+      sidebarOpen: this.state.mql.matches,
+      mobileDisplay: !this.state.mql.matches
+    }));
+    this.state = {
+      mql,
+      sidebarOpen: mql.matches,
+      mobileDisplay: !mql.matches
+    };
+    this.toggleSidebar = this.toggleSidebar.bind(this);
+  }
+  toggleSidebar() {
+    this.setState({
+      sidebarOpen: !this.state.sidebarOpen
+    });
+  }
+  renderMobileTogglesAndShading() {
+    return (
+      <div>
+        <MobileToggleIconContainer onClick={this.toggleSidebar}>
+          <MobileToggleIcon>
+            <i className={this.state.sidebarOpen ? "fa fa-close" : "fa fa-sliders"} aria-hidden="true"/>
+          </MobileToggleIcon>
+        </MobileToggleIconContainer>
+        <GreyOverlay
+          sidebarOpen={this.state.sidebarOpen}
+          onClick={this.toggleSidebar}
+        />
+      </div>
+    );
+  }
   render() {
+    console.log(`sidebarOpen ${this.state.sidebarOpen} mobileDisplay ${this.state.mobileDisplay}`)
     // console.log("genericTemplate props:", this.props)
     const { slug } = this.props.pathContext; /* defined by createPages */
     const postNode = this.props.data.postBySlug;
@@ -22,7 +59,7 @@ export default class GenericTemplate extends React.Component {
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
         <SidebarBodyFlexContainer className="container">
-          <SidebarContainer>
+          <SidebarContainer sidebarOpen={this.state.sidebarOpen}>
             <NavBar minified location={this.props.location} />
             <Sidebar
               selectedSlug={slug}
@@ -47,6 +84,7 @@ export default class GenericTemplate extends React.Component {
               </MarkdownContent>
             </CenteredContainer>
           </ContentContainer>
+          {this.state.mobileDisplay ? this.renderMobileTogglesAndShading() : null}
         </SidebarBodyFlexContainer>
       </div>
     );
@@ -60,17 +98,19 @@ const SidebarBodyFlexContainer = styled.div`
   flex-direction: row;
   width: 100% !important;
 `;
-
 const SidebarContainer = styled.div`
   flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
   overflow-y: scroll;  /*adds scroll to this container*/
-  width: 260px;
-  min-width: 266px;
-  max-width: 266px;
+  left: 0px;
+  min-width: ${(props) => props.sidebarOpen ? props.theme.sidebarWidth : "0px"};
+  max-width: ${(props) => props.sidebarOpen ? props.theme.sidebarWidth : "0px"};
   background-color: #F2F2F2;
   box-shadow: -3px 0px 3px -3px rgba(0, 0, 0, 0.2) inset;
+  transition: width 0.3s ease-in-out;
 `;
-
+/* this doesn't work - probably due to flex? TODO
+left: ${(props) => props.sidebarOpen ? 0 : -1 * parseInt(props.theme.sidebarWidth, 10) + "px"};
+*/
 const ContentContainer = styled.div`
   padding-top: 15px;
   padding-bottom: 25px;
@@ -97,7 +137,46 @@ const PostAuthor = styled.span`
 const PostDate = styled.span`
   float: right;
 `;
-
+const GreyOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: ${(props) => props.sidebarOpen ? props.theme.sidebarWidth : 0};
+  width: 100%;
+  height: 100%;
+  transition: ${(props) => props.sidebarOpen ? 'visibility 0s ease-out, left 0.3s ease-out, opacity 0.3s ease-out' : 'left 0.3s ease-out, opacity 0.3s ease-out, visibility 0s ease-out 0.3s'};
+  background-color: rgba(0,0,0,0.5);
+  z-index: 8000;
+  cursor: pointer;
+`;
+const MobileToggleIconContainer = styled.div`
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 15px;
+  left: auto;
+  right: 20px;
+  z-index: 9000;
+  background-color: ${(props) => props.theme.goColor};
+  box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  padding: 0;
+  borderRadius: 45px;
+`;
+const MobileToggleIcon = styled.div`
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 50%;
+  left: 50%;
+  line-height: 30px;
+  text-align: center;
+  transform: translate(-50%,-50%);
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: middle;
+  color: #FFFFFF;
+  font-size: 26px;
+`;
 
 /* eslint no-undef: "off" */
 export const pageQuery = graphql`

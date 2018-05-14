@@ -14,13 +14,16 @@ export const theme = {
   brandColor: "#5097BA",
   sidebarColor: "#F2F2F2",
   errorRed: "rgb(222, 60, 38)",
+  goColor: "#89B77F", // green
 
   /* FONTS / LINE HEIGHTS ETC */
   niceLineHeight: 1.42857143,
   tightLineHeight: 1.2,
   generalFont: "Lato, Helvetica Neue, Helvetica, sans-serif",
   niceFontSize: "16px",
-  smallFontSize: "12px"
+  smallFontSize: "12px",
+
+  sidebarWidth: "260px"
 
 };
 
