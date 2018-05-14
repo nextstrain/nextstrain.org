@@ -21,13 +21,13 @@
 
 
 p > code, li > code {
-  background: rgba(255,229,100,0.2);
+  background: #E9F2F6;
   font-weight: 100;
   font-size: 0.9em;
 }
 
 pre, code {
-  font-family: 'source-code-pro', 'Menlo', monospace;
+  font-family: 'Fira Mono', 'Menlo', monospace;
 }
 
 blockquote {
@@ -44,14 +44,15 @@ blockquote {
 
 /* this class is the code blocks */
 .gatsby-highlight {
-  background: #282c34;
-  color: #ffffff;
-  border-radius: 10px;
+  background: #F6F6F6;
+  color: #000;
+  border-radius: 6px;
   padding: 15px;
   margin: 10px;
   overflow: auto;
   tab-size: 1.5em;
   font-size: 0.9em;
+  border: 1px solid #E2E2E2;
 }
 
 .gatsby-highlight code[class*="gatsby-code-"],

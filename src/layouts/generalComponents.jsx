@@ -49,16 +49,14 @@ export const TeamMember = ({name, image, link}) => (
   </span>
 );
 
-export const CenteredContent = (props) => (
-  <GeneralNiceText>
-    <div className="row">
-      <div className="col-md-2" />
-      <div className="col-md-8">
-        {props.children}
-      </div>
-      <div className="col-md-2" />
+export const CenteredContainer = (props) => (
+  <div className="row">
+    <div className="col-md-2" />
+    <div className="col-md-8">
+      {props.children}
     </div>
-  </GeneralNiceText>
+    <div className="col-md-2" />
+  </div>
 );
 
 export const RightHandAside = ({title, asideContent, children}) => (
@@ -87,7 +85,7 @@ export const GeneralNiceText = styled.div`
   overflow: scroll;
   justify-self: center;
   width: 100%;
-  padding: ${props => props.theme.sitePadding};
+  padding: 0px;
   text-align: justify;
   font-size: 16px;
   margin-top: 5px;
@@ -99,7 +97,41 @@ export const GeneralNiceText = styled.div`
   & > h1 {
     color: ${props => props.theme.accentDark};
   }
-`
+`;
+
+export const MarkdownContent = styled.div`
+  overflow: scroll;
+  justify-self: center;
+  width: 100%;
+  text-align: justify;
+  font-size: 16px;
+  font-weight: 300;
+  margin-top: 15px;
+  color: ${props => props.theme.darkGrey};
+  line-height: ${props => props.theme.niceLineHeight};
+
+  & > h1 {
+    color: ${props => props.theme.accentDark};
+  }
+  li > ul {
+    padding-left: 30px;
+  }
+  li {
+    margin-left: 30px;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 20px;
+  }
+  p {
+    margin-top: 15px;
+  }
+  hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #ccc;
+  }
+`;
 
 const Aside = styled.div`
   font-size: 13px;

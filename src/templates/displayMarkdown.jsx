@@ -4,7 +4,7 @@ import styled from "styled-components";
 import SEO from "../components/SEO/SEO";
 import NavBar from '../components/nav-bar';
 import Sidebar from "../components/Sidebar";
-import {CenteredContent} from "../layouts/generalComponents";
+import { CenteredContainer, MarkdownContent } from "../layouts/generalComponents";
 
 const parseSlug = require("../util/parseSlug");
 
@@ -30,20 +30,22 @@ export default class GenericTemplate extends React.Component {
             />
           </SidebarContainer>
           <ContentContainer>
-            <CenteredContent>
-              <PostTitle>{post.title}</PostTitle>
-              <PostAuthorSurrounds>
-                {showAuthor ? (
-                  <div>
-                    <PostAuthor>{post.author}</PostAuthor>
-                    <PostDate>{post.date}</PostDate>
-                  </div>
-                ) : (
-                  <PostDate>last modified {post.date}</PostDate>
-                )}
-              </PostAuthorSurrounds>
-              <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
-            </CenteredContent>
+            <CenteredContainer>
+              <MarkdownContent>
+                <PostAuthorSurrounds>
+                  {showAuthor ? (
+                    <div>
+                      <PostAuthor>{post.author}</PostAuthor>
+                      <PostDate>{post.date}</PostDate>
+                    </div>
+                  ) : (
+                    <PostDate>Last modified {post.date}</PostDate>
+                  )}
+                </PostAuthorSurrounds>
+                <PostTitle>{post.title}</PostTitle>
+                <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
+              </MarkdownContent>
+            </CenteredContainer>
           </ContentContainer>
         </SidebarBodyFlexContainer>
       </div>
@@ -70,25 +72,18 @@ const SidebarContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  padding-top: 15px;
+  padding-bottom: 25px;
+  padding-left: 25px;
+  padding-right: 25px;
   flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
   overflow-y: scroll;  /*adds scroll to this container*/
 `;
 
-const MarkdownContent = styled.div`
-
-  li > ul {
-    padding-left: 30px;
-  }
-  li {
-    margin-left: 30px;
-  }
-`;
-
 const PostTitle = styled.h1`
-  background-color: black;
-  color: white;
-  padding: 5px;
-  font-weight: 500;
+  color: ${(props) => props.theme.darkGrey};
+  font-weight: 500 !important;
+  font-size: 38px !important;
 `;
 const PostAuthorSurrounds = styled.div`
   min-height: 2rem;

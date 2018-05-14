@@ -23,10 +23,9 @@ module.exports = {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
         fonts: [
-          `lato text: 100,200,300,400,500,700`,
-          `source-code-pro: 100,300`,
-          `space mono: 400,700`,
-        ],
+          `lato: 100,200,300,400,500,600,700`,
+          `fira mono: 400`
+        ]
       }
     },
     {

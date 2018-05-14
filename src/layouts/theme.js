@@ -20,10 +20,8 @@ export const theme = {
   tightLineHeight: 1.2,
   generalFont: "Lato, Helvetica Neue, Helvetica, sans-serif",
   niceFontSize: "16px",
-  smallFontSize: "12px",
+  smallFontSize: "12px"
 
-  /* PADDING ETC */
-  sitePadding: "25px"
 };
 
 /* FROM AUSPICE */
