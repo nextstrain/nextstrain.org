@@ -2,6 +2,7 @@
 const path = require("path");
 const express = require("express");
 const expressStaticGzip = require("express-static-gzip");
+const favicon = require('serve-favicon');
 const queryString = require("query-string");
 /* auspice imports */
 const charon = require("./auspice/src/server/charon");
@@ -11,7 +12,7 @@ const globals = require("./auspice/src/server/globals");
 // NOTE: order of app.get is first come first serve (https://stackoverflow.com/questions/32603818/order-of-router-precedence-in-express-js)
 const app = express();
 app.set('port', process.env.PORT || 5000);
-app.use(express.favicon(path.join(__dirname, "auspice", "favicon.png")));
+app.use(favicon(path.join(__dirname, "favicon.png")));
 // redirect www.nextstrain.org to nextstrain.org
 app.use(require('express-naked-redirect')({reverse: true}));
 
