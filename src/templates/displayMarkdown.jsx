@@ -10,20 +10,23 @@ const parseSlug = require("../util/parseSlug");
 
 export default class GenericTemplate extends React.Component {
   constructor(props) {
-    // console.log("genericTemplate CONSTRUCTOR")
     super(props);
+    this.toggleSidebar = this.toggleSidebar.bind(this);
+    this.state = {mql: undefined, sidebarOpen: undefined, mobileDisplay: undefined};
+  }
+  componentDidMount() {
     /* window listener to see when width changes cross threshold to toggle sidebar */
+    /* can't be in the constructor -- https://github.com/gatsbyjs/gatsby/issues/309 */
     const mql = window.matchMedia(`(min-width: 780px)`);
     mql.addListener(() => this.setState({
       sidebarOpen: this.state.mql.matches,
       mobileDisplay: !this.state.mql.matches
     }));
-    this.state = {
+    this.setState({
       mql,
       sidebarOpen: mql.matches,
       mobileDisplay: !mql.matches
-    };
-    this.toggleSidebar = this.toggleSidebar.bind(this);
+    });
   }
   toggleSidebar() {
     this.setState({
