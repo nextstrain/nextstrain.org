@@ -19,6 +19,7 @@
     "build": "webpack --config webpack.config.js",
     "server": "node server.transpiled.js",
     "start": "npm run server",
+    "redeploy-site": "./redeploy-site.sh",
     "heroku-postbuild": "npm run fetch-bundles && npm run build"
   },
   "dependencies": {

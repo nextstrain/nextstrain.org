@@ -7,6 +7,8 @@ install:
 script:
   - npm run fetch-bundles
   - npm run build
+after_success:
+- test $TRAVIS_BRANCH = "master" && npm run redeploy-site
 notifications:
   email:
     on_success: never
