@@ -15,8 +15,7 @@ The first few lines of the markdown contain the "frontmatter" - here it is for t
 
 ```yaml
 ---
-author: "James Hadfield"
-date: "30/04/2018"
+date: "2018-04-30"
 title: "How to write markdown content for nextstrain.org"
 ---
 ```
@@ -31,5 +30,12 @@ The rest of the file is standard markdown.
   * Quotes (lines starting with >) have a yellow background.
 
 #### Images
+The easiest way is to include the image file in a `./figures` directory where the markdown file is located.
+Images can then be included via markdown such as
+```md
+![caption](figures/image_path.png)
+```
+
 
 #### Embedded content (tweets, videos)
+_to do_
