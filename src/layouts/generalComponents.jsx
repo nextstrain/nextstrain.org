@@ -86,7 +86,6 @@ export const GeneralNiceText = styled.div`
   justify-self: center;
   width: 100%;
   padding: 0px;
-  text-align: justify;
   font-size: 16px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -103,7 +102,6 @@ export const MarkdownContent = styled.div`
   overflow: scroll;
   justify-self: center;
   width: 100%;
-  text-align: justify;
   font-size: 16px;
   font-weight: 300;
   margin-top: 15px;
