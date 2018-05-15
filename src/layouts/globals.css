@@ -3,6 +3,7 @@
 
 html {
     font-size: 62.5%;
+    -webkit-overflow-scrolling: touch;
 }
 * {
     box-sizing: border-box;
