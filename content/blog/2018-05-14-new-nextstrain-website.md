@@ -1,6 +1,6 @@
 ---
 author: "James Hadfield"
-date: "2018-05-15"
+date: "2018-05-14"
 title: "New nextstrain.org website"
 ---
 
