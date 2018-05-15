@@ -3,7 +3,7 @@ title: "Install instructions"
 date: "2018-05-12"
 ---
 
-To run local builds of Nextstrain, you will need two main software components. These are the [augur bioinformatic pipeline](/docs/bioinformatics-pipeline/introduction) and the [auspice visualization app](/docs/auspice/servers).
+To run local builds of Nextstrain, you will need two main software components. These are the [augur bioinformatic pipeline](/docs/bioinformatics-pipeline/introduction) and the [auspice visualization app](/docs/auspice/introduction).
 
 Throughout the docs, we assume that Nextstrain components are sister directories. We would recommend placing them as children of a `nextstrain/` parent directory.
 
@@ -22,7 +22,7 @@ cd augur
 git submodule update --init
 ```
 
-Augur is written in Python 2.7 and requires Python 2.7 to run. Your version of Python can be confirmed by running `python --version`.
+Augur requires Python 2.7 to run. Your version of Python can be confirmed by running `python --version`.
 
 Augur has a number of python dependencies that are listed in `requirements.txt` and are best installed via a package manager like conda or pip.
 

@@ -104,7 +104,7 @@ export const MarkdownContent = styled.div`
   width: 100%;
   font-size: 16px;
   font-weight: 300;
-  margin-top: 15px;
+  margin-top: 0px;
   color: ${props => props.theme.darkGrey};
   line-height: ${props => props.theme.niceLineHeight};
 
@@ -121,6 +121,9 @@ export const MarkdownContent = styled.div`
     margin-top: 20px;
   }
   p {
+    margin-top: 15px;
+  }
+  blockquote {
     margin-top: 15px;
   }
   hr {
