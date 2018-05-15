@@ -1,5 +1,6 @@
 /* eslint no-console: off */
 const path = require("path");
+const sslRedirect = require('heroku-ssl-redirect');
 const express = require("express");
 const expressStaticGzip = require("express-static-gzip");
 const favicon = require('serve-favicon');
@@ -13,9 +14,12 @@ const globals = require("./auspice/src/server/globals");
 const app = express();
 app.set('port', process.env.PORT || 5000);
 app.use(favicon(path.join(__dirname, "favicon.png")));
+
+// redirect HTTP to HTTPS
+app.use(sslRedirect());
+
 // redirect www.nextstrain.org to nextstrain.org
 app.use(require('express-naked-redirect')({reverse: true}));
-
 
 /* GATSBY HANDLING (STATIC) */
 app.use(express.static(path.join(__dirname, "static", "public")))

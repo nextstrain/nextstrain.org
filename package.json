@@ -34,6 +34,7 @@
     "express": "^4.13.3",
     "express-naked-redirect": "^0.1.2",
     "express-static-gzip": "^0.2.2",
+    "heroku-ssl-redirect": "0.0.4",
     "query-string": "^6.1.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
