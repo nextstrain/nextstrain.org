@@ -1,6 +1,7 @@
 import React from "react";
 import Link from 'gatsby-link';
 import styled from 'styled-components';
+import { startsWith } from "lodash";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 
 const NavContainer = styled.div`
@@ -66,7 +67,7 @@ class NavBar extends React.Component {
 
   selectedClass(name) {
     if (!this.props.location || !this.props.location.pathname) return "";
-    return this.props.location.pathname.startsWith(`/${name}`);
+    return startsWith(this.props.location.pathname, `/${name}`); // can't run this.props.location.pathname.startsWith(`/${name}`) on IE
   }
 
   getLogo() {
