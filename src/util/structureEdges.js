@@ -34,7 +34,12 @@ const parseEdges = (edges, sectionWanted) => {
       order: parseInt(meta.postOrder, 10)
     };
     if (hasChapters) {
-      const chapterIdx = data.findIndex((el) => el.name === meta.chapter);
+      let chapterIdx = 0;
+      data.forEach((post, idx) => {
+        if (post.name === meta.chapter) {
+          chapterIdx = idx;
+        }
+      });
       data[chapterIdx].posts.push(nodeData);
     } else {
       data.push(nodeData);
