@@ -12,7 +12,7 @@ The nextstrain project is an attempt to make flexible informatic pipelines and v
 This repository contains the code and content behind the static parts of nextstrain.org (the interactive app codebase is [here](http://github.com/nextstrain/auspice)).
 
 
-Please see [https://nextstrain.org/docs/static-website/introduction](https://nextstrain.org/docs/static-website/introduction) for more detailed information on how this code is organised and how to add content in the form of markdown files.
+Please see [https://nextstrain.org/docs/static-content/introduction](https://nextstrain.org/docs/static-content/introduction) for more detailed information on how this code is organised and how to add content in the form of markdown files.
 
 
 ### Installing
