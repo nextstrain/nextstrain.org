@@ -65,6 +65,7 @@ export const MarkdownContent = styled.div`
   font-size: 16px;
   font-weight: 300;
   margin-top: 0px;
+  padding-bottom: 25px;
   color: ${props => props.theme.darkGrey};
   line-height: ${props => props.theme.niceLineHeight};
 
