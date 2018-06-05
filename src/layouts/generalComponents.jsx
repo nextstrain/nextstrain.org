@@ -60,7 +60,6 @@ export const CenteredContainer = (props) => (
 );
 
 export const MarkdownContent = styled.div`
-  overflow: scroll;
   justify-self: center;
   width: 100%;
   font-size: 16px;
