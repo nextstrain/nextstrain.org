@@ -78,20 +78,18 @@ export default class GenericTemplate extends React.Component {
           </SidebarContainer>
           <ContentContainer>
             <CenteredContainer>
-              <MarkdownContent>
-                <PostAuthorSurrounds>
-                  {showAuthor ? (
-                    <div>
-                      <PostAuthor>{post.author}</PostAuthor>
-                      <PostDate>{post.date}</PostDate>
-                    </div>
-                  ) : (
-                    <PostDate>Last modified {post.date}</PostDate>
-                  )}
-                </PostAuthorSurrounds>
-                <PostTitle>{post.title}</PostTitle>
-                <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
-              </MarkdownContent>
+              <PostAuthorSurrounds>
+                {showAuthor ? (
+                  <div>
+                    <PostAuthor>{post.author}</PostAuthor>
+                    <PostDate>{post.date}</PostDate>
+                  </div>
+                ) : (
+                  <PostDate>Last modified {post.date}</PostDate>
+                )}
+              </PostAuthorSurrounds>
+              <PostTitle>{post.title}</PostTitle>
+              <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </CenteredContainer>
           </ContentContainer>
           {this.state.mobileDisplay ? this.renderMobileTogglesAndShading() : null}

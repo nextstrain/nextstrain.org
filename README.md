@@ -27,7 +27,7 @@ Please see [https://nextstrain.org/docs/static-content/introduction](https://nex
 
 ### Adding content
 * add markdown files to the `/content` directory
-* [this page](https://nextstrain.org/docs/static-website/writing-content) explains the format required
+* [this page](https://nextstrain.org/docs/static-content/writing-content) explains the format required
 
 ### Deploying:
 * simply push to master. That's it! (Travis CI takes care of the rest)
