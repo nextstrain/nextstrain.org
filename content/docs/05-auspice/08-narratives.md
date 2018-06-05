@@ -18,7 +18,7 @@ The scope for narratives is large - they could encompass static reports, summari
 ### Technical details
 * Narrative markdown files are located in the static github repo in the `narratives` directory.
 * They are accessed via nextstrain.org/narratives/X where X is the filepath of the narratives markdown without the `.md` suffix.
-* See [this example markdown](https://github.com/nextstrain/static/blob/master/narratives/test.md) which can be accessed at [www.nextstrain.org/narratives/test](www.nextstrain.org/narratives/test)
+* See [this example markdown](https://github.com/nextstrain/static/blob/master/narratives/test.md) which can be accessed at [www.nextstrain.org/narratives/test](https://www.nextstrain.org/narratives/test)
 * There is a short YAML header and a code block defining the URL state the app should be in for the following paragraph.
 
 > Currently dataset changes & 2nd trees are not implemented, and the interface is slow
