@@ -59,45 +59,6 @@ export const CenteredContainer = (props) => (
   </div>
 );
 
-export const RightHandAside = ({title, asideContent, children}) => (
-  <GeneralNiceText className="container">
-    <div className="row">
-      <div className="col-md-1" />
-      <div className="col-md-7">
-        <h1>{title}</h1>
-      </div>
-    </div>
-    <div className="row">
-      <div className="col-md-1" />
-      <div className="col-md-6">
-        {children}
-      </div>
-      <div className="col-md-1" />
-      <Aside className="col-md-3 aside">
-        {asideContent}
-      </Aside>
-      <div className="col-md-1" />
-    </div>
-  </GeneralNiceText>
-);
-
-export const GeneralNiceText = styled.div`
-  overflow: scroll;
-  justify-self: center;
-  width: 100%;
-  padding: 0px;
-  font-size: 16px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  font-weight: 300;
-  color: ${props => props.theme.darkGrey};
-  line-height: ${props => props.theme.niceLineHeight};
-
-  & > h1 {
-    color: ${props => props.theme.accentDark};
-  }
-`;
-
 export const MarkdownContent = styled.div`
   overflow: scroll;
   justify-self: center;
