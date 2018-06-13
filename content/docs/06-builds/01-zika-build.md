@@ -38,6 +38,22 @@ Options for `<format> are`:
 * `sacra_rebuild`: used during initial transition from fauna to sacra
 * Any other header can be defined by editing the appropriate section of `make_config` in `configs/zika.py`
 
-## Prepare and process sequences via augur
+## Run the modular augur pipeline
 
-TBD
+_Make sure you have enabled the correct conda environment - namely, python3 with system installs of treetime and augur_
+* `cd augur/builds/zika`
+* `snakemake auspice/zika_tree.json`
+
+
+## Visualise locally via auspice
+
+* copy the JSONs in `augur/builds/zika/auspice` to `auspice/data`
+* in the auspice directory, run `npm run start:local`
+
+
+## Push to S3
+_You may need to disable the conda environment for this to work. Try running_ `source deactivate`
+* Navigate to `augur/`
+* Load environment variables by running `source environment_aws.sh`
+* Deploy to staging with `python scripts/s3.py push --bucket nextstrain-staging --glob "builds/zika/auspice/zika_*"`
+* Deploy live with `python scripts/s3.py push --bucket nextstrain-data --glob "builds/zika/auspice/zika_*"*`
