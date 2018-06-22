@@ -62,10 +62,16 @@ This assumes that `auspice/` and `augur/` are sister directories.
 
 ## Visualize
 
-Navigate to the auspice directory and start the app in local mode by running
+Navigate to the auspice directory and create a manifest file for Zika.
 
 ```
 cd ../../../auspice
+echo '{ "pathogen": { "zika": "" } }' > data/manifest_guest.json
+```
+
+Start the app in local mode by running
+
+```
 npm run start:local
 ```
 
