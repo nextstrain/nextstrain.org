@@ -9,41 +9,20 @@ Modular augur aims to break apart the relevant tasks into simple layers which ca
 
 
 ## Installing
-This assumes you have `conda` working and available.
 
-### Create the correct environment
-```bash
-conda_on
-conda create -n nextstrain python=3.6
-conda info --envs
-source activate nextstrain
-conda install numpy biopython scipy pandas
-conda install -c bioconda snakemake
-```
+Dependencies for modular augur are described in the file `setup.py` and can be installed with:
 
-### Install augur to the system python path
 ```bash
-# git clone git@github.com:nextstrain/augur.git
-cd augur
-git pull
-python setup.py install
-```
-
-### Install treetime to the system python path
-```bash
-# git clone git@github.com:neherlab/treetime.git
-cd treetime
-git fetch
-git checkout py3
-git pull
-python setup.py install
+pip3 install --process-dependency-links .
 ```
 
 ## Running builds
+
 This should be as simple as running the snakemake file in the relevant build directory, e.g. `snakemake auspice/zika_tree.json`.
 Don't forget to switch into the correct conda environment via `source activate nextstrain`.
 
 ## Developing
+
 The main problem with developing is that the snakefile (which runs each pathogen), sources augur (and treetime) from the system path.
 It is probably possible to change the snakemake file to access augur via the local `bin` directory, and to make `bin/augur` access the local augur module
 by adding `sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..")) ` (or similar) at the top of the script.
