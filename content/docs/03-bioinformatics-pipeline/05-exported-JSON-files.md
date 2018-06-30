@@ -1,6 +1,6 @@
 ---
 title: "Format of JSON files exported by augur and consumed by auspice"
-date: "2018-03-09"
+date: "2018-06-30"
 ---
 
 The data displayed in auspice is derived from JSON files produced by augur.
@@ -12,19 +12,19 @@ This page details their format.
 ### Metadata JSON
 
   * `updated {str}` Displayed in the footer.
-  * `author_info {obj}`
-    * `key -> {title -> str, n -> int}` Displayed when clicking on strains in the tree and also for the authors filter in the footer.
+  * `author_info {obj}` Author info clicking on strains in the tree and also for the authors filter in the footer. Keys are author abbreviations, ie `Gardy et al`. Keys map to a object with:
+    * `n -> int` Count of tips associated with this publication.
+    * `title -> str` Publication title.
+    * `journal -> str` Publication journal information.
+    * `paper_url -> str` URL for publication
   * `virus_count {int}` Total number of tips in the tree. Used in the Info panel & for CSV download.
   * `defaults {obj}` _optional_ Used to override the default view of the data. Possible keys/values are:
     * `geoResolution`
     * `colorBy`
     * `mapTriplicate {bool}`
-  * `title {str}` Displayed in the header
+  * `title {str}` Build title displayed in the header.
   * `vaccine_choices {obj}` _optional_
     * `<strain_name> -> YYYY-MM-DD` The date string is currently unused, but the strain names will show up as a black cross in the tree.
-  * `controls {obj}` _to do - are these used by the filters?!?! WHy is this effectively a dup of author_info_
-    * `geographic location {obj}` Keys are deme names. Value is the object `{count: INT, subcats: OBJ}`. There is also a key `name -> str`.
-    * `authors`
   * `color_options {obj}`  _to do_
     * `<name> -> menuItem: STR, type: STR, legendTitle: STR, key: STR, color_map: ARRAY`
     * The name is used...
@@ -32,13 +32,12 @@ This page details their format.
     * The `color_map` is an array of arrays, where each array has `[value, hex]`. It can only be used with discrete scales.
     * The `key`
     * The `menuItem`
-  * `seq_author_map` _DEPRECATED_
   * `filters {ARRAY}` a list of colorBy values to use as filters in the footer. Authors should not be specified, that's added automatically. _to do - clean up_
   * `commit {str}` _currently unused because it is always "unknown", but this will be used in the future_
   * `maintainer {array}` Used in the footer. An array of name to be displayed and URL (both strings).
   * `panels {array}`
-  * `geo {obj}` Keys are the values of the colorBy values that are used as map demes, and therefore appear in the geographic resolution dropdown _i'm guessing here - CHECK_. Each value is an object:
-    * `{key -> {latitude: FLOAT, longitude: FLOAT}}` keys being the colorBy values.
+  * `geo {obj}` Keys are the values that appear in "geographic resolution" dropdown. Each key maps to an object containing geo locations that is structured as:
+    * `{key -> {latitude: FLOAT, longitude: FLOAT}}` keys being the geo location values.
   * `annotations {obj}` Used to create the gene map in the entropy panel. Each object has shape:
     * `{NAME -> {start: INT, end: INT, strand: INT}}` where `NAME` is the gene name or "nuc".
 
