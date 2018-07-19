@@ -8,8 +8,10 @@ install:
 script:
   - npm run build
 after_success:
-  - test $TRAVIS_BRANCH = "master" && npm run gzip-and-upload
-  - test $TRAVIS_BRANCH = "master" && npm run redeploy-site
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
+      npm run gzip-and-upload;
+      npm run redeploy-site;
+    fi
 notifications:
   email:
     on_success: never
