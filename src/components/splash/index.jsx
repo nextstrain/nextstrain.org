@@ -89,7 +89,7 @@ class Splash extends React.Component {
             <BigSpacer/>
             <Styles.H2>Future Directions</Styles.H2>
             <Styles.FocusParagraph>
-              Nextstrain is under active development and we have big plans for its future, including visualization, bioinformatics analysis and an increasing number and variety of datasets. Please get in touch with <a href="https://twitter.com/hamesjadfield">@hamesjadfield</a>, <a href="https://twitter.com/richardneher">@richardneher</a> or <a href="https://twitter.com/trvrb">@trvrb</a> with any questions or comments.
+              Nextstrain is under active development and we have big plans for its future, including visualization, bioinformatics analysis and an increasing number and variety of datasets. If you have any questions or ideas, please give us a shout at hello<span style={{display: "none"}}>obfuscate</span>@nextstrain.org.
             </Styles.FocusParagraph>
           </div>
         </div>

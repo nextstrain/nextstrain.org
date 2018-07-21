@@ -15,7 +15,7 @@ We thought an open online system that implements robust bioinformatic pipelines 
 This website aims to provide a _real-time_ snapshot of evolving viral populations and to provide interactive data visualizations to virologists, epidemiologists, public health officials and citizen scientists.
 Through interactive data visualizations, we aim to allow exploration of continually up-to-date datasets, providing a novel surveillance tool to the scientific and public health communities.
 
-Nextstrain is under active development and we have big plans for its future, including visualization, bioinformatics analysis and an increasing number and variety of datasets. Please get in touch with [@hamesjadfield](https://twitter.com/hamesjadfield), [@richardneher](https://twitter.com/richardneher) or [@trvrb](https://twitter.com/trvrb) with any questions or comments.
+Nextstrain is under active development and we have big plans for its future, including visualization, bioinformatics analysis and an increasing number and variety of datasets. If you have any questions or ideas, please give us a shout at hello<span style="display:none">obfuscate</span>@nextstrain.org.
 
 ----------------------------------
 
