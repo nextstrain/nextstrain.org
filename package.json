@@ -30,6 +30,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "compression": "^1.7.3",
     "compression-webpack-plugin": "^1.0.0",
     "express": "^4.13.3",
     "express-naked-redirect": "^0.1.2",
