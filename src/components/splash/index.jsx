@@ -24,7 +24,7 @@ class Splash extends React.Component {
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
-            Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response.
+            Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at hello<span style={{display: "none"}}>obfuscate</span>@nextstrain.org.
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 
