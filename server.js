@@ -15,13 +15,16 @@ const globals = require("./auspice/src/server/globals");
 const app = express();
 app.set('port', process.env.PORT || 5000);
 app.use(favicon(path.join(__dirname, "favicon.png")));
+app.use('/favicon.png', express.static(path.join(__dirname, "favicon.png")));
+
 // redirect HTTP to HTTPS
 app.use(sslRedirect());
 // send files (e.g. res.json()) using compression (if possible)
 app.use(compression());
 // redirect www.nextstrain.org to nextstrain.org
 app.use(require('express-naked-redirect')({reverse: true}));
-
+// simple logging for debugging
+// app.use((req, res, next) => {console.log("LOG REQUEST  ", req.originalUrl); next();});
 
 /* GATSBY HANDLING (STATIC) */
 app.use(express.static(path.join(__dirname, "static", "public")))
