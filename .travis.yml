@@ -6,7 +6,6 @@ install:
   - npm install
 script:
   - npm run fetch-bundles
-  - npm run build
 after_success:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
       npm run redeploy-site
