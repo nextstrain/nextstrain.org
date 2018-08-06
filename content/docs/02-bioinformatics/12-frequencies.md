@@ -3,6 +3,6 @@ title: "Frequencies"
 date: "2018-07-13"
 ---
 
-This markdown file is a stub. This PR will not be complete until this page is filled out.
+> Apologies, this documentation is not yet complete.
 
 * This is an introduction to the model(s), not the interface to the module

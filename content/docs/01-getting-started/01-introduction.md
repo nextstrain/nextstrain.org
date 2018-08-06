@@ -3,7 +3,7 @@ title: "Introduction to Nextstrain"
 date: "2018-07-13"
 ---
 
-This markdown file is a stub. This PR will not be complete until this page is filled out.
+> Apologies, this documentation is not yet complete.
 
 * What is the aim of nextstrain?
 * Comprises Bioinformatics & visualisation packages

@@ -3,7 +3,7 @@ title: "Bioinformatics Modules"
 date: "2018-07-13"
 ---
 
-This markdown file is a stub. This PR will not be complete until this page is filled out.
+> Apologies, this documentation is not yet complete.
 
 * All modules on this page?
 * TOC at the top with links?
