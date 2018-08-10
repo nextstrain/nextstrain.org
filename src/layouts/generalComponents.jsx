@@ -41,8 +41,8 @@ export const Line = styled.div`
 export const TeamMember = ({name, image, link}) => (
   <span style={{whiteSpace: "nowrap"}}>
     <a href={link} style={{fontWeight: 300, color: "#333", marginLeft: "2px", marginRight: "2px"}}>
-      <img alt={name} width="30"
-        style={{marginLeft: "4px", marginRight: "3px", borderRadius: "50%", verticalAlign: "middle"}}
+      <img alt={name} width="32"
+        style={{marginLeft: "5px", marginRight: "4px", borderRadius: "50%", verticalAlign: "middle"}}
         src={require("../../static/team/"+image)}/>
       {name}
     </a>
