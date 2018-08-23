@@ -84,7 +84,8 @@ augur tree \
 
 The resulting tree is stored in [Newick format](http://evolution.genetics.washington.edu/phylip/newicktree.html).
 Branch lengths in this tree measure nucleotide divergence.
-To annotate position tips by their sample date and infer the most likely time of their ancestors, run [TreeTime](https://github.com/neherlab/treetime) with the `refine` command.
+Augur can also adjust branch lengths in this tree to position tips by their sample date and infer the most likely time of their ancestors, using [TreeTime](https://github.com/neherlab/treetime).
+Run the `refine` command to apply TreeTime to the original phylogenetic tree and produce a "time tree".
 
 ```bash
 augur refine \
@@ -105,7 +106,8 @@ Branch lengths in the resulting Newick tree measure adjusted nucleotide divergen
 All other data inferred by TreeTime is stored by strain or internal node name in the corresponding JSON file.
 
 TreeTime can also infer ancestral traits from an existing phylogenetic tree and metadata annotating each tip of the tree.
-Infer the region and country of all internal nodes from the time tree and original strain metadata.
+The following command infers the region and country of all internal nodes from the time tree and original strain metadata.
+As with the `refine` command, the resulting JSON output is indexed by strain or internal node name.
 
 ```bash
 augur traits \
@@ -116,7 +118,6 @@ augur traits \
   --confidence
 ```
 
-As with the `refine` command, the resulting JSON output is indexed by strain or internal node name.
 Next, infer the ancestral sequence of each internal node and identify any nucleotide mutations on the branches leading to any node in the tree.
 
 ```bash
@@ -183,6 +184,6 @@ As before, you can copy the resulting auspice JSON files into your auspice insta
 
 ## Next steps
 
-  * Fork the [Zika pathogen repository on GitHub](https://github.com/nextstrain/zika), modify the Snakefile to make your own pathogen build, and view the resulting site at `https://nextstrain.org/community/<orgName>/<repoName>` for your corresponding GitHub username/org name and repository name.
   * Learn more about [augur modules](/docs/bioinformatics/introduction)
   * Learn more about [auspice visualizations](/docs/visualisation/introduction)
+  * Fork the [Zika pathogen repository on GitHub](https://github.com/nextstrain/zika), modify the Snakefile to make your own pathogen build, and view the resulting site at `https://nextstrain.org/community/<orgName>/<repoName>` for your corresponding GitHub username/org name and repository name.
