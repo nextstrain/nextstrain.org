@@ -53,6 +53,7 @@
     "gatsby-remark-images": "^1.5.3",
     "gatsby-remark-prismjs": "^1.2.0",
     "gatsby-remark-responsive-iframe": "^1.4.2",
+    "gatsby-remark-smartypants": "^1.4.12",
     "gatsby-source-filesystem": "^1.4.2",
     "gatsby-transformer-remark": "^1.7.0",
     "lodash": "^4.17.4",
