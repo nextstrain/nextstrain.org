@@ -29,7 +29,7 @@ You may already have Python 3 installed, especially if you're on Linux.  Check b
 
 With Python 3 installed, you can use [pip](https://pip.pypa.io) to install the [nextstrain-cli package](https://pypi.org/project/nextstrain-cli):
 
-    $ pip3 install nextstrain-cli
+    $ python3 -m pip install nextstrain-cli
     Collecting nextstrain-cli
     […a lot of output…]
     Successfully installed nextstrain-cli-1.4.1
