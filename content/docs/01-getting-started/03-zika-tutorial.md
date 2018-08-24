@@ -18,7 +18,7 @@ Nextstrain builds typically require the following steps:
 
 First, download the Zika pathogen build which includes example data and a pathogen build script.
 
-```bash
+```
 git clone https://github.com/nextstrain/zika.git
 cd zika
 ```
@@ -27,7 +27,7 @@ A Nextstrain site typically starts with a collection of pathogen sequences in a 
 For this tutorial, we will use an example data set whose FASTA sequences also include metadata in the same file.
 Create a directory for your data and copy the example data into that directory.
 
-```bash
+```
 mkdir -p data/
 cp example_data/zika.fasta data/
 ```
@@ -35,7 +35,7 @@ cp example_data/zika.fasta data/
 Split annotated FASTA sequences into one FASTA file with sequences and a tab-delimited file with metadata and store these outputs in a new directory.
 The `fields` parameter below informs augur how to interpret the metadata stored in the original FASTA file’s sequence names.
 
-```bash
+```
 mkdir -p results
 augur parse \
   --sequences data/zika.fasta \
@@ -49,7 +49,7 @@ The `strain` is a unique id used to reference a specific sequence in the tab-del
 
 Filter the parsed sequences and metadata to exclude strains from subsequent analysis and subsample the remaining strains to a fixed number of samples per group.
 
-```bash
+```
 augur filter \
   --sequences results/sequences.fasta \
   --metadata results/metadata.tsv \
@@ -66,7 +66,7 @@ After this alignment, columns with gaps in the reference are removed.
 Additionally, the `--fill-gaps` flag fills gaps in non-reference sequences with “N” characters.
 These modifications force all sequences into the same coordinate space as the reference sequence.
 
-```bash
+```
 augur align \
   --sequences results/filtered.fasta \
   --reference-sequence config/zika_outgroup.gb \
@@ -76,7 +76,7 @@ augur align \
 
 Infer a phylogenetic tree from the multiple sequence alignment.
 
-```bash
+```
 augur tree \
   --alignment results/aligned.fasta \
   --output results/tree_raw.nwk
@@ -87,7 +87,7 @@ Branch lengths in this tree measure nucleotide divergence.
 Augur can also adjust branch lengths in this tree to position tips by their sample date and infer the most likely time of their ancestors, using [TreeTime](https://github.com/neherlab/treetime).
 Run the `refine` command to apply TreeTime to the original phylogenetic tree and produce a "time tree".
 
-```bash
+```
 augur refine \
   --tree results/tree_raw.nwk \
   --alignment results/aligned.fasta \
@@ -109,7 +109,7 @@ TreeTime can also infer ancestral traits from an existing phylogenetic tree and 
 The following command infers the region and country of all internal nodes from the time tree and original strain metadata.
 As with the `refine` command, the resulting JSON output is indexed by strain or internal node name.
 
-```bash
+```
 augur traits \
   --tree results/tree.nwk \
   --metadata results/metadata.tsv \
@@ -120,7 +120,7 @@ augur traits \
 
 Next, infer the ancestral sequence of each internal node and identify any nucleotide mutations on the branches leading to any node in the tree.
 
-```bash
+```
 augur ancestral \
   --tree results/tree.nwk \
   --alignment results/aligned.fasta \
@@ -132,7 +132,7 @@ Identify amino acid mutations from the nucleotide mutations and a reference sequ
 The resulting JSON file contains amino acid mutations indexed by strain or internal node name and by gene name.
 To export a FASTA file with the complete amino acid translations for each gene from each node’s sequence, specify the `--alignment-output` parameter in the form of `results/aligned_aa_%GENE.fasta`.
 
-```bash
+```
 augur translate \
   --tree results/tree.nwk \
   --ancestral-sequences results/nt_muts.json \
@@ -143,7 +143,7 @@ augur translate \
 Finally, collect all node annotations and metadata and export it all in auspice’s JSON format.
 The resulting tree and metadata JSON files are the inputs to the auspice visualization tool.
 
-```bash
+```
 augur export \
   --tree results/tree.nwk \
   --metadata results/metadata.tsv \
@@ -159,7 +159,7 @@ augur export \
 
 To visualize the resulting Nextstrain site, copy the auspice files into the `data` directory of your local auspice installation, start auspice, and navigate to http://localhost:4000/local/zika in your browser.
 
-```bash
+```
 # Copy files into auspice data directory.
 mkdir ~/src/auspice/data/
 cp auspice/*.json ~/src/auspice/data/
@@ -174,7 +174,7 @@ Nextstrain implements these automated pathogen builds with [Snakemake](https://s
 
 To run the automated pathogen build for Zika, delete the output from the manual steps above and run Snakemake.
 
-```bash
+```
 rm -rf results/ auspice/
 snakemake
 ```

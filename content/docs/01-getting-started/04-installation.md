@@ -18,14 +18,14 @@ TBD.
 
 Install augur.
 
-```bash
+```
 # Install augur.
 pip3 install git+https://github.com/nextstrain/augur@master
 ```
 
 Test your installation.
 
-```bash
+```
 augur -h
 ```
 
@@ -35,13 +35,13 @@ To run augur, you also need to install the following dependencies.
 
 If you do not have the `brew` command, [download and install the latest version of Homebrew](https://brew.sh/).
 
-```bash
+```
 brew install fasttree iqtree mafft raxml
 ```
 
 #### Install augur dependencies on Linux
 
-```bash
+```
 apt-get install fasttree iqtree mafft raxml
 ```
 
@@ -51,14 +51,14 @@ If you do not have the `conda` command, [download and install the latest version
 
 Install augur and its dependencies in a new `nextstrain` environment.
 
-```bash
+```
 curl -L https://tinyurl.com/y9dmtc2k > nextstrain.yaml
 conda env create -n nextstrain -f nextstrain.yaml
 ```
 
 Test your installation.
 
-```bash
+```
 conda activate nextstrain
 augur -h
 ```
@@ -67,7 +67,7 @@ augur -h
 
 [Install Node.js](https://nodesource.com/blog/installing-node-js-tutorial-using-nvm-on-mac-os-x-and-ubuntu/) and then install auspice and its dependencies.
 
-```bash
+```
 # Download auspice.
 git clone https://github.com/nextstrain/auspice
 cd auspice
@@ -78,6 +78,6 @@ npm install
 
 Test your auspice installation by starting the server.
 
-```bash
+```
 npm run dev
 ```
