@@ -19,7 +19,6 @@ TBD.
 Install augur.
 
 ```
-# Install augur.
 pip3 install git+https://github.com/nextstrain/augur@master
 ```
 
