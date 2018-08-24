@@ -22,7 +22,7 @@ These data are continually updated whenever new genomes are made available, thus
 We built Nextstrain in an attempt to provide a rapid and automatable bioinformatics pipeline for analysis of pathogens in order to better harness the scientific and public health potential of pathogen genome data.
 Open sharing of derived data (such as phylogenies and transmission reconstructions) through [nextstrain.org](https://www.nextstrain.org) is a core priority.
 There is now a growing community of researchers using these tools, with a focus on fast analysis times, interactive visualization and data sharing.
-Our model for data analysis and sharing is for scientists to store the code used for their analyis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](docs/pathogen-builds/introduction) for more details).
+Our model for data analysis and sharing is for scientists to store the code used for their analyis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](/docs/pathogen-builds/introduction) for more details).
 
 
 ### Moving Parts
