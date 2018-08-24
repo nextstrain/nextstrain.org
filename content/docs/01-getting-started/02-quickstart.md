@@ -111,8 +111,7 @@ Then run `nextstrain build zika/` to run the build:
     Building DAG of jobs...
     […a lot of output…]
 
-Output files will be in the directories `zika/data/`, `zika/results/` and
-`zika/auspice/`.
+Output files will be in the directories `zika/data/`, `zika/results/` and `zika/auspice/`.
 
 ## Visualize build results
 
