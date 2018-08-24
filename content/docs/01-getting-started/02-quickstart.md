@@ -29,7 +29,7 @@ You may already have Python 3 installed, especially if you're on Linux.  Check b
 
 With Python 3 installed, you can use [pip](https://pip.pypa.io) to install the [nextstrain-cli package](https://pypi.org/project/nextstrain-cli):
 
-    $ pip3 install nextstrain-cli
+    $ python3 -m pip install nextstrain-cli
     Collecting nextstrain-cli
     […a lot of output…]
     Successfully installed nextstrain-cli-1.4.1
@@ -97,9 +97,9 @@ After unzipping the snapshot, you'll need to rename the resulting `zika-master/`
 
 ## Run the build
 
-Running the [augur bioinformatics pipeline](/docs/bioinformatics) encompasses subsampling data, aligning sequences, building a phylogeny and estimating phylogeographic patterns and saving the results in a format suitable for [visualization with auspice](/docs/visualisation).
+Nextstrain builds use the [augur bioinformatics toolkit](/docs/bioinformatics) to subsample data, align sequences, build a phylogeny, estimate phylogeographic patterns, and save the results in a format suitable for [visualization with auspice](/docs/visualisation).
 
-You'll run the build with an example data set which is quite a bit smaller than the full dataset in order to save time.
+You'll run the Zika build with an example data set which is quite a bit smaller than the full dataset in order to save time.
 Copy the provided example data into place:
 
     $ mkdir -p zika/data/
@@ -111,8 +111,7 @@ Then run `nextstrain build zika/` to run the build:
     Building DAG of jobs...
     […a lot of output…]
 
-Output files will be in the directories `zika/data/`, `zika/results/` and
-`zika/auspice/`.
+Output files will be in the directories `zika/data/`, `zika/results/` and `zika/auspice/`.
 
 ## Visualize build results
 
