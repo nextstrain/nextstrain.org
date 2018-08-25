@@ -27,8 +27,8 @@ Our model for data analysis and sharing is for scientists to store the code used
 
 ### Moving Parts
 
-1. _Bioinformatics via Augur:_ Sequence analysis is performed via by a series of steps which we refer to as modules (these are effectively individual command-line scripts).
-Since they are just a series of self-contained steps, it's trivial to customise which steps are run and to add your own.
+1. _Bioinformatics via Augur:_ Sequence analysis is performed by running a series of [augur commands](../bioinformatics) in discrete steps.
+It's possible to customize which steps are run and to add your own, whether they use augur or not.
 These steps can include subsampling, alignment, tree-inference, node dating etc.
 [See here](/docs/bioinformatics/introduction) for more details.
 2. _Visualization via Auspice:_ Visualization is via a JavaScript-based web app, which is what you see when you access datasets such as [nextstrain.org/zika](https://www.nextstrain.org/zika).

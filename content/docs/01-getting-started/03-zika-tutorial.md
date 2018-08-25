@@ -184,6 +184,6 @@ As before, you can copy the resulting auspice JSON files into your auspice insta
 
 ## Next steps
 
-  * Learn more about [augur modules](/docs/bioinformatics/introduction)
+  * Learn more about [augur commands](../bioinformatics)
   * Learn more about [auspice visualizations](/docs/visualisation/introduction)
   * Fork the [Zika pathogen repository on GitHub](https://github.com/nextstrain/zika), modify the Snakefile to make your own pathogen build, and view the resulting site at `https://nextstrain.org/community/<orgName>/<repoName>` for your corresponding GitHub username/org name and repository name.
