@@ -14,7 +14,7 @@ This guide will assume you're relatively new to Linux/Ubuntu; if you're a more a
 ## Enable and Install Ubuntu via Microsoft Store
 The Windows Subsystem for Linux is developed and supported by Microsoft, so it will not cause any problems for your computer. 
 It is not a 'dual-boot' system, where you must restart to switch between Windows and Ubuntu; you'll be able to run Ubuntu in a window within Windows.
-Though multiple Linux distributions are now available, we recommend installing Unbuntu, as it has lots of support available online for Windows 10 installations.
+Though multiple Linux distributions are now available, we recommend installing Ubuntu, as it has lots of support available online for Windows 10 installations.
 
 [Follow these instructions](https://docs.microsoft.com/en-us/windows/wsl/install-win10) to install Windows Subsystem for Linux, and select 'Ubuntu' from the Store.
 Be sure to follow the instructions for 'initialization of your distro', and update/upgrade Ubuntu using 
