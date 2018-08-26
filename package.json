@@ -28,6 +28,8 @@
     "express-static-gzip": "^0.2.2",
     "heroku-ssl-redirect": "0.0.4",
     "query-string": "^6.1.0",
+    "marked": "^0.5.0",
+    "yaml-front-matter": "^4.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-markdown": "^2.5.0",
