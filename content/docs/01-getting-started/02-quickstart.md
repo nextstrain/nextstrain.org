@@ -44,7 +44,7 @@ The version you get will probably be different than the one shown in the example
 ### Install Docker Community Edition (CE)
 
 The Nextstrain CLI tool also currently requires [Docker](https://docker.com).
-You can download and install the [Docker Community Edition (CE)](https://www.docker.com/community-edition#download) for your platform for free.
+You can download and install the [Docker Community Edition (CE)](https://store.docker.com/search?type=edition&offering=community) for your platform for free.
 
 After installing Docker CE, run `nextstrain check-setup` to ensure it works:
 
