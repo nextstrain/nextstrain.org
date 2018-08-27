@@ -12,10 +12,21 @@ Then we will see how to automate this stepwise process by defining a pathogen bu
 Note that we will not use all the commands possible with Nextstrain. 
 After running this tutorial, you may want to read about everything you can do with Nextstrain [here](/docs/bioinformatics/modules).
 
-If you have not already, [install augur and auspice](/docs/getting-started/installation). 
+If you have not already, [install augur and auspice](/docs/getting-started/installation).
+
+The data from this tutorial is public and is a subset of the data from Lee et al.'s 2015 paper [Population genomics of *Mycobacterium tuberculosis* in the Inuit](http://www.pnas.org/content/112/44/13609).
+As location was anonymized in the paper, location data provided here was randomly chosen from the region for illustrative purposes.
 
 ## Nextstrain steps
 Nextstrain builds typically require the following steps:
+* Preparing data
+* Constructing a phylogeny
+* Annotating the phylogeny
+* Exporting the results
+
+However, the modules that make up each step can vary depending on your pathogen and your analysis. 
+Here, we'll follow these steps:
+
 1. Prepare pathogen sequences and metadata  
     1.1 Filter the sequences (remove unwanted sequences and/or sample sequences)  
     1.2 Mask the sequences (exclude regions of the sequence that are unreliable)  
@@ -26,6 +37,8 @@ Nextstrain builds typically require the following steps:
     3.1 Infer ancestral sequences  
     3.2 Translate genes and identify amino-acid changes  
     3.3 Reconstruct ancestral states (like location or host)  
+    3.4 Identify clades on the tree  
+    3.5 Identify drug resistance mutations  
 4. Export the final results into auspice-readable format
 
 ## Download Data
@@ -54,7 +67,7 @@ However, `augur` can take gzipped or un-gzipped VCF files.
 It can also produce either gzipped or un-gzipped VCF files as output. 
 Here, we'll usually keep our VCF files gzipped, by giving our output files endings like `.vcf.gz`, but you can specify `.vcf` instead.
 
-All the data you need to make the TB site is in the `data` folder.
+All the data you need to make the TB site is in the `data` and `config` folders.
 
 ### Filter the Sequences
 
@@ -76,8 +89,8 @@ Now run filter:
 augur filter \
     --sequences data/lee_2015.vcf.gz \
     --metadata data/meta.tsv \
-    --output results/filtered.vcf.gz \
-    --exclude data/dropped_strains.txt
+    --exclude config/dropped_strains.txt \
+    --output results/filtered.vcf.gz
 ```
 
 ### Mask the Sequences
@@ -90,8 +103,8 @@ The areas to be masked are specified in a BED-format file.
 ```
 augur mask \
     --sequences results/filtered.vcf.gz \
-    --output results/masked.vcf.gz \
-    --mask data/Locus_to_exclude_Mtb.bed
+    --mask config/Locus_to_exclude_Mtb.bed \
+    --output results/masked.vcf.gz
 ```
 
 ## Construct the Phylogeny
@@ -118,9 +131,9 @@ Finally, we use `iqtree` as the method to build the tree here.
 augur tree \
     --alignment results/masked.vcf.gz \
     --vcf-reference data/ref.fasta \
-    --output results/tree_raw.nwk \
-    --exclude-sites data/drm_sites.txt \
-    --method iqtree
+    --exclude-sites config/drm_sites.txt \
+    --method iqtree \
+    --output results/tree_raw.nwk
 ```
 
 ### Fix Branch Lengths & Get a Time-Resolved Tree
@@ -139,11 +152,11 @@ augur refine \
     --alignment results/masked.vcf.gz \
     --vcf-reference data/ref.fasta \
     --metadata data/meta.tsv \
-    --output-tree results/tree.nwk \
-    --output-node-data results/branch_lengths.json \
     --timetree \
     --root residual \
-    --coalescent opt
+    --coalescent opt \
+    --output-tree results/tree.nwk \
+    --output-node-data results/branch_lengths.json
 ```
 
 In addition to assigning times to internal nodes, the `refine` command filters tips that are likely outliers.
@@ -167,9 +180,9 @@ augur ancestral \
     --tree results/tree.nwk \
     --alignment results/masked.vcf.gz \
     --vcf-reference data/ref.fasta \
+    --inference joint \
     --output results/nt_muts.json \
-    --output-vcf results/nt_muts.vcf \
-    --inference joint
+    --output-vcf results/nt_muts.vcf
 ```
 
 ### Identify Amino-Acid Mutations
@@ -186,12 +199,11 @@ augur translate \
     --tree results/tree.nwk \
     --ancestral-sequences results/nt_muts.vcf \
     --vcf-reference data/ref.fasta \
-    --genes data/genes.txt \
-    --reference-sequence data/Mtb_H37Rv_NCBI_Annot.gff \
+    --genes config/genes.txt \
+    --reference-sequence config/Mtb_H37Rv_NCBI_Annot.gff \
     --output results/aa_muts.json \
     --alignment-output results/translations.vcf \
     --vcf-reference-output results/translations_reference.fasta
-
 ```
 
 ### Reconstruct Ancestral States
@@ -207,8 +219,42 @@ augur traits \
     --tree results/tree.nwk \
     --metadata data/meta.tsv \
     --columns location \
-    --output results/traits.json \
-    --confidence
+    --confidence \
+    --output results/traits.json
+```
+
+### Identify Specified Clades
+
+In the [original paper](http://www.pnas.org/content/112/44/13609), the authors identified 'sublineages' within the dataset.
+We can add these to our dataset as 'clades' by defining the sublineages with amino-acid or nucleotide mutations specific to that sublineage, given here in the file `clades.tsv`.
+
+As clades, these sublineages will be labelled and we'll be able to color the tree by them.
+
+```
+augur clades \
+    --tree results/tree.nwk \
+    --mutations results/nt_muts.json results/aa_muts.json \
+    --clades config/clades.tsv \
+    --output results/clades.json
+```
+
+### Identify Drug Resistance Mutations
+
+`sequence-traits` can identify any trait associated with particular nucleotide or amino-acid mutations, not just drug resistance mutations.
+
+This dataset doesn't actually contain any drug resistance mutations, but identifying such mutations is often of interest to those working on tuberculosis.
+Here, we'll run this step as an example, even though it won't add anything to the tree for this dataset.
+
+```
+augur sequence-traits \
+    --ancestral-sequences results/nt_muts.vcf \
+    --vcf-reference data/ref.fasta \
+    --translations results/translations.vcf \
+    --vcf-translate-reference results/translations_reference.fasta \
+    --features config/DRMs-AAnuc.tsv \
+    --count traits \
+    --label Drug_Resistance \
+    --output results/drms.json
 ```
 
 ## Export the Results
@@ -224,9 +270,11 @@ augur export \
                 results/traits.json \
                 results/aa_muts.json \
                 results/nt_muts.json \
-    --auspice-config data/config.json \
-    --colors data/color.tsv \
-    --lat-longs data/lat_longs.tsv \
+                results/clades.json \
+                results/drms.json \
+    --auspice-config config/config.json \
+    --colors config/color.tsv \
+    --lat-longs config/lat_longs.tsv \
     --output-tree auspice/tb_tree.json \
     --output-meta auspice/tb_meta.json
 ```
