@@ -1,6 +1,6 @@
 ---
 title: "TB Tutorial"
-date: "2018-08-24"
+date: "2018-08-27"
 ---
 
 This tutorial explains how to build a Nextstrain site for Tuberculosis sequences.
@@ -9,7 +9,8 @@ However, much of it will be applicable to any run where you are starting with VC
 We will first build a site step-by-step using an example data set. 
 Then we will see how to automate this stepwise process by defining a pathogen build script which contains the commands we will run below.
 
-Note that we will not use all the commands possible with Nextstrain. After running this tutorial, you may want to read about everything you can do with Nextstrain [here](/docs/bioinformatics/modules).
+Note that we will not use all the commands possible with Nextstrain. 
+After running this tutorial, you may want to read about everything you can do with Nextstrain [here](/docs/bioinformatics/modules).
 
 If you have not already, [install augur and auspice](/docs/getting-started/installation). 
 
@@ -39,14 +40,21 @@ cd tb
 
 ## Prepare the Sequences
 
-A Nextstrain site starts with:
+A Nextstrain site with VCF file input starts with:
 * A VCF file containing all the sequences you want to include (variable sites only)
 * A Fasta file of the reference sequence to which your VCF was mapped
 * A tab-delimited metadata file _we need better info about what format this should be..._
 
-Here, our intput file is compressed with gzip - you can see it ends with `.vcf.gz`. However, `augur` can take gzipped or un-gzipped VCF files. It can also produce either gzipped or un-gzipped VCF files as output. Here, we'll usually keep our VCF files gzipped, by giving our output files endings like `.vcf.gz`, but you can specify `.vcf` instead.
+There are other files you will need if you want to perform certain steps, like masking. 
+If you are also working with TB sequences, you may be able to use the files provided here on your own data. 
+Otherwise, you'll need to provide files specific to your pathogen.
 
-The data you need to make the TB site is in the `data` folder.
+Here, our input file is compressed with gzip - you can see it ends with `.vcf.gz`. 
+However, `augur` can take gzipped or un-gzipped VCF files. 
+It can also produce either gzipped or un-gzipped VCF files as output. 
+Here, we'll usually keep our VCF files gzipped, by giving our output files endings like `.vcf.gz`, but you can specify `.vcf` instead.
+
+All the data you need to make the TB site is in the `data` folder.
 
 ### Filter the Sequences
 
@@ -74,8 +82,10 @@ augur filter \
 
 ### Mask the Sequences
 
-There may be regions in your pathogen sequences that are unreliable. For example, areas that are hard to map because of repeat regions.
-Often, these are excluded from analysis so that incorrect calls in these areas don't influence the results. The areas to be masked are specified in a BED-format file.
+There may be regions in your pathogen sequences that are unreliable. 
+For example, areas that are hard to map because of repeat regions.
+Often, these are excluded from analysis so that incorrect calls in these areas don't influence the results. 
+The areas to be masked are specified in a BED-format file.
 
 ```
 augur mask \
@@ -90,14 +100,18 @@ Now our sequences are ready to start analysis.
 
 With VCF files, we'll do this in two steps that are slightly different from Fasta-input.
 1. First, we'll use only the variable sites to construct a tree quickly. This will give us the topology, but the branch lengths will be incorrect.
-2. Next, we'll consider the entire sequence to correct our branch lengths. At the same time, the sample date information will be used to create a time-resolved tree. 
+2. Next, we'll consider the entire sequence to correct our branch lengths.
+At the same time, the sample date information will be used to create a time-resolved tree. 
 
 ### Get the Topology
 
-You can use different tree-building programs to build your initial tree, and specify some parameters. You can see all the options for `tree` [here](/docs/bioinformatics/modules).
+You can use different tree-building programs to build your initial tree, and specify some parameters. 
+You can see all the options for `tree` [here](/docs/bioinformatics/modules).
 
-Here, we pass in the VCF file and the reference it was mapped to. We also pass in a list of sites that we'd like to exclude from building the topology. 
-These are sites associated with drug-resistance mutations that can influence the topology. We exclude them here, but they'll be allowed to influence branch length and be included in ancestral sequence reconstruction later.
+Here, we pass in the VCF file and the reference it was mapped to. 
+We also pass in a list of sites that we'd like to exclude from building the topology. 
+These are sites associated with drug-resistance mutations that can influence the topology. 
+We exclude them here, but they'll be allowed to influence branch length and be included in ancestral sequence reconstruction later.
 Finally, we use `iqtree` as the method to build the tree here.
 
 ```
@@ -139,11 +153,12 @@ All other data inferred by TreeTime is stored by strain or internal node name in
 ## Annotate the Phylogeny
 
 Now that we have an accurate tree and some information about the ancestral sequences, we can annotate some interesting data onto our phylogeny.
-TreeTime can infer ancestral traits from an existing phylogenetic tree and metadata annotating each tip of the tree.
+TreeTime can infer ancestral sequences and ancestral traits from an existing phylogenetic tree and metadata to annotate each tip of the tree.
 
 ### Infer Ancestral Sequences
 
-We can reconstruct the ancestral sequences for the internal nodes on our phylogeny and identify any nucleotide mutations on the branches leading to any node in the tree. You can read about all the options for `ancestral` [here](/docs/bioinformatics/modules).
+We can reconstruct the ancestral sequences for the internal nodes on our phylogeny and identify any nucleotide mutations on the branches leading to any node in the tree. 
+You can read about all the options for `ancestral` [here](/docs/bioinformatics/modules).
 
 For VCF runs, `ancestral` will produce another VCF that contains entries for the reconstructed sequence of all the internal nodes, as well as a JSON-format file that contains nucleotide mutation information for each node.
 
@@ -157,7 +172,7 @@ augur ancestral \
     --inference joint
 ```
 
-### Translate Genes and get Amino-Acid Mutations
+### Identify Amino-Acid Mutations
 
 With `translate` we can identify amino acid mutations from the nucleotide mutations and a GFF file with gene coordinate annotations.
 The resulting JSON file contains amino acid mutations indexed by strain or internal node name and by gene name.
@@ -225,7 +240,7 @@ Navigate to the `auspice` directory and use `npm run dev' to start auspice.
 Open a browser and navigate to [localhost:4000/local/tb](http://localhost:4000/local/tb) to visualise your run.
 
 
-##Snakemake
+## Snakemake
 
 While it is instructive to run all of the above commands manually, it is more practical to automate their execution with a single script.
 Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) by defining a `Snakefile` like the one supplied in the TB respository you cloned. 
