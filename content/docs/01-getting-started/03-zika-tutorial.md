@@ -1,12 +1,13 @@
 ---
 title: "Zika Tutorial"
-date: "2018-08-23"
+date: "2018-08-27"
 ---
 
 This tutorial explains how to build a Nextstrain site for the Zika virus.
 We will first build a site step by step using an example data set.
 Then we will see how to automate this stepwise process by defining a pathogen build script.
-If you have not already, install augur and auspice.
+
+If you have not already, [install augur and auspice](/docs/getting-started/installation).
 
 Nextstrain builds typically require the following steps:
 
@@ -23,6 +24,8 @@ git clone https://github.com/nextstrain/zika.git
 cd zika
 ```
 
+## Prepare the Sequences
+
 A Nextstrain site typically starts with a collection of pathogen sequences in a single FASTA file and a corresponding table of metadata describing those sequences in a tab-delimited text file.
 For this tutorial, we will use an example data set whose FASTA sequences also include metadata in the same file.
 Create a directory for your data and copy the example data into that directory.
@@ -31,6 +34,8 @@ Create a directory for your data and copy the example data into that directory.
 mkdir -p data/
 cp example_data/zika.fasta data/
 ```
+
+### Parse Out Metadata
 
 Split annotated FASTA sequences into one FASTA file with sequences and a tab-delimited file with metadata and store these outputs in a new directory.
 The `fields` parameter below informs augur how to interpret the metadata stored in the original FASTA file’s sequence names.
@@ -47,6 +52,8 @@ augur parse \
 Note that the resulting output FASTA has sequences named after the contents of the `strain` field in the original FASTA metadata.
 The `strain` is a unique id used to reference a specific sequence in the tab-delimited metadata file.
 
+### Filter the Sequences
+
 Filter the parsed sequences and metadata to exclude strains from subsequent analysis and subsample the remaining strains to a fixed number of samples per group.
 
 ```
@@ -60,7 +67,8 @@ augur filter \
   --min-date 2012
 ```
 
-Now the pathogen sequences are ready for analysis.
+### Align the Sequences
+
 Create a multiple alignment of the sequences using a custom reference.
 After this alignment, columns with gaps in the reference are removed.
 Additionally, the `--fill-gaps` flag fills gaps in non-reference sequences with “N” characters.
@@ -74,6 +82,10 @@ augur align \
   --fill-gaps
 ```
 
+Now the pathogen sequences are ready for analysis.
+
+## Construct the Phylogeny
+
 Infer a phylogenetic tree from the multiple sequence alignment.
 
 ```
@@ -84,6 +96,9 @@ augur tree \
 
 The resulting tree is stored in [Newick format](http://evolution.genetics.washington.edu/phylip/newicktree.html).
 Branch lengths in this tree measure nucleotide divergence.
+
+### Get a Time-Resolved Tree
+
 Augur can also adjust branch lengths in this tree to position tips by their sample date and infer the most likely time of their ancestors, using [TreeTime](https://github.com/neherlab/treetime).
 Run the `refine` command to apply TreeTime to the original phylogenetic tree and produce a "time tree".
 
@@ -105,6 +120,10 @@ In addition to assigning times to internal nodes, the `refine` command filters t
 Branch lengths in the resulting Newick tree measure adjusted nucleotide divergence.
 All other data inferred by TreeTime is stored by strain or internal node name in the corresponding JSON file.
 
+## Annotate the Phylogeny
+
+### Reconstruct Ancestral Traits
+
 TreeTime can also infer ancestral traits from an existing phylogenetic tree and metadata annotating each tip of the tree.
 The following command infers the region and country of all internal nodes from the time tree and original strain metadata.
 As with the `refine` command, the resulting JSON output is indexed by strain or internal node name.
@@ -118,6 +137,8 @@ augur traits \
   --confidence
 ```
 
+### Infer Ancestral Sequences
+
 Next, infer the ancestral sequence of each internal node and identify any nucleotide mutations on the branches leading to any node in the tree.
 
 ```
@@ -127,6 +148,8 @@ augur ancestral \
   --output results/nt_muts.json \
   --inference joint
 ```
+
+### Identify Amino-Acid Mutations
 
 Identify amino acid mutations from the nucleotide mutations and a reference sequence with gene coordinate annotations.
 The resulting JSON file contains amino acid mutations indexed by strain or internal node name and by gene name.
@@ -139,6 +162,8 @@ augur translate \
   --reference-sequence config/zika_outgroup.gb \
   --output results/aa_muts.json
 ```
+
+## Export the Results
 
 Finally, collect all node annotations and metadata and export it all in auspice’s JSON format.
 The resulting tree and metadata JSON files are the inputs to the auspice visualization tool.
@@ -157,6 +182,8 @@ augur export \
   --output-meta auspice/zika_meta.json
 ```
 
+## Visualize the Results
+
 To visualize the resulting Nextstrain site, copy the auspice files into the `data` directory of your local auspice installation, start auspice, and navigate to http://localhost:4000/local/zika in your browser.
 
 ```
@@ -168,6 +195,8 @@ cp auspice/*.json ~/src/auspice/data/
 cd ~/src/auspice/data/
 npm run dev
 ```
+
+## Snakemake
 
 While it is instructive to run all of the above commands manually, it is more practical to automate their execution with a single script.
 Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) by defining a `Snakefile` like the one in the Zika pathogen code.
