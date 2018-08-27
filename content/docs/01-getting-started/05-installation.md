@@ -1,10 +1,12 @@
 ---
 title: "Installation"
-date: "2018-08-23"
+date: "2018-08-27"
 ---
 
 Nextstrain consists of a bioinformatics pipeline utility, `augur`, and a web application for data visualization, `auspice`.
 The following instructions describe how to install augur and auspice on Mac OS X or an Ubuntu-style Linux distribution.
+If you are using Windows, we have instructions for [installing a Linux subsystem](/docs/getting-started/windows-help) to get Nexstrain running.
+
 Install the following dependencies, before you begin:
 
 * [git](https://git-scm.com/downloads)

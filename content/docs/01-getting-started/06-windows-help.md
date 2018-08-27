@@ -1,6 +1,6 @@
 ---
 title: "Help! I'm using Windows"
-date: "2018-08-24"
+date: "2018-08-27"
 ---
 
 Nextstrain documentation assumes users are running a Unix-based system like Mac OS X or Linux. 
@@ -98,7 +98,7 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | b
 
 After it finishes, close and re-open Ubuntu to complete the install, then check it by typing `nvm --version`. 
 
-Now finish it setting up by running:
+Now finish setting it up by running:
 ```
 nvm install node
 nvm use node
