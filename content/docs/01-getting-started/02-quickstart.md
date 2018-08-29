@@ -7,7 +7,7 @@ This guide uses the [Nextstrain command-line interface (CLI) tool](https://githu
 It assumes you are comfortable using the command line and installing software on your computer.
 If you need help when following this guide, please reach out by [emailing us](mailto:hello@nextstrain.org?subject=Quickstart%20help).
 
-When you're done following this guide, you will have built a local version of [our live Zika analysis](https://nextstrain.org/zika) and viewed the results on your computer.
+When you're done following this guide, you will have built a local version of [our example Zika analysis](https://github.com/nextstrain/zika-tutorial) and viewed the results on your computer.
 You'll have a basic understanding of how to run builds for other pathogens and a foundation for understanding the Nextstrain ecosystem in more depth.
 
 ## Set up your computer
@@ -80,44 +80,41 @@ It is free to [download and install git](https://git-scm.com/book/en/v2/Getting-
 
 While git is not required to use this guide, it is recommended and _will_ be necessary for taking your next steps after this guide.
 
-## Download the nextstrain/zika repository
+## Download the nextstrain/zika-tutorial repository
 
-Now that you're set up, it's time to download the [Zika pathogen repository](https://github.com/nextstrain/zika) you're going to build.  
+Now that you're set up, it's time to download the [example Zika pathogen repository](https://github.com/nextstrain/zika-tutorial) you're going to build.
 
 If you have git installed, clone the repository we use to keep track of changes to our analysis:
 
-    $ git clone https://github.com/nextstrain/zika
-    Cloning into 'zika'...
+    $ git clone https://github.com/nextstrain/zika-tutorial
+    Cloning into 'zika-tutorial'...
     […more output…]
 
-When it's done, you'll have a new directory called `zika/`.
+When it's done, you'll have a new directory called `zika-tutorial/`.
 
-If you don't have git installed and want to skip installing it for now, you can instead download [a snapshot of the repository in a zip file](https://github.com/nextstrain/zika/archive/master.zip).
-After unzipping the snapshot, you'll need to rename the resulting `zika-master/` directory to just `zika/` to match the rest of this guide.
+If you don't have git installed and want to skip installing it for now, you can instead download [a snapshot of the repository in a zip file](https://github.com/nextstrain/zika-tutorial/archive/master.zip).
+After unzipping the snapshot, you'll need to rename the resulting `zika-tutorial-master/` directory to just `zika-tutorial/` to match the rest of this guide.
 
 ## Run the build
 
 Nextstrain builds use the [augur bioinformatics toolkit](/docs/bioinformatics) to subsample data, align sequences, build a phylogeny, estimate phylogeographic patterns, and save the results in a format suitable for [visualization with auspice](/docs/visualisation).
 
-You'll run the Zika build with an example data set which is quite a bit smaller than the full dataset in order to save time.
-Copy the provided example data into place:
+Run `nextstrain build zika-tutorial/` to run the build:
 
-    $ mkdir -p zika/data/
-    $ cp zika/example_data/zika.fasta zika/data/
-
-Then run `nextstrain build zika/` to run the build:
-
-    $ nextstrain build zika/
+    $ nextstrain build zika-tutorial/
     Building DAG of jobs...
     […a lot of output…]
 
-Output files will be in the directories `zika/data/`, `zika/results/` and `zika/auspice/`.
+This should take just a few minutes to complete.
+In order to save time, the tutorial build uses an example data set which is quite a bit smaller than [our live Zika analysis](https://nextstrain.org/zika).
+
+Output files will be in the directories `zika-tutorial/data/`, `zika-tutorial/results/` and `zika-tutorial/auspice/`.
 
 ## Visualize build results
 
-Now you can run `nextstrain view zika/auspice/` to view the build results using Nextstrain's visualizations:
+Now you can run `nextstrain view zika-tutorial/auspice/` to view the build results using Nextstrain's visualizations:
 
-    $ nextstrain view zika/auspice/
+    $ nextstrain view zika-tutorial/auspice/
     ——————————————————————————————————————————————————————————————————————————————
         The following datasets should be available in a moment:
            • http://127.0.0.1:4000/local/zika
