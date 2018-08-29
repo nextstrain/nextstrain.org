@@ -20,37 +20,52 @@ Nextstrain builds typically require the following steps:
 First, download the Zika pathogen build which includes example data and a pathogen build script.
 
 ```
-git clone https://github.com/nextstrain/zika.git
+git clone https://github.com/nextstrain/zika-tutorial.git
 cd zika
 ```
 
 ## Prepare the Sequences
 
 A Nextstrain site typically starts with a collection of pathogen sequences in a single FASTA file and a corresponding table of metadata describing those sequences in a tab-delimited text file.
-For this tutorial, we will use an example data set whose FASTA sequences also include metadata in the same file.
-Create a directory for your data and copy the example data into that directory.
+For this tutorial, we will use an example data set with a subset of 34 viruses.
+
+The virus sequences are stored in a single [FASTA](https://en.wikipedia.org/wiki/FASTA_format) file.
+An example virus sequence record looks like the following, with the virus's strain id as the sequence name in the header line followed by the virus sequence.
 
 ```
-mkdir -p data/
-cp example_data/zika.fasta data/
+>PAN/CDC_259359_V1_V3/2015
+gaatttgaagcgaatgctaacaacagtatcaacaggttttattttggatttggaaacgag
+agtttctggtcatgaaaaacccaaaaaagaaatccggaggattccggattgtcaatatgc
+taaaacgcggagtagcccgtgtgagcccctttgggggcttgaagaggctgccagccggac
+ttctgctgggtcatgggcccatcaggatggtcttggcgattctagcctttttgagattca
 ```
 
-### Parse Out Metadata
-
-Split annotated FASTA sequences into one FASTA file with sequences and a tab-delimited file with metadata and store these outputs in a new directory.
-The `fields` parameter below informs augur how to interpret the metadata stored in the original FASTA file’s sequence names.
+Each sequence record's virus strain id links to the tab-delimited metadata file by the latter's `strain` field.
+The metadata file contains a header of column names followed by one row per virus strain id in the sequences file.
+An example metadata file looks like the following.
 
 ```
-mkdir -p results
-augur parse \
-  --sequences data/zika.fasta \
-  --output-sequences results/sequences.fasta \
-  --output-metadata results/metadata.tsv \
-  --fields strain virus accession date region country division city db segment authors url title journal paper_url
+strain	virus	accession	date	region	country	division	city	db	segment	authors	url	title	journal	paper_url
+1_0087_PF	zika	KX447509	2013-12-XX	oceania	french_polynesia	french_polynesia	french_polynesia	genbank	genome	Pettersson et al	https://www.ncbi.nlm.nih.gov/nuccore/KX447509	How Did Zika Virus Emerge in the Pacific Islands and Latin America?	MBio 7 (5), e01239-16 (2016)	https://www.ncbi.nlm.nih.gov/pubmed/27729507
+1_0181_PF	zika	KX447512	2013-12-XX	oceania	french_polynesia	french_polynesia	french_polynesia	genbank	genome	Pettersson et al	https://www.ncbi.nlm.nih.gov/nuccore/KX447512	How Did Zika Virus Emerge in the Pacific Islands and Latin America?	MBio 7 (5), e01239-16 (2016)	https://www.ncbi.nlm.nih.gov/pubmed/27729507
+1_0199_PF	zika	KX447519	2013-11-XX	oceania	french_polynesia	french_polynesia	french_polynesia	genbank	genome	Pettersson et al	https://www.ncbi.nlm.nih.gov/nuccore/KX447519	How Did Zika Virus Emerge in the Pacific Islands and Latin America?	MBio 7 (5), e01239-16 (2016)	https://www.ncbi.nlm.nih.gov/pubmed/27729507
+Aedes_aegypti/USA/2016/FL05	zika	KY075937	2016-09-09	north_america	usa	usa	usa	genbank	genome	Grubaugh et al	https://www.ncbi.nlm.nih.gov/nuccore/KY075937	Genomic epidemiology reveals multiple introductions of Zika virus into the United States	Nature (2017) In press	https://www.ncbi.nlm.nih.gov/pubmed/28538723
 ```
 
-Note that the resulting output FASTA has sequences named after the contents of the `strain` field in the original FASTA metadata.
-The `strain` is a unique id used to reference a specific sequence in the tab-delimited metadata file.
+A metadata file must have the following columns:
+
+  * strain
+  * virus
+  * date
+
+Builds using published data should include the following additional columns, as shown in the example above:
+
+  * accession (e.g., NCBI GenBank, EMBL EBI, etc.)
+  * authors
+  * url
+  * title
+  * journal
+  * paper_url
 
 ### Filter the Sequences
 
@@ -58,8 +73,8 @@ Filter the parsed sequences and metadata to exclude strains from subsequent anal
 
 ```
 augur filter \
-  --sequences results/sequences.fasta \
-  --metadata results/metadata.tsv \
+  --sequences data/sequences.fasta \
+  --metadata data/metadata.tsv \
   --exclude config/dropped_strains.txt \
   --output results/filtered.fasta \
   --group-by country year month \
@@ -71,7 +86,7 @@ augur filter \
 
 Create a multiple alignment of the sequences using a custom reference.
 After this alignment, columns with gaps in the reference are removed.
-Additionally, the `--fill-gaps` flag fills gaps in non-reference sequences with “N” characters.
+Additionally, the `--fill-gaps` flag fills gaps in non-reference sequences with "N" characters.
 These modifications force all sequences into the same coordinate space as the reference sequence.
 
 ```
@@ -106,7 +121,7 @@ Run the `refine` command to apply TreeTime to the original phylogenetic tree and
 augur refine \
   --tree results/tree_raw.nwk \
   --alignment results/aligned.fasta \
-  --metadata results/metadata.tsv \
+  --metadata data/metadata.tsv \
   --output-tree results/tree.nwk \
   --output-node-data results/branch_lengths.json \
   --timetree \
@@ -131,7 +146,7 @@ As with the `refine` command, the resulting JSON output is indexed by strain or 
 ```
 augur traits \
   --tree results/tree.nwk \
-  --metadata results/metadata.tsv \
+  --metadata data/metadata.tsv \
   --output results/traits.json \
   --columns region country \
   --confidence
@@ -171,7 +186,7 @@ The resulting tree and metadata JSON files are the inputs to the auspice visuali
 ```
 augur export \
   --tree results/tree.nwk \
-  --metadata results/metadata.tsv \
+  --metadata data/metadata.tsv \
   --node-data results/branch_lengths.json \
               results/traits.json \
               results/nt_muts.json \
@@ -196,7 +211,7 @@ cd ~/src/auspice/data/
 npm run dev
 ```
 
-## Snakemake
+## Automate the Build with Snakemake
 
 While it is instructive to run all of the above commands manually, it is more practical to automate their execution with a single script.
 Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) by defining a `Snakefile` like the one in the Zika pathogen code.
