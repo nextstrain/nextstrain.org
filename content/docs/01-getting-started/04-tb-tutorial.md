@@ -4,7 +4,7 @@ date: "2018-08-29"
 ---
 
 This tutorial explains how to create a Nextstrain build for Tuberculosis sequences.
-However, much of it will be applicable to any run where you are starting with VCF files rather than FASTA files.
+However, much of it will be applicable to any run where you are starting with [VCF](https://en.wikipedia.org/wiki/Variant_Call_Format) files rather than [FASTA](https://en.wikipedia.org/wiki/FASTA_format) files.
 
 We will first make the build step-by-step using an example data set. 
 Then we will see how to automate this stepwise process by defining a pathogen build script which contains the commands we will run below.
