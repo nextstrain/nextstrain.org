@@ -9,8 +9,8 @@ However, much of it will be applicable to any run where you are starting with VC
 We will first build a site step-by-step using an example data set. 
 Then we will see how to automate this stepwise process by defining a pathogen build script which contains the commands we will run below.
 
-Note that we will not use all the commands possible with Nextstrain. 
-After running this tutorial, you may want to read about everything you can do with Nextstrain [here](/docs/bioinformatics/modules).
+Note that we will not use all the bioinformatics commands possible with Nextstrain.
+After running this tutorial, you may want to read more about the [bioinformatics commands offered by Nextstrain](/docs/bioinformatics).
 
 If you have not already, [install augur and auspice](/docs/getting-started/installation).
 
@@ -24,7 +24,7 @@ Nextstrain builds typically require the following steps:
 * Annotating the phylogeny
 * Exporting the results
 
-However, the modules that make up each step can vary depending on your pathogen and your analysis. 
+However, the commands that make up each step can vary depending on your pathogen and your analysis.
 Here, we'll follow these steps:
 
 1. Prepare pathogen sequences and metadata  
@@ -73,7 +73,7 @@ All the data you need to make the TB site is in the `data` and `config` folders.
 
 Sometimes you may want to exclude certain sequences from analysis. 
 You may also wish to downsample your data based on certain criteria. `filter` lets you do this.
-For more information on all the ways you can filter data, see [here](/docs/bioinformatics/modules).
+For more information on all the ways you can filter data, see [the bioinformatics commands reference](/docs/bioinformatics/commands#filter).
 
 For this example, we'll just exclude sequences in the file `dropped_strains.txt`.
 
@@ -119,7 +119,7 @@ At the same time, the sample date information will be used to create a time-reso
 ### Get the Topology
 
 You can use different tree-building programs to build your initial tree, and specify some parameters. 
-You can see all the options for `tree` [here](/docs/bioinformatics/modules).
+You can see all the options for `tree` in [the bioinformatics commands reference](/docs/bioinformatics/commands#tree).
 
 Here, we pass in the VCF file and the reference it was mapped to. 
 We also pass in a list of sites that we'd like to exclude from building the topology. 
@@ -140,7 +140,8 @@ augur tree \
 
 Now we'll use the topology from `tree`, but get more accurate branch lengths and a time-resolved tree. 
 This adjusts branch lengths in the tree to position tips by their sample date and infer the most likely time of their ancestors, using [TreeTime](https://github.com/neherlab/treetime).
-There are _many_ options that can be specified here in `refine` to help you get a good tree - you can read about them [here](/docs/bioinformatics/modules).
+There are _many_ options that can be specified here in `refine` to help you get a good tree.
+You can read about them in [the bioinformatics commands reference](/docs/bioinformatics/commands#refine).
 
 `refine` will produce as output:
 * another tree (newick format)
@@ -171,7 +172,7 @@ TreeTime can infer ancestral sequences and ancestral traits from an existing phy
 ### Infer Ancestral Sequences
 
 We can reconstruct the ancestral sequences for the internal nodes on our phylogeny and identify any nucleotide mutations on the branches leading to any node in the tree. 
-You can read about all the options for `ancestral` [here](/docs/bioinformatics/modules).
+You can read about all the options for `ancestral` in [the bioinformatics commands reference](/docs/bioinformatics/commands#ancestral).
 
 For VCF runs, `ancestral` will produce another VCF that contains entries for the reconstructed sequence of all the internal nodes, as well as a JSON-format file that contains nucleotide mutation information for each node.
 
@@ -305,7 +306,7 @@ As before, you can copy the resulting auspice JSON files into your auspice insta
 
 ## Next steps
 
-  * Learn more about [augur modules](/docs/bioinformatics/introduction)
+  * Learn more about [augur commands](/docs/bioinformatics).
   * Learn more about [auspice visualizations](/docs/visualisation/introduction)
   * Learn more about [creating and modifying snakemake files](/docs/pathogen-builds/snakemake)
   * Fork the [TB pathogen repository on GitHub](https://github.com/nextstrain/tb), modify the Snakefile to make your own pathogen build, and view the resulting site at `https://nextstrain.org/community/<orgName>/<repoName>` for your corresponding GitHub username/org name and repository name.
