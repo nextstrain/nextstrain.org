@@ -1,6 +1,6 @@
 ---
 title: "TB Tutorial"
-date: "2018-08-27"
+date: "2018-08-29"
 ---
 
 This tutorial explains how to build a Nextstrain site for Tuberculosis sequences.
