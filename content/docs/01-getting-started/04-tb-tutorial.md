@@ -17,7 +17,7 @@ If you have not already, [install augur and auspice](/docs/getting-started/insta
 The data from this tutorial is public and is a subset of the data from Lee et al.'s 2015 paper [Population genomics of *Mycobacterium tuberculosis* in the Inuit](http://www.pnas.org/content/112/44/13609).
 As location was anonymized in the paper, location data provided here was randomly chosen from the region for illustrative purposes.
 
-## Nextstrain steps
+## Build steps
 Nextstrain builds typically require the following steps:
 * Preparing data
 * Constructing a phylogeny

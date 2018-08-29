@@ -9,6 +9,8 @@ Then we will see how to automate this stepwise process by defining a pathogen bu
 
 If you have not already, [install augur and auspice](/docs/getting-started/installation).
 
+## Build steps
+
 Nextstrain builds typically require the following steps:
 
 1. Prepare pathogen sequences and metadata
