@@ -21,7 +21,7 @@ First, download the Zika pathogen build which includes example data and a pathog
 
 ```
 git clone https://github.com/nextstrain/zika-tutorial.git
-cd zika
+cd zika-tutorial
 ```
 
 ## Prepare the Sequences
@@ -72,6 +72,8 @@ Builds using published data should include the following additional columns, as 
 Filter the parsed sequences and metadata to exclude strains from subsequent analysis and subsample the remaining strains to a fixed number of samples per group.
 
 ```
+mkdir -p results/
+
 augur filter \
   --sequences data/sequences.fasta \
   --metadata data/metadata.tsv \
