@@ -1,10 +1,10 @@
 ---
 title: "Zika Tutorial"
-date: "2018-08-27"
+date: "2018-08-29"
 ---
 
 This tutorial explains how to build a Nextstrain site for the Zika virus.
-We will first build a site step by step using an example data set.
+We will first build a site step-by-step using an example data set.
 Then we will see how to automate this stepwise process by defining a pathogen build script.
 
 If you have not already, [install augur and auspice](/docs/getting-started/installation).
