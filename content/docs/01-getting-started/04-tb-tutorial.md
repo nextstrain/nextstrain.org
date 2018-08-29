@@ -289,7 +289,7 @@ Navigate to the `auspice` directory and use `npm run dev' to start auspice.
 Open a browser and navigate to [localhost:4000/local/tb](http://localhost:4000/local/tb) to visualise your run.
 
 
-## Snakemake
+## Automate the Build with Snakemake
 
 While it is instructive to run all of the above commands manually, it is more practical to automate their execution with a single script.
 Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) by defining a `Snakefile` like the one supplied in the TB respository you cloned. 
