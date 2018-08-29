@@ -17,7 +17,7 @@ Before you can do anything else, you need to set up your computer to run the Nex
 ### Install Python 3
 
 Python 3.5 or higher is required.
-There are many ways to install Python 3 on Windows, macOS, or Linux, including the [official packages](https://www.python.org/downloads/), [Homebrew](https://brew.sh) for macOS, and the [Anaconda Distribution](https://www.anaconda.com/distribution/).  
+There are many ways to install Python 3 on Windows, macOS, or Linux, including the [official packages](https://www.python.org/downloads/), [Homebrew](https://brew.sh) for macOS, and the [Anaconda Distribution](https://www.anaconda.com/distribution/).
 Details are beyond the scope of this guide, but make sure you install Python 3.5 or higher.
 
 You may already have Python 3 installed, especially if you're on Linux.  Check by running `python3 --version`:
