@@ -312,4 +312,4 @@ As before, you can copy the resulting auspice JSON files into your auspice insta
 
 * Learn more about [creating and modifying snakemake files](../pathogen-builds/snakemake).
 
-* Fork the [TB pathogen repository on GitHub](https://github.com/nextstrain/tb), modify the Snakefile to make your own pathogen build, and view the resulting build at `https://nextstrain.org/community/<orgName>/<repoName>` for your corresponding GitHub username/org name and repository name.
+* Fork the [TB pathogen repository on GitHub](https://github.com/nextstrain/tb), modify the Snakefile to make your own pathogen build, and learn [how to publish your build on nextstrain.org](../visualisation/introduction#viewing-your-data-through-nextstrainorg).
