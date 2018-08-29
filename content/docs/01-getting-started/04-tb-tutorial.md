@@ -9,13 +9,16 @@ However, much of it will be applicable to any run where you are starting with [V
 We will first make the build step-by-step using an example data set. 
 Then we will see how to automate this stepwise process by defining a pathogen build script which contains the commands we will run below.
 
+If you haven't already worked through the [Quickstart](quickstart), you may want to back up and begin there before continuing with this tutorial.
+
 Note that we will not use all the bioinformatics commands possible with Nextstrain.
 After running this tutorial, you may want to read more about the [bioinformatics commands offered by Nextstrain](/docs/bioinformatics).
 
-If you have not already, [install augur and auspice](/docs/getting-started/installation).
+## Setup
 
-The data from this tutorial is public and is a subset of the data from Lee et al.'s 2015 paper [Population genomics of *Mycobacterium tuberculosis* in the Inuit](http://www.pnas.org/content/112/44/13609).
-As location was anonymized in the paper, location data provided here was randomly chosen from the region for illustrative purposes.
+If you have the [Nextstrain command-line interface (CLI) tool](https://github.com/nextstrain/cli) installed from following the [Quickstart](quickstart), then you're all set!
+
+Otherwise, you'll need to either [install the CLI](quickstart#set-up-your-computer) or [install the Nextstrain components](../getting-started/installation) individually.
 
 ## Build steps
 Nextstrain builds typically require the following steps:
@@ -46,6 +49,9 @@ Here, we'll follow these steps:
 
 ## Download Data
 
+The data in this tutorial is public and is a subset of the data from Lee et al.'s 2015 paper [Population genomics of *Mycobacterium tuberculosis* in the Inuit](http://www.pnas.org/content/112/44/13609).
+As location was anonymized in the paper, location data provided here was randomly chosen from the region for illustrative purposes.
+
 First, download the Tuberculosis (TB) build which includes example data and a pathogen build script.
 Then enter the directory you just cloned.
 
@@ -53,6 +59,16 @@ Then enter the directory you just cloned.
 git clone https://github.com/nextstrain/tb.git
 cd tb
 ```
+
+Next, if you're using the Nextstrain CLI tool, use it to enter the Nextstrain build environment by running:
+
+```
+nextstrain shell .
+```
+
+Note the dot (`.`) as the last argument; it is important and indicates that your current directory (`tb/`) is the build directory.
+Your command prompt will change to indicate you are in the build environment.
+(If you want to leave the build environment, run the command `exit`.)
 
 ## Prepare the Sequences
 
@@ -283,29 +299,64 @@ augur export \
     --output-meta auspice/tb_meta.json
 ```
 
-## Visualise the Results
+## Visualize the Results
 
-Copy the files to the `data` directory inside the `auspice` directory (create this folder if it does not exist). 
+If you entered the Nextstrain build environment using `nextstrain shell` at the beginning of this tutorial, leave it now using the `exit` command and then use `nextstrain view` to visualize the TB build output in `auspice/*.json`.
 
-Navigate to the `auspice` directory and use `npm run dev' to start auspice. 
+```
+# Leave the shell you entered earlier.
+exit
 
-Open a browser and navigate to [localhost:4000/local/tb](http://localhost:4000/local/tb) to visualise your run.
+# View results in your auspice/ directory.
+nextstrain view auspice/
+```
 
+If you're not using the Nextstrain CLI shell, then copy the `auspice/*.json` files into the `data` directory of your local auspice installation and start auspice from there.
+
+```
+# Copy files into auspice data directory.  Adjust
+# paths if auspice isn't installed in ~/src/auspice/.
+mkdir ~/src/auspice/data/
+cp auspice/*.json ~/src/auspice/data/
+
+# Start auspice.
+cd ~/src/auspice/data/
+npm run dev
+```
+
+Either way, navigate to <http://localhost:4000/local/tb> in your browser to view the results.
 
 ## Automate the Build with Snakemake
 
 While it is instructive to run all of the above commands manually, it is more practical to automate their execution with a single script.
-Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) by defining a `Snakefile` like the one supplied in the TB respository you cloned. 
+Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io) by defining a `Snakefile` like [the one in the TB repository you downloaded](https://github.com/nextstrain/tb/blob/master/Snakefile).
 
-To run the automated pathogen build for TB, delete the output from the manual steps above and run Snakemake.
+First delete the output from the manual steps above.
 
 ```
 rm -rf results/ auspice/
+```
+
+Then, if you're using the Nextstrain CLI tool, run:
+
+```
+nextstrain build .
+```
+
+to run the automated pathogen build.
+
+If you're not using the Nextstrain CLI tool, run:
+
+```
 snakemake
 ```
 
-This command runs all of the manual steps above up through the auspice export.
-As before, you can copy the resulting auspice JSON files into your auspice installation directory and confirm that you have produced the same TB build.
+The automated build runs all of the manual steps above up through the auspice export.
+View the results the same way you did before to confirm it produced the same TB build you made manually.
+
+Note that automated builds will only re-run steps when the data changes.
+This means builds will pick up where they left off if they are restarted after being interrupted.
+If you want to force a re-run of the whole build, first remove any previous output with `nextstrain build . clean` or `snakemake clean`.
 
 ## Next steps
 
