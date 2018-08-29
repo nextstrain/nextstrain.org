@@ -28,11 +28,10 @@ cd zika-tutorial
 
 ## Prepare the Sequences
 
-A Nextstrain build typically starts with a collection of pathogen sequences in a single FASTA file and a corresponding table of metadata describing those sequences in a tab-delimited text file.
+A Nextstrain build typically starts with a collection of pathogen sequences in a single [FASTA](https://en.wikipedia.org/wiki/FASTA_format) file and a corresponding table of metadata describing those sequences in a tab-delimited text file.
 For this tutorial, we will use an example data set with a subset of 34 viruses.
 
-The virus sequences are stored in a single [FASTA](https://en.wikipedia.org/wiki/FASTA_format) file.
-An example virus sequence record looks like the following, with the virus's strain id as the sequence name in the header line followed by the virus sequence.
+Each example virus sequence record looks like the following, with the virus's strain id as the sequence name in the header line followed by the virus sequence.
 
 ```
 >PAN/CDC_259359_V1_V3/2015
