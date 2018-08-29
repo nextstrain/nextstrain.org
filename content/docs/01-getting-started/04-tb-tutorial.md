@@ -27,19 +27,22 @@ Nextstrain builds typically require the following steps:
 However, the commands that make up each step can vary depending on your pathogen and your analysis.
 Here, we'll follow these steps:
 
-1. Prepare pathogen sequences and metadata  
-    1.1 Filter the sequences (remove unwanted sequences and/or sample sequences)  
-    1.2 Mask the sequences (exclude regions of the sequence that are unreliable)  
-2. Construct a phylogeny  
-    2.1 Construct an initial tree (to get topology)  
-    2.2 Convert this into a time-resolved tree (to get accurate branch lengths)  
-3. Annotate the phylogeny  
-    3.1 Infer ancestral sequences  
-    3.2 Translate genes and identify amino-acid changes  
-    3.3 Reconstruct ancestral states (like location or host)  
-    3.4 Identify clades on the tree  
-    3.5 Identify drug resistance mutations  
-4. Export the final results into auspice-readable format
+ 1. Prepare pathogen sequences and metadata
+    1. Filter the sequences (remove unwanted sequences and/or sample sequences)
+    2. Mask the sequences (exclude regions of the sequence that are unreliable)
+
+ 2. Construct a phylogeny
+    1. Construct an initial tree (to get topology)
+    2. Convert this into a time-resolved tree (to get accurate branch lengths)
+
+ 3. Annotate the phylogeny
+    1. Infer ancestral sequences
+    2. Translate genes and identify amino-acid changes
+    3. Reconstruct ancestral states (like location or host)
+    4. Identify clades on the tree
+    5. Identify drug resistance mutations
+
+ 4. Export the final results into auspice-readable format
 
 ## Download Data
 
