@@ -4,7 +4,7 @@ date: "2018-08-29"
 ---
 
 This tutorial explains how to create a Nextstrain build for Tuberculosis sequences.
-However, much of it will be applicable to any run where you are starting with VCF files rather than Fasta files.
+However, much of it will be applicable to any run where you are starting with VCF files rather than FASTA files.
 
 We will first make the build step-by-step using an example data set. 
 Then we will see how to automate this stepwise process by defining a pathogen build script which contains the commands we will run below.
@@ -55,7 +55,7 @@ cd tb
 
 A Nextstrain build with VCF file input starts with:
 * A VCF file containing all the sequences you want to include (variable sites only)
-* A Fasta file of the reference sequence to which your VCF was mapped
+* A FASTA file of the reference sequence to which your VCF was mapped
 * A tab-delimited metadata file _we need better info about what format this should be..._
 
 There are other files you will need if you want to perform certain steps, like masking. 
@@ -111,7 +111,7 @@ augur mask \
 
 Now our sequences are ready to start analysis. 
 
-With VCF files, we'll do this in two steps that are slightly different from Fasta-input.
+With VCF files, we'll do this in two steps that are slightly different from FASTA-input.
 1. First, we'll use only the variable sites to construct a tree quickly. This will give us the topology, but the branch lengths will be incorrect.
 2. Next, we'll consider the entire sequence to correct our branch lengths.
 At the same time, the sample date information will be used to create a time-resolved tree. 
@@ -190,7 +190,7 @@ augur ancestral \
 
 With `translate` we can identify amino acid mutations from the nucleotide mutations and a GFF file with gene coordinate annotations.
 The resulting JSON file contains amino acid mutations indexed by strain or internal node name and by gene name.
-`translate` will also produce a VCF-style file with the amino acid changes for each gene and each sequence, and Fasta file with the translated 'reference' genes which the VCF-style file 'maps' to. 
+`translate` will also produce a VCF-style file with the amino acid changes for each gene and each sequence, and FASTA file with the translated 'reference' genes which the VCF-style file 'maps' to.
 
 Because of the number of genes in TB, we will only translate some genes to save time. We can pass in a list of genes to translate (genes associated with drug resistance) using `--genes`. 
 Note that the `--reference-sequence` option is how you pass in the GFF file with the gene coordinates.

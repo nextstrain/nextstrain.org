@@ -10,7 +10,7 @@ The Nextstrain architecture consists of three components. We maintain a database
 
 ## Data Collection
 
-We maintain a database of publicly available sequences and have written a number of scripts to ingest and canonicize data from different sources. This database, which is regularly updated, allows downloading of Zika, Ebola and influenza genomes in fasta format.
+We maintain a database of publicly available sequences and have written a number of scripts to ingest and canonicize data from different sources. This database, which is regularly updated, allows downloading of Zika, Ebola and influenza genomes in FASTA format.
 
 ## Filtering
 
