@@ -11,11 +11,11 @@ If you have not already, [install augur and auspice](/docs/getting-started/insta
 
 Nextstrain builds typically require the following steps:
 
-1. prepare pathogen sequences and metadata
-2. align sequences
-3. construct a phylogeny from aligned sequences
-4. annotate the phylogeny with inferred ancestral pathogen dates, sequences, and traits
-5. export the annotated phylogeny and corresponding metadata into auspice-readable format
+1. Prepare pathogen sequences and metadata
+2. Align sequences
+3. Construct a phylogeny from aligned sequences
+4. Annotate the phylogeny with inferred ancestral pathogen dates, sequences, and traits
+5. Export the annotated phylogeny and corresponding metadata into auspice-readable format
 
 First, download the Zika pathogen build which includes example data and a pathogen build script.
 
