@@ -127,7 +127,7 @@ Now you can run `nextstrain view zika-tutorial/auspice/` to view the build resul
 
 ## Next steps
 
-* Learn more [about the Zika build](zika-tutorial).
+* Learn more [about the Zika build](zika-tutorial) or the [Tuberculosis build](tb-tutorial).
 
 * Learn more about the CLI by running `nextstrain --help` and `nextstrain <command> --help`.
 
