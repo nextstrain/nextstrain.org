@@ -1,3 +1,4 @@
+const { execFileSync } = require("child_process");
 const path = require("path");
 // const _ = require("lodash");
 const webpackLodashPlugin = require("lodash-webpack-plugin");
@@ -13,6 +14,8 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
   /* for markdown files, turn (e.g.)
    * /content/reports/01-flu-vaccine-selection/2015-september into
    * /content/reports/flu-vaccine-selection/2015-september
+   *
+   * and stash the last commit date for the benefit of templates.
    */
   if (node.internal.type === "MarkdownRemark") {
     const fileNode = getNode(node.parent);
@@ -70,6 +73,24 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
       value: post.order
     });
 
+    // Stash the commit date of the last git commit for the Markdown file.
+    // This lets our templates use it as a fallback page date when the
+    // frontmatter doesn't contain a "date" key.
+    const lastCommitDate = execFileSync(
+      "git", [
+        "log",
+        "-1",
+        "--date-order",
+        "--format=format:%cI",
+        fileNode.absolutePath],
+      { encoding: 'utf-8' }
+    );
+
+    boundActionCreators.createNodeField({
+      node,
+      name: "lastCommitDate",
+      value: lastCommitDate
+    });
   }
 };
 

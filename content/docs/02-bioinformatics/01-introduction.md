@@ -1,6 +1,5 @@
 ---
 title: "Bioinformatics Introduction"
-date: "2018-08-24"
 ---
 
 Nextstrain's bioinformatics toolkit is called __augur__.

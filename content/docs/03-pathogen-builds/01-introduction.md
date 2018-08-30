@@ -1,6 +1,5 @@
 ---
 title: "Introduction to Running Nextstrain Pathogen Builds"
-date: "2018-07-13"
 ---
 
 > Apologies, this documentation is not yet complete.

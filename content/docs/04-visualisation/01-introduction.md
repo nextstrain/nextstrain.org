@@ -1,6 +1,5 @@
 ---
 title: "Interactive Bioinformatics Visualisation using Auspice"
-date: "2018-07-13"
 ---
 
 Visualisation of bioinformatics results is an integral part of current phylodynamics, both for data exploration and communication.
