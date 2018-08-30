@@ -82,10 +82,10 @@ export default class GenericTemplate extends React.Component {
                 {showAuthor ? (
                   <div>
                     <PostAuthor>{post.author}</PostAuthor>
-                    <PostDate>{post.date}</PostDate>
+                    <PostDate>{post.date || postNode.fields.lastCommitDate}</PostDate>
                   </div>
                 ) : (
-                  <PostDate>Last modified {post.date}</PostDate>
+                  <PostDate>Last modified {post.date || postNode.fields.lastCommitDate}</PostDate>
                 )}
               </PostAuthorSurrounds>
               <PostTitle>{post.title}</PostTitle>
@@ -208,6 +208,7 @@ export const pageQuery = graphql`
       }
       fields {
         slug
+        lastCommitDate(formatString: "YYYY-MM-DD")
       }
     }
   }
