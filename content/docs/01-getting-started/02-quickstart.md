@@ -1,6 +1,5 @@
 ---
 title: Quickstart
-date: "2018-08-29"
 ---
 
 This guide uses the [Nextstrain command-line interface (CLI) tool](https://github.com/nextstrain/cli) to help you quickly get started running and viewing pathogen builds in Nextstrain with a minimum of fuss.

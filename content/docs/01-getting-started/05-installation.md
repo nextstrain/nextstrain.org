@@ -1,6 +1,5 @@
 ---
 title: "Installation"
-date: "2018-08-27"
 ---
 
 Nextstrain consists of a bioinformatics pipeline utility, `augur`, and a web application for data visualization, `auspice`.

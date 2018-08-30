@@ -1,6 +1,5 @@
 ---
 title: "Communicating results using Narratives"
-date: "2018-08-22"
 ---
 
 Narratives are a method of data-driven storytelling.

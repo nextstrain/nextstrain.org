@@ -1,6 +1,5 @@
 ---
 title: "About Nextstrain"
-date: "2018-05-13"
 ---
 
 In the course of an infection and over an epidemic, viral pathogens naturally accumulate random mutations to their genomes.

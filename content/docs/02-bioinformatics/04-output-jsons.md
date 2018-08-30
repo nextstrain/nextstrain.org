@@ -1,6 +1,5 @@
 ---
 title: "Format of JSON files exported by augur and consumed by auspice"
-date: "2018-08-29"
 ---
 
 We use JSONs as the interchange file format between Augur (the bioinformatics tooling) and Auspice (the visualisation app).

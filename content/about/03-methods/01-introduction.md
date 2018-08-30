@@ -1,6 +1,5 @@
 ---
 title: "Methods overview"
-date: "2018-05-02"
 ---
 
 ## Nextstrain Components

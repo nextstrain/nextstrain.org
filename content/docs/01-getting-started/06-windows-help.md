@@ -1,6 +1,5 @@
 ---
 title: "Help! I'm using Windows"
-date: "2018-08-27"
 ---
 
 Nextstrain documentation assumes users are running a Unix-based system like Mac OS X or Linux. 
