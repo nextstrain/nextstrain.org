@@ -1,5 +1,5 @@
 import React from "react";
-import ScrollableAnchor from 'react-scrollable-anchor';
+import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import { tweets } from "./tweets";
 import { generateTiles } from "./cards";
 import Title from "./title";
@@ -9,6 +9,11 @@ import { SmallSpacer, MediumSpacer, BigSpacer, HugeSpacer,
 import { Logos } from "../../components/logos";
 
 class Splash extends React.Component {
+  constructor() {
+    super();
+    configureAnchors({ offset: -10 });
+  }
+
   render() {
     return (
       <Styles.Container className="container">
