@@ -56,6 +56,16 @@ export default class GenericTemplate extends React.Component {
       </div>
     );
   }
+
+  renderPostDate(postNode) {
+    const date = postNode.frontmatter.date;
+    const commitDate = postNode.fields.lastCommitDate;
+
+    return date
+      ? (<PostDate>{ date }</PostDate>)
+      : (<PostDate>Last modified { commitDate }</PostDate>);
+  }
+
   render() {
     // console.log("genericTemplate props:", this.props)
     const { slug } = this.props.pathContext; /* defined by createPages */
@@ -82,10 +92,10 @@ export default class GenericTemplate extends React.Component {
                 {showAuthor ? (
                   <div>
                     <PostAuthor>{post.author}</PostAuthor>
-                    <PostDate>{post.date || postNode.fields.lastCommitDate}</PostDate>
+                    { this.renderPostDate(postNode) }
                   </div>
                 ) : (
-                  <PostDate>Last modified {post.date || postNode.fields.lastCommitDate}</PostDate>
+                  this.renderPostDate(postNode)
                 )}
               </PostAuthorSurrounds>
               <PostTitle>{post.title}</PostTitle>
