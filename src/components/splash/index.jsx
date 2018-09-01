@@ -24,7 +24,7 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <HugeSpacer />
-        <Styles.H1> Real-time tracking of virus evolution </Styles.H1>
+        <Styles.H1> Real-time tracking of pathogen evolution </Styles.H1>
         <SmallSpacer />
 
         <FlexCenter>
@@ -108,7 +108,7 @@ class Splash extends React.Component {
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
-            Nextstrain is also an open-source toolkit enabling the bioinformatics and visualization you see on this site.
+            Nextstrain provides an open-source toolkit enabling the bioinformatics and visualization you see on this site.
             Tweak our analyses and create your own using the same tools we do.
             We aim to empower the wider genomic epidemiology and public health communities.
           </Styles.CenteredFocusParagraph>
