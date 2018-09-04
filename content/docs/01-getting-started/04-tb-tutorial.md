@@ -2,21 +2,24 @@
 title: "TB Tutorial"
 ---
 
-This tutorial explains how to build a Nextstrain site for Tuberculosis sequences.
-However, much of it will be applicable to any run where you are starting with VCF files rather than Fasta files.
+This tutorial explains how to create a Nextstrain build for Tuberculosis sequences.
+However, much of it will be applicable to any run where you are starting with [VCF](https://en.wikipedia.org/wiki/Variant_Call_Format) files rather than [FASTA](https://en.wikipedia.org/wiki/FASTA_format) files.
 
-We will first build a site step-by-step using an example data set. 
+We will first make the build step-by-step using an example data set. 
 Then we will see how to automate this stepwise process by defining a pathogen build script which contains the commands we will run below.
+
+If you haven't already worked through the [Quickstart](quickstart), you may want to back up and begin there before continuing with this tutorial.
 
 Note that we will not use all the bioinformatics commands possible with Nextstrain.
 After running this tutorial, you may want to read more about the [bioinformatics commands offered by Nextstrain](/docs/bioinformatics).
 
-If you have not already, [install augur and auspice](/docs/getting-started/installation).
+## Setup
 
-The data from this tutorial is public and is a subset of the data from Lee et al.'s 2015 paper [Population genomics of *Mycobacterium tuberculosis* in the Inuit](http://www.pnas.org/content/112/44/13609).
-As location was anonymized in the paper, location data provided here was randomly chosen from the region for illustrative purposes.
+If you have the [Nextstrain command-line interface (CLI) tool](https://github.com/nextstrain/cli) installed from following the [Quickstart](quickstart), then you're all set!
 
-## Nextstrain steps
+Otherwise, you'll need to either [install the CLI](quickstart#set-up-your-computer) or [install the Nextstrain components](../getting-started/installation) individually.
+
+## Build steps
 Nextstrain builds typically require the following steps:
 * Preparing data
 * Constructing a phylogeny
@@ -26,21 +29,27 @@ Nextstrain builds typically require the following steps:
 However, the commands that make up each step can vary depending on your pathogen and your analysis.
 Here, we'll follow these steps:
 
-1. Prepare pathogen sequences and metadata  
-    1.1 Filter the sequences (remove unwanted sequences and/or sample sequences)  
-    1.2 Mask the sequences (exclude regions of the sequence that are unreliable)  
-2. Construct a phylogeny  
-    2.1 Construct an initial tree (to get topology)  
-    2.2 Convert this into a time-resolved tree (to get accurate branch lengths)  
-3. Annotate the phylogeny  
-    3.1 Infer ancestral sequences  
-    3.2 Translate genes and identify amino-acid changes  
-    3.3 Reconstruct ancestral states (like location or host)  
-    3.4 Identify clades on the tree  
-    3.5 Identify drug resistance mutations  
-4. Export the final results into auspice-readable format
+ 1. Prepare pathogen sequences and metadata
+    1. Filter the sequences (remove unwanted sequences and/or sample sequences)
+    2. Mask the sequences (exclude regions of the sequence that are unreliable)
+
+ 2. Construct a phylogeny
+    1. Construct an initial tree (to get topology)
+    2. Convert this into a time-resolved tree (to get accurate branch lengths)
+
+ 3. Annotate the phylogeny
+    1. Infer ancestral sequences
+    2. Translate genes and identify amino-acid changes
+    3. Reconstruct ancestral states (like location or host)
+    4. Identify clades on the tree
+    5. Identify drug resistance mutations
+
+ 4. Export the final results into auspice-readable format
 
 ## Download Data
+
+The data in this tutorial is public and is a subset of the data from Lee et al.'s 2015 paper [Population genomics of *Mycobacterium tuberculosis* in the Inuit](http://www.pnas.org/content/112/44/13609).
+As location was anonymized in the paper, location data provided here was randomly chosen from the region for illustrative purposes.
 
 First, download the Tuberculosis (TB) build which includes example data and a pathogen build script.
 Then enter the directory you just cloned.
@@ -50,11 +59,21 @@ git clone https://github.com/nextstrain/tb.git
 cd tb
 ```
 
+Next, if you're using the Nextstrain CLI tool, use it to enter the Nextstrain build environment by running:
+
+```
+nextstrain shell .
+```
+
+Note the dot (`.`) as the last argument; it is important and indicates that your current directory (`tb/`) is the build directory.
+Your command prompt will change to indicate you are in the build environment.
+(If you want to leave the build environment, run the command `exit`.)
+
 ## Prepare the Sequences
 
-A Nextstrain site with VCF file input starts with:
+A Nextstrain build with VCF file input starts with:
 * A VCF file containing all the sequences you want to include (variable sites only)
-* A Fasta file of the reference sequence to which your VCF was mapped
+* A FASTA file of the reference sequence to which your VCF was mapped
 * A tab-delimited metadata file _we need better info about what format this should be..._
 
 There are other files you will need if you want to perform certain steps, like masking. 
@@ -66,7 +85,7 @@ However, `augur` can take gzipped or un-gzipped VCF files.
 It can also produce either gzipped or un-gzipped VCF files as output. 
 Here, we'll usually keep our VCF files gzipped, by giving our output files endings like `.vcf.gz`, but you can specify `.vcf` instead.
 
-All the data you need to make the TB site is in the `data` and `config` folders.
+All the data you need to make the TB build is in the `data` and `config` folders.
 
 ### Filter the Sequences
 
@@ -110,7 +129,7 @@ augur mask \
 
 Now our sequences are ready to start analysis. 
 
-With VCF files, we'll do this in two steps that are slightly different from Fasta-input.
+With VCF files, we'll do this in two steps that are slightly different from FASTA-input.
 1. First, we'll use only the variable sites to construct a tree quickly. This will give us the topology, but the branch lengths will be incorrect.
 2. Next, we'll consider the entire sequence to correct our branch lengths.
 At the same time, the sample date information will be used to create a time-resolved tree. 
@@ -189,7 +208,7 @@ augur ancestral \
 
 With `translate` we can identify amino acid mutations from the nucleotide mutations and a GFF file with gene coordinate annotations.
 The resulting JSON file contains amino acid mutations indexed by strain or internal node name and by gene name.
-`translate` will also produce a VCF-style file with the amino acid changes for each gene and each sequence, and Fasta file with the translated 'reference' genes which the VCF-style file 'maps' to. 
+`translate` will also produce a VCF-style file with the amino acid changes for each gene and each sequence, and FASTA file with the translated 'reference' genes which the VCF-style file 'maps' to.
 
 Because of the number of genes in TB, we will only translate some genes to save time. We can pass in a list of genes to translate (genes associated with drug resistance) using `--genes`. 
 Note that the `--reference-sequence` option is how you pass in the GFF file with the gene coordinates.
@@ -279,29 +298,64 @@ augur export \
     --output-meta auspice/tb_meta.json
 ```
 
-## Visualise the Results
+## Visualize the Results
 
-Copy the files to the `data` directory inside the `auspice` directory (create this folder if it does not exist). 
+If you entered the Nextstrain build environment using `nextstrain shell` at the beginning of this tutorial, leave it now using the `exit` command and then use `nextstrain view` to visualize the TB build output in `auspice/*.json`.
 
-Navigate to the `auspice` directory and use `npm run dev' to start auspice. 
+```
+# Leave the shell you entered earlier.
+exit
 
-Open a browser and navigate to [localhost:4000/local/tb](http://localhost:4000/local/tb) to visualise your run.
+# View results in your auspice/ directory.
+nextstrain view auspice/
+```
 
+If you're not using the Nextstrain CLI shell, then copy the `auspice/*.json` files into the `data` directory of your local auspice installation and start auspice from there.
 
-## Snakemake
+```
+# Copy files into auspice data directory.  Adjust
+# paths if auspice isn't installed in ~/src/auspice/.
+mkdir ~/src/auspice/data/
+cp auspice/*.json ~/src/auspice/data/
+
+# Start auspice.
+cd ~/src/auspice/data/
+npm run dev
+```
+
+Either way, navigate to <http://localhost:4000/local/tb> in your browser to view the results.
+
+## Automate the Build with Snakemake
 
 While it is instructive to run all of the above commands manually, it is more practical to automate their execution with a single script.
-Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) by defining a `Snakefile` like the one supplied in the TB respository you cloned. 
+Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io) by defining a `Snakefile` like [the one in the TB repository you downloaded](https://github.com/nextstrain/tb/blob/master/Snakefile).
 
-To run the automated pathogen build for TB, delete the output from the manual steps above and run Snakemake.
+First delete the output from the manual steps above.
 
 ```
 rm -rf results/ auspice/
+```
+
+Then, if you're using the Nextstrain CLI tool, run:
+
+```
+nextstrain build .
+```
+
+to run the automated pathogen build.
+
+If you're not using the Nextstrain CLI tool, run:
+
+```
 snakemake
 ```
 
-This command runs all of the manual steps above up through the auspice export.
-As before, you can copy the resulting auspice JSON files into your auspice installation directory and confirm that you have produced the same TB site.
+The automated build runs all of the manual steps above up through the auspice export.
+View the results the same way you did before to confirm it produced the same TB build you made manually.
+
+Note that automated builds will only re-run steps when the data changes.
+This means builds will pick up where they left off if they are restarted after being interrupted.
+If you want to force a re-run of the whole build, first remove any previous output with `nextstrain build . clean` or `snakemake clean`.
 
 ## Next steps
 
@@ -311,4 +365,4 @@ As before, you can copy the resulting auspice JSON files into your auspice insta
 
 * Learn more about [creating and modifying snakemake files](../pathogen-builds/snakemake).
 
-* Fork the [TB pathogen repository on GitHub](https://github.com/nextstrain/tb), modify the Snakefile to make your own pathogen build, and view the resulting site at `https://nextstrain.org/community/<orgName>/<repoName>` for your corresponding GitHub username/org name and repository name.
+* Fork the [TB pathogen repository on GitHub](https://github.com/nextstrain/tb), modify the Snakefile to make your own pathogen build, and learn [how to publish your build on nextstrain.org](../visualisation/introduction#viewing-your-data-through-nextstrainorg).

@@ -2,19 +2,27 @@
 title: "Zika Tutorial"
 ---
 
-This tutorial explains how to build a Nextstrain site for the Zika virus.
-We will first build a site step-by-step using an example data set.
+This tutorial explains how to create a Nextstrain build for the Zika virus.
+We will first make the build step-by-step using an example data set.
 Then we will see how to automate this stepwise process by defining a pathogen build script.
 
-If you have not already, [install augur and auspice](/docs/getting-started/installation).
+If you haven't already worked through the [Quickstart](quickstart), you may want to back up and begin there before continuing with this tutorial.
+
+## Setup
+
+If you have the [Nextstrain command-line interface (CLI) tool](https://github.com/nextstrain/cli) installed from following the [Quickstart](quickstart), then you're all set!
+
+Otherwise, you'll need to either [install the CLI](quickstart#set-up-your-computer) or [install the Nextstrain components](../getting-started/installation) individually.
+
+## Build steps
 
 Nextstrain builds typically require the following steps:
 
-1. prepare pathogen sequences and metadata
-2. align sequences
-3. construct a phylogeny from aligned sequences
-4. annotate the phylogeny with inferred ancestral pathogen dates, sequences, and traits
-5. export the annotated phylogeny and corresponding metadata into auspice-readable format
+1. Prepare pathogen sequences and metadata
+2. Align sequences
+3. Construct a phylogeny from aligned sequences
+4. Annotate the phylogeny with inferred ancestral pathogen dates, sequences, and traits
+5. Export the annotated phylogeny and corresponding metadata into auspice-readable format
 
 First, download the Zika pathogen build which includes example data and a pathogen build script.
 
@@ -23,13 +31,22 @@ git clone https://github.com/nextstrain/zika-tutorial.git
 cd zika-tutorial
 ```
 
+Next, if you're using the Nextstrain CLI tool, use it to enter the Nextstrain build environment by running:
+
+```
+nextstrain shell .
+```
+
+Note the dot (`.`) as the last argument; it is important and indicates that your current directory (`zika-tutorial/`) is the build directory.
+Your command prompt will change to indicate you are in the build environment.
+(If you want to leave the build environment, run the command `exit`.)
+
 ## Prepare the Sequences
 
-A Nextstrain site typically starts with a collection of pathogen sequences in a single FASTA file and a corresponding table of metadata describing those sequences in a tab-delimited text file.
+A Nextstrain build typically starts with a collection of pathogen sequences in a single [FASTA](https://en.wikipedia.org/wiki/FASTA_format) file and a corresponding table of metadata describing those sequences in a tab-delimited text file.
 For this tutorial, we will use an example data set with a subset of 34 viruses.
 
-The virus sequences are stored in a single [FASTA](https://en.wikipedia.org/wiki/FASTA_format) file.
-An example virus sequence record looks like the following, with the virus's strain id as the sequence name in the header line followed by the virus sequence.
+Each example virus sequence record looks like the following, with the virus's strain id as the sequence name in the header line followed by the virus sequence.
 
 ```
 >PAN/CDC_259359_V1_V3/2015
@@ -200,10 +217,21 @@ augur export \
 
 ## Visualize the Results
 
-To visualize the resulting Nextstrain site, copy the auspice files into the `data` directory of your local auspice installation, start auspice, and navigate to http://localhost:4000/local/zika in your browser.
+If you entered the Nextstrain build environment using `nextstrain shell` at the beginning of this tutorial, leave it now using the `exit` command and then use `nextstrain view` to visualize the Zika build output in `auspice/*.json`.
 
 ```
-# Copy files into auspice data directory.
+# Leave the shell you entered earlier.
+exit
+
+# View results in your auspice/ directory.
+nextstrain view auspice/
+```
+
+If you're not using the Nextstrain CLI shell, then copy the `auspice/*.json` files into the `data` directory of your local auspice installation and start auspice from there.
+
+```
+# Copy files into auspice data directory.  Adjust
+# paths if auspice isn't installed in ~/src/auspice/.
 mkdir ~/src/auspice/data/
 cp auspice/*.json ~/src/auspice/data/
 
@@ -212,20 +240,39 @@ cd ~/src/auspice/data/
 npm run dev
 ```
 
+Either way, navigate to <http://localhost:4000/local/zika> in your browser to view the results.
+
 ## Automate the Build with Snakemake
 
 While it is instructive to run all of the above commands manually, it is more practical to automate their execution with a single script.
-Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) by defining a `Snakefile` like the one in the Zika pathogen code.
+Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io) by defining a `Snakefile` like [the one in the Zika repository you downloaded](https://github.com/nextstrain/zika-tutorial/blob/master/Snakefile).
 
-To run the automated pathogen build for Zika, delete the output from the manual steps above and run Snakemake.
+First delete the output from the manual steps above.
 
 ```
 rm -rf results/ auspice/
+```
+
+Then, if you're using the Nextstrain CLI tool, run:
+
+```
+nextstrain build .
+```
+
+to run the automated pathogen build.
+
+If you're not using the Nextstrain CLI tool, run:
+
+```
 snakemake
 ```
 
-This command runs all of the manual steps above up through the auspice export.
-As before, you can copy the resulting auspice JSON files into your auspice installation directory and confirm that you have produced the same Zika site.
+The automated build runs all of the manual steps above up through the auspice export.
+View the results the same way you did before to confirm it produced the same Zika build you made manually.
+
+Note that automated builds will only re-run steps when the data changes.
+This means builds will pick up where they left off if they are restarted after being interrupted.
+If you want to force a re-run of the whole build, first remove any previous output with `nextstrain build . clean` or `snakemake clean`.
 
 ## Next steps
 
@@ -235,4 +282,4 @@ As before, you can copy the resulting auspice JSON files into your auspice insta
 
 * Learn more about [creating and modifying snakemake files](../pathogen-builds/snakemake).
 
-* Fork the [Zika tutorial pathogen repository on GitHub](https://github.com/nextstrain/zika-tutorial), modify the Snakefile to make your own pathogen build, and view the resulting site at `https://nextstrain.org/community/<orgName>/<repoName>` for your corresponding GitHub username/org name and repository name.
+* Fork the [Zika tutorial pathogen repository on GitHub](https://github.com/nextstrain/zika-tutorial), modify the Snakefile to make your own pathogen build, and learn [how to publish your build on nextstrain.org](../visualisation/introduction#viewing-your-data-through-nextstrainorg).
