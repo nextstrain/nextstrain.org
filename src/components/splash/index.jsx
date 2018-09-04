@@ -1,5 +1,5 @@
 import React from "react";
-import ScrollableAnchor from 'react-scrollable-anchor';
+import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import { tweets } from "./tweets";
 import { generateTiles } from "./cards";
 import Title from "./title";
@@ -9,6 +9,11 @@ import { SmallSpacer, MediumSpacer, BigSpacer, HugeSpacer,
 import { Logos } from "../../components/logos";
 
 class Splash extends React.Component {
+  constructor() {
+    super();
+    configureAnchors({ offset: -10 });
+  }
+
   render() {
     return (
       <Styles.Container className="container">
@@ -19,12 +24,12 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <HugeSpacer />
-        <Styles.H1> Real-time tracking of virus evolution </Styles.H1>
+        <Styles.H1> Real-time tracking of pathogen evolution </Styles.H1>
         <SmallSpacer />
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
-            Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at hello<span style={{display: "none"}}>obfuscate</span>@nextstrain.org.
+            Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data alongside powerful analytic and visualization tools for use by the community. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at hello<span style={{display: "none"}}>obfuscate</span>@nextstrain.org.
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 
@@ -93,6 +98,29 @@ class Splash extends React.Component {
             </Styles.FocusParagraph>
           </div>
         </div>
+
+        {/* Bioinformatics toolkit */}
+        <HugeSpacer/>
+
+        <ScrollableAnchor id={'tools'}>
+          <Styles.H1>A bioinformatics and data viz toolkit</Styles.H1>
+        </ScrollableAnchor>
+
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph>
+            Nextstrain provides an open-source toolkit enabling the bioinformatics and visualization you see on this site.
+            Tweak our analyses and create your own using the same tools we do.
+            We aim to empower the wider genomic epidemiology and public health communities.
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter>
+
+        <BigSpacer/>
+
+        <FlexCenter>
+          <Styles.Button to="docs">
+            Read the documentation
+          </Styles.Button>
+        </FlexCenter>
 
         <Line style={{margin: "30px 0px 10px 0px"}}/>
 
