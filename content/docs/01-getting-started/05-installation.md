@@ -41,9 +41,13 @@ brew install fasttree iqtree mafft raxml vcftools
 
 #### Install augur dependencies on Linux
 
+On Ubuntu, you can use `apt` to install the required packages:
+
 ```
-apt-get install fasttree iqtree mafft raxml vcftools
+sudo apt install fasttree iqtree mafft raxml vcftools
 ```
+
+Other Linux distributions will likely have the same packages available, although the names may differ slightly.
 
 ### Install augur with Conda
 
