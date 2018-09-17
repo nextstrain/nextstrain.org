@@ -41,6 +41,12 @@ Note the dot (`.`) as the last argument; it is important and indicates that your
 Your command prompt will change to indicate you are in the build environment.
 (If you want to leave the build environment, run the command `exit`.)
 
+If you installed Nextstrain components [using Conda](../getting-started/installation#install-augur-with-conda) remember to activate your environment with:
+
+```
+conda activate nextstrain
+```
+
 ## Prepare the Sequences
 
 A Nextstrain build typically starts with a collection of pathogen sequences in a single [FASTA](https://en.wikipedia.org/wiki/FASTA_format) file and a corresponding table of metadata describing those sequences in a tab-delimited text file.
@@ -228,19 +234,28 @@ nextstrain view auspice/
 ```
 
 If you're not using the Nextstrain CLI shell, then copy the `auspice/*.json` files into the `data` directory of your local auspice installation and start auspice from there.
+You can use the commands below (adjusted if necessary), or copy them using a graphical file explorer.
 
 ```
 # Copy files into auspice data directory.  Adjust
 # paths if auspice isn't installed in ~/src/auspice/.
 mkdir ~/src/auspice/data/
 cp auspice/*.json ~/src/auspice/data/
+```
+
+Then enter your `auspice` directry and start auspice.
+
+```
+# Navigate into auspice.
+cd ~/src/auspice/data/
 
 # Start auspice.
-cd ~/src/auspice/data/
 npm run dev
 ```
 
-Either way, navigate to <http://localhost:4000/local/zika> in your browser to view the results.
+When auspice is running, navigate to <http://localhost:4000/local/zika> in your browser to view the results.
+
+To stop auspice and return to the command line when you are done viewing your data, press CTRL+C.
 
 ## Automate the Build with Snakemake
 
@@ -248,6 +263,7 @@ While it is instructive to run all of the above commands manually, it is more pr
 Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io) by defining a `Snakefile` like [the one in the Zika repository you downloaded](https://github.com/nextstrain/zika-tutorial/blob/master/Snakefile).
 
 First delete the output from the manual steps above.
+Be sure to navigate into the `zika-tutorial` directory first.
 
 ```
 rm -rf results/ auspice/
