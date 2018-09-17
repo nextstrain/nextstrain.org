@@ -19,15 +19,6 @@ If you have the [Nextstrain command-line interface (CLI) tool](https://github.co
 
 Otherwise, you'll need to either [install the CLI](quickstart#set-up-your-computer) or [install the Nextstrain components](../getting-started/installation) individually.
 
-For VCF-file input, you also need [VCFTools](https://vcftools.github.io/).
-If you are running Ubuntu (including on Windows), you can install this with the command:
-
-```
-sudo apt-get install vcftools
-```
-
-Otherwise, you can download and build VCFTools using the [Build from Github](https://github.com/vcftools/vcftools#build-from-github) instructions.
-
 ## Build steps
 Nextstrain builds typically require the following steps:
 * Preparing data
