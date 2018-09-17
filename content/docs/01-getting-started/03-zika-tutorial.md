@@ -41,7 +41,7 @@ Note the dot (`.`) as the last argument; it is important and indicates that your
 Your command prompt will change to indicate you are in the build environment.
 (If you want to leave the build environment, run the command `exit`.)
 
-If you installed Nextstrain components [using Conda](../getting-started/installation#install-augur-with-conda) remember to activate your environment with:
+If instead you installed Nextstrain components [using Conda](../getting-started/installation#install-augur-with-conda), remember to activate your environment by running:
 
 ```
 conda activate nextstrain
@@ -263,7 +263,7 @@ While it is instructive to run all of the above commands manually, it is more pr
 Nextstrain implements these automated pathogen builds with [Snakemake](https://snakemake.readthedocs.io) by defining a `Snakefile` like [the one in the Zika repository you downloaded](https://github.com/nextstrain/zika-tutorial/blob/master/Snakefile).
 
 First delete the output from the manual steps above.
-Be sure to navigate into the `zika-tutorial` directory first.
+(Be sure to navigate into the `zika-tutorial/` directory first.)
 
 ```
 rm -rf results/ auspice/
