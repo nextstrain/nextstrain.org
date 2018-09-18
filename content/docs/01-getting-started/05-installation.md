@@ -36,14 +36,18 @@ To run augur, you also need to install the following dependencies.
 If you do not have the `brew` command, [download and install the latest version of Homebrew](https://brew.sh/).
 
 ```
-brew install fasttree iqtree mafft raxml
+brew install fasttree iqtree mafft raxml vcftools
 ```
 
 #### Install augur dependencies on Linux
 
+On Ubuntu, you can use `apt` to install the required packages:
+
 ```
-apt-get install fasttree iqtree mafft raxml
+sudo apt install fasttree iqtree mafft raxml vcftools
 ```
+
+Other Linux distributions will likely have the same packages available, although the names may differ slightly.
 
 ### Install augur with Conda
 
