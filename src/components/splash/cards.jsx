@@ -54,7 +54,7 @@ const cards = [
   },
   {
     img: "tb.jpg",
-    url: "/tb",
+    url: "/tb/global",
     title: "Tuberculosis"
   }
 ];
