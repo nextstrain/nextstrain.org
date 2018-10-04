@@ -176,7 +176,11 @@ class Splash extends React.Component {
               <a href="https://phil.cdc.gov/Details.aspx?pid=1874">Mumps</a>
               {` by the CDC, `}
               <a href="http://www.tau.ac.il/lifesci/departments/biotech/members/rozenblatt/fig3.html">Measles</a>
-              {` by Shmuel Rozenblatt.`}
+              {` by Shmuel Rozenblatt, `}
+              <a href="https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1003240#s5">Enterovirus</a>
+              {` by Shingler `}<i>et al., </i>
+              <a href="https://pixnio.com/science/microscopy-images/ralstonia-mannitolilytica-bacteria/gram-positive-mycobacterium-tuberculosis-bacteria-2">Tuberculosis</a>
+              {` by Ray Butler.`}
             </Styles.FooterParagraph>
           </div>
         </div>

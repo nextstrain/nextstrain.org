@@ -46,6 +46,16 @@ const cards = [
     img: "measles.jpg",
     url: "/measles",
     title: "Measles"
+  },
+  {
+    img: "enterovirus.jpg",
+    url: "/enterovirus/d68",
+    title: "Enterovirus D68"
+  },
+  {
+    img: "tb.jpg",
+    url: "/tb/global",
+    title: "Tuberculosis"
   }
 ];
 
