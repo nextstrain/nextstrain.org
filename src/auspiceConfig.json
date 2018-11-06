@@ -1,0 +1,3 @@
+{
+  "server": "./auspiceServerHandlers/index.js"
+}
