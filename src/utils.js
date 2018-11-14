@@ -43,10 +43,22 @@ const fetchJSON = (path) => {
   return p;
 };
 
+const printStackTrace = (err) => {
+  if (err.stack) {
+    warn('Stacktrace:');
+    console.log('====================');
+    console.log(err.stack);
+    console.log('====================');
+  } else {
+    warn("No available stacktrace");
+  }
+};
+
 module.exports = {
   getGitHash,
   verbose,
   log,
   warn,
-  fetchJSON
+  fetchJSON,
+  printStackTrace
 };
