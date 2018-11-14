@@ -205,6 +205,7 @@ augur translate \
 ## Export the Results
 
 Finally, collect all node annotations and metadata and export it all in auspice’s JSON format.
+This refers to three config files to define colors via `config/colors.tsv`, lat/long coordinates via `config/lat_longs.tsv` and page title, maintainer, filters present, etc... via `config/auspice_config.json`.
 The resulting tree and metadata JSON files are the inputs to the auspice visualization tool.
 
 ```
@@ -216,6 +217,7 @@ augur export \
               results/nt_muts.json \
               results/aa_muts.json \
   --colors config/colors.tsv \
+  --lat-longs config/lat_longs.tsv \
   --auspice-config config/auspice_config.json \
   --output-tree auspice/zika_tree.json \
   --output-meta auspice/zika_meta.json
