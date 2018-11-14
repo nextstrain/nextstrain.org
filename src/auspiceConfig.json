@@ -9,5 +9,6 @@
     "unselectedColor": "#333",
     "unselectedBackground": "#888"
   },
-  "navbarComponent": "navbar.js"
+  "navbarComponent": "navbar.js",
+  "browserTitle": "nextstrain"
 }
