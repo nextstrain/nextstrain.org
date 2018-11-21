@@ -1,5 +1,5 @@
 const queryString = require("query-string");
-const utils = require("../utils");
+const utils = require("../client/utils");
 const helpers = require("./getDatasetHelpers");
 
 

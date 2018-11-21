@@ -9,16 +9,6 @@ function errorFound {
 # TRAPS
 trap 'errorFound $LINENO' ERR
 
-echo "Fetching auspice"
-curl https://s3.amazonaws.com/nextstrain-bundles/auspice.tar.gz --output auspice.tar.gz
-
-echo "Uncompressing auspice"
-if [ -d "auspice" ]; then
-  rm -rf auspice
-fi
-mkdir auspice
-tar -xzvf auspice.tar.gz -C auspice/
-
 echo "Fetching static"
 curl https://s3.amazonaws.com/nextstrain-bundles/static.tar.gz --output static.tar.gz
 

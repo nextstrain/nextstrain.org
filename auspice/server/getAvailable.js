@@ -1,4 +1,4 @@
-const utils = require("../utils");
+const utils = require("../client/utils");
 const queryString = require("query-string");
 
 /* Note that global.availableDatasets & global.availableNarratives exist */

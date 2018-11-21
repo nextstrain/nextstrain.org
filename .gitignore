@@ -1,11 +1,10 @@
 # repositories that will be checked in #
-auspice/
 static/
-auspice.tar.gz
 static.tar.gz
 
-# build server #
-server.transpiled.js
+# auspice build
+auspice/index.html
+auspice/dist/
 
 # misc #
 .DS_Store

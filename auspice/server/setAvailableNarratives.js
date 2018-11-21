@@ -1,4 +1,4 @@
-const utils = require("../utils");
+const utils = require("../client/utils");
 const fetch = require('node-fetch');
 
 /* See comment at top of "setAvailableDatasets.js" */
