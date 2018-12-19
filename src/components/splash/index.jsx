@@ -47,7 +47,7 @@ class Splash extends React.Component {
         <div className="row">
           <div className="col-md-1" />
           <div className="col-md-10">
-            <Styles.H1>Explore viruses</Styles.H1>
+            <Styles.H1>Explore pathogens</Styles.H1>
             <MediumSpacer />
             {generateTiles()}
           </div>
@@ -69,9 +69,9 @@ class Splash extends React.Component {
         <div className="row">
           <div className="col-md-6">
             <BigSpacer/>
-            <Styles.H2>Viral Phylogenies</Styles.H2>
+            <Styles.H2>Pathogen Phylogenies</Styles.H2>
             <Styles.FocusParagraph>
-              In the course of an infection and over an epidemic, viral pathogens naturally accumulate random mutations to their genomes. This is an inevitable consequence of error-prone viral replication. Since different viruses typically pick up different mutations, mutations can be used as a marker of transmission in which closely related viral genomes indicate closely related infections. By reconstructing a viral <i>phylogeny</i> we can learn about important epidemiological phenomena such as spatial spread, introduction timings and epidemic growth rate.
+              In the course of an infection and over an epidemic, pathogens naturally accumulate random mutations to their genomes. This is an inevitable consequence of error-prone genome replication. Since different genomes typically pick up different mutations, mutations can be used as a marker of transmission in which closely related genomes indicate closely related infections. By reconstructing a <i>phylogeny</i> we can learn about important epidemiological phenomena such as spatial spread, introduction timings and epidemic growth rate.
             </Styles.FocusParagraph>
           </div>
           <div className="col-md-6">
