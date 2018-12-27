@@ -78,7 +78,7 @@ class Splash extends React.Component {
             <BigSpacer/>
             <Styles.H2>Actionable Inferences</Styles.H2>
             <Styles.FocusParagraph>
-              However, if viral genome sequences are going to inform public health interventions, then analyses have to be rapidly conducted and results widely disseminated. Current scientific publishing practices hinder the rapid dissemination of epidemiologically relevant results. We thought an open online system that implements robust bioinformatic pipelines to synthesize data from across research groups has the best capacity to make epidemiologically actionable inferences.
+              However, if pathogen genome sequences are going to inform public health interventions, then analyses have to be rapidly conducted and results widely disseminated. Current scientific publishing practices hinder the rapid dissemination of epidemiologically relevant results. We thought an open online system that implements robust bioinformatic pipelines to synthesize data from across research groups has the best capacity to make epidemiologically actionable inferences.
             </Styles.FocusParagraph>
           </div>
         </div>
@@ -87,7 +87,7 @@ class Splash extends React.Component {
             <BigSpacer/>
             <Styles.H2>This Website</Styles.H2>
             <Styles.FocusParagraph>
-              This website aims to provide a <i>real-time</i> snapshot of evolving viral populations and to provide interactive data visualizations to virologists, epidemiologists, public health officials and citizen scientists. Through interactive data visualizations, we aim to allow exploration of continually up-to-date datasets, providing a novel surveillance tool to the scientific and public health communities.
+              This website aims to provide a <i>real-time</i> snapshot of evolving pathogen populations and to provide interactive data visualizations to virologists, epidemiologists, public health officials and citizen scientists. Through interactive data visualizations, we aim to allow exploration of continually up-to-date datasets, providing a novel surveillance tool to the scientific and public health communities.
             </Styles.FocusParagraph>
           </div>
           <div className="col-md-6">
