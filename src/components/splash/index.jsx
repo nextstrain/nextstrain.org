@@ -47,7 +47,7 @@ class Splash extends React.Component {
         <div className="row">
           <div className="col-md-1" />
           <div className="col-md-10">
-            <Styles.H1>Explore viruses</Styles.H1>
+            <Styles.H1>Explore pathogens</Styles.H1>
             <MediumSpacer />
             {generateTiles()}
           </div>
@@ -69,16 +69,16 @@ class Splash extends React.Component {
         <div className="row">
           <div className="col-md-6">
             <BigSpacer/>
-            <Styles.H2>Viral Phylogenies</Styles.H2>
+            <Styles.H2>Pathogen Phylogenies</Styles.H2>
             <Styles.FocusParagraph>
-              In the course of an infection and over an epidemic, viral pathogens naturally accumulate random mutations to their genomes. This is an inevitable consequence of error-prone viral replication. Since different viruses typically pick up different mutations, mutations can be used as a marker of transmission in which closely related viral genomes indicate closely related infections. By reconstructing a viral <i>phylogeny</i> we can learn about important epidemiological phenomena such as spatial spread, introduction timings and epidemic growth rate.
+              In the course of an infection and over an epidemic, pathogens naturally accumulate random mutations to their genomes. This is an inevitable consequence of error-prone genome replication. Since different genomes typically pick up different mutations, mutations can be used as a marker of transmission in which closely related genomes indicate closely related infections. By reconstructing a <i>phylogeny</i> we can learn about important epidemiological phenomena such as spatial spread, introduction timings and epidemic growth rate.
             </Styles.FocusParagraph>
           </div>
           <div className="col-md-6">
             <BigSpacer/>
             <Styles.H2>Actionable Inferences</Styles.H2>
             <Styles.FocusParagraph>
-              However, if viral genome sequences are going to inform public health interventions, then analyses have to be rapidly conducted and results widely disseminated. Current scientific publishing practices hinder the rapid dissemination of epidemiologically relevant results. We thought an open online system that implements robust bioinformatic pipelines to synthesize data from across research groups has the best capacity to make epidemiologically actionable inferences.
+              However, if pathogen genome sequences are going to inform public health interventions, then analyses have to be rapidly conducted and results widely disseminated. Current scientific publishing practices hinder the rapid dissemination of epidemiologically relevant results. We thought an open online system that implements robust bioinformatic pipelines to synthesize data from across research groups has the best capacity to make epidemiologically actionable inferences.
             </Styles.FocusParagraph>
           </div>
         </div>
@@ -87,7 +87,7 @@ class Splash extends React.Component {
             <BigSpacer/>
             <Styles.H2>This Website</Styles.H2>
             <Styles.FocusParagraph>
-              This website aims to provide a <i>real-time</i> snapshot of evolving viral populations and to provide interactive data visualizations to virologists, epidemiologists, public health officials and citizen scientists. Through interactive data visualizations, we aim to allow exploration of continually up-to-date datasets, providing a novel surveillance tool to the scientific and public health communities.
+              This website aims to provide a <i>real-time</i> snapshot of evolving pathogen populations and to provide interactive data visualizations to virologists, epidemiologists, public health officials and citizen scientists. Through interactive data visualizations, we aim to allow exploration of continually up-to-date datasets, providing a novel surveillance tool to the scientific and public health communities.
             </Styles.FocusParagraph>
           </div>
           <div className="col-md-6">
