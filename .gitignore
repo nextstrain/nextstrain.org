@@ -1,4 +1,4 @@
-# repositories that will be checked in #
+# static currently obtained via S3
 static/
 static.tar.gz
 
@@ -10,3 +10,4 @@ auspice/dist/
 .DS_Store
 node_modules/
 npm-debug.log
+scratch

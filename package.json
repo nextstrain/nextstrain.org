@@ -12,11 +12,11 @@
     "npm": "6.2.x"
   },
   "scripts": {
-    "fetch-bundles": "./fetch-bundles.sh",
+    "set-up": "./set-up.sh",
     "server": "node server.js",
     "start": "npm run server",
     "redeploy-site": "./redeploy-site.sh",
-    "heroku-postbuild": "npm run fetch-bundles"
+    "heroku-postbuild": "npm run set-up"
   },
   "dependencies": {
     "argparse": "^1.0.10",
