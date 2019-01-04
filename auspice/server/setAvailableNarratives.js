@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 
 /* See comment at top of "setAvailableDatasets.js" */
 
-// SET AVAILABLE NARRATIVES AS GLOBAL
+// SIDE EFFECT: sets global.availableNarratives
 global.availableNarratives = {};
 try {
   (() => new Promise((resolve, reject) => {

@@ -11,7 +11,7 @@ const splitPrefixIntoParts = (url) => url
   .replace(/\/$/, '')
   .split("/");
 
-/* nextstrain.org only considers two sources: "live" and "staging" */
+/* nextstrain.org only considers three sources: "live", "staging" and "community" */
 const decideSourceFromPrefix = (prefix) => {
   let parts = splitPrefixIntoParts(prefix);
   if (parts[0] === "status") {
@@ -19,6 +19,9 @@ const decideSourceFromPrefix = (prefix) => {
   }
   if (parts[0] === "staging") {
     return "staging";
+  }
+  if (parts[0] === "community") {
+    return "community";
   }
   return "live";
 };
@@ -100,19 +103,23 @@ const parsePrefix = (source, prefix, otherQueries) => {
   }
 
   /* build the auspice display & server fetch URLs */
-  const fetchPrefix = source === "staging" ? "http://staging.nextstrain.org" : "http://data.nextstrain.org";
-  const auspicePrefixParts = prefixParts.slice();
+  const fetchPrefix =
+    source === "staging" ? "http://staging.nextstrain.org" :
+      source === "community" ? `https://raw.githubusercontent.com/${prefixParts[1]}/${prefixParts[2]}/master/auspice` :
+        "http://data.nextstrain.org";
+  auspiceDisplayUrl += prefixParts.join("/");
+  const auspicePrefixParts = source === "community" ? prefixParts.slice(2) : prefixParts.slice();
   if (secondTreeName) {
-    const idxOfTree = prefixParts.indexOf(treeName);
-    const secondTreePrefixParts = prefixParts.slice();
+    const idxOfTree = auspicePrefixParts.indexOf(treeName);
+    const secondTreePrefixParts = auspicePrefixParts.slice();
     secondTreePrefixParts[idxOfTree] = secondTreeName;
     fetchUrls.secondTree = `${fetchPrefix}/${secondTreePrefixParts.join("_")}_tree.json`;
-    auspicePrefixParts[idxOfTree] = `${treeName}:${secondTreeName}`;
+    // auspicePrefixParts[idxOfTree] = `${treeName}:${secondTreeName}`;
+    auspiceDisplayUrl = auspiceDisplayUrl.replace(`/${treeName}/`, `/${treeName}:${secondTreeName}/`);
   }
-  auspiceDisplayUrl += auspicePrefixParts.join("/");
 
-  fetchUrls.tree = `${fetchPrefix}/${prefixParts.join("_")}_tree.json`;
-  fetchUrls.meta = `${fetchPrefix}/${prefixParts.join("_")}_meta.json`;
+  fetchUrls.tree = `${fetchPrefix}/${auspicePrefixParts.join("_")}_tree.json`;
+  fetchUrls.meta = `${fetchPrefix}/${auspicePrefixParts.join("_")}_meta.json`;
 
   if (otherQueries.type) {
     fetchUrls.additional = `${fetchPrefix}/${prefixParts.join("_")}_${otherQueries.type}.json`;

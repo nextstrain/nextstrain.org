@@ -47,11 +47,13 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
     .map((fileParts) => ({request: fileParts.join("/")}));
 };
 
-/* We need to get lists of files available...
-Option 1: crawl the directories (S3? local?)
-Option 2: fetch pre-generated files
-For option 2, we'd have to periodically update this... or have a API trigger
-*/
+/* setAvailableDatasetsFromManifest
+ * Collect available datasets by fetching the manifest JSON
+ * and parsing it.
+ * In the future this may be done by crawling the S3 bucket
+ *
+ * SIDE EFFECT: sets global.availableDatasets
+ */
 const setAvailableDatasetsFromManifest = async () => {
   utils.verbose("Fetching manifests for live & staging");
   /* LIVE */
