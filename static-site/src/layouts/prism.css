@@ -1,0 +1,165 @@
+/* mostly copied from reactjs.org */
+
+:root {
+  --lineHighlight: #14161a;
+  --keyword: #c5a5c5;
+  --char: #D8DEE9;
+  --comment: #999999;
+  --keyword: #c5a5c5;
+  --lineHighlight: #14161a;
+  --primitive: #5a9bcf;
+  --string: #8dc891;
+  --variable: #d7deea;
+  --boolean: #ff8b50;
+  --punctuation: #5FB3B3;
+  --tag: #fc929e;
+  --function: #79b6f2;
+  --className: #FAC863;
+  --method: #6699CC;
+  --operator: #fc929e;
+}
+
+
+p > code, li > code {
+  background: #E9F2F6;
+  font-weight: 100;
+  font-size: 0.9em;
+}
+
+pre, code {
+  font-family: 'Fira Mono', 'Menlo', monospace;
+}
+
+blockquote {
+  background: rgba(255,229,100,0.3);
+  border-left-color: #ffe564;
+  border-left-width: 9px;
+  border-left-style: solid;
+  padding: 1px 45px 10px 26px;
+  margin-bottom: 30;
+  margin-top: 20;
+  margin-left: -30;
+  margin-right: -30;
+}
+
+/* this class is the code blocks */
+.gatsby-highlight {
+  background: #F6F6F6;
+  color: #000;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 10px;
+  overflow: auto;
+  tab-size: 1.5em;
+  font-size: 0.9em;
+  border: 1px solid #E2E2E2;
+}
+
+.gatsby-highlight code[class*="gatsby-code-"],
+.gatsby-highlight pre[class*="gatsby-code-"],
+.gatsby-highlight pre.prism-code {
+  height: auto !important;
+  margin: 1rem;
+  font-size: 18px;
+  line-height: 20px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.gatsby-highlight + .gatsby-highlight {
+  margin-top: 20px;
+}
+
+.gatsby-highlight-code-line {
+  background-color: var(--lineHighlight);
+  display: block;
+  margin: -0.125rem calc(-1rem - 15px);
+  padding: 0.125rem calc(1rem + 15px);
+}
+
+.token.attr-name {
+  color: var(--keyword);
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--comment);
+}
+
+.token.property,
+.token.number,
+.token.function-name,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--primitive);
+}
+
+.token.boolean {
+  color: var(--boolean);
+}
+
+.token.tag {
+  color: var(--tag);
+}
+
+.token.string {
+  color: var(--string);
+}
+
+.token.punctuation {
+  color: var(--punctuation);
+}
+
+.token.selector,
+.token.char,
+.token.builtin,
+.token.inserted` {
+  color: var(--char);
+}
+
+.token.function {
+  color: var(--function);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.token.variable {
+  color: var(--variable);
+}
+
+.token.attr-value {
+  color: var(--string);
+}
+
+.token.keyword {
+  color: var(--keyword);
+}
+
+.token.atrule,
+.token.class-name {
+  color: var(--className);
+}
+
+.token.important {
+  font-weight: 400,
+}
+
+.token.bold {
+  font-weight: 700,
+}
+.token.italic {
+  font-style: italic,
+}
+
+.token.entity {
+  cursor: help,
+}
+
+.namespace {
+  opacity: 0.7,
+}
