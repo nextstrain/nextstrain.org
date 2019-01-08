@@ -28,9 +28,7 @@
     "lint:md": "remark content/posts/",
     "write-good": "write-good $(glob 'content/posts/**/*.md')",
     "format:js": "prettier '**/*.{js,jsx}' --write",
-    "heroku-postbuild": "gatsby build",
-    "redeploy-site": "./redeploy-site.sh",
-    "gzip-and-upload": "./gzip-and-upload.sh"
+    "heroku-postbuild": "gatsby build"
   },
   "dependencies": {
     "babel-plugin-lodash": "^3.2.11",

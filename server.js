@@ -41,10 +41,10 @@ app.use(require('express-naked-redirect')({reverse: true})); // redirect www.nex
 // app.use((req, res, next) => {console.log("LOG REQUEST  ", req.originalUrl); next();});
 
 /* A portion of nextstrain.org is a "static" website build with gatsby
- * It is sourced from this repo: https://github.com/nextstrain/static
- * and it is available from the (gitignored) directory "./static/public"
+ * This is ./static-site, with it's own package.json etc
+ * ./static-site/public contains the built files we need serve
  */
-app.use(express.static(path.join(__dirname, "static", "public")));
+app.use(express.static(path.join(__dirname, "static-site", "public")));
 const gatsbyRoutes = [
   "/",
   "/about*",
@@ -56,7 +56,7 @@ const gatsbyRoutes = [
 ];
 app.get(gatsbyRoutes, (req, res) => {
   utils.verbose(`Sending ${req.originalUrl} to gatsby as it matches a (hardcoded) gatsby route`);
-  res.sendFile(path.join(__dirname, "static", "public", "index.html"));
+  res.sendFile(path.join(__dirname, "static-site", "public", "index.html"));
 });
 
 
@@ -94,7 +94,6 @@ const server = app.listen(app.get('port'), () => {
   console.log(nextstrainAbout);
   console.log(`  Server listening on port ${server.address().port}`);
   console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`)
-  console.log(`  Static content is prebuilt (using gatsby) and stored here.`);
   console.log(`  Auspice datasets are sourced from S3 buckets.`);
   console.log("\n-----------------------------------\n\n");
 });
