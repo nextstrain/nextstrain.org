@@ -59,11 +59,7 @@ export default class GenericTemplate extends React.Component {
 
   renderPostDate(postNode) {
     const date = postNode.frontmatter.date;
-    const commitDate = postNode.fields.lastCommitDate;
-
-    return date
-      ? (<PostDate>{ date }</PostDate>)
-      : (<PostDate>Last modified { commitDate }</PostDate>);
+    return (<PostDate>{ date ? date : "" }</PostDate>);
   }
 
   render() {
@@ -218,7 +214,6 @@ export const pageQuery = graphql`
       }
       fields {
         slug
-        lastCommitDate(formatString: "YYYY-MM-DD")
       }
     }
   }

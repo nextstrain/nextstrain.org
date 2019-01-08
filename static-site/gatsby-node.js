@@ -73,24 +73,6 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
       value: post.order
     });
 
-    // Stash the commit date of the last git commit for the Markdown file.
-    // This lets our templates use it as a fallback page date when the
-    // frontmatter doesn't contain a "date" key.
-    const lastCommitDate = execFileSync(
-      "git", [
-        "log",
-        "-1",
-        "--date-order",
-        "--format=format:%cI",
-        fileNode.absolutePath],
-      { encoding: 'utf-8' }
-    );
-
-    boundActionCreators.createNodeField({
-      node,
-      name: "lastCommitDate",
-      value: lastCommitDate
-    });
   }
 };
 
