@@ -1,13 +1,13 @@
-# repositories that will be checked in #
-auspice/
+# static currently obtained via S3
 static/
-auspice.tar.gz
 static.tar.gz
 
-# build server #
-server.transpiled.js
+# auspice build
+auspice/index.html
+auspice/dist/
 
 # misc #
 .DS_Store
 node_modules/
 npm-debug.log
+scratch

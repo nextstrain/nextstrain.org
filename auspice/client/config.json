@@ -1,0 +1,13 @@
+{
+  "sidebarTheme": {
+    "background": "#F2F2F2",
+    "color": "#000",
+    "sidebarBoxShadow": "rgba(0, 0, 0, 0.2)",
+    "font-family": "Lato, Helvetica Neue, Helvetica, sans-serif",
+    "selectedColor": "#5097BA",
+    "unselectedColor": "#333",
+    "unselectedBackground": "#888"
+  },
+  "navbarComponent": "navbar.js",
+  "browserTitle": "nextstrain"
+}

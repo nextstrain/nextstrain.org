@@ -2,10 +2,12 @@ language: node_js
 sudo: false
 node_js:
   - "9"
+python:
+  - "2.7"
 install:
   - npm install
 script:
-  - npm run fetch-bundles
+  - npm run set-up
 after_success:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
       npm run redeploy-site
