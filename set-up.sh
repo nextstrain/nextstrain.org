@@ -20,29 +20,7 @@ cd ..
 
 ##############################################################
 echo "Step 2: Building a customised version of auspice"
-
-if command -v auspice; then
-  echo -e "\tGlobally installed auspice found at $(command -v auspice)"
-else
-  echo -e "\tInstalling auspice from source as the extend version is not yet in master and therefore not on NPM"
-  # installing auspice into the gitignored scratch directory as the directory "auspice" already exists
-  if [ ! -d "scratch" ]; then
-    mkdir scratch
-  fi
-  cd scratch
-  if [ ! -d "auspice" ]; then
-    git clone https://github.com/nextstrain/auspice.git
-  fi
-  cd auspice
-  git checkout extend     # remove after auspice PR #688 is merged
-  npm install             # install dependencies
-  npm install --only=dev  # needed for heroku
-  npm install -g .        # make "auspice" available globally
-  cd ../..
-  auspice --version       # ensure auspice is available
-fi
-
-echo -e "\tBuilding auspice with nextstrain.org extensions (for the client)"
+npm install --global auspice@^1.35.2
 cd auspice
 auspice build --verbose --extend ./client/config.json
 cd ..

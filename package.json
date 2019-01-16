@@ -26,14 +26,11 @@
     "express-naked-redirect": "^0.1.2",
     "express-static-gzip": "^0.2.2",
     "heroku-ssl-redirect": "0.0.4",
-    "query-string": "^4.2.3",
     "marked": "^0.5.0",
     "node-fetch": "^2.1.2",
-    "yaml-front-matter": "^4.0.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-markdown": "^2.5.0",
-    "serve-favicon": "^2.5.0"
+    "query-string": "^4.2.3",
+    "serve-favicon": "^2.5.0",
+    "yaml-front-matter": "^4.0.0"
   },
   "devDependencies": {
     "eslint": "^5.3.0",

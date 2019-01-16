@@ -23,9 +23,8 @@ Note that this site is build and uploaded to a S3 bucket whenever it's master br
 The script `npm run set-up` will build nextstrain.org locally.
 It carries out these tasks:
 1. Fetch the pre-build static site from S3 -- this populates the gitignored `./static/` directory. 
-1. Install auspice globally
+1. Install auspice (as a npm global package)
 1. Build auspice -- creates `./auspice/dist/*` and `./auspice/index.html`
-
 
 
 To run nextstrain.org locally
@@ -53,7 +52,7 @@ auspice develop --verbose --extend ./client/config.json --handlers ./server/inde
 ```
 Note that the auspice development mode uses the auspice splash page which won't be shown in production.
 This is because the nextstrain.org server (see above) uses the splash page of the static content, but the auspice dev server doesn't.
-The advantage of `auspice develop` mode is that the client will live update as you edit the source code.
+The advantage of `auspice develop` mode is that the client will live update as you edit the coustomisations.
 
 
 
