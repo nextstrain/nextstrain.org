@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const queryString = require("query-string");
-const utils = require("../client/utils");
+const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const parseNarrative = require('./parseNarrative').default;
 

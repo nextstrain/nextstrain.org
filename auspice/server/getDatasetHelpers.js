@@ -1,4 +1,4 @@
-const utils = require("../client/utils");
+const utils = require("./utils");
 
 const handleError = (res, clientMsg, serverMsg="") => {
   res.statusMessage = clientMsg;

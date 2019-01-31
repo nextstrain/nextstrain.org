@@ -6,7 +6,7 @@ const expressStaticGzip = require("express-static-gzip");
 const favicon = require('serve-favicon');
 const compression = require('compression');
 const argparse = require('argparse');
-const utils = require("./auspice/client/utils");
+const utils = require("./auspice/server/utils");
 const auspiceServerHandlers = require("./auspice/server");
 
 const version = utils.getGitHash();
