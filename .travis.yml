@@ -10,7 +10,7 @@ script:
   - npm run set-up
 after_success:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
-      npm run redeploy-site
+      npm run redeploy-site;
     fi
 notifications:
   email:
