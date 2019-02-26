@@ -20,7 +20,7 @@ cd ..
 
 ##############################################################
 echo "Step 2: Building a customised version of auspice"
-npm install --global auspice@^1.35.5
+npm install --global auspice@^1.36.0
 cd auspice
 auspice build --verbose --extend ./client/config.json
 cd ..
