@@ -2,6 +2,9 @@
 static/
 static.tar.gz
 
+# environment variables
+environment*
+
 # auspice build
 auspice/index.html
 auspice/dist/
