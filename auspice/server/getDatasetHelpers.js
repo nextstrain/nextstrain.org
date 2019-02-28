@@ -31,32 +31,47 @@ const decideSourceFromPrefix = (prefix) => {
  * "default" one.
  */
 const correctPrefixFromAvailable = (source, prefixParts) => {
+
   if (!global.availableDatasets[source]) {
     utils.verbose("Cant compare against available datsets as there are none!");
     return prefixParts;
   }
-  const prefix = prefixParts.join("/");
 
-  /* is there an exact match in the manifest? */
-  for (let i=0; i<global.availableDatasets[source].length; i++) {
-    if (global.availableDatasets[source][i].request === prefix) {
-      utils.verbose("Matches an availible dataset");
-      return prefixParts;
+  if (source === "staging" && prefixParts[0] !== "staging") {
+    prefixParts.unshift("staging");
+  }
+
+  const doesPathExist = (pathToCheck) => {
+    for (let i=0; i<global.availableDatasets[source].length; i++) {
+      if (global.availableDatasets[source][i].request === pathToCheck) {
+        utils.verbose(` ${pathToCheck} Matches an availible dataset`);
+        return true;
+      }
     }
+    return false;
+  };
+
+  const removeStagingFromFront = (parts) => {
+    if (parts[0] === "staging") parts.shift();
+    return parts;
+  };
+
+  let prefix = prefixParts.join("/");
+
+  if (doesPathExist(prefix)) {
+    return removeStagingFromFront(prefixParts);
   }
 
-  /* is there a partial match in the manifest? If so, use the
-  available datasets to return the correct path */
-  let possibleDatasets = global.availableDatasets[source]
-    .map((d) => d.request.split("/"));
-  prefixParts.forEach((part, idx) => {
-    possibleDatasets = possibleDatasets.filter((dataset) => dataset[idx] === part);
-  });
-  if (possibleDatasets.length) {
-    utils.verbose(`Changing ${prefixParts.join("/")} to ${possibleDatasets[0]}`);
-    return possibleDatasets[0];
+  /* if we are here, then the path doesn't match any available datasets exactly */
+  if (prefix in global.availableDatasets.defaults[source]) {
+    prefix = `${prefix}/${global.availableDatasets.defaults[source][prefix]}`;
+    const parts = prefix.split("/");
+    if (doesPathExist(prefix)) {
+      return removeStagingFromFront(parts);
+    }
+    return correctPrefixFromAvailable(source, parts);
   }
-  utils.verbose("No matches in available datasets for this prefix. Proceeding anyway.");
+
   return prefixParts;
 };
 
