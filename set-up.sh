@@ -20,7 +20,7 @@ cd ..
 
 ##############################################################
 echo "Step 2a: Installing auspice (globally)"
-npm install --global auspice@1.36.3
+npm install --global auspice@1.36.4
 
 # for testing reasons (e.g. deploying to dev-heroku server) you may wish to
 # install from a github branch (useful for auspice versions not pushed to npm)
