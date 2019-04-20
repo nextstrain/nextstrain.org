@@ -5,32 +5,30 @@
 <br/>
 
 
-[![Build Status](https://travis-ci.com/nextstrain/static.svg?branch=master)](https://travis-ci.com/nextstrain/static)
+This directory contains the documentation files and static site generator for nextstrain.
 
+### Developing locally
 
-The nextstrain project is an attempt to make flexible informatic pipelines and visualization tools to track ongoing pathogen evolution as sequence data emerges.
-This repository contains the code and content behind the static parts of nextstrain.org (the interactive app codebase is [here](http://github.com/nextstrain/auspice)).
+> See `../set-up.sh` for how this site is built during production
 
+```bash
+npm install # this needs python 2
+npm run develop
+```
 
-Please see [https://nextstrain.org/docs/static-content/introduction](https://nextstrain.org/docs/static-content/introduction) for more detailed information on how this code is organised and how to add content in the form of markdown files.
-
-
-### Installing
-* `git clone https://github.com/nextstrain/static.git`
-* make sure npm & node are installed (on linux & OS-X, [installing nvm](https://nodesource.com/blog/installing-node-js-tutorial-using-nvm-on-mac-os-x-and-ubuntu/) is the best way to do this)
-* `npm install`
-
-### Building locally
-* dev mode: `npm run dev`
-* compile & serve: `npm run build && npm run serve`
-* _note that the interactive dataset page (e.g. /zika) will 404 when built locally_
+To test the built version:
+```bash
+npm run build
+npm run serve
+```
 
 ### Adding content
 * add markdown files to the `/content` directory
-* [this page](https://nextstrain.org/docs/static-content/writing-content) explains the format required
 
-### Deploying:
-* simply push to master. That's it! (Travis CI takes care of the rest)
+
+### Deploying
+The static documentation is automatically rebuilt every time the (parent) repo is updated.
+
 
 ## License and copyright
 
