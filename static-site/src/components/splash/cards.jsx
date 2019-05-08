@@ -49,7 +49,7 @@ const cards = [
   },
   {
     img: "enterovirus.jpg",
-    url: "/enterovirus/d68",
+    url: "/enterovirus/d68/genome",
     title: "Enterovirus D68"
   },
   {
