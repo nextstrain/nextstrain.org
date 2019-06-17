@@ -4,7 +4,7 @@ title: "Interactive Bioinformatics Visualisation using Auspice"
 
 Visualisation of bioinformatics results is an integral part of current phylodynamics, both for data exploration and communication.
 We wanted to build a tool that was highly interactive, versatile and usable as communication platform to quickly disseminate results to the wider community.
-Auspice is written in JavaScript and is the app that powers all the phylogenomic analysis on nextstrain.org (github repo [here](https://www.github.com/nextstrain/auspice)).
+Auspice is written in JavaScript and is the app that powers all the phylogenomic analysis on nextstrain.org. The code is completely open source and may be found on [Github](https://www.github.com/nextstrain/auspice)).
 
 
 ![mumps](figures/mumps.png)

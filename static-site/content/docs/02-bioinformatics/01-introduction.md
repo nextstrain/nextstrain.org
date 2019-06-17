@@ -3,7 +3,7 @@ title: "Bioinformatics Introduction"
 ---
 
 Nextstrain's bioinformatics toolkit is called __augur__.
-It is a core part of the Nextstrain ecosystem and used by all of our [pathogen builds](../pathogen-builds).
+It is a core part of the Nextstrain ecosystem used by all of our [pathogen builds](../pathogen-builds), and all source code is available on [GitHub](https://github.com/nextstrain/augur). 
 
 Augur provides ways to perform common bioinformatics tasks through a collection of commands which are designed to be composable into larger processing pipelines.
 This means the commands work well both independently and together, embracing the [philosophy of composability](https://en.wikipedia.org/wiki/Composability).
