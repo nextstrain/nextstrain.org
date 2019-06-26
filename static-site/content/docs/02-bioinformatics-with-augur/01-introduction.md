@@ -8,53 +8,23 @@ It is a core part of the Nextstrain ecosystem used by all of our [pathogen build
 Augur provides ways to perform common bioinformatics tasks through a collection of commands which are designed to be composable into larger processing pipelines.
 This means the commands work well both independently and together, embracing the [philosophy of composability](https://en.wikipedia.org/wiki/Composability).
 
-Augur is suitable for use with both relatively small viral genomes, like Zika, as well as much larger bacterial genomes, like tuberculosis.
+
+We've used `augur` to analyse a bunch of different pathogens -- from viruses with tiny genomes like [zika](/docs/tutorials/zika), to bacterial genomes orders-of-magnitude bigger like [tuberculosis](/docs/tutorials/tb).
+Check out the tutorials (via the sidebar to the left) to see what components we used in each one.
+
+Since we built it to be composable, it's easy to use other code or software to replace steps (or multiple steps!).
+Similarly, not all available commands are applicable -- nor scientifically valid -- for different pathogen analyses.
+We've used BEAST to replace multiple augur commands, but still visualise the results in auspice. 
+It's also common to have additional scripts which are called in-between different components; reading the different tutorials should give you a feel for how powerful these can be, and how versitile your builds can be!
 
 
+### Explore in more depth:
 
-## Commands
+* Learn more about [each augur command](augur-commands).
 
-All augur commands are run via the `augur` program.  The available commands are:
-
-* `augur parse`
-* `augur filter`
-* `augur mask`
-* `augur align` (uses [mafft](https://mafft.cbrc.jp/alignment/software/))
-* `augur tree` (uses [RAxML](https://sco.h-its.org/exelixis/web/software/raxml/index.html), [FastTree](http://www.microbesonline.org/fasttree/), or [IQ-TREE](http://www.iqtree.org/))
-* `augur refine`
-* `augur ancestral`
-* `augur translate`
-* `augur traits`
-* `augur sequence-traits`
-* `augur titers`
-* `augur export`
-* `augur validate`
-
-More information about each command is available via [read-the-docs [external link]](https://nextstrain-augur.readthedocs.io/).
-
-## Exploring the commands
-
-A usage reference for each command is available by running `augur <command> --help`.
-
-If you have the [Nextstrain CLI](https://pypi.org/project/nextstrain-cli) installed from the [Quickstart](../getting-started/quickstart), you can use `nextstrain shell` to start a new shell in which you can run augur commands:
-
-    $ nextstrain shell .
-    $ augur parse --help
-    usage: augur parse [-h] --sequences SEQUENCES
-                   [--output-sequences OUTPUT_SEQUENCES]
-                   [--output-metadata OUTPUT_METADATA]
-                   [--fields FIELDS [FIELDS ...]]
-                   [--separator SEPARATOR]
-                   [--fix-dates {dayfirst,monthfirst}]
-    …
-
-The above example makes the current directory (`.`) available inside the new shell.
-To leave the Nextstrain shell, use the `exit` command; you'll be returned to your previous shell.
-
-## Next steps
+* Learn more about the [data formats augur expects and exports](data-formats).
 
 * See [how augur commands are used in our Zika build](../tutorials/zika).
 
-* Learn more about [each augur command [external link]](https://nextstrain-augur.readthedocs.io/)
+* See how we use Snakemake to automate builds TODO
 
-* Learn more about [putting together your own pathogen builds](../tutorials).
