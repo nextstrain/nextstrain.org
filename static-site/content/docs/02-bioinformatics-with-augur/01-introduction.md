@@ -3,15 +3,13 @@ title: "Bioinformatics Introduction"
 ---
 
 Nextstrain's bioinformatics toolkit is called __augur__.
-It is a core part of the Nextstrain ecosystem used by all of our [pathogen builds](../pathogen-builds), and all source code is available on [GitHub](https://github.com/nextstrain/augur). 
+It is a core part of the Nextstrain ecosystem used by all of our [pathogen builds](/docs/tutorials), and all source code is available on [GitHub](https://github.com/nextstrain/augur). 
 
 Augur provides ways to perform common bioinformatics tasks through a collection of commands which are designed to be composable into larger processing pipelines.
 This means the commands work well both independently and together, embracing the [philosophy of composability](https://en.wikipedia.org/wiki/Composability).
 
 Augur is suitable for use with both relatively small viral genomes, like Zika, as well as much larger bacterial genomes, like tuberculosis.
 
-Currently our [Zika](/zika), [Ebola](/ebola), and [Lassa](/lassa) builds use the latest version of augur, described here.
-Our [Seasonal Influenza](/flu/seasonal), [Avian Influenza](/flu/avian), [West Nile Virus](/WNV), [Mumps](/mumps), [Measles](/measles), and [Dengue](/dengue) builds use an older version of augur, but the plan is to eventually move them to the newer version.
 
 
 ## Commands
@@ -32,7 +30,7 @@ All augur commands are run via the `augur` program.  The available commands are:
 * `augur export`
 * `augur validate`
 
-More information about each command is available on the [Bioinformatic Commands page](commands).
+More information about each command is available via [read-the-docs [external link]](https://nextstrain-augur.readthedocs.io/).
 
 ## Exploring the commands
 
@@ -55,8 +53,8 @@ To leave the Nextstrain shell, use the `exit` command; you'll be returned to you
 
 ## Next steps
 
-* See [how augur commands are used in our Zika build](../getting-started/zika-tutorial).
+* See [how augur commands are used in our Zika build](../tutorials/zika).
 
-* Learn more about [each augur command](commands).
+* Learn more about [each augur command [external link]](https://nextstrain-augur.readthedocs.io/)
 
-* Learn more about [putting together your own pathogen builds](../pathogen-builds).
+* Learn more about [putting together your own pathogen builds](../tutorials).

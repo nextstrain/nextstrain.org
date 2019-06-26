@@ -17,7 +17,7 @@ This is what you see when, for example, you visit [nextstrain.org/zika](https://
 
 
 This architecture allows us to
-- perform sequence analysis -- including subsampling, alignment, tree-inference, node dating etcetera -- by running a series of [augur commands](../bioinformatics) in discrete steps.
+- perform sequence analysis -- including subsampling, alignment, tree-inference, node dating etcetera -- by running a series of augur commands in discrete steps.
 - use additional tools & scripts within a given bioinformatics recipe to add additional functionality.
 - replace modules, or series of modules with other analysis tools (e.g. BEAST).
 - interpret our data -- no matter what analysis recipe we used -- within auspice on our computer.
@@ -30,8 +30,8 @@ These data are continually updated whenever new genomes are made available, thus
 
 
 More information:
-* [Augur documentation](../bioinformatics)
-* [Auspice documentation](/docs/visualisation/introduction)
+* [Augur documentation](/docs/bioinformatics-with-augur/introduction)
+* [Auspice documentation](/docs/visualisation-with-auspice/introduction)
 
 
 
@@ -46,7 +46,7 @@ Our model for data analysis and sharing is for scientists to store the code used
 ### How to get started
 
 * If you would like to investigate live datasets, [head back to the splash page](/) and click on any of the tiles.
-* If you would like to use Nextstrain to process and visualise your own data, you can either start with the [Quickstart](/docs/getting-started/quickstart) which uses a Docker container to run the builds automatically, or follow the [Zika Tutorial](/docs/getting-started/zika-tutorial) which provides a more hands-on approach to processing the data.
+* If you would like to use Nextstrain to process and visualise your own data, you can either start with the [Quickstart](/docs/getting-started/quickstart) which uses a Docker container to run the builds automatically, or follow the [Zika Tutorial](/docs/tutorials/zika) which provides a more hands-on approach to processing the data.
 * If you have data generated from other sources (e.g. BEAST, RAxML, etc...) then please watch this space -- we'll add tutorials for these soon!
 
 ### Contact us
@@ -55,5 +55,5 @@ We are keen to keep expanding the scope of Nextstrain and empowering other resea
 Please [get in touch with us](mailto:hello@nextstrain.org) if you have any questions or comments.
 
 ### Publication
-
-Hadfield et al., [Nextstrain: real-time tracking of pathogen evolution](https://doi.org/10.1093/bioinformatics/bty407), _Bioinformatics_ (2018)
+If you use nextstrain.org, augur or auspice as part of your analysis, please cite: 
+* Hadfield et al., [Nextstrain: real-time tracking of pathogen evolution](https://doi.org/10.1093/bioinformatics/bty407), _Bioinformatics_ (2018)

@@ -6,13 +6,16 @@ This tutorial explains how to create a Nextstrain build for the Zika virus.
 We will first make the build step-by-step using an example data set.
 Then we will see how to automate this stepwise process by defining a pathogen build script.
 
-If you haven't already worked through the [Quickstart](quickstart), you may want to back up and begin there before continuing with this tutorial.
+If you haven't already looked at the [Quickstart](/docs/getting-started/quickstart), you may want to skim through that before continuing with this tutorial.
 
 ## Setup
 
-If you have the [Nextstrain command-line interface (CLI) tool](https://github.com/nextstrain/cli) installed from following the [Quickstart](quickstart), then you're all set!
+To run this tutorial you'll need either:
+* augur and auspice installed -- [see installation instructions here](../getting-started/installation#install-augur-with-conda).
+* the nextstrain CLI tool -- see [the quickstart for more info](/docs/getting-started/quickstart).
 
-Otherwise, you'll need to either [install the CLI](quickstart#set-up-your-computer) or [install the Nextstrain components](../getting-started/installation) individually.
+
+You'll also need to install `git` -- [see here](/docs/getting-started/installation).
 
 ## Build steps
 
@@ -31,7 +34,12 @@ git clone https://github.com/nextstrain/zika-tutorial.git
 cd zika-tutorial
 ```
 
-Next, if you're using the Nextstrain CLI tool, use it to enter the Nextstrain build environment by running:
+Next, if you're using the conda to install augur & auspice (see above), don't forget to enter the correct environment, e.g.
+
+```
+conda activate nextstrain
+```
+or if you're using the Nextstrain CLI tool, use it to enter the Nextstrain build environment by running:
 
 ```
 nextstrain shell .
@@ -41,11 +49,6 @@ Note the dot (`.`) as the last argument; it is important and indicates that your
 Your command prompt will change to indicate you are in the build environment.
 (If you want to leave the build environment, run the command `exit`.)
 
-If instead you installed Nextstrain components [using Conda](../getting-started/installation#install-augur-with-conda), remember to activate your environment by running:
-
-```
-conda activate nextstrain
-```
 
 ## Prepare the Sequences
 
@@ -271,33 +274,31 @@ First delete the output from the manual steps above.
 rm -rf results/ auspice/
 ```
 
-Then, if you're using the Nextstrain CLI tool, run:
+If you've installed augur / auspice, simply run
+```
+snakemake
+```
+
+or, if you're using the Nextstrain CLI tool, run:
 
 ```
 nextstrain build .
 ```
 
-to run the automated pathogen build.
-
-If you're not using the Nextstrain CLI tool, run:
-
-```
-snakemake
-```
-
-The automated build runs all of the manual steps above up through the auspice export.
+which will run the automated pathogen build.
+This runs all of the manual steps above up through the auspice export.
 View the results the same way you did before to confirm it produced the same Zika build you made manually.
 
 Note that automated builds will only re-run steps when the data changes.
 This means builds will pick up where they left off if they are restarted after being interrupted.
-If you want to force a re-run of the whole build, first remove any previous output with `nextstrain build . clean` or `snakemake clean`.
+If you want to force a re-run of the whole build, first remove any previous output with `snakemake clean` or `nextstrain build . clean`.
 
 ## Next steps
 
-* Learn more about [augur commands](../bioinformatics).
+* Learn more about [augur commands](/docs/bioinformatics-with-augur/introduction).
 
-* Learn more about [auspice visualizations](../visualisation).
+* Learn more about [auspice visualizations](/docs/visualisation-with-auspice/introduction).
 
-* Learn more about [creating and modifying snakemake files](../pathogen-builds/snakemake).
+* Learn more about [creating and modifying snakemake files](../tutorials).
 
-* Fork the [Zika tutorial pathogen repository on GitHub](https://github.com/nextstrain/zika-tutorial), modify the Snakefile to make your own pathogen build, and learn [how to publish your build on nextstrain.org](../visualisation/introduction#viewing-your-data-through-nextstrainorg).
+* Fork the [Zika tutorial pathogen repository on GitHub](https://github.com/nextstrain/zika-tutorial), modify the Snakefile to make your own pathogen build, and learn [how to publish your build on nextstrain.org](/docs/visualisation-with-auspice/introduction#viewing-your-data-through-nextstrainorg).

@@ -2,12 +2,14 @@
 title: Quickstart
 ---
 
-This guide uses the [Nextstrain command-line interface (CLI) tool](https://github.com/nextstrain/cli) to help you quickly get started running and viewing pathogen builds in Nextstrain with a minimum of fuss.
+This guide uses the [Nextstrain command-line interface (CLI) tool [GitHub]](https://github.com/nextstrain/cli) to help you quickly get started running and viewing pathogen builds in Nextstrain with a minimum of fuss.
 It assumes you are comfortable using the command line and installing software on your computer.
 If you need help when following this guide, please reach out by [emailing us](mailto:hello@nextstrain.org?subject=Quickstart%20help).
 
 When you're done following this guide, you will have built a local version of [our example Zika analysis](https://github.com/nextstrain/zika-tutorial) and viewed the results on your computer.
 You'll have a basic understanding of how to run builds for other pathogens and a foundation for understanding the Nextstrain ecosystem in more depth.
+
+If you'd like to run these analysis in a more hands-on manner, without installing docker or the nextstrain CLI, please [install augur & auspice seperately](/docs/getting-started/installation) and then run the [zika tutorial](/docs/tutorials/zika).
 
 ## Set up your computer
 
@@ -16,7 +18,7 @@ Before you can do anything else, you need to set up your computer to run the Nex
 ### Install Python 3
 
 Python 3.5 or higher is required.
-There are many ways to install Python 3 on Windows, macOS, or Linux, including the [official packages](https://www.python.org/downloads/), [Homebrew](https://brew.sh) for macOS, and the [Anaconda Distribution](https://www.anaconda.com/distribution/).
+There are many ways to install Python 3 on Windows, macOS, or Linux, including the [official packages](https://www.python.org/downloads/), [Homebrew](https://brew.sh) for macOS, and [Conda](https://www.anaconda.com/distribution/).
 Details are beyond the scope of this guide, but make sure you install Python 3.5 or higher.
 
 You may already have Python 3 installed, especially if you're on Linux.  Check by running `python3 --version`:
@@ -127,7 +129,7 @@ Now you can run `nextstrain view zika-tutorial/auspice/` to view the build resul
 
 ## Next steps
 
-* Learn more [about the Zika build](zika-tutorial) or the [Tuberculosis build](tb-tutorial).
+* Learn more [about the Zika build](/docs/tutorials/zika) or the [Tuberculosis build](/docs/tutorials/tb).
 
 * Learn more about the CLI by running `nextstrain --help` and `nextstrain <command> --help`.
 
