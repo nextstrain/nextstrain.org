@@ -5,7 +5,7 @@ title: "Format of JSON files exported by augur and consumed by auspice"
 We use JSONs as the interchange file format between Augur (the bioinformatics tooling) and Auspice (the visualisation app).
 JSONs are reasonably easy for humans to read, easy to parse in most languages, and easy to extend.
 Note that any compatible JSONs can be used by Auspice, not just those produced by Augur.
-Augur produces these JSONs via the `augur export` command -- see the [bioinformatics command reference](/docs/bioinformatics/commands#export) for more details.
+Augur produces these JSONs via the `augur export` command -- see the [individual augur commands [external link]](https://nextstrain-augur.readthedocs.io/) for more details.
 Augur also produces a number of other results files (written to the `results/` directory by default), however these are not used by Auspice for visualisation.
 
 
