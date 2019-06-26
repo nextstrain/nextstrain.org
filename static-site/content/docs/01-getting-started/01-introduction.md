@@ -9,11 +9,30 @@ Nextstrain is an open-source project to harness the scientific and public health
 
 Nextstrain is a collection of open-source tools to aid in our understanding of pathogen spread and evolution, especially in outbreak scenarios.
 We have designed these in such a way that they can be used with a wide range of data sources, and are easy to replace with your own tooling.
-Broadly speaking, Nextstrain consists of (1) a modular-base bioinformatics pipeline and (2) a web-based visualization program.
-Note that data analyzed outside of Nextstrain can still be visualized here, and similarly the results of Nextstrain-analysis is easily interpretable for further downstream analysis and custom visualizations.
+Broadly speaking, Nextstrain consists of 
+* "augur" -- a series of composable, modular (unix-like) bioinformatics tools.
+We use these to create recipes for different pathogens and different analyses, which are easy to reproduce when new data is available.
+* "auspice" -- a web-based visualization program, to present & interact with phylogenomic & phylogeographic data. 
+This is what you see when, for example, you visit [nextstrain.org/zika](https://www.nextstrain.org/zika), but it can also run locally on your computer.
+
+
+This architecture allows us to
+- perform sequence analysis -- including subsampling, alignment, tree-inference, node dating etcetera -- by running a series of [augur commands](../bioinformatics) in discrete steps.
+- use additional tools & scripts within a given bioinformatics recipe to add additional functionality.
+- replace modules, or series of modules with other analysis tools (e.g. BEAST).
+- interpret our data -- no matter what analysis recipe we used -- within auspice on our computer.
+- share our results to collaborators or other scientists through nextstrain.org
+- rerun analysis as new data become available
+
 
 We use these tools to provide a continually-updated view of publicly available data for certain important pathogens such as [influenza](https://www.nextstrain.org/flu), [Ebola](https://www.nextstrain.org/ebola) and [Zika](https://www.nextstrain.org/zika) viruses.
 These data are continually updated whenever new genomes are made available, thus providing the most up-to-date view possible.
+
+
+More information:
+* [Augur documentation](../bioinformatics)
+* [Auspice documentation](/docs/visualisation/introduction)
+
 
 
 ### Motivation
@@ -24,16 +43,6 @@ There is now a growing community of researchers using these tools, with a focus 
 Our model for data analysis and sharing is for scientists to store the code used for their analyis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](/docs/pathogen-builds/introduction) for more details).
 
 
-### Moving Parts
-
-1. _Bioinformatics via Augur:_ Sequence analysis is performed by running a series of [augur commands](../bioinformatics) in discrete steps.
-It's possible to customize which steps are run and to add your own, whether they use augur or not.
-These steps can include subsampling, alignment, tree-inference, node dating etc.
-[See here](/docs/bioinformatics/introduction) for more details.
-2. _Visualization via Auspice:_ Visualization is via a JavaScript-based web app, which is what you see when you access datasets such as [nextstrain.org/zika](https://www.nextstrain.org/zika).
-This can be installed locally, and as long as your data is in the correct format it can be visualized.
-[See here](/docs/visualisation/introduction) for more details.
-
 ### How to get started
 
 * If you would like to investigate live datasets, [head back to the splash page](/) and click on any of the tiles.
@@ -43,7 +52,7 @@ This can be installed locally, and as long as your data is in the correct format
 ### Contact us
 
 We are keen to keep expanding the scope of Nextstrain and empowering other researchers to better analyse and understand their data.
-Please don't hesitate to [get in touch with us](mailto:hello@nextstrain.org) if you have any questions or comments.
+Please [get in touch with us](mailto:hello@nextstrain.org) if you have any questions or comments.
 
 ### Publication
 
