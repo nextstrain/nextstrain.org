@@ -1,8 +1,9 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import { tweets } from "./tweets";
-import GenerateCards from "../Cards";
+import Cards from "../Cards";
 import nextstrainCards from "../Cards/nextstrainCards"
+import communityCards from "../Cards/communityCards"
 import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, MediumSpacer, BigSpacer, HugeSpacer,
@@ -46,9 +47,16 @@ class Splash extends React.Component {
 
 
 
-        <GenerateCards
+        <Cards
           title="Explore pathogens"
           cards={nextstrainCards}
+        />
+
+        <Cards
+          numCardsToShow={3}
+          title="Community builds"
+          subtext={<span>analyses by independent groups stored & accessed via public GitHub repos</span>}
+          cards={communityCards}
         />
 
 
