@@ -15,7 +15,8 @@ To run this tutorial you'll need either:
 * the nextstrain CLI tool -- see [the quickstart for more info](/docs/getting-started/quickstart).
 
 
-You'll also need to install `git` -- [see here](/docs/getting-started/installation).
+You'll also need to install `git` if you don't have it.
+If you [used conda to install augur and auspice](/docs/getting-started/installation#install-augur--auspice-with-conda-recommended) then you've already got this inside the "nextstrain" environment.
 
 ## Build steps
 

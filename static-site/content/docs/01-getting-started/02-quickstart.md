@@ -9,7 +9,7 @@ If you need help when following this guide, please reach out by [emailing us](ma
 When you're done following this guide, you will have built a local version of [our example Zika analysis](https://github.com/nextstrain/zika-tutorial) and viewed the results on your computer.
 You'll have a basic understanding of how to run builds for other pathogens and a foundation for understanding the Nextstrain ecosystem in more depth.
 
-If you'd like to run these analysis in a more hands-on manner, without installing docker or the nextstrain CLI, please [install augur & auspice seperately](/docs/getting-started/installation) and then run the [zika tutorial](/docs/tutorials/zika).
+> If you'd like to run these analysis in a more hands-on manner, without installing docker or the nextstrain CLI, please [install augur & auspice seperately](/docs/getting-started/installation) and then run the [zika tutorial](/docs/tutorials/zika).
 
 ## Set up your computer
 
