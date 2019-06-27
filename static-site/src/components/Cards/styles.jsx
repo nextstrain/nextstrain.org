@@ -1,13 +1,11 @@
 import styled from "styled-components";
 
 export const CardImg = styled.img`
-  object-fit: cover;
-  width: 100%;
+  object-fit: contain;
   border-radius: 6px;
   box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
-  @media (max-width: 680px) {
-    height: 120px;
-  }
+  max-height: 100%;
+  max-width: 100%;
 `;
 
 export const CardInner = styled.div`
@@ -21,6 +19,19 @@ export const CardOuter = styled.div`
   overflow: hidden;
   position: relative;
   padding: 15px 0px 15px 0px;
+  height: 250px;
+  width: 250px;
+  @media (max-width: 992px) {
+    height: 200px;
+    width: 200px;
+  }
+  @media (max-width: 768px) {
+    height: 150px;
+    width: 200px;
+  }
+  @media (max-width: 680px) {
+    height: 120px;
+  }
 `;
 
 export const CardTitle = styled.div`
