@@ -1,12 +1,15 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import { tweets } from "./tweets";
-import { generateTiles } from "./cards";
+import GenerateCards from "../Cards";
+import nextstrainCards from "../Cards/nextstrainCards"
 import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, MediumSpacer, BigSpacer, HugeSpacer,
   FlexCenter, TeamMember, Line } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
+
+console.log("***", nextstrainCards)
 
 class Splash extends React.Component {
   constructor() {
@@ -42,17 +45,12 @@ class Splash extends React.Component {
         </FlexCenter>
 
 
-        {/* THE CLICKABLE CARDS - see about page for sources & attribution */}
-        <HugeSpacer />
-        <div className="row">
-          <div className="col-md-1" />
-          <div className="col-md-10">
-            <Styles.H1>Explore pathogens</Styles.H1>
-            <MediumSpacer />
-            {generateTiles()}
-          </div>
-          <div className="col-md-1" />
-        </div>
+
+        <GenerateCards
+          title="Explore pathogens"
+          cards={nextstrainCards}
+        />
+
 
         {/* <Styles.H1>Tutorials / Narrative links</Styles.H1> */}
 

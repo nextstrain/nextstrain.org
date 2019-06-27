@@ -1,7 +1,4 @@
-import React from "react";
-import * as Styles from "./styles";
-
-const cards = [
+const nextstrainCards = [
   {
     img: "seasonalinfluenza.png",
     url: "/flu/seasonal",
@@ -59,23 +56,4 @@ const cards = [
   }
 ];
 
-export const generateTiles = () => (
-  <div className="row">
-    {cards.map((d) => (
-      <div key={d.title}>
-        <div className="col-sm-4">
-          <Styles.CardOuter>
-            <Styles.CardInner>
-              <a href={`${d.url}`}>
-                <Styles.CardTitle>
-                  {d.title}
-                </Styles.CardTitle>
-                <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} />
-              </a>
-            </Styles.CardInner>
-          </Styles.CardOuter>
-        </div>
-      </div>
-    ))}
-  </div>
-);
+export default nextstrainCards;
