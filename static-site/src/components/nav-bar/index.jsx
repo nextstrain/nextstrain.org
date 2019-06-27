@@ -114,7 +114,6 @@ class NavBar extends React.Component {
         {this.getLogo()}
         {this.getLogoType()}
         <div style={{flex: 5}}/>
-        {this.getLink("About", "/about", this.selectedClass("about"))}
         {this.getLink("Docs", "/docs", this.selectedClass("docs"))}
         {this.getLink("Blog", "/blog", this.selectedClass("blog"))}
         <div style={{width: this.props.minified ? 12 : 0 }}/>

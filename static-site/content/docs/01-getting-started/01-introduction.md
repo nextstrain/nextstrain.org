@@ -7,6 +7,17 @@ Nextstrain is an open-source project to harness the scientific and public health
 
 ### What is Nextstrain?
 
+
+[nextstrain.org](https://www.nextstrain.org) aims to provide a _real-time_ snapshot of evolving pathogen populations and to provide interactive data visualizations to virologists, epidemiologists, public health officials and citizen scientists.
+Through interactive data visualizations, we aim to allow exploration of continually up-to-date datasets, providing a novel surveillance tool to the scientific and public health communities.
+
+
+In the process we have created a number of open-source tools (described above) which have allowed a growing community to produce similar analyses, and we want to promote this community through nextstrain.
+Our model for data analysis and sharing is for scientists to store the code used for their analyis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](/docs/visualisation-with-auspice/community-build) for more details).
+
+
+### Open source tools for the community
+
 Nextstrain is a collection of open-source tools to aid in our understanding of pathogen spread and evolution, especially in outbreak scenarios.
 We have designed these in such a way that they can be used with a wide range of data sources, and are easy to replace with your own tooling.
 Broadly speaking, Nextstrain consists of 
@@ -37,10 +48,12 @@ More information:
 
 ### Motivation
 
-We built Nextstrain in an attempt to provide a rapid and automatable bioinformatics pipeline for analysis of pathogens in order to better harness the scientific and public health potential of pathogen genome data.
-Open sharing of derived data (such as phylogenies and transmission reconstructions) through [nextstrain.org](https://www.nextstrain.org) is a core priority.
-There is now a growing community of researchers using these tools, with a focus on fast analysis times, interactive visualization and data sharing.
-Our model for data analysis and sharing is for scientists to store the code used for their analyis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](/docs/pathogen-builds/introduction) for more details).
+If pathogen genome sequences are going to inform public health interventions, then analyses have to be rapidly conducted and results widely disseminated.
+Current scientific publishing practices hinder the rapid dissemination of epidemiologically relevant results.
+We thought an open online system that implements robust bioinformatic pipelines to synthesize data from across research groups has the best capacity to make epidemiologically actionable inferences.
+Additionally we have open-sourced all the tools we use, and hope to create a community around nextstrain which supports and promotes genomic analyses of various kinds.
+
+
 
 
 ### How to get started

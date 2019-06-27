@@ -127,6 +127,13 @@ exports.createPages = ({graphql, boundActionCreators}) => {
           .map((edge) => edge.node.fields.slug.split("/")[1])
           .filter((cv, idx, arr) => arr.indexOf(cv)===idx); /* filter to unique values */
 
+        createRedirect({
+          fromPath: "/about",
+          isPermanent: true,
+          redirectInBrowser: true,
+          toPath: "/docs/getting-started/introduction"
+        });
+
         sections.forEach((section) => {
           const [hasChapters, data] = structureEdges.parseEdges(result.data.allMarkdownRemark.edges, section);
           /* create the section redirects */
