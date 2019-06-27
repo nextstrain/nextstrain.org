@@ -5,6 +5,7 @@ import SEO from "../components/SEO/SEO";
 import NavBar from '../components/nav-bar';
 import Sidebar from "../components/Sidebar";
 import { CenteredContainer, MarkdownContent } from "../layouts/generalComponents";
+import Footer from "../components/Footer";
 
 const parseSlug = require("../util/parseSlug");
 
@@ -97,6 +98,9 @@ export default class GenericTemplate extends React.Component {
               <PostTitle>{post.title}</PostTitle>
               <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </CenteredContainer>
+
+            <Footer/>
+
           </ContentContainer>
           {this.state.mobileDisplay ? this.renderMobileTogglesAndShading() : null}
         </SidebarBodyFlexContainer>
