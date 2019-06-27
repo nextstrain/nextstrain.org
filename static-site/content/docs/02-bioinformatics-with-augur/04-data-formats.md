@@ -2,6 +2,15 @@
 title: "Format of files used and created by augur"
 ---
 
+#### Table of Contents:
+* [node-data JSONs](#node-data-jsons)
+* [metadata TSV](#metadata-tsv)
+* [exported JSON(s) for auspice](#exported-jsons-for-auspice)
+
+
+---
+
+
 ## node-data JSONs
 
 These files are produced by many different augur commands to store data for nodes in the tree (often including internal nodes).
@@ -21,16 +30,19 @@ Additionally, certain top-level property names may be produced.
 Most of the time these are used as comments or information not used by `augur export`, with the following exceptions:
 * `augur translate`: "annotations"
 
+---
 ## metadata TSV
 
 TODO
 
+---
 ## exported JSON(s) for auspice
 
 We use JSONs as the interchange file format between Augur (the bioinformatics tooling) and Auspice (the visualisation app).
 JSONs are reasonably easy for humans to read, easy to parse in most languages, and easy to extend.
 Note that any compatible JSONs can be used by Auspice, not just those produced by Augur.
 Augur produces these JSONs via the `augur export` command -- [see here for more details](augur-commands). 
+
 
 ### v2 (unified) JSON
 _watch this space!_

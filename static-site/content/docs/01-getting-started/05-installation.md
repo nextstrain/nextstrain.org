@@ -8,6 +8,18 @@ If you are using Windows, we have instructions for [installing a Linux subsystem
 
 We recommend using conda to manage environments, however there are other options (see below).
 
+#### Table of Contents:
+* [Prerequisites](#prerequisites)
+* [Install augur with Conda (recommended)](#install-augur-with-conda-recommended)
+* [Install augur with Python](#install-augur-with-python)
+* [Install auspice using npm](#install-auspice-using-npm)
+* [Install augur from source](#install-augur-from-source)
+* [Install auspice from source](#install-auspice-from-source)
+
+
+---
+
+
 ### Prerequisites
 
 You'll need the following installed before you begin:
