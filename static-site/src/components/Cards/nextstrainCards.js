@@ -10,11 +10,6 @@ const nextstrainCards = [
     title: "West Nile Virus"
   },
   {
-    img: "lassa.png",
-    url: "/lassa",
-    title: "Lassa"
-  },
-  {
     img: "mumps.jpg",
     url: "/mumps",
     title: "Mumps"
