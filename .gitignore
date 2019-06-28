@@ -1,7 +1,3 @@
-# static currently obtained via S3
-static/
-static.tar.gz
-
 # environment variables
 environment*
 
