@@ -54,7 +54,7 @@ class Splash extends React.Component {
 
         <Cards
           numCardsToShow={3}
-          title="Community builds"
+          title="From the community"
           subtext={<span>analyses by independent groups stored & accessed via public GitHub repos</span>}
           cards={communityCards}
         />
@@ -64,7 +64,7 @@ class Splash extends React.Component {
 
         {/* SOCIAL MEDIA AKA TWITTER */}
         <HugeSpacer/>
-        <Styles.H1>From the community</Styles.H1>
+        <Styles.H1>Mentions on Twitter</Styles.H1>
         <HugeSpacer/>
         {tweets()}
 
