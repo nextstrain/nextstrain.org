@@ -1,12 +1,16 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import { tweets } from "./tweets";
-import { generateTiles } from "./cards";
+import Cards from "../Cards";
+import nextstrainCards from "../Cards/nextstrainCards"
+import communityCards from "../Cards/communityCards"
 import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, MediumSpacer, BigSpacer, HugeSpacer,
   FlexCenter, TeamMember, Line } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
+
+console.log("***", nextstrainCards)
 
 class Splash extends React.Component {
   constructor() {
@@ -42,23 +46,25 @@ class Splash extends React.Component {
         </FlexCenter>
 
 
-        {/* THE CLICKABLE CARDS - see about page for sources & attribution */}
-        <HugeSpacer />
-        <div className="row">
-          <div className="col-md-1" />
-          <div className="col-md-10">
-            <Styles.H1>Explore pathogens</Styles.H1>
-            <MediumSpacer />
-            {generateTiles()}
-          </div>
-          <div className="col-md-1" />
-        </div>
+
+        <Cards
+          title="Explore pathogens"
+          cards={nextstrainCards}
+        />
+
+        <Cards
+          numCardsToShow={3}
+          title="From the community"
+          subtext={<span>analyses by independent groups stored & accessed via public GitHub repos</span>}
+          cards={communityCards}
+        />
+
 
         {/* <Styles.H1>Tutorials / Narrative links</Styles.H1> */}
 
         {/* SOCIAL MEDIA AKA TWITTER */}
         <HugeSpacer/>
-        <Styles.H1>From the community</Styles.H1>
+        <Styles.H1>Mentions on Twitter</Styles.H1>
         <HugeSpacer/>
         {tweets()}
 
