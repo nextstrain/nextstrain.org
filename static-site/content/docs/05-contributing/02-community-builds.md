@@ -22,6 +22,7 @@ Our solution to this is to allow anyone to store the results of their analyses o
 ### Some examples
 
 * Genomic epidemiology of the 2018 North Kivu, DRC Ebola epidemic: [github](https://github.com/inrb-drc/ebola-nord-kivu) & [nextstrain](https://nextstrain.org/community/inrb-drc/ebola-nord-kivu) 
+* Wheat yellow rust fungus -- the first plant pathogen on nextstrain 🎉 [github](https://github.com/saunderslab/PST) & [nextstrain](https://nextstrain.org/community/saunderslab/PST)
 * Zika in Columbia: [github](https://github.com/blab/zika-colombia) & [nextstrain](https://nextstrain.org/community/blab/zika-colombia) 
 * TB outbreak in Germany: [github](https://github.com/idolawoye/tb) & [nextstrain #1](https://nextstrain.org/community/idolawoye/tb/1), [nextstrain #2](https://nextstrain.org/community/idolawoye/tb/2) 
 * Lassa virus evolution 2015-2018 Outbreak in Nigeria: [github](https://github.com/pauloluniyi/lassa) & [nextstrain (L segment)](https://nextstrain.org/community/pauloluniyi/lassa/l), [nextstrain (S segment)](https://nextstrain.org/community/pauloluniyi/lassa/s) 

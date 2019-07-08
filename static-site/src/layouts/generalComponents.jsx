@@ -74,6 +74,7 @@ export const MarkdownContent = styled.div`
   }
   li > ul {
     padding-left: 30px;
+    margin: 5px 0px 5px 0px;
   }
   li {
     margin-left: 30px;

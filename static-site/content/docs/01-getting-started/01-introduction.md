@@ -2,7 +2,7 @@
 title: "Nextstrain: analysis and visualisation of pathogen sequence data"
 ---
 
-Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at hello@nextstrain.org.
+Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at [hello@nextstrain.org]((mailto:hello@nextstrain.org)).
 
 
 ### What is Nextstrain?
@@ -58,7 +58,7 @@ Additionally we have open-sourced all the tools we use, and hope to create a com
 
 ### How to get started
 
-* If you would like to investigate live datasets, [head back to the splash page](/) and click on any of the tiles.
+* If you would like to investigate live datasets -- including those contributed by the community, [head back to the splash page](/) and click on any of the tiles.
 * If you would like to use Nextstrain to process and visualise your own data, you can either start with the [Quickstart](/docs/getting-started/quickstart) which uses a Docker container to run the builds automatically, or follow the [Zika Tutorial](/docs/tutorials/zika) which provides a more hands-on approach to processing the data.
 * If you have data generated from other sources (e.g. BEAST, RAxML, etc...) then please watch this space -- we'll add tutorials for these soon!
 

@@ -2,14 +2,27 @@
 title: Quickstart
 ---
 
-This guide uses the [Nextstrain command-line interface (CLI) tool [GitHub]](https://github.com/nextstrain/cli) to help you quickly get started running and viewing pathogen builds in Nextstrain with a minimum of fuss.
+This guide uses the [Nextstrain command-line interface (CLI) tool [GitHub]](https://github.com/nextstrain/cli) to help you quickly get started running and viewing the pathogen builds you ma see on nextstrain.org with a minimum of fuss.
 It assumes you are comfortable using the command line and installing software on your computer.
 If you need help when following this guide, please reach out by [emailing us](mailto:hello@nextstrain.org?subject=Quickstart%20help).
 
 When you're done following this guide, you will have built a local version of [our example Zika analysis](https://github.com/nextstrain/zika-tutorial) and viewed the results on your computer.
 You'll have a basic understanding of how to run builds for other pathogens and a foundation for understanding the Nextstrain ecosystem in more depth.
 
-> If you'd like to run these analysis in a more hands-on manner, without installing docker or the nextstrain CLI, please [install augur & auspice seperately](/docs/getting-started/installation) and then run the [zika tutorial](/docs/tutorials/zika).
+#### Further information:
+* If you'd like to run these analysis in a more hands-on manner, without installing docker or the nextstrain CLI, read about [the difference between a local & container installation](./running-locally-vs-container) and [how to install augur & auspice locally](/docs/getting-started/installation).
+You can then run the [zika tutorial](/docs/tutorials/zika).
+* Confused about what excatly a "pathogen build" is? [See here](/docs/bioinformatics/what-is-a-build).
+
+
+#### Table of Contents:
+* [Set up your computer](#set-up-your-computer)
+* [Download the nextstrain/zika-tutorial repository](#download-the-nextstrainzika-tutorial-repository)
+* [Run the build](#run-the-build)
+* [Visualize build results](#visualize-build-results)
+* [Next Steps](#next-steps)
+
+---
 
 ## Set up your computer
 

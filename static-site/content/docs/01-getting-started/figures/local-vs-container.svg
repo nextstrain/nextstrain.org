@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="782px" height="1019px" viewBox="0 0 782 1019" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Artboard</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#EEEEEE" x="0" y="0" width="782" height="606"></rect>
+        <rect id="Rectangle" fill="#EEEEEE" x="0" y="629" width="782" height="390"></rect>
+        <path d="M172,264.457614 C172,257.577887 185.43,252 202,252 L610,252 C626.57,252 640,257.577887 640,264.457614 L640,364.138557 C565.22,350.979951 480.78,350.979951 406,364.138557 C331.22,377.287148 246.78,377.287148 172,364.138557 L172,264.457614 Z" id="Path" stroke="#666666" stroke-width="2" fill="#D6D6D6" fill-rule="nonzero"></path>
+        <path d="M142,276.456847 C142,269.577543 155.43,264 172,264 L580,264 C596.57,264 610,269.577543 610,276.456847 L610,376.131653 C535.22,362.973858 450.78,362.973858 376,376.131653 C301.22,389.289449 216.78,389.289449 142,376.131653 L142,276.456847 Z" id="Path" stroke="#666666" stroke-width="2" fill="#D6D6D6" fill-rule="nonzero"></path>
+        <path d="M112,289.466861 C112,286.162392 115.16,282.988099 120.79,280.654943 C126.41,278.311774 134.04,277 142,277 L550,277 C557.96,277 565.59,278.311774 571.21,280.654943 C576.84,282.988099 580,286.162392 580,289.466861 L580,389.131653 C505.22,375.983872 420.78,375.983872 346,389.131653 C271.22,402.289449 186.78,402.289449 112,389.131653 L112,289.466861 Z" id="Path" stroke="#666666" stroke-width="2" fill="#D6D6D6" fill-rule="nonzero"></path>
+        <g id="Group" transform="translate(253.000000, 312.000000)" fill="#333333" font-family="ArialMT, Arial" font-size="18" font-weight="normal">
+            <g id="ephemeral-build-cont">
+                <text>
+                    <tspan x="0.934082031" y="16.5">ephemeral build container</tspan>
+                    <tspan x="71.4926758" y="37.0888672">(docker)</tspan>
+                </text>
+            </g>
+        </g>
+        <polygon id="Path" stroke="#000000" stroke-width="2" fill="#FFFFFF" fill-rule="nonzero" transform="translate(207.000000, 252.000000) rotate(90.000000) translate(-207.000000, -252.000000) " points="127 238 247 238 247 217 287 252 247 287 247 266 127 266 127 252"></polygon>
+        <path d="M144,64.4576142 C144,61.1529417 145.137225,57.9884673 147.152307,55.645154 C149.177365,53.3118549 151.910694,52 154.773707,52 L301.226293,52 C307.181759,52 312,57.5778868 312,64.4576142 L312,164.138557 C285.155513,150.979951 254.849474,150.979951 228.004988,164.138557 C201.150526,177.287148 170.844487,177.287148 144,164.138557 L144,64.4576142 Z" id="Path" stroke="#D6B656" stroke-width="2" fill="#FFF2CC" fill-rule="nonzero"></path>
+        <path d="M133,76.4568474 C133,73.1523782 134.127316,69.9880987 136.152494,67.6549432 C138.167696,65.3117741 140.911164,64 143.764371,64 L290.235629,64 C293.088836,64 295.832304,65.3117741 297.847506,67.6549432 C299.872684,69.9880987 301,73.1523782 301,76.4568474 L301,176.131653 C274.153919,162.973858 243.846081,162.973858 217,176.131653 C190.153919,189.289449 159.846081,189.289449 133,176.131653 L133,76.4568474 Z" id="Path" stroke="#D6B656" stroke-width="2" fill="#FFF2CC" fill-rule="nonzero"></path>
+        <path d="M122,89.4668609 C122,82.5775434 126.818241,77 132.773707,77 L279.226293,77 C285.181759,77 290,82.5775434 290,89.4668609 L290,189.131653 C263.155513,175.983872 232.849474,175.983872 205.995012,189.131653 C179.150526,202.289449 148.844487,202.289449 122,189.131653 L122,89.4668609 Z" id="Path" stroke="#D6B656" stroke-width="2" fill="#FFF2CC" fill-rule="nonzero"></path>
+        <g id="Group" transform="translate(149.000000, 17.000000)" fill="#000000" font-family="ArialMT, Arial" font-size="18" font-weight="normal">
+            <g id="(container)-Images">
+                <text>
+                    <tspan x="0.5" y="16.5">(container) Images</tspan>
+                </text>
+            </g>
+        </g>
+        <rect id="Rectangle" stroke="#D79B00" fill="#FFE6CC" fill-rule="nonzero" x="130" y="92" width="70" height="40" rx="6"></rect>
+        <rect id="Rectangle" stroke="#D79B00" fill="#FFE6CC" fill-rule="nonzero" x="212" y="92" width="70" height="40" rx="6"></rect>
+        <rect id="Rectangle" stroke="#D79B00" fill="#FFE6CC" fill-rule="nonzero" x="132" y="142" width="87" height="20" rx="3"></rect>
+        <g id="Group" transform="translate(139.000000, 144.000000)" fill="#000000" font-family="ArialMT, Arial" font-size="14" font-weight="normal">
+            <g id="snakemake">
+                <text>
+                    <tspan x="0" y="13">snakemake</tspan>
+                </text>
+            </g>
+        </g>
+        <g id="Group" transform="translate(146.000000, 103.000000)" fill="#000000" font-family="ArialMT, Arial" font-size="14" font-weight="normal">
+            <g>
+                <text id="augur">
+                    <tspan x="0" y="13">augur</tspan>
+                </text>
+                <text id="auspice">
+                    <tspan x="77.5" y="13.5">auspice</tspan>
+                </text>
+            </g>
+        </g>
+        <rect id="Rectangle" stroke="#D79B00" fill="#FFE6CC" fill-rule="nonzero" x="232" y="142" width="47" height="20" rx="3"></rect>
+        <g id="Group" transform="translate(240.000000, 145.000000)" fill="#000000" font-family="ArialMT, Arial" font-size="14" font-weight="normal">
+            <g id="mafft">
+                <text>
+                    <tspan x="0.5" y="13">mafft</tspan>
+                </text>
+            </g>
+        </g>
+        <polygon id="Path" stroke="#000000" stroke-width="2" fill="#FFFFFF" fill-rule="nonzero" transform="translate(497.000000, 252.000000) rotate(90.000000) translate(-497.000000, -252.000000) " points="417 238 537 238 537 217 577 252 537 287 537 266 417 266 417 252"></polygon>
+        <path d="M424,63.6401214 C424,57.2134911 428.818241,52 434.773707,52 L581.226293,52 C587.181759,52 592,57.2134911 592,63.6401214 L592,156.781144 C565.155513,144.489336 534.849474,144.489336 508.004988,156.781144 C481.150526,169.072952 450.844487,169.072952 424,156.781144 L424,63.6401214 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero"></path>
+        <path d="M413,74.6393536 C413,68.2131472 417.818527,63 423.764371,63 L570.235629,63 C576.181473,63 581,68.2131472 581,74.6393536 L581,167.774233 C554.153919,155.483236 523.846081,155.483236 497,167.774233 C470.153919,180.075256 439.846081,180.075256 413,167.774233 L413,74.6393536 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero"></path>
+        <path d="M402,86.6491228 C402,80.2130326 406.818241,75 412.773707,75 L559.226293,75 C565.181759,75 570,80.2130326 570,86.6491228 L570,179.781955 C543.155513,167.491228 512.849474,167.491228 485.995012,179.781955 C459.150526,192.072682 428.844487,192.072682 402,179.781955 L402,86.6491228 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero"></path>
+        <path d="M424,63.6401214 C424,57.2134911 428.818241,52 434.773707,52 L581.226293,52 C587.181759,52 592,57.2134911 592,63.6401214 L592,156.781144 C565.155513,144.489336 534.849474,144.489336 508.004988,156.781144 C481.150526,169.072952 450.844487,169.072952 424,156.781144 L424,63.6401214 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero"></path>
+        <path d="M413,74.6393536 C413,68.2131472 417.818527,63 423.764371,63 L570.235629,63 C576.181473,63 581,68.2131472 581,74.6393536 L581,167.774233 C554.153919,155.483236 523.846081,155.483236 497,167.774233 C470.153919,180.075256 439.846081,180.075256 413,167.774233 L413,74.6393536 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero"></path>
+        <path d="M402,86.6491228 C402,80.2130326 406.818241,75 412.773707,75 L559.226293,75 C565.181759,75 570,80.2130326 570,86.6491228 L570,179.781955 C543.155513,167.491228 512.849474,167.491228 485.995012,179.781955 C459.150526,192.072682 428.844487,192.072682 402,179.781955 L402,86.6491228 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero"></path>
+        <text id="Pathogen-build-repos" fill="#000000" font-family="ArialMT, Arial" font-size="18" font-weight="normal">
+            <tspan x="422" y="35">Pathogen build repos</tspan>
+        </text>
+        <path d="M640,49 L635.090909,49 C631.818182,49 630.181818,52.3333333 630.181818,59 L630.181818,111.5 C630.181818,118.166667 628.545455,121.5 625.272727,121.5 L622.818182,121.5 C621.181818,121.5 622,121.5 625.272727,121.5 L627.727273,121.5 C629.363636,121.5 630.181818,124.833333 630.181818,131.5 L630.181818,184 C630.181818,190.666667 631.818182,194 635.090909,194 L640,194" id="Path" stroke="#000000" transform="translate(631.000000, 121.500000) rotate(180.000000) translate(-631.000000, -121.500000) "></path>
+        <text id="e.g.-gihub.com/-next" fill="#000000" font-family="ArialMT, Arial" font-size="16" font-weight="normal">
+            <tspan x="642" y="94">e.g.</tspan>
+            <tspan x="642" y="111.523438">gihub.com/</tspan>
+            <tspan x="642" y="129.046875">   nextstrain/zika</tspan>
+            <tspan x="642" y="146.570312">   nextstrain/ebola</tspan>
+            <tspan x="642" y="164.09375">   nextstrain/tb…</tspan>
+        </text>
+        <path d="M386.166667,171.166667 L381.166667,171.166667 C377.833333,171.166667 376.166667,174.5 376.166667,181.166667 L376.166667,426.166667 C376.166667,432.833333 374.5,436.166667 371.166667,436.166667 L368.666667,436.166667 C367,436.166667 367.833333,436.166667 371.166667,436.166667 L373.666667,436.166667 C375.333333,436.166667 376.166667,439.5 376.166667,446.166667 L376.166667,691.166667 C376.166667,697.833333 377.833333,701.166667 381.166667,701.166667 L386.166667,701.166667" id="Path" stroke="#000000" transform="translate(377.000000, 436.166667) rotate(-90.000000) translate(-377.000000, -436.166667) "></path>
+        <path d="M386,519 L381.090909,519 C377.818182,519 376.181818,522.333333 376.181818,529 L376.181818,774 C376.181818,780.666667 374.545455,784 371.272727,784 L368.818182,784 C367.181818,784 368,784 371.272727,784 L373.727273,784 C375.363636,784 376.181818,787.333333 376.181818,794 L376.181818,1039 C376.181818,1045.66667 377.818182,1049 381.090909,1049 L386,1049" id="Path" stroke="#000000" transform="translate(377.000000, 784.000000) rotate(-270.000000) translate(-377.000000, -784.000000) "></path>
+        <text id="nextstrain-build-(ru" fill="#000000" font-family="Arial-BoldMT, Arial" font-size="16" font-weight="bold">
+            <tspan x="162" y="513">nextstrain build</tspan>
+            <tspan x="281.125" y="513" font-family="ArialMT, Arial" font-weight="normal"> (runs Snakemake inside container)</tspan>
+            <tspan x="162" y="530.523438">nextstrain shell</tspan>
+            <tspan x="279.375" y="530.523438" font-family="ArialMT, Arial" font-weight="normal"> (runs bash inside container)</tspan>
+            <tspan x="162" y="548.046875">nextstrain view</tspan>
+            <tspan x="277.601562" y="548.046875" font-family="ArialMT, Arial" font-weight="normal"> (runs auspice inside container)</tspan>
+            <tspan x="162" y="565.570312">nextstrain version --verbose</tspan>
+            <tspan x="162" y="583.09375">nextstrain update (</tspan>
+            <tspan x="305.132812" y="583.09375" font-family="ArialMT, Arial" font-weight="normal">downloads latest container image)</tspan>
+        </text>
+        <text id="On-your-computer-(or" fill="#000000" font-family="ArialMT, Arial" font-size="16" font-weight="normal">
+            <tspan x="112" y="481">On your computer (or AWS Batch)</tspan>
+        </text>
+        <text id="On-your-computer" fill="#000000" font-family="ArialMT, Arial" font-size="16" font-weight="normal">
+            <tspan x="112" y="668">On your computer</tspan>
+        </text>
+        <text id="augur-&lt;command&gt;-(run" fill="#000000" font-family="ArialMT, Arial" font-size="16" font-weight="normal">
+            <tspan x="162" y="686"></tspan>
+            <tspan x="162" y="704" font-family="Arial-BoldMT, Arial" font-weight="bold">augur &lt;command&gt;</tspan>
+            <tspan x="305.148438" y="704"> (run individual augur commands)</tspan>
+            <tspan x="162" y="721.523438" font-family="Arial-BoldMT, Arial" font-weight="bold">snakemake</tspan>
+            <tspan x="248.289062" y="721.523438"> (runs collection of augur commands)</tspan>
+            <tspan x="162" y="739.046875" font-family="Arial-BoldMT, Arial" font-weight="bold">auspice</tspan>
+            <tspan x="221.585938" y="739.046875"> </tspan>
+            <tspan x="226.03125" y="739.046875" font-family="Arial-BoldMT, Arial" font-weight="bold">view </tspan>
+            <tspan x="265.164062" y="739.046875">(runs auspice locally)</tspan>
+            <tspan x="162" y="756.570312">develop source code for augur / auspice</tspan>
+        </text>
+        <text id="Snakefile-config/-zi" fill="#000000" font-family="ArialMT, Arial" font-size="16" font-weight="normal">
+            <tspan x="413" y="101">Snakefile</tspan>
+            <tspan x="413" y="118.523438">config/</tspan>
+            <tspan x="413" y="136.046875">   zika_reference.gb</tspan>
+            <tspan x="413" y="153.570312">   dropped_strains.txt</tspan>
+            <tspan x="413" y="171.09375">    …</tspan>
+        </text>
+        <path d="M123,828.649123 C123,822.213033 131.001722,817 140.892049,817 L384.107951,817 C393.998278,817 402,822.213033 402,828.649123 L402,921.781955 C357.418977,909.491228 307.089306,909.491228 262.491717,921.781955 C217.910694,934.072682 167.581023,934.072682 123,921.781955 L123,828.649123 Z" id="Path" stroke="#BF6C93" stroke-width="2" fill="#FCDAF0" fill-rule="nonzero" transform="translate(262.500000, 874.000000) rotate(-180.000000) translate(-262.500000, -874.000000) "></path>
+        <rect id="Rectangle" stroke="#D79B00" fill="#FFE6CC" fill-rule="nonzero" x="147" y="864" width="70" height="40" rx="6"></rect>
+        <rect id="Rectangle" stroke="#D79B00" fill="#FFE6CC" fill-rule="nonzero" x="251" y="864" width="70" height="40" rx="6"></rect>
+        <text id="augur" fill="#000000" font-family="ArialMT, Arial" font-size="14" font-weight="normal">
+            <tspan x="164" y="888">augur</tspan>
+        </text>
+        <text id="auspice" fill="#000000" font-family="ArialMT, Arial" font-size="14" font-weight="normal">
+            <tspan x="262" y="888">auspice</tspan>
+        </text>
+        <path d="M463,846.640121 C463,840.213491 467.818241,835 473.773707,835 L620.226293,835 C626.181759,835 631,840.213491 631,846.640121 L631,939.781144 C604.155513,927.489336 573.849474,927.489336 547.004988,939.781144 C520.150526,952.072952 489.844487,952.072952 463,939.781144 L463,846.640121 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero" transform="translate(547.000000, 892.000000) rotate(-180.000000) translate(-547.000000, -892.000000) "></path>
+        <path d="M452,832.639354 C452,826.213147 456.818527,821 462.764371,821 L609.235629,821 C615.181473,821 620,826.213147 620,832.639354 L620,925.774233 C593.153919,913.483236 562.846081,913.483236 536,925.774233 C509.153919,938.075256 478.846081,938.075256 452,925.774233 L452,832.639354 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero" transform="translate(536.000000, 878.000000) rotate(-180.000000) translate(-536.000000, -878.000000) "></path>
+        <path d="M441,819.649123 C441,813.213033 445.818241,808 451.773707,808 L598.226293,808 C604.181759,808 609,813.213033 609,819.649123 L609,912.781955 C582.155513,900.491228 551.849474,900.491228 524.995012,912.781955 C498.150526,925.072682 467.844487,925.072682 441,912.781955 L441,819.649123 Z" id="Path" stroke="#6C8EBF" stroke-width="2" fill="#DAE8FC" fill-rule="nonzero" transform="translate(525.000000, 865.000000) rotate(-180.000000) translate(-525.000000, -865.000000) "></path>
+        <text id="Pathogen-build-repos" fill="#000000" font-family="ArialMT, Arial" font-size="18" font-weight="normal">
+            <tspan x="452" y="979">Pathogen build repos</tspan>
+            <tspan x="452" y="999.588867">(normally from github)</tspan>
+        </text>
+        <text id="nextstrain-conda-env" fill="#000000" font-family="ArialMT, Arial" font-size="18" font-weight="normal">
+            <tspan x="133" y="964">nextstrain conda environment</tspan>
+        </text>
+        <text id="Snakefile-config/-zi" fill="#000000" font-family="ArialMT, Arial" font-size="16" font-weight="normal">
+            <tspan x="452" y="846">Snakefile</tspan>
+            <tspan x="452" y="863.523438">config/</tspan>
+            <tspan x="452" y="881.046875">   zika_reference.gb</tspan>
+            <tspan x="452" y="898.570312">   dropped_strains.txt</tspan>
+            <tspan x="452" y="916.09375">    …</tspan>
+        </text>
+        <text id="LOCAL-INSTALLATION" transform="translate(65.500000, 810.500000) rotate(-90.000000) translate(-65.500000, -810.500000) " font-family="Arial-BoldMT, Arial" font-size="31" font-weight="bold" fill="#000000">
+            <tspan x="-111" y="801">LOCAL  INSTALLATION</tspan>
+        </text>
+        <text id="CONTAINER-BASED-INST" transform="translate(55.000000, 293.500000) rotate(-90.000000) translate(-55.000000, -293.500000) " font-family="Arial-BoldMT, Arial" font-size="31" font-weight="bold" fill="#000000">
+            <tspan x="-221" y="284">CONTAINER  BASED  INSTALLATION</tspan>
+        </text>
+    </g>
+</svg>

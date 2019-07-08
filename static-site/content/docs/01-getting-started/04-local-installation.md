@@ -2,14 +2,12 @@
 title: "Installation"
 ---
 
-Nextstrain consists of a bioinformatics pipeline utility, `augur`, and a web application for data visualization, `auspice`.
-The following instructions describe how to install augur and auspice on MacOS or an Ubuntu-style Linux distribution.
+
+The following instructions describe how to install `augur` (bioinformatics tooling) and `auspice` (our visualisation app) on MacOS or an Ubuntu-style Linux distribution.
 If you are using Windows, we have instructions for [installing a Linux subsystem](/docs/getting-started/windows-help) to get Nexstrain running.
 
-We highly recommend using conda to manage environments, however there are other options (see below).
+> Before digging in, it's worth reading [the difference between a local & container installation](./running-locally-vs-container), both of which will install the components behind nextstrain and allow you to run and visualise analyses on your computer.
 
-> This page details installing `augur` & `auspice` themselves.
-If you want to use a container-based installation, then the Nextstrain CLI is for you -- see [the quickstart](quickstart)!
 
 
 #### Table of Contents:
