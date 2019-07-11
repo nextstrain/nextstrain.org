@@ -1,9 +1,15 @@
 {
-    "/about": "/docs/getting-started/introduction",
-    "/about/overview/introduction": "/docs/getting-started/introduction",
-    "/about/overview": "/docs/getting-started/introduction",
-    "/about/methods/introduction": "/docs/getting-started/introduction",
-    "/about/methods": "/docs/getting-started/introduction",
-    "docs/bioinformatics/introduction": "docs/bioinformatics/introduction-to-augur",
-    "docs/visualisation": "/docs/interpretation/auspice"
+  "/about": "/docs/getting-started/introduction",
+  "/about/overview/introduction": "/docs/getting-started/introduction",
+  "/about/overview": "/docs/getting-started/introduction",
+  "/about/methods/introduction": "/docs/getting-started/introduction",
+  "/about/methods": "/docs/getting-started/introduction",
+  "/docs/bioinformatics/introduction": "docs/bioinformatics/introduction-to-augur",
+  "/docs/bioinformatics/output-jsons": "/docs/bioinformatics/data-formats",
+  "/docs/visualisation": "/docs/interpretation/auspice",
+  "/docs/visualisation/introduction": "/docs/interpretation/auspice",
+  "/docs/visualisation/narratives": "/docs/narratives/introduction",
+  "/docs/getting-started/zika-tutorial/": "/docs/tutorials/zika",
+  "/docs/getting-started/tb-tutorial/": "/docs/tutorials/tb",
+  "/docs/getting-started/installation": "/docs/getting-started/local-installation"
 }
