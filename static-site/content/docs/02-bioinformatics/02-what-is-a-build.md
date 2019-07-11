@@ -29,7 +29,7 @@ and each of these can be run via a separate `augur` command.
 ### Snakemake
 
 While it would be possible to run a build by running each of the individual steps -- they're just self-contained commands after all -- we typically group these together into a make-type file.
-[Snakemake] is 
+[Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) is "a tool to create reproducible and scalable data analyses... via a human readable, Python based language."
 
 > Snakemake is installed as part of the [conda environment](docs/getting-started/local-installation#install-augur--auspice-with-conda-recommended) or the [docker container](docs/getting-started/container-installation#install-docker).
 If you ever see a build which has a "Snakefile" then you can run this simply by typing `snakemake` or `nextstrain build .`, respectively.

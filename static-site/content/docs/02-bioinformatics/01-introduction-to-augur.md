@@ -1,5 +1,5 @@
 ---
-title: "Bioinformatics Introduction"
+title: "Augur: Nextstrain's Bioinformatics Toolkit"
 ---
 
 Nextstrain's bioinformatics toolkit is called __augur__.
@@ -10,7 +10,7 @@ This means the commands work well both independently and together, embracing the
 
 
 We've used `augur` to analyse a bunch of different pathogens -- from viruses with tiny genomes like [zika](/docs/tutorials/zika), to bacterial genomes orders-of-magnitude bigger like [tuberculosis](/docs/tutorials/tb).
-Check out the tutorials (via the sidebar to the left) to see what components we used in each one.
+Check out the tutorials (via the sidebar to the left) to see which components we used in each one.
 
 Since we built it to be composable, it's easy to use other code or software to replace steps (or multiple steps!).
 Similarly, not all available commands are applicable -- nor scientifically valid -- for different pathogen analyses.
@@ -22,9 +22,8 @@ It's also common to have additional scripts which are called in-between differen
 
 * Learn more about [each augur command](augur-commands).
 
-* Learn more about the [data formats augur expects and exports](data-formats).
+* Learn more about the [data formats augur uses & produces](data-formats).
 
 * See [how augur commands are used in our Zika build](../tutorials/zika).
 
-* See how we use Snakemake to automate builds TODO
 

@@ -26,7 +26,7 @@ Auspice (version 1.x) currently requires two JSON files, with a third optional J
 The tree structure is encoded as a deeply nested JSON object, with traits (such as country, divergence, collection date, attributions etc) stored on each node.
 The presence of a `children` property indicates that it's an internal node and contains the child objects.
 
-See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_tree.json) for more details, or see the current [live zika build](https://nextstrain.org/zika)'s file [here](http://data.nextstrain.org/zika_tree.json).
+See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_tree.json) for more details, or see the current [live zika build](https://nextstrain.org/zika)'s tree JSON [here](http://data.nextstrain.org/zika_tree.json).
 
 The filename _must_ end with `_tree.json`.
 
@@ -34,7 +34,7 @@ The filename _must_ end with `_tree.json`.
 
 Additional data to control and inform the visualisation is stored via the `metadata` property (key) at the top level of the JSON.
 
-See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_meta.json) for more details, or see the current [live zika build](https://nextstrain.org/zika)'s file [here](http://data.nextstrain.org/zika_meta.json).
+See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_meta.json) for more details, or see the current [live zika build](https://nextstrain.org/zika)'s metadata JSON [here](http://data.nextstrain.org/zika_meta.json).
 
 The filename _must_ end with `_meta.json` and have the same prefix as the tree JSON above.
 

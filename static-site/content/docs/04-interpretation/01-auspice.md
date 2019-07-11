@@ -19,20 +19,20 @@ The generator of the data controls which traits are able to be visualised - for 
 A number of controls are made available in a sidebar to control the time period viewed, the layout of the tree etc.
 
 We are currently working on allowing scientists to author custom narratives which describe the data, and control how the data is visualised as one progresses through the narrative.
-See [here](/docs/visualisation/narratives) for more information.
+See [here](/docs/narratives/introduction) for more information.
 
 ### Auspice is agnostic about where the data came from
-We build bioinformatic tooling (augur, docs [here](/docs/bioinformatics-with-augur/introduction)) to produce JSONs specifically for visualisation in Auspice.
+We build bioinformatic tooling (augur, docs [here](/docs/bioinformatics/introduction-to-augur)) to produce JSONs specifically for visualisation in Auspice.
 However any compatible JSONs can be visualised through auspice -- either locally, or via nextstrain.org (see below).
 **The data doesn't have to be viral genomes, or real-time, or generated in Augur!**
 
 We're working on adding tutorials on how to convert BEAST results etc into the formats used by Auspice.
-In the meantime, the JSON file formats are specified [here](/docs/bioinformatics-with-augur/output-jsons).
+In the meantime, the JSON file formats are specified [here](/docs/bioinformatics/data-formats).
 
 
 ### Running locally
 Auspice can be run locally to visualise datasets.
-See [this documentation](/docs/getting-started/installation) for how to install and run Auspice locally.
+See [local installation](/docs/getting-started/local-installation) for how to get up and running.
 
 
 ### Private (non public) datasets

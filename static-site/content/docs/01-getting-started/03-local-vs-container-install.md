@@ -2,14 +2,14 @@
 title: "Installing locally vs a container-based installation"
 ---
 
-We, and our collaborators, have set up different versions of nextstrain all across the world, on many different computer architectures.
+We -- and our collaborators -- have set up different versions of nextstrain all across the world, on many different computer architectures.
 These experiences have resulted in two alternative approaches to installation, each with their pros & cons:
 
 
 1. __"Local Install"__ which installs `augur` & `auspice` themselves, so that they're available as individual programs on the command line.
 We highly recommend using conda to manage environments, however there are other options.
 2. __"Container based installation"__ We provide a container-based system using docker, which includes all of the individuial components behind nextstrain.
-You may then interact with this container through the `nextstrain` program.
+You may then interact with this container through the `nextstrain` CLI (command line interface).
 
 No matter which method you use, you'll be able to run & modify pathogen builds on your own computer, and share the results through nextstrain.org if you wish to.
 

@@ -1,3 +1,9 @@
 {
-    "/about": "/docs/getting-started/introduction"
+    "/about": "/docs/getting-started/introduction",
+    "/about/overview/introduction": "/docs/getting-started/introduction",
+    "/about/overview": "/docs/getting-started/introduction",
+    "/about/methods/introduction": "/docs/getting-started/introduction",
+    "/about/methods": "/docs/getting-started/introduction",
+    "docs/bioinformatics/introduction": "docs/bioinformatics/introduction-to-augur",
+    "docs/visualisation": "/docs/interpretation/auspice"
 }

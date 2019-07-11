@@ -5,6 +5,15 @@ title: "Nextstrain: analysis and visualisation of pathogen sequence data"
 Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at [hello@nextstrain.org]((mailto:hello@nextstrain.org)).
 
 
+#### Table of Contents:
+* [What is Nextstrain?](#what-is-nextstrain)
+* [Open source tools for the community](#open-source-tools-for-the-community)
+* [Motivation](#motivation)
+* [How to get started](#how-to-get-started)
+* [Contact Us](#contact-us)
+
+---
+
 ### What is Nextstrain?
 
 
@@ -13,9 +22,9 @@ Through interactive data visualizations, we aim to allow exploration of continua
 
 
 In the process we have created a number of open-source tools (described above) which have allowed a growing community to produce similar analyses, and we want to promote this community through nextstrain.
-Our model for data analysis and sharing is for scientists to store the code used for their analyis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](/docs/visualisation-with-auspice/community-build) for more details).
+Our model for data analysis and sharing is for scientists to store the code used for their analyis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](/docs/contributing/community-builds) for more details).
 
-
+---
 ### Open source tools for the community
 
 Nextstrain is a collection of open-source tools to aid in our understanding of pathogen spread and evolution, especially in outbreak scenarios.
@@ -41,11 +50,12 @@ These data are continually updated whenever new genomes are made available, thus
 
 
 More information:
-* [Augur documentation](/docs/bioinformatics-with-augur/introduction)
-* [Auspice documentation](/docs/visualisation-with-auspice/introduction)
+* Installation [using containers](./container-installation) or [locally](./local-installation) ([what's the difference?](./local-vs-container-install))
+* [Augur documentation](/docs/bioinformatics/introduction-to-augur)
+* [Auspice documentation](/docs/interpretation/auspice)
 
 
-
+---
 ### Motivation
 
 If pathogen genome sequences are going to inform public health interventions, then analyses have to be rapidly conducted and results widely disseminated.
@@ -55,18 +65,19 @@ Additionally we have open-sourced all the tools we use, and hope to create a com
 
 
 
-
+---
 ### How to get started
 
 * If you would like to investigate live datasets -- including those contributed by the community, [head back to the splash page](/) and click on any of the tiles.
 * If you would like to use Nextstrain to process and visualise your own data, you can either start with the [Quickstart](/docs/getting-started/quickstart) which uses a Docker container to run the builds automatically, or follow the [Zika Tutorial](/docs/tutorials/zika) which provides a more hands-on approach to processing the data.
 * If you have data generated from other sources (e.g. BEAST, RAxML, etc...) then please watch this space -- we'll add tutorials for these soon!
 
+---
 ### Contact us
 
 We are keen to keep expanding the scope of Nextstrain and empowering other researchers to better analyse and understand their data.
 Please [get in touch with us](mailto:hello@nextstrain.org) if you have any questions or comments.
 
+---
 ### Publication
-If you use nextstrain.org, augur or auspice as part of your analysis, please cite: 
-* Hadfield et al., [Nextstrain: real-time tracking of pathogen evolution](https://doi.org/10.1093/bioinformatics/bty407), _Bioinformatics_ (2018)
+If you use nextstrain.org, augur or auspice as part of your analysis, please cite 👇👇
