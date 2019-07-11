@@ -4,7 +4,7 @@ title: "Interactive Bioinformatics Visualisation using Auspice"
 
 Visualisation of bioinformatics results is an integral part of current phylodynamics, both for data exploration and communication.
 We wanted to build a tool that was highly interactive, versatile and usable as communication platform to quickly disseminate results to the wider community.
-Auspice is written in JavaScript and is the app that powers all the phylogenomic analysis on nextstrain.org (github repo [here](https://www.github.com/nextstrain/auspice)).
+Auspice is written in JavaScript and is the app that powers all the phylogenomic analysis on nextstrain.org. The code is completely open source and may be found on [Github](https://www.github.com/nextstrain/auspice)).
 
 
 ![mumps](figures/mumps.png)
@@ -19,31 +19,20 @@ The generator of the data controls which traits are able to be visualised - for 
 A number of controls are made available in a sidebar to control the time period viewed, the layout of the tree etc.
 
 We are currently working on allowing scientists to author custom narratives which describe the data, and control how the data is visualised as one progresses through the narrative.
-See [here](/docs/visualisation/narratives) for more information.
+See [here](/docs/narratives/introduction) for more information.
 
 ### Auspice is agnostic about where the data came from
-We build bioinformatic tooling (augur, docs [here](/docs/bioinformatics/introduction)) to produce JSONs specifically for visualisation in Auspice.
+We build bioinformatic tooling (augur, docs [here](/docs/bioinformatics/introduction-to-augur)) to produce JSONs specifically for visualisation in Auspice.
 However any compatible JSONs can be visualised through auspice -- either locally, or via nextstrain.org (see below).
 **The data doesn't have to be viral genomes, or real-time, or generated in Augur!**
+
 We're working on adding tutorials on how to convert BEAST results etc into the formats used by Auspice.
-In the meantime, the JSON file formats are specified [here](/docs/bioinformatics/output-jsons).
-
-
-### Viewing your data through nextstrain.org
-Our desire is to develop a community of scientists using nextstrain.org to share datasets, and to allow these to be easily updated so that they represent the most up-to-date view of the current situation.
-We currently utilise GitHub to achieve this, whereby if JSONs are committed to github repos they can be automatically accessed through nextstrain.org.
-
-
-Given a repository at **github.com/orgName/repoName**, if there is a folder named **auspice** with JSONs **repoName_tree.json** and **repoName_meta.json**, then that dataset can be accessed via **nextstrain.org/community/orgName/repoName**.
-Additional datasets named such as **repoName\_a\_b\_c\_meta.json** are available at **nextstrain.org/community/orgName/repoName/a/b/c**.
-
-
-For example, [Alli Black's](https://bedford.io/team/allison-black/) analysis of Zika virus in the US Virgin Islands is being updated [in this github repo](https://github.com/blab/zika-usvi/), and you can see the most up-to-date results at [nextstrain.org/community/blab/zika-usvi](https://www.nextstrain.org/community/blab/zika-usvi)
+In the meantime, the JSON file formats are specified [here](/docs/bioinformatics/data-formats).
 
 
 ### Running locally
 Auspice can be run locally to visualise datasets.
-See [this documentation](/docs/getting-started/installation) for how to install and run Auspice locally.
+See [local installation](/docs/getting-started/local-installation) for how to get up and running.
 
 
 ### Private (non public) datasets

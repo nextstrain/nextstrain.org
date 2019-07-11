@@ -3,6 +3,7 @@ const path = require("path");
 // const _ = require("lodash");
 const webpackLodashPlugin = require("lodash-webpack-plugin");
 const structureEdges = require("./src/util/structureEdges");
+const redirects = require("./redirects.json")
 
 
 /* onCreateNode is called on each node and used to update information.
@@ -126,6 +127,15 @@ exports.createPages = ({graphql, boundActionCreators}) => {
         const sections = result.data.allMarkdownRemark.edges
           .map((edge) => edge.node.fields.slug.split("/")[1])
           .filter((cv, idx, arr) => arr.indexOf(cv)===idx); /* filter to unique values */
+
+        for(const [key, value] of Object.entries(redirects)){
+          createRedirect({
+            fromPath: key,
+            isPermanent: true,
+            redirectInBrowser: true,
+            toPath: value
+          });
+        }
 
         sections.forEach((section) => {
           const [hasChapters, data] = structureEdges.parseEdges(result.data.allMarkdownRemark.edges, section);
