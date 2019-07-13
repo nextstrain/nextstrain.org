@@ -2,8 +2,8 @@
 title: "Contributing to augur & auspice development"
 ---
 
-Augur, Auspice & all other components of the nextstrain eco-system are 100% open source.
-We welcome contributions in the form of pull requests, using github "issues" to tell us about bugs or potential imrpovements.
+Augur, Auspice & all other components of the Nextstrain ecosystem are 100% open source.
+We welcome contributions in the form of pull requests, using GitHub "issues" to tell us about bugs or potential improvements.
 You're welcome to [email us](mailto:hello@nextstrain.org) with any thoughts or suggestions.
 
 

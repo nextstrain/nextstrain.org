@@ -11,7 +11,7 @@ It uses docker containers to bundle up the installation of all the different com
 Once you've installed the nextstrain CLI, you can run the [quickstart guide](/docs/getting-started/quickstart) or any of the tutorials available here. 
 
 
-> Before digging in, it's worth reading [the difference between a local & container installation](local-vs-container-install), both of which will install the components behind nextstrain and allow you to run and visualise analyses on your computer.
+> Before digging in, it's worth reading [the difference between a local & container installation](local-vs-container-install), both of which will install the components behind nextstrain and allow you to run and visualize analyses on your computer.
 
 
 

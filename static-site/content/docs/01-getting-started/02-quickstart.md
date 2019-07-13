@@ -12,7 +12,7 @@ You'll have a basic understanding of how to run builds for other pathogens and a
 #### Further information:
 * If you'd like to run these analysis in a more hands-on manner, without installing docker or the nextstrain CLI, read about [the difference between a local & container installation](/docs/getting-started/local-vs-container-install) and [how to install augur & auspice locally](/docs/getting-started/installation).
 You can then run the [zika tutorial](/docs/tutorials/zika).
-* Confused about what excatly a "pathogen build" is? [See here](/docs/bioinformatics/what-is-a-build).
+* Confused about what exactly a "pathogen build" is? [See here](/docs/bioinformatics/what-is-a-build).
 
 
 #### Table of Contents:

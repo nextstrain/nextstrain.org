@@ -249,7 +249,7 @@ mkdir ~/src/auspice/data/
 cp auspice/*.json ~/src/auspice/data/
 ```
 
-Then enter your `auspice` directry and start auspice.
+Then enter your `auspice` directory and start auspice.
 
 ```
 # Navigate into auspice.
@@ -300,6 +300,6 @@ If you want to force a re-run of the whole build, first remove any previous outp
 
 * Learn more about [auspice visualizations](/docs/interpretation/auspice).
 
-* Learn more about [creating and modifying snakemake files](/docs/bioinformatics/customising-a-build).
+* Learn more about [creating and modifying snakemake files](/docs/bioinformatics/customizing-a-build).
 
 * Fork the [Zika tutorial pathogen repository on GitHub](https://github.com/nextstrain/zika-tutorial), modify the Snakefile to make your own pathogen build, and learn [how to contribute to nextstrain.org](/docs/contributing/community-builds).

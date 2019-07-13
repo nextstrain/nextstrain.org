@@ -13,7 +13,7 @@ title: "Format of files used and created by augur"
 ---
 ## exported JSON(s) for auspice
 
-We use JSONs as the interchange file format between Augur (the bioinformatics tooling) and Auspice (the visualisation app).
+We use JSONs as the interchange file format between Augur (the bioinformatics tooling) and Auspice (the visualization app).
 JSONs are reasonably easy for humans to read, easy to parse in most languages, and easy to extend.
 Any compatible JSONs can be used by Auspice, not just those produced by Augur.
 Augur produces these JSONs via the `augur export` command -- see the [augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html#export).
@@ -32,7 +32,7 @@ The filename _must_ end with `_tree.json`.
 
 #### Metadata JSON (required)
 
-Additional data to control and inform the visualisation is stored via the `metadata` property (key) at the top level of the JSON.
+Additional data to control and inform the visualization is stored via the `metadata` property (key) at the top level of the JSON.
 
 See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_meta.json) for more details, or see the current [live zika build](https://nextstrain.org/zika)'s metadata JSON [here](http://data.nextstrain.org/zika_meta.json).
 

@@ -1,5 +1,5 @@
 ---
-title: "How to customise a build (FAQ)"
+title: "How to customize a build (FAQ)"
 ---
 
 
