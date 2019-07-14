@@ -6,7 +6,7 @@ Nextstrain's focus on providing a _real-time_ snapshot of evolving pathogen popu
 The individual steps necessary to repeat analysis together comprise a "build".
 
 
-Because no two datasets or pathogens are the same, we build augur to be flexible and sutable for different analyses.
+Because no two datasets or pathogens are the same, we build augur to be flexible and suitable for different analyses.
 The individual augur commands are composable, and can be mixed and matched with other scripts as needed.
 These steps, taken together, are what we refer to as a "build".
 
@@ -40,5 +40,5 @@ If you ever see a build which has a "Snakefile" then you can run this simply by 
 * Have a look at some of the tutorials (listed in the sidebar).
 Each one will use a slightly different combination of `augur` commands depending on the pathogen.
 
-* Read about [how to customise a build](customising-a-build)
+* Read about [how to customize a build](customizing-a-build)
 

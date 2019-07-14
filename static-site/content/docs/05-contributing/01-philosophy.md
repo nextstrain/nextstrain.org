@@ -2,7 +2,7 @@
 title: "Our philosophy: Facilitating open-science & sharing of results"
 ---
 
-From the beginning, Nextrain has had a focus on open, real-time, pre-publication sharing of results.
+From the beginning, Nextstrain has had a focus on open, real-time, pre-publication sharing of results.
 Every situation is different and over time we've tried to develop a range of different approaches to make steps in this direction.
 
 
@@ -24,10 +24,10 @@ We're exited to collaborate with more groups and expand these datasets -- please
 To make supporting this philosophy as easy as possible, we have created a "community builds" functionality, whereby GitHub is used to store the results of your analyses and the results are available for everyone via nextstrain.org.
 This is behind the [community builds](/) which you can see on the main page.
 
-See [this page](community-builds) for more information, including a step-by-step on how you can get your datsets up as a community build. 
+See [this page](community-builds) for more information, including a step-by-step on how you can get your datasets up as a community build. 
 
 ### Bespoke auspice deployments
 
-Auspice can be run on your own server, including customisations to the appearence and functionality.
-We have developed implementations of this using authentication for certain datasets where it's inapropriate to share the data publically.
+Auspice can be run on your own server, including customizations to the appearance and functionality.
+We have developed implementations of this using authentication for certain datasets where it's inappropriate to share the data publicly.
 Tutorials and documentation about this are currently being written, but [email us](mailto:hello@nextstrain.org) and we can discuss your use case.

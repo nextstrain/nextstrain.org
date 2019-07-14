@@ -9,7 +9,7 @@ This allows you to communicate results with the appropriate views into the data,
 
 
 > Narratives are a new feature, and there may still be bugs.
-We're aiming to publicise this feature as soon as we have ensured everything's working as desired.
+We're aiming to publicize this feature as soon as we have ensured everything's working as desired.
 
 
 ### How to write a narrative
@@ -38,7 +38,7 @@ Note that all the fields are optional, except for dataset, title & authors.
 #### Paragraphs
 Each paragraph must start with a heading consisting of a link.
 This link defines the dataset & settings used to display the data associated with the paragraph's content.
-For instance, this paragraph displays the influenza A/H3N2 dataset, displaying only the phylogenetic tree & frequency panels, coloured by region and highlighting sequences collected since 2017. (The URL was obtained by manipulating the [nextstrain.org/flu](https://www.nextstrain.org/flu) page into the desired configuration).
+For instance, this paragraph displays the influenza A/H3N2 dataset, displaying only the phylogenetic tree & frequency panels, colored by region and highlighting sequences collected since 2017. (The URL was obtained by manipulating the [nextstrain.org/flu](https://www.nextstrain.org/flu) page into the desired configuration).
 
 ```markdown
 # [The situation since 2017](https://nextstrain.org/flu/seasonal/h3n2/ha/3y?c=region&d=tree,frequencies&dmin=2017-01-01&p=full)
@@ -55,7 +55,7 @@ Given a repository at **github.com/orgName/repoName**, if there is a folder name
 Additional narratives named such as **repoName\_a\_b\_c.json** are available at **nextstrain.org/community/narratives/orgName/repoName/a/b/c**.
 
 
-Our own narratives, which are stored in [this github repo](https://github.com/nextstrain/narratives) are available to view at [nextstrain.org/narratives](https://www.nextstrain.org/narratives).
+Our own narratives, which are stored in [this GitHub repo](https://github.com/nextstrain/narratives) are available to view at [nextstrain.org/narratives](https://www.nextstrain.org/narratives).
 We're currently working at adding content and tutorials to these!
 
 ### Known Bugs / Limitations

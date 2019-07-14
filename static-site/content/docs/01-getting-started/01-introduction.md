@@ -1,5 +1,5 @@
 ---
-title: "Nextstrain: analysis and visualisation of pathogen sequence data"
+title: "Nextstrain: analysis and visualization of pathogen sequence data"
 ---
 
 Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at [hello@nextstrain.org]((mailto:hello@nextstrain.org)).
@@ -22,7 +22,7 @@ Through interactive data visualizations, we aim to allow exploration of continua
 
 
 In the process we have created a number of open-source tools (described above) which have allowed a growing community to produce similar analyses, and we want to promote this community through nextstrain.
-Our model for data analysis and sharing is for scientists to store the code used for their analyis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](/docs/contributing/community-builds) for more details).
+Our model for data analysis and sharing is for scientists to store the code used for their analysis in GitHub repositories, and if the results are also stored in these repositories they are automatically made available through `nextstrain.org/community/...` URLs (see [here](/docs/contributing/community-builds) for more details).
 
 ---
 ### Open source tools for the community
@@ -30,14 +30,14 @@ Our model for data analysis and sharing is for scientists to store the code used
 Nextstrain is a collection of open-source tools to aid in our understanding of pathogen spread and evolution, especially in outbreak scenarios.
 We have designed these in such a way that they can be used with a wide range of data sources, and are easy to replace with your own tooling.
 Broadly speaking, Nextstrain consists of 
-* "augur" -- a series of composable, modular (unix-like) bioinformatics tools.
+* "augur" -- a series of composable, modular (Unix-like) bioinformatics tools.
 We use these to create recipes for different pathogens and different analyses, which are easy to reproduce when new data is available.
 * "auspice" -- a web-based visualization program, to present & interact with phylogenomic & phylogeographic data. 
 This is what you see when, for example, you visit [nextstrain.org/zika](https://www.nextstrain.org/zika), but it can also run locally on your computer.
 
 
 This architecture allows us to
-- perform sequence analysis -- including subsampling, alignment, tree-inference, node dating etcetera -- by running a series of augur commands in discrete steps.
+- perform sequence analysis -- including subsampling, alignment, tree-inference, node dating et cetera -- by running a series of augur commands in discrete steps.
 - use additional tools & scripts within a given bioinformatics recipe to add additional functionality.
 - replace modules, or series of modules with other analysis tools (e.g. BEAST).
 - interpret our data -- no matter what analysis recipe we used -- within auspice on our computer.
@@ -69,13 +69,13 @@ Additionally we have open-sourced all the tools we use, and hope to create a com
 ### How to get started
 
 * If you would like to investigate live datasets -- including those contributed by the community, [head back to the splash page](/) and click on any of the tiles.
-* If you would like to use Nextstrain to process and visualise your own data, you can either start with the [Quickstart](/docs/getting-started/quickstart) which uses a Docker container to run the builds automatically, or follow the [Zika Tutorial](/docs/tutorials/zika) which provides a more hands-on approach to processing the data.
+* If you would like to use Nextstrain to process and visualize your own data, you can either start with the [Quickstart](/docs/getting-started/quickstart) which uses a Docker container to run the builds automatically, or follow the [Zika Tutorial](/docs/tutorials/zika) which provides a more hands-on approach to processing the data.
 * If you have data generated from other sources (e.g. BEAST, RAxML, etc...) then please watch this space -- we'll add tutorials for these soon!
 
 ---
 ### Contact us
 
-We are keen to keep expanding the scope of Nextstrain and empowering other researchers to better analyse and understand their data.
+We are keen to keep expanding the scope of Nextstrain and empowering other researchers to better analyze and understand their data.
 Please [get in touch with us](mailto:hello@nextstrain.org) if you have any questions or comments.
 
 ---
