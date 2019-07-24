@@ -10,28 +10,36 @@ const utils = require("./utils");
  * This mimics the behavior of the auspice server around version 1.32.
  * Ideally we can find a solution which doesn't use globals.
  */
-global.availableDatasets = {};
+global.availableDatasets = {defaults: {}};
 
 
-const convertManifestJsonToAvailableDatasetList = (old) => {
+const convertManifestJsonToAvailableDatasetList = (old, pathPrefix=false) => {
   const allParts = [];
+  const defaults = {}; /* holds the defaults, used to complete incomplete paths */
   const recurse = (partsSoFar, obj) => {
     if (typeof obj === "string") {
       // done
       allParts.push(partsSoFar);
     }
     let keys = Object.keys(obj);
+
+    /* if there's only one key in the object it's the "name" of the level
+    in the heirachy, e.g. "category" or "lineage", which we skip over.
+    Note that for levels with only 1 option there's 2 keys (one is "default") */
     if (keys.length === 1) {
       obj = obj[keys[0]]; // eslint-disable-line
       keys = Object.keys(obj); // skip level
     }
+
     const defaultValue = obj.default;
     if (!defaultValue) {
       return;
     }
-    const orderedKeys = [defaultValue];
+    defaults[partsSoFar.join("/")] = defaultValue;
+
+    const orderedKeys = [];
     keys.forEach((k) => {
-      if (k !== defaultValue && k !== "default") {
+      if (k !== "default") {
         orderedKeys.push(k);
       }
     });
@@ -42,9 +50,11 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
     });
   };
 
-  recurse([], old.pathogen);
-  return allParts
-    .map((fileParts) => ({request: fileParts.join("/")}));
+  recurse(pathPrefix ? [pathPrefix] : [], old.pathogen);
+  return [
+    allParts.map((fileParts) => ({request: fileParts.join("/")})),
+    defaults
+  ];
 };
 
 /* setAvailableDatasetsFromManifest
@@ -60,9 +70,11 @@ const setAvailableDatasetsFromManifest = async () => {
   try {
     let data = await fetch(`http://data.nextstrain.org/manifest_guest.json`)
         .then((result) => result.json());
-    data = convertManifestJsonToAvailableDatasetList(data);
+    let defaultsForPathCompletion;
+    [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data);
     utils.verbose(`Successfully got manifest for "live"`);
     global.availableDatasets.live = data;
+    global.availableDatasets.defaults.live = defaultsForPathCompletion;
   } catch (err) {
     utils.warn(`Failed to getch manifest for "live"`);
   }
@@ -70,12 +82,11 @@ const setAvailableDatasetsFromManifest = async () => {
   try {
     let data = await fetch(`http://staging.nextstrain.org/manifest_guest.json`)
         .then((result) => result.json());
-    data = convertManifestJsonToAvailableDatasetList(data);
-    data.forEach((dataset) => {
-      dataset.request = `staging/${dataset.request}`;
-    });
+    let defaultsForPathCompletion;
+    [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data, "staging");
     utils.verbose(`Successfully got manifest for "staging"`);
     global.availableDatasets.staging = data;
+    global.availableDatasets.defaults.staging = defaultsForPathCompletion;
   } catch (err) {
     utils.warn(`Failed to fetch manifest for "staging"`);
   }
