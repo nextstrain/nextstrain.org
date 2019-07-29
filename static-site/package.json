@@ -53,7 +53,7 @@
     "gatsby-remark-smartypants": "^1.4.12",
     "gatsby-source-filesystem": "^1.4.2",
     "gatsby-transformer-remark": "^1.7.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.15",
     "lodash-webpack-plugin": "^0.11.4",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
