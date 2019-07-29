@@ -72,7 +72,7 @@ const correctPrefixFromAvailable = (source, prefixParts) => {
     return correctPrefixFromAvailable(source, parts);
   }
 
-  return prefixParts;
+  return removeStagingFromFront(prefixParts);
 };
 
 
