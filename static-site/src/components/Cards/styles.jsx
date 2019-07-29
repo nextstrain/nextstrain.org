@@ -58,6 +58,6 @@ export const SubText = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  font-size: 1.5em;
+  font-size: 16px;
   margin-top: 15px;
 `
