@@ -91,7 +91,6 @@ const NavBar = ({sidebar, mobileDisplay, toggleHandler, narrativeTitle, width}) 
       <div style={styles.flexRows}>
         <div style={{...styles.flexColumns, paddingRight: "12px"}}>
           <div style={{flex: 5}}/>
-          {renderLink("About", "/about",   styles.link)}
           {renderLink("Docs",  "/docs",    styles.link)}
           {renderLink("Blog",  "/blog",    styles.link)}
         </div>
