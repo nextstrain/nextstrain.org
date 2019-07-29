@@ -26,19 +26,23 @@
     "express-naked-redirect": "^0.1.2",
     "express-static-gzip": "^0.2.2",
     "heroku-ssl-redirect": "0.0.4",
-    "marked": "^0.5.0",
+    "marked": "^0.7.0",
     "node-fetch": "^2.1.2",
     "query-string": "^4.2.3",
     "serve-favicon": "^2.5.0",
     "yaml-front-matter": "^4.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.3.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-plugin-lodash": "^3.2.11",
+    "eslint": "^5.14.1",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-defaults": "^7.0.1",
     "eslint-plugin-filenames": "^0.1.2",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.2.1"
+    "eslint-plugin-react": "^7.2.1",
+    "eslint-plugin-react-hooks": "^1.6.0"
   }
 }

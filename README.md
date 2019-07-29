@@ -11,12 +11,18 @@ This repo builds [nextstrain.org](https://nextstrain.org) and comprises:
 * Server which, amongst other things, handles auspice data JSONs
 
 
+## Building nextstrain.org locally
 
-## Splash & Documentation
+1. `npm install` (from the "nextstrain.org" directory)
+2. `npm run set-up`, which runs `./set-up.sh` to build both the static site & auspice.
+3. `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
+
+---
+## Splash & documentation pages
 
 This is found at `./static-site/`.
 See [static-site/README.md](./static-site/README.md) for instructions on how to add documentation and develop.
-This is built using Gatsby during deployment (see below) and served via `./server.js`.
+This is built using Gatsby during deployment and served via `./server.js`.
 
 
 ## Auspice
@@ -46,23 +52,21 @@ Note that the auspice development mode uses the auspice splash page which won't 
 This is because the nextstrain.org server (see above) uses the splash page of the static content, but the auspice dev server doesn't.
 The advantage of development mode is that the client will live update as you edit the customisations.
 
+
 ## Server
 `./server.js` decides, based on the path, whether to serve auspice or the (pre-built) static documentation / splash pages.
 It also imports auspice-specific code from `./auspice/server` to process auspice requests for data (including data transforms).
 
 
-## Building nextstrain.org locally
-The script `npm run set-up` will build the site locally -- see `./set-up.sh` for the exact steps.
-Running `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
 
-
+---
 ## Deploy nextstrain.org
 All commits pushed to github trigger [Travis-CI](https://travis-ci.com/nextstrain/nextstrain.org), which runs the `npm run set-up` script.
 If there are no errors, and we're on the master branch, Travis-CI then triggers the heroku server to rebuild (via `npm run redeploy-site`).
 Heroku rebuilds by running `npm run set-up` (via the `heroku-postbuild` hook) and, upon success, starts the server (`npm run server`).
 
 
-> Note that there is a development heroku server available which can be deployed via
+Note that there is a development heroku server available which can be deployed via
 `git push -f heroku-dev <branch>:master`, where the `heroku-dev` remote is https://git.heroku.com/nextstrain-dev.git
 It can be useful to test an unpublished auspice version -- modify the `set-up.sh` script locally and push to `heroku-dev` (see comments in that file for further info).
 
