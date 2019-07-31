@@ -10,8 +10,6 @@ import * as Styles from "./styles";
 import { SmallSpacer, MediumSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 
-console.log("***", nextstrainCards)
-
 class Splash extends React.Component {
   constructor() {
     super();

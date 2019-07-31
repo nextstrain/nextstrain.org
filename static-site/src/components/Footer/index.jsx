@@ -31,7 +31,9 @@ const SplashImagesCredit = () => (
         <a href="https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1003240#s5">Enterovirus</a>
         {` by Shingler `}<i>et al., </i>
         <a href="https://pixnio.com/science/microscopy-images/ralstonia-mannitolilytica-bacteria/gram-positive-mycobacterium-tuberculosis-bacteria-2">Tuberculosis</a>
-        {` by Ray Butler.`}
+        {` by Ray Butle, `}
+        <a href="https://www.flickr.com/photos/nihgov/33288028956">RSV</a>
+        {` by NIAID / NIH.`}
       </Styles.FooterParagraph>
     </div>
   </div>
