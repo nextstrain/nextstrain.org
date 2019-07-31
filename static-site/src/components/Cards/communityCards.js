@@ -23,6 +23,11 @@ const communityCards = [
     img: "rsv.png",
     url: "/community/JianiC/rsv/B/WGS",
     title: "RSV (subtype B)"
+  },
+  {
+    img: "stripe_rust.png",
+    url: "/community/saunderslab/PST",
+    title: "Wheat Yellow Rust"
   }
 ];
 

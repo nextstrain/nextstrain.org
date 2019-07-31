@@ -33,7 +33,9 @@ const SplashImagesCredit = () => (
         <a href="https://pixnio.com/science/microscopy-images/ralstonia-mannitolilytica-bacteria/gram-positive-mycobacterium-tuberculosis-bacteria-2">Tuberculosis</a>
         {` by Ray Butle, `}
         <a href="https://www.flickr.com/photos/nihgov/33288028956">RSV</a>
-        {` by NIAID / NIH.`}
+        {` by NIAID / NIH, `}
+        <a href="https://commons.wikimedia.org/wiki/File:Stripe_rust_on_wheat.jpg">Wheat yellow rust (Puccinia striiformis)</a>
+        {` by Yue Jin / USDA.`}
       </Styles.FooterParagraph>
     </div>
   </div>
