@@ -4,6 +4,7 @@
   "/about/overview": "/docs/getting-started/introduction",
   "/about/methods/introduction": "/docs/getting-started/introduction",
   "/about/methods": "/docs/getting-started/introduction",
+  "/community": "/#community",  
   "/docs/bioinformatics/introduction": "docs/bioinformatics/introduction-to-augur",
   "/docs/bioinformatics/output-jsons": "/docs/bioinformatics/data-formats",
   "/docs/visualisation": "/docs/interpretation/auspice",

@@ -8,7 +8,6 @@ class Cards extends React.Component {
   render() {
     return (
       <div>
-        <HugeSpacer />
         <div className="row">
           <div className="col-md-1" />
           <div className="col-md-10">
