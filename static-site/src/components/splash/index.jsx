@@ -48,26 +48,36 @@ class Splash extends React.Component {
           </Styles.Button>
         </FlexCenter>
 
-        <SmallSpacer/>
+        <HugeSpacer/>
+
+        <ScrollableAnchor id={'pathogens'}>
+          <Styles.H1>Explore pathogens</Styles.H1>
+        </ScrollableAnchor>
+
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph>
+            Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter>
 
         <Cards
-          title="Explore pathogens"
-          subtext={
-            <span>
-              Views of the genomic epidemiology of specific pathogens kept up-to-date by the Nextstrain team
-            </span>}
           cards={nextstrainCards}
         />
 
         <HugeSpacer/>
 
+        <ScrollableAnchor id={'community'}>
+          <Styles.H1>From the community</Styles.H1>
+        </ScrollableAnchor>
+
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph>
+            Analyses by independent groups <Link to="/docs/contributing/community-builds">stored and
+            accessed via public GitHub repos</Link>
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter>
+
         <Cards
-          numCardsToShow={3}
-          title="From the community"
-          subtext={
-            <span>
-              Analyses by independent groups <Link to="/docs/contributing/community-builds">stored and accessed via public GitHub repos</Link>
-            </span>}
           cards={communityCards}
         />
 
