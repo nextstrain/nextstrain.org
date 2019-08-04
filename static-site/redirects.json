@@ -10,7 +10,7 @@
   "/docs/visualisation": "/docs/interpretation/auspice",
   "/docs/visualisation/introduction": "/docs/interpretation/auspice",
   "/docs/visualisation/narratives": "/docs/narratives/introduction",
-  "/docs/getting-started/zika-tutorial/": "/docs/tutorials/zika",
-  "/docs/getting-started/tb-tutorial/": "/docs/tutorials/tb",
+  "/docs/getting-started/zika-tutorial": "/docs/tutorials/zika",
+  "/docs/getting-started/tb-tutorial": "/docs/tutorials/tb",
   "/docs/getting-started/installation": "/docs/getting-started/local-installation"
 }

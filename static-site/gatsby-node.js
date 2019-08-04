@@ -128,9 +128,16 @@ exports.createPages = ({graphql, boundActionCreators}) => {
           .map((edge) => edge.node.fields.slug.split("/")[1])
           .filter((cv, idx, arr) => arr.indexOf(cv)===idx); /* filter to unique values */
 
-        for(const [key, value] of Object.entries(redirects)){
+        for (const [key, value] of Object.entries(redirects)) {
           createRedirect({
             fromPath: key,
+            isPermanent: true,
+            redirectInBrowser: true,
+            toPath: value
+          });
+          /* also create redirectos from paths with a trailing slash */
+          createRedirect({
+            fromPath: `${key}/`,
             isPermanent: true,
             redirectInBrowser: true,
             toPath: value
