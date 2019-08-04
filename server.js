@@ -52,6 +52,7 @@ const gatsbyRoutes = [
   "/docs*",
   "/reports*",
   "/tutorial*",
+  "/community",
   "/local*" // local shouldn't be handled by auspice for nextstrain.org
 ];
 app.get(gatsbyRoutes, (req, res) => {
