@@ -6,12 +6,13 @@ import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
 
+
 const FourOhFour = () => {
   return (
     <div className="index-container">
       <Helmet title={config.siteTitle} />
       <main>
-        <NavBar/>
+        <NavBar minified/>
         <div className="container">
           <ErrorContainer>
             {"Oops - that page doesn't exist! (404)."}
