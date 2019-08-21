@@ -4,10 +4,11 @@
 
 <br/>
 
-
+# Nextstrain static site
 This directory contains the documentation files and static site generator for nextstrain.
+For general `nextstrain.org` documentation including the nextstrain server (including the `/charon/...` API endpoints) and auspice customizations, see [nextstrain.org/README.md]((./static-site/README.md)).
 
-### Developing locally
+## Developing locally
 
 > See `../set-up.sh` for how this site is built during production
 
@@ -22,7 +23,7 @@ npm run build
 npm run serve
 ```
 
-#### Troubleshooting on Linux
+### Troubleshooting on Linux
 If `npm install` fails and you are getting an error about the Gatsby `sharp` plugin dependency, it could be related to the [Node support for sharp issue reported here](https://github.com/lovell/sharp/issues/1668). Check your `node -v`. We have found the best results with version 10 of Node. If you are using `nvm`, you can install Node v10 with
 
     nvm install 10
@@ -44,11 +45,11 @@ If `npm run develop` fails and you are getting an error about `pngquant`, delete
   ```
 
 
-### Adding content
+## Adding content
 * add markdown files to the `/content` directory
 
 
-### Deploying
+## Deploying
 The static documentation is automatically rebuilt every time the (parent) repo is updated.
 
 
