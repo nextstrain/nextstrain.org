@@ -66,32 +66,41 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
  */
 const setAvailableDatasetsFromManifest = async () => {
   utils.verbose("Fetching manifests for live & staging");
-  /* LIVE */
-  try {
-    let data = await fetch(`http://data.nextstrain.org/manifest_guest.json`)
-        .then((result) => result.json());
-    let defaultsForPathCompletion;
-    [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data);
-    utils.verbose(`Successfully got manifest for "live"`);
-    global.availableDatasets.live = data;
-    global.availableDatasets.defaults.live = defaultsForPathCompletion;
-  } catch (err) {
-    utils.warn(`Failed to getch manifest for "live"`);
-  }
-  /* STAGING */
-  try {
-    let data = await fetch(`http://staging.nextstrain.org/manifest_guest.json`)
-        .then((result) => result.json());
-    let defaultsForPathCompletion;
-    [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data);
-    utils.verbose(`Successfully got manifest for "staging"`);
-    global.availableDatasets.staging = data;
-    global.availableDatasets.defaults.staging = defaultsForPathCompletion;
-  } catch (err) {
-    utils.warn(`Failed to fetch manifest for "staging"`);
-  }
 
-  utils.log(`Got manifests for ${Object.keys(global.availableDatasets).join(", ")}`);
+  const servers = {
+    live: "data",
+    staging: "staging"
+  };
+
+  const promises = Object.keys(servers).map((server) => {
+    return fetch(`http://${servers[server]}.nextstrain.org/manifest_guest.json`)
+      .then((result) => {
+        return result.json();
+      })
+      .then((data) => {
+        let defaultsForPathCompletion;
+
+        [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data);
+        utils.verbose(`Successfully got manifest for "${server}"`);
+
+        global.availableDatasets[server] = data;
+        global.availableDatasets.defaults[server] = defaultsForPathCompletion;
+      })
+      .catch((e) => {
+        console.error(e);
+        utils.warn(`Failed to getch manifest for "${server}"`);
+      });
+  });
+
+  Promise.all(promises)
+    .then((results) => {
+      utils.log(`Got manifests for ${Object.keys(global.availableDatasets).join(", ")}`);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+
+
 };
 
 setAvailableDatasetsFromManifest();
