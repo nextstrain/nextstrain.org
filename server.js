@@ -97,4 +97,12 @@ const server = app.listen(app.get('port'), () => {
   console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`)
   console.log(`  Auspice datasets are sourced from S3 buckets.`);
   console.log("\n-----------------------------------\n\n");
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    utils.error(`Port ${app.get('port')} is currently in use by another program.
+    You must either close that program or specify a different port by setting the shell variable
+    "$PORT". Note that on MacOS / Linux, "lsof -n -i :${app.get('port')} | grep LISTEN" should
+    identify the process currently using the port.`);
+  }
+  utils.error(`Uncaught error in app.listen(). Code: ${err.code}`);
 });

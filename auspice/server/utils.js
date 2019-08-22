@@ -26,6 +26,10 @@ const log = (msg) => {
 const warn = (msg) => {
   console.warn(chalk.redBright(`[warning]\t${msg}`));
 };
+const error = (msg) => {
+  console.error(chalk.redBright(`[error]\t${msg}`));
+  process.exit(2);
+};
 
 const fetchJSON = (path) => {
   const p = fetch(path)
@@ -59,6 +63,7 @@ module.exports = {
   verbose,
   log,
   warn,
+  error,
   fetchJSON,
   printStackTrace
 };
