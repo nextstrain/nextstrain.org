@@ -16,41 +16,52 @@ global.availableDatasets = {defaults: {}};
 const convertManifestJsonToAvailableDatasetList = (old) => {
   const allParts = [];
   const defaults = {}; /* holds the defaults, used to complete incomplete paths */
-  const recurse = (partsSoFar, obj) => {
-    if (typeof obj === "string") {
-      // done
-      allParts.push(partsSoFar);
-    }
-    let keys = Object.keys(obj);
 
-    /* if there's only one key in the object it's the "name" of the level
-    in the heirachy, e.g. "category" or "lineage", which we skip over.
-    Note that for levels with only 1 option there's 2 keys (one is "default") */
+  /*
+    if there's only one key in the object it's the "name" of the level
+    in the hierarchy, e.g. "category" or "lineage", which we skip over.
+    Note that for levels with only 1 option there's 2 keys (one is "default")
+  */
+  const skipLevelNameKeys = (obj) => {
+    const keys = Object.keys(obj);
     if (keys.length === 1) {
       obj = obj[keys[0]]; // eslint-disable-line
-      keys = Object.keys(obj); // skip level
+    }
+    return obj;
+  };
+
+  /**
+   * Iterates over an object to build an array of URL components to be used
+   * for a future data request.
+   *
+   * @param {[String]} partsSoFar
+   * @param {Object} obj
+   */
+  const recursivelyBuildUrlParts = (partsSoFar, obj) => {
+    if (typeof obj === "string") {
+      allParts.push(partsSoFar);
     }
 
-    const defaultValue = obj.default;
+    const flattenedObj = skipLevelNameKeys(obj);
+    const keys = Object.keys(flattenedObj);
+
+    const defaultValue = flattenedObj.default;
     if (!defaultValue) {
       return;
     }
     defaults[partsSoFar.join("/")] = defaultValue;
 
-    const orderedKeys = [];
-    keys.forEach((k) => {
-      if (k !== "default") {
-        orderedKeys.push(k);
-      }
-    });
+    const orderedKeys = keys.filter((k) => k !== "default");
+
     orderedKeys.forEach((key) => {
       const newParts = partsSoFar.slice();
       newParts.push(key);
-      recurse(newParts, obj[key]);
+      recursivelyBuildUrlParts(newParts, flattenedObj[key]);
     });
   };
 
-  recurse([], old.pathogen);
+  recursivelyBuildUrlParts([], old.pathogen);
+
   return [
     allParts.map((fileParts) => fileParts.join("/")),
     defaults
