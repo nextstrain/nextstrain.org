@@ -5,8 +5,8 @@
   "main": "server.js",
   "author": "James Hadfield",
   "license": "AGPL-3.0-only",
-  "repository": "github:nextstrain/auspice",
-  "homepage": "https://www.nextstrain.org",
+  "repository": "github:nextstrain/nextstrain.org",
+  "homepage": "https://nextstrain.org",
   "engines": {
     "node": "10.8.x",
     "npm": "6.2.x"
