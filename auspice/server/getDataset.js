@@ -50,6 +50,19 @@ const requestMainDataset = async (res, req, fetchUrls, treeName, secondTreeName,
   }
 };
 
+/**
+ * Uses custom logic to match a "best guess" dataset from the client's *req* to
+ * a dataset stored on nextstrain.org.
+ *
+ * If the request URL differs from the URL of the matched dataset, then it sends
+ * the client a redirect to the new URL.
+ *
+ * If the URLs match, then it sends the client the requested dataset as a JSON
+ * object.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ */
 const getDataset = async (req, res) => {
   const query = queryString.parse(req.url.split('?')[1]);
   if (!query.prefix) {
@@ -76,11 +89,23 @@ const getDataset = async (req, res) => {
     return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }
 
-  const {source, fetchUrls, treeName, secondTreeName} = datasetInfo;
+  const {source, fetchUrls, treeName, secondTreeName, auspiceDisplayUrl} = datasetInfo;
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
     return helpers.unauthorized(req, res);
+  }
+
+  const baseUrl = req.url.split(query.prefix)[0];
+  let redirectUrl = baseUrl + '/' + auspiceDisplayUrl;
+  if (query.type) {
+    redirectUrl += `&type=${query.type}`;
+  }
+
+  if (redirectUrl !== req.url) {
+    utils.log(`Redirecting client to: ${redirectUrl}`);
+    res.redirect(redirectUrl);
+    return undefined;
   }
 
   if (fetchUrls.additional) {
