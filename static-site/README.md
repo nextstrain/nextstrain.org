@@ -10,7 +10,7 @@ For general `nextstrain.org` documentation including the nextstrain server (incl
 
 ## Developing locally
 
-> See `../set-up.sh` for how this site is built during production
+> See `../build.sh` for how this site is built during production
 
 ```bash
 npm install # this needs python 2

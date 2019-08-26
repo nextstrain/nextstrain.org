@@ -66,7 +66,7 @@ This means that nextstrain.org, auspice.us, and your local auspice installation 
 ## Build nextstrain.org locally
 ### Build locally mirroring the deployed (live) website
 1. `npm install` (from the "nextstrain.org" directory)
-2. `npm run set-up`, which runs `./set-up.sh` to build both the static site & auspice with nextstrain.org customisations.
+2. `npm run build`, which runs `./build.sh` to build both the static site & auspice with nextstrain.org customisations.
 3. `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
 
 
@@ -100,14 +100,14 @@ See the [charon API auspice documentation](https://nextstrain.github.io/auspice/
 
 ---
 ## Deploy nextstrain.org
-All commits pushed to github trigger [Travis-CI](https://travis-ci.com/nextstrain/nextstrain.org), which runs the `npm run set-up` script.
+All commits pushed to github trigger [Travis-CI](https://travis-ci.com/nextstrain/nextstrain.org), which runs the `npm run build` script.
 If there are no errors, and we're on the master branch, Travis-CI then triggers the heroku server to rebuild (via `npm run redeploy-site`).
-Heroku rebuilds by running `npm run set-up` (via the `heroku-postbuild` hook) and, upon success, starts the server (`npm run server`).
+Heroku rebuilds by running `npm run build` and, upon success, starts the server (`npm run server`).
 
 
 Note that there is a development heroku server available which can be deployed via
 `git push -f heroku-dev <branch>:master`, where the `heroku-dev` remote is https://git.heroku.com/nextstrain-dev.git
-It can be useful to test an unpublished auspice version -- modify the `set-up.sh` script locally and push to `heroku-dev` (see comments in that file for further info).
+It can be useful to test an unpublished auspice version -- modify the `build.sh` script locally and push to `heroku-dev` (see comments in that file for further info).
 
 
 ---

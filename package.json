@@ -12,11 +12,11 @@
     "npm": "6.2.x"
   },
   "scripts": {
-    "set-up": "./set-up.sh",
+    "build": "./build.sh",
+    "set-up": "npm run build",
     "server": "node server.js",
     "start": "npm run server",
-    "redeploy-site": "./redeploy-site.sh",
-    "heroku-postbuild": "npm run set-up"
+    "redeploy-site": "./redeploy-site.sh"
   },
   "dependencies": {
     "argparse": "^1.0.10",

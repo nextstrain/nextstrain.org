@@ -8,7 +8,7 @@ function errorFound {
 trap 'errorFound $LINENO' ERR
 
 ##############################################################
-echo "Running the nextstrain.org set up script"
+echo "Running the nextstrain.org build script"
 
 
 ##############################################################
@@ -33,4 +33,4 @@ auspice build --verbose --extend ./client/config.json
 cd ..
 
 ##############################################################
-echo "Set up complete. Next step: \"npm run server\""
+echo "Build complete. Next step: \"npm run server\""
