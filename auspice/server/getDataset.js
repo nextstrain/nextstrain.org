@@ -9,8 +9,8 @@ const {NoDatasetPathError} = require("./exceptions");
  * @param {*} datasetInfo
  * @param {*} query
  */
-const requestCertainFileType = async (res, req, datasetInfo, query) => {
-  const jsonData = await utils.fetchJSON(datasetInfo.fetchUrls.additional);
+const requestCertainFileType = async (res, req, additional, query) => {
+  const jsonData = await utils.fetchJSON(additional);
   if (query.type === "tree") {
     res.json({tree: jsonData});
   }
@@ -23,12 +23,12 @@ const requestCertainFileType = async (res, req, datasetInfo, query) => {
  * @param {*} datasetInfo
  * @param {*} query
  */
-const requestMainDataset = async (res, req, datasetInfo) => {
-  const fetchMultiple = [utils.fetchJSON(datasetInfo.fetchUrls.meta),
-    utils.fetchJSON(datasetInfo.fetchUrls.tree)];
+const requestMainDataset = async (res, req, fetchUrls, treeName, secondTreeName, source) => {
+  const fetchMultiple = [utils.fetchJSON(fetchUrls.meta),
+    utils.fetchJSON(fetchUrls.tree)];
 
-  if (datasetInfo.fetchUrls.secondTree) {
-    fetchMultiple.push(utils.fetchJSON(datasetInfo.fetchUrls.secondTree));
+  if (fetchUrls.secondTree) {
+    fetchMultiple.push(utils.fetchJSON(fetchUrls.secondTree));
   }
 
   const data = await Promise.all(fetchMultiple);
@@ -36,12 +36,12 @@ const requestMainDataset = async (res, req, datasetInfo) => {
   const jsonData = {
     meta: data[0],
     tree: data[1],
-    _source: datasetInfo.source.name,
-    _treeName: datasetInfo.treeName
+    _source: source.name,
+    _treeName: treeName
   };
 
-  if (datasetInfo.fetchUrls.secondTree) {
-    jsonData._treeTwoName = datasetInfo.secondTreeName;
+  if (fetchUrls.secondTree) {
+    jsonData._treeTwoName = secondTreeName;
     jsonData.treeTwo = data[2];
   }
 
@@ -75,20 +75,22 @@ const getDataset = async (req, res) => {
     return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }
 
+  const {source, fetchUrls, treeName, secondTreeName} = datasetInfo;
+
   // Authorization
-  if (!datasetInfo.source.visibleToUser(req.user)) {
+  if (!source.visibleToUser(req.user)) {
     return helpers.unauthorized(req, res);
   }
 
-  if (datasetInfo.fetchUrls.additional) {
+  if (fetchUrls.additional) {
     try {
-      await requestCertainFileType(res, req, datasetInfo, query);
+      await requestCertainFileType(res, req, fetchUrls.additional, query);
     } catch (err) {
-      return helpers.handleError(res, `Couldn't fetch JSON: ${datasetInfo.fetchUrls.additional}`, err.message);
+      return helpers.handleError(res, `Couldn't fetch JSON: ${fetchUrls.additional}`, err.message);
     }
   } else {
     try {
-      await requestMainDataset(res, req, datasetInfo);
+      await requestMainDataset(res, req, fetchUrls, treeName, secondTreeName, source);
     } catch (err) {
       return helpers.handleError(res, `Couldn't fetch JSONs`, err.message);
     }
