@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "argparse": "^1.0.10",
+    "auspice": "https://github.com/nextstrain/auspice/tarball/v2",
     "aws-sdk": "^2.520.0",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
@@ -38,7 +39,6 @@
     "yaml-front-matter": "^4.0.0"
   },
   "devDependencies": {
-    "auspice": "1.39.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-plugin-lodash": "^3.2.11",
@@ -51,5 +51,8 @@
     "eslint-plugin-react": "^7.2.1",
     "eslint-plugin-react-hooks": "^1.6.0"
   },
-  "cacheDirectories": ["node_modules", "static-site/node_modules"]
+  "cacheDirectories": [
+    "node_modules",
+    "static-site/node_modules"
+  ]
 }
