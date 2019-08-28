@@ -125,6 +125,7 @@ const parsePrefix = (prefix, otherQueries) => {
   // Get the server fetch URLs
   const dataset = source.dataset(prefixParts);
 
+  fetchUrls.main = dataset.urlFor("main");
   fetchUrls.tree = dataset.urlFor("tree");
   fetchUrls.meta = dataset.urlFor("meta");
 
@@ -158,28 +159,3 @@ module.exports = {
   parsePrefix
 };
 
-
-/* Function to fetch unified JSON (meta+tree combined), and fallback to v1 jsons if this isn't found */
-/* Currently not implemented as we don't have any v2 JSONs, but we will... */
-// const fetchUnifiedJSON = (serverRes, source, path, pathTreeTwo, toInject, errorHandler) => {
-//   const p = source === "local" ? utils.readFilePromise : utils.fetchJSON;
-//   const pArr = [p(paths.fetchURL)];
-//   if (paths.secondTreeFetchURL) {
-//     pArr.push(p(paths.secondTreeFetchURL));
-//   }
-//   Promise.all(pArr)
-//     .then((jsons) => {
-//       const json = jsons[0]; // first is always the main JSON
-//       for (const field in toInject) { // eslint-disable-line
-//         json[field] = toInject[field];
-//       }
-//       if (paths.secondTreeFetchURL) {
-//         json.treeTwo = jsons[1].tree;
-//       }
-//       res.json(json);
-//     })
-//     .catch(() => {
-//       console.log("\tFailed to fetch unified JSON for", paths.fetchURL, "trying for v1...");
-//       fetchV1JSONs.fetchTreeAndMetaJSONs(res, source, paths.fetchURL, paths.secondTreeFetchURL, toInject, errorHandler);
-//     });
-// }

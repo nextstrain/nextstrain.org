@@ -56,7 +56,9 @@ class Dataset {
   }
   baseNameFor(type) {
     const baseName = this.baseParts.join("_");
-    return `${baseName}_${type}.json`;
+    return type === "main"
+      ? `${baseName}.json`
+      : `${baseName}_${type}.json`;
   }
   urlFor(type) {
     const url = new URL(this.baseNameFor(type), this.source.baseUrl);
