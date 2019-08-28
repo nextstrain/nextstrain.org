@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const queryString = require("query-string");
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
-const parseNarrative = require('./parseNarrative').default;
+const auspice = require("auspice");
 
 const getNarrative = async (req, res, next) => {
   let prefix;
@@ -33,7 +33,7 @@ const getNarrative = async (req, res, next) => {
     }
 
     const fileContents = await response.text();
-    const blocks = parseNarrative(fileContents);
+    const blocks = auspice.parseNarrativeFile(fileContents);
     res.send(JSON.stringify(blocks).replace(/</g, '\\u003c'));
     utils.verbose("SUCCESS");
   } catch (err) {
