@@ -1,6 +1,8 @@
 const fs = require('fs');
 const chalk = require('chalk');
 const fetch = require('node-fetch');
+const childProcess = require('child_process');
+const path = require('path');
 
 const getGitHash = () => {
   /* https://stackoverflow.com/questions/34518389/get-hash-of-most-recent-git-commit-in-node */
@@ -59,6 +61,30 @@ const printStackTrace = (err) => {
   }
 };
 
+
+/** Since npm doesn't search globally installed npm packages
+ * we can't simply require("auspice"). This is important as we
+ * encourage global installs of auspice, and a local install of
+ * auspice is problematic -- see https://github.com/nextstrain/auspice/issues/689
+ *
+ * This function will import auspice locally if it exists else
+ * it'll use the globally installed auspice.
+ * Throws if it can't find an instance of auspice installed.
+ */
+const importAuspice = () => {
+  if (fs.existsSync("../node_modules/auspice")) {
+    return require("auspice"); // eslint-disable-line
+  }
+  const globalNpmAuspiceDir = path.join(
+    childProcess.execSync('npm root --global').toString().trim(),
+    "auspice"
+  );
+  if (fs.existsSync(globalNpmAuspiceDir)) {
+    return require(globalNpmAuspiceDir); // eslint-disable-line
+  }
+  throw new Error("Cannot find an auspice installation -- auspice must be installed globally (e.g. 'npm install --global auspice') or locally (e.g. 'npm install auspice').");
+};
+
 module.exports = {
   getGitHash,
   verbose,
@@ -66,5 +92,6 @@ module.exports = {
   warn,
   error,
   fetchJSON,
-  printStackTrace
+  printStackTrace,
+  importAuspice
 };
