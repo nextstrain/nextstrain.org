@@ -2,6 +2,7 @@ const queryString = require("query-string");
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const {NoDatasetPathError} = require("./exceptions");
+const auspice = require("auspice");
 
 /**
  *
@@ -33,20 +34,16 @@ const requestMainDataset = async (res, req, fetchUrls, treeName, secondTreeName,
 
   const data = await Promise.all(fetchMultiple);
 
-  const jsonData = {
-    meta: data[0],
-    tree: data[1],
-    _source: source.name,
-    _treeName: treeName
-  };
+  const datasetJson = auspice.convertFromV1({tree: data[1], meta: data[0]});
+
+  utils.verbose(`Success fetching v1 auspice JSONs. Sending as a single v2 JSON.`);
+  res.send(datasetJson);
 
   if (fetchUrls.secondTree) {
-    jsonData._treeTwoName = secondTreeName;
-    jsonData.treeTwo = data[2];
+    console.log("TO DO - SECOND TREE"); // TODO
+    // jsonData._treeTwoName = secondTreeName;
+    // jsonData.treeTwo = data[2];
   }
-
-  utils.verbose(`Success fetching ${fetchMultiple.length} version 1 auspice JSONs. Sending as a single JSON.`);
-  res.send(jsonData);
 };
 
 const getDataset = async (req, res) => {
