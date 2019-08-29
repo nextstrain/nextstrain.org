@@ -14,9 +14,6 @@ const splitPrefixIntoParts = (url) => url
 /* nextstrain.org only considers three sources: "live", "staging" and "community" */
 const decideSourceFromPrefix = (prefix) => {
   let parts = splitPrefixIntoParts(prefix);
-  if (parts[0] === "status") {
-    parts = parts.slice(1);
-  }
   if (parts[0] === "staging") {
     return "staging";
   }
