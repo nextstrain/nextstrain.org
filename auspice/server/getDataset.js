@@ -8,16 +8,16 @@ const getDataset = async (req, res) => {
   if (!query.prefix) {
     return helpers.handleError(res, `getDataset request must define a prefix`);
   }
-  const source = helpers.decideSourceFromPrefix(query.prefix);
-  utils.log(`Getting (nextstrain) datasets for: ${req.url.split('?')[1]}. Source: ${source}`);
+  utils.log(`Getting (nextstrain) datasets for: ${req.url.split('?')[1]}`);
 
   // construct fetch URL
   let datasetInfo;
   try {
-    datasetInfo = helpers.parsePrefix(source, query.prefix, query);
+    datasetInfo = helpers.parsePrefix(query.prefix, query);
+    utils.verbose("Dataset: ", datasetInfo);
   } catch (err) {
     // utils.printStackTrace(err);
-    return helpers.handleError(res, `Couldn't parse the url "${query.prefix}" for source "${source}"`, err.message);
+    return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }
 
   /* Are we requesting a certain file type? */
@@ -43,7 +43,7 @@ const getDataset = async (req, res) => {
     const jsonData = {
       meta: data[0],
       tree: data[1],
-      _source: source,
+      _source: datasetInfo.source.name,
       _treeName: datasetInfo.treeName,
       _url: datasetInfo.auspiceDisplayUrl
     };

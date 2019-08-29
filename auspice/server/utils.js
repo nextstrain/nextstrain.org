@@ -28,6 +28,7 @@ const warn = (msg) => {
 };
 
 const fetchJSON = (path) => {
+  verbose(`Fetching ${path}`);
   const p = fetch(path)
     .then((res) => {
       if (res.status !== 200) throw new Error(res.statusText);
