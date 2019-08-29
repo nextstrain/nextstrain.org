@@ -30,7 +30,7 @@ const decideSourceFromPrefix = (prefix) => {
 const correctPrefixFromAvailable = (source, prefixParts) => {
 
   if (!global.availableDatasets[source]) {
-    utils.verbose("Cant compare against available datsets as there are none!");
+    utils.verbose("Can't compare against available datasets as there are none!");
     return prefixParts;
   }
 
