@@ -15,9 +15,9 @@ const getGitHash = () => {
   }
 };
 
-const verbose = (msg) => {
+const verbose = (msg, ...rest) => {
   if (global.verbose) {
-    console.log(chalk.greenBright(`[verbose]\t${msg}`));
+    console.log(chalk.greenBright(`[verbose]\t${msg}`), ...rest);
   }
 };
 const log = (msg) => {
