@@ -1,33 +1,49 @@
 #!/usr/bin/env bash
+set -eEuo pipefail
 
-function errorFound {
-  echo -e "\nScript Failed at step $step (Line $1)\nYou are responsible for clean up (sorry!)"
-  exit 2
+on-error() {
+    exec >&2
+    echo
+    echo "Build failed at ${BASH_SOURCE[0]} line ${BASH_LINENO[0]}"
+    echo
+    echo "You are responsible for clean up (sorry!)"
+    exit 1
 }
-# TRAPS
-trap 'errorFound $LINENO' ERR
 
-##############################################################
-echo "Running the nextstrain.org build script"
+trap on-error ERR
 
+main() {
+    local step="${1:-all}"
 
-##############################################################
-echo "Step 1: Building the static site (./static-site/public/)"
-cd static-site
-npm install # this needs python 2
-npm run build # build using gatsby. Can take a few minutes.
-cd ..
+    case "$step" in
+        static)
+            build-static;;
+        auspice)
+            build-auspice;;
+        all)
+            echo "Running the nextstrain.org build script"
+            build-static
+            build-auspice
+            echo "Build complete. Next step: \"npm run server\"";;
+        *)
+            echo "Unknown build step \"$step\"" >&2
+            exit 1;;
+    esac
+}
 
-##############################################################
-# for testing reasons (e.g. deploying to dev-heroku server) you may wish to
-# install from a github branch (useful for auspice versions not pushed to npm)
-# npm install https://github.com/nextstrain/auspice/tarball/master
+build-static() {
+    echo "Building the static site (./static-site/public/)"
+    cd static-site
+    npm install # this needs python 2
+    npm run build # build using gatsby. Can take a few minutes.
+    cd ..
+}
 
+build-auspice() {
+    echo "Building a customised version of auspice"
+    cd auspice
+    ../node_modules/.bin/auspice build --verbose --extend ./client/config.json
+    cd ..
+}
 
-echo "Step 2: Building a customised version of auspice"
-cd auspice
-../node_modules/.bin/auspice build --verbose --extend ./client/config.json
-cd ..
-
-##############################################################
-echo "Build complete. Next step: \"npm run server\""
+main "$@"

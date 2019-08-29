@@ -31,9 +31,7 @@ Please see [the auspice documentation](https://nextstrain.github.io/auspice/cust
 
 Production mode:
 ```bash
-cd auspice
-npx auspice build --verbose --extend ./client/config.json
-cd ..
+./build.sh auspice
 npm run server
 ```
 This will create the `auspice/index.html` and `auspice/dist/*` files which are gitignored.
