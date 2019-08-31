@@ -8,6 +8,9 @@ const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./auspice/server/utils");
 const auspiceServerHandlers = require("./auspice/server");
+const authn = require("./authn");
+
+const production = process.env.NODE_ENV === "production";
 
 const version = utils.getGitHash();
 const nextstrainAbout = `
@@ -30,6 +33,12 @@ global.verbose = args.verbose;
 /* BASIC APP SETUP */
 // NOTE: order of app.get is first come first serve (https://stackoverflow.com/questions/32603818/order-of-router-precedence-in-express-js)
 const app = express();
+
+// In production, trust Heroku as a reverse proxy and Express will use request
+// metadata from the proxy.
+if (production)
+  app.enable("trust proxy");
+
 app.set('port', process.env.PORT || 5000);
 app.use(favicon(path.join(__dirname, "favicon.png")));
 app.use('/favicon.png', express.static(path.join(__dirname, "favicon.png")));
@@ -59,6 +68,11 @@ app.get(gatsbyRoutes, (req, res) => {
   utils.verbose(`Sending ${req.originalUrl} to gatsby as it matches a (hardcoded) gatsby route`);
   res.sendFile(path.join(__dirname, "static-site", "public", "index.html"));
 });
+
+
+// Authentication (authn)
+//
+authn.setup(app);
 
 
 /* We use auspice to display phylogenomic data.

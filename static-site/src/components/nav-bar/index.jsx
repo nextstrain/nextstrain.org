@@ -64,6 +64,22 @@ const NavLinkActive = styled.div`
 `;
 
 class NavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: undefined,
+    };
+  }
+
+  componentDidMount() {
+    this.loadUser();
+  }
+
+  loadUser() {
+    fetch("/whoami", { headers: { Accept: 'application/json' }})
+      .then(response => response.json())
+      .then(whoami => this.setState(state => ({...state, ...whoami})));
+  }
 
   selectedClass(name) {
     if (!this.props.location || !this.props.location.pathname) return "";
@@ -116,6 +132,9 @@ class NavBar extends React.Component {
         <div style={{flex: 5}}/>
         {this.getLink("Docs", "/docs", this.selectedClass("docs"))}
         {this.getLink("Blog", "/blog", this.selectedClass("blog"))}
+        {this.state.user
+          ? this.getLink(`👤 ${this.state.user.username}`, "/whoami")
+          : this.getLink("Login", "/login", this.selectedClass("login"))}
         <div style={{width: this.props.minified ? 12 : 0 }}/>
       </NavContainer>
     );

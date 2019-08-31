@@ -1,4 +1,5 @@
 const utils = require("./utils");
+const sources = require("./sources");
 
 const handleError = (res, clientMsg, serverMsg="") => {
   res.statusMessage = clientMsg;
@@ -11,68 +12,39 @@ const splitPrefixIntoParts = (url) => url
   .replace(/\/$/, '')
   .split("/");
 
-/* nextstrain.org only considers three sources: "live", "staging" and "community" */
-const decideSourceFromPrefix = (prefix) => {
-  let parts = splitPrefixIntoParts(prefix);
-  if (parts[0] === "status") {
-    parts = parts.slice(1);
-  }
-  if (parts[0] === "staging") {
-    return "staging";
-  }
-  if (parts[0] === "community") {
-    return "community";
-  }
-  return "live";
-};
-
 /* Given the prefix (split on "/") -- is there an exact match in
  * the available datasets? If not, we use these to pick the
  * "default" one.
  */
-const correctPrefixFromAvailable = (source, prefixParts) => {
+const correctPrefixFromAvailable = (sourceName, prefixParts) => {
 
-  if (!global.availableDatasets[source]) {
-    utils.verbose("Cant compare against available datsets as there are none!");
+  if (!global.availableDatasets[sourceName]) {
+    utils.verbose("Can't compare against available datasets as there are none!");
     return prefixParts;
   }
 
-  if (source === "staging" && prefixParts[0] !== "staging") {
-    prefixParts.unshift("staging");
-  }
-
-  const doesPathExist = (pathToCheck) => {
-    for (let i=0; i<global.availableDatasets[source].length; i++) {
-      if (global.availableDatasets[source][i].request === pathToCheck) {
-        utils.verbose(` ${pathToCheck} Matches an availible dataset`);
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const removeStagingFromFront = (parts) => {
-    if (parts[0] === "staging") parts.shift();
-    return parts;
-  };
+  const doesPathExist = (pathToCheck) =>
+    global.availableDatasets[sourceName]
+      .map(dataset => dataset.request)
+      .includes(pathToCheck);
 
   let prefix = prefixParts.join("/");
 
   if (doesPathExist(prefix)) {
-    return removeStagingFromFront(prefixParts);
+    return prefixParts;
   }
 
   /* if we are here, then the path doesn't match any available datasets exactly */
-  if (prefix in global.availableDatasets.defaults[source]) {
-    prefix = `${prefix}/${global.availableDatasets.defaults[source][prefix]}`;
+  if (prefix in global.availableDatasets.defaults[sourceName]) {
+    prefix = `${prefix}/${global.availableDatasets.defaults[sourceName][prefix]}`;
     const parts = prefix.split("/");
     if (doesPathExist(prefix)) {
-      return removeStagingFromFront(parts);
+      return parts;
     }
-    return correctPrefixFromAvailable(source, parts);
+    return correctPrefixFromAvailable(sourceName, parts);
   }
 
-  return removeStagingFromFront(prefixParts);
+  return prefixParts;
 };
 
 
@@ -84,17 +56,34 @@ const guessTreeName = (prefixParts) => {
   return undefined;
 };
 
+const decideSourceFromPrefix = (prefix) => {
+  const prefixParts = splitPrefixIntoParts(prefix);
+
+  /* The first part of the prefix is an optional source name.  The rest is the
+   * source path parts.
+   */
+  const sourceName = sources.has(prefixParts[0])
+    ? prefixParts[0]
+    : "live";
+
+  return sources.get(sourceName);
+};
+
 /* Parse the prefix (normally URL) and decide which URLs to fetch etc
  * The prefix is case sensitive
  */
-const parsePrefix = (source, prefix, otherQueries) => {
-  let auspiceDisplayUrl = ""; // the URL to be displayed in Auspice
+const parsePrefix = (prefix, otherQueries) => {
   const fetchUrls = {};
-  let treeName;
   let prefixParts = splitPrefixIntoParts(prefix);
 
-  /* does the URL specify two trees? */
-  let secondTreeName;
+  const source = decideSourceFromPrefix(prefix);
+
+  /* Does the URL specify two trees?
+   *
+   * If so, we need to extract the two tree names and massage the prefixParts
+   * to only include the first.
+   */
+  let treeName, secondTreeName;
   for (let i=0; i<prefixParts.length; i++) {
     if (prefixParts[i].indexOf(":") !== -1) {
       [treeName, secondTreeName] = prefixParts[i].split(":");
@@ -106,42 +95,46 @@ const parsePrefix = (source, prefix, otherQueries) => {
     secondTreeName = otherQueries.deprecatedSecondTree;
   }
 
-  if (source === "staging") {
-    prefixParts = prefixParts.slice(1);
-    auspiceDisplayUrl = "staging/";
-  }
-  prefixParts = correctPrefixFromAvailable(source, prefixParts);
+  // Expand partial prefixes.  This would be cleaner if integerated into the
+  // Source classes.
+  prefixParts = correctPrefixFromAvailable(source.name, prefixParts);
 
   if (!treeName) {
     utils.verbose("Guessing tree name -- this should be improved");
     treeName = guessTreeName(prefixParts);
   }
 
-  /* build the auspice display & server fetch URLs */
-  const fetchPrefix =
-    source === "staging" ? "http://staging.nextstrain.org" :
-      source === "community" ? `https://raw.githubusercontent.com/${prefixParts[1]}/${prefixParts[2]}/master/auspice` :
-        "http://data.nextstrain.org";
-  auspiceDisplayUrl += prefixParts.join("/");
-  const auspicePrefixParts = source === "community" ? prefixParts.slice(2) : prefixParts.slice();
+  // The URL to be displayed in Auspice, tweaked below if necessary
+  let auspiceDisplayUrl = prefixParts.join("/");
+
+  // Get the server fetch URLs
+  const pathParts = source.name === "live"
+    ? prefixParts.slice(0)
+    : prefixParts.slice(1);
+
+  const dataset = source.dataset(pathParts);
+
+  fetchUrls.tree = dataset.urlFor("tree");
+  fetchUrls.meta = dataset.urlFor("meta");
+
   if (secondTreeName) {
-    const idxOfTree = auspicePrefixParts.indexOf(treeName);
-    const secondTreePrefixParts = auspicePrefixParts.slice();
-    secondTreePrefixParts[idxOfTree] = secondTreeName;
-    fetchUrls.secondTree = `${fetchPrefix}/${secondTreePrefixParts.join("_")}_tree.json`;
+    const idxOfTree = pathParts.indexOf(treeName);
+    const secondTreePathParts = pathParts.slice();
+    secondTreePathParts[idxOfTree] = secondTreeName;
+
+    const secondDataset = source.dataset(secondTreePathParts);
+    fetchUrls.secondTree = secondDataset.urlFor("tree");
+
     const re = new RegExp(`\\/${treeName}(/|$)`); // note the double escape for special char
     auspiceDisplayUrl = auspiceDisplayUrl.replace(re, `/${treeName}:${secondTreeName}/`);
   }
   auspiceDisplayUrl = auspiceDisplayUrl.replace(/\/$/, ''); // remove any trailing slash
 
-  fetchUrls.tree = `${fetchPrefix}/${auspicePrefixParts.join("_")}_tree.json`;
-  fetchUrls.meta = `${fetchPrefix}/${auspicePrefixParts.join("_")}_meta.json`;
-
   if (otherQueries.type) {
-    fetchUrls.additional = `${fetchPrefix}/${prefixParts.join("_")}_${otherQueries.type}.json`;
+    fetchUrls.additional = dataset.urlFor(otherQueries.type);
   }
 
-  return ({fetchUrls, auspiceDisplayUrl, treeName, secondTreeName});
+  return ({fetchUrls, auspiceDisplayUrl, treeName, secondTreeName, source});
 
 };
 

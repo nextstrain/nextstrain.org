@@ -15,9 +15,9 @@ const getGitHash = () => {
   }
 };
 
-const verbose = (msg) => {
+const verbose = (msg, ...rest) => {
   if (global.verbose) {
-    console.log(chalk.greenBright(`[verbose]\t${msg}`));
+    console.log(chalk.greenBright(`[verbose]\t${msg}`), ...rest);
   }
 };
 const log = (msg) => {
@@ -28,6 +28,7 @@ const warn = (msg) => {
 };
 
 const fetchJSON = (path) => {
+  verbose(`Fetching ${path}`);
   const p = fetch(path)
     .then((res) => {
       if (res.status !== 200) throw new Error(res.statusText);

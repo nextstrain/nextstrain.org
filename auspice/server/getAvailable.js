@@ -1,27 +1,34 @@
 const utils = require("./utils");
 const queryString = require("query-string");
+const {decideSourceFromPrefix} = require("./getDatasetHelpers");
 
 /* Note that global.availableDatasets & global.availableNarratives exist */
 
 /* handler for /charon/getAvailable requests */
-const getAvailable = (req, res) => {
-  /* nextstrain.org only considers two sources: "live" and "staging" */
+const getAvailable = async (req, res) => {
   const prefix = queryString.parse(req.url.split('?')[1]).prefix || "";
-  const source = prefix.includes("staging") ? "staging" : "live";
   utils.verbose(`getAvailable prefix: "${prefix}"`);
 
-  let datasets = [];
-  if (global.availableDatasets[source]) {
-    datasets = global.availableDatasets[source];
-  } else {
-    utils.verbose(`No datasets available for ${source}`);
+  const source = decideSourceFromPrefix(prefix);
+
+  // Authorization
+  if (!source.visibleToUser(req.user)) {
+    const user = req.user
+      ? `user ${req.user.username}`
+      : `an anonymous user`;
+
+    utils.warn(`Denying getAvailable access to ${user} for ${prefix}`);
+    return res.status(404).end();
   }
 
-  let narratives = [];
-  if (global.availableNarratives[source]) {
-    narratives = global.availableNarratives[source];
-  } else {
-    utils.verbose(`No narratives available for ${source}`);
+  const datasets = await source.availableDatasets() || [];
+  const narratives = await source.availableNarratives() || [];
+
+  if (!datasets || !datasets.length) {
+    utils.verbose(`No datasets available for ${source.name}`);
+  }
+  if (!narratives || !narratives.length) {
+    utils.verbose(`No narratives available for ${source.name}`);
   }
 
   res.json({datasets, narratives});

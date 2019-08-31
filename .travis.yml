@@ -7,7 +7,7 @@ python:
 install:
   - npm install
 script:
-  - npm run set-up
+  - npm run build
 after_success:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
       npm run redeploy-site;
