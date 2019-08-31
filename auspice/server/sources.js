@@ -17,6 +17,9 @@ class Source {
   dataset(pathParts) {
     return new Dataset(this, pathParts);
   }
+  visibleToUser(user) {
+    return true;
+  }
   availableDatasets() {
     return [];
   }

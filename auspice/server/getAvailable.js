@@ -11,6 +11,16 @@ const getAvailable = async (req, res) => {
 
   const source = decideSourceFromPrefix(prefix);
 
+  // Authorization
+  if (!source.visibleToUser(req.user)) {
+    const user = req.user
+      ? `user ${req.user.username}`
+      : `an anonymous user`;
+
+    utils.warn(`Denying getAvailable access to ${user} for ${prefix}`);
+    return res.status(404).end();
+  }
+
   const datasets = await source.availableDatasets() || [];
   const narratives = await source.availableNarratives() || [];
 

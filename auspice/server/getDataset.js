@@ -20,6 +20,16 @@ const getDataset = async (req, res) => {
     return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }
 
+  // Authorization
+  if (!datasetInfo.source.visibleToUser(req.user)) {
+    const user = req.user
+      ? `user ${req.user.username}`
+      : `an anonymous user`;
+
+    utils.warn(`Denying getDataset access to ${user} for ${query.prefix}`);
+    return res.status(404).end();
+  }
+
   /* Are we requesting a certain file type? */
   if (datasetInfo.fetchUrls.additional) {
     try {
