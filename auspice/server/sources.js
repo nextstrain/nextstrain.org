@@ -1,3 +1,6 @@
+const AWS = require("aws-sdk");
+const S3 = new AWS.S3();
+
 /* These Source and Dataset classes contain information to map an array of
  * dataset path parts onto a URL.  Source selection and dataset path aliasing
  * (/flu → /flu/seasonal/h3n2/ha/3y) is handled in
@@ -92,8 +95,54 @@ class CommunityDataset extends Dataset {
   }
 }
 
+class PrivateS3Source extends Source {
+  dataset(pathParts) {
+    return new PrivateS3Dataset(this, pathParts);
+  }
+  visibleToUser(user) {
+    throw "visibleToUser() must be implemented explicitly by subclasses (not inherited from Source)";
+  }
+  async availableDatasets() {
+    // XXX TODO: This will only return the first 1000 objects.  That's fine for
+    // now (for comparison, nextstrain-data only has ~500), but we really
+    // should iterate over the whole bucket contents using the S3 client's
+    // pagination support.
+    //   -trs, 30 Aug 2019
+    const list = await S3.listObjectsV2({Bucket: this.bucket}).promise();
+
+    // Walking logic borrowed from auspice's cli/server/getAvailable.js
+    return list.Contents
+      .map(object => object.Key)
+      .filter(file => file.endsWith("_tree.json"))
+      .map(file => file
+        .replace(/_tree[.]json$/, "")
+        .split("_")
+        .join("/"))
+      .map(path => ({request: [this.name, path].join("/")}));
+  }
+}
+
+class PrivateS3Dataset extends Dataset {
+  urlFor(type) {
+    return S3.getSignedUrl("getObject", {
+      Bucket: this.source.bucket,
+      Key: this.baseNameFor(type)
+    });
+  }
+}
+
+class InrbDrcSource extends PrivateS3Source {
+  get name() { return "inrb-drc" }
+  get bucket() { return "nextstrain-inrb" }
+
+  visibleToUser(user) {
+    return !!user && !!user.groups && user.groups.includes("inrb");
+  }
+}
+
 module.exports = new Map([
   ["live", new LiveSource()],
   ["staging", new StagingSource()],
   ["community", new CommunitySource()],
+  ["inrb-drc", new InrbDrcSource()],
 ]);
