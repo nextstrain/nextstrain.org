@@ -10,3 +10,6 @@ auspice/dist/
 node_modules/
 npm-debug.log
 scratch
+
+# local sessions
+/sessions/

@@ -8,6 +8,7 @@ const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./auspice/server/utils");
 const auspiceServerHandlers = require("./auspice/server");
+const authn = require("./authn");
 
 const production = process.env.NODE_ENV === "production";
 
@@ -67,6 +68,11 @@ app.get(gatsbyRoutes, (req, res) => {
   utils.verbose(`Sending ${req.originalUrl} to gatsby as it matches a (hardcoded) gatsby route`);
   res.sendFile(path.join(__dirname, "static-site", "public", "index.html"));
 });
+
+
+// Authentication (authn)
+//
+authn.setup(app);
 
 
 /* We use auspice to display phylogenomic data.

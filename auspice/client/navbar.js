@@ -79,6 +79,37 @@ const renderNarrativeTitle = (text, style) => (
   </div>
 );
 
+class WhoAmI extends React.Component {
+  state = {
+    user: undefined,
+  };
+
+  render() {
+    const styles = getStyles({minified: this.props.sidebar});
+
+    if (this.state.user === undefined)
+      return null;
+
+    return (
+      <div>
+        { this.state.user
+            ? renderLink(`👤 ${this.state.user.username}`, "/whoami", styles.link)
+            : renderLink("Login", "/login", styles.link) }
+      </div>
+    );
+  }
+
+  async componentDidMount() {
+    this.loadUser();
+  }
+
+  async loadUser() {
+    const response = await fetch("/whoami", { headers: { Accept: 'application/json' }});
+    const whoami   = await response.json();
+    this.setState(state => ({...state, ...whoami}));
+  }
+}
+
 const NavBar = ({sidebar, mobileDisplay, toggleHandler, narrativeTitle, width}) => {
   const styles = getStyles({minified: sidebar, narrative: !!narrativeTitle, width});
   return (
@@ -93,6 +124,7 @@ const NavBar = ({sidebar, mobileDisplay, toggleHandler, narrativeTitle, width}) 
           <div style={{flex: 5}}/>
           {renderLink("Docs",  "/docs",    styles.link)}
           {renderLink("Blog",  "/blog",    styles.link)}
+          <WhoAmI sidebar={sidebar}/>
         </div>
         {narrativeTitle ? renderNarrativeTitle(narrativeTitle, styles.narrativeTitle) : null}
       </div>
