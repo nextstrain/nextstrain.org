@@ -7,10 +7,28 @@ const handleError = (res, clientMsg, serverMsg="") => {
   return res.status(500).end();
 };
 
-const splitPrefixIntoParts = (url) => url
-  .replace(/^\//, '')
-  .replace(/\/$/, '')
-  .split("/");
+const splitPrefixIntoParts = (prefix) => {
+  const prefixParts = prefix
+    .replace(/^\//, '')
+    .replace(/\/$/, '')
+    .split("/");
+
+  /* The first part of the prefix is an optional source name.  The rest is the
+   * source path parts.
+   */
+  const sourceName = sources.has(prefixParts[0])
+    ? prefixParts.shift()
+    : "live";
+
+  const source = sources.get(sourceName);
+
+  return {source, prefixParts};
+};
+
+const joinPartsIntoPrefix = ({source, prefixParts}) =>
+  source.name === "live"
+    ? prefixParts.join("/")
+    : [source.name, ...prefixParts].join("/");
 
 /* Given the prefix (split on "/") -- is there an exact match in
  * the available datasets? If not, we use these to pick the
@@ -25,7 +43,6 @@ const correctPrefixFromAvailable = (sourceName, prefixParts) => {
 
   const doesPathExist = (pathToCheck) =>
     global.availableDatasets[sourceName]
-      .map(dataset => dataset.request)
       .includes(pathToCheck);
 
   let prefix = prefixParts.join("/");
@@ -56,27 +73,12 @@ const guessTreeName = (prefixParts) => {
   return undefined;
 };
 
-const decideSourceFromPrefix = (prefix) => {
-  const prefixParts = splitPrefixIntoParts(prefix);
-
-  /* The first part of the prefix is an optional source name.  The rest is the
-   * source path parts.
-   */
-  const sourceName = sources.has(prefixParts[0])
-    ? prefixParts[0]
-    : "live";
-
-  return sources.get(sourceName);
-};
-
 /* Parse the prefix (normally URL) and decide which URLs to fetch etc
  * The prefix is case sensitive
  */
 const parsePrefix = (prefix, otherQueries) => {
   const fetchUrls = {};
-  let prefixParts = splitPrefixIntoParts(prefix);
-
-  const source = decideSourceFromPrefix(prefix);
+  let {source, prefixParts} = splitPrefixIntoParts(prefix);
 
   /* Does the URL specify two trees?
    *
@@ -105,14 +107,10 @@ const parsePrefix = (prefix, otherQueries) => {
   }
 
   // The URL to be displayed in Auspice, tweaked below if necessary
-  let auspiceDisplayUrl = prefixParts.join("/");
+  let auspiceDisplayUrl = joinPartsIntoPrefix({source, prefixParts});
 
   // Get the server fetch URLs
-  const pathParts = source.name === "live"
-    ? prefixParts.slice(0)
-    : prefixParts.slice(1);
-
-  const dataset = source.dataset(pathParts);
+  const dataset = source.dataset(prefixParts);
 
   fetchUrls.tree = dataset.urlFor("tree");
   fetchUrls.meta = dataset.urlFor("meta");
@@ -141,7 +139,7 @@ const parsePrefix = (prefix, otherQueries) => {
 
 module.exports = {
   splitPrefixIntoParts,
-  decideSourceFromPrefix,
+  joinPartsIntoPrefix,
   handleError,
   parsePrefix
 };

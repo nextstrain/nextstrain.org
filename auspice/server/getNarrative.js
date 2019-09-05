@@ -12,7 +12,7 @@ const getNarrative = async (req, res) => {
     return helpers.handleError(res, "No prefix in narrative URL query");
   }
 
-  const source = helpers.decideSourceFromPrefix(prefix);
+  const {source, prefixParts} = helpers.splitPrefixIntoParts(prefix);
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
@@ -24,14 +24,9 @@ const getNarrative = async (req, res) => {
     return res.status(404).end();
   }
 
-  // Slice off the source name, if applicable, and "narratives/", and generate
-  // the narrative's origin URL for fetching.
-  const prefixParts = helpers.splitPrefixIntoParts(prefix);
-  const pathParts = source.name === "live"
-    ? prefixParts.slice(1)
-    : prefixParts.slice(2);
-
-  const narrative = source.narrative(pathParts);
+  // Slice off the leading "narratives/" and generate the narrative's origin
+  // URL for fetching.
+  const narrative = source.narrative(prefixParts.slice(1));
   const fetchURL = narrative.url();
 
   utils.log(`trying to fetch & parse narrative file: ${fetchURL}`);

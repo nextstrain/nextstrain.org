@@ -11,8 +11,7 @@ try {
       return files
         .filter((file) => file.endsWith(".md") && file!=="README.md")
         .map((file) => file.replace(".md", ""))
-        .map((file) => file.split("_").join("/"))
-        .map((filepath) => ({request: `narratives/${filepath}`}));
+        .map((file) => file.split("_").join("/"));
     };
 
     fetch("https://api.github.com/repos/nextstrain/narratives/contents")

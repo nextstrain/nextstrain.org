@@ -174,8 +174,7 @@ class PrivateS3Source extends Source {
       .map(file => file
         .replace(/_tree[.]json$/, "")
         .split("_")
-        .join("/"))
-      .map(path => ({request: [this.name, path].join("/")}));
+        .join("/"));
   }
   async availableNarratives() {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
@@ -186,8 +185,7 @@ class PrivateS3Source extends Source {
       .map(file => file
         .replace(/[.]md$/, "")
         .split("_")
-        .join("/"))
-      .map(path => ({request: [this.name, "narratives", path].join("/")}));
+        .join("/"));
   }
 }
 

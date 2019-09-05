@@ -13,7 +13,7 @@ const utils = require("./utils");
 global.availableDatasets = {defaults: {}};
 
 
-const convertManifestJsonToAvailableDatasetList = (old, pathPrefix=false) => {
+const convertManifestJsonToAvailableDatasetList = (old) => {
   const allParts = [];
   const defaults = {}; /* holds the defaults, used to complete incomplete paths */
   const recurse = (partsSoFar, obj) => {
@@ -50,9 +50,9 @@ const convertManifestJsonToAvailableDatasetList = (old, pathPrefix=false) => {
     });
   };
 
-  recurse(pathPrefix ? [pathPrefix] : [], old.pathogen);
+  recurse([], old.pathogen);
   return [
-    allParts.map((fileParts) => ({request: fileParts.join("/")})),
+    allParts.map((fileParts) => fileParts.join("/")),
     defaults
   ];
 };
@@ -83,7 +83,7 @@ const setAvailableDatasetsFromManifest = async () => {
     let data = await fetch(`http://staging.nextstrain.org/manifest_guest.json`)
         .then((result) => result.json());
     let defaultsForPathCompletion;
-    [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data, "staging");
+    [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data);
     utils.verbose(`Successfully got manifest for "staging"`);
     global.availableDatasets.staging = data;
     global.availableDatasets.defaults.staging = defaultsForPathCompletion;
