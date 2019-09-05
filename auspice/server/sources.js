@@ -1,4 +1,8 @@
 const AWS = require("aws-sdk");
+const fetch = require("node-fetch");
+const queryString = require("query-string");
+const utils = require("./utils");
+
 const S3 = new AWS.S3();
 
 /* These Source, Dataset, and Narrative classes contain information to map an
@@ -84,8 +88,25 @@ class LiveSource extends Source {
   availableDatasets() {
     return global.availableDatasets[this.name] || [];
   }
-  availableNarratives() {
-    return global.availableNarratives[this.name] || [];
+
+  async availableNarratives() {
+    const qs = queryString.stringify({ref: this.branch});
+    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents?${qs}`);
+
+    if (!response.ok) {
+      utils.warn(`Error fetching available narratives from GitHub for source ${this.name}`);
+      return [];
+    }
+
+    const files = await response.json();
+    return files
+      .filter(file => file.type === "file")
+      .filter(file => file.name !== "README.md")
+      .filter(file => file.name.endsWith(".md"))
+      .map(file => file.name
+        .replace(/[.]md$/, "")
+        .split("_")
+        .join("/"));
   }
 }
 
