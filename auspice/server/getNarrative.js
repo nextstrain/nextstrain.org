@@ -31,8 +31,13 @@ const getNarrative = async (req, res) => {
 
   utils.log(`trying to fetch & parse narrative file: ${fetchURL}`);
   try {
-    let fileContents = await fetch(fetchURL);
-    fileContents = await fileContents.text();
+    const response = await fetch(fetchURL);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${fetchURL}: ${response.status} ${response.statusText}`);
+    }
+
+    const fileContents = await response.text();
     const blocks = parseNarrative(fileContents);
     res.send(JSON.stringify(blocks).replace(/</g, '\\u003c'));
     utils.verbose("SUCCESS");
