@@ -35,7 +35,11 @@ const joinPartsIntoPrefix = ({source, prefixParts}) =>
  * "default" one.
  */
 const correctPrefixFromAvailable = (sourceName, prefixParts) => {
-
+  // XXX FIXME: This should be consulting our source objects, not breaking
+  // encapsulation by accessing the global directly.  Punting on that for now
+  // as this work is time-sensitive.  I'll loop back around to it, though!
+  //   -trs, 5 Sept 2019
+  //
   if (!global.availableDatasets[sourceName]) {
     utils.verbose("Can't compare against available datasets as there are none!");
     return prefixParts;
