@@ -110,17 +110,11 @@ class LiveSource extends Source {
   }
 }
 
-class StagingSource extends Source {
+class StagingSource extends LiveSource {
   get name() { return "staging" }
   get baseUrl() { return "http://staging.nextstrain.org/" }
-
-  // The computation of these globals should move here.
-  availableDatasets() {
-    return global.availableDatasets[this.name] || [];
-  }
-  availableNarratives() {
-    return global.availableNarratives[this.name] || [];
-  }
+  get repo() { return "nextstrain/narratives" }
+  get branch() { return "staging" }
 }
 
 class LiveNarrative extends Narrative {
