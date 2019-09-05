@@ -4,22 +4,6 @@ const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const parseNarrative = require('./parseNarrative').default;
 
-const getNarrativeURL = function getNarrativeURL(prefix) {
-  let filename = prefix
-  .replace(/.+narratives\//, "")  // remove the URL up to (& including) "narratives/"
-  .replace(/^\//, "")             // remove beginning slash
-  .replace(/\/$/, "")             // remove ending slash
-  .replace(/\//g, "_");           // change slashes to underscores
-  if (!prefix.includes("community")) {
-    return `https://raw.githubusercontent.com/nextstrain/narratives/master/${filename}.md`;
-  }
-  const parts = filename.split("_");
-  const [orgName, repoName] = [parts[0], parts[1]];
-  filename = [repoName].concat(parts.slice(2)).join("_");
-  const fetchURL = `https://raw.githubusercontent.com/${orgName}/${repoName}/master/narratives/${filename}.md`;
-  return fetchURL;
-};
-
 const getNarrative = async (req, res) => {
   let prefix;
   try {
@@ -27,7 +11,28 @@ const getNarrative = async (req, res) => {
   } catch (err) {
     return helpers.handleError(res, "No prefix in narrative URL query");
   }
-  const fetchURL = getNarrativeURL(prefix);
+
+  const source = helpers.decideSourceFromPrefix(prefix);
+
+  // Authorization
+  if (!source.visibleToUser(req.user)) {
+    const user = req.user
+      ? `user ${req.user.username}`
+      : `an anonymous user`;
+
+    utils.warn(`Denying getNarrative access to ${user} for ${prefix}`);
+    return res.status(404).end();
+  }
+
+  // Slice off the source name, if applicable, and "narratives/", and generate
+  // the narrative's origin URL for fetching.
+  const prefixParts = helpers.splitPrefixIntoParts(prefix);
+  const pathParts = source.name === "live"
+    ? prefixParts.slice(1)
+    : prefixParts.slice(2);
+
+  const narrative = source.narrative(pathParts);
+  const fetchURL = narrative.url();
 
   utils.log(`trying to fetch & parse narrative file: ${fetchURL}`);
   try {

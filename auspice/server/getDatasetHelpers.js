@@ -140,6 +140,7 @@ const parsePrefix = (prefix, otherQueries) => {
 
 
 module.exports = {
+  splitPrefixIntoParts,
   decideSourceFromPrefix,
   handleError,
   parsePrefix

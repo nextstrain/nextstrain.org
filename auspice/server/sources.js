@@ -1,9 +1,9 @@
 const AWS = require("aws-sdk");
 const S3 = new AWS.S3();
 
-/* These Source and Dataset classes contain information to map an array of
- * dataset path parts onto a URL.  Source selection and dataset path aliasing
- * (/flu → /flu/seasonal/h3n2/ha/3y) is handled in
+/* These Source, Dataset, and Narrative classes contain information to map an
+ * array of dataset/narrative path parts onto a URL.  Source selection and
+ * dataset path aliasing (/flu → /flu/seasonal/h3n2/ha/3y) is handled in
  * getDatasetHelpers.parsePrefix().
  *
  * The class definitions would be a bit shorter/prettier if we were using Babel
@@ -19,6 +19,9 @@ class Source {
   }
   dataset(pathParts) {
     return new Dataset(this, pathParts);
+  }
+  narrative(pathParts) {
+    return new Narrative(this, pathParts);
   }
   visibleToUser(user) {
     return true;
@@ -49,9 +52,33 @@ class Dataset {
   }
 }
 
+class Narrative {
+  constructor(source, pathParts) {
+    this.source = source;
+    this.pathParts = pathParts;
+  }
+  get baseParts() {
+    return this.pathParts.slice();
+  }
+  get baseName() {
+    const baseName = this.baseParts.join("_");
+    return `${baseName}.md`;
+  }
+  url() {
+    const url = new URL(this.baseName, this.source.baseUrl);
+    return url.toString();
+  }
+}
+
 class LiveSource extends Source {
   get name() { return "live" }
   get baseUrl() { return "http://data.nextstrain.org/" }
+  get repo() { return "nextstrain/narratives" }
+  get branch() { return "master" }
+
+  narrative(pathParts) {
+    return new LiveNarrative(this, pathParts);
+  }
 
   // The computation of these globals should move here.
   availableDatasets() {
@@ -75,10 +102,21 @@ class StagingSource extends Source {
   }
 }
 
+class LiveNarrative extends Narrative {
+  url() {
+    const repoBaseUrl = `https://raw.githubusercontent.com/${this.source.repo}/${this.source.branch}/`;
+    const url = new URL(this.baseName, repoBaseUrl);
+    return url.toString();
+  }
+}
+
 class CommunitySource extends Source {
   get name() { return "community" }
   dataset(pathParts) {
     return new CommunityDataset(this, pathParts);
+  }
+  narrative(pathParts) {
+    return new CommunityNarrative(this, pathParts);
   }
 }
 
@@ -95,23 +133,42 @@ class CommunityDataset extends Dataset {
   }
 }
 
+class CommunityNarrative extends Narrative {
+  get baseParts() {
+    // First part is the GitHub user/org.  The repo name is the second part,
+    // which we also expect in the file basename.
+    return this.pathParts.slice(1);
+  }
+  url() {
+    const repoBaseUrl = `https://raw.githubusercontent.com/${this.pathParts[0]}/${this.pathParts[1]}/master/narratives/`;
+    const url = new URL(this.baseName, repoBaseUrl);
+    return url.toString();
+  }
+}
+
 class PrivateS3Source extends Source {
   dataset(pathParts) {
     return new PrivateS3Dataset(this, pathParts);
   }
+  narrative(pathParts) {
+    return new PrivateS3Narrative(this, pathParts);
+  }
   visibleToUser(user) {
     throw "visibleToUser() must be implemented explicitly by subclasses (not inherited from Source)";
   }
-  async availableDatasets() {
+  async _listObjects() {
     // XXX TODO: This will only return the first 1000 objects.  That's fine for
     // now (for comparison, nextstrain-data only has ~500), but we really
     // should iterate over the whole bucket contents using the S3 client's
     // pagination support.
     //   -trs, 30 Aug 2019
     const list = await S3.listObjectsV2({Bucket: this.bucket}).promise();
-
+    return list.Contents;
+  }
+  async availableDatasets() {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
-    return list.Contents
+    const objects = await this._listObjects();
+    return objects
       .map(object => object.Key)
       .filter(file => file.endsWith("_tree.json"))
       .map(file => file
@@ -120,6 +177,18 @@ class PrivateS3Source extends Source {
         .join("/"))
       .map(path => ({request: [this.name, path].join("/")}));
   }
+  async availableNarratives() {
+    // Walking logic borrowed from auspice's cli/server/getAvailable.js
+    const objects = await this._listObjects();
+    return objects
+      .map(object => object.Key)
+      .filter(file => file.endsWith(".md"))
+      .map(file => file
+        .replace(/[.]md$/, "")
+        .split("_")
+        .join("/"))
+      .map(path => ({request: [this.name, "narratives", path].join("/")}));
+  }
 }
 
 class PrivateS3Dataset extends Dataset {
@@ -127,6 +196,15 @@ class PrivateS3Dataset extends Dataset {
     return S3.getSignedUrl("getObject", {
       Bucket: this.source.bucket,
       Key: this.baseNameFor(type)
+    });
+  }
+}
+
+class PrivateS3Narrative extends Narrative {
+  url() {
+    return S3.getSignedUrl("getObject", {
+      Bucket: this.source.bucket,
+      Key: this.baseName
     });
   }
 }
