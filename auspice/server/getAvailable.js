@@ -2,8 +2,6 @@ const utils = require("./utils");
 const queryString = require("query-string");
 const {decideSourceFromPrefix} = require("./getDatasetHelpers");
 
-/* Note that global.availableDatasets & global.availableNarratives exist */
-
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
   const prefix = queryString.parse(req.url.split('?')[1]).prefix || "";
