@@ -52,7 +52,7 @@ These data show...
 ### How to share narratives
 Similar to [how community datasets are sourced from GitHub](/docs/contributing/community-builds) and accessible through nextstrain.org/community/..., so are narratives.
 Given a repository at **github.com/orgName/repoName**, if there is a folder named **narratives** with the markdown file **repoName.md**, then that dataset can be accessed via **nextstrain.org/community/narratives/orgName/repoName**.
-Additional narratives named such as **repoName\_a\_b\_c.json** are available at **nextstrain.org/community/narratives/orgName/repoName/a/b/c**.
+Additional narratives named such as **repoName\_a\_b\_c.md** are available at **nextstrain.org/community/narratives/orgName/repoName/a/b/c**.
 
 
 Our own narratives, which are stored in [this GitHub repo](https://github.com/nextstrain/narratives) are available to view at [nextstrain.org/narratives](https://www.nextstrain.org/narratives).
