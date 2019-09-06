@@ -18,10 +18,7 @@ const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
 
 const COGNITO_REGION = COGNITO_USER_POOL_ID.split("_")[0];
 
-// XXX TODO: We can customize this to login.nextstrain.org or something later.
-// Or use our own UI to collect credentials instead of Cognito's.
-//   -trs, 30 Aug 2019
-const COGNITO_BASE_URL = "https://nextstrain.auth.us-east-1.amazoncognito.com";
+const COGNITO_BASE_URL = "https://login.nextstrain.org";
 
 const COGNITO_CLIENT_ID = PRODUCTION
   ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org
