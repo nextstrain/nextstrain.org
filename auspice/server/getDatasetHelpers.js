@@ -120,11 +120,11 @@ const parsePrefix = (prefix, otherQueries) => {
   fetchUrls.meta = dataset.urlFor("meta");
 
   if (secondTreeName) {
-    const idxOfTree = pathParts.indexOf(treeName);
-    const secondTreePathParts = pathParts.slice();
-    secondTreePathParts[idxOfTree] = secondTreeName;
+    const idxOfTree = prefixParts.indexOf(treeName);
+    const secondTreePrefixParts = prefixParts.slice();
+    secondTreePrefixParts[idxOfTree] = secondTreeName;
 
-    const secondDataset = source.dataset(secondTreePathParts);
+    const secondDataset = source.dataset(secondTreePrefixParts);
     fetchUrls.secondTree = secondDataset.urlFor("tree");
 
     const re = new RegExp(`\\/${treeName}(/|$)`); // note the double escape for special char
