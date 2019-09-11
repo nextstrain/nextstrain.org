@@ -39,7 +39,6 @@ const getStyles = ({minified=true, width}={}) => ({
     cursor: "pointer",
     fontSize: minified ? 12 : 16,
     fontWeight: 400,
-    textTransform: "uppercase",
     color: minified ? "#000" : darkGrey
   },
   logo: {
@@ -94,7 +93,7 @@ class WhoAmI extends React.Component {
       <div>
         { this.state.user
             ? renderLink(`👤 ${this.state.user.username}`, "/whoami", styles.link)
-            : renderLink("Login", "/login", styles.link) }
+            : renderLink("LOGIN", "/login", styles.link) }
       </div>
     );
   }
@@ -122,8 +121,8 @@ const NavBar = ({sidebar, mobileDisplay, toggleHandler, narrativeTitle, width}) 
       <div style={styles.flexRows}>
         <div style={{...styles.flexColumns, paddingRight: "12px"}}>
           <div style={{flex: 5}}/>
-          {renderLink("Docs",  "/docs",    styles.link)}
-          {renderLink("Blog",  "/blog",    styles.link)}
+          {renderLink("DOCS", "/docs", styles.link)}
+          {renderLink("BLOG", "/blog", styles.link)}
           <WhoAmI sidebar={sidebar}/>
         </div>
         {narrativeTitle ? renderNarrativeTitle(narrativeTitle, styles.narrativeTitle) : null}

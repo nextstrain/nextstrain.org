@@ -47,7 +47,6 @@ const NavLink = styled(Link)`
   cursor: pointer;
   font-size: ${(props) => props.minified ? '12px' : '16px'} !important;
   font-weight: 400;
-  text-transform: uppercase;
   color: ${(props) => props.minified ? '#000000' : props.theme.darkGrey} !important;
 `;
 
@@ -59,7 +58,6 @@ const NavLinkActive = styled.div`
   text-decoration: none;
   font-size: ${(props) => props.minified ? '12px' : '16px'};
   font-weight: 400;
-  text-transform: uppercase;
   color: ${(props) => props.theme.brandColor};
 `;
 
@@ -130,11 +128,11 @@ class NavBar extends React.Component {
         {this.getLogo()}
         {this.getLogoType()}
         <div style={{flex: 5}}/>
-        {this.getLink("Docs", "/docs", this.selectedClass("docs"))}
-        {this.getLink("Blog", "/blog", this.selectedClass("blog"))}
+        {this.getLink("DOCS", "/docs", this.selectedClass("docs"))}
+        {this.getLink("BLOG", "/blog", this.selectedClass("blog"))}
         {this.state.user
           ? this.getLink(`👤 ${this.state.user.username}`, "/whoami")
-          : this.getLink("Login", "/login", this.selectedClass("login"))}
+          : this.getLink("LOGIN", "/login", this.selectedClass("login"))}
         <div style={{width: this.props.minified ? 12 : 0 }}/>
       </NavContainer>
     );
