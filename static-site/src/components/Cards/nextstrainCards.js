@@ -22,7 +22,7 @@ const nextstrainCards = [
   {
     img: "ebola.png",
     url: "/ebola",
-    title: "Ebola"
+    title: "West African Ebola 2013-16"
   },
   {
     img: "dengue.png",
