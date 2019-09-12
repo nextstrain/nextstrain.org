@@ -126,12 +126,36 @@ function setup(app) {
   // Routes
   //
   // Authenticate with Cognito IdP on /login and establish a local session
-  app.route("/login").get(passport.authenticate("oauth2"));
+  app.route("/login").get(
+    (req, res, next) => {
+      /* Save the original page the user was on with a best-effort approach.
+       * If there is no Referer or it's not parseable as a URL, then ignore it
+       * and we'll do the default thing of redirecting to the home page.
+       *
+       * Only use the Referer if it points to ourselves, so that our login flow
+       * can't be abused to send folks to external sites.
+       */
+      try {
+        const referer = new URL(req.header("Referer"));
+
+        if (res.locals.origin === referer.origin) {
+          req.session.afterLoginReturnTo = referer.pathname;
+        }
+      } catch (e) {}
+      next();
+    },
+    passport.authenticate("oauth2")
+  );
 
   // Verify IdP response on /logged-in
   app.route("/logged-in").get(
     passport.authenticate("oauth2", { failureRedirect: "/login" }),
-    (req, res) => res.redirect("/"));
+    (req, res) => {
+      // We can trust this value from the session because we are the only ones
+      // in control of it.
+      res.redirect(req.session.afterLoginReturnTo || "/");
+    }
+  );
 
   // Delete our local session and redirect to logout from Cognito IdP
   app.route("/logout").get((req, res) => {
