@@ -52,6 +52,8 @@ function setup(app) {
         tokenURL: `${COGNITO_BASE_URL}/oauth2/token`,
         clientID: COGNITO_CLIENT_ID,
         callbackURL: "/logged-in",
+        pkce: true,
+        state: true,
       },
       async (accessToken, refreshToken, profile, done) => {
         // Fetch groups from Cognito, which our data sources
