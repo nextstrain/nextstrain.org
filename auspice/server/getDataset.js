@@ -16,6 +16,13 @@ const getDataset = async (req, res) => {
     datasetInfo = helpers.parsePrefix(query.prefix, query);
     utils.verbose("Dataset: ", datasetInfo);
   } catch (err) {
+    if (err.message === "bucketRootRequest") {
+      /* auspice has made a dataset request which matches the bucket root
+      (i.e. it's not a valid dataset). Don't 404, but rather return a
+      204 (No Content) signal */
+      utils.verbose(`A dataset request was made for the bucket root. Returning 204.`);
+      return res.status(204).end();
+    }
     // utils.printStackTrace(err);
     return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }

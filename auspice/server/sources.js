@@ -206,6 +206,11 @@ class PrivateS3Source extends Source {
 
 class PrivateS3Dataset extends Dataset {
   urlFor(type) {
+    if (!this.baseParts.length) {
+      /* if there are no baseParts, then we're accessing the root of the bucket
+      and not actually requesting any datasets. For S3, this should return an error */
+      throw new Error(`bucketRootRequest`);
+    }
     return S3.getSignedUrl("getObject", {
       Bucket: this.source.bucket,
       Key: this.baseNameFor(type)
