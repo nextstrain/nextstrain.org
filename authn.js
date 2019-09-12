@@ -14,6 +14,8 @@ const SESSION_SECRET = PRODUCTION
   ? process.env.SESSION_SECRET
   : "BAD SECRET FOR DEV ONLY";
 
+const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30d in seconds
+
 const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
 
 const COGNITO_REGION = COGNITO_USER_POOL_ID.split("_")[0];
@@ -96,9 +98,11 @@ function setup(app) {
       secret: SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
-      store: new FileStore({ttl: 7 * 24 * 60 * 60 }), // 7d TTL, in seconds
+      rolling: true,
+      store: new FileStore({ttl: SESSION_MAX_AGE}),
       cookie: {
         secure: PRODUCTION,
+        maxAge: SESSION_MAX_AGE * 1000, // milliseconds
       }
     })
   );
