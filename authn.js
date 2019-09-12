@@ -97,6 +97,9 @@ function setup(app) {
       resave: false,
       saveUninitialized: false,
       store: new FileStore({ttl: 7 * 24 * 60 * 60 }), // 7d TTL, in seconds
+      cookie: {
+        secure: PRODUCTION,
+      }
     })
   );
   app.use(passport.initialize());
