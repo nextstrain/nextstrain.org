@@ -1,6 +1,7 @@
 const AWS = require("aws-sdk");
 const fetch = require("node-fetch");
 const queryString = require("query-string");
+const {NoDatasetPathError} = require("./exceptions");
 const utils = require("./utils");
 
 const S3 = new AWS.S3();
@@ -42,6 +43,13 @@ class Dataset {
   constructor(source, pathParts) {
     this.source = source;
     this.pathParts = pathParts;
+
+    // Require baseParts, otherwise we have no actual dataset path.  This
+    // inspects baseParts because some of the pathParts (above) may not apply,
+    // which each Dataset subclass determines for itself.
+    if (!this.baseParts.length) {
+      throw new NoDatasetPathError();
+    }
   }
   get baseParts() {
     return this.pathParts.slice();
@@ -206,11 +214,6 @@ class PrivateS3Source extends Source {
 
 class PrivateS3Dataset extends Dataset {
   urlFor(type) {
-    if (!this.baseParts.length) {
-      /* if there are no baseParts, then we're accessing the root of the bucket
-      and not actually requesting any datasets. For S3, this should return an error */
-      throw new Error(`bucketRootRequest`);
-    }
     return S3.getSignedUrl("getObject", {
       Bucket: this.source.bucket,
       Key: this.baseNameFor(type)

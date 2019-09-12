@@ -1,6 +1,7 @@
 const queryString = require("query-string");
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
+const {NoDatasetPathError} = require("./exceptions");
 
 
 const getDataset = async (req, res) => {
@@ -16,14 +17,16 @@ const getDataset = async (req, res) => {
     datasetInfo = helpers.parsePrefix(query.prefix, query);
     utils.verbose("Dataset: ", datasetInfo);
   } catch (err) {
-    if (err.message === "bucketRootRequest") {
-      /* auspice has made a dataset request which matches the bucket root
-      (i.e. it's not a valid dataset). Don't 404, but rather return a
-      204 (No Content) signal */
-      utils.verbose(`A dataset request was made for the bucket root. Returning 204.`);
+    /* Return a 204 No Content when Auspice makes a dataset request to a
+     * valid source root without a dataset path.
+     *
+     * Note that this leaks the existence of private sources, but I think
+     * broader discussions are leaning towards that anyhow.
+     */
+    if (err instanceof NoDatasetPathError) {
+      utils.verbose(err.message);
       return res.status(204).end();
     }
-    // utils.printStackTrace(err);
     return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }
 
