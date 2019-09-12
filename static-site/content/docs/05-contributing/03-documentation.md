@@ -7,10 +7,10 @@ We're always trying to improve the documentation here and would appreciate any a
 
 ### Built from Markdown files
 
-Each page in this documentation website ([nextstrain.org/docs](https://nextstrain.org/docs)) is built from a markdown file -- for instance [here's the file for this page](https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/docs/05-contributing/04-development.md). 
+Each page in this documentation website ([nextstrain.org/docs](https://nextstrain.org/docs)) is built from a markdown file -- for instance [here's the file for this page](https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/docs/05-contributing/04-development.md).
 
 
-> If you're new to markdown, [here's a good guide](https://guides.github.com/features/mastering-markdown/) and [here's a cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) which is really useful to refer to. 
+> If you're new to markdown, [here's a good guide](https://guides.github.com/features/mastering-markdown/) and [here's a cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) which is really useful to refer to.
 
 
 ### Stored on GitHub
@@ -18,7 +18,7 @@ Each page in this documentation website ([nextstrain.org/docs](https://nextstrai
 The [nextstrain.org github repository](https://github.com/nextstrain/nextstrain.org) contains all the code and content which is used to build [nextstrain.org](https://nextstrain.org).
 Each time the "master" branch is changed, the website will automatically rebuild, so in order to redeploy any changes, all that has to happen is to push to master 🙌
 
---- 
+---
 
 ### Building the documentation locally
 
@@ -30,9 +30,9 @@ Prerequisites:
 * `nodejs` version 10
 * `python` version 2.7
 
-If you use `conda` you can grab these via 
+If you use `conda` you can grab these via
 ```
-conda env create -n nextstrain.org nodejs=10 python=2.7
+conda create -n nextstrain.org nodejs=10 python=2.7
 ```
 
 
@@ -116,4 +116,3 @@ Once this is done, you can begin to write the page contents 😇
 
 nextstrain.org is automatically redeployed anytime there's a change to the master branch on GitHub.
 We encourage a pull request with proposed changes, which can then be merged into master once someone's taken a look.
-
