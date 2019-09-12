@@ -111,6 +111,18 @@ function setup(app) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  // Set the app's origin centrally so other handlers can use it
+  //
+  // We can trust the HTTP Host header (req.hostname) because we're always
+  // running behind name-based virtual hosting on Heroku.  A forged Host header
+  // will be rejected by Heroku and never make it to us.
+  app.use((req, res, next) => {
+    res.locals.origin = PRODUCTION
+      ? `${req.protocol}://${req.hostname}`
+      : `${req.protocol}://${req.hostname}:${req.app.get("port")}`;
+    next();
+  });
+
   // Routes
   //
   // Authenticate with Cognito IdP on /login and establish a local session
@@ -126,9 +138,7 @@ function setup(app) {
     req.session.destroy(() => {
       const params = {
         client_id: COGNITO_CLIENT_ID,
-        logout_uri: PRODUCTION
-          ? `${req.protocol}://${req.hostname}`
-          : `${req.protocol}://${req.hostname}:${app.get("port")}`
+        logout_uri: res.locals.origin,
       };
       res.redirect(`${COGNITO_BASE_URL}/logout?${querystring.stringify(params)}`);
     });
