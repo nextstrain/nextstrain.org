@@ -46,6 +46,11 @@ app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
 app.use(require('express-naked-redirect')({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
 
+// Authentication (authn)
+//
+authn.setup(app);
+
+
 /* simple logging for debugging */
 // app.use((req, res, next) => {console.log("LOG REQUEST  ", req.originalUrl); next();});
 
@@ -68,11 +73,6 @@ app.get(gatsbyRoutes, (req, res) => {
   utils.verbose(`Sending ${req.originalUrl} to gatsby as it matches a (hardcoded) gatsby route`);
   res.sendFile(path.join(__dirname, "static-site", "public", "index.html"));
 });
-
-
-// Authentication (authn)
-//
-authn.setup(app);
 
 
 /* We use auspice to display phylogenomic data.
