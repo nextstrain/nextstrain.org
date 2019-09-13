@@ -7,6 +7,8 @@ const FileStore = require("session-file-store")(session);
 const passport = require("passport");
 const fetch = require("node-fetch");
 const AWS = require("aws-sdk");
+const sources = require("./auspice/server/sources");
+const utils = require("./auspice/server/utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -186,6 +188,23 @@ function setup(app) {
       // Express's JSON serialization drops keys with undefined values
       json: () => res.json({ user: req.user || null }),
     });
+  });
+
+  const nonPublicSources = Array.from(sources.entries())
+    .filter(([name, source]) => !source.visibleToUser(null))
+    .map(([name, source]) => `/${name}`);
+
+  app.use(nonPublicSources, (req, res, next) => {
+    // Prompt for login if an anonymous user asks for a non-public dataset.
+    if (!req.user) {
+      utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
+      req.session.afterLoginReturnTo = req.originalUrl;
+      return res.redirect("/login");
+    }
+
+    // Otherwise, let the server's normal route handle this request, which
+    // should fall through to Auspice.
+    next("route");
   });
 }
 

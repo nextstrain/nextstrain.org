@@ -1,1 +1,1 @@
-web: npm run server
+web: node server.js --verbose

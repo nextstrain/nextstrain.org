@@ -32,12 +32,7 @@ const getDataset = async (req, res) => {
 
   // Authorization
   if (!datasetInfo.source.visibleToUser(req.user)) {
-    const user = req.user
-      ? `user ${req.user.username}`
-      : `an anonymous user`;
-
-    utils.warn(`Denying getDataset access to ${user} for ${query.prefix}`);
-    return res.status(404).end();
+    return helpers.unauthorized(req, res);
   }
 
   /* Are we requesting a certain file type? */
