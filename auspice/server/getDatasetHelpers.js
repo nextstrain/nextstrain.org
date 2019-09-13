@@ -7,6 +7,15 @@ const handleError = (res, clientMsg, serverMsg="") => {
   return res.status(500).end();
 };
 
+const unauthorized = (req, res) => {
+  const user = req.user
+    ? `user ${req.user.username}`
+    : `an anonymous user`;
+
+  utils.warn(`Denying ${user} access to ${req.originalUrl}`);
+  return res.status(404).end();
+};
+
 const splitPrefixIntoParts = (prefix) => {
   const prefixParts = prefix
     .replace(/^\//, '')
@@ -145,6 +154,7 @@ module.exports = {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
   handleError,
+  unauthorized,
   parsePrefix
 };
 

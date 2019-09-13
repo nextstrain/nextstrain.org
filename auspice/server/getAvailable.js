@@ -1,6 +1,6 @@
 const utils = require("./utils");
 const queryString = require("query-string");
-const {splitPrefixIntoParts, joinPartsIntoPrefix} = require("./getDatasetHelpers");
+const {splitPrefixIntoParts, joinPartsIntoPrefix, unauthorized} = require("./getDatasetHelpers");
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
@@ -11,12 +11,7 @@ const getAvailable = async (req, res) => {
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    const user = req.user
-      ? `user ${req.user.username}`
-      : `an anonymous user`;
-
-    utils.warn(`Denying getAvailable access to ${user} for ${prefix}`);
-    return res.status(404).end();
+    return unauthorized(req, res);
   }
 
   const datasets = await source.availableDatasets() || [];

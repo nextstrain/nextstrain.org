@@ -4,7 +4,7 @@ const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const parseNarrative = require('./parseNarrative').default;
 
-const getNarrative = async (req, res) => {
+const getNarrative = async (req, res, next) => {
   let prefix;
   try {
     prefix = queryString.parse(req.url.split("?")[1]).prefix;
@@ -16,12 +16,7 @@ const getNarrative = async (req, res) => {
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    const user = req.user
-      ? `user ${req.user.username}`
-      : `an anonymous user`;
-
-    utils.warn(`Denying getNarrative access to ${user} for ${prefix}`);
-    return res.status(404).end();
+    return helpers.unauthorized(req, res);
   }
 
   // Slice off the leading "narratives/" and generate the narrative's origin
