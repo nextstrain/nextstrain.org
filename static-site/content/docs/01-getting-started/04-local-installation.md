@@ -43,16 +43,17 @@ conda activate nextstrain
 # test things are installed / run analyses
 augur -h
 auspice -h
+nextstrain -h
 # when you're done, leave the environment
 conda deactivate
 ```
 
 
-#### Updating `augur` & `auspice`:
+#### Updating `augur`, `auspice`, and `nextstrain`:
 
 ```
 source activate nextstrain
-pip install nextstrain-augur --upgrade
+pip install --upgrade nextstrain-augur nextstrain-cli
 npm update --global auspice
 ```
 
