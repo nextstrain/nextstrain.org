@@ -68,6 +68,5 @@ You're now ready to [install the Nextstrain programs](/docs/getting-started/inst
 
 Note that you'll always need to open an Ubuntu window and use `conda activate nextstrain` before running any of the Nextstrain programs like `nextstrain`, `augur`, and `auspice`.
 
-#Important Note:
-**Never modify your Ubuntu system files (like `.bashrc`) in Windows!**
-Use an editor within Ubuntu, like `vi` or `vim`. 
+> **Never modify your Ubuntu system files (like `.bashrc`) in Windows!**  
+> Use an editor within Ubuntu, like `nano`.
