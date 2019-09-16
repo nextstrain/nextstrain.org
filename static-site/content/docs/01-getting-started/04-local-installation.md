@@ -25,7 +25,8 @@ If you have any issues with installing augur / auspice using any of these method
 ## Install augur & auspice with Conda (recommended)
 
 [Download and install the latest version of Miniconda](https://conda.io/miniconda.html) which will make the `conda` command available to you.
-We're going to create a new environment called "nextstrain", which automatically installs `augur` and dependencies. We'll then install `auspice` into this environment. 
+We're going to create a new environment called "nextstrain", which automatically installs `augur` and dependencies.
+We'll then install `auspice` into this environment as well and optionally setup the `nextstrain` command.
 
 
 ```
@@ -33,6 +34,9 @@ curl http://data.nextstrain.org/nextstrain.yml --compressed -o nextstrain.yml
 conda env create -f nextstrain.yml
 conda activate nextstrain
 npm install --global auspice
+
+# Optionally, if you want to use the nextstrain command
+nextstrain check-setup --set-default
 ```
 
 and we're all done 🙌.
