@@ -60,58 +60,13 @@ You'll need to close and re-open your Ubuntu window to finish the installation.
 
 After re-opening Ubuntu, you can type `conda list` to ensure it's installed correctly.
 
-When you install `augur`, you can now follow the instructions to [install augur with Conda](/docs/getting-started/installation#install-augur-with-conda).
-**Don't do this just yet - finish installing things below!**
-
-You'll always need to use `conda activate nextstrain` before running `augur`. 
-
-## Installing Necessary Programs
-
-It's important to remember that to install things in Ubuntu you will not be able to follow the usual Windows installation instructions. 
-You also generally can't use things you've already installed in Windows when working in Ubuntu - you'll need to install them again in Ubuntu.
-
-But, installing the things you'll need to run Nextstrain is very easy.
-
-(If you already have any of the below installed, it will tell you, and nothing will be changed.)
-
-### Install git & gcc
-
-Git will allow you to 'clone' or copy files from [GitHub](https://github.com/), which is where all the Nextstrain code and public data lives. `gcc` is a compiler used by some packages. 
-
-Install both with:
-
-```
-sudo apt-get install git
-sudo apt-get install gcc
-```
-
-### Install Node.js & npm
-
-The easiest way to install Node.js and npm is via `nvm`. 
-You can follow Step 0 [from these instructions](https://nodesource.com/blog/installing-node-js-tutorial-using-nvm-on-mac-os-x-and-ubuntu/), repeated here:
-
-Download and install `nvm`:
-```
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
-```
-
-After it finishes, close and re-open Ubuntu to complete the install, then check it by typing `nvm --version`. 
-
-Now finish setting it up by running:
-```
-nvm install node
-nvm use node
-nvm install --lts
-nvm use --lts
-```
-
-
 ## Install Nextstrain
 
-You're now ready to [install Nextstrain programs](/docs/getting-started/installation)!
-You should already now have Python 3 and git, so jump to [installing augur with Conda](/docs/getting-started/installation#install-augur-with-conda).
+You're now ready to [install the Nextstrain programs](/docs/getting-started/installation) and can jump right to [installing Augur & Auspice with Conda](/docs/getting-started/installation#install-augur--auspice-with-conda-recommended).
 
-When you install `auspice`, you already have Node.js.
+## You're done!
+
+Note that you'll always need to open an Ubuntu window and use `conda activate nextstrain` before running any of the Nextstrain programs like `nextstrain`, `augur`, and `auspice`.
 
 #Important Note:
 **Never modify your Ubuntu system files (like `.bashrc`) in Windows!**
