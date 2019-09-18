@@ -24,9 +24,17 @@ const getAvailable = async (req, res) => {
     utils.verbose(`No narratives available for ${source.name}`);
   }
 
+  // XXX TODO: This is bad and should go away by refactoring tangle tree
+  // enumeration into our source classes, potentially as part of the
+  // availableDatasets() method.
+  //   -trs, 3 Oct 2019
+  const tangleTreeOptions = (dataset) =>
+    (global.availableDatasets.tangleTreeOptions[source.name] || {})[dataset] || [];
+
   res.json({
     datasets: datasets.map(path => ({
-      request: joinPartsIntoPrefix({source, prefixParts: [path]})
+      request: joinPartsIntoPrefix({source, prefixParts: [path]}),
+      tangleTreeOptions: tangleTreeOptions(path)
     })),
     narratives: narratives.map(path => ({
       request: joinPartsIntoPrefix({source, prefixParts: ["narratives", path]})

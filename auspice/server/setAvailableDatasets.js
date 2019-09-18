@@ -10,12 +10,45 @@ const utils = require("./utils");
  * This mimics the behavior of the auspice server around version 1.32.
  * Ideally we can find a solution which doesn't use globals.
  */
-global.availableDatasets = {defaults: {}};
+global.availableDatasets = {
+  tangleTreeOptions: {},
+  defaults: {}
+};
 
+/**
+ * Generates tangle tree options for a given dataset.
+ *
+ * Replaces segment within urlParts with every other segment in
+ * given segments array
+ *
+ * @param {[String]} urlParts
+ * @param {[String]} segments
+ */
+const generateTangleTreeOptions = (urlParts, segments) => {
+  // Return empty array if there are no segments
+  if (segments.length === 0) return [];
+
+  // Find segment in urlParts
+  const currentSegment = segments.filter((seg) => urlParts.indexOf(seg) !== -1)[0];
+  const segmentIndex = urlParts.indexOf(currentSegment);
+
+  // Remove current segment from segments array
+  segments = segments.filter((segment) => segment !== currentSegment);
+
+  // Generate tangle tree options by replacing segment in urlParts
+  const tangleTreeOptions = segments.map((segment) => {
+    const newUrl = urlParts.slice();
+    newUrl[segmentIndex] = segment;
+    return newUrl.join("/");
+  });
+
+  return tangleTreeOptions;
+};
 
 const convertManifestJsonToAvailableDatasetList = (old) => {
-  const allParts = [];
+  const allUrls = {}; /* holds all URLs as keys and tangle tree options as value */
   const defaults = {}; /* holds the defaults, used to complete incomplete paths */
+  let segments = []; /* holds the genome segments, used to find tangle tree options */
 
   /*
     if there's only one key in the object it's the "name" of the level
@@ -34,12 +67,15 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
    * Iterates over an object to build an array of URL components to be used
    * for a future data request.
    *
+   * SIDE EFFECT: sets segments based on obj keys and resets segments based on
+   * lenght of partsSoFar.
+   *
    * @param {[String]} partsSoFar
    * @param {Object} obj
    */
   const recursivelyBuildUrlParts = (partsSoFar, obj) => {
     if (typeof obj === "string") {
-      allParts.push(partsSoFar);
+      allUrls[partsSoFar.join("/")] = generateTangleTreeOptions(partsSoFar, segments);
     }
 
     const flattenedObj = skipLevelNameKeys(obj);
@@ -53,6 +89,13 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
 
     const orderedKeys = keys.filter((k) => k !== "default");
 
+    if (partsSoFar.length === 1) {
+      segments = [];
+    }
+    if (Object.keys(obj)[0] === "segment") {
+      segments = orderedKeys.slice();
+    }
+
     orderedKeys.forEach((key) => {
       const newParts = partsSoFar.slice();
       newParts.push(key);
@@ -62,10 +105,11 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
 
   recursivelyBuildUrlParts([], old.pathogen);
 
-  return [
-    allParts.map((fileParts) => fileParts.join("/")),
-    defaults
-  ];
+  return {
+    datasets: Object.keys(allUrls),
+    tangleTreeOptions: allUrls,
+    defaults,
+  };
 };
 
 /* setAvailableDatasetsFromManifest
@@ -89,13 +133,12 @@ const setAvailableDatasetsFromManifest = async () => {
         return result.json();
       })
       .then((data) => {
-        let defaultsForPathCompletion;
-
-        [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data);
+        const {datasets, tangleTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
         utils.verbose(`Successfully got manifest for "${server}"`);
 
-        global.availableDatasets[server] = data;
-        global.availableDatasets.defaults[server] = defaultsForPathCompletion;
+        global.availableDatasets[server] = datasets;
+        global.availableDatasets.tangleTreeOptions[server] = tangleTreeOptions;
+        global.availableDatasets.defaults[server] = defaults;
       })
       .catch((e) => {
         console.error(e);
