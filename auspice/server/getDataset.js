@@ -25,32 +25,24 @@ const requestCertainFileType = async (res, req, additional, query) => {
  * @param {*} query
  */
 const requestMainDataset = async (res, req, fetchUrls, treeName, secondTreeName, source) => {
-  /* try to fetch the meta + tree json (i.e. v1 JSONs) first, then if that fails attempt
-  * to get the "main" JSON path (i.e. v2+).
-  * In the future we may wish to switch the ordering here, but as of Sept 2019 the majority
-  * of datasets on S3 are v1.
-  */
+  /** try to fetch the (v2) dataset JSON first
+   * If this fails, attempt to fetch the (v1) meta + tree jsons
+   */
   let datasetJson;
   try {
+    datasetJson = await utils.fetchJSON(fetchUrls.main);
+    utils.verbose(`Success fetching v2 dataset`);
+  } catch (err) {
+    utils.verbose(`Failed to get v2 JSON. Trying with v1 at: "${fetchUrls.meta}" & "${fetchUrls.tree}`);
     const data = await Promise.all([utils.fetchJSON(fetchUrls.meta), utils.fetchJSON(fetchUrls.tree)]);
     datasetJson = auspice.convertFromV1({tree: data[1], meta: data[0]});
-  } catch (err) {
-    utils.verbose(`Failed to get v1 JSONs. Trying with v2 at: "${fetchUrls.main}"`);
-    datasetJson = await utils.fetchJSON(fetchUrls.main);
+    utils.verbose(`Success fetching & converting v1 auspice JSONs. Sending as a single v2 JSON.`);
   }
 
   // TODO -- see https://github.com/nextstrain/auspice/issues/783
   datasetJson._source = source;
 
-  utils.verbose(`Success fetching v1 auspice JSONs. Sending as a single v2 JSON.`);
   res.send(datasetJson);
-
-  if (fetchUrls.secondTree) {
-    console.log("TO DO - SECOND TREE"); // TODO
-    // fetchMultiple.push(utils.fetchJSON(fetchUrls.secondTree));
-    // jsonData._treeTwoName = secondTreeName;
-    // jsonData.treeTwo = data[2];
-  }
 };
 
 /**
