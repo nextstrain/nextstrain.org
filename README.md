@@ -60,29 +60,42 @@ This means that nextstrain.org, auspice.us, and your local auspice installation 
 [./server.js](server.js) decides, based on the path, whether to serve the bundled auspice JavaScript file (built from running `auspice build`), the (pre-built) static [splash & documentation pages](#Splash--documentation-pages), or the auspice-specific code from `./auspice/server` to process auspice requests for data from the `/charon/...` web API endpoints (including data transforms).
 
 ---
+
 ## Build nextstrain.org locally
+
+### Install prerequisites
+
+We recommend using a conda environment to manade the dependencies as both node version 10 and python v2 are needed.
+These can be installed into a new environment via:
+```
+conda create -n nextstrain.org nodejs=10 python=2.7
+```
+Next we need to install the node dependencies by running
+```
+npm install
+```
+from this directory (the "nextstrain.org" directory).
+
+
 ### Build locally mirroring the deployed (live) website
-1. `npm install` (from the "nextstrain.org" directory)
-2. `npm run build`, which runs `./build.sh` to build both the static site & auspice with nextstrain.org customisations.
-3. `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
+1. `npm run build`, which runs `./build.sh` to build both the static site & auspice with nextstrain.org customisations.
+2. `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
+This should mirror exactly what you see when you visit [nextstrain.org](https://nextstrain.org).
 
 
 ### Build locally using a custom version of auspice
-When nextstrain.org is built, it uses a JavaScript bundle from a previously installed version of auspice.
-[./set-up.sh](./set-up.sh) installs a fresh, global copy of auspice and builds the client (i.e. the bundle) with nextstrain.org provided customisations.
-To develop `nextstrain.org` using a custom version of auspice, **do not** run [./set-up.sh](./set-up.sh)`.
-First, follow [these auspice installation instructions](https://nextstrain.org/docs/getting-started/local-installation/#install-auspice-from-source) to install auspice locally.
+When nextstrain.org is built, it uses `auspice build` to generate a client (see [above section](#Auspice)), using the version of `auspice` installed when we ran `npm install` above.
+If you'd instead like to use a custom version of auspice (e.g. if you are concurrently developing the auspice source code) then _do not_ run `npm run build`, instead
+1. Install auspice globally from source -- [docs here](https://nextstrain.org/docs/getting-started/local-installation/#install-auspice-from-source)
+2. Generate the client using this globally installed `auspice` via:
+```
+cd auspice/
+auspice build --verbose --extend ./client/config.json
+cd -
+```
+3. Start the nextstrain.org server as per normal (`npm run server --verbose`)
 
-Note: You cannot run `auspice view` or `auspice develop` (with hot reloading) to serve the nextstrain.org server.
-When you are ready to serve your local version of auspice, you must rebuild the auspice client JavaScript bundle via:
-
-    cd auspice/
-    auspice build --verbose --extend ./client/config.json
-    cd -
-
-Then, you can start the nextstrain.org server by running:
-
-    npm run server --verbose
+> Note: You cannot run `auspice view` or `auspice develop` (with hot reloading) to serve the entire nextstrain.org server, which comprises both the static-site and auspice.
 
 
 #### How does this work?
