@@ -20,9 +20,9 @@ const communityCards = [
     title: "RSV (subtype A)"
   },
   {
-    img: "rsv.png",
-    url: "/community/JianiC/rsv/B/WGS",
-    title: "RSV (subtype B)"
+    img: "cassava.png",
+    url: "/community/pestdisplace/CMDAFRICA",
+    title: "cassava geminiviruses"
   },
   {
     img: "stripe_rust.png",

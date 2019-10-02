@@ -34,6 +34,8 @@ const SplashImagesCredit = () => (
         {` by Ray Butle, `}
         <a href="https://www.flickr.com/photos/nihgov/33288028956">RSV</a>
         {` by NIAID / NIH, `}
+        {` Cassava Leaf by `}
+        <a href="mailto:w.cuellar@cgiar.org">Wilmer Cuellar, </a>
         <a href="https://commons.wikimedia.org/wiki/File:Stripe_rust_on_wheat.jpg">Wheat yellow rust (Puccinia striiformis)</a>
         {` by Yue Jin / USDA.`}
       </Styles.FooterParagraph>
