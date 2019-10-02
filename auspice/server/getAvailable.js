@@ -37,7 +37,7 @@ const getAvailable = async (req, res) => {
       secondTreeOptions: secondTreeOptions(path)
     })),
     narratives: narratives.map(path => ({
-      request: joinPartsIntoPrefix({source, prefixParts: ["narratives", path]})
+      request: joinPartsIntoPrefix({source, prefixParts: [path], isNarrative: true})
     })),
   });
 };

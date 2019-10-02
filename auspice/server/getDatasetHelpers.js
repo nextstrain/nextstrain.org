@@ -16,8 +16,19 @@ const unauthorized = (req, res) => {
   return res.status(404).end();
 };
 
+/* All of the logic for mapping a dataset or narratives URL ("prefix") to a
+ * source + path is intentionally encapsulated contained here.  This function
+ * is essentially a router, and potentially should be refactored as such in the
+ * future.
+ *
+ * The inverse of splitPrefixIntoParts() is joinPartsIntoPrefix(), which should
+ * roundtrip losslessly.
+ */
 const splitPrefixIntoParts = (prefix) => {
-  const prefixParts = prefix
+  /* This could be const, but use let to signal to the reader that we use
+   * modifying methods like shift() and splice().
+   */
+  let prefixParts = prefix
     .replace(/^\//, '')
     .replace(/\/$/, '')
     .split("/");
@@ -29,15 +40,55 @@ const splitPrefixIntoParts = (prefix) => {
     ? prefixParts.shift()
     : "live";
 
-  const source = sources.get(sourceName);
+  const isNarrative = prefixParts[0] === "narratives";
 
-  return {source, prefixParts};
+  if (isNarrative) {
+    prefixParts.shift();
+  }
+
+  const Source = sources.get(sourceName);
+  let source;
+
+  switch (sourceName) {
+    // Community source requires an owner and repo name
+    case "community":
+      source = new Source(...prefixParts.splice(0, 2));
+      break;
+
+    default:
+      source = new Source();
+  }
+
+  return {source, prefixParts, isNarrative};
 };
 
-const joinPartsIntoPrefix = ({source, prefixParts}) =>
-  source.name === "live"
-    ? prefixParts.join("/")
-    : [source.name, ...prefixParts].join("/");
+/* The inverse of splitPrefixIntoParts() above, intentionally written to mimic
+ * that function's structure and roundtrip losslessly.
+ *
+ * If we move to a real router-based approach, this would ideally be an
+ * automatically provided reverse URL-construction/interpolation function on
+ * the matched route.
+ */
+const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
+  let leadingParts = [];
+
+  if (source.name !== "live") {
+    leadingParts.push(source.name);
+  }
+
+  if (isNarrative) {
+    leadingParts.push("narratives");
+  }
+
+  switch (source.name) {
+    // Community source requires an owner and repo name
+    case "community":
+      leadingParts.push(source.owner, source.repoName);
+      break;
+  }
+
+  return [...leadingParts, ...prefixParts.filter(x => x.length)].join("/");
+};
 
 /* Given the prefix (split on "/") -- is there an exact match in
  * the available datasets? If not, we use these to pick the

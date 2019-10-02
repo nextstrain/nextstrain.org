@@ -191,11 +191,11 @@ function setup(app) {
   });
 
   const nonPublicSources = Array.from(sources.entries())
-    .filter(([name, source]) => !source.visibleToUser(null))
-    .map(([name, source]) => `/${name}`);
+    .filter(([name, Source]) => !Source.visibleToUser(null))
+    .map(([name, Source]) => `/${name}`);
 
   app.use(nonPublicSources, (req, res, next) => {
-    // Prompt for login if an anonymous user asks for a non-public dataset.
+    // Prompt for login if an anonymous user asks for a non-public source.
     if (!req.user) {
       utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
       req.session.afterLoginReturnTo = req.originalUrl;

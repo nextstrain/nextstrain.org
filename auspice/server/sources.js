@@ -28,14 +28,25 @@ class Source {
   narrative(pathParts) {
     return new Narrative(this, pathParts);
   }
-  visibleToUser(user) {
-    return true;
-  }
   availableDatasets() {
     return [];
   }
   availableNarratives() {
     return [];
+  }
+
+  /* Static access control for this entire source, regardless of any
+   * instance-specific parameters.
+   */
+  static visibleToUser(user) {
+    return true;
+  }
+
+  /* Instance-specific access control delegates to the static method by
+   * default.
+   */
+  visibleToUser(user) {
+    return this.constructor.visibleToUser(user);
   }
 }
 
@@ -136,38 +147,105 @@ class LiveNarrative extends Narrative {
 }
 
 class CommunitySource extends Source {
+  constructor(owner, repoName) {
+    super();
+
+    // The GitHub owner and repo names are required.
+    if (!owner) throw new Error(`Cannot construct a ${this.constructor.name} without an owner`);
+    if (!repoName) throw new Error(`Cannot construct a ${this.constructor.name} without an repoName`);
+
+    this.owner = owner;
+    this.repoName = repoName;
+  }
+
   get name() { return "community" }
+  get repo() { return `${this.owner}/${this.repoName}` }
+  get branch() { return "master" }
+  get baseUrl() { return `https://raw.githubusercontent.com/${this.repo}/${this.branch}/` }
+
   dataset(pathParts) {
     return new CommunityDataset(this, pathParts);
   }
   narrative(pathParts) {
     return new CommunityNarrative(this, pathParts);
   }
+
+  async availableDatasets() {
+    const qs = queryString.stringify({ref: this.branch});
+    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/auspice?${qs}`);
+
+    if (!response.ok) {
+      utils.warn(`Error fetching available datasets from GitHub for source ${this.name}`);
+      return [];
+    }
+
+    const files = await response.json();
+    const jsonFiles = files
+      .filter(file => file.type === "file")
+      .filter(file => file.name.endsWith(".json"))
+      .filter(file => file.name.startsWith(this.repoName))
+      .map(file => file.name);
+
+    const sidecarSuffixes = ["meta", "tree", "root-sequence", "seq", "tip-frequencies"];
+    const notSidecar = (filename) =>
+      !sidecarSuffixes.some(suffix => filename.endsWith(`_${suffix}.json`));
+
+    // All JSON files which aren't a sidecar file with a known suffix.
+    const v2 = jsonFiles
+      .filter(notSidecar)
+      .map(filename => filename.replace(/[.]json$/, ""));
+
+    // All *_meta.json files which have a corresponding *_tree.json.
+    const v1 = jsonFiles
+      .filter(filename => filename.endsWith("_meta.json"))
+      .filter(filename => jsonFiles.includes(filename.replace(/_meta[.]json$/, "_tree.json")))
+      .map(filename => filename.replace(/_meta[.]json$/, ""));
+
+    return Array.from(new Set([...v2, ...v1]))
+      .map(filename => filename
+        .replace(this.repoName, "")
+        .replace(/^_/, "")
+        .split("_")
+        .join("/"));
+  }
+
+  async availableNarratives() {
+    const qs = queryString.stringify({ref: this.branch});
+    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/narratives?${qs}`);
+
+    if (!response.ok) {
+      utils.warn(`Error fetching available narratives from GitHub for source ${this.name}`);
+      return [];
+    }
+
+    const files = await response.json();
+    return files
+      .filter(file => file.type === "file")
+      .filter(file => file.name !== "README.md")
+      .filter(file => file.name.endsWith(".md"))
+      .filter(file => file.name.startsWith(this.repoName))
+      .map(file => file.name
+        .replace(this.repoName, "")
+        .replace(/^_/, "")
+        .replace(/[.]md$/, "")
+        .split("_")
+        .join("/"));
+  }
 }
 
 class CommunityDataset extends Dataset {
   get baseParts() {
-    // First part is the GitHub user/org.  The repo name is the second part,
-    // which we also expect in the file basename.
-    return this.pathParts.slice(1);
-  }
-  urlFor(type) {
-    const repoBaseUrl = `https://raw.githubusercontent.com/${this.pathParts[0]}/${this.pathParts[1]}/master/auspice/`;
-    const url = new URL(this.baseNameFor(type), repoBaseUrl);
-    return url.toString();
+    // We require datasets are in the auspice/ directory and include the repo
+    // name in the file basename.
+    return [`auspice/${this.source.repoName}`, ...this.pathParts];
   }
 }
 
 class CommunityNarrative extends Narrative {
   get baseParts() {
-    // First part is the GitHub user/org.  The repo name is the second part,
-    // which we also expect in the file basename.
-    return this.pathParts.slice(1);
-  }
-  url() {
-    const repoBaseUrl = `https://raw.githubusercontent.com/${this.pathParts[0]}/${this.pathParts[1]}/master/narratives/`;
-    const url = new URL(this.baseName, repoBaseUrl);
-    return url.toString();
+    // We require narratives are in the narratives/ directory and include the
+    // repo name in the file basename.
+    return [`narratives/${this.source.repoName}`, ...this.pathParts];
   }
 }
 
@@ -178,7 +256,7 @@ class PrivateS3Source extends Source {
   narrative(pathParts) {
     return new PrivateS3Narrative(this, pathParts);
   }
-  visibleToUser(user) {
+  static visibleToUser(user) {
     throw "visibleToUser() must be implemented explicitly by subclasses (not inherited from Source)";
   }
   async _listObjects() {
@@ -236,14 +314,14 @@ class InrbDrcSource extends PrivateS3Source {
   get name() { return "inrb-drc" }
   get bucket() { return "nextstrain-inrb" }
 
-  visibleToUser(user) {
+  static visibleToUser(user) {
     return !!user && !!user.groups && user.groups.includes("inrb");
   }
 }
 
 module.exports = new Map([
-  ["live", new LiveSource()],
-  ["staging", new StagingSource()],
-  ["community", new CommunitySource()],
-  ["inrb-drc", new InrbDrcSource()],
+  ["live", LiveSource],
+  ["staging", StagingSource],
+  ["community", CommunitySource],
+  ["inrb-drc", InrbDrcSource],
 ]);

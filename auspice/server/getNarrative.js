@@ -19,9 +19,8 @@ const getNarrative = async (req, res, next) => {
     return helpers.unauthorized(req, res);
   }
 
-  // Slice off the leading "narratives/" and generate the narrative's origin
-  // URL for fetching.
-  const narrative = source.narrative(prefixParts.slice(1));
+  // Generate the narrative's origin URL for fetching.
+  const narrative = source.narrative(prefixParts);
   const fetchURL = narrative.url();
 
   utils.log(`trying to fetch & parse narrative file: ${fetchURL}`);
