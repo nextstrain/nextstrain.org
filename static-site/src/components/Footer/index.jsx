@@ -1,3 +1,5 @@
+/* eslint-disable react/prefer-stateless-function */
+
 import React from "react";
 import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer, TeamMember, Line } from "../../layouts/generalComponents";
@@ -41,7 +43,7 @@ const SplashImagesCredit = () => (
       </Styles.FooterParagraph>
     </div>
   </div>
-)
+);
 
 class Footer extends React.Component {
 
@@ -71,7 +73,7 @@ class Footer extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <Styles.WideParagraph>
-              All <a href="https://github.com/nextstrain">source code</a> is freely available under the terms of the <a href="https://github.com/nextstrain/auspice/blob/master/LICENSE.txt">GNU Affero General Public License</a>. Screenshots etc may be used as long as a link to nextstrain.org is provided.
+              All <a href="https://github.com/nextstrain">source code</a> is freely available under the terms of the <a href="https://github.com/nextstrain/auspice/blob/master/LICENSE.txt">GNU Affero General Public License</a>. Screenshots may be used under a <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0 license</a> and attribution to nextstrain.org must be provided.
             </Styles.WideParagraph>
 
             <Styles.WideParagraph>
@@ -99,7 +101,7 @@ class Footer extends React.Component {
 
         <BigSpacer/>
       </div>
-    )
+    );
   }
 }
 
