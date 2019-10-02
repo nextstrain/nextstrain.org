@@ -3,7 +3,7 @@ import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import Link from 'gatsby-link';
 import { tweets } from "./tweets";
 import Cards from "../Cards";
-import nextstrainCards from "../Cards/nextstrainCards"
+import coreCards from "../Cards/coreCards"
 import communityCards from "../Cards/communityCards"
 import Title from "./title";
 import * as Styles from "./styles";
@@ -61,7 +61,7 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <Cards
-          cards={nextstrainCards}
+          cards={coreCards}
         />
 
         <HugeSpacer/>

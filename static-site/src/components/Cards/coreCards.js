@@ -1,4 +1,4 @@
-const nextstrainCards = [
+const coreCards = [
   {
     img: "seasonalinfluenza.png",
     url: "/flu/seasonal",
@@ -51,4 +51,4 @@ const nextstrainCards = [
   }
 ];
 
-export default nextstrainCards;
+export default coreCards;
