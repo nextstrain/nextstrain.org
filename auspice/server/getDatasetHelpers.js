@@ -38,7 +38,7 @@ const splitPrefixIntoParts = (prefix) => {
    */
   const sourceName = sources.has(prefixParts[0])
     ? prefixParts.shift()
-    : "live";
+    : "core";
 
   const isNarrative = prefixParts[0] === "narratives";
 
@@ -72,7 +72,7 @@ const splitPrefixIntoParts = (prefix) => {
 const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
   let leadingParts = [];
 
-  if (source.name !== "live") {
+  if (source.name !== "core") {
     leadingParts.push(source.name);
   }
 

@@ -120,10 +120,10 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
  * SIDE EFFECT: sets global.availableDatasets
  */
 const setAvailableDatasetsFromManifest = async () => {
-  utils.verbose("Fetching manifests for live & staging");
+  utils.verbose("Fetching manifests for core & staging");
 
   const servers = {
-    live: "data",
+    core: "data",
     staging: "staging"
   };
 

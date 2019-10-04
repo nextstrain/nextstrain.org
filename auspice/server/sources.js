@@ -95,14 +95,14 @@ class Narrative {
   }
 }
 
-class LiveSource extends Source {
-  get name() { return "live" }
+class CoreSource extends Source {
+  get name() { return "core" }
   get baseUrl() { return "http://data.nextstrain.org/" }
   get repo() { return "nextstrain/narratives" }
   get branch() { return "master" }
 
   narrative(pathParts) {
-    return new LiveNarrative(this, pathParts);
+    return new CoreNarrative(this, pathParts);
   }
 
   // The computation of these globals should move here.
@@ -131,14 +131,14 @@ class LiveSource extends Source {
   }
 }
 
-class StagingSource extends LiveSource {
+class CoreStagingSource extends CoreSource {
   get name() { return "staging" }
   get baseUrl() { return "http://staging.nextstrain.org/" }
   get repo() { return "nextstrain/narratives" }
   get branch() { return "staging" }
 }
 
-class LiveNarrative extends Narrative {
+class CoreNarrative extends Narrative {
   url() {
     const repoBaseUrl = `https://raw.githubusercontent.com/${this.source.repo}/${this.source.branch}/`;
     const url = new URL(this.baseName, repoBaseUrl);
@@ -320,8 +320,8 @@ class InrbDrcSource extends PrivateS3Source {
 }
 
 module.exports = new Map([
-  ["live", LiveSource],
-  ["staging", StagingSource],
+  ["core", CoreSource],
+  ["staging", CoreStagingSource],
   ["community", CommunitySource],
   ["inrb-drc", InrbDrcSource],
 ]);
