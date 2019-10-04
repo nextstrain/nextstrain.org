@@ -39,9 +39,6 @@ const requestMainDataset = async (res, req, fetchUrls, treeName, secondTreeName,
     utils.verbose(`Success fetching & converting v1 auspice JSONs. Sending as a single v2 JSON.`);
   }
 
-  // TODO -- see https://github.com/nextstrain/auspice/issues/783
-  datasetJson._source = source;
-
   res.send(datasetJson);
 };
 

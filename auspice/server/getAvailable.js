@@ -34,7 +34,10 @@ const getAvailable = async (req, res) => {
   res.json({
     datasets: datasets.map(path => ({
       request: joinPartsIntoPrefix({source, prefixParts: [path]}),
-      secondTreeOptions: secondTreeOptions(path)
+      secondTreeOptions: secondTreeOptions(path),
+      buildUrl: source.name === "community"
+        ? `https://github.com/${source.repo}`
+        : null
     })),
     narratives: narratives.map(path => ({
       request: joinPartsIntoPrefix({source, prefixParts: [path], isNarrative: true})
