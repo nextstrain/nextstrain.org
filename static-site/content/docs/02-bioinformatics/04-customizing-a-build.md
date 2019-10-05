@@ -1,8 +1,8 @@
 ---
-title: "How to customize a build (FAQ)"
+title: "How to Customize a Build (FAQ)"
 ---
 
 
 #### 😳😧 we haven't written this page yet!
 
-#### if you have any suggestions please [send them our way](mailto:hello@nextstrain.org).
+#### If you have any suggestions please [send them our way](mailto:hello@nextstrain.org).
