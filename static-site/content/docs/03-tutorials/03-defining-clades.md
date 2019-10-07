@@ -1,14 +1,14 @@
 ---
-title: "Manually labeling clades on a Nextstrain tree"
+title: "Manually Labeling Clades on a Nextstrain Tree"
 ---
 
-If you look at the [nextstrain seasonal influenza tree](https://nextstrain.org/flu/seasonal/h3n2/ha/3y), you'll see that the clades are labelled (for example, `3c2`, `3c2.A`, `3c3` etc.). However labelled clades are not a default in nextstrain builds. You may want to add clade labelling to your nextstrain trees to more easily describe certain aspects of the tree, point out agreed-upon groups that are accepted by the field, or to facilitate zoomed views on the tree when using [nextstrain narratives](https://nextstrain.org/docs/narratives/introduction). This bit of documentation describes how to add clade labeling to your nextstrain build.
+If you look at the [Nextstrain Seasonal Influenza tree](https://nextstrain.org/flu/seasonal/h3n2/ha/3y), you'll see that the clades are labelled (for example, `3c2`, `3c2.A`, `3c3` etc.). However labelled clades are not a default in Nextstrain builds. You may want to add clade labelling to your Nextstrain trees to more easily describe certain aspects of the tree, point out agreed-upon groups that are accepted by the field, or to facilitate zoomed views on the tree when using [Nextstrain narratives](https://nextstrain.org/docs/narratives/introduction). This bit of documentation describes how to add clade labeling to your Nextstrain build.
 
-## Finding clade defining nucleotide mutations
+## Finding Clade Defining Nucleotide Mutations
 
-You can find clade-defining mutations by exploring a nextstrain tree that you have built previously. By default, nextstrain trees will show amino acid mutations. While you can certainly define clades by amino acid changes, there may be many clades that you would like to label for which no amino acid mutations have occurred. Thus, it may work better to define clades using nucleotide mutations, which occur more frequently.
+You can find clade-defining mutations by exploring a Nextstrain tree that you have built previously. By default, Nextstrain trees will show amino acid mutations. While you can certainly define clades by amino acid changes, there may be many clades that you would like to label for which no amino acid mutations have occurred. Thus, it may work better to define clades using nucleotide mutations, which occur more frequently.
 
-The first thing you'll need to do is switch from displaying amino acid mutations to displaying nucleotide mutations. To do this, when you are viewing a tree on  nextstrain.org or locally with auspice, scroll down to the diversity panel. In the top right hand corner, you'll see you can toggle between `AA` and `NT`. Select `NT`.
+The first thing you'll need to do is switch from displaying amino acid mutations to displaying nucleotide mutations. To do this, when you are viewing a tree on  nextstrain.org or locally with Auspice, scroll down to the diversity panel. In the top right hand corner, you'll see you can toggle between `AA` and `NT`. Select `NT`.
 
 ![](./img/diversity-plot.png)
 
@@ -17,9 +17,9 @@ Then, head back to the tree. When you hover over a branch, a dark grey window po
 ![](./img/branch-hover.png)
 
 
-## Make a tsv file containing your clade mutations
+## Make a TSV File Containing your Clade Mutations
 
-The header of this tsv file should have the following entries: clade`\t`gene`\t`site`\t`alt
+The header of this TSV file should have the following entries: clade`\t`gene`\t`site`\t`alt
 
 * `clade` is the name of your clade, whatever you want to refer to it as.
 
@@ -29,19 +29,19 @@ The header of this tsv file should have the following entries: clade`\t`gene`\t`
 
 * `alt` is the nucleotide that the site mutated to. For example if the nucleotide mutation is `G9417A`, then `alt` would be `A`.
 
-Note that some clades will be defined by more than one mutation. To avoid any conflicts with other clades, you should list all the mutations in the tsv file (using the same clade name, but different site information). A picture of what this tsv file should look like, showing invisible characters, is given below. Note that clades `c1`, `c2`, `c3`, `c4`, and `c5` are defined by only one mutation, but that `c6` is defined by two mutations, and thus has two entries, one for each mutation. Along the same lines, there are six mutations defining clade `c6`, and thus there are six entries in the `tsv` file.
+Note that some clades will be defined by more than one mutation. To avoid any conflicts with other clades, you should list all the mutations in the TSV file (using the same clade name, but different site information). A picture of what this tsv file should look like, showing invisible characters, is given below. Note that clades `c1`, `c2`, `c3`, `c4`, and `c5` are defined by only one mutation, but that `c6` is defined by two mutations, and thus has two entries, one for each mutation. Along the same lines, there are six mutations defining clade `c6`, and thus there are six entries in the `tsv` file.
 
 ![](./img/tsv.png)
 
-It doesn't really matter where you save your `clades.tsv` file (as long as you know the path to the file), I usually save this file within the `config` directory of my workflow, as this is where other files such as `colors.tsv` are usually kept within nextstrain analysis directories.
+It doesn't really matter where you save your `clades.tsv` file (as long as you know the path to the file), we usually save this file within the `config` directory of our workflows, as this is where other files such as `colors.tsv` are usually kept within nextstrain analysis directories.
 
 _Side note_: If you are using the clade labelling specifically for nextstrain narratives, the names need to read as strings. Thus if you are wanting to label the clades numerically (e.g. as `1`, `2`, `3` ...) add a letter ahead of the number (for instance I do `c1`, `c2`, `c3` ...)
 
-## Changing your workflow to add clade labeling by editing your Snakefile
+## Changing your Workflow to Add Clade Labeling by Editing your Snakefile
 
-Clade labelling is not a default task in the standard nextstrain workflow. But you can certainly add it to your workflow! To do so, you'll need to edit your Snakefile.
+Clade labelling is not a default task in the standard Nextstrain workflow. However, you can certainly add it to your workflow! To do so, you'll need to edit your Snakefile.
 
-The first thing you'll need to edit is `rule files:`. Here, you'll need to add an entry to the `params` section that references your file. For example, you could add `clades = config/clades.tsv` to the `params` section. The important thing here is that the path to your tsv file is correct. This is what this looks like for me in one of my Snakefiles:
+The first thing you'll need to edit is `rule files:`. Here, you'll need to add an entry to the `params` section that references your file. For example, you could add `clades = config/clades.tsv` to the `params` section. The important thing here is that the path to your TSV file is correct. This is what this looks like for us in one of our Snakefiles:
 
 ```
 rule files:
@@ -57,9 +57,9 @@ rule files:
         clades = "config/clades.tsv"
 ```
 
-Next, you'll need to add a rule to the Snakefile that tells the workflow to perform the clade labelling. I usually place this rule after the `translate` rule.
+Next, you'll need to add a rule to the Snakefile that tells the workflow to perform the clade labelling. We usually place this rule after the `translate` rule.
 
-Here's an example rule that I wrote for clade labeling.
+Here's an example rule that we wrote for clade labeling.
 
 ```
 rule clades:
@@ -80,9 +80,9 @@ rule clades:
         """
 ```
 
-Finally, you'll need to edit the `export` rule to make sure that the clade labelling information gets added to the auspice JSONs. You'll need to add the clade data as an input to `export`, and you'll also need to include it as an argument in the `--node-data` flag of the `auspice export command`.
+Finally, you'll need to edit the `export` rule to make sure that the clade labelling information gets added to the Auspice JSONs. You'll need to add the clade data as an input to `export`, and you'll also need to include it as an argument in the `--node-data` flag of the `auspice export command`.
 
-For instance, this is what my `export` command looks like:
+For instance, this is what our `export` command looks like:
 
 ```
 rule export:
@@ -115,6 +115,6 @@ rule export:
         """
 ```
 
-Note that in the input I have `clades = rules.clades.output.clade_data` and in the `--node-data` flag I have an argument `{input.clades}`.
+Note that in the input we have `clades = rules.clades.output.clade_data` and in the `--node-data` flag, we have an argument `{input.clades}`.
 
-**Important**: You may have to edit the names depending on how you named your rules, your inputs, and your outputs. For example, in the `export` rule above, I have a line that says `clades = rules.clades.output.clade_data`. This is formatted this way because I have a rule called `clades` and the output from that rule is called `clade_data`. However, if my rule had been called something different, say `label_clades_on_my_tree`, then the referenced file would have to be labelled `rules.label_clades_on_my_tree.output.clade_data`. This is also true for however you name the output files.
+**Important**: You may have to edit the names depending on how you named your rules, your inputs, and your outputs. For example, in the `export` rule above, we have a line that says `clades = rules.clades.output.clade_data`. This is formatted this way because we have a rule called `clades` and the output from that rule is called `clade_data`. However if our rule had been called something different, say `label_clades_on_my_tree`, then the referenced file would have to be labelled `rules.label_clades_on_my_tree.output.clade_data`. This is also true for however you name the output files.
