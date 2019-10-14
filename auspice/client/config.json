@@ -9,5 +9,6 @@
     "unselectedBackground": "#888"
   },
   "navbarComponent": "navbar.js",
-  "browserTitle": "nextstrain"
+  "browserTitle": "nextstrain",
+  "googleAnalyticsKey": "UA-92687617-1"
 }
