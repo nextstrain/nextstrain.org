@@ -31,8 +31,12 @@ In the meantime, the JSON file formats are specified [here](/docs/bioinformatics
 
 
 ### Running Locally
-Auspice can be run locally to visualize datasets.
-See [local installation](/docs/getting-started/local-installation) for how to get up and running.
+Auspice can be run locally to visualize datasets. If you have auspice compatable JSONs then auspice can visualise these by running
+
+```
+auspice view --datasetDir <dir>
+```
+where <dir> contains the JSONs. This command makes the data available to view in a browser at localhost:4000.
 
 
 ### Private (Non-Public) Datasets
