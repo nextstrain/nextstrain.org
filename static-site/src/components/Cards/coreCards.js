@@ -2,12 +2,12 @@ const coreCards = [
   {
     img: "seasonalinfluenza.png",
     url: "/flu/seasonal",
-    title: "Seasonal Influenza"
+    title: "Seasonal influenza"
   },
   {
     img: "wnv.jpg",
     url: "/WNV",
-    title: "West Nile Virus"
+    title: "West Nile virus"
   },
   {
     img: "mumps.jpg",
@@ -32,7 +32,7 @@ const coreCards = [
   {
     img: "avianinfluenza.png",
     url: "/flu/avian",
-    title: "Avian Influenza"
+    title: "Avian influenza"
   },
   {
     img: "measles.jpg",

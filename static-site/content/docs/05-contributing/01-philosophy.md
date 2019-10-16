@@ -13,7 +13,7 @@ Please [get in touch with us](mailto:hello@nextstrain.org) with any specific que
 ### Centrally Maintained, Regularly Updated Datasets
 
 There are a number of datasets which are run by the Nextstrain team or close collaborators, for instance
-[Zika](/zika), [Influenza](/flu), and [West Nile Virus](/WNV/NA).
+[Zika](/zika), [influenza](/flu), and [West Nile virus](/WNV/NA).
 Each individual dataset contains links to the scientists who maintain it.
 
 We're exited to collaborate with more groups and expand these datasets -- please [get in touch with us](mailto:hello@nextstrain.org) if this is something you'd like to be involved in.

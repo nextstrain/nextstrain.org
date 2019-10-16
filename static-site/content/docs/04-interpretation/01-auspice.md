@@ -7,8 +7,8 @@ We wanted to build a tool that was highly interactive, versatile, and usable as 
 Auspice is written in JavaScript and is the app that powers all the phylogenomic analysis on nextstrain.org. The code is completely open-source and may be found on [Github](https://www.github.com/nextstrain/auspice)).
 
 
-![Mumps](figures/mumps.png)
-*Auspice displaying Mumps genomes from North America. See [nextstrain.org/mumps/na](https://www.nextstrain.org/mumps/na)*
+![mumps](figures/mumps.png)
+*Auspice displaying mumps genomes from North America. See [nextstrain.org/mumps/na](https://www.nextstrain.org/mumps/na)*
 
 ### General Design Overview
 We wanted to build a powerful, yet not overly complex visualization tool.
