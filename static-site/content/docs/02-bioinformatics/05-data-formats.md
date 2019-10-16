@@ -45,5 +45,3 @@ Currently this is only used by the flu builds, and generates the frequencies pan
 
 ## Input files for Auspice
 _Full information on file format requirements for Auspice and how to get your data into the correct format will be updated soon_
-
-If you are interested in visualizing Newick trees, which is possible with CSV/TSV metadata files, then you may want to use [auspice.us](https://auspice-us.herokuapp.com/), which lets you drag and frop your files into the browser.
