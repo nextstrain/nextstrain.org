@@ -14,16 +14,16 @@ If you have any issues with installing augur / auspice using any of these method
 
 #### Table of Contents:
 - [Install Augur & Auspice with Conda (recommended)](#install-augur--auspice-with-conda-recommended)
-    - [Updating `Augur`, `Auspice`, and `Nextstrain`:](#updating-augur-auspice-and-nextstrain)
+- [Updating `augur`, `auspice`, and `nextstrain`:](#updating-augur-auspice-and-nextstrain)
 - [Install Augur with Python](#install-augur-with-python)
-  - [Install Auspice using npm](#install-auspice-using-npm)
-  - [Install Augur from source](#install-augur-from-source)
-  - [Install Auspice from source](#install-auspice-from-source)
+- [Install Auspice Using npm](#install-auspice-using-npm)
+- [Install Augur from Source](#install-augur-from-source)
+- [Install Auspice from Source](#install-auspice-from-source)
 
 
 
 ---
-## Install augur & auspice with Conda (recommended)
+## Install Augur & Auspice with Conda (recommended)
 
 [Download and install the latest version of Miniconda](https://conda.io/miniconda.html) which will make the `conda` command available to you.
 We're going to create a new environment called "nextstrain", which automatically installs `augur` and dependencies.
@@ -56,7 +56,7 @@ conda deactivate
 ```
 
 
-#### Updating `augur`, `auspice`, and `nextstrain`:
+## Updating `augur`, `auspice`, and `nextstrain`:
 
 ```
 source activate nextstrain
@@ -66,7 +66,7 @@ npm update --global auspice
 
 ---
 
-## Install augur with Python
+## Install Augur with Python
 
 If you'd rather not use Conda to manage things, then you'll have to do a bit more work!
 This requires you to manage your Python installation (Python 3.4 or above is required).
@@ -106,7 +106,7 @@ sudo apt install mafft iqtree raxml fasttree vcftools
 Other Linux distributions will likely have the same packages available, although the names may differ slightly.
 
 ---
-### Install auspice using npm
+## Install Auspice Using npm
 
 You'll need to have an installation of Node.js to install Auspice. This can be done via Conda as simply as `conda create -yn auspice nodejs=10`, or by using [nvm](https://github.com/nvm-sh/nvm) or by [installing manually](https://nodesource.com/blog/installing-node-js-tutorial-using-nvm-on-mac-os-x-and-ubuntu/).
 Once this is done (check via `node --version`), then:
@@ -117,7 +117,7 @@ auspice --help # to check things worked
 ```
 
 ---
-### Install augur from source
+## Install Augur from Source
 
 This is useful for debugging, modifying the source code, or using an unpublished feature branch.
 Similar to [installing Augur with python](#install-augur-with-python) you'll need a copy of python and the required dependencies.
@@ -145,7 +145,7 @@ augur --version
 Note that you can use `pip install .` as the final step, but this means changes to the source code won't be reflected in your `auspice` version... which you probably want if you're going to the trouble of installing from source!
 
 ---
-### Install auspice from source
+## Install Auspice from Source
 
 This gives us the same advantages as installing Augur from source 😀 Note that here we're using Conda to create an "Auspice" environment with Node.js installed -- if you'd prefer to do something else then just replace those two steps.
 
