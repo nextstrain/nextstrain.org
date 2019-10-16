@@ -23,6 +23,14 @@ Auspice v1 requires two dataset JSONs (metadata + tree) with an optional, tip-fr
 
 Auspice v2 is backward compatible with v1, but also can take a single "v2" dataset JSON instead of the metadata + tree v1 JSONs.
 
+Here is a helpful table describing the JSONs for each version of Auspice:
+
+| file | schema | Auspice versions | description |
+| ---- | ---- | ---- | ---- |
+|"tree" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v1-tree.json) | v1, v2 | Decorated phylogenetic tree |
+|"meta" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v1-meta.json) | v1, v2 | The "metadata" associated with a phylogenetic tree |
+|"v2" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v2.json) | v2 | The single input format required for Auspice v2 |
+
 #### Tree JSON (required)
 The tree structure is encoded as a deeply nested JSON object, with traits (such as country, divergence, collection date, attributions etc) stored on each node.
 The presence of a `children` property indicates that it's an internal node and contains the child objects.
