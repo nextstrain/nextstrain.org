@@ -19,8 +19,9 @@ Any compatible JSONs can be used by Auspice, not just those produced by Augur.
 Augur produces these JSONs via the `augur export` command -- see the [augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html#export).
 We also define schemas for these JSONs (see below) and provide a validation tool to check JSONs against these schemas, `auspice validate` --  see the [augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html#validate).
 
+Auspice v1 requires two dataset JSONs (metadata + tree) with an optional, tip-frequencies JSON.
 
-Auspice (version 2) currently requires two JSON files, with a third optional JSON.
+Auspice v2 is backward compatible with v1, but also can take a single "v2" dataset JSON instead of the metadata + tree v1 JSONs.
 
 #### Tree JSON (required)
 The tree structure is encoded as a deeply nested JSON object, with traits (such as country, divergence, collection date, attributions etc) stored on each node.
@@ -37,7 +38,6 @@ Additional data to control and inform the visualization is stored via the `metad
 See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_meta.json) for more details, or see the current [live zika build](https://nextstrain.org/zika)'s metadata JSON [here](http://data.nextstrain.org/zika_meta.json).
 
 The filename _must_ end with `_meta.json` and have the same prefix as the tree JSON above.
-
 
 #### Frequency JSON (optional)
 
