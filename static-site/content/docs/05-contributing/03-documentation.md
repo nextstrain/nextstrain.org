@@ -1,30 +1,30 @@
 ---
-title: "Contributing to documentation"
+title: "Contributing to Documentation"
 ---
 
-Documentation is crucial to a project's success, but something that's often painful to write!
-We're always trying to improve the documentation here and would appreciate any and all contributions, whether you are a collaborator or simply a user.
+Documentation is crucial to a project's success, but often painful to write!
+We're always trying to improve our documentation here and would appreciate any and all contributions, whether you are a collaborator or simply a user.
 
-### Built from Markdown files
+### Built from Markdown Files
 
-Each page in this documentation website ([nextstrain.org/docs](https://nextstrain.org/docs)) is built from a markdown file -- for instance [here's the file for this page](https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/docs/05-contributing/04-development.md).
+Each page in this documentation website ([nextstrain.org/docs](https://nextstrain.org/docs)) is built from a Markdown file -- for instance [here's the file for this page](https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/docs/05-contributing/04-development.md).
 
 
-> If you're new to markdown, [here's a good guide](https://guides.github.com/features/mastering-markdown/) and [here's a cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) which is really useful to refer to.
+> If you're new to Markdown, [here's a good guide](https://guides.github.com/features/mastering-markdown/) and [here's a cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) which is really useful to refer to.
 
 
 ### Stored on GitHub
 
-The [nextstrain.org github repository](https://github.com/nextstrain/nextstrain.org) contains all the code and content which is used to build [nextstrain.org](https://nextstrain.org).
+The [nextstrain.org GitHub repository](https://github.com/nextstrain/nextstrain.org) contains all the code and content which is used to build [nextstrain.org](https://nextstrain.org).
 Each time the "master" branch is changed, the website will automatically rebuild, so in order to redeploy any changes, all that has to happen is to push to master 🙌
 
 ---
 
-### Building the documentation locally
+### Building the Documentation Locally
 
 Before we can edit documentation, it's always helpful to be able to build the website locally.
-This allows us to see changes as we make them & ensure everything looks as we want it to!
-While this isn't strictly necessary -- you could just edit the markdown files and push them up, it will help avoid errors.
+This allows us to see changes as we make them and ensure everything looks as we want it to!
+While this isn't strictly necessary, you could just edit the markdown files and push them up, it will help avoid errors.
 
 Prerequisites:
 * `nodejs` version 10
@@ -47,7 +47,7 @@ npm install
 ```
 
 You should now be able to run the static-site part of the website, which includes the splash page and all the documentation.
-(It doesn't include auspice, which is what we use to visualise datasets. [See here](https://github.com/nextstrain/nextstrain.org#build-nextstrainorg-locally) for how to accomplish this.)
+(It doesn't include Auspice, which is what we use to visualise datasets. [See here](https://github.com/nextstrain/nextstrain.org#build-nextstrainorg-locally) for how to accomplish this.)
 We will run this in development mode, which allows us to update the markdown files and have the results instantly update in the browser:
 
 ```
@@ -60,10 +60,10 @@ Further information, including troubleshooting, [is available in the GitHub repo
 
 ---
 
-### Where are these markdown files?
+### Where Are These Markdown Files?
 
-If you've got things up and running (well done!) we can now actually make some edits!
-The documentation markdown files are all found in `./static-site/content/docs/` -- there you'll see a number of folders which correspond to the categories you can see in the left hand side right now 👈. When I wrote this docs, they were:
+Once you've got things up and running we can now actually make some edits!
+The documentation markdown files are all found in `./static-site/content/docs/` -- there you'll see a number of folders which correspond to the categories you can see in the left hand side right now 👈. When we wrote these docs, they were:
 ```
 01-getting-started
 02-bioinformatics
@@ -90,29 +90,29 @@ If you are running the site locally in development mode (see above) then you can
 
 ---
 
-### Changing existing pages
+### Changing Existing Pages
 
 All that's needed is to find the markdown file corresponding to the page and edit it.
 Once you're happy with things, you can push the changes up to nextstrain.org (see below).
 
-### Adding pages
+### Adding Pages
 
-It's _almost_ as easy as changing existing pages -- but first you'll need to create the markdown file.
+It's similar to changing existing pages -- but first you'll need to create the markdown file.
 For instance, if we wanted to add a new page to the "getting started" section from above, we could make the file `01-getting-started/07-something-new.md` which would then be visible to you locally at [localhost:8000/docs/getting-started/something-new](http://localhost:8000/docs/getting-started/something-new) and, once deployed, at [nextstrain.org/docs/getting-started/something-new](https://nextstrain.org/docs/getting-started/something-new).
 
 In the new file, you'll need to first create some metadata at the top of the file which defines the title of the page. For instance, the metadata for this file/page is:
 
 ```
 ---
-title: "Contributing to documentation"
+title: "Contributing to Documentation"
 ---
 ```
 
-Once this is done, you can begin to write the page contents 😇
+Once this is done, you can begin to write the page's content.
 
 ---
 
-### Pushing changes live
+### Pushing Changes Live
 
-nextstrain.org is automatically redeployed anytime there's a change to the master branch on GitHub.
+Nextstrain.org is automatically redeployed anytime there's a change to the master branch on GitHub.
 We encourage a pull request with proposed changes, which can then be merged into master once someone's taken a look.

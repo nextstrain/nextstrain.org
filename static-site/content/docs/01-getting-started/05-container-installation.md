@@ -1,17 +1,16 @@
 ---
-title: "Installing the container-based nextstrain CLI"
+title: "Installing the container-based Nextstrain CLI"
 ---
 
 
-The Nextstrain command-line tool (CLI).
-It aims to provide access to Nextstrain components in a local environment with a minimum of fuss.
-It uses docker containers to bundle up the installation of all the different components behind nextstrain, so that you have a clean interface and fewer installation issues!
+The Nextstrain command-line tool (CLI) aims to provide access to Nextstrain components in a local environment with minimal fuss.
+It uses docker containers to bundle up the installation of all the components behind Nextstrain, so that you have a clean interface and fewer installation issues!
 
 
-Once you've installed the nextstrain CLI, you can run the [quickstart guide](/docs/getting-started/quickstart) or any of the tutorials available here. 
+Once you've installed the Nextstrain CLI, you can run the [quickstart guide](/docs/getting-started/quickstart) or any of the tutorials available here. 
 
 
-> Before digging in, it's worth reading [the difference between a local & container installation](local-vs-container-install), both of which will install the components behind nextstrain and allow you to run and visualize analyses on your computer.
+> Before digging in, it's worth reading [the difference between a local and container installation](local-vs-container-install), both of which will install the components behind Nextstrain and allow you to run and visualize analyses on your computer.
 
 
 
@@ -39,7 +38,7 @@ Check by running `python --version` or `python3 --version`.
 
 ### Git
 
-[git](https://en.wikipedia.org/wiki/Git_(software)) is a [version control system](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control) used by all of the Nextstrain ecosystem.
+[Git](https://en.wikipedia.org/wiki/Git_(software)) is a [version control system](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control) used by all of the Nextstrain ecosystem.
 It is free to [download and install](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 
@@ -47,7 +46,7 @@ It is free to [download and install](https://git-scm.com/book/en/v2/Getting-Star
 ## Install the Nextstrain CLI
 
 With Python 3 installed, you can use [pip](https://pip.pypa.io) to install the
-[nextstrain-cli package](https://pypi.org/project/nextstrain-cli):
+[Nextstrain-CLI package](https://pypi.org/project/nextstrain-cli):
 
 ```
 $ python3 -m pip install nextstrain-cli
@@ -64,8 +63,8 @@ $ nextstrain version
 nextstrain.cli 1.6.1
 ```
 
-(The version you get will probably be different than the one shown in the
-example above.)
+_The version you get will probably be different than the one shown in the
+example above_.
 
 ---
 ## Install Docker

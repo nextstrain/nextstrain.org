@@ -11,12 +11,12 @@ If you haven't already looked at the [Quickstart](/docs/getting-started/quicksta
 ## Setup
 
 To run this tutorial you'll need either:
-* augur and auspice installed -- [see installation instructions here](/docs/getting-started/local-installation#install-augur--auspice-with-conda-recommended).
-* the nextstrain CLI tool -- see [the quickstart for more info](/docs/getting-started/quickstart).
+* Augur and Auspice installed -- [see installation instructions here](/docs/getting-started/local-installation#install-augur--auspice-with-conda-recommended).
+* the Nextstrain CLI tool -- see [the quickstart for more info](/docs/getting-started/quickstart).
 
 
 You'll also need to install `git` if you don't have it.
-If you [used conda to install augur and auspice](/docs/getting-started/installation#install-augur--auspice-with-conda-recommended) then you've already got this inside the "nextstrain" environment.
+If you [used conda to install Augur and Auspice](/docs/getting-started/installation#install-augur--auspice-with-conda-recommended) then you've already got this inside the "Nextstrain" environment.
 
 ## Build steps
 
@@ -56,7 +56,7 @@ Your command prompt will change to indicate you are in the build environment.
 A Nextstrain build typically starts with a collection of pathogen sequences in a single [FASTA](https://en.wikipedia.org/wiki/FASTA_format) file and a corresponding table of metadata describing those sequences in a tab-delimited text file.
 For this tutorial, we will use an example data set with a subset of 34 viruses.
 
-Each example virus sequence record looks like the following, with the virus's strain id as the sequence name in the header line followed by the virus sequence.
+Each example virus sequence record looks like the following, with the virus's strain ID as the sequence name in the header line followed by the virus sequence.
 
 ```
 >PAN/CDC_259359_V1_V3/2015
@@ -66,8 +66,8 @@ taaaacgcggagtagcccgtgtgagcccctttgggggcttgaagaggctgccagccggac
 ttctgctgggtcatgggcccatcaggatggtcttggcgattctagcctttttgagattca
 ```
 
-Each sequence record's virus strain id links to the tab-delimited metadata file by the latter's `strain` field.
-The metadata file contains a header of column names followed by one row per virus strain id in the sequences file.
+Each sequence record's virus strain ID links to the tab-delimited metadata file by the latter's `strain` field.
+The metadata file contains a header of column names followed by one row per virus strain ID in the sequences file.
 An example metadata file looks like the following.
 
 ```
@@ -80,18 +80,18 @@ Aedes_aegypti/USA/2016/FL05	zika	KY075937	2016-09-09	north_america	usa	usa	usa	g
 
 A metadata file must have the following columns:
 
-  * strain
-  * virus
-  * date
+  * Strain
+  * Virus
+  * Date
 
 Builds using published data should include the following additional columns, as shown in the example above:
 
-  * accession (e.g., NCBI GenBank, EMBL EBI, etc.)
-  * authors
-  * url
-  * title
-  * journal
-  * paper_url
+  * Accession (e.g., NCBI GenBank, EMBL EBI, etc.)
+  * Authors
+  * URL
+  * Title
+  * Journal
+  * Paper_URL
 
 ### Filter the Sequences
 
@@ -112,7 +112,7 @@ augur filter \
 
 ### Align the Sequences
 
-Create a multiple alignment of the sequences using a custom reference.
+Create a multi-sequence alignment using a custom reference.
 After this alignment, columns with gaps in the reference are removed.
 Additionally, the `--fill-gaps` flag fills gaps in non-reference sequences with "N" characters.
 These modifications force all sequences into the same coordinate space as the reference sequence.
@@ -129,7 +129,7 @@ Now the pathogen sequences are ready for analysis.
 
 ## Construct the Phylogeny
 
-Infer a phylogenetic tree from the multiple sequence alignment.
+Infer a phylogenetic tree from the multi-sequence alignment.
 
 ```
 augur tree \
@@ -167,7 +167,7 @@ All other data inferred by TreeTime is stored by strain or internal node name in
 
 ### Reconstruct Ancestral Traits
 
-TreeTime can also infer ancestral traits from an existing phylogenetic tree and metadata annotating each tip of the tree.
+TreeTime can also infer ancestral traits from an existing phylogenetic tree and the metadata annotating each tip of the tree.
 The following command infers the region and country of all internal nodes from the time tree and original strain metadata.
 As with the `refine` command, the resulting JSON output is indexed by strain or internal node name.
 
@@ -208,9 +208,9 @@ augur translate \
 
 ## Export the Results
 
-Finally, collect all node annotations and metadata and export it all in auspice’s JSON format.
-This refers to three config files to define colors via `config/colors.tsv`, lat/long coordinates via `config/lat_longs.tsv` and page title, maintainer, filters present, etc... via `config/auspice_config.json`.
-The resulting tree and metadata JSON files are the inputs to the auspice visualization tool.
+Finally, collect all node annotations and metadata and export it in Auspice’s JSON format.
+This refers to three config files to define colors via `config/colors.tsv`, latitude and longitude coordinates via `config/lat_longs.tsv`, as well as page title, maintainer, filters present, etc., via `config/auspice_config.json`.
+The resulting tree and metadata JSON files are the inputs to the Auspice visualization tool.
 
 ```
 augur export \
@@ -243,7 +243,7 @@ If you're not using the Nextstrain CLI shell, then copy the `auspice/*.json` fil
 You can use the commands below (adjusted if necessary), or copy them using a graphical file explorer.
 
 ```
-# Copy files into auspice data directory.  Adjust
+# Copy files into Auspice data directory.  Adjust
 # paths if auspice isn't installed in ~/src/auspice/.
 mkdir ~/src/auspice/data/
 cp auspice/*.json ~/src/auspice/data/
@@ -259,9 +259,9 @@ cd ~/src/auspice/data/
 npm run dev
 ```
 
-When auspice is running, navigate to <http://localhost:4000/local/zika> in your browser to view the results.
+When Auspice is running, navigate to <http://localhost:4000/local/zika> in your browser to view the results.
 
-To stop auspice and return to the command line when you are done viewing your data, press CTRL+C.
+To stop Auspice and return to the command line when you are done viewing your data, press CTRL+C.
 
 ## Automate the Build with Snakemake
 
@@ -275,7 +275,7 @@ First delete the output from the manual steps above.
 rm -rf results/ auspice/
 ```
 
-If you've installed augur / auspice, simply run
+If you've installed Augur & Auspice, simply run
 ```
 snakemake
 ```
@@ -296,10 +296,10 @@ If you want to force a re-run of the whole build, first remove any previous outp
 
 ## Next steps
 
-* Learn more about [augur commands](/docs/bioinformatics/introduction-to-augur).
+* Learn more about [Augur commands](/docs/bioinformatics/introduction-to-augur).
 
-* Learn more about [auspice visualizations](/docs/interpretation/auspice).
+* Learn more about [Auspice visualizations](/docs/interpretation/auspice).
 
-* Learn more about [creating and modifying snakemake files](/docs/bioinformatics/customizing-a-build).
+* Learn more about [creating and modifying Snakemake files](/docs/bioinformatics/customizing-a-build).
 
 * Fork the [Zika tutorial pathogen repository on GitHub](https://github.com/nextstrain/zika-tutorial), modify the Snakefile to make your own pathogen build, and learn [how to contribute to nextstrain.org](/docs/contributing/community-builds).
