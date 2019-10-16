@@ -2,16 +2,16 @@
 title: "Format of files used and created by augur"
 ---
 
-> A full listing of the input and output data formats used in augur will soon be available here.
-
-
-
 #### Table of Contents:
-* [exported JSON(s) for auspice](#exported-jsons-for-auspice)
+- [Output JSON(s) for Auspice](#output-jsons-for-auspice)
+    - [Tree JSON (required)](#tree-json-required)
+    - [Metadata JSON (required)](#metadata-json-required)
+    - [Frequency JSON (optional)](#frequency-json-optional)
+- [Input files for Auspice](#input-files-for-auspice)
 
 
 ---
-## exported JSON(s) for auspice
+## Output JSON(s) for Auspice
 
 We use JSONs as the interchange file format between Augur (the bioinformatics tooling) and Auspice (the visualization app).
 JSONs are reasonably easy for humans to read, easy to parse in most languages, and easy to extend.
@@ -20,7 +20,7 @@ Augur produces these JSONs via the `augur export` command -- see the [augur docs
 We also define schemas for these JSONs (see below) and provide a validation tool to check JSONs against these schemas, `auspice validate` --  see the [augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html#validate).
 
 
-Auspice (version 1.x) currently requires two JSON files, with a third optional JSON.
+Auspice (version 2) currently requires two JSON files, with a third optional JSON.
 
 #### Tree JSON (required)
 The tree structure is encoded as a deeply nested JSON object, with traits (such as country, divergence, collection date, attributions etc) stored on each node.
@@ -43,3 +43,7 @@ The filename _must_ end with `_meta.json` and have the same prefix as the tree J
 
 Currently this is only used by the flu builds, and generates the frequencies panel you can see at [nextstrain.org/flu](https://nextstrain.org/flu). [Here](http://data.nextstrain.org/flu_seasonal_h3n2_ha_2y_tip-frequencies.json) is an example of this file.
 
+## Input files for Auspice
+_Full information on file format requirements for Auspice and how to get your data into the correct format will be updated soon_
+
+If you are interested in visualizing Newick trees, which is possible with CSV/TSV metadata files, then you may want to use [auspice.us](https://auspice-us.herokuapp.com/), which lets you drag and frop your files into the browser.

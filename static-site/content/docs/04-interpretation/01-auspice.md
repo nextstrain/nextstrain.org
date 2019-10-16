@@ -30,10 +30,14 @@ We're working on adding tutorials on how to convert BEAST results etc into the f
 In the meantime, the JSON file formats are specified [here](/docs/bioinformatics/data-formats).
 
 
-### Running locally
-Auspice can be run locally to visualize datasets.
-See [local installation](/docs/getting-started/local-installation) for how to get up and running.
+### Running Locally
+Auspice can be run locally to visualize datasets. If you have auspice compatable JSONs then auspice can visualise these by running
+
+```
+auspice view --datasetDir <dir>
+```
+where <dir> contains the JSONs. This command makes the data available to view in a browser at localhost:4000.
 
 
-### Private (non public) datasets
+### Private (Non-Public) Datasets
 We are looking to include logins / accounts through nextstrain.org in order to serve private datasets, but this feature is not currently available.
