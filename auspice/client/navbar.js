@@ -1,5 +1,5 @@
 /* eslint-disable no-multi-spaces */
-import React from "react"; // eslint-disable-line
+import React from "@libraries/react"; // eslint-disable-line
 
 const logoPNG = require("./nextstrain-logo-small.png");
 
