@@ -8,11 +8,11 @@ If you look at the [Nextstrain Seasonal Influenza tree](https://nextstrain.org/f
 
 You can find clade-defining mutations by exploring a Nextstrain tree that you have built previously. By default, Nextstrain trees will show amino acid mutations. While you can certainly define clades by amino acid changes, there may be many clades that you would like to label for which no amino acid mutations have occurred. Thus, it may work better to define clades using nucleotide mutations, which occur more frequently.
 
-The first thing you'll need to do is switch from displaying amino acid mutations to displaying nucleotide mutations. To do this, when you are viewing a tree on  nextstrain.org or locally with Auspice, scroll down to the diversity panel. In the top right hand corner, you'll see you can toggle between `AA` and `NT`. Select `NT`.
 
-![](./img/diversity-plot.png)
-
-Then, head back to the tree. When you hover over a branch, a dark grey window pops up. Inside this window, you'll see that there's a header that says `Nucleotide Mutations:`. In the image below, the clade descended from this branch is defined by a mutation from G to A at site 9417 in the genome. This is the information that you'll need for defining your clades.
+Then, head back to the tree. When you hover over a branch in the tree, a dark grey window pops up.
+Inside this window, you'll see that there's a header that says `Nucleotide Mutations:`.
+In the image below, the clade descended from this branch is defined by a mutation from G to A at site 9417 in the genome.
+This is the information that you'll need for defining your clades.
 
 ![](./img/branch-hover.png)
 
@@ -33,9 +33,12 @@ Note that some clades will be defined by more than one mutation. To avoid any co
 
 ![](./img/tsv.png)
 
+> The `∆` and `¬` characters are displayed by the [Atom text editor](https://atom.io/) to represent "tab" and "(unix) end of line" characters, respectively.
+
 It doesn't really matter where you save your `clades.tsv` file (as long as you know the path to the file), we usually save this file within the `config` directory of our workflows, as this is where other files such as `colors.tsv` are usually kept within nextstrain analysis directories.
 
-_Side note_: If you are using the clade labelling specifically for nextstrain narratives, the names need to read as strings. Thus if you are wanting to label the clades numerically (e.g. as `1`, `2`, `3` ...) add a letter ahead of the number (for instance I do `c1`, `c2`, `c3` ...)
+> _Side note_: Please avoid numerical labelling for the clades, which currently cause issues.
+I.e. instead of using `1`, `2`, `3` etc, add a letter ahead of the number - for instance `c1`, `c2`, `c3`.
 
 ## Changing your Workflow to Add Clade Labeling by Editing your Snakefile
 
