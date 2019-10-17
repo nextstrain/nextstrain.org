@@ -16,13 +16,13 @@ Our solution to this is to allow anyone to store the results of their analyses o
 * Store your final output from augur, i.e. the JSONs which auspice uses, in a directory called "auspice" -- [see here for an example](https://github.com/blab/zika-colombia/tree/master/auspice)
   * While you don't need to, it'd be great if you also stored your analysis pipeline (e.g. Snakefile) on GitHub too! This doesn't need to give away any data, just the recipe for the analysis.
 * Push things to github.
-* Access your data via "nextstrain.org/community" + "github organisation name" + "github repo name". For this example, it's at [nextstrain.org/community/blab/zika-colombia](https://nextstrain.org/community/blab/zika-colombia).
+* Access your data via "nextstrain.org/community" + "github organisation name" + "github repo name". For this example, it's at [nextstrain.org/community/blab/zika-colombia](/community/blab/zika-colombia).
   * Share your results with the world 🎉🎉
 
 ### Some Examples
 
-* Genomic epidemiology of the 2018 North Kivu, DRC Ebola epidemic: [GitHub](https://github.com/inrb-drc/ebola-nord-kivu) & [Nextstrain](https://nextstrain.org/community/inrb-drc/ebola-nord-kivu) 
-* Wheat yellow rust fungus -- the first plant pathogen on nextstrain 🎉 [GitHub](https://github.com/saunderslab/PST) & [Nextstrain](https://nextstrain.org/community/saunderslab/PST)
-* Zika in Columbia: [GitHub](https://github.com/blab/zika-colombia) & [Nextstrain](https://nextstrain.org/community/blab/zika-colombia) 
-* TB outbreak in Germany: [GitHub](https://github.com/idolawoye/tb) & [Nextstrain #1](https://nextstrain.org/community/idolawoye/tb/1), [Nextstrain #2](https://nextstrain.org/community/idolawoye/tb/2) 
-* Lassa virus evolution 2015-2018 Outbreak in Nigeria: [GitHub](https://github.com/pauloluniyi/lassa) & [Nextstrain (L segment)](https://nextstrain.org/community/pauloluniyi/lassa/l), [Nextstrain (S segment)](https://nextstrain.org/community/pauloluniyi/lassa/s) 
+* Genomic epidemiology of the 2018 North Kivu, DRC Ebola epidemic: [GitHub](https://github.com/inrb-drc/ebola-nord-kivu) & [Nextstrain](/community/inrb-drc/ebola-nord-kivu)
+* Wheat yellow rust fungus -- the first plant pathogen on nextstrain 🎉 [GitHub](https://github.com/saunderslab/PST) & [Nextstrain](/community/saunderslab/PST)
+* Zika in Columbia: [GitHub](https://github.com/blab/zika-colombia) & [Nextstrain](/community/blab/zika-colombia)
+* TB outbreak in Germany: [GitHub](https://github.com/idolawoye/tb) & [Nextstrain #1](/community/idolawoye/tb/1), [Nextstrain #2](/community/idolawoye/tb/2)
+* Lassa virus evolution 2015-2018 Outbreak in Nigeria: [GitHub](https://github.com/pauloluniyi/lassa) & [Nextstrain (L segment)](/community/pauloluniyi/lassa/l), [Nextstrain (S segment)](/community/pauloluniyi/lassa/s)

@@ -124,7 +124,7 @@ Run `nextstrain build zika-tutorial/` to run the build:
     […a lot of output…]
 
 This should take just a few minutes to complete.
-In order to save time, the tutorial build uses an example data set which is quite a bit smaller than [our live Zika analysis](https://nextstrain.org/zika).
+In order to save time, the tutorial build uses an example data set which is quite a bit smaller than [our live Zika analysis](/zika).
 
 Output files will be in the directories `zika-tutorial/data/`, `zika-tutorial/results/` and `zika-tutorial/auspice/`.
 

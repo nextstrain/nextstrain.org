@@ -7,7 +7,7 @@ We're always trying to improve our documentation here and would appreciate any a
 
 ### Built from Markdown Files
 
-Each page in this documentation website ([nextstrain.org/docs](https://nextstrain.org/docs)) is built from a Markdown file -- for instance [here's the file for this page](https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/docs/05-contributing/04-development.md).
+Each page in this documentation website ([nextstrain.org/docs](/docs)) is built from a Markdown file -- for instance [here's the file for this page](https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/docs/05-contributing/04-development.md).
 
 
 > If you're new to Markdown, [here's a good guide](https://guides.github.com/features/mastering-markdown/) and [here's a cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) which is really useful to refer to.
@@ -98,7 +98,7 @@ Once you're happy with things, you can push the changes up to nextstrain.org (se
 ### Adding Pages
 
 It's similar to changing existing pages -- but first you'll need to create the markdown file.
-For instance, if we wanted to add a new page to the "getting started" section from above, we could make the file `01-getting-started/07-something-new.md` which would then be visible to you locally at [localhost:8000/docs/getting-started/something-new](http://localhost:8000/docs/getting-started/something-new) and, once deployed, at [nextstrain.org/docs/getting-started/something-new](https://nextstrain.org/docs/getting-started/something-new).
+For instance, if we wanted to add a new page to the "getting started" section from above, we could make the file `01-getting-started/07-something-new.md` which would then be visible to you locally at [localhost:8000/docs/getting-started/something-new](http://localhost:8000/docs/getting-started/something-new) and, once deployed, at [nextstrain.org/docs/getting-started/something-new](/docs/getting-started/something-new).
 
 In the new file, you'll need to first create some metadata at the top of the file which defines the title of the page. For instance, the metadata for this file/page is:
 
