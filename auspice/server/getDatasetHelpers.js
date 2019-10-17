@@ -28,7 +28,7 @@ const splitPrefixIntoParts = (prefix) => {
   /* This could be const, but use let to signal to the reader that we use
    * modifying methods like shift() and splice().
    */
-  let prefixParts = prefix
+  const prefixParts = prefix
     .replace(/^\//, '')
     .replace(/\/$/, '')
     .split("/");
@@ -70,7 +70,7 @@ const splitPrefixIntoParts = (prefix) => {
  * the matched route.
  */
 const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
-  let leadingParts = [];
+  const leadingParts = [];
 
   if (source.name !== "core") {
     leadingParts.push(source.name);
@@ -85,9 +85,10 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
     case "community":
       leadingParts.push(source.owner, source.repoName);
       break;
+    // no default
   }
 
-  return [...leadingParts, ...prefixParts.filter(x => x.length)].join("/");
+  return [...leadingParts, ...prefixParts.filter((x) => x.length)].join("/");
 };
 
 /* Given the prefix (split on "/") -- is there an exact match in

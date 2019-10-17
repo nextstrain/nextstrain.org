@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "./build.sh",
+    "lint": "eslint --ext .js,.jsx .",
     "set-up": "npm run build",
     "server": "node server.js",
     "start": "npm run server",

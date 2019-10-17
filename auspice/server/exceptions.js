@@ -1,8 +1,8 @@
 /* A base error class for our custom internal errors.
  */
 class NextstrainError extends Error {
-  constructor() {
-    super(...arguments);
+  constructor(...params) {
+    super(...params);
     this.name = this.constructor.name;
   }
 }
@@ -16,7 +16,17 @@ class NoDatasetPathError extends NextstrainError {
   }
 }
 
+/* Thrown when a Source (sub-)class is improperly accessedobject is asked to create a new Dataset object
+ * without a dataset path.
+ */
+class InvalidSourceImplementation extends NextstrainError {
+  constructor(msg = "Invalid implementation of Source (sub-)class", ...rest) {
+    super(msg, ...rest);
+  }
+}
+
+
 module.exports = {
-  NextstrainError,
-  NoDatasetPathError,
+  InvalidSourceImplementation,
+  NoDatasetPathError
 };

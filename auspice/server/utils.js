@@ -33,9 +33,9 @@ const error = (msg) => {
   process.exit(2);
 };
 
-const fetchJSON = (path) => {
-  verbose(`Fetching ${path}`);
-  const p = fetch(path)
+const fetchJSON = (pathToFetch) => {
+  verbose(`Fetching ${pathToFetch}`);
+  const p = fetch(pathToFetch)
     .then((res) => {
       if (res.status !== 200) throw new Error(res.statusText);
       try {

@@ -23,7 +23,7 @@ rules:
   no-case-declarations: off # we don't surround case blocks with { } in our switch statements as we use fallthroughs deliberately
   one-var: off
   one-var-declaration-per-line: off
-  no-console: [1, { "allow": ["warn", "error"] }]
+  no-console: off
   space-infix-ops: off
   no-param-reassign: [1, { "props": false }]
   no-underscore-dangle: off
@@ -50,6 +50,7 @@ rules:
   indent: ["error", 2, {"MemberExpression": "off", "SwitchCase": 1}]
   react-hooks/rules-of-hooks: "error"
   react-hooks/exhaustive-deps: "warn"
+  react/no-danger: off # gatsby uses this a lot
 parserOptions:
   ecmaVersion: 6
   sourceType: module

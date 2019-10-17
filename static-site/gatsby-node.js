@@ -1,9 +1,8 @@
-const { execFileSync } = require("child_process");
 const path = require("path");
 // const _ = require("lodash");
 const webpackLodashPlugin = require("lodash-webpack-plugin");
 const structureEdges = require("./src/util/structureEdges");
-const redirects = require("./redirects.json")
+const redirects = require("./redirects.json");
 
 
 /* onCreateNode is called on each node and used to update information.

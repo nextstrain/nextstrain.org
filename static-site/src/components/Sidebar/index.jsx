@@ -15,8 +15,8 @@ class Sidebar extends React.Component {
         if (selectedSlugInfo.chapter !== chapterNameOfPost) highlightPost = false;
       }
       const titleJSX = highlightPost ?
-      (<SelectedPostTitle>{formatFileName(post.title)}</SelectedPostTitle>) :
-      (<UnselectedPostTitle>{formatFileName(post.title)}</UnselectedPostTitle>);
+        (<SelectedPostTitle>{formatFileName(post.title)}</SelectedPostTitle>) :
+        (<UnselectedPostTitle>{formatFileName(post.title)}</UnselectedPostTitle>);
       return (
         <ItemContainer key={post.path}>
           <Link to={post.path}>

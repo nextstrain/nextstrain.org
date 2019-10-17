@@ -32,15 +32,14 @@ const generateSecondTreeOptions = (urlParts, segments) => {
   const currentSegment = segments.filter((seg) => urlParts.indexOf(seg) !== -1)[0];
   const segmentIndex = urlParts.indexOf(currentSegment);
 
-  // Remove current segment from segments array
-  segments = segments.filter((segment) => segment !== currentSegment);
-
   // Generate second tree options by replacing segment in urlParts
-  const secondTreeOptions = segments.map((segment) => {
-    const newUrl = urlParts.slice();
-    newUrl[segmentIndex] = segment;
-    return newUrl.join("/");
-  });
+  const secondTreeOptions = segments
+    .filter((segment) => segment !== currentSegment) // Remove current segment from segments array
+    .map((segment) => {
+      const newUrl = urlParts.slice();
+      newUrl[segmentIndex] = segment;
+      return newUrl.join("/");
+    });
 
   return secondTreeOptions;
 };
@@ -108,7 +107,7 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
   return {
     datasets: Object.keys(allUrls),
     secondTreeOptions: allUrls,
-    defaults,
+    defaults
   };
 };
 
@@ -147,13 +146,12 @@ const setAvailableDatasetsFromManifest = async () => {
   });
 
   Promise.all(promises)
-    .then((results) => {
+    .then(() => {
       utils.log(`Got manifests for ${Object.keys(global.availableDatasets).join(", ")}`);
     })
     .catch((e) => {
       console.error(e);
     });
-
 
 };
 

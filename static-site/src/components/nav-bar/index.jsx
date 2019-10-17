@@ -65,7 +65,7 @@ class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: undefined,
+      user: undefined
     };
   }
 
@@ -75,8 +75,8 @@ class NavBar extends React.Component {
 
   loadUser() {
     fetch("/whoami", { headers: { Accept: 'application/json' }})
-      .then(response => response.json())
-      .then(whoami => this.setState(state => ({...state, ...whoami})));
+      .then((response) => response.json())
+      .then((whoami) => this.setState((state) => ({...state, ...whoami})));
   }
 
   selectedClass(name) {
@@ -97,6 +97,7 @@ class NavBar extends React.Component {
   getLogoType() {
     const title = "Nextstrain";
     const rainbowTitle = title.split("").map((letter, i) =>
+      // eslint-disable-next-line react/no-array-index-key
       <NavLogoCharacter key={i} colorIndex={i}>{letter}</NavLogoCharacter>
     );
     return (

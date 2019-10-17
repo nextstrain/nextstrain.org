@@ -1,3 +1,6 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
+
 import React from "react";
 import styled from "styled-components";
 
@@ -41,9 +44,12 @@ export const Line = styled.div`
 export const TeamMember = ({name, image, link}) => (
   <span style={{whiteSpace: "nowrap"}}>
     <a href={link} style={{fontWeight: 300, color: "#333", marginLeft: "2px", marginRight: "2px"}}>
-      <img alt={name} width="32"
+      <img
+        alt={name}
+        width="32"
         style={{marginLeft: "5px", marginRight: "4px", borderRadius: "50%", verticalAlign: "middle"}}
-        src={require("../../static/team/"+image)}/>
+        src={require("../../static/team/"+image)}
+      />
       {name}
     </a>
   </span>
@@ -66,11 +72,11 @@ export const MarkdownContent = styled.div`
   font-weight: 300;
   margin-top: 0px;
   padding-bottom: 25px;
-  color: ${props => props.theme.darkGrey};
-  line-height: ${props => props.theme.niceLineHeight};
+  color: ${(props) => props.theme.darkGrey};
+  line-height: ${(props) => props.theme.niceLineHeight};
 
   & > h1 {
-    color: ${props => props.theme.accentDark};
+    color: ${(props) => props.theme.accentDark};
   }
   li > ul {
     padding-left: 30px;
@@ -96,6 +102,3 @@ export const MarkdownContent = styled.div`
   }
 `;
 
-const Aside = styled.div`
-  font-size: 13px;
-`

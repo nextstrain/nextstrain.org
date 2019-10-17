@@ -31,17 +31,17 @@ const getAvailable = async (req, res) => {
   const secondTreeOptions = (dataset) =>
     (global.availableDatasets.secondTreeOptions[source.name] || {})[dataset] || [];
 
-  res.json({
-    datasets: datasets.map(path => ({
+  return res.json({
+    datasets: datasets.map((path) => ({
       request: joinPartsIntoPrefix({source, prefixParts: [path]}),
       secondTreeOptions: secondTreeOptions(path),
       buildUrl: source.name === "community"
         ? `https://github.com/${source.repo}`
         : null
     })),
-    narratives: narratives.map(path => ({
+    narratives: narratives.map((path) => ({
       request: joinPartsIntoPrefix({source, prefixParts: [path], isNarrative: true})
-    })),
+    }))
   });
 };
 

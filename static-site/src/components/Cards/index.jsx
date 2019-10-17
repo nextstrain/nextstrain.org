@@ -1,8 +1,11 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 import React from "react";
 import * as Styles from "./styles";
 import { H1 } from "../splash/styles";
-import { MediumSpacer, HugeSpacer } from "../../layouts/generalComponents";
+import { MediumSpacer } from "../../layouts/generalComponents";
 
+// eslint-disable-next-line react/prefer-stateless-function
 class Cards extends React.Component {
 
   render() {
@@ -13,13 +16,13 @@ class Cards extends React.Component {
           <div className="col-md-10">
             <H1>{this.props.title}</H1>
 
-            {
-              this.props.subtext ? (
-                  <Styles.SubText>
-                    {this.props.subtext}
-                  </Styles.SubText>
-                ) :
-                null
+            {this.props.subtext ?
+              (
+                <Styles.SubText>
+                  {this.props.subtext}
+                </Styles.SubText>
+              ) :
+              null
             }
 
             <MediumSpacer />
@@ -42,13 +45,13 @@ class Cards extends React.Component {
                 </div>
               ))}
             </div>
-        </div>
+          </div>
 
+        </div>
+        <div className="col-md-1" />
       </div>
-      <div className="col-md-1" />
-      </div>
-    )
+    );
   }
-};
+}
 
 export default Cards;

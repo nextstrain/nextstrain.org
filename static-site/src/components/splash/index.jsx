@@ -3,11 +3,11 @@ import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import Link from 'gatsby-link';
 import { tweets } from "./tweets";
 import Cards from "../Cards";
-import coreCards from "../Cards/coreCards"
-import communityCards from "../Cards/communityCards"
+import coreCards from "../Cards/coreCards";
+import communityCards from "../Cards/communityCards";
 import Title from "./title";
 import * as Styles from "./styles";
-import { SmallSpacer, MediumSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
+import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 
 class Splash extends React.Component {
@@ -141,8 +141,9 @@ class Splash extends React.Component {
             <Styles.FocusParagraph>
               Nextstrain is under active development and we have big plans for its future, including
               visualization, bioinformatics analysis and an increasing number and variety of
-              datasets. If you have any questions or ideas, please give us a shout at hello<span
-              style={{display: "none"}}>obfuscate</span>@nextstrain.org.
+              datasets. If you have any questions or ideas, please give us a shout at hello
+              <span style={{display: "none"}}>obfuscate</span>
+              @nextstrain.org.
             </Styles.FocusParagraph>
           </div>
         </div>
@@ -170,7 +171,7 @@ class Splash extends React.Component {
           </Styles.Button>
         </FlexCenter>
 
-        <Footer splashImagesCredit={true}/>
+        <Footer splashImagesCredit/>
 
       </Styles.Container>
     );

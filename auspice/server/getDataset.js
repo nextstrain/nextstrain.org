@@ -22,10 +22,8 @@ const requestCertainFileType = async (res, req, additional, query) => {
 /**
  * Currently the main datasets are tree + meta
  *
- * @param {*} datasetInfo
- * @param {*} query
  */
-const requestMainDataset = async (res, req, fetchUrls, treeName, secondTreeName, source) => {
+const requestMainDataset = async (res, req, fetchUrls) => {
   /** try to fetch the (v2) dataset JSON first
    * If this fails, attempt to fetch the (v1) meta + tree jsons
    */
@@ -82,7 +80,7 @@ const getDataset = async (req, res) => {
     return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }
 
-  const {source, fetchUrls, treeName, secondTreeName, auspiceDisplayUrl} = datasetInfo;
+  const {source, fetchUrls, auspiceDisplayUrl} = datasetInfo;
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
@@ -109,7 +107,7 @@ const getDataset = async (req, res) => {
     }
   } else {
     try {
-      await requestMainDataset(res, req, fetchUrls, treeName, secondTreeName, source);
+      await requestMainDataset(res, req, fetchUrls);
     } catch (err) {
       return helpers.handleError(res, `Couldn't fetch JSONs`, err.message);
     }

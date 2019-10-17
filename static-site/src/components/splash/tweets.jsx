@@ -1,18 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 import TweetEmbed from 'react-tweet-embed';
 
 /* find the tweet, copy the code via click down -> embed tweet,
 paste in here, rename class -> className, and remove the data-lang="en"
 bit from the first <blockquote> element
 */
-
-const TwitterFlex = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-`;
 
 export const tweets = () => ( // eslint-disable-line
   <div className="twitterRow">

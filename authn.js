@@ -7,6 +7,7 @@ const FileStore = require("session-file-store")(session);
 const passport = require("passport");
 const fetch = require("node-fetch");
 const AWS = require("aws-sdk");
+const OAuth2Strategy = require("passport-oauth2").Strategy;
 const sources = require("./auspice/server/sources");
 const utils = require("./auspice/server/utils");
 
@@ -30,8 +31,6 @@ const COGNITO_CLIENT_ID = PRODUCTION
 
 function setup(app) {
   // Use OAuth2 to authenticate against AWS Cognito's identity provider (IdP)
-  const OAuth2Strategy = require("passport-oauth2").Strategy;
-
   // Implement OAuth2Strategy's stub for fetching user info.
   OAuth2Strategy.prototype.userProfile = async (accessToken, done) => {
     try {
@@ -41,8 +40,7 @@ function setup(app) {
       );
       const profile = await response.json();
       return done(null, profile);
-    }
-    catch (error) {
+    } catch (error) {
       return done(`Unable to fetch user info: ${error}`);
     }
   };
@@ -55,7 +53,7 @@ function setup(app) {
         clientID: COGNITO_CLIENT_ID,
         callbackURL: "/logged-in",
         pkce: true,
-        state: true,
+        state: true
       },
       async (accessToken, refreshToken, profile, done) => {
         // Fetch groups from Cognito, which our data sources
@@ -68,10 +66,10 @@ function setup(app) {
 
         const response = await cognitoIdp.adminListGroupsForUser({
           UserPoolId: COGNITO_USER_POOL_ID,
-          Username: profile.username,
+          Username: profile.username
         }).promise();
 
-        const groups = response.Groups.map(g => g.GroupName);
+        const groups = response.Groups.map((g) => g.GroupName);
 
         // All users are ok, as we control the entire user pool.
         return done(null, {...profile, groups});
@@ -106,7 +104,7 @@ function setup(app) {
       store: new FileStore({ttl: SESSION_MAX_AGE}),
       cookie: {
         secure: PRODUCTION,
-        maxAge: SESSION_MAX_AGE * 1000, // milliseconds
+        maxAge: SESSION_MAX_AGE * 1000 // milliseconds
       }
     })
   );
@@ -143,7 +141,9 @@ function setup(app) {
         if (res.locals.origin === referer.origin) {
           req.session.afterLoginReturnTo = referer.pathname;
         }
-      } catch (e) {}
+      } catch (e) {
+        // intentionally left empty
+      }
       next();
     },
     passport.authenticate("oauth2")
@@ -164,7 +164,7 @@ function setup(app) {
     req.session.destroy(() => {
       const params = {
         client_id: COGNITO_CLIENT_ID,
-        logout_uri: res.locals.origin,
+        logout_uri: res.locals.origin
       };
       res.redirect(`${COGNITO_BASE_URL}/logout?${querystring.stringify(params)}`);
     });
@@ -186,13 +186,13 @@ function setup(app) {
       ),
 
       // Express's JSON serialization drops keys with undefined values
-      json: () => res.json({ user: req.user || null }),
+      json: () => res.json({ user: req.user || null })
     });
   });
 
   const nonPublicSources = Array.from(sources.entries())
-    .filter(([name, Source]) => !Source.visibleToUser(null))
-    .map(([name, Source]) => `/${name}`);
+    .filter(([name, Source]) => !Source.visibleToUser(null)) // eslint-disable-line no-unused-vars
+    .map(([name, Source]) => `/${name}`); // eslint-disable-line no-unused-vars
 
   app.use(nonPublicSources, (req, res, next) => {
     // Prompt for login if an anonymous user asks for a non-public source.
@@ -204,7 +204,7 @@ function setup(app) {
 
     // Otherwise, let the server's normal route handle this request, which
     // should fall through to Auspice.
-    next("route");
+    return next("route");
   });
 }
 

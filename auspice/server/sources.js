@@ -1,7 +1,8 @@
+/* eslint-disable no-use-before-define */
 const AWS = require("aws-sdk");
 const fetch = require("node-fetch");
 const queryString = require("query-string");
-const {NoDatasetPathError} = require("./exceptions");
+const {NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
 const utils = require("./utils");
 
 const S3 = new AWS.S3();
@@ -17,10 +18,10 @@ const S3 = new AWS.S3();
 
 class Source {
   get name() {
-    throw "name() must be implemented by subclasses";
+    throw InvalidSourceImplementation("name() must be implemented by subclasses");
   }
   get baseUrl() {
-    throw "baseUrl() must be implemented by subclasses";
+    throw InvalidSourceImplementation("baseUrl() must be implemented by subclasses");
   }
   dataset(pathParts) {
     return new Dataset(this, pathParts);
@@ -38,7 +39,7 @@ class Source {
   /* Static access control for this entire source, regardless of any
    * instance-specific parameters.
    */
-  static visibleToUser(user) {
+  static visibleToUser(user) { // eslint-disable-line no-unused-vars
     return true;
   }
 
@@ -96,10 +97,10 @@ class Narrative {
 }
 
 class CoreSource extends Source {
-  get name() { return "core" }
-  get baseUrl() { return "http://data.nextstrain.org/" }
-  get repo() { return "nextstrain/narratives" }
-  get branch() { return "master" }
+  get name() { return "core"; }
+  get baseUrl() { return "http://data.nextstrain.org/"; }
+  get repo() { return "nextstrain/narratives"; }
+  get branch() { return "master"; }
 
   narrative(pathParts) {
     return new CoreNarrative(this, pathParts);
@@ -121,10 +122,10 @@ class CoreSource extends Source {
 
     const files = await response.json();
     return files
-      .filter(file => file.type === "file")
-      .filter(file => file.name !== "README.md")
-      .filter(file => file.name.endsWith(".md"))
-      .map(file => file.name
+      .filter((file) => file.type === "file")
+      .filter((file) => file.name !== "README.md")
+      .filter((file) => file.name.endsWith(".md"))
+      .map((file) => file.name
         .replace(/[.]md$/, "")
         .split("_")
         .join("/"));
@@ -132,10 +133,10 @@ class CoreSource extends Source {
 }
 
 class CoreStagingSource extends CoreSource {
-  get name() { return "staging" }
-  get baseUrl() { return "http://staging.nextstrain.org/" }
-  get repo() { return "nextstrain/narratives" }
-  get branch() { return "staging" }
+  get name() { return "staging"; }
+  get baseUrl() { return "http://staging.nextstrain.org/"; }
+  get repo() { return "nextstrain/narratives"; }
+  get branch() { return "staging"; }
 }
 
 class CoreNarrative extends Narrative {
@@ -158,10 +159,10 @@ class CommunitySource extends Source {
     this.repoName = repoName;
   }
 
-  get name() { return "community" }
-  get repo() { return `${this.owner}/${this.repoName}` }
-  get branch() { return "master" }
-  get baseUrl() { return `https://raw.githubusercontent.com/${this.repo}/${this.branch}/` }
+  get name() { return "community"; }
+  get repo() { return `${this.owner}/${this.repoName}`; }
+  get branch() { return "master"; }
+  get baseUrl() { return `https://raw.githubusercontent.com/${this.repo}/${this.branch}/`; }
 
   dataset(pathParts) {
     return new CommunityDataset(this, pathParts);
@@ -181,28 +182,28 @@ class CommunitySource extends Source {
 
     const files = await response.json();
     const jsonFiles = files
-      .filter(file => file.type === "file")
-      .filter(file => file.name.endsWith(".json"))
-      .filter(file => file.name.startsWith(this.repoName))
-      .map(file => file.name);
+      .filter((file) => file.type === "file")
+      .filter((file) => file.name.endsWith(".json"))
+      .filter((file) => file.name.startsWith(this.repoName))
+      .map((file) => file.name);
 
     const sidecarSuffixes = ["meta", "tree", "root-sequence", "seq", "tip-frequencies"];
     const notSidecar = (filename) =>
-      !sidecarSuffixes.some(suffix => filename.endsWith(`_${suffix}.json`));
+      !sidecarSuffixes.some((suffix) => filename.endsWith(`_${suffix}.json`));
 
     // All JSON files which aren't a sidecar file with a known suffix.
     const v2 = jsonFiles
       .filter(notSidecar)
-      .map(filename => filename.replace(/[.]json$/, ""));
+      .map((filename) => filename.replace(/[.]json$/, ""));
 
     // All *_meta.json files which have a corresponding *_tree.json.
     const v1 = jsonFiles
-      .filter(filename => filename.endsWith("_meta.json"))
-      .filter(filename => jsonFiles.includes(filename.replace(/_meta[.]json$/, "_tree.json")))
-      .map(filename => filename.replace(/_meta[.]json$/, ""));
+      .filter((filename) => filename.endsWith("_meta.json"))
+      .filter((filename) => jsonFiles.includes(filename.replace(/_meta[.]json$/, "_tree.json")))
+      .map((filename) => filename.replace(/_meta[.]json$/, ""));
 
     return Array.from(new Set([...v2, ...v1]))
-      .map(filename => filename
+      .map((filename) => filename
         .replace(this.repoName, "")
         .replace(/^_/, "")
         .split("_")
@@ -220,11 +221,11 @@ class CommunitySource extends Source {
 
     const files = await response.json();
     return files
-      .filter(file => file.type === "file")
-      .filter(file => file.name !== "README.md")
-      .filter(file => file.name.endsWith(".md"))
-      .filter(file => file.name.startsWith(this.repoName))
-      .map(file => file.name
+      .filter((file) => file.type === "file")
+      .filter((file) => file.name !== "README.md")
+      .filter((file) => file.name.endsWith(".md"))
+      .filter((file) => file.name.startsWith(this.repoName))
+      .map((file) => file.name
         .replace(this.repoName, "")
         .replace(/^_/, "")
         .replace(/[.]md$/, "")
@@ -256,8 +257,8 @@ class PrivateS3Source extends Source {
   narrative(pathParts) {
     return new PrivateS3Narrative(this, pathParts);
   }
-  static visibleToUser(user) {
-    throw "visibleToUser() must be implemented explicitly by subclasses (not inherited from Source)";
+  static visibleToUser(user) { // eslint-disable-line no-unused-vars
+    throw InvalidSourceImplementation("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
   }
   async _listObjects() {
     // XXX TODO: This will only return the first 1000 objects.  That's fine for
@@ -272,9 +273,9 @@ class PrivateS3Source extends Source {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
     const objects = await this._listObjects();
     return objects
-      .map(object => object.Key)
-      .filter(file => file.endsWith("_tree.json"))
-      .map(file => file
+      .map((object) => object.Key)
+      .filter((file) => file.endsWith("_tree.json"))
+      .map((file) => file
         .replace(/_tree[.]json$/, "")
         .split("_")
         .join("/"));
@@ -283,9 +284,9 @@ class PrivateS3Source extends Source {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
     const objects = await this._listObjects();
     return objects
-      .map(object => object.Key)
-      .filter(file => file.endsWith(".md"))
-      .map(file => file
+      .map((object) => object.Key)
+      .filter((file) => file.endsWith(".md"))
+      .map((file) => file
         .replace(/[.]md$/, "")
         .split("_")
         .join("/"));
@@ -311,8 +312,8 @@ class PrivateS3Narrative extends Narrative {
 }
 
 class InrbDrcSource extends PrivateS3Source {
-  get name() { return "inrb-drc" }
-  get bucket() { return "nextstrain-inrb" }
+  get name() { return "inrb-drc"; }
+  get bucket() { return "nextstrain-inrb"; }
 
   static visibleToUser(user) {
     return !!user && !!user.groups && user.groups.includes("inrb");
@@ -323,5 +324,5 @@ module.exports = new Map([
   ["core", CoreSource],
   ["staging", CoreStagingSource],
   ["community", CommunitySource],
-  ["inrb-drc", InrbDrcSource],
+  ["inrb-drc", InrbDrcSource]
 ]);

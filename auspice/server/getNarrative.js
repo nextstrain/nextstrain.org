@@ -5,7 +5,7 @@ const helpers = require("./getDatasetHelpers");
 
 const auspice = utils.importAuspice();
 
-const getNarrative = async (req, res, next) => {
+const getNarrative = async (req, res) => {
   let prefix;
   try {
     prefix = queryString.parse(req.url.split("?")[1]).prefix;
@@ -34,8 +34,9 @@ const getNarrative = async (req, res, next) => {
 
     const fileContents = await response.text();
     const blocks = auspice.parseNarrativeFile(fileContents);
-    res.send(JSON.stringify(blocks).replace(/</g, '\\u003c'));
+    const blocksForClient = JSON.stringify(blocks).replace(/</g, '\\u003c');
     utils.verbose("SUCCESS");
+    return res.send(blocksForClient);
   } catch (err) {
     return helpers.handleError(res, `Narratives couldn't be served -- ${err.message}`);
   }

@@ -36,8 +36,7 @@ const app = express();
 
 // In production, trust Heroku as a reverse proxy and Express will use request
 // metadata from the proxy.
-if (production)
-  app.enable("trust proxy");
+if (production) app.enable("trust proxy");
 
 app.set('port', process.env.PORT || 5000);
 app.use(favicon(path.join(__dirname, "favicon.png")));
@@ -108,7 +107,7 @@ const server = app.listen(app.get('port'), () => {
   console.log("-----------------------------------");
   console.log(nextstrainAbout);
   console.log(`  Server listening on port ${server.address().port}`);
-  console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`)
+  console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`);
   console.log(`  Auspice datasets are sourced from S3 buckets.`);
   console.log("\n-----------------------------------\n\n");
 }).on('error', (err) => {
