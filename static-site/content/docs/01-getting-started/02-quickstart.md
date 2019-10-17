@@ -2,7 +2,7 @@
 title: Quickstart
 ---
 
-This guide uses the [Nextstrain command-line interface (CLI) tool [GitHub]](https://github.com/nextstrain/cli) to help you quickly get started running and viewing the pathogen builds you ma see on nextstrain.org with a minimum of fuss.
+This guide uses the [Nextstrain command-line interface (CLI) tool [GitHub]](https://github.com/nextstrain/cli) to help you get started running and viewing the pathogen builds you see on nextstrain.org.
 It assumes you are comfortable using the command line and installing software on your computer.
 If you need help when following this guide, please reach out by [emailing us](mailto:hello@nextstrain.org?subject=Quickstart%20help).
 
@@ -10,8 +10,8 @@ When you're done following this guide, you will have built a local version of [o
 You'll have a basic understanding of how to run builds for other pathogens and a foundation for understanding the Nextstrain ecosystem in more depth.
 
 #### Further information:
-* If you'd like to run these analysis in a more hands-on manner, without installing docker or the nextstrain CLI, read about [the difference between a local & container installation](/docs/getting-started/local-vs-container-install) and [how to install augur & auspice locally](/docs/getting-started/installation).
-You can then run the [zika tutorial](/docs/tutorials/zika).
+* If you'd like to run these analysis in a more hands-on manner, without installing docker or the nextstrain CLI, read about [the difference between a local and container installation](/docs/getting-started/local-vs-container-install) and [how to install Augur & Auspice locally](/docs/getting-started/installation).
+You can then run the [Zika tutorial](/docs/tutorials/zika).
 * Confused about what exactly a "pathogen build" is? [See here](/docs/bioinformatics/what-is-a-build).
 
 
@@ -53,11 +53,12 @@ After installation, make sure the `nextstrain` command works by running `nextstr
     $ nextstrain version
     nextstrain.cli 1.4.1
 
-The version you get will probably be different than the one shown in the example above.
+_The version you get will probably be different than the one shown in the
+example above_.
 
 ### Install Docker Community Edition (CE)
 
-The Nextstrain CLI tool also currently requires [Docker](https://docker.com), which is freely available.
+The Nextstrain CLI tool currently requires [Docker](https://docker.com), which is freely available.
 On Windows or a Mac you should download and install [Docker Desktop](https://www.docker.com/products/docker-desktop) (also known as "Docker for Mac" and "Docker for Windows").
 On Linux, your package manager should include a Docker package.
 
@@ -88,12 +89,12 @@ The final part of the set up is running `nextstrain update` to download the late
 
 You can re-run this command in the future to get updates to the Nextstrain environment.
 
-### Optionally: Install git
+### Optional: Install git
 
 [git](https://en.wikipedia.org/wiki/Git_(software)) is a [version control system](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control) used by all of the Nextstrain ecosystem.
 It is free to [download and install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-While git is not required to use this guide, it is recommended and _will_ be necessary for taking your next steps after this guide.
+While git is not required to use this guide, it is recommended and _will_ be necessary for taking the next steps after this guide.
 
 ---
 ## Download the nextstrain/zika-tutorial repository
@@ -114,7 +115,7 @@ After unzipping the snapshot, you'll need to rename the resulting `zika-tutorial
 ---
 ## Run the build
 
-Nextstrain builds use the [augur bioinformatics toolkit](/docs/bioinformatics) to subsample data, align sequences, build a phylogeny, estimate phylogeographic patterns, and save the results in a format suitable for [visualization with auspice](/docs/interpretation).
+Nextstrain builds use the [Augur bioinformatics toolkit](/docs/bioinformatics) to subsample data, align sequences, build a phylogeny, estimate phylogeographic patterns, and save the results in a format suitable for [visualization with Auspice](/docs/interpretation).
 
 Run `nextstrain build zika-tutorial/` to run the build:
 
@@ -123,7 +124,7 @@ Run `nextstrain build zika-tutorial/` to run the build:
     […a lot of output…]
 
 This should take just a few minutes to complete.
-In order to save time, the tutorial build uses an example data set which is quite a bit smaller than [our live Zika analysis](https://nextstrain.org/zika).
+In order to save time, the tutorial build uses an example data set which is quite a bit smaller than [our live Zika analysis](/zika).
 
 Output files will be in the directories `zika-tutorial/data/`, `zika-tutorial/results/` and `zika-tutorial/auspice/`.
 
@@ -152,6 +153,6 @@ Now you can run `nextstrain view zika-tutorial/auspice/` to view the build resul
 
 * Explore the Nextstrain environment by running ad-hoc commands inside it using `nextstrain shell zika/`.
 
-* Read about [the difference between a local & container installation](/docs/getting-started/local-vs-container-install).
+* Read about [the difference between a local and container installation](/docs/getting-started/local-vs-container-install).
 
 

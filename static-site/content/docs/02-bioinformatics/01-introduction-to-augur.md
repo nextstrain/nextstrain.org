@@ -2,14 +2,14 @@
 title: "Augur: Nextstrain's Bioinformatics Toolkit"
 ---
 
-Nextstrain's bioinformatics toolkit is called __augur__.
+Nextstrain's bioinformatics toolkit is called __Augur__.
 It is a core part of the Nextstrain ecosystem used by all of our [pathogen builds](/docs/tutorials), and all source code is available on [GitHub](https://github.com/nextstrain/augur). 
 
 Augur provides ways to perform common bioinformatics tasks through a collection of commands which are designed to be composable into larger processing pipelines.
 This means the commands work well both independently and together, embracing the [philosophy of composability](https://en.wikipedia.org/wiki/Composability).
 
 
-We've used `augur` to analyze a bunch of different pathogens -- from viruses with tiny genomes like [zika](/docs/tutorials/zika), to bacterial genomes orders-of-magnitude bigger like [tuberculosis](/docs/tutorials/tb).
+We've used Augur to analyze a bunch of different pathogens -- from viruses with tiny genomes like [Zika](/docs/tutorials/zika), to bacterial genomes orders-of-magnitude bigger like [tuberculosis](/docs/tutorials/tb).
 Check out the tutorials (via the sidebar to the left) to see which components we used in each one.
 
 Since we built it to be composable, it's easy to use other code or software to replace steps (or multiple steps!).
@@ -20,10 +20,10 @@ It's also common to have additional scripts which are called in-between differen
 
 ### Explore in more depth:
 
-* Learn more about [each augur command](augur-commands).
+* Learn more about [each Augur command](augur-commands).
 
-* Learn more about the [data formats augur uses & produces](data-formats).
+* Learn more about the [data formats Augur uses and produces](data-formats).
 
-* See [how augur commands are used in our Zika build](../tutorials/zika).
+* See [how Augur commands are used in our Zika build](../tutorials/zika).
 
 

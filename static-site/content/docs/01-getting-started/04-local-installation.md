@@ -6,9 +6,9 @@ title: "Local Installation"
 The following instructions describe how to install `augur` (bioinformatics tooling) and `auspice` (our visualization app) on macOS or an Ubuntu-style Linux distribution.
 If you are using Windows, we have instructions for [installing a Linux subsystem](/docs/getting-started/windows-help) to get Nextstrain running.
 
-If you have any issues with installing augur / auspice using any of these methods, please [email us](mailto:hello@nextstrain.org) or submit a GitHub issue to [augur](https://github.com/nextstrain/augur/issues) or [auspice](https://github.com/nextstrain/auspice/issues).
+If you have any issues with installing Augur/Auspice using any of these methods, please [email us](mailto:hello@nextstrain.org) or submit a GitHub issue to [Augur](https://github.com/nextstrain/augur/issues) or [Auspice](https://github.com/nextstrain/auspice/issues).
 
-> Before digging in, it's worth reading [the difference between a local & container installation](/docs/getting-started/local-vs-container-install), both of which will install the components behind nextstrain and allow you to run and visualize analyses on your computer.
+> Before digging in, it's worth reading [the difference between a local and container installation](/docs/getting-started/local-vs-container-install), both of which will install the components behind Nextstrain and allow you to run and visualize analyses on your computer.
 
 
 
@@ -26,8 +26,8 @@ If you have any issues with installing augur / auspice using any of these method
 ## Install Augur & Auspice with Conda (recommended)
 
 [Download and install the latest version of Miniconda](https://conda.io/miniconda.html) which will make the `conda` command available to you.
-We're going to create a new environment called "nextstrain", which automatically installs `augur` and dependencies.
-We'll then install `auspice` into this environment as well and optionally setup the `nextstrain` command.
+We're going to create a new environment called "nextstrain", which automatically installs `Augur` and dependencies.
+We'll then install `Auspice` into this environment as well, and optionally set up the `Nextstrain` command.
 
 
 ```
@@ -41,7 +41,7 @@ nextstrain check-setup --set-default
 ```
 
 and we're all done 🙌.
-The beauty of this is that whenever you want to use `Augur`/`Auspice` you can jump into the `Nextstrain` Conda environment and you're good to go!
+The beauty of this is that whenever you want to use `augur` or `auspice` you can jump into the `nextstrain` conda environment and you're good to go!
 
 ```
 conda activate nextstrain
@@ -142,7 +142,7 @@ pip install -e .[dev]
 augur --version
 ```
 
-Note that you can use `pip install .` as the final step, but this means changes to the source code won't be reflected in your `auspice` version... which you probably want if you're going to the trouble of installing from source!
+Note that you can use `pip install .` as the final step, but this means changes to the source code won't be reflected in your `auspice` version, which you probably want if you're going to the trouble of installing from source!
 
 ---
 ## Install Auspice from Source
@@ -169,3 +169,4 @@ auspice --help
 
 Auspice should now be available everywhere, as long as you're in this environment.
 At least on macOS, changes to the source code are reflected in this system-wide install.
+

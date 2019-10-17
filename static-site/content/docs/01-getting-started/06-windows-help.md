@@ -2,13 +2,13 @@
 title: "Help! I'm using Windows"
 ---
 
-Nextstrain documentation assumes users are running a Unix-based system like Mac OS X or Linux. 
-It is in theory possible to install and run Nextstrain components in Windows natively, but it will be less straightforward, and won't be covered here. 
+Nextstrain documentation assumes users are running a Unix-based system like macOS or Linux. 
+It is in theory possible to install and run Nextstrain components in Windows natively, but it will be less straightforward and won't be covered here. 
 
 However, a new feature in Windows 10 means you can easily run a 'subsystem' of Linux on your Windows machine, ensuring you'll be able to use exactly the same commands as given in the documentation.
 
 After installing, you may want to Google for some information (or a tutorial) on basic Linux commands.
-This guide will assume you're relatively new to Linux/Ubuntu; if you're a more advanced user you may want to modify the instructions to suit your preferences.
+This guide will assume you're relatively new to Linux/Ubuntu; if you're a more advanced user can modify the instructions to suit your preferences.
 
 ## Enable and Install Ubuntu via Microsoft Store
 The Windows Subsystem for Linux is developed and supported by Microsoft, so it will not cause any problems for your computer. 
