@@ -41,11 +41,11 @@ build-static() {
 
 build-auspice() {
     echo "Installing auspice (globally)"
-    # npm install --global auspice@1.37.5
+    npm install --global auspice@2.0.0
     
     # for testing reasons (e.g. deploying to dev-heroku server) you may wish to
     # install from a github branch (useful for auspice versions not pushed to npm)
-    npm install --global https://github.com/nextstrain/auspice/tarball/v2
+    # npm install --global https://github.com/nextstrain/auspice/tarball/v2
 
     echo "Building a customised version of auspice"
     cd auspice
