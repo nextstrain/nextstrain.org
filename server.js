@@ -53,6 +53,11 @@ authn.setup(app);
 /* simple logging for debugging */
 // app.use((req, res, next) => {console.log("LOG REQUEST  ", req.originalUrl); next();});
 
+/* handle redirects to outside sites */
+app.get("/auspice*", (req, res) => {
+  res.redirect('https://nextstrain.github.io/auspice/');
+});
+
 /* A portion of nextstrain.org is a "static" website build with gatsby
  * This is ./static-site, with it's own package.json etc
  * ./static-site/public contains the built files we need serve
