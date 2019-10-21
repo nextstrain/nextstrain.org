@@ -1,5 +1,5 @@
 /* eslint-disable no-multi-spaces */
-import React from "react"; // eslint-disable-line
+import React from "@libraries/react"; // eslint-disable-line
 
 const logoPNG = require("./nextstrain-logo-small.png");
 
@@ -67,7 +67,7 @@ const renderLink = (text, url, style) => (
 const renderNextstrainTitle = (style) => (
   <a id="RainbowNextstrain" style={style} href="/">
     {"Nextstrain".split("").map((letter, i) =>
-      <span key={i} style={{color: titleColors[i]}}>{letter}</span>
+      <span key={titleColors[i]} style={{color: titleColors[i]}}>{letter}</span>
     )}
   </a>
 );
@@ -80,20 +80,19 @@ const renderNarrativeTitle = (text, style) => (
 
 class WhoAmI extends React.Component {
   state = {
-    user: undefined,
+    user: undefined
   };
 
   render() {
     const styles = getStyles({minified: this.props.sidebar});
 
-    if (this.state.user === undefined)
-      return null;
+    if (this.state.user === undefined) return null;
 
     return (
       <div>
         { this.state.user
-            ? renderLink(`👤 ${this.state.user.username}`, "/whoami", styles.link)
-            : renderLink("LOGIN", "/login", styles.link) }
+          ? renderLink(`👤 ${this.state.user.username}`, "/whoami", styles.link)
+          : renderLink("LOGIN", "/login", styles.link) }
       </div>
     );
   }
@@ -105,11 +104,11 @@ class WhoAmI extends React.Component {
   async loadUser() {
     const response = await fetch("/whoami", { headers: { Accept: 'application/json' }});
     const whoami   = await response.json();
-    this.setState(state => ({...state, ...whoami}));
+    this.setState((state) => ({...state, ...whoami}));
   }
 }
 
-const NavBar = ({sidebar, mobileDisplay, toggleHandler, narrativeTitle, width}) => {
+const NavBar = ({sidebar, narrativeTitle, width}) => {
   const styles = getStyles({minified: sidebar, narrative: !!narrativeTitle, width});
   return (
     <div style={styles.flexColumns}>

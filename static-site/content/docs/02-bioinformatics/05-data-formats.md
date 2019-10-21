@@ -2,16 +2,16 @@
 title: "Format of Files Used and Created by Augur"
 ---
 
-> A full listing of the input and output data formats used in Augur will soon be available here.
-
-
-
 #### Table of Contents:
-* [exported JSON(s) for Auspice](#exported-jsons-for-auspice)
+- [Output JSON(s) for Auspice](#output-jsons-for-auspice)
+    - [Tree JSON (required)](#tree-json-required)
+    - [Metadata JSON (required)](#metadata-json-required)
+    - [Frequency JSON (optional)](#frequency-json-optional)
+- [Input files for Auspice](#input-files-for-auspice)
 
 
 ---
-## exported JSON(s) for Auspice
+## Output JSON(s) for Auspice
 
 We use JSONs as the interchange file format between Augur (the bioinformatics tooling) and Auspice (the visualization app).
 JSONs are human-readable, parsable in most languages, and extendable.
@@ -19,8 +19,17 @@ Any compatible JSONs can be used by Auspice, not just those produced by Augur.
 Augur produces these JSONs via the `augur export` command -- see the [Augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html#export).
 We also define schemas for these JSONs (see below) and provide a validation tool to check JSONs against these schemas, `auspice validate` --  see the [Augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html#validate).
 
+Auspice v1 requires two dataset JSONs (metadata + tree) with an optional, tip-frequencies JSON.
 
-Auspice (version 1.x) currently requires two JSON files, with a third optional JSON.
+Auspice v2 is backward compatible with v1, but also can take a single "v2" dataset JSON instead of the metadata + tree v1 JSONs.
+
+Here is a helpful table describing the JSONs for each version of Auspice:
+
+| file | schema | Auspice versions | description |
+| ---- | ---- | ---- | ---- |
+|"tree" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v1-tree.json) | v1, v2 | Decorated phylogenetic tree |
+|"meta" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v1-meta.json) | v1, v2 | The "metadata" associated with a phylogenetic tree |
+|"v2" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v2.json) | v2 | The single input format required for Auspice v2 |
 
 #### Tree JSON (required)
 The tree structure is encoded as a deeply nested JSON object, with traits (such as country, divergence, collection date, attributions, etc.) stored on each node.
@@ -37,7 +46,6 @@ Additional data to control and inform the visualization is stored via the `metad
 See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_meta.json) for more details, or see the current [live Zika build](/zika)'s metadata JSON [here](http://data.nextstrain.org/zika_meta.json).
 
 The filename _must_ end with `_meta.json` and have the same prefix as the tree JSON above.
-
 
 #### Frequency JSON (optional)
 

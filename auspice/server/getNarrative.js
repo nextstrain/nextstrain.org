@@ -2,9 +2,10 @@ const fetch = require('node-fetch');
 const queryString = require("query-string");
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
-const parseNarrative = require('./parseNarrative').default;
 
-const getNarrative = async (req, res, next) => {
+const auspice = utils.importAuspice();
+
+const getNarrative = async (req, res) => {
   let prefix;
   try {
     prefix = queryString.parse(req.url.split("?")[1]).prefix;
@@ -19,9 +20,8 @@ const getNarrative = async (req, res, next) => {
     return helpers.unauthorized(req, res);
   }
 
-  // Slice off the leading "narratives/" and generate the narrative's origin
-  // URL for fetching.
-  const narrative = source.narrative(prefixParts.slice(1));
+  // Generate the narrative's origin URL for fetching.
+  const narrative = source.narrative(prefixParts);
   const fetchURL = narrative.url();
 
   utils.log(`trying to fetch & parse narrative file: ${fetchURL}`);
@@ -33,9 +33,10 @@ const getNarrative = async (req, res, next) => {
     }
 
     const fileContents = await response.text();
-    const blocks = parseNarrative(fileContents);
-    res.send(JSON.stringify(blocks).replace(/</g, '\\u003c'));
+    const blocks = auspice.parseNarrativeFile(fileContents);
+    const blocksForClient = JSON.stringify(blocks).replace(/</g, '\\u003c');
     utils.verbose("SUCCESS");
+    return res.send(blocksForClient);
   } catch (err) {
     return helpers.handleError(res, `Narratives couldn't be served -- ${err.message}`);
   }

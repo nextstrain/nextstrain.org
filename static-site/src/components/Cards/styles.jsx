@@ -52,7 +52,7 @@ export const MoreIconContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-`
+`;
 
 export const SubText = styled.div`
   display: flex;
@@ -60,4 +60,4 @@ export const SubText = styled.div`
   justify-content: center;
   font-size: 16px;
   margin-top: 15px;
-`
+`;

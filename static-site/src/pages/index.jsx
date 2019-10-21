@@ -5,6 +5,7 @@ import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
 
+// eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   render() {
     const postEdges = this.props.data.allMarkdownRemark.edges;

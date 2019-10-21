@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import config from "../../../data/SiteConfig";
 
+// eslint-disable-next-line react/prefer-stateless-function
 class SEO extends Component {
   render() {
     const { postNode, postPath, postSEO } = this.props;

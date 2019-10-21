@@ -36,8 +36,7 @@ const app = express();
 
 // In production, trust Heroku as a reverse proxy and Express will use request
 // metadata from the proxy.
-if (production)
-  app.enable("trust proxy");
+if (production) app.enable("trust proxy");
 
 app.set('port', process.env.PORT || 5000);
 app.use(favicon(path.join(__dirname, "favicon.png")));
@@ -53,6 +52,11 @@ authn.setup(app);
 
 /* simple logging for debugging */
 // app.use((req, res, next) => {console.log("LOG REQUEST  ", req.originalUrl); next();});
+
+/* handle redirects to outside sites */
+app.get("/auspice*", (req, res) => {
+  res.redirect('https://nextstrain.github.io/auspice/');
+});
 
 /* A portion of nextstrain.org is a "static" website build with gatsby
  * This is ./static-site, with it's own package.json etc
@@ -108,7 +112,15 @@ const server = app.listen(app.get('port'), () => {
   console.log("-----------------------------------");
   console.log(nextstrainAbout);
   console.log(`  Server listening on port ${server.address().port}`);
-  console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`)
+  console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`);
   console.log(`  Auspice datasets are sourced from S3 buckets.`);
   console.log("\n-----------------------------------\n\n");
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    utils.error(`Port ${app.get('port')} is currently in use by another program.
+    You must either close that program or specify a different port by setting the shell variable
+    "$PORT". Note that on MacOS / Linux, "lsof -n -i :${app.get('port')} | grep LISTEN" should
+    identify the process currently using the port.`);
+  }
+  utils.error(`Uncaught error in app.listen(). Code: ${err.code}`);
 });

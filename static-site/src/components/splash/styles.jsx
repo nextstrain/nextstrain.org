@@ -128,15 +128,11 @@ const ButtonContainer = styled.button`
   }
 `;
 
+export const Button = ({to, children}) => (
+  <a href={to}>
+    <ButtonContainer>
+      {children}
+    </ButtonContainer>
+  </a>
+);
 
-export class Button extends React.Component {
-  render() {
-    return (
-      <a href={this.props.to}>
-        <ButtonContainer>
-          {this.props.children}
-        </ButtonContainer>
-      </a>
-    );
-  }
-}

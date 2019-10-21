@@ -16,7 +16,18 @@ const unauthorized = (req, res) => {
   return res.status(404).end();
 };
 
+/* All of the logic for mapping a dataset or narratives URL ("prefix") to a
+ * source + path is intentionally encapsulated contained here.  This function
+ * is essentially a router, and potentially should be refactored as such in the
+ * future.
+ *
+ * The inverse of splitPrefixIntoParts() is joinPartsIntoPrefix(), which should
+ * roundtrip losslessly.
+ */
 const splitPrefixIntoParts = (prefix) => {
+  /* This could be const, but use let to signal to the reader that we use
+   * modifying methods like shift() and splice().
+   */
   const prefixParts = prefix
     .replace(/^\//, '')
     .replace(/\/$/, '')
@@ -27,17 +38,58 @@ const splitPrefixIntoParts = (prefix) => {
    */
   const sourceName = sources.has(prefixParts[0])
     ? prefixParts.shift()
-    : "live";
+    : "core";
 
-  const source = sources.get(sourceName);
+  const isNarrative = prefixParts[0] === "narratives";
 
-  return {source, prefixParts};
+  if (isNarrative) {
+    prefixParts.shift();
+  }
+
+  const Source = sources.get(sourceName);
+  let source;
+
+  switch (sourceName) {
+    // Community source requires an owner and repo name
+    case "community":
+      source = new Source(...prefixParts.splice(0, 2));
+      break;
+
+    default:
+      source = new Source();
+  }
+
+  return {source, prefixParts, isNarrative};
 };
 
-const joinPartsIntoPrefix = ({source, prefixParts}) =>
-  source.name === "live"
-    ? prefixParts.join("/")
-    : [source.name, ...prefixParts].join("/");
+/* The inverse of splitPrefixIntoParts() above, intentionally written to mimic
+ * that function's structure and roundtrip losslessly.
+ *
+ * If we move to a real router-based approach, this would ideally be an
+ * automatically provided reverse URL-construction/interpolation function on
+ * the matched route.
+ */
+const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
+  const leadingParts = [];
+
+  if (source.name !== "core") {
+    leadingParts.push(source.name);
+  }
+
+  if (isNarrative) {
+    leadingParts.push("narratives");
+  }
+
+  switch (source.name) {
+    // Community source requires an owner and repo name
+    case "community":
+      leadingParts.push(source.owner, source.repoName);
+      break;
+    // no default
+  }
+
+  return [...leadingParts, ...prefixParts.filter((x) => x.length)].join("/");
+};
 
 /* Given the prefix (split on "/") -- is there an exact match in
  * the available datasets? If not, we use these to pick the
@@ -125,6 +177,7 @@ const parsePrefix = (prefix, otherQueries) => {
   // Get the server fetch URLs
   const dataset = source.dataset(prefixParts);
 
+  fetchUrls.main = dataset.urlFor("main");
   fetchUrls.tree = dataset.urlFor("tree");
   fetchUrls.meta = dataset.urlFor("meta");
 
@@ -158,28 +211,3 @@ module.exports = {
   parsePrefix
 };
 
-
-/* Function to fetch unified JSON (meta+tree combined), and fallback to v1 jsons if this isn't found */
-/* Currently not implemented as we don't have any v2 JSONs, but we will... */
-// const fetchUnifiedJSON = (serverRes, source, path, pathTreeTwo, toInject, errorHandler) => {
-//   const p = source === "local" ? utils.readFilePromise : utils.fetchJSON;
-//   const pArr = [p(paths.fetchURL)];
-//   if (paths.secondTreeFetchURL) {
-//     pArr.push(p(paths.secondTreeFetchURL));
-//   }
-//   Promise.all(pArr)
-//     .then((jsons) => {
-//       const json = jsons[0]; // first is always the main JSON
-//       for (const field in toInject) { // eslint-disable-line
-//         json[field] = toInject[field];
-//       }
-//       if (paths.secondTreeFetchURL) {
-//         json.treeTwo = jsons[1].tree;
-//       }
-//       res.json(json);
-//     })
-//     .catch(() => {
-//       console.log("\tFailed to fetch unified JSON for", paths.fetchURL, "trying for v1...");
-//       fetchV1JSONs.fetchTreeAndMetaJSONs(res, source, paths.fetchURL, paths.secondTreeFetchURL, toInject, errorHandler);
-//     });
-// }

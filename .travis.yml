@@ -8,6 +8,7 @@ install:
   - npm install
 script:
   - npm run build
+  - npm run lint
 after_success:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
       npm run redeploy-site;

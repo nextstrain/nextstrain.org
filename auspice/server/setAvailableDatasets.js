@@ -10,51 +10,105 @@ const utils = require("./utils");
  * This mimics the behavior of the auspice server around version 1.32.
  * Ideally we can find a solution which doesn't use globals.
  */
-global.availableDatasets = {defaults: {}};
+global.availableDatasets = {
+  secondTreeOptions: {},
+  defaults: {}
+};
 
+/**
+ * Generates second tree options for a given dataset.
+ *
+ * Replaces segment within urlParts with every other segment in
+ * given segments array
+ *
+ * @param {[String]} urlParts
+ * @param {[String]} segments
+ */
+const generateSecondTreeOptions = (urlParts, segments) => {
+  // Return empty array if there are no segments
+  if (segments.length === 0) return [];
+
+  // Find segment in urlParts
+  const currentSegment = segments.filter((seg) => urlParts.indexOf(seg) !== -1)[0];
+  const segmentIndex = urlParts.indexOf(currentSegment);
+
+  // Generate second tree options by replacing segment in urlParts
+  const secondTreeOptions = segments
+    .filter((segment) => segment !== currentSegment) // Remove current segment from segments array
+    .map((segment) => {
+      const newUrl = urlParts.slice();
+      newUrl[segmentIndex] = segment;
+      return newUrl.join("/");
+    });
+
+  return secondTreeOptions;
+};
 
 const convertManifestJsonToAvailableDatasetList = (old) => {
-  const allParts = [];
+  const allUrls = {}; /* holds all URLs as keys and second tree options as value */
   const defaults = {}; /* holds the defaults, used to complete incomplete paths */
-  const recurse = (partsSoFar, obj) => {
-    if (typeof obj === "string") {
-      // done
-      allParts.push(partsSoFar);
-    }
-    let keys = Object.keys(obj);
+  let segments = []; /* holds the genome segments, used to find second tree options */
 
-    /* if there's only one key in the object it's the "name" of the level
-    in the heirachy, e.g. "category" or "lineage", which we skip over.
-    Note that for levels with only 1 option there's 2 keys (one is "default") */
+  /*
+    if there's only one key in the object it's the "name" of the level
+    in the hierarchy, e.g. "category" or "lineage", which we skip over.
+    Note that for levels with only 1 option there's 2 keys (one is "default")
+  */
+  const skipLevelNameKeys = (obj) => {
+    const keys = Object.keys(obj);
     if (keys.length === 1) {
       obj = obj[keys[0]]; // eslint-disable-line
-      keys = Object.keys(obj); // skip level
+    }
+    return obj;
+  };
+
+  /**
+   * Iterates over an object to build an array of URL components to be used
+   * for a future data request.
+   *
+   * SIDE EFFECT: sets segments based on obj keys and resets segments based on
+   * lenght of partsSoFar.
+   *
+   * @param {[String]} partsSoFar
+   * @param {Object} obj
+   */
+  const recursivelyBuildUrlParts = (partsSoFar, obj) => {
+    if (typeof obj === "string") {
+      allUrls[partsSoFar.join("/")] = generateSecondTreeOptions(partsSoFar, segments);
     }
 
-    const defaultValue = obj.default;
+    const flattenedObj = skipLevelNameKeys(obj);
+    const keys = Object.keys(flattenedObj);
+
+    const defaultValue = flattenedObj.default;
     if (!defaultValue) {
       return;
     }
     defaults[partsSoFar.join("/")] = defaultValue;
 
-    const orderedKeys = [];
-    keys.forEach((k) => {
-      if (k !== "default") {
-        orderedKeys.push(k);
-      }
-    });
+    const orderedKeys = keys.filter((k) => k !== "default");
+
+    if (partsSoFar.length === 1) {
+      segments = [];
+    }
+    if (Object.keys(obj)[0] === "segment") {
+      segments = orderedKeys.slice();
+    }
+
     orderedKeys.forEach((key) => {
       const newParts = partsSoFar.slice();
       newParts.push(key);
-      recurse(newParts, obj[key]);
+      recursivelyBuildUrlParts(newParts, flattenedObj[key]);
     });
   };
 
-  recurse([], old.pathogen);
-  return [
-    allParts.map((fileParts) => fileParts.join("/")),
+  recursivelyBuildUrlParts([], old.pathogen);
+
+  return {
+    datasets: Object.keys(allUrls),
+    secondTreeOptions: allUrls,
     defaults
-  ];
+  };
 };
 
 /* setAvailableDatasetsFromManifest
@@ -65,33 +119,40 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
  * SIDE EFFECT: sets global.availableDatasets
  */
 const setAvailableDatasetsFromManifest = async () => {
-  utils.verbose("Fetching manifests for live & staging");
-  /* LIVE */
-  try {
-    let data = await fetch(`http://data.nextstrain.org/manifest_guest.json`)
-        .then((result) => result.json());
-    let defaultsForPathCompletion;
-    [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data);
-    utils.verbose(`Successfully got manifest for "live"`);
-    global.availableDatasets.live = data;
-    global.availableDatasets.defaults.live = defaultsForPathCompletion;
-  } catch (err) {
-    utils.warn(`Failed to getch manifest for "live"`);
-  }
-  /* STAGING */
-  try {
-    let data = await fetch(`http://staging.nextstrain.org/manifest_guest.json`)
-        .then((result) => result.json());
-    let defaultsForPathCompletion;
-    [data, defaultsForPathCompletion] = convertManifestJsonToAvailableDatasetList(data);
-    utils.verbose(`Successfully got manifest for "staging"`);
-    global.availableDatasets.staging = data;
-    global.availableDatasets.defaults.staging = defaultsForPathCompletion;
-  } catch (err) {
-    utils.warn(`Failed to fetch manifest for "staging"`);
-  }
+  utils.verbose("Fetching manifests for core & staging");
 
-  utils.log(`Got manifests for ${Object.keys(global.availableDatasets).join(", ")}`);
+  const servers = {
+    core: "data",
+    staging: "staging"
+  };
+
+  const promises = Object.keys(servers).map((server) => {
+    return fetch(`http://${servers[server]}.nextstrain.org/manifest_guest.json`)
+      .then((result) => {
+        return result.json();
+      })
+      .then((data) => {
+        const {datasets, secondTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
+        utils.verbose(`Successfully got manifest for "${server}"`);
+
+        global.availableDatasets[server] = datasets;
+        global.availableDatasets.secondTreeOptions[server] = secondTreeOptions;
+        global.availableDatasets.defaults[server] = defaults;
+      })
+      .catch((e) => {
+        console.error(e);
+        utils.warn(`Failed to getch manifest for "${server}"`);
+      });
+  });
+
+  Promise.all(promises)
+    .then(() => {
+      utils.log(`Got manifests for ${Object.keys(global.availableDatasets).join(", ")}`);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+
 };
 
 setAvailableDatasetsFromManifest();
