@@ -41,7 +41,7 @@ build-static() {
 
 build-auspice() {
     echo "Installing auspice (globally)"
-    npm install --global auspice@2.0.1
+    npm install --global auspice@2.0.2
     
     # for testing reasons (e.g. deploying to dev-heroku server) you may wish to
     # install from a github branch (useful for auspice versions not pushed to npm)
