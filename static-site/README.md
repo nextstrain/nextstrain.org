@@ -58,12 +58,12 @@ npm install
 1. Find an image with appropriate rights for us to use.
 2. Edit the picture in [LunaPic](https://www110.lunapic.com/editor/)
     * upload picture
-    * Style the picture via the "art" menu. Closse "grey" for core cards, "floating" for community cards. Adjust slider as you see fit.
+    * Style the picture via the "art" menu. Closse "grey" for core cards, "floating" for community cards or "sadness" for narrative cards. Adjust slider as you see fit.
     * "Edit" -> "Simple Crop Tool" & crop to a square.
     * "Edit" -> "Resize Image" to 250 x 250px
     * "File" -> "Save Image" & use PNG
 3. Save the file in `./static/splash_images`
-4. Edit `./src/components/Cards/communityCards.js` or `./src/components/Cards/coreCards.js` to include the card together 
+4. Edit `./src/components/Cards/coreCards.js`, `./src/components/Cards/communityCards.js` or `./src/components/Cards/narrativeCards.js` to include the card & title.
 5. Edit `./src/Footer/index.jsx` to provide credit for the photo.
 
 ## Deploying

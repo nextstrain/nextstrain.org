@@ -5,6 +5,7 @@ import { tweets } from "./tweets";
 import Cards from "../Cards";
 import coreCards from "../Cards/coreCards";
 import communityCards from "../Cards/communityCards";
+import narrativeCards from "../Cards/narrativeCards";
 import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
@@ -80,6 +81,21 @@ class Splash extends React.Component {
         <Cards
           cards={communityCards}
         />
+
+
+        <HugeSpacer/>
+        <ScrollableAnchor id={'community'}>
+          <Styles.H1>Narratives</Styles.H1>
+        </ScrollableAnchor>
+
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph>
+            Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data.
+            <a href="https://nextstrain.github.io/auspice/narratives/introduction"> See here to find out more.</a>
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter>
+
+        <Cards cards={narrativeCards}/>
 
         <HugeSpacer/>
         <BigSpacer/>
