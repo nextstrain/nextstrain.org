@@ -3,6 +3,7 @@
 //
 const querystring = require("querystring");
 const session = require("express-session");
+const MemcachedStore = require("connect-memjs")(session);
 const FileStore = require("session-file-store")(session);
 const passport = require("passport");
 const fetch = require("node-fetch");
@@ -89,11 +90,20 @@ function setup(app) {
   });
 
   // Setup session storage and passport.
-  //
-  // XXX TODO: Eventually we'll want a more sophisticated session store that
-  // can be shared between server instances (dynos).  For now, use a local file
-  // store on each server instance and use session affinity.
-  //   -trs, 30 Aug 2019
+  const sessionStore = () => {
+    if (process.env.MEMCACHIER_SERVERS) {
+      utils.verbose(`Storing sessions in Memcached at ${process.env.MEMCACHIER_SERVERS} (via localhost:11211 encrypted tunnel)`);
+
+      return new MemcachedStore({
+        servers: ["localhost:11211"],
+        prefix: "nextstrain.org-session:"
+      });
+    } else {
+      utils.verbose("Storing sessions as files under session/");
+      return new FileStore({ttl: SESSION_MAX_AGE});
+    }
+  };
+
   app.use(
     session({
       name: "nextstrain.org",
@@ -101,7 +111,7 @@ function setup(app) {
       resave: false,
       saveUninitialized: false,
       rolling: true,
-      store: new FileStore({ttl: SESSION_MAX_AGE}),
+      store: sessionStore(),
       cookie: {
         secure: PRODUCTION,
         maxAge: SESSION_MAX_AGE * 1000 // milliseconds
