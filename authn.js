@@ -98,10 +98,10 @@ function setup(app) {
         servers: ["localhost:11211"],
         prefix: "nextstrain.org-session:"
       });
-    } else {
-      utils.verbose("Storing sessions as files under session/");
-      return new FileStore({ttl: SESSION_MAX_AGE});
     }
+
+    utils.verbose("Storing sessions as files under session/");
+    return new FileStore({ttl: SESSION_MAX_AGE});
   };
 
   app.use(
