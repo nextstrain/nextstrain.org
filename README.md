@@ -82,9 +82,11 @@ npx auspice develop --verbose --extend ./client/config.json --handlers ./server/
 
 Sometimes it is useful to change the version of Auspice that is used.
 Perhaps you're upgrading the version nextstrain.org uses or you want to test changes in a local copy of Auspice against nextstrain.org.
-First change the installed Auspice version to either a local development version with `npm install <path to auspice repo>` or a different released version with `npm install auspice@...` (replace `...` with the [semantic version specifier](https://docs.npmjs.com/about-semantic-versioning) you want).  
+
+If you're upgrading the version of Auspice used, install the new version with `npm install auspice@...`.
+Replace `...` with the [semantic version specifier](https://docs.npmjs.com/about-semantic-versioning) you want.
 This will change `package.json` and `package-lock.json` to reflect the new version you installed.
-If you are preparing to commit your Auspice version change, you'll want to include those changed files too.
+When preparing to commit your Auspice version change, you'll want to include those changed files too.
 Run `npx auspice --version` to check that (a) it's installed correctly and (b) which version you have.
 
 Then build and run the server as above with either:
