@@ -111,6 +111,8 @@ npm link <path to auspice repo>
 
 This uses symlinks both globally and within the local `node_modules/` directory to point the local Auspice dependency to your local Auspice source.
 
+> Using `npm install <path to auspice repo>` will _not_ work to use a local development copy, as dependencies are handled differently with `npm install` vs. `npm link` in this case.
+
 ---
 ## Nextstrain.org server
 `npm run server` runs `./server.js` which serves all the content on [nextstrain.org](https://nextstrain.org) & handles authentication.
