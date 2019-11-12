@@ -74,7 +74,8 @@ cd auspice
 npx auspice develop --verbose --extend ./client/config.json --handlers ./server/index.js
 ```
 
-> If you don't have [`npx`](https://www.npmjs.com/package/npx) installed, you can either install it first with `npm install --global npx` or just use `../node_modules/.bin/auspice` in its place.
+> If you're not familiar with [`npx`](https://www.npmjs.com/package/npx), it's a command to easily run programs installed by `npm`.
+> Running `npx auspice` above is equivalent to `../node_modules/.bin/auspice`.
 
 
 ### Using a different version of Auspice
