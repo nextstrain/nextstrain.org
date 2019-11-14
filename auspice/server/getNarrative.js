@@ -2,8 +2,7 @@ const fetch = require('node-fetch');
 const queryString = require("query-string");
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
-
-const auspice = utils.importAuspice();
+const auspice = require("auspice");
 
 const getNarrative = async (req, res) => {
   let prefix;

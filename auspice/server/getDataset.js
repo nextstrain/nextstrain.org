@@ -2,8 +2,7 @@ const queryString = require("query-string");
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const {NoDatasetPathError} = require("./exceptions");
-
-const auspice = utils.importAuspice();
+const auspice = require("auspice");
 
 /**
  *
