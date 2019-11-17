@@ -3,7 +3,7 @@
 //
 const querystring = require("querystring");
 const session = require("express-session");
-const MemcachedStore = require("connect-memjs")(session);
+// const MemcachedStore = require("connect-memjs")(session);
 const FileStore = require("session-file-store")(session);
 const passport = require("passport");
 const fetch = require("node-fetch");
@@ -91,14 +91,14 @@ function setup(app) {
 
   // Setup session storage and passport.
   const sessionStore = () => {
-    if (process.env.MEMCACHIER_SERVERS) {
-      utils.verbose(`Storing sessions in Memcached at ${process.env.MEMCACHIER_SERVERS} (via localhost:11211 encrypted tunnel)`);
+    // if (process.env.MEMCACHIER_SERVERS) {
+    //   utils.verbose(`Storing sessions in Memcached at ${process.env.MEMCACHIER_SERVERS} (via localhost:11211 encrypted tunnel)`);
 
-      return new MemcachedStore({
-        servers: ["localhost:11211"],
-        prefix: "nextstrain.org-session:"
-      });
-    }
+    //   return new MemcachedStore({
+    //     servers: ["localhost:11211"],
+    //     prefix: "nextstrain.org-session:"
+    //   });
+    // }
 
     utils.verbose("Storing sessions as files under session/");
     return new FileStore({ttl: SESSION_MAX_AGE});
