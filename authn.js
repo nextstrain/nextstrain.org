@@ -3,7 +3,8 @@
 //
 const querystring = require("querystring");
 const session = require("express-session");
-// const MemcachedStore = require("connect-memjs")(session);
+const Redis = require("ioredis");
+const RedisStore = require("connect-redis")(session);
 const FileStore = require("session-file-store")(session);
 const passport = require("passport");
 const fetch = require("node-fetch");
@@ -19,6 +20,8 @@ const SESSION_SECRET = PRODUCTION
   : "BAD SECRET FOR DEV ONLY";
 
 const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30d in seconds
+
+const REDIS_URL = process.env.REDIS_URL;
 
 const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
 
@@ -91,14 +94,35 @@ function setup(app) {
 
   // Setup session storage and passport.
   const sessionStore = () => {
-    // if (process.env.MEMCACHIER_SERVERS) {
-    //   utils.verbose(`Storing sessions in Memcached at ${process.env.MEMCACHIER_SERVERS} (via localhost:11211 encrypted tunnel)`);
+    if (REDIS_URL) {
+      const url = new URL(REDIS_URL);
 
-    //   return new MemcachedStore({
-    //     servers: ["localhost:11211"],
-    //     prefix: "nextstrain.org-session:"
-    //   });
-    // }
+      // Heroku Redis' TLS socket is documented to be on the next port up.  The
+      // scheme for secure redis:// URLs is rediss://.
+      if (url.protocol === "redis:") {
+        utils.verbose(`Rewriting Redis URL <${scrubUrl(url)}> to use TLS`);
+        url.protocol = "rediss:";
+        url.port = Number(url.port) + 1;
+      }
+
+      utils.verbose(`Storing sessions in Redis at <${scrubUrl(url)}>`);
+
+      const client = new Redis(url.toString(), {
+        tls: {
+          // It is pretty frustrating that Heroku doesn't provide verifiable
+          // certs.  Although we're not using the Heroku Redis buildpack, the
+          // issue is documented here nicely
+          // <https://github.com/heroku/heroku-buildpack-redis/issues/15>.
+          rejectUnauthorized: false
+        }
+      });
+
+      return new RedisStore({
+        client,
+        prefix: "nextstrain.org-session:",
+        ttl: SESSION_MAX_AGE
+      });
+    }
 
     utils.verbose("Storing sessions as files under session/");
     return new FileStore({ttl: SESSION_MAX_AGE});
@@ -216,6 +240,12 @@ function setup(app) {
     // should fall through to Auspice.
     return next("route");
   });
+}
+
+function scrubUrl(url) {
+  const scrubbedUrl = new URL(url);
+  scrubbedUrl.password = "XXXXXX";
+  return scrubbedUrl;
 }
 
 module.exports = {
