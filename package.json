@@ -25,7 +25,6 @@
     "aws-sdk": "^2.520.0",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
-    "connect-memjs": "^0.2.1",
     "connect-redis": "^4.0.3",
     "express": "^4.17.1",
     "express-naked-redirect": "^0.1.2",
