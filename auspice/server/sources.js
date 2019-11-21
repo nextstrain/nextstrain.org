@@ -232,6 +232,21 @@ class CommunitySource extends Source {
         .split("_")
         .join("/"));
   }
+  async getInfo() {
+    /* could attempt to fetch a certain file from the repository if we want to implement
+    this functionality in the future */
+    return {
+      title: `${this.owner}'s Nextstrain community builds for ${this.repoName}`,
+      byline: "Nextstrain community builds source datasets from GitHub repositories, in this case" +
+        ` https://github.com/${this.owner}/${this.repoName}. You can see the available datasets listed below :)`,
+      showDatasets: true,
+      showNarratives: true,
+      /* avatar could be fetched here & sent in base64 or similar, or a link sent. The former (or similar) has the advantage
+      of private S3 buckets working, else the client will have to make (a) an authenticated request (too much work)
+      or (b) a subsequent request to nextstrain.org/charon (why not do it at once?) */
+      avatar: `https://github.com/${this.owner}.png?size=200`
+    };
+  }
 }
 
 class CommunityDataset extends Dataset {
@@ -290,6 +305,28 @@ class PrivateS3Source extends Source {
         .replace(/[.]md$/, "")
         .split("_")
         .join("/"));
+  }
+  /**
+   * Get information about a (particular) source.
+   * The data could be a JSON, or a markdown with YAML frontmatter. Or something else.
+   * This is very similar to our previous discussions around moving the auspice footer
+   * content to the dataset JSON - it would be nice to allow links etc to be written in
+   * the title/byline. One advantage of this being outside of the auspice codebase is that
+   * we can iterate on it after pushing live to nextstrain.org
+   */
+  async getInfo() {
+    try {
+      /* attempt to fetch customisable information from S3 bucket */
+      throw new Error();
+    } catch (err) {
+      /* Appropriate fallback if no customised data is available */
+      return {
+        title: `Nextstrain group page for ${this.bucket}`,
+        byline: `The following are the available datasets & narratives for this nextstrain group:`,
+        showDatasets: true,
+        showNarratives: true
+      };
+    }
   }
 }
 

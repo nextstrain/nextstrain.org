@@ -107,6 +107,7 @@ If you're installing from a local development copy of Auspice's source, you can 
 
 ```bash
 npm link <path to auspice repo>
+npm link <path to auspice repo>/node_modules/react
 ```
 
 This uses symlinks both globally and within the local `node_modules/` directory to point the local Auspice dependency to your local Auspice source.

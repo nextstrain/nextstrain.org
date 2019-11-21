@@ -91,6 +91,7 @@ app.get(gatsbyRoutes, (req, res) => {
 app.get("/charon/getAvailable", auspiceServerHandlers.getAvailable);
 app.get("/charon/getDataset", auspiceServerHandlers.getDataset);
 app.get("/charon/getNarrative", auspiceServerHandlers.getNarrative);
+app.get("/charon/getSourceInfo", auspiceServerHandlers.getSourceInfo);
 app.get("/charon*", (req, res) => {
   res.statusMessage = `Query unhandled: ${req.originalUrl}`;
   utils.warn(res.statusMessage);
