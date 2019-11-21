@@ -198,7 +198,7 @@ const parsePrefix = (prefix, otherQueries) => {
     fetchUrls.additional = dataset.urlFor(otherQueries.type);
   }
 
-  return ({fetchUrls, auspiceDisplayUrl, treeName, secondTreeName, source});
+  return ({fetchUrls, auspiceDisplayUrl, treeName, secondTreeName, source, dataset});
 
 };
 

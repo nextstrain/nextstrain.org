@@ -79,7 +79,7 @@ const getDataset = async (req, res) => {
     return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }
 
-  const {source, fetchUrls, auspiceDisplayUrl} = datasetInfo;
+  const {source, dataset, fetchUrls, auspiceDisplayUrl} = datasetInfo;
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
@@ -108,6 +108,10 @@ const getDataset = async (req, res) => {
     try {
       await requestMainDataset(res, req, fetchUrls);
     } catch (err) {
+      if (dataset.isRequestValidWithoutDataset) {
+        utils.verbose("Request is valid, but no dataset available. Returning 204.");
+        return res.status(204).end();
+      }
       return helpers.handleError(res, `Couldn't fetch JSONs`, err.message);
     }
   }

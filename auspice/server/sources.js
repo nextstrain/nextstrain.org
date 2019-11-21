@@ -76,6 +76,9 @@ class Dataset {
     const url = new URL(this.baseNameFor(type), this.source.baseUrl);
     return url.toString();
   }
+  get isRequestValidWithoutDataset() {
+    return false;
+  }
 }
 
 class Narrative {
@@ -254,6 +257,12 @@ class CommunityDataset extends Dataset {
     // We require datasets are in the auspice/ directory and include the repo
     // name in the file basename.
     return [`auspice/${this.source.repoName}`, ...this.pathParts];
+  }
+  get isRequestValidWithoutDataset() {
+    if (!this.pathParts.length) {
+      return true;
+    }
+    return false;
   }
 }
 
