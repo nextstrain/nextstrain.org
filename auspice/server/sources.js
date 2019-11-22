@@ -183,34 +183,16 @@ class CommunitySource extends Source {
       return [];
     }
 
-    const files = await response.json();
-    const jsonFiles = files
+    const filenames = (await response.json())
       .filter((file) => file.type === "file")
-      .filter((file) => file.name.endsWith(".json"))
+      // remove anything which doesn't start with the repo name, which is required of community datasets
       .filter((file) => file.name.startsWith(this.repoName))
       .map((file) => file.name);
-
-    const sidecarSuffixes = ["meta", "tree", "root-sequence", "seq", "tip-frequencies"];
-    const notSidecar = (filename) =>
-      !sidecarSuffixes.some((suffix) => filename.endsWith(`_${suffix}.json`));
-
-    // All JSON files which aren't a sidecar file with a known suffix.
-    const v2 = jsonFiles
-      .filter(notSidecar)
-      .map((filename) => filename.replace(/[.]json$/, ""));
-
-    // All *_meta.json files which have a corresponding *_tree.json.
-    const v1 = jsonFiles
-      .filter((filename) => filename.endsWith("_meta.json"))
-      .filter((filename) => jsonFiles.includes(filename.replace(/_meta[.]json$/, "_tree.json")))
-      .map((filename) => filename.replace(/_meta[.]json$/, ""));
-
-    return Array.from(new Set([...v2, ...v1]))
-      .map((filename) => filename
-        .replace(this.repoName, "")
-        .replace(/^_/, "")
-        .split("_")
-        .join("/"));
+    const pathnames = utils.getDatasetsFromListOfFilenames(filenames)
+      // strip out the repo name from the start of the pathnames
+      // as CommunityDataset().baseParts will add this in
+      .map((pathname) => pathname.replace(`${this.repoName}/`, ""));
+    return pathnames;
   }
 
   async availableNarratives() {
@@ -294,15 +276,9 @@ class PrivateS3Source extends Source {
     return list.Contents;
   }
   async availableDatasets() {
-    // Walking logic borrowed from auspice's cli/server/getAvailable.js
     const objects = await this._listObjects();
-    return objects
-      .map((object) => object.Key)
-      .filter((file) => file.endsWith("_tree.json"))
-      .map((file) => file
-        .replace(/_tree[.]json$/, "")
-        .split("_")
-        .join("/"));
+    const pathnames = utils.getDatasetsFromListOfFilenames(objects.map((object) => object.Key));
+    return pathnames;
   }
   async availableNarratives() {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
