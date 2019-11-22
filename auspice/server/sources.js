@@ -320,9 +320,19 @@ class InrbDrcSource extends PrivateS3Source {
   }
 }
 
+class InrbDrcSourceAlwaysVisible extends PrivateS3Source {
+  get name() { return "inrb-test"; }
+  get bucket() { return "nextstrain-inrb"; }
+
+  static visibleToUser(user) { // eslint-disable-line
+    return true;
+  }
+}
+
 module.exports = new Map([
   ["core", CoreSource],
   ["staging", CoreStagingSource],
   ["community", CommunitySource],
-  ["inrb-drc", InrbDrcSource]
+  ["inrb-drc", InrbDrcSource],
+  ["inrb-test", InrbDrcSourceAlwaysVisible]
 ]);
