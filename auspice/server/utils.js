@@ -59,6 +59,39 @@ const printStackTrace = (err) => {
   }
 };
 
+/**
+ * Given a list of files, return a list of URL pathnames of
+ * datasets which can be fetched
+ * @param {Array} files. Array of strings.
+ * @returns {Array}
+ */
+const getDatasetsFromListOfFilenames = (filenames) => {
+  const jsonFiles = filenames
+    .filter((file) => file.endsWith(".json"));
+
+  // All JSON files which aren't a sidecar file with a known suffix are assumed to
+  // be v2+ JSONs (aka "unified" JSONs)
+  const sidecarSuffixes = ["meta", "tree", "root-sequence", "seq", "tip-frequencies"];
+  const datasets = jsonFiles
+    .filter((filename) => !sidecarSuffixes.some((suffix) => filename.endsWith(`_${suffix}.json`)))
+    .map((filename) => filename.replace(/[.]json$/, ""));
+
+  // All *_meta.json files which have a corresponding *_tree.json are assumed to
+  // be v1 JSONs.
+  jsonFiles
+    .filter((filename) => filename.endsWith("_meta.json"))
+    .filter((filename) => jsonFiles.includes(filename.replace(/_meta[.]json$/, "_tree.json")))
+    .map((filename) => filename.replace(/_meta[.]json$/, ""))
+    .filter((filename) => !datasets.includes(filename))
+    .forEach((filename) => datasets.push(filename));
+
+  // modify the filenames to represent URL pathnames not filenames
+  return datasets.map((filename) => filename
+    .split("_")
+    .join("/"));
+};
+
+
 module.exports = {
   getGitHash,
   verbose,
@@ -66,5 +99,6 @@ module.exports = {
   warn,
   error,
   fetchJSON,
-  printStackTrace
+  printStackTrace,
+  getDatasetsFromListOfFilenames
 };
