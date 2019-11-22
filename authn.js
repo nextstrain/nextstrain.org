@@ -119,6 +119,11 @@ function setup(app) {
 
       return new RedisStore({
         client,
+
+        // Using a key prefix reduces the chance that we conflict with
+        // potential future usage of Redis in this codebase.  While this is
+        // very unlikely because the session keys are long random strings, I
+        // like code to be defensive and future-proof.
         prefix: "nextstrain.org-session:",
         ttl: SESSION_MAX_AGE
       });
