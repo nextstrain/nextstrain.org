@@ -342,9 +342,19 @@ class InrbDrcSource extends PrivateS3Source {
   }
 }
 
+class CaddeSource extends PrivateS3Source {
+  get name() { return "cadde"; }
+  get bucket() { return "nextstrain-cadde"; }
+
+  static visibleToUser(user) {
+    return !!user && !!user.groups && user.groups.includes("cadde");
+  }
+}
+
 module.exports = new Map([
   ["core", CoreSource],
   ["staging", CoreStagingSource],
   ["community", CommunitySource],
-  ["inrb-drc", InrbDrcSource]
+  ["inrb-drc", InrbDrcSource],
+  ["cadde", CaddeSource]
 ]);
