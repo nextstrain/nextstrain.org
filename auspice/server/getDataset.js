@@ -3,6 +3,7 @@ const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const {NoDatasetPathError} = require("./exceptions");
 const auspice = require("auspice");
+const request = require('request');
 
 /**
  *
@@ -18,26 +19,45 @@ const requestCertainFileType = async (res, req, additional, query) => {
   res.json(jsonData);
 };
 
-/**
- * Currently the main datasets are tree + meta
- *
- */
-const requestMainDataset = async (res, req, fetchUrls) => {
-  /** try to fetch the (v2) dataset JSON first
-   * If this fails, attempt to fetch the (v1) meta + tree jsons
-   */
-  let datasetJson;
-  try {
-    datasetJson = await utils.fetchJSON(fetchUrls.main);
-    utils.verbose(`Success fetching v2 dataset`);
-  } catch (err) {
-    utils.verbose(`Failed to get v2 JSON. Trying with v1 at: "${fetchUrls.meta}" & "${fetchUrls.tree}`);
-    const data = await Promise.all([utils.fetchJSON(fetchUrls.meta), utils.fetchJSON(fetchUrls.tree)]);
-    datasetJson = auspice.convertFromV1({tree: data[1], meta: data[0]});
-    utils.verbose(`Success fetching & converting v1 auspice JSONs. Sending as a single v2 JSON.`);
-  }
 
-  res.send(datasetJson);
+const requestV1Dataset = async (res, metaJsonUrl, treeJsonUrl) => {
+  utils.verbose(`Trying to request v1 datasets at: "${metaJsonUrl}" & "${treeJsonUrl}`);
+  let data, datasetJson;
+  try {
+    data = await Promise.all([utils.fetchJSON(metaJsonUrl), utils.fetchJSON(treeJsonUrl)]);
+  } catch (err) {
+    utils.warn("Failed to fetch v1 dataset JSONs");
+    return res.sendStatus(404); // Not Found
+  }
+  try {
+    datasetJson = auspice.convertFromV1({tree: data[1], meta: data[0]});
+  } catch (err) {
+    utils.warn("Failed to convert v1 dataset JSONs to v2");
+    return res.sendStatus(500); // Internal Server Error
+  }
+  utils.verbose(`Success fetching & converting v1 auspice JSONs. Sending as a single v2 JSON.`);
+  return res.send(datasetJson);
+};
+
+/**
+ * The "main" dataset is assumed to be a v2+ (unified) JSON
+ * If this request 404s, then we attempt to fetch a v1-version
+ * of the dataset (i.e. meta + tree JSONs) and convert it
+ * to v2 format for the response.
+ */
+const requestMainDataset = async (res, fetchUrls) => {
+  /* try to stream the (v2+) dataset JSON as the response */
+  const req = request
+    .get(fetchUrls.main)
+    .on("response", (response) => {
+      if (response.statusCode === 200) {
+        utils.verbose(`Successfully streaming ${fetchUrls.main}.`);
+        req.pipe(res);
+      } else {
+        utils.verbose(`The request for ${fetchUrls.main} returned ${response.statusCode}.`);
+        requestV1Dataset(res, fetchUrls.meta, fetchUrls.tree);
+      }
+    });
 };
 
 /**
@@ -106,7 +126,7 @@ const getDataset = async (req, res) => {
     }
   } else {
     try {
-      await requestMainDataset(res, req, fetchUrls);
+      await requestMainDataset(res, fetchUrls);
     } catch (err) {
       return helpers.handleError(res, `Couldn't fetch JSONs`, err.message);
     }
