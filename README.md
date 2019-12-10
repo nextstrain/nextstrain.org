@@ -34,6 +34,9 @@ from this directory (the "nextstrain.org" directory).
 2. `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
 This should mirror exactly what you see when you visit [nextstrain.org](https://nextstrain.org).
 
+#### Building with Nextstrain Groups (e.g. "Login") functionality
+You'll need AWS credentials configured (via environment or `~/.aws/credentials`) for the Bedford Lab account.
+If you add a new profile to `~/.aws/credentials`, you can then tell the local nextstrain.org server to use it by setting `AWS_PROFILE=...`.
 
 ---
 ## Splash & documentation pages
