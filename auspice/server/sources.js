@@ -323,18 +323,27 @@ class PrivateS3Narrative extends Narrative {
   }
 }
 
-class InrbDrcSource extends PrivateS3Source {
-  static get _name() { return "inrb-drc"; }
-  get bucket() { return "nextstrain-inrb"; }
+class PublicGroupSource extends S3Source {
+  get bucket() { return `nextstrain-${this.name}`; }
+}
+
+class PrivateGroupSource extends PrivateS3Source {
+  get bucket() { return `nextstrain-${this.name}`; }
 
   static visibleToUser(user) {
-    return !!user && !!user.groups && user.groups.includes("inrb");
+    return !!user && !!user.groups && user.groups.includes(this._name);
   }
 }
 
-class SeattleFluSource extends S3Source {
+class InrbDrcSource extends PrivateGroupSource {
+  static get _name() { return "inrb-drc"; }
+
+  // INRB's bucket is named differently due to early adoption
+  get bucket() { return "nextstrain-inrb"; }
+}
+
+class SeattleFluSource extends PublicGroupSource {
   static get _name() { return "seattleflu"; }
-  get bucket() { return "nextstrain-seattleflu"; }
 }
 
 const sources = [
