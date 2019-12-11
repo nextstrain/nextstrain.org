@@ -329,9 +329,15 @@ class InrbDrcSource extends PrivateS3Source {
   }
 }
 
+class SeattleFluSource extends S3Source {
+  get name() { return "seattleflu"; }
+  get bucket() { return "nextstrain-seattleflu"; }
+}
+
 module.exports = new Map([
   ["core", CoreSource],
   ["staging", CoreStagingSource],
   ["community", CommunitySource],
-  ["inrb-drc", InrbDrcSource]
+  ["inrb-drc", InrbDrcSource],
+  ["seattleflu", SeattleFluSource],
 ]);
