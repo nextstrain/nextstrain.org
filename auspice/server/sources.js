@@ -345,4 +345,7 @@ const sources = [
   SeattleFluSource,
 ];
 
-module.exports = new Map(sources.map(s => [s._name, s]));
+const sourceMap = new Map(sources.map(s => [s._name, s]));
+utils.verbose("Sources are:", sourceMap);
+
+module.exports = sourceMap;
