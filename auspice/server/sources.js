@@ -250,15 +250,12 @@ class CommunityNarrative extends Narrative {
   }
 }
 
-class PrivateS3Source extends Source {
-  dataset(pathParts) {
-    return new PrivateS3Dataset(this, pathParts);
+class S3Source extends Source {
+  get bucket() {
+    throw InvalidSourceImplementation("bucket() must be implemented by subclasses");
   }
-  narrative(pathParts) {
-    return new PrivateS3Narrative(this, pathParts);
-  }
-  static visibleToUser(user) { // eslint-disable-line no-unused-vars
-    throw InvalidSourceImplementation("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
+  get baseUrl() {
+    return `https://${this.bucket}.s3.amazonaws.com`;
   }
   async _listObjects() {
     // XXX TODO: This will only return the first 1000 objects.  That's fine for
@@ -290,6 +287,18 @@ class PrivateS3Source extends Source {
         .replace(/[.]md$/, "")
         .split("_")
         .join("/"));
+  }
+}
+
+class PrivateS3Source extends S3Source {
+  dataset(pathParts) {
+    return new PrivateS3Dataset(this, pathParts);
+  }
+  narrative(pathParts) {
+    return new PrivateS3Narrative(this, pathParts);
+  }
+  static visibleToUser(user) { // eslint-disable-line no-unused-vars
+    throw InvalidSourceImplementation("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
   }
 }
 
