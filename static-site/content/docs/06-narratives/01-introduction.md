@@ -8,7 +8,7 @@ This content drives the way in which data is displayed, so instead of the user c
 This allows you to communicate results with the appropriate views into the data, whilst maintaining the ability for the user to jump back to the "normal" viewing mode and interact with the data.
 
 
-> Narratives are a new feature, and there may still be bugs.
+> Narratives are a new feature and there may still be bugs.
 We're aiming to publicize this feature as soon as we have ensured everything's working as desired.
 
 

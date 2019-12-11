@@ -19,12 +19,12 @@ Each individual dataset contains links to the scientists who maintain it.
 We're exited to collaborate with more groups and expand these datasets -- please [get in touch with us](mailto:hello@nextstrain.org) if this is something you'd like to be involved in.
 
 
-### Community Daintained Datasets
+### Community Maintained Datasets
 
 To make supporting this philosophy as easy as possible, we have created a "community builds" functionality, whereby GitHub is used to store the results of your analyses and the results are available for everyone via nextstrain.org.
 This is behind the [community builds](/) which you can see on the main page.
 
-See [this page](community-builds) for more information, including a step-by-step on how you can get your datasets up as a community build. 
+See [this page](community-builds) for more information, including a step-by-step on how you can get your datasets up as a community build.
 
 ### Bespoke Auspice Deployments
 

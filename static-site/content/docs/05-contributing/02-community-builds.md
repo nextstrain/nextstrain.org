@@ -10,7 +10,7 @@ Our solution to this is to allow anyone to store the results of their analyses o
 
 ### How Does This Actually Work?
 * Run your analysis locally ([see the bioinformatics introduction](/docs/bioinformatics/introduction-to-augur))
-* Create a github repository for your analysis. For instance, [Alli Black](https://bedford.io/team/allison-black/) has created a "zika-colombia" in the "blab" group/organisation/username -- [github.com/blab/zika-colombia](https://github.com/blab/zika-colombia)
+* Create a GitHub repository for your analysis. For instance, [Alli Black](https://bedford.io/team/allison-black/) has created a "zika-colombia" in the "blab" group/organisation/username -- [github.com/blab/zika-colombia](https://github.com/blab/zika-colombia)
   * _This is your own github repository -- you don't even need to tell us about it if you don't want to!_
 * Make sure the JSONs you've produced start with the same name as the repository. In this case they'd need to be `zika-colombia_meta.json` and `zika-colombia_tree.json`
 * Store your final output from augur, i.e. the JSONs which auspice uses, in a directory called "auspice" -- [see here for an example](https://github.com/blab/zika-colombia/tree/master/auspice)
