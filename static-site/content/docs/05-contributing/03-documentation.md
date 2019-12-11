@@ -24,7 +24,7 @@ Each time the "master" branch is changed, the website will automatically rebuild
 
 Before we can edit documentation, it's always helpful to be able to build the website locally.
 This allows us to see changes as we make them and ensure everything looks as we want it to!
-While this isn't strictly necessary, you could just edit the markdown files and push them up, it will help avoid errors.
+While this isn't strictly necessary, you could just edit the Markdown files and push them up, it will help avoid errors.
 
 Prerequisites:
 * `nodejs` version 10
@@ -48,12 +48,12 @@ npm install
 
 You should now be able to run the static-site part of the website, which includes the splash page and all the documentation.
 (It doesn't include Auspice, which is what we use to visualise datasets. [See here](https://github.com/nextstrain/nextstrain.org#build-nextstrainorg-locally) for how to accomplish this.)
-We will run this in development mode, which allows us to update the markdown files and have the results instantly update in the browser:
+We will run this in development mode, which allows us to update the Markdown files and have the results instantly update in the browser:
 
 ```
 npm run develop
 ```
-& then open the webpage it indicates, which is usually [localhost:8000](http://localhost:8000).
+Then open the webpage it indicates, which is usually [localhost:8000](http://localhost:8000).
 
 
 Further information, including troubleshooting, [is available in the GitHub repo](https://github.com/nextstrain/nextstrain.org/tree/master/static-site).
@@ -63,7 +63,7 @@ Further information, including troubleshooting, [is available in the GitHub repo
 ### Where Are These Markdown Files?
 
 Once you've got things up and running we can now actually make some edits!
-The documentation markdown files are all found in `./static-site/content/docs/` -- there you'll see a number of folders which correspond to the categories you can see in the left hand side right now 👈. When we wrote these docs, they were:
+The documentation Markdown files are all found in `./static-site/content/docs/` -- there you'll see a number of folders which correspond to the categories you can see in the left hand side right now 👈. When we wrote these docs, they were:
 ```
 01-getting-started
 02-bioinformatics
@@ -74,7 +74,7 @@ The documentation markdown files are all found in `./static-site/content/docs/` 
 ```
 > The numeric prefix isn't displayed, but it defines the order of the categories. This will be the same for the files representing each page (see below).
 
-Inside each of these "category" folders, you will see the markdown files for each page -- for instance, here's the contents of `01-getting-started`:
+Inside each of these "category" folders, you will see the Markdown files for each page -- for instance, here's the contents of `01-getting-started`:
 ```
 01-introduction.md
 02-quickstart.md
@@ -92,7 +92,7 @@ If you are running the site locally in development mode (see above) then you can
 
 ### Changing Existing Pages
 
-All that's needed is to find the markdown file corresponding to the page and edit it.
+All that's needed is to find the Markdown file corresponding to the page and edit it.
 Once you're happy with things, you can push the changes up to nextstrain.org (see below).
 
 ### Adding Pages
@@ -115,4 +115,4 @@ Once this is done, you can begin to write the page's content.
 ### Pushing Changes Live
 
 Nextstrain.org is automatically redeployed anytime there's a change to the master branch on GitHub.
-We encourage a pull request with proposed changes, which can then be merged into master once someone's taken a look.
+We encourage a pull request with proposed changes, which can then be merged into master once someone has taken a look.
