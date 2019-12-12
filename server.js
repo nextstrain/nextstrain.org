@@ -15,7 +15,7 @@ const version = utils.getGitHash();
 const nextstrainAbout = `
   Nextstrain is an open-source project to harness the scientific and public health potential
   of pathogen genome data. This is the server behind nextstrain.org.
-  It delivers the static content (https://github.com/nextstrain/static) as well as the interactive 
+  It delivers the static content (https://github.com/nextstrain/static) as well as the interactive
   visualisation app auspice (https://github.com/nextstrain/auspice), with customisations.
 `;
 const parser = new argparse.ArgumentParser({
