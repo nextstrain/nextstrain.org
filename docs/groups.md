@@ -108,35 +108,14 @@ These will need to provided to the group owner.
 If more then one individual Cognito user needs bucket management permissions, mint additional sets of access credentials from the IAM user page.
 These access credentials need to be provided to `nextstrain deploy`, as documented in that command's help.
 
-For a private group, you'll also need to create an IAM policy granting read-only access to the bucket for the `nextstrain.org` IAM user.
-This is the service user which the Nextstrain server itself uses to access the private buckets of private groups.
-The policy document should look like:
+You also need to update the existing IAM policy [NextstrainDotOrgServerInstance](https://console.aws.amazon.com/iam/home?region=us-east-1#/policies/arn:aws:iam::827581582529:policy/NextstrainDotOrgServerInstance$jsonEditor) which grants read-only access to the bucket for the `nextstrain.org` IAM user.
+This is the service user which the Nextstrain server itself uses to access the buckets of groups.
 
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::nextstrain-<group>"
-        },
-        {
-            "Sid": "VisualEditor1",
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:GetObjectVersion"
-            ],
-            "Resource": "arn:aws:s3:::nextstrain-<group>/*"
-        }
-    ]
-}
-```
+Add an entry like `arn:aws:s3:::nextstrain-<group>` to the `Resource` array of the policy statement allowing `s3:ListBucket`.
 
-Replace `<group>` with the group name.
-Then attach this policy to the `nextstrain.org` IAM user.
+Add an entry like `arn:aws:s3:::nextstrain-<group>/*` to the `Resource` array of the policy statement allowing `s3:GetObject`.
+
+Make sure to replace `<group>` with the group name.
 
 For a public group, you'll also need to add a bucket policy allowing public read-only access to objects.
 Under **Permissions** → **Bucket Policy**, add the following:
