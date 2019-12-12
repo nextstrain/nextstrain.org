@@ -16,8 +16,7 @@
     "lint": "eslint --ext .js,.jsx .",
     "set-up": "npm run build",
     "server": "node server.js",
-    "start": "npm run server",
-    "redeploy-site": "./redeploy-site.sh"
+    "start": "npm run server"
   },
   "dependencies": {
     "argparse": "^1.0.10",
