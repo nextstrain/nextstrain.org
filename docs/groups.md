@@ -136,7 +136,28 @@ The policy document should look like:
 ```
 
 Replace `<group>` with the group name.
-
 Then attach this policy to the `nextstrain.org` IAM user.
+
+For a public group, you'll also need to add a bucket policy allowing public read-only access to objects.
+Under **Permissions** → **Bucket Policy**, add the following:
+
+```json
+{
+    "Version": "2008-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadForGetBucketObjects",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::nextstrain-<group>/*"
+        }
+    ]
+}
+```
+
+Replace `<group>` with the group name.
 
 _The need to create new IAM groups, users, and policies for private buckets will go away once we integrate with Cognito Identity Pools._
