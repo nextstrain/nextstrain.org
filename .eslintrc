@@ -15,7 +15,7 @@ rules:
   object-curly-spacing: off # allow { a: 1 } and {a: 1}
   block-spacing: off # same as above for function blocks on a single line
   dot-notation: off # allows someObject["a"] as well as someObject.a
-  comma-dangle: ["error", "never"]
+  comma-dangle: ["error", "only-multiline"]
   padded-blocks: off
   no-plusplus: off # we are old enought to use i++
   arrow-body-style: off
