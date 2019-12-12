@@ -12,8 +12,8 @@
 
 ## Heroku
 
-The production Heroku app is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server).
-Deploys are generally triggered by a successful Travis CI build pinging a Heroku webhook.
+The production Heroku app is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server), which is part of a [Heroku app pipeline of the same name](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d).
+Deploys of `master` happen automatically after Travis CI tests are successful.
 
 A testing/staging app, `nextstrain-dev`, is also used.
 
