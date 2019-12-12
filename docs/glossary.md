@@ -66,9 +66,11 @@ Some community builds are highlighted on the Nextstrain homepage.
 
 An individual login account associated with one or more [groups](#group).
 Managed in an AWS Cognito User Pool called `nextstrain.org`.
+Not to be confused with AWS IAM users.
 
 ## Group
 
 A named set of [users](#user) with access to see and update a set of builds.
 Each group has a related [source](#source), which typically authorizes access based on the group.
 Managed in an AWS Cognito User Pool called `nextstrain.org`.
+Not to be confused with AWS IAM groups.
