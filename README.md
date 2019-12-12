@@ -152,8 +152,8 @@ See the [charon API auspice documentation](https://nextstrain.github.io/auspice/
 ---
 ## Deploy nextstrain.org
 All commits pushed to github trigger [Travis-CI](https://travis-ci.com/nextstrain/nextstrain.org), which runs the `npm run build` script & runs [eslint](https://eslint.org/) via `npm run lint`.
-If there are no errors, and we're on the master branch, Travis-CI then triggers the heroku server to rebuild (via `npm run redeploy-site`).
-Heroku rebuilds by running `npm run build` and, upon success, starts the server (`npm run server`).
+Heroku will deploy commits pushed to the `master` branch automatically if there are no Travis CI errors.
+Heroku builds by running `npm run build` and, upon success, starts the server (`npm run server`).
 
 
 ---
