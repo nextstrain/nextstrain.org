@@ -2,7 +2,7 @@
 
 ## Domains
 
-**nextstrain.org** is [hosted on Heroku](#heroku).
+**nextstrain.org** and **dev.nextstrain.org** are [hosted on Heroku](#heroku).
 
 **data.nextstrain.org** is an AWS CloudFronted S3 bucket, [`nextstrain-data`](#nextstrain-data).
 
@@ -16,6 +16,7 @@ The production Heroku app is [`nextstrain-server`](https://dashboard.heroku.com/
 Deploys of `master` happen automatically after Travis CI tests are successful.
 
 A testing/staging app, `nextstrain-dev`, is also used.
+Deploys to it are manual, via the dashboard or [git pushes to the Heroku remote](https://devcenter.heroku.com/articles/git).
 
 ### Environment variables
 
