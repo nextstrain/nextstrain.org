@@ -212,17 +212,7 @@ function setup(app) {
   // Provide the client-side app with info about the current user
   app.route("/whoami").get((req, res) => {
     res.format({
-      // XXX TODO: This is really janky, but we can make it nicer in the
-      // future.
-      //   -trs, 30 Aug 2019
-      html: () => res.send(
-        req.user
-          ? `You’re logged in as <strong>${req.user.username}</strong>.
-             You are in the groups <strong>${req.user.groups.join(", ")}</strong>.
-             <a href="/logout">Logout</a>`
-          : `You are not logged in.
-             <a href="/login">Login</a>`
-      ),
+      html: () => res.redirect("/users"),
 
       // Express's JSON serialization drops keys with undefined values
       json: () => res.json({ user: req.user || null })

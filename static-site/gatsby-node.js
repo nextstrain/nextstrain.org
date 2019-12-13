@@ -180,6 +180,12 @@ exports.createPages = ({graphql, boundActionCreators}) => {
             });
           }
         });
+
+        // Create users page
+        createPage({
+          path: "/users",
+          component: path.resolve("src/pages/users.jsx")
+        });
       })
     );
   });
