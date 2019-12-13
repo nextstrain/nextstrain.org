@@ -47,7 +47,7 @@ If you don't see them in the AWS Console, make sure to check the region you're l
 
 Public.
 CloudFronted.
-Contains JSONs for our core builds, as well as the `nextstrain.yml` conda environment definition.
+Contains JSONs for our core builds, as well as the [`nextstrain.yml` conda environment](https://github.com/nextstrain/conda) definition.
 Fetches by the server happen over unauthenticated HTTP.
 
 ### nextstrain-staging
