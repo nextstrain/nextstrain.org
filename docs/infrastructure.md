@@ -47,7 +47,7 @@ If you don't see them in the AWS Console, make sure to check the region you're l
 
 Public.
 CloudFronted.
-Contains JSONs for our core builds, as well as a few narratives and the `nextstrain.yml` conda environment definition.
+Contains JSONs for our core builds, as well as the `nextstrain.yml` conda environment definition.
 Fetches by the server happen over unauthenticated HTTP.
 
 ### nextstrain-staging
@@ -80,3 +80,9 @@ It may be beneficial to use one in the future so we can get temporary AWS creden
 ## DNS
 
 Nameservers for the nextstrain.org zone are hosted by [DNSimple](https://dnsimple.com/a/89964/domains/nextstrain.org).
+
+## GitHub
+
+[nextstrain/nextstrain.org](https://github.com/nextstrain/nextstrain.org) is the GitHub repo for the Nextstrain website.
+
+Core and staging narratives are sourced from the [nextstrain/narratives](https://github.com/nextstrain/narratives) repo (the `master` and `staging` branches, respectively).
