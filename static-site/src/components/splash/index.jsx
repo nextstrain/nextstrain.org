@@ -84,7 +84,7 @@ class Splash extends React.Component {
 
 
         <HugeSpacer/>
-        <ScrollableAnchor id={'community'}>
+        <ScrollableAnchor id={'narratives'}>
           <Styles.H1>Narratives</Styles.H1>
         </ScrollableAnchor>
 
