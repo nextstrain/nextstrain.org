@@ -46,7 +46,7 @@ app.set('port', process.env.PORT || 5000);
 app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
 app.use(require('express-naked-redirect')({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
-app.use(favicon(path.join(__dirname, "favicon.png")));
+app.use(favicon(path.join(__dirname, "favicon.ico")));
 app.use('/favicon.png', express.static(path.join(__dirname, "favicon.png")));
 
 // Authentication (authn)
