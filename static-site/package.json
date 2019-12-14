@@ -31,6 +31,7 @@
     "heroku-postbuild": "gatsby build"
   },
   "dependencies": {
+    "@reach/router": "^1.2.1",
     "gatsby": "^1.9.256",
     "gatsby-link": "^1.6.7",
     "gatsby-plugin-catch-links": "^1.0.4",
