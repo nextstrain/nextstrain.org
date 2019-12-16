@@ -1,6 +1,7 @@
 /* eslint no-console: off */
 const path = require("path");
 const sslRedirect = require('heroku-ssl-redirect');
+const nakedRedirect = require('express-naked-redirect');
 const express = require("express");
 const expressStaticGzip = require("express-static-gzip");
 const favicon = require('serve-favicon');
@@ -57,7 +58,7 @@ if (production) app.enable("trust proxy");
 app.set('port', process.env.PORT || 5000);
 app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
-app.use(require('express-naked-redirect')({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
+app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
 app.use(favicon(relativePath("favicon.ico")));
 app.use('/favicon.png', express.static(relativePath("favicon.png")));
 
