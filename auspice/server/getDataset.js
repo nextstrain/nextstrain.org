@@ -20,23 +20,27 @@ const requestCertainFileType = async (res, req, additional, query) => {
 };
 
 
-const requestV1Dataset = async (res, metaJsonUrl, treeJsonUrl) => {
+/**
+ * Fetch dataset in v1 format (meta + tree files).
+ * Returns a array of [success {bool}, dataToSend or response code to return]
+ */
+const requestV1Dataset = async (metaJsonUrl, treeJsonUrl) => {
   utils.verbose(`Trying to request v1 datasets at: "${metaJsonUrl}" & "${treeJsonUrl}`);
   let data, datasetJson;
   try {
     data = await Promise.all([utils.fetchJSON(metaJsonUrl), utils.fetchJSON(treeJsonUrl)]);
   } catch (err) {
     utils.warn("Failed to fetch v1 dataset JSONs");
-    return res.sendStatus(404); // Not Found
+    return [false, 404]; // Not Found
   }
   try {
     datasetJson = auspice.convertFromV1({tree: data[1], meta: data[0]});
   } catch (err) {
     utils.warn("Failed to convert v1 dataset JSONs to v2");
-    return res.sendStatus(500); // Internal Server Error
+    return [false, 500]; // Internal Server Error
   }
   utils.verbose(`Success fetching & converting v1 auspice JSONs. Sending as a single v2 JSON.`);
-  return res.send(datasetJson);
+  return [true, datasetJson];
 };
 
 /**
@@ -49,13 +53,17 @@ const requestMainDataset = async (res, fetchUrls) => {
   /* try to stream the (v2+) dataset JSON as the response */
   const req = request
     .get(fetchUrls.main)
-    .on("response", (response) => {
+    .on("response", async (response) => { // eslint-disable-line consistent-return
       if (response.statusCode === 200) {
         utils.verbose(`Successfully streaming ${fetchUrls.main}.`);
         req.pipe(res);
       } else {
         utils.verbose(`The request for ${fetchUrls.main} returned ${response.statusCode}.`);
-        requestV1Dataset(res, fetchUrls.meta, fetchUrls.tree);
+        const [success, dataToReturn] = await requestV1Dataset(fetchUrls.meta, fetchUrls.tree);
+        if (success) {
+          return res.send(dataToReturn);
+        }
+        return res.sendStatus(dataToReturn);
       }
     });
 };
