@@ -92,7 +92,7 @@ function ErrorMessage({errorMessage}) {
       There seems to have been an error accessing that dataset.
       <p style={{fontSize: "14px"}}>
         {`Details: ${errorMessage}. Please `}
-        <a href={"mailto:hello@nextstrain,.org"} style={{color: "inherit", textDecoration: "underline"}}>
+        <a href={"mailto:hello@nextstrain.org"} style={{color: "inherit", textDecoration: "underline"}}>
           email us
         </a>
         {` if you think this is a bug.`}
