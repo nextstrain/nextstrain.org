@@ -34,6 +34,18 @@ const auspiceServerHandlers = require("./auspice/server");
 const authn = require("./authn");
 
 
+/* Path helpers for static assets, to make routes more readable.
+ */
+const relativePath = (...subpath) =>
+  path.join(__dirname, ...subpath);
+
+const gatsbyAssetPath = (...subpath) =>
+  relativePath("static-site", "public", ...subpath);
+
+const auspiceAssetPath = (...subpath) =>
+  relativePath("auspice", ...subpath);
+
+
 /* BASIC APP SETUP */
 // NOTE: order of app.get is first come first serve (https://stackoverflow.com/questions/32603818/order-of-router-precedence-in-express-js)
 const app = express();
@@ -43,73 +55,100 @@ const app = express();
 if (production) app.enable("trust proxy");
 
 app.set('port', process.env.PORT || 5000);
-app.use(favicon(path.join(__dirname, "favicon.png")));
-app.use('/favicon.png', express.static(path.join(__dirname, "favicon.png")));
 app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
 app.use(require('express-naked-redirect')({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
+app.use(favicon(relativePath("favicon.ico")));
+app.use('/favicon.png', express.static(relativePath("favicon.png")));
 
-// Authentication (authn)
-//
+
+/* Authentication (authn)
+ */
 authn.setup(app);
 
 
-/* simple logging for debugging */
-// app.use((req, res, next) => {console.log("LOG REQUEST  ", req.originalUrl); next();});
-
-/* handle redirects to outside sites */
-app.get("/auspice*", (req, res) => {
-  res.redirect('https://nextstrain.github.io/auspice/');
-});
-
-/* A portion of nextstrain.org is a "static" website build with gatsby
- * This is ./static-site, with it's own package.json etc
- * ./static-site/public contains the built files we need serve
+/* Redirects.
  */
-app.use(express.static(path.join(__dirname, "static-site", "public")));
-const gatsbyRoutes = [
-  "/",
-  "/about*",
-  "/blog*",
-  "/docs*",
-  "/reports*",
-  "/tutorial*",
-  "/community",
-  "/local*" // local shouldn't be handled by auspice for nextstrain.org
+app.route("/auspice")
+  .get((req, res) => res.redirect('https://nextstrain.github.io/auspice/'));
+
+
+/* Static assets.  Auspice hardcodes /dist/… in its Webpack config.
+ */
+app.use(express.static(gatsbyAssetPath()));
+
+app.route("/dist/*")
+  .all(expressStaticGzip(auspiceAssetPath()));
+
+
+/* Charon API used by Auspice.
+ */
+app.route("/charon/getAvailable")
+  .get(auspiceServerHandlers.getAvailable);
+
+app.route("/charon/getDataset")
+  .get(auspiceServerHandlers.getDataset);
+
+app.route("/charon/getNarrative")
+  .get(auspiceServerHandlers.getNarrative);
+
+app.route("/charon/getSourceInfo")
+  .get(auspiceServerHandlers.getSourceInfo);
+
+app.route("/charon/*")
+  .all((req, res) => res.status(404).end());
+
+
+/* Dataset and narrative paths hit Auspice's entrypoint.
+ */
+const coreBuilds = [
+  "/dengue",
+  "/ebola",
+  "/enterovirus",
+  "/flu",
+  "/lassa",
+  "/measles",
+  "/mers",
+  "/mumps",
+  "/seattleflu", // XXX TODO: Remove once PR #60 is merged.
+  "/tb",
+  "/WNV",
+  "/yellow-fever",
+  "/zika",
 ];
-app.get(gatsbyRoutes, (req, res) => {
-  utils.verbose(`Sending ${req.originalUrl} to gatsby as it matches a (hardcoded) gatsby route`);
-  res.sendFile(path.join(__dirname, "static-site", "public", "index.html"));
+
+const auspicePaths = [
+  ...coreBuilds,
+  ...coreBuilds.map(url => url + "/*"),
+  "/narratives",
+  "/narratives/*",
+  "/staging",
+  "/staging/*",
+
+  /* Auspice gets specific /community paths so it can show an index of datasets
+   * and narratives, but Gatsby gets top-level /community.
+   */
+  "/community/:user/:repo",
+  "/community/:user/:repo/*",
+
+  /* XXX TODO: Remove the following two lines once PR #59 is merged and replace
+   * with an appropriate /groups/… path pattern.
+   */
+  "/inrb-drc",
+  "/inrb-drc/*",
+];
+
+app.route(auspicePaths).get((req, res) => {
+  utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
+  res.sendFile(auspiceAssetPath("index.html"));
 });
 
 
-/* We use auspice to display phylogenomic data.
- * Our version of auspice is based off of https://github.com/nextstrain/auspice
- * but is built with custom extensions -- see "./src/auspiceConfig.json"
- * The built code is available in the "./auspice" directory.
- * Note that if you are developing auspice in the context of nextstrain.org, it's
- * easier to do this by using the auspice dev server. See docs.
+/* Everything else hits our Gatsby app's entrypoint.
  */
-
-/* Handle the auspice-derived requests ("charon") */
-app.get("/charon/getAvailable", auspiceServerHandlers.getAvailable);
-app.get("/charon/getDataset", auspiceServerHandlers.getDataset);
-app.get("/charon/getNarrative", auspiceServerHandlers.getNarrative);
-app.get("/charon/getSourceInfo", auspiceServerHandlers.getSourceInfo);
-app.get("/charon*", (req, res) => {
-  res.statusMessage = `Query unhandled: ${req.originalUrl}`;
-  utils.warn(res.statusMessage);
-  return res.status(500).end();
-});
-
-/* Any remaining paths go to auspice */
-app.use(expressStaticGzip(path.join(__dirname, "auspice", "dist")));
-app.get(["/dist*"], (req, res) => {
-  res.sendFile(path.join(__dirname, "auspice", req.originalUrl));
-});
 app.get("*", (req, res) => {
-  utils.verbose(`Sending ${req.originalUrl} to auspice (it handles the actual route!)`);
-  res.sendFile(path.join(__dirname, "auspice", "index.html"));
+  utils.verbose(`Sending Gatsby entrypoint for ${req.originalUrl}`);
+  res.sendFile(gatsbyAssetPath("index.html"));
 });
 
 
