@@ -15,11 +15,11 @@ rules:
   object-curly-spacing: off # allow { a: 1 } and {a: 1}
   block-spacing: off # same as above for function blocks on a single line
   dot-notation: off # allows someObject["a"] as well as someObject.a
-  comma-dangle: ["error", "never"]
+  comma-dangle: ["error", "only-multiline"]
   padded-blocks: off
   no-plusplus: off # we are old enought to use i++
   arrow-body-style: off
-  arrow-parens: ["error", "always"] # use brackets always, (a) => body // () => body // (a, b) => body
+  arrow-parens: off
   no-case-declarations: off # we don't surround case blocks with { } in our switch statements as we use fallthroughs deliberately
   one-var: off
   one-var-declaration-per-line: off

@@ -7,8 +7,6 @@ const favicon = require('serve-favicon');
 const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./auspice/server/utils");
-const auspiceServerHandlers = require("./auspice/server");
-const authn = require("./authn");
 
 const production = process.env.NODE_ENV === "production";
 
@@ -28,6 +26,12 @@ const parser = new argparse.ArgumentParser({
 parser.addArgument('--verbose', {action: "storeTrue", help: "verbose server logging"});
 const args = parser.parseArgs();
 global.verbose = args.verbose;
+
+
+// Import these after parsing CLI arguments and setting global.verbose so code
+// in them can use utils.verbose() at load time.
+const auspiceServerHandlers = require("./auspice/server");
+const authn = require("./authn");
 
 
 /* BASIC APP SETUP */

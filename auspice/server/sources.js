@@ -17,8 +17,11 @@ const S3 = new AWS.S3();
  */
 
 class Source {
+  static get _name() {
+    throw InvalidSourceImplementation("_name() must be implemented by subclasses");
+  }
   get name() {
-    throw InvalidSourceImplementation("name() must be implemented by subclasses");
+    return this.constructor._name;
   }
   get baseUrl() {
     throw InvalidSourceImplementation("baseUrl() must be implemented by subclasses");
@@ -100,7 +103,7 @@ class Narrative {
 }
 
 class CoreSource extends Source {
-  get name() { return "core"; }
+  static get _name() { return "core"; }
   get baseUrl() { return "http://data.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "master"; }
@@ -136,7 +139,7 @@ class CoreSource extends Source {
 }
 
 class CoreStagingSource extends CoreSource {
-  get name() { return "staging"; }
+  static get _name() { return "staging"; }
   get baseUrl() { return "http://staging.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "staging"; }
@@ -162,7 +165,7 @@ class CommunitySource extends Source {
     this.repoName = repoName;
   }
 
-  get name() { return "community"; }
+  static get _name() { return "community"; }
   get repo() { return `${this.owner}/${this.repoName}`; }
   get branch() { return "master"; }
   get baseUrl() { return `https://raw.githubusercontent.com/${this.repo}/${this.branch}/`; }
@@ -274,15 +277,12 @@ class CommunityNarrative extends Narrative {
   }
 }
 
-class PrivateS3Source extends Source {
-  dataset(pathParts) {
-    return new PrivateS3Dataset(this, pathParts);
+class S3Source extends Source {
+  get bucket() {
+    throw InvalidSourceImplementation("bucket() must be implemented by subclasses");
   }
-  narrative(pathParts) {
-    return new PrivateS3Narrative(this, pathParts);
-  }
-  static visibleToUser(user) { // eslint-disable-line no-unused-vars
-    throw InvalidSourceImplementation("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
+  get baseUrl() {
+    return `https://${this.bucket}.s3.amazonaws.com`;
   }
   async _listObjects() {
     // XXX TODO: This will only return the first 1000 objects.  That's fine for
@@ -339,6 +339,18 @@ class PrivateS3Source extends Source {
   }
 }
 
+class PrivateS3Source extends S3Source {
+  dataset(pathParts) {
+    return new PrivateS3Dataset(this, pathParts);
+  }
+  narrative(pathParts) {
+    return new PrivateS3Narrative(this, pathParts);
+  }
+  static visibleToUser(user) { // eslint-disable-line no-unused-vars
+    throw InvalidSourceImplementation("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
+  }
+}
+
 class PrivateS3Dataset extends Dataset {
   urlFor(type) {
     return S3.getSignedUrl("getObject", {
@@ -357,18 +369,38 @@ class PrivateS3Narrative extends Narrative {
   }
 }
 
-class InrbDrcSource extends PrivateS3Source {
-  get name() { return "inrb-drc"; }
-  get bucket() { return "nextstrain-inrb"; }
+class PublicGroupSource extends S3Source {
+  get bucket() { return `nextstrain-${this.name}`; }
+}
+
+class PrivateGroupSource extends PrivateS3Source {
+  get bucket() { return `nextstrain-${this.name}`; }
 
   static visibleToUser(user) {
-    return !!user && !!user.groups && user.groups.includes("inrb");
+    return !!user && !!user.groups && user.groups.includes(this._name);
   }
 }
 
-module.exports = new Map([
-  ["core", CoreSource],
-  ["staging", CoreStagingSource],
-  ["community", CommunitySource],
-  ["inrb-drc", InrbDrcSource]
-]);
+class InrbDrcSource extends PrivateGroupSource {
+  static get _name() { return "inrb-drc"; }
+
+  // INRB's bucket is named differently due to early adoption
+  get bucket() { return "nextstrain-inrb"; }
+}
+
+class SeattleFluSource extends PublicGroupSource {
+  static get _name() { return "seattleflu"; }
+}
+
+const sources = [
+  CoreSource,
+  CoreStagingSource,
+  CommunitySource,
+  InrbDrcSource,
+  SeattleFluSource,
+];
+
+const sourceMap = new Map(sources.map(s => [s._name, s]));
+utils.verbose("Sources are:", sourceMap);
+
+module.exports = sourceMap;
