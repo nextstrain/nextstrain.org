@@ -12,6 +12,15 @@ const getNarrative = async (req, res) => {
     return helpers.handleError(res, "No prefix in narrative URL query");
   }
 
+  /*
+   * "inrb-drc" was the first of the Nextstrain groups. Groups now live at
+   * `nextstrain.org/groups`, but we want to support old URLs for INRB DRC by
+   * redirecting requests from "/inrb-drc" to "/groups/inrb-drc".
+   */
+  if (prefix.startsWith('/inrb-drc')) {
+    return res.redirect("getNarrative?prefix=/groups" + prefix);
+  }
+
   const {source, prefixParts} = helpers.splitPrefixIntoParts(prefix);
 
   // Authorization
