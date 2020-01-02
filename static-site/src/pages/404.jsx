@@ -8,21 +8,27 @@ import Splash from "../components/splash";
 
 
 const FourOhFour = () => {
+  // Workaround so 404 page doesn't flash when pages are redirecting
+  // See github issue: https://github.com/gatsbyjs/gatsby/issues/5329#issuecomment-484741119
+  const browser = typeof window !== "undefined" && window;
+
   return (
-    <div className="index-container">
-      <Helmet title={config.siteTitle} />
-      <main>
-        <NavBar minified/>
-        <div className="container">
-          <ErrorContainer>
-            {"Oops - that page doesn't exist! (404)."}
-            <br/>
-            {"Here's the splash page instead..."}
-          </ErrorContainer>
-        </div>
-        <Splash />
-      </main>
-    </div>
+    browser && (
+      <div className="index-container">
+        <Helmet title={config.siteTitle} />
+        <main>
+          <NavBar minified/>
+          <div className="container">
+            <ErrorContainer>
+              {"Oops - that page doesn't exist! (404)."}
+              <br/>
+              {"Here's the splash page instead..."}
+            </ErrorContainer>
+          </div>
+          <Splash />
+        </main>
+      </div>
+    )
   );
 };
 
