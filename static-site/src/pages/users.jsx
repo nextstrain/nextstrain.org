@@ -38,7 +38,13 @@ const UserPage = (props) => {
       You&apos;re logged in as <strong>{this.state.user.username}</strong>.<br />
       You have access to the following private Nextstrain groups, which each
       contain a collection of datasets and/or narratives:
-      <strong>{this.state.user.groups.join(', ')}</strong>.<br />
+      <UserGroupsList>
+        {user.groups.map((group) => (
+          <li>
+            <a href={`/groups/${group}`}>{group}</a>
+          </li>
+        ))}
+      </UserGroupsList>
       <a href="/logout">Logout</a>
     </p>
   );
@@ -76,6 +82,11 @@ const UserContainer = styled.div`
   font-size: 28px;
   font-weight: 300;
   line-height: ${(props) => 1.4 * props.theme.niceLineHeight};
+`;
+
+const UserGroupsList = styled.ul`
+  display: table;
+  margin: 0 auto !important;
 `;
 
 export default UsersApp;
