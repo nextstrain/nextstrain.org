@@ -211,6 +211,11 @@ function setup(app) {
 
   // Provide the client-side app with info about the current user
   app.route("/whoami").get((req, res) => {
+    if (req.user && req.user.groups) {
+      // Filter user groups to match available Nextstrain sources
+      req.user.groups = req.user.groups.filter((group) => sources.has(group));
+    }
+
     res.format({
       html: () => res.redirect(
         req.user
