@@ -212,7 +212,10 @@ function setup(app) {
   // Provide the client-side app with info about the current user
   app.route("/whoami").get((req, res) => {
     res.format({
-      html: () => res.redirect("/users"),
+      html: () => res.redirect(
+        req.user
+          ? `/users/${req.user.username}`
+          : "/users"),
 
       // Express's JSON serialization drops keys with undefined values
       json: () => res.json({ user: req.user || null })

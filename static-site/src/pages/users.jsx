@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { Router, Redirect } from "@reach/router";
 import NavBar from '../components/nav-bar';
 import { Logos } from "../components/logos";
 
-class Users extends React.Component {
+class UsersApp extends React.Component {
   state = {
     user: undefined
   }
@@ -17,39 +18,50 @@ class Users extends React.Component {
     .catch((error) => console.error("Error: ", error));
   }
 
-  LoggedIn = () => (
+  render() {
+    return (
+      <Router>
+        {/* Only redirect to /users/<username> is a user is signed in */}
+        {this.state.user && <Redirect from="users" to={`users/${this.state.user.username}`}/>}
+        <UserPage path="users/*" user={this.state.user}/>
+      </Router>
+    );
+  }
+
+}
+
+const UserPage = (props) => {
+  const { user } = props;
+
+  const LoggedIn = () => (
     <p>
-      You&apos;re logged in as <strong>{this.state.user.username}</strong>.<br />
-      You are in the groups <strong>{this.state.user.groups.join(', ')}</strong>.<br />
+      You&apos;re logged in as <strong>{user.username}</strong>.<br />
+      You are in the groups <strong>{user.groups.join(', ')}</strong>.<br />
       <a href="/logout">Logout</a>
     </p>
   );
 
-  LoggedOut = () => (
+  const LoggedOut = () => (
     <p>
       You are not logged in.<br />
       <a href="/login">Login</a>
     </p>
-  )
+  );
 
-  render() {
-    if (this.state.user === undefined) return null;
-
-    return (
-      <div className="index-container">
-        <main>
-          <NavBar minified/>
-          <UserContainer>
-            {this.state.user
-              ? this.LoggedIn()
-              : this.LoggedOut()}
-          </UserContainer>
-          <Logos />
-        </main>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="index-container">
+      <main>
+        <NavBar minified/>
+        <UserContainer>
+          {user
+            ? LoggedIn()
+            : LoggedOut()}
+        </UserContainer>
+        <Logos />
+      </main>
+    </div>
+  );
+};
 
 const UserContainer = styled.div`
   max-width: 640px;
@@ -64,4 +76,4 @@ const UserContainer = styled.div`
   line-height: ${(props) => 1.4 * props.theme.niceLineHeight};
 `;
 
-export default Users;
+export default UsersApp;
