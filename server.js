@@ -125,7 +125,6 @@ const auspicePaths = [
   "/narratives/*",
   "/staging",
   "/staging/*",
-  "/groups",
   "/groups/*",
 
   /* Auspice gets specific /community paths so it can show an index of datasets
