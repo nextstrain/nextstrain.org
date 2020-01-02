@@ -15,7 +15,7 @@ const version = utils.getGitHash();
 const nextstrainAbout = `
   Nextstrain is an open-source project to harness the scientific and public health potential
   of pathogen genome data. This is the server behind nextstrain.org.
-  It delivers the static content (https://github.com/nextstrain/static) as well as the interactive 
+  It delivers the static content (https://github.com/nextstrain/static) as well as the interactive
   visualisation app auspice (https://github.com/nextstrain/auspice), with customisations.
 `;
 const parser = new argparse.ArgumentParser({
@@ -125,18 +125,14 @@ const auspicePaths = [
   "/narratives/*",
   "/staging",
   "/staging/*",
+  "/groups",
+  "/groups/*",
 
   /* Auspice gets specific /community paths so it can show an index of datasets
    * and narratives, but Gatsby gets top-level /community.
    */
   "/community/:user/:repo",
   "/community/:user/:repo/*",
-
-  /* XXX TODO: Remove the following two lines once PR #59 is merged and replace
-   * with an appropriate /groups/… path pattern.
-   */
-  "/inrb-drc",
-  "/inrb-drc/*",
 ];
 
 app.route(auspicePaths).get((req, res) => {
@@ -144,6 +140,10 @@ app.route(auspicePaths).get((req, res) => {
   res.sendFile(auspiceAssetPath("index.html"));
 });
 
+/* handle redirects for inrb-drc (first of the Nextstrain groups) */
+app.get("/inrb-drc*", (req, res) => {
+  res.redirect(`/groups${req.originalUrl}`);
+});
 
 /* Everything else hits our Gatsby app's entrypoint.
  */

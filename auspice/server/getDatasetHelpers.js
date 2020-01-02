@@ -36,9 +36,21 @@ const splitPrefixIntoParts = (prefix) => {
   /* The first part of the prefix is an optional source name.  The rest is the
    * source path parts.
    */
-  const sourceName = sources.has(prefixParts[0])
-    ? prefixParts.shift()
-    : "core";
+  let sourceName;
+
+  switch (prefixParts[0]) {
+    case "community":
+    case "staging":
+      sourceName = prefixParts.shift();
+      break;
+    case "groups":
+      prefixParts.shift();
+      sourceName = prefixParts.shift();
+      break;
+    default:
+      sourceName = "core";
+      break;
+  }
 
   const isNarrative = prefixParts[0] === "narratives";
 
@@ -72,8 +84,15 @@ const splitPrefixIntoParts = (prefix) => {
 const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
   const leadingParts = [];
 
-  if (source.name !== "core") {
-    leadingParts.push(source.name);
+  switch (source.name) {
+    case "core":
+      break;
+    case "community":
+    case "staging":
+      leadingParts.push(source.name);
+      break;
+    default:
+      leadingParts.push("groups", source.name);
   }
 
   if (isNarrative) {
@@ -210,4 +229,3 @@ module.exports = {
   unauthorized,
   parsePrefix
 };
-
