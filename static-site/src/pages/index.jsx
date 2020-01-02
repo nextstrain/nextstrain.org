@@ -8,6 +8,10 @@ import Splash from "../components/splash";
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   render() {
+    // Workaround so index page doesn't flash when pages are redirecting
+    // See github issue: https://github.com/gatsbyjs/gatsby/issues/5329#issuecomment-484741119
+    const browser = typeof window !== "undefined" && window;
+
     const postEdges = this.props.data.allMarkdownRemark.edges;
     return (
       <div className="index-container">
@@ -15,7 +19,7 @@ class Index extends React.Component {
         <SEO postEdges={postEdges} />
         <main>
           <NavBar location={this.props.location} />
-          <Splash />
+          {browser && <Splash />}
         </main>
       </div>
     );
