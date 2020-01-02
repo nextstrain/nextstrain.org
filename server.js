@@ -33,6 +33,7 @@ global.verbose = args.verbose;
 // in them can use utils.verbose() at load time.
 const auspiceServerHandlers = require("./auspice/server");
 const authn = require("./authn");
+const sources = require("./auspice/server/sources");
 
 
 /* Path helpers for static assets, to make routes more readable.
@@ -118,6 +119,8 @@ const coreBuilds = [
   "/zika",
 ];
 
+const groups = [...sources.keys()].filter((k) => !["core", "staging", "community"].includes(k));
+
 const auspicePaths = [
   ...coreBuilds,
   ...coreBuilds.map(url => url + "/*"),
@@ -125,7 +128,8 @@ const auspicePaths = [
   "/narratives/*",
   "/staging",
   "/staging/*",
-  "/groups/*",
+  ...groups.map((group) => `/groups/${group}`),
+  ...groups.map((group) => `/groups/${group}/*`),
 
   /* Auspice gets specific /community paths so it can show an index of datasets
    * and narratives, but Gatsby gets top-level /community.
