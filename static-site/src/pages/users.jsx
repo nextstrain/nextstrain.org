@@ -36,7 +36,14 @@ const UserPage = (props) => {
   const LoggedIn = () => (
     <p>
       You&apos;re logged in as <strong>{user.username}</strong>.<br />
-      You are in the groups <strong>{user.groups.join(', ')}</strong>.<br />
+      You have access to the following groups:
+      <UserGroupsList>
+        {user.groups.map((group) => (
+          <li>
+            <a href={`/groups/${group}`}>{group}</a>
+          </li>
+        ))}
+      </UserGroupsList>
       <a href="/logout">Logout</a>
     </p>
   );
@@ -74,6 +81,11 @@ const UserContainer = styled.div`
   font-size: 28px;
   font-weight: 300;
   line-height: ${(props) => 1.4 * props.theme.niceLineHeight};
+`;
+
+const UserGroupsList = styled.ul`
+  display: table;
+  margin: 0 auto !important;
 `;
 
 export default UsersApp;
