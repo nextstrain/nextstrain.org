@@ -37,7 +37,7 @@ class Cards extends React.Component {
                           <Styles.CardTitle>
                             {d.title}
                           </Styles.CardTitle>
-                          <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} />
+                          <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} color={d.color}/>
                         </a>
                       </Styles.CardInner>
                     </Styles.CardOuter>
