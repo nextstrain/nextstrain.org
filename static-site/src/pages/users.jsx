@@ -1,41 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { Router, Redirect } from "@reach/router";
+import UserDataWrapper from "../layouts/userDataWrapper";
 import NavBar from '../components/nav-bar';
 import { Logos } from "../components/logos";
-
-class UsersApp extends React.Component {
-  state = {
-    user: undefined
-  }
-
-  // Cannot use async componentDidMount() in current gatsby version
-  // see github issue: https://github.com/gatsbyjs/gatsby/issues/3972
-  componentDidMount() {
-    fetch('/whoami', { headers: { Accept: 'application/json' }})
-    .then((response) => response.json())
-    .then((user) => this.setState((state) => ({...state, ...user})))
-    .catch((error) => console.error("Error: ", error));
-  }
-
-  render() {
-    return (
-      <Router>
-        {/* Only redirect to /users/<username> is a user is signed in */}
-        {this.state.user && <Redirect from="users" to={`users/${this.state.user.username}`}/>}
-        <UserPage path="users/*" user={this.state.user}/>
-      </Router>
-    );
-  }
-
-}
 
 const UserPage = (props) => {
   const { user } = props;
 
   const LoggedIn = () => (
     <p>
-      You&apos;re logged in as <strong>{this.state.user.username}</strong>.<br />
+      You&apos;re logged in as <strong>{user.username}</strong>.<br />
       You have access to the following private Nextstrain groups, which each
       contain a collection of datasets and/or narratives:
       <UserGroupsList>
@@ -57,17 +31,12 @@ const UserPage = (props) => {
   );
 
   return (
-    <div className="index-container">
-      <main>
-        <NavBar />
-        <UserContainer>
-          {user
-            ? LoggedIn()
-            : LoggedOut()}
-        </UserContainer>
-        <Logos />
-      </main>
-    </div>
+    <UserContainer>
+      {user
+        ? LoggedIn()
+        : LoggedOut()
+      }
+    </UserContainer>
   );
 };
 
@@ -89,4 +58,18 @@ const UserGroupsList = styled.ul`
   margin: 0 auto !important;
 `;
 
-export default UsersApp;
+const Users = () => {
+  return (
+    <div className="index-container">
+      <main>
+        <UserDataWrapper>
+          <NavBar />
+          <UserPage/>
+          <Logos />
+        </UserDataWrapper>
+      </main>
+    </div>
+  );
+};
+
+export default Users;

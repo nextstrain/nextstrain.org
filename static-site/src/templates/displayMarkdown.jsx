@@ -5,6 +5,7 @@ import SEO from "../components/SEO/SEO";
 import NavBar from '../components/nav-bar';
 import Sidebar from "../components/Sidebar";
 import { CenteredContainer, MarkdownContent } from "../layouts/generalComponents";
+import UserDataWrapper from "../layouts/userDataWrapper";
 import Footer from "../components/Footer";
 
 const parseSlug = require("../util/parseSlug");
@@ -77,7 +78,9 @@ export default class GenericTemplate extends React.Component {
         <SEO postPath={slug} postNode={postNode} postSEO />
         <SidebarBodyFlexContainer className="container">
           <SidebarContainer sidebarOpen={this.state.sidebarOpen}>
-            <NavBar minified location={this.props.location} />
+            <UserDataWrapper>
+              <NavBar minified location={this.props.location} />
+            </UserDataWrapper>
             <Sidebar
               selectedSlug={slug}
               allNodes={this.props.data.allSlugs.edges}

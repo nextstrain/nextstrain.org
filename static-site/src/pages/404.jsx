@@ -5,6 +5,7 @@ import styled from "styled-components";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
+import UserDataWrapper from "../layouts/userDataWrapper";
 
 
 const FourOhFour = () => {
@@ -17,15 +18,17 @@ const FourOhFour = () => {
       <div className="index-container">
         <Helmet title={config.siteTitle} />
         <main>
-          <NavBar minified/>
-          <div className="container">
-            <ErrorContainer>
-              {"Oops - that page doesn't exist! (404)."}
-              <br/>
-              {"Here's the splash page instead..."}
-            </ErrorContainer>
-          </div>
-          <Splash />
+          <UserDataWrapper>
+            <NavBar minified/>
+            <div className="container">
+              <ErrorContainer>
+                {"Oops - that page doesn't exist! (404)."}
+                <br/>
+                {"Here's the splash page instead..."}
+              </ErrorContainer>
+            </div>
+            <Splash />
+          </UserDataWrapper>
         </main>
       </div>
     )

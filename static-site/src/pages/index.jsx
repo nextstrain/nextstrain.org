@@ -4,6 +4,7 @@ import SEO from "../components/SEO/SEO";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
+import UserDataWrapper from "../layouts/userDataWrapper";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
@@ -18,8 +19,10 @@ class Index extends React.Component {
         <Helmet title={config.siteTitle} />
         <SEO postEdges={postEdges} />
         <main>
-          <NavBar location={this.props.location} />
-          {browser && <Splash />}
+          <UserDataWrapper>
+            <NavBar location={this.props.location} />
+            {browser && <Splash />}
+          </UserDataWrapper>
         </main>
       </div>
     );
