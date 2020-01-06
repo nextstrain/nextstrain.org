@@ -122,6 +122,8 @@ const coreBuilds = [
 const groups = [...sources.keys()].filter((k) => !["core", "staging", "community"].includes(k));
 
 const auspicePaths = [
+  "/status",
+  "/status/*",
   ...coreBuilds,
   ...coreBuilds.map(url => url + "/*"),
   "/narratives",
