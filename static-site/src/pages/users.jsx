@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import styled from "styled-components";
 import UserDataWrapper from "../layouts/userDataWrapper";
 import NavBar from '../components/nav-bar';
@@ -8,10 +8,13 @@ const UserPage = (props) => {
   const { user } = props;
 
   const LoggedIn = () => (
-    <p>
-      You&apos;re logged in as <strong>{user.username}</strong>.<br />
-      You have access to the following private Nextstrain groups, which each
-      contain a collection of datasets and/or narratives:
+    <Fragment>
+      You&apos;re logged in as <strong>{user.username}</strong>.
+      <SubText>
+        You have access to the following private Nextstrain groups, which each
+        contain a collection of datasets and/or narratives:
+      </SubText>
+
       <UserGroupsList>
         {user.groups.map((group) => (
           <li>
@@ -20,7 +23,7 @@ const UserPage = (props) => {
         ))}
       </UserGroupsList>
       <a href="/logout">Logout</a>
-    </p>
+    </Fragment>
   );
 
   const LoggedOut = () => (
@@ -48,9 +51,14 @@ const UserContainer = styled.div`
   margin-bottom: 0px;
   margin-left: auto;
   text-align: center;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 300;
   line-height: ${(props) => 1.4 * props.theme.niceLineHeight};
+`;
+
+const SubText = styled.p`
+  line-height: ${(props) => props.theme.niceLineHeight};
+  font-size: 18px;
 `;
 
 const UserGroupsList = styled.ul`
