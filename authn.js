@@ -73,7 +73,9 @@ function setup(app) {
           Username: profile.username
         }).promise();
 
-        const groups = response.Groups.map((g) => g.GroupName);
+        const groups = response.Groups
+          .map((g) => g.GroupName)
+          .filter((g) => sources.has(g));
 
         // All users are ok, as we control the entire user pool.
         return done(null, {...profile, groups});
@@ -211,11 +213,6 @@ function setup(app) {
 
   // Provide the client-side app with info about the current user
   app.route("/whoami").get((req, res) => {
-    if (req.user && req.user.groups) {
-      // Filter user groups to match available Nextstrain sources
-      req.user.groups = req.user.groups.filter((group) => sources.has(group));
-    }
-
     res.format({
       html: () => res.redirect(
         req.user
