@@ -10,6 +10,7 @@ import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import Footer from "../Footer";
+import UserGroups from "./userGroups";
 
 class Splash extends React.Component {
   constructor() {
@@ -50,6 +51,8 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <HugeSpacer/>
+
+        {this.props.user && <UserGroups user={this.props.user}/>}
 
         <ScrollableAnchor id={'pathogens'}>
           <Styles.H1>Explore pathogens</Styles.H1>
