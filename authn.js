@@ -73,12 +73,17 @@ function setup(app) {
           Username: profile.username
         }).promise();
 
-        const groups = response.Groups
-          .map((g) => g.GroupName)
-          .filter((g) => sources.has(g));
+        const groups = response.Groups.map((g) => g.GroupName);
 
         // All users are ok, as we control the entire user pool.
-        return done(null, {...profile, groups});
+        const user = {...profile, groups};
+
+        user.visibleGroups = Array.from(sources.values())
+          .filter(source => source.visibleToUser(user))
+          .map(source => source._name)
+          .filter(source => groups.includes(source));
+
+        return done(null, user);
       }
     )
   );

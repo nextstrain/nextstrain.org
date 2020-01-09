@@ -16,7 +16,7 @@ const UserPage = (props) => {
       </SubText>
 
       <UserGroupsList>
-        {user.groups.map((group) => (
+        {user.visibleGroups.map((group) => (
           <li>
             <a href={`/groups/${group}`}>{group}</a>
           </li>

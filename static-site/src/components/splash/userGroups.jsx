@@ -9,7 +9,7 @@ const UserGroups = (props) => {
 
   const colors = [...theme.titleColors];
 
-  const groupCards = props.user.groups.map((group) => {
+  const groupCards = props.user.visibleGroups.map((group) => {
     const groupColor = colors[0];
     colors.push(colors.shift());
 
