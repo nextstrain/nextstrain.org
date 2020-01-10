@@ -51,8 +51,7 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <HugeSpacer/>
-
-        {this.props.user && <UserGroups user={this.props.user}/>}
+        {this.props.user && <UserGroups user={this.props.user} visibleGroups={this.props.visibleGroups} />}
 
         <ScrollableAnchor id={'pathogens'}>
           <Styles.H1>Explore pathogens</Styles.H1>

@@ -5,7 +5,7 @@ import NavBar from '../components/nav-bar';
 import { Logos } from "../components/logos";
 
 const UserPage = (props) => {
-  const { user } = props;
+  const { user, visibleGroups } = props;
 
   const LoggedIn = () => (
     <Fragment>
@@ -16,7 +16,7 @@ const UserPage = (props) => {
       </SubText>
 
       <UserGroupsList>
-        {user.visibleGroups.map((group) => (
+        {visibleGroups.map((group) => (
           <li>
             <a href={`/groups/${group}`}>{group}</a>
           </li>

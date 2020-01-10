@@ -2,7 +2,8 @@ import React from "react";
 
 export default class UserDataWrapper extends React.Component {
   state = {
-    user: undefined
+    user: undefined,
+    visibleGroups: undefined,
   }
 
   componentDidMount() {
@@ -21,7 +22,8 @@ export default class UserDataWrapper extends React.Component {
     const childElements = React.Children.map(children, child =>
       // Passes the user state as a prop to all children elements via the prop `user`
       child && React.cloneElement(child, {
-        user: this.state.user
+        user: this.state.user,
+        visibleGroups: this.state.visibleGroups,
       })
     );
     return <div>{ childElements }</div>;

@@ -76,14 +76,7 @@ function setup(app) {
         const groups = response.Groups.map((g) => g.GroupName);
 
         // All users are ok, as we control the entire user pool.
-        const user = {...profile, groups};
-
-        user.visibleGroups = Array.from(sources.values())
-          .filter(source => source.visibleToUser(user))
-          .map(source => source._name)
-          .filter(source => groups.includes(source));
-
-        return done(null, user);
+        return done(null, {...profile, groups});
       }
     )
   );
@@ -216,16 +209,37 @@ function setup(app) {
     });
   });
 
+  /**
+   * Returns an array of names of Nextstrain groups that are visible to a
+   * given *user*.
+   *
+   * FIX: Contains a hard-coded assumption that all Nextstrain groups match
+   * their corresponding group name exactly.
+   * See <https://github.com/nextstrain/nextstrain.org/issues/76> for more
+   * context and to track this issue.
+   *
+   * @param {Object} user
+   * @returns {Array}
+   */
+  const visibleGroups = (user) => Array.from(sources.values())
+    .filter(source => source.visibleToUser(user))
+    .map(source => source._name)
+    .filter(source => user.groups.includes(source));
+
   // Provide the client-side app with info about the current user
   app.route("/whoami").get((req, res) => {
-    res.format({
+
+    return res.format({
       html: () => res.redirect(
         req.user
           ? `/users/${req.user.username}`
           : "/users"),
 
       // Express's JSON serialization drops keys with undefined values
-      json: () => res.json({ user: req.user || null })
+      json: () => res.json({
+        user: req.user || null,
+        visibleGroups: (req.user && req.user.groups) ? visibleGroups(req.user) : []
+      })
     });
   });
 
