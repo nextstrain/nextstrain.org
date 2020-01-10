@@ -56,6 +56,7 @@
     "gatsby-transformer-remark": "^2.6.48",
     "lodash": "^4.17.15",
     "lodash-webpack-plugin": "^0.11.4",
+    "prismjs": "^1.18.0",
     "prop-types": "^15.6.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
