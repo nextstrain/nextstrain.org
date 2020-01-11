@@ -381,6 +381,10 @@ class PrivateGroupSource extends PrivateS3Source {
   }
 }
 
+class BlabSource extends PublicGroupSource {
+  static get _name() { return "blab"; }
+}
+
 class InrbDrcSource extends PrivateGroupSource {
   static get _name() { return "inrb-drc"; }
 
@@ -396,6 +400,7 @@ const sources = [
   CoreSource,
   CoreStagingSource,
   CommunitySource,
+  BlabSource,
   InrbDrcSource,
   SeattleFluSource,
 ];
