@@ -6,6 +6,7 @@ import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
 import UserDataWrapper from "../layouts/userDataWrapper";
+import MainLayout from "../components/layout";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
@@ -16,16 +17,18 @@ class Index extends React.Component {
 
     const postEdges = this.props.data.allMarkdownRemark.edges;
     return (
-      <div className="index-container">
-        <Helmet title={config.siteTitle} />
-        <SEO postEdges={postEdges} />
-        <main>
-          <UserDataWrapper>
-            <NavBar location={this.props.location} />
-            {browser && <Splash />}
-          </UserDataWrapper>
-        </main>
-      </div>
+      <MainLayout>
+        <div className="index-container">
+          <Helmet title={config.siteTitle} />
+          <SEO postEdges={postEdges} />
+          <main>
+            <UserDataWrapper>
+              <NavBar location={this.props.location} />
+              {browser && <Splash />}
+            </UserDataWrapper>
+          </main>
+        </div>
+      </MainLayout>
     );
   }
 }

@@ -8,6 +8,7 @@ import Sidebar from "../components/Sidebar";
 import { CenteredContainer, MarkdownContent } from "../layouts/generalComponents";
 import UserDataWrapper from "../layouts/userDataWrapper";
 import Footer from "../components/Footer";
+import MainLayout from "../components/layout";
 
 const parseSlug = require("../util/parseSlug");
 
@@ -72,7 +73,7 @@ export default class GenericTemplate extends React.Component {
     const post = postNode.frontmatter;
     const showAuthor = ["blog", "reports"].indexOf(parseSlug.parseSlug(slug).section) !== -1;
     return (
-      <div>
+      <MainLayout>
         <Helmet>
           <title>{post.title}</title>
         </Helmet>
@@ -108,7 +109,7 @@ export default class GenericTemplate extends React.Component {
           </ContentContainer>
           {this.state.mobileDisplay ? this.renderMobileTogglesAndShading() : null}
         </SidebarBodyFlexContainer>
-      </div>
+      </MainLayout>
     );
   }
 }

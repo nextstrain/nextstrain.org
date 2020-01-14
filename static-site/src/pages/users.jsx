@@ -3,6 +3,7 @@ import styled from "styled-components";
 import UserDataWrapper from "../layouts/userDataWrapper";
 import NavBar from '../components/nav-bar';
 import { Logos } from "../components/logos";
+import MainLayout from "../components/layout";
 
 const UserPage = (props) => {
   const { user, visibleGroups } = props;
@@ -34,12 +35,14 @@ const UserPage = (props) => {
   );
 
   return (
-    <UserContainer>
-      {user
-        ? LoggedIn()
-        : LoggedOut()
-      }
-    </UserContainer>
+    <MainLayout>
+      <UserContainer>
+        {user
+          ? LoggedIn()
+          : LoggedOut()
+        }
+      </UserContainer>
+    </MainLayout>
   );
 };
 
