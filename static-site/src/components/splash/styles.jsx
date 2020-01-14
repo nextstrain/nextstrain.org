@@ -128,6 +128,10 @@ const ButtonContainer = styled.button`
   }
 `;
 
+export const StrongerText = styled.span`
+  font-weight: 500;
+`;
+
 export const Button = ({to, children}) => (
   <a href={to}>
     <ButtonContainer>

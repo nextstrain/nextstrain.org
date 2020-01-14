@@ -4,6 +4,7 @@ import React from "react";
 import * as Styles from "./styles";
 import { H1 } from "../splash/styles";
 import { MediumSpacer } from "../../layouts/generalComponents";
+import Padlock from "./padlock";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Cards extends React.Component {
@@ -37,6 +38,11 @@ class Cards extends React.Component {
                           <Styles.CardTitle>
                             {d.title}
                           </Styles.CardTitle>
+                          {d.private ? (
+                            <Styles.BottomRightLabel>
+                              <Padlock/>
+                            </Styles.BottomRightLabel>
+                          ) : null}
                           <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} color={d.color}/>
                         </a>
                       </Styles.CardInner>

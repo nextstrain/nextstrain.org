@@ -48,6 +48,19 @@ export const CardTitle = styled.div`
   background: rgba(0, 0, 0, 0.7);
 `;
 
+export const BottomRightLabel = styled.div`
+  font-family: ${(props) => props.theme.generalFont};
+  font-weight: 500;
+  font-size: 26px;
+  position: absolute;
+  border-radius: 3px;
+  padding: 10px 20px 10px 20px;
+  bottom: 20px;
+  right: 0px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+`;
+
 export const MoreIconContainer = styled.div`
   cursor: pointer;
   display: flex;

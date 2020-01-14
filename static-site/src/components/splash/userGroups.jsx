@@ -15,9 +15,10 @@ const UserGroups = (props) => {
     return (
       {
         img: "empty.png",
-        url: `/groups/${group}`,
-        title: group,
-        color: groupColor
+        url: `/groups/${group.name}`,
+        title: group.name,
+        color: groupColor,
+        private: group.private
       }
     );
   });
@@ -25,13 +26,15 @@ const UserGroups = (props) => {
   return (
     <Fragment>
       <ScrollableAnchor id={'groups'}>
-        <Styles.H1>Private Nextstrain Groups</Styles.H1>
+        <Styles.H1>Nextstrain Groups</Styles.H1>
       </ScrollableAnchor>
 
       <FlexCenter>
         <Styles.CenteredFocusParagraph>
-          Nextstrain groups are collections of datasets with controlled access.
-          You ({props.user.username}) have access to the following groups:
+          Nextstrain groups represent collections of datasets, potentially with controlled access.
+          You (
+          <Styles.StrongerText>{props.user.username}</Styles.StrongerText>
+          ) have access to the following groups (a padlock icon indicates a private group):
         </Styles.CenteredFocusParagraph>
       </FlexCenter>
 
