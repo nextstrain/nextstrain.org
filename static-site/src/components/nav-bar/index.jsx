@@ -35,10 +35,14 @@ const NavLogoCharacter = styled.span`
   font-size: 20px;
   font-weight: 400;
   cursor: pointer;
-  color: ${(props) => props.theme.titleColors[props.colorIndex]};
+  color: ${(props) => {
+    // TODO -- the theme is not available as a prop for some reason
+    // return props.theme.titleColors[props.colorIndex];
+    return "black";
+  }};
 `;
 
-const NavLink = styled(Link)`
+const NavLink = styled((props) => <Link {...props} />)`
   padding-left: ${(props) => props.minified ? '6px' : '12px'};
   padding-right: ${(props) => props.minified ? '6px' : '12px'};
   padding-top: 20px;
