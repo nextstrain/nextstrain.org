@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import { graphql } from "gatsby";
 import SEO from "../components/SEO/SEO";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
