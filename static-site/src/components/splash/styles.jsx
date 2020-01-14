@@ -67,7 +67,7 @@ export const FocusParagraph = styled.p`
   line-height: ${(props) => props.theme.niceLineHeight};
 `;
 
-export const IconParagraph = styled.p`
+export const IconParagraph = styled.div`
   margin-top: 0px;
   margin-right: auto;
   margin-bottom: 0px;
