@@ -10,7 +10,7 @@ Here we predominantly use it to set the slug (the URL)
 and the order ([chaper, page])
 NOTE that for static pages, the slug is set in createPages (below)
 NOTE this should probably be moved into createPages */
-exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
+exports.onCreateNode = ({node, actions, getNode}) => {
   /* for markdown files, turn (e.g.)
    * /content/reports/01-flu-vaccine-selection/2015-september into
    * /content/reports/flu-vaccine-selection/2015-september
@@ -43,31 +43,31 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
     }
     /* step two: modify the node data */
     if (chapter.name) {
-      boundActionCreators.createNodeField({
+      actions.createNodeField({
         node,
         name: "slug",
         value: `/${section}/${chapter.name}/${post.name}`
       });
       // console.log(`${parsedFilePath.dir}/${parsedFilePath.name} (CHAPTERS)-> /${section}/${chapter.name}/${post.name}. Chapter order: ${chapter.order}. Post Order: ${post.order}`)
-      boundActionCreators.createNodeField({
+      actions.createNodeField({
         node,
         name: "chapterOrder",
         value: chapter.order
       });
     } else {
-      boundActionCreators.createNodeField({
+      actions.createNodeField({
         node,
         name: "slug",
         value: `/${section}/${post.name}`
       });
       // console.log(`${parsedFilePath.dir}/${parsedFilePath.name} -> /${section}/${post.name}. Post Order: ${post.order}`)
-      boundActionCreators.createNodeField({
+      actions.createNodeField({
         node,
         name: "chapterOrder",
         value: "00" // this means we don't have chapters! */
       });
     }
-    boundActionCreators.createNodeField({
+    actions.createNodeField({
       node,
       name: "postOrder",
       value: post.order
@@ -77,8 +77,8 @@ exports.onCreateNode = ({node, boundActionCreators, getNode}) => {
 };
 
 /* createPages essentially defines all the URLs and which component gets called to display them */
-exports.createPages = ({graphql, boundActionCreators}) => {
-  const {createPage, createRedirect} = boundActionCreators;
+exports.createPages = ({graphql, actions}) => {
+  const {createPage, createRedirect} = actions;
 
   /* statically defined pages (i.e. not generated from GraphQL & markdown) */
   /* The context is passed as props to the component as well as into the component's GraphQL query. */
