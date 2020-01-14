@@ -1,6 +1,6 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
-import Link from 'gatsby-link';
+import {Link} from 'gatsby';
 import { tweets } from "./tweets";
 import Cards from "../Cards";
 import coreCards from "../Cards/coreCards";

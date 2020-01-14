@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'gatsby-link';
+import {Link} from 'gatsby';
 import styled from 'styled-components';
 import { startsWith } from "lodash";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
