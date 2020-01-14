@@ -26,6 +26,9 @@ class Source {
   get baseUrl() {
     throw InvalidSourceImplementation("baseUrl() must be implemented by subclasses");
   }
+  static isGroup() { /* is the source a "nextstrain group"? */
+    return false;
+  }
   dataset(pathParts) {
     return new Dataset(this, pathParts);
   }
@@ -371,6 +374,9 @@ class PrivateS3Narrative extends Narrative {
 
 class PublicGroupSource extends S3Source {
   get bucket() { return `nextstrain-${this.name}`; }
+  static isGroup() {
+    return true;
+  }
 }
 
 class PrivateGroupSource extends PrivateS3Source {
@@ -378,6 +384,9 @@ class PrivateGroupSource extends PrivateS3Source {
 
   static visibleToUser(user) {
     return !!user && !!user.groups && user.groups.includes(this._name);
+  }
+  static isGroup() {
+    return true;
   }
 }
 

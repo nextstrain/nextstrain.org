@@ -15,8 +15,8 @@ const UserGroups = (props) => {
     return (
       {
         img: "empty.png",
-        url: `/groups/${group}`,
-        title: group,
+        url: `/groups/${group.name}`,
+        title: group.name,
         color: groupColor
       }
     );
