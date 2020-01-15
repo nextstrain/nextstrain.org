@@ -180,11 +180,10 @@ exports.createPages = ({graphql, actions}) => {
             });
           }
         });
-
         // Create users page
         createPage({
           path: "/users",
-          matchPath: "/users/:username",
+          matchPath: "/users/*",
           component: path.resolve("src/pages/users.jsx")
         });
       })
