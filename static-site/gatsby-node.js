@@ -184,7 +184,7 @@ exports.createPages = ({graphql, actions}) => {
         createPage({
           path: "/users",
           matchPath: "/users/*",
-          component: path.resolve("src/pages/users.jsx")
+          component: path.resolve("src/sections/users.jsx")
         });
       })
     );
