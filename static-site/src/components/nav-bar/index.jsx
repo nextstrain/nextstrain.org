@@ -1,8 +1,9 @@
 import React from "react";
 import {Link} from 'gatsby';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import { startsWith } from "lodash";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
+
 
 const NavContainer = styled.div`
   display: flex;
@@ -45,26 +46,38 @@ const NavLogoCharacter = styled.span`
   }};
 `;
 
-const NavLink = styled((props) => <Link {...props} />)`
+const baseLinkCss = css`
   padding-left: ${(props) => props.minified ? '6px' : '12px'};
   padding-right: ${(props) => props.minified ? '6px' : '12px'};
   padding-top: 20px;
   padding-bottom: 20px;
   text-decoration: none !important;
-  cursor: pointer;
   font-size: ${(props) => props.minified ? '12px' : '16px'} !important;
   font-weight: 400;
-  color: ${(props) => props.minified ? '#000000' : props.theme.darkGrey} !important;
 `;
 
-const NavLinkActive = styled.div`
-  padding-left: ${(props) => props.minified ? '6px' : '12px'};
-  padding-right: ${(props) => props.minified ? '6px' : '12px'};
-  padding-top: 20px;
-  padding-bottom: 20px;
-  text-decoration: none;
-  font-size: ${(props) => props.minified ? '12px' : '16px'};
-  font-weight: 400;
+/** Link which, if relative, will have event handlers attached by gatsby.
+ * This means it _won't_ be seen by the server!
+ */
+const NavLinkToBeHandledByGatsby = styled((props) => <Link {...props} />)`
+  ${baseLinkCss}
+  color: ${(props) => props.minified ? '#000000' : props.theme.darkGrey} !important;
+  cursor: pointer;
+`;
+
+/** Link which shouldn't have any event handlers attached by gatsby. This means it'll go to the server
+ * even if it's a relative link, which is essential for some functionality, but can cause
+ * a page flash
+ */
+const NavLinkToGoToServer = styled.a`
+  ${baseLinkCss}
+  color: ${(props) => props.minified ? '#000000' : props.theme.darkGrey} !important;
+  cursor: pointer;
+`;
+
+/* Looks like a nav link but can't be clicked */
+const NavLinkInactive = styled.div`
+  ${baseLinkCss}
   color: ${(props) => props.theme.brandColor};
 `;
 
@@ -100,30 +113,29 @@ class NavBar extends React.Component {
     );
   }
 
-  getLink(name, url, selected) {
-    return (
-      selected ?
-        <NavLinkActive minified={this.props.minified ? 1 : 0}>
-          {name}
-        </NavLinkActive>
-        :
-        <NavLink to={url} minified={this.props.minified ? 1 : 0}>
-          {name}
-        </NavLink>
-    );
-  }
-
   render() {
+    const minified = this.props.minified ? 1 : 0;
     return (
       <NavContainer>
         {this.getLogo()}
         {this.getLogoType()}
         <div style={{flex: 5}}/>
-        {this.getLink("DOCS", "/docs", this.selectedClass("docs"))}
-        {this.getLink("BLOG", "/blog", this.selectedClass("blog"))}
-        {this.props.user
-          ? this.getLink(`👤 ${this.props.user.username}`, "/whoami")
-          : this.getLink("LOGIN", "/login", this.selectedClass("login"))}
+        {this.selectedClass("docs") ?
+          <NavLinkInactive minified={minified}>DOCS</NavLinkInactive> :
+          <NavLinkToBeHandledByGatsby minified={minified} to="/docs">DOCS</NavLinkToBeHandledByGatsby>
+        }
+        {this.selectedClass("blog") ?
+          <NavLinkInactive minified={minified}>BLOG</NavLinkInactive> :
+          <NavLinkToBeHandledByGatsby minified={minified} to="/blog">BLOG</NavLinkToBeHandledByGatsby>
+        }
+        {this.props.user ? (
+          <NavLinkToGoToServer minified={minified} href="/whoami">
+            <span role="img" aria-labelledby="userIcon">👤</span>
+            {` ${this.props.user.username}`}
+          </NavLinkToGoToServer>
+        ) :
+          <NavLinkToGoToServer minified={minified} href="/login">LOGIN</NavLinkToGoToServer>
+        }
         <div style={{width: this.props.minified ? 12 : 0 }}/>
       </NavContainer>
     );
