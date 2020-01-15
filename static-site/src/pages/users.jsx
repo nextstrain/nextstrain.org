@@ -35,14 +35,12 @@ const UserPage = (props) => {
   );
 
   return (
-    <MainLayout>
-      <UserContainer>
-        {user
-          ? LoggedIn()
-          : LoggedOut()
-        }
-      </UserContainer>
-    </MainLayout>
+    <UserContainer>
+      {user
+        ? LoggedIn()
+        : LoggedOut()
+      }
+    </UserContainer>
   );
 };
 
@@ -70,16 +68,19 @@ const UserGroupsList = styled.ul`
 `;
 
 const Users = () => {
+  console.log("<Users>");
   return (
-    <div className="index-container">
-      <main>
-        <UserDataWrapper>
-          <NavBar />
-          <UserPage/>
-          <Logos />
-        </UserDataWrapper>
-      </main>
-    </div>
+    <MainLayout>
+      <div className="index-container">
+        <main>
+          <UserDataWrapper>
+            <NavBar />
+            <UserPage/>
+            <Logos />
+          </UserDataWrapper>
+        </main>
+      </div>
+    </MainLayout>
   );
 };
 
