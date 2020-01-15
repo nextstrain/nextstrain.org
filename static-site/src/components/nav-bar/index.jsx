@@ -42,7 +42,7 @@ const NavLogoCharacter = styled.span`
       console.log("ERROR in props.", props);
       return "black";
     }
-  }}
+  }};
 `;
 
 const NavLink = styled((props) => <Link {...props} />)`
