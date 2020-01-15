@@ -68,6 +68,6 @@ module.exports = {
       }
     },
     "gatsby-plugin-sharp",
-    "gatsby-plugin-catch-links" // See https://github.com/nextstrain/nextstrain.org/issues/34
+    // "gatsby-plugin-catch-links" // See https://github.com/nextstrain/nextstrain.org/issues/34
   ]
 };
