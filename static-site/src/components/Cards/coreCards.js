@@ -1,5 +1,10 @@
 const coreCards = [
   {
+    img: "ncov.png",
+    url: "/ncov",
+    title: "nCoV 2019-20"
+  },
+  {
     img: "seasonalinfluenza.png",
     url: "/flu/seasonal",
     title: "Seasonal influenza"
