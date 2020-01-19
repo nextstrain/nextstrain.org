@@ -112,7 +112,7 @@ const coreBuilds = [
   "/measles",
   "/mers",
   "/mumps",
-  "/seattleflu", // XXX TODO: Remove once PR #60 is merged.
+  "/ncov",
   "/tb",
   "/WNV",
   "/yellow-fever",
