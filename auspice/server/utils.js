@@ -66,6 +66,11 @@ const printStackTrace = (err) => {
  * @returns {Array}
  */
 const getDatasetsFromListOfFilenames = (filenames) => {
+  /* Please see https://github.com/nextstrain/nextstrain.org/pull/65 for comments
+  which indicate that this function "weirdly mixes a functional, stream-based
+  approach with a procedural approach" and is a candidate for refactoring.
+                                                            James // Jan 2020 */
+
   const jsonFiles = filenames
     .filter((file) => file.endsWith(".json"));
 
