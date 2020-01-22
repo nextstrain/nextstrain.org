@@ -21,6 +21,7 @@ const SESSION_SECRET = PRODUCTION
 
 const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30d in seconds
 
+/* Our heroku apps (nextstrain-dev & nextstrain-server) set the `REDIS_URL` env variable */
 const REDIS_URL = process.env.REDIS_URL;
 
 const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
@@ -129,8 +130,12 @@ function setup(app) {
       });
     }
 
+    /* If no REDIS_URL is available, then we are running in a development
+    environment and want to use a local FileStore to store the session.
+    We limit the retries to 0 to avoid excessive warnings when the
+    browser remembers a session id that is not on your filesystem */
     utils.verbose("Storing sessions as files under session/");
-    return new FileStore({ttl: SESSION_MAX_AGE});
+    return new FileStore({ttl: SESSION_MAX_AGE, retries: 0});
   };
 
   app.use(
