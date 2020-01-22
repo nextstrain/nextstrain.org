@@ -249,7 +249,7 @@ function setup(app) {
 
   const nonPublicSources = Array.from(sources.entries())
     .filter(([name, Source]) => !Source.visibleToUser(null)) // eslint-disable-line no-unused-vars
-    .map(([name, Source]) => `/${name}`); // eslint-disable-line no-unused-vars
+    .map(([name, Source]) => `/groups/${name}`); // eslint-disable-line no-unused-vars
 
   app.use(nonPublicSources, (req, res, next) => {
     // Prompt for login if an anonymous user asks for a non-public source.
