@@ -10,14 +10,14 @@ For general `nextstrain.org` documentation including the nextstrain server (incl
 
 ## Installing
 
-See [the readme](../README.md#build-nextstrainorg-locally) in the parent directory for instructions on how to install prerequisites and install nextstrain.org locally. 
+See [the readme](../README.md#build-nextstrainorg-locally) in the parent directory for instructions on how to install prerequisites and install nextstrain.org locally.
 
 ### Developing locally
 
 To develop just the static-site part of nextstrain.org, you may run:
 
 ```
-npm install # this needs python 2
+npm install
 npm run develop
 ```
 
@@ -26,7 +26,7 @@ npm run develop
 If you wish to test the production build of just the static-site portion of nextstrain.org, you may run:
 
 ```
-npm install # this needs python 2
+npm install
 npm run build
 npm run serve
 ```

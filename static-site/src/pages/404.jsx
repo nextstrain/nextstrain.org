@@ -6,6 +6,7 @@ import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
 import UserDataWrapper from "../layouts/userDataWrapper";
+import MainLayout from "../components/layout";
 
 
 const FourOhFour = () => {
@@ -15,22 +16,24 @@ const FourOhFour = () => {
 
   return (
     browser && (
-      <div className="index-container">
-        <Helmet title={config.siteTitle} />
-        <main>
-          <UserDataWrapper>
-            <NavBar minified/>
-            <div className="container">
-              <ErrorContainer>
-                {"Oops - that page doesn't exist! (404)."}
-                <br/>
-                {"Here's the splash page instead..."}
-              </ErrorContainer>
-            </div>
-            <Splash />
-          </UserDataWrapper>
-        </main>
-      </div>
+      <MainLayout>
+        <div className="index-container">
+          <Helmet title={config.siteTitle} />
+          <main>
+            <UserDataWrapper>
+              <NavBar minified/>
+              <div className="container">
+                <ErrorContainer>
+                  {"Oops - that page doesn't exist! (404)."}
+                  <br/>
+                  {"Here's the splash page instead..."}
+                </ErrorContainer>
+              </div>
+              <Splash />
+            </UserDataWrapper>
+          </main>
+        </div>
+      </MainLayout>
     )
   );
 };

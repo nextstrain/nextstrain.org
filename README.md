@@ -16,13 +16,7 @@ This repository provides the tools you need to [build nextstrain.org locally](#b
 ## Build nextstrain.org locally
 
 ### Install prerequisites
-
-We recommend using a conda environment to manade the dependencies as both node version 10 and python v2 are needed.
-These can be installed into a new environment via:
-```
-conda create -n nextstrain.org nodejs=10 python=2.7
-```
-Next we need to install the node dependencies by running
+Install the node dependencies by running
 ```
 npm install
 ```
@@ -40,7 +34,6 @@ If you add a new profile to `~/.aws/credentials`, you can then tell the local ne
 
 ---
 ## Splash & documentation pages
-
 These are found in `./static-site/`.
 See [static-site/README.md](./static-site/README.md) for instructions on how to add content (e.g. docs) and develop this portion of the site in isolation.
 In production, this is built using Gatsby (`npm run build`) and served via the nextstrain.org server (`npm run server`).
@@ -56,7 +49,6 @@ The auspice customisations specific to nextstrain.org are found in `./auspice/cl
 Please see [the auspice documentation](https://nextstrain.github.io/auspice/customisations/introduction) for more information on customising auspice.
 
 ### Testing locally
-
 Make sure you've installed dependencies with `npm install` first (and activated your conda environment if using one).
 Then run:
 
@@ -82,7 +74,6 @@ npx auspice develop --verbose --extend ./client/config.json --handlers ./server/
 
 
 ### Using a different version of Auspice
-
 Sometimes it is useful to change the version of Auspice that is used.
 Perhaps you're upgrading the version nextstrain.org uses or you want to test changes in a local copy of Auspice against nextstrain.org.
 

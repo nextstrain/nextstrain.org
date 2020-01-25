@@ -3,6 +3,7 @@ import styled from "styled-components";
 import UserDataWrapper from "../layouts/userDataWrapper";
 import NavBar from '../components/nav-bar';
 import { Logos } from "../components/logos";
+import MainLayout from "../components/layout";
 
 const UserPage = (props) => {
   const { user, visibleGroups } = props;
@@ -67,16 +68,19 @@ const UserGroupsList = styled.ul`
 `;
 
 const Users = () => {
+  console.log("<Users>");
   return (
-    <div className="index-container">
-      <main>
-        <UserDataWrapper>
-          <NavBar />
-          <UserPage/>
-          <Logos />
-        </UserDataWrapper>
-      </main>
-    </div>
+    <MainLayout>
+      <div className="index-container">
+        <main>
+          <UserDataWrapper>
+            <NavBar />
+            <UserPage/>
+            <Logos />
+          </UserDataWrapper>
+        </main>
+      </div>
+    </MainLayout>
   );
 };
 
