@@ -1,8 +1,8 @@
 const narrativeCards = [
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/2020-01-23",
-    title: "nCoV Situation Report 2020-01-23"
+    url: "/narratives/ncov/sit-rep/2020-01-25",
+    title: "nCoV Situation Report 2020-01-25"
   },
   {
     img: "wnv2.png",
