@@ -3,6 +3,7 @@ import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import {Link} from 'gatsby';
 import { tweets } from "./tweets";
 import Cards from "../Cards";
+import nCoVCards from "../Cards/nCoVCards";
 import coreCards from "../Cards/coreCards";
 import communityCards from "../Cards/communityCards";
 import narrativeCards from "../Cards/narrativeCards";
@@ -52,6 +53,23 @@ class Splash extends React.Component {
 
         <HugeSpacer/>
         {this.props.user && <UserGroups user={this.props.user} visibleGroups={this.props.visibleGroups} />}
+
+        <ScrollableAnchor id={'pathogens'}>
+          <Styles.H1>Novel coronavirus (2019-nCoV)</Styles.H1>
+        </ScrollableAnchor>
+
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph>
+            We are incorporating nCoV genomes as soon as they are shared and providing analyses and situation reports.
+            Please see below for the latest updates.
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter>
+
+        <Cards
+          cards={nCoVCards}
+        />
+
+        <HugeSpacer/>
 
         <ScrollableAnchor id={'pathogens'}>
           <Styles.H1>Explore pathogens</Styles.H1>
