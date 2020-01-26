@@ -9,7 +9,7 @@ All Augur commands are run via the `augur` program -- you can see a list of thes
 More details for each command can be seen via `augur <command> --help` (e.g. `augur traits --help`).
 
 
-For an online list of Augur commands and their arguments please see [the augur documentation [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html).
+For an online list of Augur commands and their arguments please see [the augur documentation [external link]](https://nextstrain-augur.readthedocs.io).
 
 ---
 As of Augur version 5.1.1, these are the available commands (generated via `augur --help`):
