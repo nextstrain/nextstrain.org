@@ -44,28 +44,35 @@ const requestV1Dataset = async (metaJsonUrl, treeJsonUrl) => {
 };
 
 /**
+ * Returns a promise which will fetch the main dataset.
  * The "main" dataset is assumed to be a v2+ (unified) JSON
  * If this request 404s, then we attempt to fetch a v1-version
  * of the dataset (i.e. meta + tree JSONs) and convert it
  * to v2 format for the response.
+ * Successful dataset fetches will resolve.
+ * If neither the v1 nor the v2 dataset fetch / parse is successful,
+ * then the promise will reject.
  */
 const requestMainDataset = async (res, fetchUrls) => {
-  /* try to stream the (v2+) dataset JSON as the response */
-  const req = request
-    .get(fetchUrls.main)
-    .on("response", async (response) => { // eslint-disable-line consistent-return
-      if (response.statusCode === 200) {
-        utils.verbose(`Successfully streaming ${fetchUrls.main}.`);
-        req.pipe(res);
-      } else {
+  return new Promise((resolve, reject) => {
+    /* try to stream the (v2+) dataset JSON as the response */
+    const req = request
+      .get(fetchUrls.main)
+      .on("response", async (response) => { // eslint-disable-line consistent-return
+        if (response.statusCode === 200) {
+          utils.verbose(`Successfully streaming ${fetchUrls.main}.`);
+          req.pipe(res);
+          return resolve();
+        }
         utils.verbose(`The request for ${fetchUrls.main} returned ${response.statusCode}.`);
         const [success, dataToReturn] = await requestV1Dataset(fetchUrls.meta, fetchUrls.tree);
         if (success) {
-          return res.send(dataToReturn);
+          res.send(dataToReturn);
+          return resolve();
         }
-        return res.sendStatus(dataToReturn);
-      }
-    });
+        return reject(dataToReturn);
+      });
+  });
 };
 
 /**
