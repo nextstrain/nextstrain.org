@@ -118,12 +118,16 @@ const NavBar = ({sidebar, narrativeTitle, width}) => {
       {sidebar ? null : renderNextstrainTitle(styles.title)}
       <div style={{flex: 5}}/>
       <div style={styles.flexRows}>
-        <div style={{...styles.flexColumns, paddingRight: "12px"}}>
-          <div style={{flex: 5}}/>
-          {renderLink("DOCS", "/docs", styles.link)}
-          {renderLink("BLOG", "/blog", styles.link)}
-          <WhoAmI sidebar={sidebar}/>
-        </div>
+        {narrativeTitle ?
+          null : (
+            <div style={{...styles.flexColumns, paddingRight: "12px"}}>
+              <div style={{flex: 5}}/>
+              {renderLink("DOCS", "/docs", styles.link)}
+              {renderLink("BLOG", "/blog", styles.link)}
+              <WhoAmI sidebar={sidebar}/>
+            </div>
+          )
+        }
         {narrativeTitle ? renderNarrativeTitle(narrativeTitle, styles.narrativeTitle) : null}
       </div>
     </div>
