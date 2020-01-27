@@ -5,8 +5,9 @@ export const CardImg = styled.img`
   border-radius: 6px;
   box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
   max-height: 100%;
-  max-width: 100%;
+  width: 100%;
   background-color: ${(props) => props.color};
+  float: right;
 `;
 
 export const CardInner = styled.div`
@@ -32,6 +33,8 @@ export const CardOuter = styled.div`
   }
   @media (max-width: 680px) {
     height: 120px;
+    width: 100%;
+    padding: 20px 0px 20px 0px;
   }
 `;
 
