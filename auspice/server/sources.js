@@ -18,13 +18,13 @@ const S3 = new AWS.S3();
 
 class Source {
   static get _name() {
-    throw InvalidSourceImplementation("_name() must be implemented by subclasses");
+    throw new InvalidSourceImplementation("_name() must be implemented by subclasses");
   }
   get name() {
     return this.constructor._name;
   }
   get baseUrl() {
-    throw InvalidSourceImplementation("baseUrl() must be implemented by subclasses");
+    throw new InvalidSourceImplementation("baseUrl() must be implemented by subclasses");
   }
   static isGroup() { /* is the source a "nextstrain group"? */
     return false;
@@ -271,7 +271,7 @@ class CommunityNarrative extends Narrative {
 
 class S3Source extends Source {
   get bucket() {
-    throw InvalidSourceImplementation("bucket() must be implemented by subclasses");
+    throw new InvalidSourceImplementation("bucket() must be implemented by subclasses");
   }
   get baseUrl() {
     return `https://${this.bucket}.s3.amazonaws.com`;
@@ -333,7 +333,7 @@ class PrivateS3Source extends S3Source {
     return new PrivateS3Narrative(this, pathParts);
   }
   static visibleToUser(user) { // eslint-disable-line no-unused-vars
-    throw InvalidSourceImplementation("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
+    throw new InvalidSourceImplementation("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
   }
 }
 
