@@ -59,6 +59,11 @@ const printStackTrace = (err) => {
   }
 };
 
+const responseDetails = async (response) => [
+  `${response.status} ${response.statusText}`,
+  await response.text()
+];
+
 /**
  * Given a list of files, return a list of URL pathnames of
  * datasets which can be fetched
@@ -105,5 +110,6 @@ module.exports = {
   error,
   fetchJSON,
   printStackTrace,
+  responseDetails,
   getDatasetsFromListOfFilenames
 };
