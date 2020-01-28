@@ -20,14 +20,14 @@ const verbose = (msg, ...rest) => {
     console.log(chalk.greenBright(`[verbose]\t${msg}`), ...rest);
   }
 };
-const log = (msg) => {
-  console.log(chalk.blueBright(msg));
+const log = (msg, ...rest) => {
+  console.log(chalk.blueBright(msg), ...rest);
 };
-const warn = (msg) => {
-  console.warn(chalk.redBright(`[warning]\t${msg}`));
+const warn = (msg, ...rest) => {
+  console.warn(chalk.redBright(`[warning]\t${msg}`), ...rest);
 };
-const error = (msg) => {
-  console.error(chalk.redBright(`[error]\t${msg}`));
+const error = (msg, ...rest) => {
+  console.error(chalk.redBright(`[error]\t${msg}`), ...rest);
   process.exit(2);
 };
 
