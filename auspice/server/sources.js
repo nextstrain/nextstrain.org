@@ -166,16 +166,26 @@ class CommunitySource extends Source {
 
     // The GitHub owner and repo names are required.
     if (!owner) throw new Error(`Cannot construct a ${this.constructor.name} without an owner`);
-    if (!repoName) throw new Error(`Cannot construct a ${this.constructor.name} without an repoName`);
+    if (!repoName) throw new Error(`Cannot construct a ${this.constructor.name} without a repoName`);
 
     this.owner = owner;
-    this.repoName = repoName;
+    [this.repoName, this.branch] = repoName.split(/@/, 2);
+
+    if (!this.repoName) throw new Error(`Cannot construct a ${this.constructor.name} without a repoName after splitting on /@/`);
+    if (!this.branch) {
+      this.branch = "master";
+    }
   }
 
   static get _name() { return "community"; }
   get repo() { return `${this.owner}/${this.repoName}`; }
-  get branch() { return "master"; }
   get baseUrl() { return `https://raw.githubusercontent.com/${this.repo}/${this.branch}/`; }
+
+  get repoNameWithBranch() {
+    return this.branch === "master"
+      ? this.repoName
+      : `${this.repoName}@${this.branch}`;
+  }
 
   dataset(pathParts) {
     return new CommunityDataset(this, pathParts);
@@ -233,7 +243,7 @@ class CommunitySource extends Source {
   async getInfo() {
     /* could attempt to fetch a certain file from the repository if we want to implement
     this functionality in the future */
-    const githubUrl = `https://github.com/${this.owner}/${this.repoName}`;
+    const githubUrl = `https://github.com/${this.owner}/${this.repoName}/tree/${this.branch}`;
     return {
       title: `${this.owner}'s "${this.repoName}" Nextstrain community build`,
       byline: `

@@ -102,7 +102,7 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
   switch (source.name) {
     // Community source requires an owner and repo name
     case "community":
-      leadingParts.push(source.owner, source.repoName);
+      leadingParts.push(source.owner, source.repoNameWithBranch);
       break;
     // no default
   }
