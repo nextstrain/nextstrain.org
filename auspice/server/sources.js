@@ -55,6 +55,10 @@ class Source {
   visibleToUser(user) {
     return this.constructor.visibleToUser(user);
   }
+
+  async getInfo() {
+    throw new InvalidSourceImplementation("getInfo() must be implemented by subclasses");
+  }
 }
 
 class Dataset {
