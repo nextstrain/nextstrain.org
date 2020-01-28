@@ -233,10 +233,14 @@ class CommunitySource extends Source {
   async getInfo() {
     /* could attempt to fetch a certain file from the repository if we want to implement
     this functionality in the future */
+    const githubUrl = `https://github.com/${this.owner}/${this.repoName}`;
     return {
-      title: `${this.owner}'s Nextstrain community builds for ${this.repoName}`,
-      byline: "Nextstrain community builds source datasets from GitHub repositories, in this case" +
-        ` https://github.com/${this.owner}/${this.repoName}. You can see the available datasets listed below :)`,
+      title: `${this.owner}'s "${this.repoName}" Nextstrain community build`,
+      byline: `
+        Nextstrain community builds are fetched directly from GitHub
+        repositories, in this case ${githubUrl}.  The available datasets and
+        narratives in this repository are listed below.
+      `,
       showDatasets: true,
       showNarratives: true,
       /* avatar could be fetched here & sent in base64 or similar, or a link sent. The former (or similar) has the advantage
@@ -316,8 +320,8 @@ class S3Source extends Source {
     } catch (err) {
       /* Appropriate fallback if no customised data is available */
       return {
-        title: `Nextstrain group page for ${this.bucket}`,
-        byline: `The following are the available datasets & narratives for this nextstrain group:`,
+        title: `"${this.name}" Nextstrain group`,
+        byline: `The available datasets and narratives in this group are listed below.`,
         showDatasets: true,
         showNarratives: true
       };
