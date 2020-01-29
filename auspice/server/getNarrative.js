@@ -28,6 +28,14 @@ const getNarrative = async (req, res) => {
     return helpers.unauthorized(req, res);
   }
 
+  // Remove 'en' from nCoV narrative prefixParts
+  if (prefixParts[0] === 'ncov') {
+    const index = prefixParts.indexOf('en');
+    if (index >= 0) {
+      prefixParts.splice(index, 1);
+    }
+  }
+
   // Generate the narrative's origin URL for fetching.
   const narrative = source.narrative(prefixParts);
   const fetchURL = narrative.url();
