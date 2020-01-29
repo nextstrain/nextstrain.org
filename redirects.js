@@ -10,6 +10,11 @@ const setup = (app) => {
   app.route("/narratives")
     .get((req, res) => res.redirect('/#narratives'));
 
+  /* The URLs and nextstrain.org/narratives/ncov and nextstrain.org/narratives/ncov/sit-rep
+  aren't valid - redirect instead to the nCoV section of the splash page */
+  app.route(["/narratives/ncov", "/narratives/ncov/sit-rep"])
+    .get((req, res) => res.redirect('/#ncov'));
+
 };
 
 module.exports = {
