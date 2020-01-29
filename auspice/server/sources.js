@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 const AWS = require("aws-sdk");
-const fetch = require("node-fetch");
+const {fetch} = require("./fetch");
 const queryString = require("query-string");
 const {NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
 const utils = require("./utils");
@@ -128,7 +128,7 @@ class CoreSource extends Source {
     const qs = queryString.stringify({ref: this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents?${qs}`);
 
-    if (!response.ok) {
+    if (response.status !== 200 && response.status !== 304) {
       utils.warn(`Error fetching available narratives from GitHub for source ${this.name}`, await utils.responseDetails(response));
       return [];
     }
@@ -198,7 +198,7 @@ class CommunitySource extends Source {
     const qs = queryString.stringify({ref: this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/auspice?${qs}`);
 
-    if (!response.ok) {
+    if (response.status !== 200 && response.status !== 304) {
       utils.warn(`Error fetching available datasets from GitHub for source ${this.name}`, await utils.responseDetails(response));
       return [];
     }
@@ -219,7 +219,7 @@ class CommunitySource extends Source {
     const qs = queryString.stringify({ref: this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/narratives?${qs}`);
 
-    if (!response.ok) {
+    if (response.status !== 200 && response.status !== 304) {
       if (response.status !== 404) {
         // not found doesn't warrant an error print, it means there are no narratives for this repo
         utils.warn(`Error fetching available narratives from GitHub for source ${this.name}`, await utils.responseDetails(response));
