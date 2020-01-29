@@ -31,6 +31,9 @@ Deploys to it are manual, via the dashboard or [git pushes to the Heroku remote]
     It should not be modified directly.
     Our [authentication handlers](../authn.js) rewrite it at server start to use a secure TLS connection.
 
+  - `FETCH_CACHE` is not currently used, but can be set to change the location of the on-disk cache used by (some) server `fetch()`-es.
+    The default location is `/tmp/fetch-cache`.
+
 ### Redis add-on
 
 The [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) add-on is attached to our `nextstrain-server` and `nextstrain-dev` apps.
