@@ -34,7 +34,7 @@ global.verbose = args.verbose;
 const auspiceServerHandlers = require("./auspice/server");
 const authn = require("./authn");
 const sources = require("./auspice/server/sources");
-
+const redirects = require("./redirects");
 
 /* Path helpers for static assets, to make routes more readable.
  */
@@ -71,8 +71,7 @@ authn.setup(app);
 
 /* Redirects.
  */
-app.route("/auspice")
-  .get((req, res) => res.redirect('https://nextstrain.github.io/auspice/'));
+redirects.setup(app);
 
 
 /* Static assets.  Auspice hardcodes /dist/… in its Webpack config.
