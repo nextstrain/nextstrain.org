@@ -220,7 +220,7 @@ class CommunitySource extends Source {
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/narratives?${qs}`);
 
     if (!response.ok) {
-      if (!response.statusText !== "Not Found") {
+      if (response.status !== 404) {
         // not found doesn't warrant an error print, it means there are no narratives for this repo
         utils.warn(`Error fetching available narratives from GitHub for source ${this.name}`, await utils.responseDetails(response));
       }
