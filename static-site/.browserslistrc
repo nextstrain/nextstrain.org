@@ -1,1 +1,6 @@
+[development]
 Last 2 versions
+
+[production]
+cover 99%
+ie >= 9
