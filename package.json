@@ -31,6 +31,7 @@
     "express-static-gzip": "^0.2.2",
     "heroku-ssl-redirect": "0.0.4",
     "ioredis": "^4.14.1",
+    "iso-639-1": "^2.1.0",
     "make-fetch-happen": "^7.1.1",
     "marked": "^0.7.0",
     "node-fetch": "^2.6.0",

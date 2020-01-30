@@ -1,5 +1,6 @@
 /* eslint-disable no-multi-spaces */
 import React from "react"; // eslint-disable-line
+import LanguageSelector from "./languageSelector";
 
 const logoPNG = require("./nextstrain-logo-small.png");
 
@@ -129,6 +130,7 @@ const NavBar = ({sidebar, narrativeTitle, width}) => {
           )
         }
         {narrativeTitle ? renderNarrativeTitle(narrativeTitle, styles.narrativeTitle) : null}
+        {narrativeTitle && window.location.pathname.startsWith("/narratives/ncov") ? <LanguageSelector/> : null}
       </div>
     </div>
   );
