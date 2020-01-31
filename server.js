@@ -8,7 +8,6 @@ const favicon = require('serve-favicon');
 const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./auspice/server/utils");
-const helpers = require("./auspice/server/getDatasetHelpers");
 
 const production = process.env.NODE_ENV === "production";
 
@@ -140,31 +139,8 @@ const auspicePaths = [
   "/community/:user/:repo/*",
 ];
 
-/*
- * Redirect to translations of narratives if the client has
- * set language preference and the translation is available
- *
- * Currently only used for nCoV narratives and requires the
- * language code to be the second to last part of the url.
- */
-const redirectToTranslatedNarratives = async (req, res) => {
-  const acceptedLanguages = req.acceptsLanguages();
-  if (acceptedLanguages && !acceptedLanguages[0].startsWith("en")) {
-    const {source, prefixParts} = helpers.splitPrefixIntoParts(req.url);
-    prefixParts.splice(-1, 0, acceptedLanguages[0]);
-    const potentialNarrative = prefixParts.join("/");
-    const availableNarratives = await source.availableNarratives();
-    if (availableNarratives.includes(potentialNarrative)) {
-      res.redirect(301, "/narratives/" + potentialNarrative);
-    }
-  }
-};
-
 app.route(auspicePaths).get((req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
-  if (req.url.startsWith("/narratives/ncov")) {
-    redirectToTranslatedNarratives(req, res);
-  }
   res.sendFile(auspiceAssetPath("index.html"));
 });
 
