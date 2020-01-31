@@ -1,3 +1,4 @@
+const acceptedLanguage = require("accept-language");
 const helpers = require("./auspice/server/getDatasetHelpers");
 
 const setup = (app) => {
@@ -28,18 +29,26 @@ const setup = (app) => {
    */
   app.route("/narratives/ncov/sit-rep/*")
     .get(async (req, res, next) => {
-      const acceptedLanguages = req.acceptsLanguages();
-      if (acceptedLanguages && !acceptedLanguages[0].startsWith("en")) {
-        const {source, prefixParts} = helpers.splitPrefixIntoParts(req.url);
-        prefixParts.splice(-1, 0, acceptedLanguages[0]);
-        const potentialNarrative = prefixParts.join("/");
-        const availableNarratives = await source.availableNarratives();
-        if (availableNarratives.includes(potentialNarrative)) {
-          res.redirect(302, "/narratives/" + potentialNarrative);
+      const {source, prefixParts} = helpers.splitPrefixIntoParts(req.url);
+      const availableNarratives = await source.availableNarratives();
+      const availableLanguages = new Set(availableNarratives.map((narrative) => {
+        if (narrative.startsWith('ncov/sit-rep/')) {
+          const narrativeParts = narrative.split("/");
+          const language = narrativeParts[narrativeParts.length - 2];
+          if (language !== 'sit-rep') return language;
         }
-
+        return null;
+      }));
+      acceptedLanguage.languages(['en'].concat([...availableLanguages]));
+      const languageChoice = acceptedLanguage.get(req.headers['accept-language']);
+      if (languageChoice !== 'en') {
+        prefixParts.splice(-1, 0, languageChoice);
+        const potentialNarrative = prefixParts.join("/");
+        if (availableNarratives.includes(potentialNarrative)) {
+          return res.redirect(302, "/narratives/" + potentialNarrative);
+        }
       }
-      next('route');
+      return next('route');
     });
 
 };

@@ -19,6 +19,7 @@
     "start": "npm run server"
   },
   "dependencies": {
+    "accept-language": "^3.0.18",
     "argparse": "^1.0.10",
     "auspice": "~2.3.7",
     "aws-sdk": "^2.520.0",
