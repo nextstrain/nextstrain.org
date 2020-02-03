@@ -1,4 +1,9 @@
-## Different human coronaviruses
+---
+title: "Different human coronaviruses"
+authors: "Trevor Bedford, Richard Neher, James Hadfield, Emma Hodcroft, Misja Ilcisin, Nicola Müller"
+affiliations: "Fred Hutch, Seattle, USA and Biozentrum, Basel, Switzerland"
+date: "2020 Jan 30"
+---
 
 Coronaviruses (CoV) are members of a diverse species of positive-sense single-stranded RNA ((+)ssRNA) viruses which have a history of causing respiratory infections in humans.
 Some variants of coronaviruses are associated with outbreaks, others are continuously circulating and cause mostly mild respiratory infections (e.g. the common cold).

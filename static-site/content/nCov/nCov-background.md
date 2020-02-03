@@ -1,4 +1,11 @@
-## Recent outbreak of a novel coronavirus
+---
+title: "Novel human Coronavirus"
+authors: "Trevor Bedford, Richard Neher, James Hadfield, Emma Hodcroft, Misja Ilcisin, Nicola Müller"
+affiliations: "Fred Hutch, Seattle, USA and Biozentrum, Basel, Switzerland"
+date: "2020 Jan 30"
+---
+
+
 In December 2019, a new illness was first detected in Wuhan, China.
 We now know this to be another outbreak of coronavirus in humans (the 7th), and it is provisionally being called nCoV (novel coronavirus).
 
