@@ -1,4 +1,3 @@
-const acceptedLanguage = require("accept-language");
 const helpers = require("./auspice/server/getDatasetHelpers");
 
 const setup = (app) => {
@@ -39,9 +38,8 @@ const setup = (app) => {
         }
         return null;
       }));
-      acceptedLanguage.languages(['en'].concat([...availableLanguages]));
-      const languageChoice = acceptedLanguage.get(req.headers['accept-language']);
-      if (languageChoice !== 'en') {
+      const languageChoice = req.acceptsLanguages(['en'].concat([...availableLanguages]));
+      if (languageChoice && languageChoice !== 'en') {
         prefixParts.splice(-1, 0, languageChoice);
         const potentialNarrative = prefixParts.join("/");
         if (availableNarratives.includes(potentialNarrative)) {
