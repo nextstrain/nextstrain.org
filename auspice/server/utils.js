@@ -101,6 +101,13 @@ const getDatasetsFromListOfFilenames = (filenames) => {
     .join("/"));
 };
 
+const parseNarrativeLanguage = (narrative) => {
+  const urlParts = narrative.split("/");
+  let language = urlParts[urlParts.length - 2];
+  if (language === 'sit-rep') language = 'en';
+  return language;
+};
+
 
 module.exports = {
   getGitHash,
@@ -111,5 +118,6 @@ module.exports = {
   fetchJSON,
   printStackTrace,
   responseDetails,
-  getDatasetsFromListOfFilenames
+  getDatasetsFromListOfFilenames,
+  parseNarrativeLanguage
 };
