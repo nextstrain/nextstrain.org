@@ -30,15 +30,15 @@ const setup = (app) => {
     .get(async (req, res, next) => {
       const {source, prefixParts} = helpers.splitPrefixIntoParts(req.url);
       const availableNarratives = await source.availableNarratives();
-      const availableLanguages = new Set(availableNarratives.map((narrative) => {
-        if (narrative.startsWith('ncov/sit-rep/')) {
+      const availableLanguages = new Set(availableNarratives
+        .filter((narrative) => narrative.startsWith('ncov/sit-rep/'))
+        .map((narrative) => {
           const narrativeParts = narrative.split("/");
-          const language = narrativeParts[narrativeParts.length - 2];
-          if (language !== 'sit-rep') return language;
-        }
-        return null;
-      }));
-      const languageChoice = req.acceptsLanguages(['en'].concat([...availableLanguages]));
+          let language = narrativeParts[narrativeParts.length - 2];
+          if (language === 'sit-rep') language = 'en';
+          return language;
+        }));
+      const languageChoice = req.acceptsLanguages([...availableLanguages]);
       if (languageChoice && languageChoice !== 'en') {
         prefixParts.splice(-1, 0, languageChoice);
         const potentialNarrative = prefixParts.join("/");
