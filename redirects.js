@@ -1,4 +1,5 @@
 const helpers = require("./auspice/server/getDatasetHelpers");
+const { parseNarrativeLanguage } = require("./auspice/server/utils");
 
 const setup = (app) => {
 
@@ -32,12 +33,7 @@ const setup = (app) => {
       const availableNarratives = await source.availableNarratives();
       const availableLanguages = new Set(availableNarratives
         .filter((narrative) => narrative.startsWith('ncov/sit-rep/'))
-        .map((narrative) => {
-          const narrativeParts = narrative.split("/");
-          let language = narrativeParts[narrativeParts.length - 2];
-          if (language === 'sit-rep') language = 'en';
-          return language;
-        }));
+        .map((narrative) => parseNarrativeLanguage(narrative)));
       const languageChoice = req.acceptsLanguages([...availableLanguages]);
       if (languageChoice && languageChoice !== 'en') {
         prefixParts.splice(-1, 0, languageChoice);

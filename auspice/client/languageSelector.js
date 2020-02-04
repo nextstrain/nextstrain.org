@@ -1,5 +1,6 @@
 import React from "react"; // eslint-disable-line
 import ISO6391 from "iso-639-1";
+import {parseNarrativeLanguage} from "../server/utils";
 
 class LanguageSelector extends React.Component {
     state = {
@@ -14,11 +15,7 @@ class LanguageSelector extends React.Component {
     }
 
     getNarrativeLanguage(narrative) {
-      const narrativeParts = narrative.split("/");
-      let narrativeLanguage = narrativeParts[narrativeParts.length - 2];
-      if (narrativeLanguage === 'sit-rep') {
-        narrativeLanguage = 'en';
-      }
+      const narrativeLanguage = parseNarrativeLanguage(narrative);
       return ISO6391.getNativeName(narrativeLanguage);
     }
 
