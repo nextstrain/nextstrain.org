@@ -5,6 +5,9 @@ title: "Nextstrain: analysis and visualization of pathogen sequence data"
 Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at [hello@nextstrain.org](mailto:hello@nextstrain.org).
 
 
+**These docs describe using the components behind nextstrain to run your own analysis, which you can choose to share through nextstrain.org.**
+**To read about how to interpret the data presented through nextstrain, please [click here](/help)**
+
 #### Table of Contents:
 * [What is Nextstrain?](#what-is-nextstrain)
 * [Open source tools for the community](#open-source-tools-for-the-community)
