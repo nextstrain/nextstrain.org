@@ -120,13 +120,20 @@ class NavBar extends React.Component {
         {this.getLogo()}
         {this.getLogoType()}
         <div style={{flex: 5}}/>
+        {this.selectedClass("help") ?
+          <NavLinkInactive minified={minified}>HELP</NavLinkInactive> :
+          <NavLinkToBeHandledByGatsby minified={minified} to="/help">HELP</NavLinkToBeHandledByGatsby>
+        }
         {this.selectedClass("docs") ?
           <NavLinkInactive minified={minified}>DOCS</NavLinkInactive> :
           <NavLinkToBeHandledByGatsby minified={minified} to="/docs">DOCS</NavLinkToBeHandledByGatsby>
         }
-        {this.selectedClass("blog") ?
-          <NavLinkInactive minified={minified}>BLOG</NavLinkInactive> :
-          <NavLinkToBeHandledByGatsby minified={minified} to="/blog">BLOG</NavLinkToBeHandledByGatsby>
+        { /* Only display "blog" if we're not minified */
+          minified ?
+            null :
+            this.selectedClass("blog") ?
+              <NavLinkInactive minified={minified}>BLOG</NavLinkInactive> :
+              <NavLinkToBeHandledByGatsby minified={minified} to="/blog">BLOG</NavLinkToBeHandledByGatsby>
         }
         {this.props.user ? (
           <NavLinkToGoToServer minified={minified} href="/whoami">
