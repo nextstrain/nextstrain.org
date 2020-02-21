@@ -4,6 +4,8 @@ title: "Interacting with Nextstrain's phylogeographic visualisations"
 
 **Following content cut from what was previously /docs/interpretation/auspice, which will redirect to this page**
 
+---
+
 
 Visualization of bioinformatics results is an integral part of phylodynamics, both for data exploration and communication.
 We wanted to build a tool that was highly interactive, versatile, and usable as a communication platform to quickly disseminate results to the wider community.
