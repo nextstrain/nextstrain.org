@@ -1,5 +1,5 @@
 import React from "react"; // eslint-disable-line
-import ISO6391 from "iso-639-1";
+import ISO6391 from "iso-639-1/build/index";
 import {parseNarrativeLanguage} from "../server/utils";
 
 class LanguageSelector extends React.Component {
