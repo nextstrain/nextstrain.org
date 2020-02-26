@@ -1,6 +1,15 @@
 import React from "react"; // eslint-disable-line
 import ISO6391 from "iso-639-1/build/index";
-import {parseNarrativeLanguage} from "../server/utils";
+
+/* This function is duplicated from ../../src/utils but included here to
+(a) keep server & client code seperate and (b) avoid any transpiling errors
+during client building */
+const parseNarrativeLanguage = (narrative) => {
+  const urlParts = narrative.split("/");
+  let language = urlParts[urlParts.length - 2];
+  if (language === 'sit-rep') language = 'en';
+  return language;
+};
 
 class LanguageSelector extends React.Component {
     state = {

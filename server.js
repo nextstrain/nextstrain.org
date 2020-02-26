@@ -7,7 +7,7 @@ const expressStaticGzip = require("express-static-gzip");
 const favicon = require('serve-favicon');
 const compression = require('compression');
 const argparse = require('argparse');
-const utils = require("./auspice/server/utils");
+const utils = require("./src/utils");
 
 const production = process.env.NODE_ENV === "production";
 
@@ -31,9 +31,9 @@ global.verbose = args.verbose;
 
 // Import these after parsing CLI arguments and setting global.verbose so code
 // in them can use utils.verbose() at load time.
-const auspiceServerHandlers = require("./auspice/server");
+const auspiceServerHandlers = require("./src/index.js");
 const authn = require("./authn");
-const sources = require("./auspice/server/sources");
+const sources = require("./src/sources");
 const redirects = require("./redirects");
 
 /* Path helpers for static assets, to make routes more readable.
@@ -45,7 +45,7 @@ const gatsbyAssetPath = (...subpath) =>
   relativePath("static-site", "public", ...subpath);
 
 const auspiceAssetPath = (...subpath) =>
-  relativePath("auspice", ...subpath);
+  relativePath("auspice-client", ...subpath);
 
 
 /* BASIC APP SETUP */

@@ -1,5 +1,5 @@
-const helpers = require("./auspice/server/getDatasetHelpers");
-const { parseNarrativeLanguage } = require("./auspice/server/utils");
+const helpers = require("./src/getDatasetHelpers");
+const { parseNarrativeLanguage } = require("./src/utils");
 
 const setup = (app) => {
 

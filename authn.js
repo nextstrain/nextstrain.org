@@ -10,8 +10,8 @@ const passport = require("passport");
 const fetch = require("node-fetch");
 const AWS = require("aws-sdk");
 const OAuth2Strategy = require("passport-oauth2").Strategy;
-const sources = require("./auspice/server/sources");
-const utils = require("./auspice/server/utils");
+const sources = require("./src/sources");
+const utils = require("./src/utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
