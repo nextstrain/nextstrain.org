@@ -41,8 +41,8 @@ build-static() {
 
 build-auspice() {
     echo "Building a customised version of auspice"
-    cd auspice
-    ../node_modules/.bin/auspice build --verbose --extend ./client/config.json
+    cd auspice-client
+    ../node_modules/.bin/auspice build --verbose --extend ./customisations/config.json
     cd ..
 }
 

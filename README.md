@@ -6,9 +6,9 @@ Nextstrain is an open-source project to harness the scientific and public health
 
 
 This repo comprises:
-  1. A server (`./server.js`) which serves all the content on [nextstrain.org](https://nextstrain.org) & handles authentication.
+  1. A server (`./server.js`) which serves all the content on [nextstrain.org](https://nextstrain.org), handles authentication and responds to API requests.
   1. The [splash & documentation pages](#Splash--documentation-pages), which are built using Gatsby & located in the `./static-site` directory.
-  1. Code to build a customised version of the [Auspice](#Auspice) client, which is located in the `./auspice/client` directory.
+  1. Code to build a customised version of the [Auspice](#Auspice) client, which is located in the `./auspice-client` directory.
 
 This repository provides the tools you need to [build nextstrain.org locally](#build-nextstrainorg-locally) and [deploy nextstrain.org](#deploy-nextstrainorg).
 
@@ -45,7 +45,7 @@ We use [Auspice](https://github.com/nextstrain/auspice) to visualise & interact 
 
 ### A customised version of the Auspice client
 We build a customised version of the auspice client (e.g. the part you see in the browser) for nextstrain.org.
-The auspice customisations specific to nextstrain.org are found in `./auspice/client/`.
+The auspice customisations specific to nextstrain.org are found in `./auspice-client/customisations/`.
 Please see [the auspice documentation](https://nextstrain.github.io/auspice/customisations/introduction) for more information on customising auspice.
 
 ### Testing locally
@@ -56,7 +56,7 @@ Then run:
 ./build.sh auspice
 npm run server
 ```
-This will create the `auspice/index.html` and `auspice/dist/*` files which are gitignored.
+This will create the `auspice-client/index.html` and `auspice-client/dist/*` files which are gitignored.
 Note that the favicon.png isn't needed for auspice, as the nextstrain.org server handles this.
 
 You can also run Auspice's own development server (not the nextstrain.org server) to ease development of client customizations.
@@ -65,8 +65,8 @@ It is not currently possible to run auspice in development mode & see the nextst
 Read the section below on the nextstrain.org server for more context.
 
 ```bash
-cd auspice
-npx auspice develop --verbose --extend ./client/config.json --handlers ./server/index.js
+cd auspice-client
+npx auspice develop --verbose --extend ./customisations/config.json --handlers ../src/index.js
 ```
 
 > If you're not familiar with [`npx`](https://www.npmjs.com/package/npx), it's a command to easily run programs installed by `npm`.
@@ -93,8 +93,8 @@ npm run server
 or
 
 ```bash
-cd auspice
-npx auspice develop --verbose --extend ./client/config.json --handlers ./server/index.js
+cd auspice-client
+npx auspice develop --verbose --extend ./customisations/config.json --handlers ../src/index.js
 ```
 
 If you're installing from a local development copy of Auspice's source, you can use [`npm link`](https://docs.npmjs.com/cli/link) to use your local copy without the need to continually re-install it after every change:
@@ -127,13 +127,13 @@ and as long as there is a server and the reponse is appropriate then the auspice
 
 
 The nextstrain.org server (`server.js`) sets up GET request handlers for those three endpoints.
-The code to handle these requests is imported from `./auspice/server/index.js`.
+The code to handle these requests is imported from `./src/index.js`.
 
 
 These handlers have been written in such a way that they can be imported by:
 1. the nextstrain.org server (`server.js`, run via `npm run server`)
-2. `auspice view --handlers ./auspice/server/index.js` (rarely useful in this case)
-3. `auspice develop --handlers ./auspice/server/index.js` (useful for auspice development)
+2. `auspice view --handlers ./src/server/index.js` (rarely useful in this case)
+3. `auspice develop --handlers ./src/server/index.js` (useful for auspice development)
 
 > Note that 2 and 3 are running auspice locally but overwriting the (default) auspice handlers for `/charon/...` GET requests.
 In this case, they're overwriting them with the handlers used in the nextstrain.org repo and are employing the nextstrain.org behavior (fetching datasets from S3, etc.).

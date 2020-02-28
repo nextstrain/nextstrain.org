@@ -2,8 +2,8 @@
 environment*
 
 # auspice build
-auspice/index.html
-auspice/dist/
+auspice-client/index.html
+auspice-client/dist/
 
 # misc #
 .DS_Store
