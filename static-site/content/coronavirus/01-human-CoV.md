@@ -2,16 +2,6 @@
 title: "Different human coronaviruses"
 ---
 
-Currently the only way to get here is via a direct URL -- there's no UI in nextstrain.org which links here.
-
-
-Add and rename markdown pages as needed to the `./static-site/content/coronavirus/X-Y.md` where X is an integer, Y is the name which will become part of the URL. `X` simply controls the ordering in the sidebar.
-If you want to add subheadings (to the sidebar you can see on the left), then create folders such as `./static-site/content/coronavirus/A-B/X-Y.md` where `A` is an integer, `B` is the subheading name and will also become part of the URL.
-
-Following content pasted from Richard's `nCov-static` branch.
-
----
-
 Coronaviruses (CoV) are members of a diverse species of positive-sense single-stranded RNA ((+)ssRNA) viruses which have a history of causing respiratory infections in humans.
 Some variants of coronaviruses are associated with outbreaks, others are continuously circulating and cause mostly mild respiratory infections (e.g. the common cold).
 

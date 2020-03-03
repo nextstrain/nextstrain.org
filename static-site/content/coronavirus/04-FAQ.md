@@ -2,17 +2,6 @@
 title: "Frequently asked questions"
 ---
 
-Currently the only way to get here is via a direct URL -- there's no UI in nextstrain.org which links here.
-
-
-Add and rename markdown pages as needed to the `./static-site/content/coronavirus/X-Y.md` where X is an integer, Y is the name which will become part of the URL. `X` simply controls the ordering in the sidebar.
-If you want to add subheadings (to the sidebar you can see on the left), then create folders such as `./static-site/content/coronavirus/A-B/X-Y.md` where `A` is an integer, `B` is the subheading name and will also become part of the URL.
-
-Following content pasted from Richard's `nCov-static` branch.
-
----
-
-## Frequently Asked Questions
 
 As a team, we’ve been fielding a lot of questions about COVID-19 and how individuals and families should be preparing. We have compiled a list of the most common questions we receive and answered them with information and recommendations from resources that we trust. 
 
