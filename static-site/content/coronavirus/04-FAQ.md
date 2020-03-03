@@ -18,7 +18,7 @@ Current case counts, deaths, and recoveries are being tracked in a number of pla
 [Johns Hopkins CSSE Dashboard](https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6).
 
 #### How is COVID-19 spread?
-COVID-19 is a respiratory virus, which spread in 3 main ways:
+COVID-19 is a respiratory virus, which [spread in 3 main ways](https://www.aappublications.org/content/35/1/1.2):
 1. Between people who are in close contact with each other (within about 6 feet, or 2 metres), through small aerosolized particles that can be produced when a person talks, coughs, or sneezes.
 
 2. In (relatively) larger droplets that are produced someone coughs or sneezes (these can travel over similar distances).
