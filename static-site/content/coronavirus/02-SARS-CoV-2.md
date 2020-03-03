@@ -26,10 +26,11 @@ The origin of the virus is still unclear, however [genomic analyis](https://viro
 It is plausible that there were other intermediate animal transmissions before the introduction into humans.
 There is no evidence of snakes as an intermediary.
 
-#### Nextstrain narratives
+### Further Reading:
 
-The following pages contain analysis performed using [Nextstrain](https://nextstrain.org).
-Scrolling through the left hand sidebar will reveal paragraphs of text with a corresponding visualization of the genomic data on the right hand side.
-
-To have full genomes of a novel and large RNA virus this quickly is a remarkable achievement.
-These analyses have been made possible by the rapid and open sharing of genomic data and interpretations by scientists all around the world (see the final slide for a visualization of sequencing authorship).
+* New China virus: Five questions scientists are asking  [Nature news](https://www.nature.com/articles/d41586-020-00166-6) _2020-01-22_
+* China virus latest: first US case confirmed  [Nature news](https://www.nature.com/articles/d41586-020-00154-w) _2020-01-21_
+* New virus surging in Asia rattles scientists  [Nature news](https://www.nature.com/articles/d41586-020-00129-x) _2020-01-20_
+* New virus identified as likely cause of mystery illness in China [Nature news](https://www.nature.com/articles/d41586-020-00020-9) _2020-01-08_
+* Interactive risk analysis by [MOBS-lab](https://datastudio.google.com/reporting/3ffd36c3-0272-4510-a140-39e288a9f15c/page/U5lCB) _2010-01-29_
+* Interactive risk analysis by [ROCS-lab](http://rocs.hu-berlin.de/corona/) _2010-01-29_
