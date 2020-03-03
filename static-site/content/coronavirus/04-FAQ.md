@@ -71,12 +71,12 @@ Some other resources and articles we have found extremely useful during our own 
 
 [US CDC - When & How to Wash Your Hands](https://www.cdc.gov/handwashing/when-how-handwashing.html)
 
-[US CDC - Guidelines on Nonpharmaceutical Interventions](https://www.cdc.gov/nonpharmaceutical-interventions/index.html).
+[US CDC - Guidelines on Nonpharmaceutical Interventions](https://www.cdc.gov/nonpharmaceutical-interventions/index.html)
 
 #### What should you do if you think you might be sick with COVID-19?
-If you are experiencing a flu-like illness, call your doctor before going to the clinic or emergency room. If your healthcare providers are concerned that you might have COVID-19, they will have specific steps for you to follow when you arrive at the clinic that will reduce the risk of getting other people sick or contracting an infection from someone already at the clinic. If you show up to a clinic or hospital without giving advance warning, you will expose yourself to a significant number of sick people and may expose others to your illness, potentially increasing transmission.
+At the time of publication, the CDC recommends to "Call ahead to a healthcare professional if you develop a fever and symptoms of respiratory illness, such as cough or difficulty breathing, and have been in close contact with a person known to have COVID-19 or if you live in or have recently traveled to an area with ongoing spread. Tell your healthcare professional about your recent travel or contact. Your healthcare professional will work with your state’s public health department and CDC to determine if you need to be tested for COVID-19."
 
-We also recommend that people limit unnecessary trips to the emergency room. As the number of potential and confirmed COVID-19 cases increase, healthcare systems will become strained. Reducing the number of people arriving at clinics and hospitals will decrease this strain and help keep you away from people who may be infected with COVID-19 or other respiratory viruses. If you are experiencing a health issue that you are concerned about, we recommend contacting your doctor’s office to determine where and when the best place for you to seek care is.
+For more detailed information on what to do if you are concerned that you or someone you know might have COVID-19, please review the CDC page, [What to Do if You are Sick](https://www.cdc.gov/coronavirus/2019-ncov/about/steps-when-sick.html). This page includes information for individuals who may be sick, as well as information for their family members, caregivers, and intimate partners.
 
 #### What is the origin of the COVID-19 virus?
 The origin of the virus is still unclear, however [genomic analysis](https://virological.org/t/ncovs-relationship-to-bat-coronaviruses-recombination-signals-no-snakes/331) suggests the COVID-19 virus is most closely related to viruses previously identified in bats. It is plausible that there were other intermediate animal transmissions before the introduction into humans.
