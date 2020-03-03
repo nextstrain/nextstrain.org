@@ -38,3 +38,8 @@ SARS is believed to have arrived in the human population from [horseshoe bats vi
 #### Human-to-human transmission
 The ability for different lineages to be transmitted between humans is extremely important to understand the potential development of an outbreak.
 Due to the ability of SARS to spread between humans and the high case fatality rate, SARS (or a SARS-like virus) is considered a [global public health threat](https://www.who.int/whr/2007/overview/en/index1.html) by the WHO.
+
+
+#### Further reading
+* General information on coronaviruses on [Wikipedia](https://en.wikipedia.org/wiki/Coronavirus) _2020-01-30_
+* Organization and genome on [ViralZone](https://viralzone.expasy.org/764?outline=all_by_species) _2020-01-23_
