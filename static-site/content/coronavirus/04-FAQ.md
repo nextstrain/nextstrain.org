@@ -45,7 +45,7 @@ More detailed information on clinical characteristics can be found in the origin
 The full report of the WHO-China Joint Mission on Coronavirus Disease 2019 (COVID-19O), can be found [here](https://www.who.int/docs/default-source/coronaviruse/who-china-joint-mission-on-covid-19-final-report.pdf).
 
 #### What can be done to prevent or reduce the spread of COVID-19?
-COVID-19 is a respiratory virus and nonpharmaceutical interventions are the most effective tool we currently have to prevent and slow the spread of COVID-19 at this time. There is not currently a vaccine or specific treatment for COVID-19. Some key ways to implement nonpharmaceutical interventions are to:
+COVID-19 is a respiratory virus, and nonpharmaceutical interventions are the most effective tool we currently have to prevent and slow the spread of COVID-19 at this time. There is not currently a vaccine or specific treatment for COVID-19. Some key ways to implement nonpharmaceutical interventions are to:
 
 - Practice [social distancing](https://en.wikipedia.org/wiki/Social_distancing), such as limiting attendance at events with large groups of people
 - Stay home, especially if you are feeling ill
