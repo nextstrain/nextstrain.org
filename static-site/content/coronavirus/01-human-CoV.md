@@ -3,6 +3,7 @@ title: "Different human coronaviruses"
 ---
 
 Currently the only way to get here is via a direct URL -- there's no UI in nextstrain.org which links here.
+Link
 
 
 Add and rename markdown pages as needed to the `./static-site/content/coronavirus/X-Y.md` where X is an integer, Y is the name which will become part of the URL. `X` simply controls the ordering in the sidebar.
