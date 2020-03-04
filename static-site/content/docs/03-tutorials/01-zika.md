@@ -239,24 +239,10 @@ exit
 nextstrain view auspice/
 ```
 
-If you're not using the Nextstrain CLI shell, then copy the `auspice/*.json` files into the `data` directory of your local auspice installation and start auspice from there.
-You can use the commands below (adjusted if necessary), or copy them using a graphical file explorer.
+If you're not using the Nextstrain CLI shell, start auspiece to view the dataset in the Zika build output directory. 
 
 ```
-# Copy files into Auspice data directory.  Adjust
-# paths if auspice isn't installed in ~/src/auspice/.
-mkdir ~/src/auspice/data/
-cp auspice/*.json ~/src/auspice/data/
-```
-
-Then enter your `auspice` directory and start auspice.
-
-```
-# Navigate into auspice.
-cd ~/src/auspice/data/
-
-# Start auspice.
-npm run dev
+auspice view --datasetDir auspice
 ```
 
 When Auspice is running, navigate to <http://localhost:4000/local/zika> in your browser to view the results.
