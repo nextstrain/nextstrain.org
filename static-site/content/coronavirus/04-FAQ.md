@@ -1,5 +1,5 @@
 ---
-title: ["COVID-19 Frequently Asked Questions"](
+title: "COVID-19 Frequently Asked Questions"
 ---
 
 
@@ -101,4 +101,4 @@ The data we have on the COVID-19 outbreak is consistent with a zoonotic origin a
 *There is not evidence that the COVID-19 virus was genetically engineered with HIV sequences.* This theory was based on a pre-print paper that has since been thoroughly debunked and the article has been withdrawn. A non-technical discussion of why this theory had no ground can be found in [this article](https://www.forbes.com/sites/victoriaforster/2020/02/02/no-coronavirus-was-not-bioengineered-to-put-pieces-of-hiv-in-it/#69d44bbc56cb) in Forbes, which links out to Nextstrain team member, [Trevor Bedford's](https://bedford.io/), [twitter thread](https://twitter.com/trvrb/status/1223666856923291648?s=20) on the same topic.
 
 
-<button onclick="topFunction()" id="myBtn" title="Back to top">Top</button>
+[Back to top](#covid-19-faqs-quick-links)
