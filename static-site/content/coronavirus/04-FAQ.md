@@ -99,3 +99,5 @@ The origin of the virus is still unclear, however [genomic analysis](https://vir
 The data we have on the COVID-19 outbreak is consistent with a zoonotic origin and inconsistent with a lab escape scenario. For a full analysis of the evidencing supporting a zoonotic origin over a lab escape origin, please read [this twitter thread](https://twitter.com/trvrb/status/1230634136102064128?s=20) by Nextstrain team member, [Trevor Bedford, PhD](https://bedford.io/), which discusses this issue in-depth.
 
 *There is not evidence that the COVID-19 virus was genetically engineered with HIV sequences.* This theory was based on a pre-print paper that has since been thoroughly debunked and the article has been withdrawn. A non-technical discussion of why this theory had no ground can be found in [this article](https://www.forbes.com/sites/victoriaforster/2020/02/02/no-coronavirus-was-not-bioengineered-to-put-pieces-of-hiv-in-it/#69d44bbc56cb) in Forbes, which links out to Nextstrain team member, [Trevor Bedford's](https://bedford.io/), [twitter thread](https://twitter.com/trvrb/status/1223666856923291648?s=20) on the same topic.
+
+ <a href="#top">Back to top</a>
