@@ -69,6 +69,13 @@ class Splash extends React.Component {
           cards={nCoVCards}
         />
 
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph>
+            We have received a number of generous offers to contribute to the development of Nextstrain.
+            Please <Link to="/docs/contributing/development">see here</Link> for how you may be able help!
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter>
+
         <HugeSpacer/>
 
         <ScrollableAnchor id={'pathogens'}>
