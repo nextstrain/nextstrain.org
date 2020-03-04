@@ -75,6 +75,8 @@ Some other resources and articles we have found extremely useful during our own 
 
 [US CDC - What to Do if You are Sick](https://www.cdc.gov/coronavirus/2019-ncov/about/steps-when-sick.html)
 
+[US CDC - Coronavirus Disease 2019 (COVID-19)](https://www.cdc.gov/coronavirus/2019-ncov/index.html)
+
 #### What should you do if you think you might be sick with COVID-19?
 At the time of publication, the US CDC recommends to "Call ahead to a healthcare professional if you develop a fever and symptoms of respiratory illness, such as cough or difficulty breathing, and have been in close contact with a person known to have COVID-19 or if you live in or have recently traveled to an area with ongoing spread. Tell your healthcare professional about your recent travel or contact. Your healthcare professional will work with your state’s public health department and CDC to determine if you need to be tested for COVID-19."
 
