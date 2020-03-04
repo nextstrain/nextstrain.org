@@ -13,9 +13,9 @@ With all of this, it is important to note that as COVID-19 is a novel virus, we 
 #### How quickly is COVID-19 spreading?
 Based on disease modeling estimates and phylodynamic analysis, the current epidemic doubling time is about 7 days. There is uncertainty with these estimates and this rate will vary based on community contact patterns. Nonpharmaceutical interventions can be effective in reducing this rate, as we have [seen in China](https://twitter.com/jodigraphics15/status/1232484344872071168?s=20). Sudden jumps in case counts are likely due to increases in testing capacity catching cases that were previously missed by surveillance systems.
 
-Current case counts, deaths, and recoveries are being tracked in a number of places. These are updated as regularly as possible, but may not always be immediately up to date. One dashboard that we particularly like is from the Johns Hopkins Center for Systems Science and Engineering:
+Current case counts, deaths, and recoveries are being tracked in a number of places. These are updated as regularly as possible, but may not always be immediately up to date. One dashboard that we particularly like is from the [Johns Hopkins Center for Systems Science and Engineering](https://www.google.com/search?client=firefox-b-1-d&q=Johns+Hopkins+Center+for+Systems+Science+and+Engineering):
 
-[Johns Hopkins CSSE Dashboard](https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6).
+[Johns Hopkins CSSE Dashboard](https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6)
 
 #### How is COVID-19 spread?
 COVID-19 is a respiratory virus, which [spread in 3 main ways](https://www.aappublications.org/content/35/1/1.2):
@@ -25,7 +25,7 @@ COVID-19 is a respiratory virus, which [spread in 3 main ways](https://www.aappu
 
 3. Contact with surfaces or objects infected with the virus (also known as fomites). If a person touches an infected surface and then touches their eyes, nose, or mouth without washing their hands, they may become sick by introducing the virus into their body.
 
-For COVID-19 there is evidence of transmission in clinically mild and asymptomatic cases, which means people who are infected with COVID-19 and able to transmit the virus to others, may not appear, or even feel, sick.
+For COVID-19 there is evidence of transmission in clinically mild and asymptomatic cases. This means that people who are infected with COVID-19 and able to transmit the virus to others may not appear, or even feel, sick.
 
 Though there is not yet clear evidence on how long the COVID-19 virus can survive on surfaces, we expect it to be similar to other coronaviruses. Coronaviruses [can live on surfaces for anywhere from a couple hours to several days](https://www.who.int/news-room/q-a-detail/q-a-coronaviruses), depending on the surface and the climate.
 
@@ -38,7 +38,7 @@ More detailed information on clinical characteristics and outcomes can be found 
 
 
 #### What are the symptoms of COVID-19?
-The most commonly reported symptoms are fever, dry cough, and shortness of breath. Again, these symptoms will be mild for about 80% of cases. COVID-19 is a lower respiratory infection (so most symptoms will appear “below” the voicebox) but is a flu-like illness and how its symptoms present varies from person to person. If you are concerned about symptoms you or someone else may be having, we recommend calling your doctor to discuss next steps.
+The most commonly reported symptoms are fever, dry cough, and shortness of breath. Again, these symptoms will be mild for about 80% of cases. COVID-19 is a lower respiratory infection (so most symptoms will appear “below” the voicebox) but is a flu-like illness and how its symptoms present varies from person to person. If you are concerned about symptoms you or someone else may be having, in line with [US CDC recommendations](https://www.cdc.gov/coronavirus/2019-ncov/about/steps-when-sick.html), we suggest calling your doctor to discuss next steps.
 
 More detailed information on clinical characteristics can be found in the original journal article [Characteristics of and Important Lessons From the Coronavirus Disease 2019 (COVID-19) Outbreak in China by Zunyou Wu, MD, PhD and Jennifer M. McGoogan, PhD](https://jamanetwork.com/journals/jama/fullarticle/2762130).
 
@@ -67,16 +67,18 @@ Some other resources and articles we have found extremely useful during our own 
 
 [So you think you’re about to be in a pandemic? by Ian McKay, PhD and Katherine E Arden, PhD](https://virologydownunder.com/so-you-think-youve-about-to-be-in-a-pandemic/)
 
-[US CDC - Guidelines specifically on prevention of COVID-19 spread](https://www.cdc.gov/coronavirus/2019-ncov/community/index.html)
+[US CDC - Preventing COVID-19 Spread in Communities](https://www.cdc.gov/coronavirus/2019-ncov/community/index.html)
 
 [US CDC - When & How to Wash Your Hands](https://www.cdc.gov/handwashing/when-how-handwashing.html)
 
-[US CDC - Guidelines on Nonpharmaceutical Interventions](https://www.cdc.gov/nonpharmaceutical-interventions/index.html)
+[US CDC - Nonpharmaceutical Interventions](https://www.cdc.gov/nonpharmaceutical-interventions/index.html)
+
+[US CDC - What to Do if You are Sick](https://www.cdc.gov/coronavirus/2019-ncov/about/steps-when-sick.html)
 
 #### What should you do if you think you might be sick with COVID-19?
-At the time of publication, the CDC recommends to "Call ahead to a healthcare professional if you develop a fever and symptoms of respiratory illness, such as cough or difficulty breathing, and have been in close contact with a person known to have COVID-19 or if you live in or have recently traveled to an area with ongoing spread. Tell your healthcare professional about your recent travel or contact. Your healthcare professional will work with your state’s public health department and CDC to determine if you need to be tested for COVID-19."
+At the time of publication, the US CDC recommends to "Call ahead to a healthcare professional if you develop a fever and symptoms of respiratory illness, such as cough or difficulty breathing, and have been in close contact with a person known to have COVID-19 or if you live in or have recently traveled to an area with ongoing spread. Tell your healthcare professional about your recent travel or contact. Your healthcare professional will work with your state’s public health department and CDC to determine if you need to be tested for COVID-19."
 
-For more detailed information on what to do if you are concerned that you or someone you know might have COVID-19, please review the CDC page, [What to Do if You are Sick](https://www.cdc.gov/coronavirus/2019-ncov/about/steps-when-sick.html). This page includes information for individuals who may be sick, as well as information for their family members, caregivers, and intimate partners.
+For more detailed information on what to do if you are concerned that you or someone you know might have COVID-19, please review the US CDC page, [What to Do if You are Sick](https://www.cdc.gov/coronavirus/2019-ncov/about/steps-when-sick.html). This page includes information for individuals who may be sick, as well as information for their family members, caregivers, and intimate partners.
 
 #### What is the origin of the COVID-19 virus?
 The origin of the virus is still unclear, however [genomic analysis](https://virological.org/t/ncovs-relationship-to-bat-coronaviruses-recombination-signals-no-snakes/331) suggests the COVID-19 virus is most closely related to viruses previously identified in bats. It is plausible that there were other intermediate animal transmissions before the introduction into humans.
