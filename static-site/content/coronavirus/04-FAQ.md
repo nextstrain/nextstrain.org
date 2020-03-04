@@ -1,5 +1,5 @@
 ---
-title: "Frequently asked questions"
+title: "COVID-19 Frequently Asked Questions"
 ---
 
 
@@ -8,7 +8,15 @@ As a team, we’ve been fielding a lot of questions about COVID-19 and how indiv
 With all of this, it is important to note that as COVID-19 is a novel virus, we are still learning about disease characteristics including who is most likely to become infected or experience serious illness as a result of it. Current clinical knowledge is based primarily on data from the China outbreak. We believe everyone should be taking steps to protect themselves and their families. We hope the resources below will help you to do that.
 
 
-## COVID-19 FAQs
+## COVID-19 FAQs Quick Links
+- [How quickly is COVID-19 spreading?](#how-quickly-is-covid-19-spreading)
+- [How is COVID-19 spread?](#how-is-covid-19-spread)
+- [Who is at the highest risk for COVID-19?](#who-is-at-the-highest-risk-for-covid-19)
+- [What are the symptoms of COVID-19?](#what-are-the-symptoms-of-covid-19)
+- [What can be done to prevent or reduce the spread of COVID-19?](#what-can-be-done-to-prevent-or-reduce-the-spread-of-covid-19)
+- [What should you do if you think you might be sick with COVID-19?](#what-should-you-do-if-you-think-you-might-be-sick-with-covid-19)
+- [What is the origin of the COVID-19 virus?](#what-is-the-origin-of-the-covid-19-virus)
+
 
 #### How quickly is COVID-19 spreading?
 Based on disease modeling estimates and phylodynamic analysis, the current epidemic doubling time is about 7 days. There is uncertainty with these estimates and this rate will vary based on community contact patterns. Nonpharmaceutical interventions can be effective in reducing this rate, as we have [seen in China](https://twitter.com/jodigraphics15/status/1232484344872071168?s=20). Sudden jumps in case counts are likely due to increases in testing capacity catching cases that were previously missed by surveillance systems.
