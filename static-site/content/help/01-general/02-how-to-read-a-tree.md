@@ -10,9 +10,9 @@ An epidemic can only take off when one infection results in more than one subseq
 As the pathogen replicates and spreads, its genome needs to be replicated many times and random mutations (copying mistakes)  will accumulate in the genome.
 Such random mutations can help to track the spread of the pathogen and learn about its transmission routes and dynamics.
 
-<div>
-  <img alt="cartoon showing how transmission tree and phylogenetic tree relate" width="500" src="https://neherlab.org/talk_images/infection_tree_combined.png"/>
-</div>
+
+![cartoon showing how transmission tree and phylogenetic tree relate](figures/infection_tree_combined.png)
+
 
 The illustration above shows a sketch of a transmission tree with a subset of cases that were sampled (blue).
 In practice, the transmission tree is unknown and typically only rough estimates of case counts are available.
@@ -29,9 +29,9 @@ When sequences appear linked by a flat vertical line, like A and B, this means t
 When a sequence sits on a long line on its own, like C or E, this means it has unique mutations not found in other sequences. The longer the line, the more mutations.
 A and B also have unique mutations (the green circle) not shared by the other sequences, but they are identical to each other.
 
-<div>
-  <img alt="cartoon of phylogenetic tree and corresponding alignment, with samples labelled A-E" width="500" src="https://data.nextstrain.org/toy_alignment_tree.png"/>
-</div>
+
+![cartoon of phylogenetic tree and corresponding alignment, with samples labelled A-E](figures/toy_alignment_tree.png)
+
 
 At the moment, the novel coronavirus (COVID-19) phylogeny may not look much like a 'tree'.
 Many of the sequences are identical – they sit together on vertical lines like A and B (some are on the left-most part of the tree).
@@ -49,10 +49,8 @@ In the fully sampled case on the right, our interpretation of what happened, was
 When removing the one orange sequence in the middle, our interpretation is now that there was one introduction into blue that happened much earlier.
 In the last example, we have only one sequence from orange, which could lead us to think that there was one introduction from orange into blue.
 
+![Example phylogeny where all or only a subset of cases are included in the final phylogeny](figures/introductions.png)
 
-<div>
-  <img alt="Example phylogeny where all or only a subset of cases are included in the final phylogeny" width="500" src="https://raw.githubusercontent.com/nicfel/nCov-Nicola/master/figures/introductions.png"/>
-</div>
 
 Overall, the inferred locations of where a lineage has been in the past, should be considered as highly uncertain.
 
