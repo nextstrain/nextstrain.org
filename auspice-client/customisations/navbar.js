@@ -124,7 +124,7 @@ const NavBar = ({sidebar, narrativeTitle, width}) => {
             <div style={{...styles.flexColumns, paddingRight: "12px"}}>
               <div style={{flex: 5}}/>
               {renderLink("DOCS", "/docs", styles.link)}
-              {renderLink("BLOG", "/blog", styles.link)}
+              {renderLink("HELP", "/help", styles.link)}
               <WhoAmI sidebar={sidebar}/>
             </div>
           )

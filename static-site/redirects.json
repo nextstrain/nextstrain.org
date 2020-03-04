@@ -1,4 +1,5 @@
 {
+  "/help": "/help/general/about-nextstrain",
   "/about": "/docs/getting-started/introduction",
   "/about/overview/introduction": "/docs/getting-started/introduction",
   "/about/overview": "/docs/getting-started/introduction",
@@ -7,8 +8,10 @@
   "/community": "/#community",  
   "/docs/bioinformatics/introduction": "docs/bioinformatics/introduction-to-augur",
   "/docs/bioinformatics/output-jsons": "/docs/bioinformatics/data-formats",
-  "/docs/visualisation": "/docs/interpretation/auspice",
-  "/docs/visualisation/introduction": "/docs/interpretation/auspice",
+  "/docs/interpretation": "/help/general/interacting-with-nextstrain",
+  "/docs/interpretation/auspice": "/help/general/interacting-with-nextstrain",
+  "/docs/visualisation": "/help/general/interacting-with-nextstrain",
+  "/docs/visualisation/introduction": "/help/general/interacting-with-nextstrain",
   "/docs/visualisation/narratives": "/docs/narratives/introduction",
   "/docs/getting-started/zika-tutorial": "/docs/tutorials/zika",
   "/docs/getting-started/tb-tutorial": "/docs/tutorials/tb",
