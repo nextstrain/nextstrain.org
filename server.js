@@ -153,7 +153,11 @@ app.get("/inrb-drc*", (req, res) => {
  */
 app.get("*", (req, res) => {
   utils.verbose(`Sending Gatsby entrypoint for ${req.originalUrl}`);
-  res.sendFile(gatsbyAssetPath("index.html"));
+  if (req.originalUrl.startsWith("/page-data/")) {
+    res.sendFile(gatsbyAssetPath("index.html"));
+  } else {
+    res.sendFile(gatsbyAssetPath("404.html"));
+  }
 });
 
 
