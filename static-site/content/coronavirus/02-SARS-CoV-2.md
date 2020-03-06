@@ -7,8 +7,8 @@ title: "SARS-CoV-2 / COVID-19"
 In December 2019, a new illness was first detected in Wuhan, China.
 We now know this to be another outbreak of coronavirus in humans (the 7th). The virus has been named SARS-CoV-2 and the disease is causes is COVID-19.
 
-As of March 5, 2020 over 96,893 cases and 3,305 deaths [have been reported](https://en.wikipedia.org/wiki/2019%E2%80%9320_outbreak_of_novel_coronavirus_(2019-nCoV)).
-Early estimates of the case fatality rate are around 2-3%, whic is significantly less than the case fatality rate of SARS. The case counts are dramatically rising in part due to increased surveillance and testing.
+As of March 6, 2020 over 100,685 cases and 3,411 deaths [have been reported](https://en.wikipedia.org/wiki/2019%E2%80%9320_outbreak_of_novel_coronavirus_(2019-nCoV)).
+The WHO currently estimates the case fatality rate at 3.4%, which is significantly less than the case fatality rate of SARS. The case counts are dramatically rising in part due to increased surveillance and testing.
 
 While the outbreak seems to be centered in Wuhan, which is now [under quarantine](https://twitter.com/PDChina/status/1220060879112282117), the virus has spread throughout China and abroad, including Hong Kong, Singapore, Japan, and Thailand, as well as Europe, North America, South Asia, the Middle East, Africa, and Australia. Local transmission outside of China has been reported.
 
