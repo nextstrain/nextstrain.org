@@ -239,7 +239,7 @@ exit
 nextstrain view auspice/
 ```
 
-If you're not using the Nextstrain CLI shell, start auspiece to view the dataset in the Zika build output directory. 
+If you're not using the Nextstrain CLI shell, start auspice to view the dataset in the Zika build output directory.
 
 ```
 auspice view --datasetDir auspice
