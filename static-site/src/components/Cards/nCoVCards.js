@@ -53,7 +53,12 @@ const nCoVCards = [
     img: "ncov_narrative.png",
     url: "/narratives/ncov/sit-rep/hi/2020-03-05",
     title: "परिस्थिति रिपोर्ट 2020-03-05"
-  }
+  },
+	{
+		img: "ncov_narrative.png",
+		url: "/narratives/ncov/sit-rep/ja/2020-03-05",
+		title: "状況報告 2020-03-05"
+	}
 ];
 
 export default nCoVCards;
