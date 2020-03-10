@@ -49,7 +49,7 @@ The then require a model that allows us to describe how divergence in sequence s
 In the case of infectious diseases, the time component of such a model is typically coming from the sampling times of sequences.
 And lastly, they (at least often) require a model that describes how likely it is for two lineages in a tree to share a common ancestor, which is often referred to as a population model.
 
-There are two distinct ways of getting from genetic sequences and sampling times to timed phylogenetic trees:
+There are two somewhat distinct ways of getting from genetic sequences and sampling times to timed phylogenetic trees:
 
 In the maximum likelihood framework (used by nextstrain), a phylogenetic tree is first constructed by using the divergence between genetic sequences.
 This divergence tree is then used to fix the topology (or branching order) of the timed tree.
@@ -57,11 +57,10 @@ In the second step, using the fixed topology, genetic sequences and sampling tim
 This is done by estimating the rate of evolution of a clock model.
 While being able to account for some uncertainty, this approach essentially results in a point estimate of how a tree should look.
 
-![Phylogenetic tree inferred from hCoV-19 sequences deposited on GenBank](figures/hcov_densitree.png)
-
 
 In the Bayesian phylogenetic framework (which we use for some of the analyses in the narratives), the phylogenetic tree, how sequences evolve and how populations behave is inferred altogether.
 Using a statistical framework (normally Markov chain Monte Carlo algorithms), this allows us to infer a set of probable phylogentic trees while accounting for uncertainty about how much we actually know about.
+The tree below gives an example of a distribution of possible trees inferred from hCoV-19 sequences deposited on [GenBank](https://www.ncbi.nlm.nih.gov/genbank/) using the Bayesian phylogenetics software [BEAST2](https://www.beast2.org/)
 
 ![Phylogenetic tree inferred from hCoV-19 sequences deposited on GenBank](figures/hcov_densitree.png)
 
