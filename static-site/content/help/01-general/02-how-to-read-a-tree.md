@@ -38,6 +38,33 @@ Many of the sequences are identical – they sit together on vertical lines like
 Others have unique or shared mutations and so sit on lines, or 'branches', going to the right.
 You can see how many mutations a branch has by hovering your mouse over it.
 
+
+### How phylogenetic trees are inferred
+
+Timed phylogenetic trees are inferred from genetic sequence data and a information about time.
+All approaches to do so follow a similar principle.
+They first require a model that allows us to go differences in genetic sequences to divergence.
+This model is often referred to as a site model that describes how likely changes between nucleotides in different places of the genome are.
+The then require a model that allows us to describe how divergence in sequence space related to how long branches on a phylogeny evolve independent of one another, which is typically referred to as a clock model.
+In the case of infectious diseases, the time component of such a model is typically coming from the sampling times of sequences.
+And lastly, they (at least often) require a model that describes how likely it is for two lineages in a tree to share a common ancestor, which is often referred to as a population model.
+
+There are two distinct ways of getting from genetic sequences and sampling times to timed phylogenetic trees:
+
+In the maximum likelihood framework (used by nextstrain), a phylogenetic tree is first constructed by using the divergence between genetic sequences.
+This divergence tree is then used to fix the topology (or branching order) of the timed tree.
+In the second step, using the fixed topology, genetic sequences and sampling times, the branch lengths of the divergence tree is converted into actual time.
+This is done by estimating the rate of evolution of a clock model.
+While being able to account for some uncertainty, this approach essentially results in a point estimate of how a tree should look.
+
+
+In the Bayesian phylogenetic framework (which we use for some of the analyses in the narratives), the phylogenetic tree, how sequences evolve and how populations behave is inferred altogether.
+Using a statistical framework (normally Markov chain Monte Carlo algorithms), this allows us to infer a set of probable phylogentic trees while accounting for uncertainty about how much we actually know about.
+
+
+
+
+
 ### Reading a typed Phylogenetic Tree
 
 Phylogenetic trees often contain additional information, such as where geographically individual sequences were isolated from.
