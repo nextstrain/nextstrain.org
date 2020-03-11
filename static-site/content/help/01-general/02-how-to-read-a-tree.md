@@ -55,14 +55,17 @@ In the maximum likelihood framework (used by nextstrain), a phylogenetic tree is
 This divergence tree is then used to fix the topology (or branching order) of the timed tree.
 In the second step, using the fixed topology, genetic sequences and sampling times, the branch lengths of the divergence tree is converted into actual time.
 This is done by estimating the rate of evolution of a clock model.
-While being able to account for some uncertainty, this approach essentially results in a point estimate of how a tree should look.
+While being able to account for some uncertainty, this approach essentially results in a point estimate of a phylogenetic tree and ignores some of the uncertainties present in the data.
+
+![Phylogenetic tree inferred from hCoV-19 sequences deposited on GenBank using the nextstrain pipeline](figures/nextstrain_tree.png)
 
 
-In the Bayesian phylogenetic framework (which we use for some of the analyses in the narratives), the phylogenetic tree, how sequences evolve and how populations behave is inferred altogether.
+
+In the Bayesian phylogenetic framework, the phylogenetic tree, how sequences evolve and how populations behave is inferred altogether.
 Using a statistical framework (normally Markov chain Monte Carlo algorithms), this allows us to infer a set of probable phylogentic trees while accounting for uncertainty about how much we actually know about.
-The tree below gives an example of a distribution of possible trees inferred from hCoV-19 sequences deposited on [GenBank](https://www.ncbi.nlm.nih.gov/genbank/) using the Bayesian phylogenetics software [BEAST2](https://www.beast2.org/)
+The tree below gives an example of a distribution of possible trees inferred from hCoV-19 sequences deposited on [GenBank](https://www.ncbi.nlm.nih.gov/genbank/) using the Bayesian phylogenetics software [BEAST2](https://www.beast2.org/).
 
-![Phylogenetic tree inferred from hCoV-19 sequences deposited on GenBank](figures/hcov_densitree.png)
+![Phylogenetic tree inferred from hCoV-19 sequences deposited on GenBank using BEAST2](figures/hcov_densitree.png)
 
 ### Reading a typed Phylogenetic Tree
 
