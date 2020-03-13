@@ -124,6 +124,7 @@ const auspicePaths = [
   "/status",
   "/status/*",
   ...coreBuilds,
+  ...coreBuilds.map((url) => url + ":*"),
   ...coreBuilds.map(url => url + "/*"),
   "/narratives",
   "/narratives/*",
