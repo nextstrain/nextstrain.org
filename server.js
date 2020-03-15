@@ -153,8 +153,9 @@ app.get("/inrb-drc*", (req, res) => {
  */
 app.get("*", (req, res) => {
   utils.verbose(`Sending Gatsby entrypoint for ${req.originalUrl}`);
-  res.sendFile(gatsbyAssetPath(""),"",function (err) {
-	if (err.code === 'EISDIR') res.status(404).sendFile(gatsbyAssetPath("404.html"));
+  res.sendFile(gatsbyAssetPath(""), {}, (err) => {
+    // This error callback is used to display the 404 page
+    if (err.code === 'EISDIR') res.status(404).sendFile(gatsbyAssetPath("404.html"));
   });
 });
 
