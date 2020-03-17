@@ -103,11 +103,10 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
     // Community source requires an owner and repo name
     case "community":
       leadingParts.push(source.owner, source.repoNameWithBranch);
-      break;
-    // no default
+      return leadingParts.join("/");
+    default:
+      return [...leadingParts, ...prefixParts.filter((x) => x.length)].join("/");
   }
-
-  return [...leadingParts, ...prefixParts.filter((x) => x.length)].join("/");
 };
 
 /* Given the prefix (split on "/") -- is there an exact match in
