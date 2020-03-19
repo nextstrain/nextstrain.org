@@ -66,6 +66,11 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
+    url: "/narratives/ncov/sit-rep/ar/2020-03-13",
+    title: ".تقرير حالة 13 مارس 2020"
+  },
+  {
+    img: "ncov_narrative.png",
     url: "/narratives/ncov/sit-rep/hi/2020-03-05",
     title: "परिस्थिति रिपोर्ट 2020-03-05"
   }
