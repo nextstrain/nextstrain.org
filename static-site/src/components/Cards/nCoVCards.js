@@ -6,7 +6,7 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/2020-03-27",
+    url: "/narratives/ncov/sit-rep/2020-03-27",
     title: "Situation Report 2020-03-27"
   },
   {
