@@ -1,9 +1,11 @@
 language: node_js
 sudo: false
+dist: bionic
 node_js:
-  - "9"
+  - "10"
+  - "12"
 python:
-  - "2.7"
+  - "3.8"
 install:
   - npm install
 script:
