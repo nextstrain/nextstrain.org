@@ -59,7 +59,7 @@ conda deactivate
 ## Updating `augur`, `auspice`, and `nextstrain`:
 
 ```
-source activate nextstrain
+conda activate nextstrain
 pip install --upgrade nextstrain-augur nextstrain-cli
 npm update --global auspice
 ```
