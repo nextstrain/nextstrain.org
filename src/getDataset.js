@@ -3,7 +3,7 @@ const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const {NoDatasetPathError} = require("./exceptions");
 const auspice = require("auspice");
-const request = require('request');
+const {fetch} = require("./fetch");
 
 /**
  *
@@ -54,25 +54,24 @@ const requestV1Dataset = async (metaJsonUrl, treeJsonUrl) => {
  * then the promise will reject.
  */
 const requestMainDataset = async (res, fetchUrls) => {
-  return new Promise((resolve, reject) => {
-    /* try to stream the (v2+) dataset JSON as the response */
-    const req = request
-      .get(fetchUrls.main)
-      .on("response", async (response) => { // eslint-disable-line consistent-return
-        if (response.statusCode === 200) {
-          utils.verbose(`Successfully streaming ${fetchUrls.main}.`);
-          req.pipe(res);
-          return resolve();
-        }
-        utils.verbose(`The request for ${fetchUrls.main} returned ${response.statusCode}.`);
-        const [success, dataToReturn] = await requestV1Dataset(fetchUrls.meta, fetchUrls.tree);
-        if (success) {
-          res.send(dataToReturn);
-          return resolve();
-        }
-        return reject(dataToReturn);
-      });
-  });
+  /* try to stream the (v2+) dataset JSON as the response */
+  const response = await fetch(fetchUrls.main);
+
+  if (response.status === 200 || response.status === 304) {
+    utils.verbose(`Successfully streaming ${fetchUrls.main}`);
+    res.set("Content-Type", "application/json");
+    response.body.pipe(res);
+    return;
+  }
+
+  utils.verbose(`The request for ${fetchUrls.main} returned ${response.status}.`);
+  const [success, dataToReturn] = await requestV1Dataset(fetchUrls.meta, fetchUrls.tree);
+
+  if (!success) {
+    throw new Error("Failed to fetch either a v2 or v1 dataset");
+  }
+
+  res.send(dataToReturn);
 };
 
 /**
