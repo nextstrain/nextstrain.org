@@ -1,5 +1,6 @@
 ---
 title: "SARS-CoV-2 / COVID-19"
+anchorText: "SARS-CoV-2"
 ---
 
 
