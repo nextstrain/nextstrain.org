@@ -398,6 +398,10 @@ class InrbDrcSource extends PrivateGroupSource {
   get bucket() { return "nextstrain-inrb"; }
 }
 
+class NzCovid19PrivateSource extends PrivateGroupSource {
+  static get _name() { return "nz-covid19-private"; }
+}
+
 class SeattleFluSource extends PublicGroupSource {
   static get _name() { return "seattleflu"; }
 }
@@ -409,6 +413,7 @@ const sources = [
   BlabSource,
   InrbDrcSource,
   SeattleFluSource,
+  NzCovid19PrivateSource
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
