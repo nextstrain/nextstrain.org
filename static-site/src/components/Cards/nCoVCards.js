@@ -16,8 +16,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/it/2020-03-27",
-    title: "Rapporto sulla situazione al 2020-03-27"
+    url: "/narratives/ncov/sit-rep/it/2020-04-03",
+    title: "Rapporto sulla situazione al 2020-04-03"
   },
   {
     img: "ncov_narrative.png",
