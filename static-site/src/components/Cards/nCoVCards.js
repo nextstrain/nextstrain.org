@@ -46,8 +46,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/fa/2020-03-27",
-    title: " گزارش اجرایی ۲۷ مارس ۲۰۲۰"
+    url: "/narratives/ncov/sit-rep/fa/2020-04-03",
+    title: "شرح گزارش ۳ آوریل ۲۰۲۰"
   },
   {
     img: "ncov_narrative.png",
