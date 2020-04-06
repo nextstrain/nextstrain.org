@@ -392,6 +392,7 @@ class BlabSource extends PublicGroupSource {
 }
 
 class InrbDrcSource extends PrivateGroupSource {
+  /* Person to contact for enquiries: Alli Black / James Hadfield */
   static get _name() { return "inrb-drc"; }
 
   // INRB's bucket is named differently due to early adoption
@@ -399,7 +400,13 @@ class InrbDrcSource extends PrivateGroupSource {
 }
 
 class NzCovid19PrivateSource extends PrivateGroupSource {
+  /* Person to contact for enquiries: James Hadfield */
   static get _name() { return "nz-covid19-private"; }
+}
+
+class NextspainSource extends PublicGroupSource {
+  /* Person to contact for enquiries: James Hadfield */
+  static get _name() { return "nextspain"; }
 }
 
 class SeattleFluSource extends PublicGroupSource {
@@ -410,10 +417,13 @@ const sources = [
   CoreSource,
   CoreStagingSource,
   CommunitySource,
+  /* Public nextstrain groups: */
   BlabSource,
-  InrbDrcSource,
   SeattleFluSource,
-  NzCovid19PrivateSource
+  NextspainSource,
+  /* Private nextstain groups: */
+  NzCovid19PrivateSource,
+  InrbDrcSource
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
