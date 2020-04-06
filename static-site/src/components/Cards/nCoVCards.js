@@ -83,6 +83,11 @@ const nCoVCards = [
     img: "ncov_narrative.png",
     url: "/narratives/ncov/sit-rep/pl/2020-04-03",
     title: "Raport sytuacyjny 2020-04-03"
+  },
+  {
+    img: "ncov_narrative.png",
+    url: "/narratives/ncov/sit-rep/id/2020-04-03",
+    title: "Laporan keadaan per 2020-04-03"
   }
 ];
 
