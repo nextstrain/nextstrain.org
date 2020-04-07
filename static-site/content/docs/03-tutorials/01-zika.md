@@ -213,7 +213,7 @@ This refers to three config files to define colors via `config/colors.tsv`, lati
 The resulting tree and metadata JSON files are the inputs to the Auspice visualization tool.
 
 ```
-augur export \
+augur export v2 \
   --tree results/tree.nwk \
   --metadata data/metadata.tsv \
   --node-data results/branch_lengths.json \
@@ -223,8 +223,7 @@ augur export \
   --colors config/colors.tsv \
   --lat-longs config/lat_longs.tsv \
   --auspice-config config/auspice_config.json \
-  --output-tree auspice/zika_tree.json \
-  --output-meta auspice/zika_meta.json
+  --output auspice/zika.json
 ```
 
 ## Visualize the Results
