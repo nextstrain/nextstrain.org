@@ -404,6 +404,11 @@ class NzCovid19PrivateSource extends PrivateGroupSource {
   static get _name() { return "nz-covid19-private"; }
 }
 
+class AllWalesPrivateSource extends PrivateGroupSource {
+  /* Person to contact for enquiries: James Hadfield */
+  static get _name() { return "allwales-private"; }
+}
+
 class NextspainSource extends PublicGroupSource {
   /* Person to contact for enquiries: James Hadfield */
   static get _name() { return "nextspain"; }
@@ -423,6 +428,7 @@ const sources = [
   NextspainSource,
   /* Private nextstain groups: */
   NzCovid19PrivateSource,
+  AllWalesPrivateSource,
   InrbDrcSource
 ];
 
