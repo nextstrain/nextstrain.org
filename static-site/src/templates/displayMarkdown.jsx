@@ -208,6 +208,7 @@ export const pageQuery = graphql`
             slug
             chapterOrder
             postOrder
+            anchorText
           }
         }
       }

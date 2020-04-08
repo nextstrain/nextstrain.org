@@ -5,7 +5,8 @@ const parseEdges = (edges, sectionWanted) => {
     .map((e) => ({
       ...parseSlug.parseSlug(e.node.fields.slug),
       chapterOrder: e.node.fields.chapterOrder,
-      postOrder: e.node.fields.postOrder
+      postOrder: e.node.fields.postOrder,
+      anchorText: e.node.fields.anchorText
     }))
     .filter((n) => n.section === sectionWanted);
 
@@ -31,7 +32,8 @@ const parseEdges = (edges, sectionWanted) => {
     const nodeData = {
       title: meta.title,
       path: meta.path,
-      order: parseInt(meta.postOrder, 10)
+      order: parseInt(meta.postOrder, 10),
+      anchorText: meta.anchorText
     };
     if (hasChapters) {
       let chapterIdx = 0;
