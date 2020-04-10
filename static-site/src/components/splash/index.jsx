@@ -55,13 +55,13 @@ class Splash extends React.Component {
         {this.props.user && <UserGroups user={this.props.user} visibleGroups={this.props.visibleGroups} />}
 
         <ScrollableAnchor id={'ncov'}>
-          <Styles.H1>Novel coronavirus (2019-nCoV)</Styles.H1>
+          <Styles.H1>Novel coronavirus</Styles.H1>
         </ScrollableAnchor>
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
-            We are incorporating nCoV genomes as soon as they are shared and providing analyses and situation reports.
-            Please see below for the latest updates.
+            We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
+            Please see below for the latest analyses and situation reports.
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 
