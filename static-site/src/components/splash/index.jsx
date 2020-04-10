@@ -66,6 +66,7 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <Cards
+          squashed
           cards={nCoVCards}
         />
 
