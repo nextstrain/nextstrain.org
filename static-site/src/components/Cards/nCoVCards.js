@@ -71,13 +71,13 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/tr/2020-04-03",
-    title: "2020-04-03 tarihli durum raporu"
+    url: "/narratives/ncov/sit-rep/tr/2020-04-10",
+    title: "2020-04-10 tarihli durum raporu"
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/el/2020-04-03",
-    title: "Κατάσταση 2020-04-03"
+    url: "/narratives/ncov/sit-rep/el/2020-04-10",
+    title: "Κατάσταση 2020-04-10"
   },
   {
     img: "ncov_narrative.png",
