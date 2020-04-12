@@ -51,8 +51,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/ja/2020-04-03",
-    title: "状況報告 2020-04-03"
+    url: "/narratives/ncov/sit-rep/ja/2020-04-10",
+    title: "状況報告 2020-04-10"
   },
   {
     img: "ncov_narrative.png",
