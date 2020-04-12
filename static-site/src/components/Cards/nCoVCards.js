@@ -11,8 +11,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/zh/2020-04-03",
-    title: "状况报告2020-04-03"
+    url: "/narratives/ncov/sit-rep/zh/2020-04-10",
+    title: "状况报告2020-04-10"
   },
   {
     img: "ncov_narrative.png",
@@ -41,8 +41,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/nl/2020-04-03",
-    title: "Situatierapportage 2020-04-03"
+    url: "/narratives/ncov/sit-rep/nl/2020-04-10",
+    title: "Situatierapportage 2020-04-10"
   },
   {
     img: "ncov_narrative.png",
