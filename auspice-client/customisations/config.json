@@ -10,6 +10,7 @@
   },
   "navbarComponent": "navbar.js",
   "splashComponent": "splash.js",
+  "socialComponent": "social.js",
   "browserTitle": "Nextstrain",
   "googleAnalyticsKey": "UA-92687617-1"
 }
