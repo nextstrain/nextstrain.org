@@ -32,10 +32,10 @@ class Cards extends React.Component {
               {this.props.cards.map((d) => (
                 <div key={d.title}>
                   <div className="col-sm-4">
-                    <Styles.CardOuter>
+                    <Styles.CardOuter squashed={this.props.squashed}>
                       <Styles.CardInner>
                         <a href={`${d.url}`}>
-                          <Styles.CardTitle>
+                          <Styles.CardTitle squashed={this.props.squashed}>
                             {d.title}
                           </Styles.CardTitle>
                           {d.private ? (
