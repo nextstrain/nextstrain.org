@@ -29,7 +29,7 @@ The header of this TSV file should have the following entries: clade`\t`gene`\t`
 
 * `alt` is the nucleotide that the site mutated to. For example if the nucleotide mutation is `G9417A`, then `alt` would be `A`.
 
-Note that some clades will be defined by more than one mutation. To avoid any conflicts with other clades, you should list all the mutations in the TSV file (using the same clade name, but different site information). A picture of what this tsv file should look like, showing invisible characters, is given below. Note that clades `c1`, `c2`, `c3`, `c4`, and `c5` are defined by only one mutation, but that `c6` is defined by two mutations, and thus has two entries, one for each mutation. Along the same lines, there are six mutations defining clade `c6`, and thus there are six entries in the `tsv` file.
+Note that some clades will be defined by more than one mutation. To avoid any conflicts with other clades, you should list all the mutations in the TSV file (using the same clade name, but different site information). A picture of what this tsv file should look like, showing invisible characters, is given below. Note that clades `c1`, `c2`, `c3`, `c4`, and `c5` are defined by only one mutation, but that `c6` is defined by two mutations, and thus has two entries, one for each mutation. Along the same lines, there are six mutations defining clade `c7`, and thus there are six entries in the `tsv` file.
 
 ![](./img/tsv.png)
 
