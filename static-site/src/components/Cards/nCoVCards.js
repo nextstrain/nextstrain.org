@@ -21,7 +21,7 @@ const nCoVCards = [
   },
   {
     img: "ncov.png",
-    url: "/ncov/south-america",
+    url: "/ncov/oceania",
     title: "Latest analysis for Oceania"
   },
   {
