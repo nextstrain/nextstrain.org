@@ -96,8 +96,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/ar/2020-04-10",
-    title: " تقرير حالة 10 نيسان 2020"
+    url: "/narratives/ncov/sit-rep/ar/2020-04-17",
+    title: " تقرير حالة 17 نيسان 2020"
   },
   {
     img: "ncov_narrative.png",
