@@ -1,11 +1,12 @@
 ---
 title: "SARS-CoV-2 / COVID-19"
+anchorText: "SARS-CoV-2"
 ---
 
 
 ## Recent outbreak of a novel coronavirus
 In December 2019, a new illness was first detected in Wuhan, China.
-We now know this to be another outbreak of coronavirus in humans (the 7th). The virus has been named SARS-CoV-2 and the disease is causes is COVID-19.
+We now know this to be another outbreak of coronavirus in humans (the 7th). The virus has been named SARS-CoV-2 and the disease it causes is COVID-19.
 
 As of March 6, 2020 over 100,685 cases and 3,411 deaths [have been reported](https://en.wikipedia.org/wiki/2019%E2%80%9320_outbreak_of_novel_coronavirus_(2019-nCoV)).
 The WHO currently estimates the case fatality rate at 3.4%, which is significantly less than the case fatality rate of SARS. The case counts are dramatically rising in part due to increased surveillance and testing.

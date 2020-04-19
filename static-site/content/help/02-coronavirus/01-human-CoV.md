@@ -1,5 +1,6 @@
 ---
 title: "Different human coronaviruses"
+anchorText: "Human CoV"
 ---
 
 Coronaviruses (CoV) are members of a diverse species of positive-sense single-stranded RNA ((+)ssRNA) viruses which have a history of causing respiratory infections in humans.

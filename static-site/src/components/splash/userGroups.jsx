@@ -38,7 +38,7 @@ const UserGroups = (props) => {
         </Styles.CenteredFocusParagraph>
       </FlexCenter>
 
-      <Cards cards={groupCards}/>
+      <Cards cards={groupCards} squashed/>
 
       <HugeSpacer/>
     </Fragment>

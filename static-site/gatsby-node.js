@@ -41,6 +41,7 @@ exports.onCreateNode = ({node, actions, getNode}) => {
       post.order = groups[1];
       post.name = groups[2];
     }
+    post.anchorText = node.frontmatter.anchorText;
     /* step two: modify the node data */
     if (chapter.name) {
       actions.createNodeField({
@@ -71,6 +72,11 @@ exports.onCreateNode = ({node, actions, getNode}) => {
       node,
       name: "postOrder",
       value: post.order
+    });
+    actions.createNodeField({
+      node,
+      name: "anchorText",
+      value: post.anchorText
     });
 
   }
