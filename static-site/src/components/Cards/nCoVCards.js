@@ -41,8 +41,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/zh/2020-04-10",
-    title: "状况报告2020-04-10"
+    url: "/narratives/ncov/sit-rep/zh/2020-04-17",
+    title: "状况报告2020-04-17"
   },
   {
     img: "ncov_narrative.png",
@@ -66,8 +66,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/de/2020-04-10",
-    title: "Lagebericht 2020-04-10"
+    url: "/narratives/ncov/sit-rep/de/2020-04-17",
+    title: "Lagebericht 2020-04-17"
   },
   {
     img: "ncov_narrative.png",
@@ -101,8 +101,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/tr/2020-04-10",
-    title: "2020-04-10 tarihli durum raporu"
+    url: "/narratives/ncov/sit-rep/tr/2020-04-17",
+    title: "2020-04-17 tarihli durum raporu"
   },
   {
     img: "ncov_narrative.png",
