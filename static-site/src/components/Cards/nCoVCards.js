@@ -81,8 +81,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/ja/2020-04-10",
-    title: "状況報告 2020-04-10"
+    url: "/narratives/ncov/sit-rep/ja/2020-04-17",
+    title: "状況報告 2020-04-17"
   },
   {
     img: "ncov_narrative.png",
@@ -121,8 +121,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/cs/2020-04-10",
-    title: "Situační zpráva ze dne 10. 4. 2020."
+    url: "/narratives/ncov/sit-rep/cs/2020-04-17",
+    title: "Situační zpráva ze dne 17. 4. 2020."
   }
 ];
 
