@@ -27,9 +27,9 @@ Here is a helpful table describing the JSONs for each version of Auspice:
 
 | file | schema | Auspice versions | description |
 | ---- | ---- | ---- | ---- |
-|"tree" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v1-tree.json) | v1, v2 | Decorated phylogenetic tree |
-|"meta" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v1-meta.json) | v1, v2 | The "metadata" associated with a phylogenetic tree |
-|"v2" JSON | [Link](https://github.com/nextstrain/augur/blob/v6/augur/data/schema-export-v2.json) | v2 | The single input format required for Auspice v2 |
+|"tree" JSON | [Link](https://github.com/nextstrain/augur/tree/master/augur/data/schema-export-v1-tree.json) | v1, v2 | Decorated phylogenetic tree |
+|"meta" JSON | [Link](https://github.com/nextstrain/augur/tree/master/augur/data/schema-export-v1-meta.json) | v1, v2 | The "metadata" associated with a phylogenetic tree |
+|"v2" JSON | [Link](https://github.com/nextstrain/augur/tree/master/augur/data/schema-export-v2.json) | v2 | The single input format required for Auspice v2 |
 
 #### Tree JSON (required)
 The tree structure is encoded as a deeply nested JSON object, with traits (such as country, divergence, collection date, attributions, etc.) stored on each node.
