@@ -6,7 +6,7 @@
 
 # Nextstrain static site
 This directory contains the documentation files and static site generator for nextstrain.
-For general `nextstrain.org` documentation including the nextstrain server (including the `/charon/...` API endpoints) and auspice customizations, see [nextstrain.org/README.md]((./static-site/README.md)).
+For general `nextstrain.org` documentation including the nextstrain server (including the `/charon/...` API endpoints) and auspice customizations, see [nextstrain.org/README.md](../README.md).
 
 ## Installing
 
