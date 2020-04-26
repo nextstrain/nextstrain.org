@@ -41,8 +41,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/zh/2020-04-17",
-    title: "状况报告2020-04-17"
+    url: "/narratives/ncov/sit-rep/zh/2020-04-24",
+    title: "状况报告2020-04-24"
   },
   {
     img: "ncov_narrative.png",
@@ -66,8 +66,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/de/2020-04-17",
-    title: "Lagebericht 2020-04-17"
+    url: "/narratives/ncov/sit-rep/de/2020-04-24",
+    title: "Lagebericht 2020-04-24"
   },
   {
     img: "ncov_narrative.png",
@@ -81,8 +81,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/ja/2020-04-17",
-    title: "状況報告 2020-04-17"
+    url: "/narratives/ncov/sit-rep/ja/2020-04-24",
+    title: "状況報告 2020-04-24"
   },
   {
     img: "ncov_narrative.png",
@@ -111,8 +111,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/pl/2020-04-17",
-    title: "Raport sytuacyjny 2020-04-17"
+    url: "/narratives/ncov/sit-rep/pl/2020-04-24",
+    title: "Raport sytuacyjny 2020-04-24"
   },
   {
     img: "ncov_narrative.png",
