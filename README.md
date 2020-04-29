@@ -118,7 +118,7 @@ This uses symlinks both globally and within the local `node_modules/` directory 
 
 This server decides based on the path, whether to serve:
 * the bundled auspice JavaScript file (i.e. the auspice client, built above via `./build.sh auspice`) _or_
-* the (pre-built) static [splash & documentation pages](#Splash--documentation-pages
+* the (pre-built) static [splash & documentation pages](#splash--documentation-pages)
 
 
 #### Aside: How do auspice (client) - server communications work?
@@ -141,7 +141,7 @@ These handlers have been written in such a way that they can be imported by:
 
 > Note that 2 and 3 are running auspice locally but overwriting the (default) auspice handlers for `/charon/...` GET requests.
 In this case, they're overwriting them with the handlers used in the nextstrain.org repo and are employing the nextstrain.org behavior (fetching datasets from S3, etc.).
-See the [charon API auspice documentation](https://nextstrain.github.io/auspice/customisations/server/charonAPI) for more info.
+See the [charon API auspice documentation](https://nextstrain.github.io/auspice/server/api) for more info.
 
 
 
