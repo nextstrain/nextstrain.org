@@ -65,6 +65,14 @@ class Splash extends React.Component {
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph>
+            <Link to="/ncov-sit-reps">
+              See all situation reports here
+            </Link>
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter>
+
         <Cards
           squashed
           cards={nCoVCards}

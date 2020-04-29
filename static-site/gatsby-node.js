@@ -192,6 +192,13 @@ exports.createPages = ({graphql, actions}) => {
           matchPath: "/users/*",
           component: path.resolve("src/sections/users.jsx")
         });
+
+        // Create page detailing all SARS-CoV-2 sit-reps
+        createPage({
+          path: "/ncov-sit-reps",
+          component: path.resolve("src/pages/ncov-sit-reps.jsx")
+        });
+
       })
     );
   });
