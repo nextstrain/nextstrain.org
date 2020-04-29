@@ -50,7 +50,7 @@ We use [Auspice](https://github.com/nextstrain/auspice) to visualise & interact 
 ### A customised version of the Auspice client
 We build a customised version of the auspice client (e.g. the part you see in the browser) for nextstrain.org.
 The auspice customisations specific to nextstrain.org are found in `./auspice-client/customisations/`.
-Please see [the auspice documentation](https://nextstrain.github.io/auspice/customisations/introduction) for more information on customising auspice.
+Please see [the auspice documentation](https://nextstrain.github.io/auspice/customise-client/introduction) for more information on customising auspice.
 
 ### Testing locally
 Make sure you've installed dependencies with `npm install` first (and activated your conda environment if using one).
