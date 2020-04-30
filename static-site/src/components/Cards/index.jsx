@@ -43,7 +43,7 @@ class Cards extends React.Component {
                               <Padlock/>
                             </Styles.BottomRightLabel>
                           ) : null}
-                          <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} color={d.color}/>
+                          {d.img ? <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} color={d.color}/> : null}
                         </a>
                       </Styles.CardInner>
                     </Styles.CardOuter>
