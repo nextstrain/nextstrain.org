@@ -1,11 +1,13 @@
 import React from "react";
 import Helmet from "react-helmet";
+// import Collapsible from "react-collapsible";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
-import Cards from "../components/Cards";
+import SitRepCards from "../components/Cards/sitreps";
 import { FlexCenter } from "../layouts/generalComponents";
-import * as Styles from "../components/splash/styles";
+import * as splashStyles from "../components/splash/styles";
+// import * as cardStyles from "../components/Cards/styles";
 import data from "../../../validGetAvailableResponse";
 
 /**
@@ -818,23 +820,14 @@ class Index extends React.Component {
           <main>
             <NavBar location={this.props.location} />
             {this.state && this.state.narrativesByLanguage ? (
-            <Styles.Container className="container">
+            <splashStyles.Container className="container">
               <FlexCenter>
-                <Styles.CenteredFocusParagraph>
+                <splashStyles.H1>
                   All ncov situation reports by language:
-                </Styles.CenteredFocusParagraph>
+                </splashStyles.H1>
               </FlexCenter>
-              {this.state.narrativesByLanguage.map((language) => 
-                <div>
-                  <Styles.H2> {language.nativeName} </Styles.H2>
-                  <Cards
-                    squashed
-                    cards={language.narratives}
-                  />
-                </div>
-               
-              )}
-            </Styles.Container>
+              <SitRepCards narrativesByLanguage={this.state.narrativesByLanguage} img=""/>
+            </splashStyles.Container>
 
             ) : null}
 
