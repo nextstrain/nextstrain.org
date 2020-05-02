@@ -61,8 +61,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/fr/2020-04-24",
-    title: "Rapport de situation 2020-04-24"
+    url: "/narratives/ncov/sit-rep/fr/2020-05-01",
+    title: "Rapport de situation 2020-05-01"
   },
   {
     img: "ncov_narrative.png",
@@ -106,8 +106,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/el/2020-04-24",
-    title: "Κατάσταση 2020-04-24"
+    url: "/narratives/ncov/sit-rep/el/2020-05-01",
+    title: "Κατάσταση 2020-05-01"
   },
   {
     img: "ncov_narrative.png",
