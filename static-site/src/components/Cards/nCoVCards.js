@@ -41,8 +41,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/zh/2020-04-24",
-    title: "状况报告2020-04-24"
+    url: "/narratives/ncov/sit-rep/zh/2020-05-01",
+    title: "状况报告2020-05-01"
   },
   {
     img: "ncov_narrative.png",
@@ -56,8 +56,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/pt/2020-04-24",
-    title: "Relatório da situação até 2020-04-24"
+    url: "/narratives/ncov/sit-rep/pt/2020-05-01",
+    title: "Relatório da situação até 2020-05-01"
   },
   {
     img: "ncov_narrative.png",
@@ -81,8 +81,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/ja/2020-04-24",
-    title: "状況報告 2020-04-24"
+    url: "/narratives/ncov/sit-rep/ja/2020-05-01",
+    title: "状況報告 2020-05-01"
   },
   {
     img: "ncov_narrative.png",
@@ -121,8 +121,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/cs/2020-04-24",
-    title: "Situační zpráva ze dne 24. 4. 2020."
+    url: "/narratives/ncov/sit-rep/cs/2020-05-01",
+    title: "Situační zpráva ze dne 01. 5. 2020."
   }
 ];
 
