@@ -3,9 +3,9 @@
 import React from "react";
 import Collapsible from "react-collapsible";
 import * as Styles from "./styles";
-import { H1 } from "../splash/styles";
+import { H1, H2 } from "../splash/styles";
 import { MediumSpacer } from "../../layouts/generalComponents";
-import Cards from "./index";
+
 
 // eslint-disable-next-line react/prefer-stateless-function
 class SitRepCards extends React.Component {
@@ -45,10 +45,15 @@ class SitRepCards extends React.Component {
                       </Styles.CardOuter>
                     }
                     >
-                      <Cards
-                        squashed={this.props.squashed}
-                        cards={language.narratives}
-                      />
+                      <ol>
+                        {language.narratives.map((narrative) => (
+                          <li>
+                            <a href={narrative.url}>
+                              <Styles.SitRepTitle>{narrative.title}</Styles.SitRepTitle>
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
                     </Collapsible>
                   </div>
                 </div>

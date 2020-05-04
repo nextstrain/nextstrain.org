@@ -54,6 +54,19 @@ export const CardTitle = styled.div`
   background: rgba(0, 0, 0, 0.7);
 `;
 
+export const SitRepTitle = styled.div`
+  font-family: ${(props) => props.theme.generalFont};
+  font-weight: 500;
+  font-size: ${(props) => props.squashed ? "18px" : "20px"};
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+  border-radius: 3px;
+  padding: 10px 20px 10px 20px;
+  top: 40px;
+  left: 20px;
+`;
+
 export const BottomRightLabel = styled.div`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
