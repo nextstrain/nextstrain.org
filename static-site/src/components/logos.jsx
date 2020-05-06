@@ -17,6 +17,9 @@ export const Logos = () => (
         <a key={3} href="https://www.nih.gov/" target="_blank" rel="noopener noreferrer">
           <img alt="logo" width="52" src={require("../../static/logos/nih-logo.jpg")} />
         </a>
+        <a key={3} href="https://www.mapbox.com" target="_blank" rel="noopener noreferrer">
+          <img alt="mapbox logo" width="120" src={require("../../static/logos/mapbox-logo-black.svg")} />
+        </a>
       </FlexCenter>
     </div>
     <div className="col-md-5">
