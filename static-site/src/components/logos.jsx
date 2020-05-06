@@ -1,40 +1,59 @@
 /* eslint global-require:"off" */
 import React from "react";
-import {FlexCenter, Line} from "../layouts/generalComponents";
+import styled from "styled-components";
+import {Line} from "../layouts/generalComponents";
+
+const fredHutchLogo = require("../../static/logos/fred-hutch-logo-small.png");
+const maxPlanckLogo = require("../../static/logos/max-planck-logo.png");
+const nihLogo = require("../../static/logos/nih-logo.jpg");
+const mapBoxLogo = require("../../static/logos/mapbox-logo-black.svg");
+const ercLogo = require("../../static/logos/erc-logo.jpg");
+const ospLogo = require("../../static/logos/osp-logo-small.png");
+const bzLogo = require("../../static/logos/bz_logo.png");
+
+const AllLogosContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 0px;
+  padding: 10px 0px 0px 0px;
+`;
+
+const IndividualLogoContainer = styled.a`
+  /* Using flex here (to vertically align the child img) causes aspect-ratio issues */
+  flex-basis: 120px;
+  margin: 10px auto 10px auto;
+  text-align: center;
+`;
+
+const ImageContainer = styled.img`
+  display: inline-block;
+  width: ${(props) => props.width}px;
+  max-width: ${(props) => props.width}px;
+  vertical-align: middle;
+  height: auto;
+`;
+
+const Logo = ({href, imgSrc, width=50}) => (
+  <IndividualLogoContainer href={href} target="_blank" rel="noopener noreferrer">
+    <span style={{display: "inline-block", height: "100%", verticalAlign: "middle"}} />
+    <ImageContainer alt="logo" src={imgSrc} width={width} />
+  </IndividualLogoContainer>
+);
 
 export const Logos = () => (
   <div className="row">
     <Line style={{marginBottom: 0}}/>
-    <div className="col-md-1" />
-    <div className="col-md-5">
-      <FlexCenter wrap="wrap" style={{marginTop: 20, justifyContent: "space-around"}}>
-        <a key={1} href="http://www.fredhutch.org/" target="_blank" rel="noopener noreferrer">
-          <img alt="logo" width="75" src={require("../../static/logos/fred-hutch-logo-small.png")} />
-        </a>
-        <a key={2} href="http://www.eb.tuebingen.mpg.de/" target="_blank" rel="noopener noreferrer">
-          <img alt="logo" width="65" src={require("../../static/logos/max-planck-logo.png")} />
-        </a>
-        <a key={3} href="https://www.nih.gov/" target="_blank" rel="noopener noreferrer">
-          <img alt="logo" width="52" src={require("../../static/logos/nih-logo.jpg")} />
-        </a>
-        <a key={3} href="https://www.mapbox.com" target="_blank" rel="noopener noreferrer">
-          <img alt="mapbox logo" width="120" src={require("../../static/logos/mapbox-logo-black.svg")} />
-        </a>
-      </FlexCenter>
+    <div className="col-md-12">
+      <AllLogosContainer>
+        <Logo href="http://www.fredhutch.org/" imgSrc={fredHutchLogo} width={90}/>
+        <Logo href="http://www.eb.tuebingen.mpg.de/" imgSrc={maxPlanckLogo} width={90}/>
+        <Logo href="https://www.nih.gov/" imgSrc={nihLogo} width={65}/>
+        <Logo href="https://www.mapbox.com" imgSrc={mapBoxLogo} width={135}/>
+        <Logo href="https://erc.europa.eu/" imgSrc={ercLogo} width={70}/>
+        <Logo href="https://www.openscienceprize.org/" imgSrc={ospLogo} width={110}/>
+        <Logo href="http://biozentrum.org/" imgSrc={bzLogo} width={120}/>
+      </AllLogosContainer>
     </div>
-    <div className="col-md-5">
-      <FlexCenter wrap="wrap" style={{marginTop: 20, justifyContent: "space-around"}}>
-        <a key={4} href="https://erc.europa.eu/" target="_blank" rel="noopener noreferrer">
-          <img alt="logo" width="60" src={require("../../static/logos/erc-logo.jpg")} />
-        </a>
-        <a key={5} href="https://www.openscienceprize.org/" target="_blank" rel="noopener noreferrer">
-          <img alt="logo" width="82" src={require("../../static/logos/osp-logo-small.png")} />
-        </a>
-        <a key={6} href="http://biozentrum.org/" target="_blank" rel="noopener noreferrer">
-          <img alt="logo" width="85" src={require("../../static/logos/bz_logo.png")} />
-        </a>
-      </FlexCenter>
-    </div>
-    <div className="col-md-1" />
   </div>
 );
