@@ -3,7 +3,7 @@
 import React from "react";
 import Collapsible from "react-collapsible";
 import * as Styles from "./styles";
-import { H1, H2 } from "../splash/styles";
+import { H1 } from "../splash/styles";
 import { MediumSpacer } from "../../layouts/generalComponents";
 
 
@@ -38,9 +38,8 @@ class SitRepCards extends React.Component {
                         <Styles.CardInner>
                           <a>
                             <Styles.CardTitle squashed={this.props.squashed}>{language.nativeName}</Styles.CardTitle>
-                            <Styles.CardImg src={require(`../../../static/splash_images/ncov_narrative.png`)}/>
+                            <Styles.CardImg src={require(`../../../static/splash_images/${language.img !== undefined ? language.image : this.props.defaultImg}`)}/>
                           </a>
-                          {/*  */}
                         </Styles.CardInner>
                       </Styles.CardOuter>
                     }
