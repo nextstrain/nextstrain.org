@@ -3,8 +3,8 @@
 import React from "react";
 import Collapsible from "react-collapsible";
 import * as Styles from "./styles";
-import { H1 } from "../splash/styles";
-import { MediumSpacer } from "../../layouts/generalComponents";
+import { H1, H2 } from "../splash/styles";
+import { MediumSpacer, Line } from "../../layouts/generalComponents";
 
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -32,29 +32,26 @@ class SitRepCards extends React.Component {
             <div className="row">
               {this.props.narrativesByLanguage.map((language) => (
                 <div key={language.name}>
-                  <div className="col-sm-4">
-                    <Collapsible trigger={
-                      <Styles.CardOuter squashed={this.props.squashed}>
-                        <Styles.CardInner>
-                          <a>
-                            <Styles.CardTitle squashed={this.props.squashed}>{language.nativeName}</Styles.CardTitle>
-                            <Styles.CardImg src={require(`../../../static/splash_images/${language.img !== undefined ? language.image : this.props.defaultImg}`)}/>
+                  <Collapsible trigger={
+                    <div>
+                      <Line style={{margin: "10px 0px 10px 0px"}}/>
+                      <a href={null}>
+                        <H2 squashed={this.props.squashed}>{language.nativeName}</H2>
+                      </a>
+                      <br/>
+                    </div>
+                  }
+                  >
+                    <div className="row">
+                      {language.narratives.map((narrative) => (
+                        <div className="col-sm-4">
+                          <a href={narrative.url}>
+                            <Styles.SitRepTitle>{narrative.title}</Styles.SitRepTitle>
                           </a>
-                        </Styles.CardInner>
-                      </Styles.CardOuter>
-                    }
-                    >
-                      <ol>
-                        {language.narratives.map((narrative) => (
-                          <li>
-                            <a href={narrative.url}>
-                              <Styles.SitRepTitle>{narrative.title}</Styles.SitRepTitle>
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </Collapsible>
-                  </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Collapsible>
                 </div>
               ))}
             </div>
