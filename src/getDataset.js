@@ -53,13 +53,26 @@ const requestV1Dataset = async (metaJsonUrl, treeJsonUrl) => {
  * If neither the v1 nor the v2 dataset fetch / parse is successful,
  * then the promise will reject.
  */
-const requestMainDataset = async (res, fetchUrls) => {
+const requestMainDataset = async (_req, res, fetchUrls) => {
   /* try to stream the (v2+) dataset JSON as the response */
-  const response = await fetch(fetchUrls.main);
+  const response = await fetch(
+    fetchUrls.main,
+    {
+      compress: false,
+      headers: { "Accept-Encoding": "gzip" }
+    }
+  );
 
   if (response.status === 200 || response.status === 304) {
     utils.verbose(`Successfully streaming ${fetchUrls.main}`);
-    res.set("Content-Type", "application/json");
+    for (const header of Object.keys(response.headers.raw())) {
+      res.set(header, response.headers.get(header));
+    }
+    res.set("Content-Encoding", "gzip");
+    if (!!_req.get("If-None-Match") && _req.get("If-None-Match") === res.get("etag")) {
+      res.sendStatus(304);
+      return;
+    }
     response.body.pipe(res);
     return;
   }
@@ -150,7 +163,7 @@ const getDataset = async (req, res) => {
     }
   } else {
     try {
-      await requestMainDataset(res, fetchUrls);
+      await requestMainDataset(req, res, fetchUrls);
     } catch (err) {
       if (dataset.isRequestValidWithoutDataset) {
         utils.verbose("Request is valid, but no dataset available. Returning 204.");
