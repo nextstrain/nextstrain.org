@@ -3,7 +3,7 @@ const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const {NoDatasetPathError} = require("./exceptions");
 const auspice = require("auspice");
-const {fetch} = require("./fetch");
+const fetch = require('node-fetch');
 
 /**
  *
