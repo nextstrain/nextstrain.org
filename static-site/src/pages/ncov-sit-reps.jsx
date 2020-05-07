@@ -1,12 +1,15 @@
 import React from "react";
 import Helmet from "react-helmet";
+import Collapsible from "react-collapsible";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
-import SitRepCards from "../components/Cards/sitreps";
-import { FlexCenter } from "../layouts/generalComponents";
+import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import { isoLangs } from "../components/Cards/languages";
+import UserDataWrapper from "../layouts/userDataWrapper";
+import Footer from "../components/Footer";
+import CollapseTitle from "../components/Misc/collapse-title";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
@@ -66,7 +69,7 @@ class Index extends React.Component {
       .then(this.handleError)
       .then((res) => res.json())
       .then((json) => { this.setState({ narrativesByLanguage: this.sitRepCards(json) });})
-      .catch(error => {throw error;}); // TODO: this catches all errors from above steps, which we might want to handle more specifically
+      .catch(error => {throw error;}); // TODO: handle this using the component state to display nice error pages
   }
 
   render() {
@@ -75,19 +78,62 @@ class Index extends React.Component {
         <div className="index-container">
           <Helmet title={config.siteTitle} />
           <main>
-            <NavBar location={this.props.location} />
-            {this.state && this.state.narrativesByLanguage ? (
-              <splashStyles.Container className="container">
-                <FlexCenter>
-                  <splashStyles.H1>
-                  All ncov situation reports by language:
-                  </splashStyles.H1>
-                </FlexCenter>
-                <SitRepCards narrativesByLanguage={this.state.narrativesByLanguage} defaultImg="ncov_narrative.png"/>
-              </splashStyles.Container>
+            <UserDataWrapper>
 
-            ) : null}
+              <NavBar location={this.props.location} />
 
+              {this.state && this.state.narrativesByLanguage &&
+                <splashStyles.Container className="container">
+                  <HugeSpacer />
+                  <splashStyles.H2>
+                    All SARS-CoV-2 situation reports
+                  </splashStyles.H2>
+                  <SmallSpacer />
+                  <FlexCenter>
+                    <splashStyles.CenteredFocusParagraph>
+                      Each week we have been writing interactive situation reports
+                      using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
+                      to communicate how COVID-19 is moving around the world and spreading locally.
+                      These are kindly translated into a number of different languages by volunteers
+                      and Google — click on any language below to see the list of situation reports available.
+                    </splashStyles.CenteredFocusParagraph>
+                  </FlexCenter>
+
+                  {/* Sit Reps */}
+                  <div className="row">
+                    <MediumSpacer />
+                    <div className="col-md-1"/>
+                    <div className="col-md-10">
+                      {this.state.narrativesByLanguage.map((language) => (
+                        <div key={language.name}>
+                          {/* TODO: seems like there is a better way to implement the different states of the collapsible title */}
+                          <Collapsible triggerWhenOpen={<CollapseTitle title={`${language.nativeName}    -`}/>}
+                            trigger={<CollapseTitle title={`${language.nativeName}    +`}/>}
+                            triggerStyle={{cursor: "pointer"}}
+                          >
+                            {/* Begin collapsible content */}
+                            <div className="row">
+                              {language.narratives.map((narrative) => (
+                                <div className="col-sm-4">
+                                  <FlexCenter>
+                                    <a href={narrative.url}>
+                                      <splashStyles.SitRepTitle>{narrative.title}</splashStyles.SitRepTitle>
+                                    </a>
+                                  </FlexCenter>
+                                </div>
+                              ))}
+                            </div>
+                          </Collapsible>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Footer />
+
+                </splashStyles.Container>
+              }
+            </UserDataWrapper>
           </main>
         </div>
       </MainLayout>
