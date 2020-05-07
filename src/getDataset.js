@@ -53,13 +53,15 @@ const requestV1Dataset = async (metaJsonUrl, treeJsonUrl) => {
  * If neither the v1 nor the v2 dataset fetch / parse is successful,
  * then the promise will reject.
  */
-const requestMainDataset = async (res, fetchUrls) => {
+const requestMainDataset = async (_req, res, fetchUrls) => {
   return new Promise((resolve, reject) => {
     /* try to stream the (v2+) dataset JSON as the response */
     const req = request
-      .get(fetchUrls.main)
+      .get(fetchUrls.main);
+    _req.pipe(req);
+    req
       .on("response", async (response) => { // eslint-disable-line consistent-return
-        if (response.statusCode === 200) {
+        if (response.statusCode === 200 || response.statusCode === 304) {
           utils.verbose(`Successfully streaming ${fetchUrls.main}.`);
           req.pipe(res);
           return resolve();
@@ -151,7 +153,7 @@ const getDataset = async (req, res) => {
     }
   } else {
     try {
-      await requestMainDataset(res, fetchUrls);
+      await requestMainDataset(req, res, fetchUrls);
     } catch (err) {
       if (dataset.isRequestValidWithoutDataset) {
         utils.verbose("Request is valid, but no dataset available. Returning 204.");
