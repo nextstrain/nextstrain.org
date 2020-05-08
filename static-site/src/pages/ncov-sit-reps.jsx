@@ -57,7 +57,12 @@ class Index extends React.Component {
         }
       });
     // return all the languages for which we have at least one narrative
-    return Object.values(narrativesByLanguage).filter(language => language.narratives !== undefined && language.narratives.length > 0);
+    const languageObjects = Object.values(narrativesByLanguage).filter(language => language.narratives !== undefined && language.narratives.length > 0);
+    // English first
+    const englishIdx = languageObjects.findIndex((l) => l.name === "English");
+    return [languageObjects[englishIdx]]
+      .concat(languageObjects.slice(0, englishIdx))
+      .concat(languageObjects.slice(englishIdx+1));
   }
 
   handleServerError(response) {
@@ -76,7 +81,7 @@ class Index extends React.Component {
       })
       .catch(error => {
         console.log("The following error occured during fetching or parsing situation reports:", error);
-        this.setState({hasError: true});
+        this.setState({ hasError: true });
       });
   }
 
@@ -101,7 +106,7 @@ class Index extends React.Component {
                   using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
                   to communicate how COVID-19 is moving around the world and spreading locally.
                   These are kindly translated into a number of different languages by volunteers
-                  and Google — click on any language below to see the list of situation reports available.
+                  and Google-provided translators — click on any language below to see the list of situation reports available.
                 </splashStyles.CenteredFocusParagraph>
               </FlexCenter>
               <div className="row">

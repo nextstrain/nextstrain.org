@@ -68,7 +68,7 @@ class Splash extends React.Component {
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
             <Link to="/ncov-sit-reps">
-              See all situation reports here
+              See previous situation reports here
             </Link>
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
