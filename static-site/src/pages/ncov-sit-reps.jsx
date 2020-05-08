@@ -1,6 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import Collapsible from "react-collapsible";
+import _sortBy from "lodash/sortBy";
 import _cloneDeep from "lodash/cloneDeep";
 import FaFile from "react-icons/lib/fa/file";
 import config from "../../data/SiteConfig";
@@ -140,7 +141,7 @@ class Index extends React.Component {
             sitrep.language = "en";
             sitrep.title = parts[0];
           } else if (parts.length === 2) {
-            sitrep.language = parts[0];
+            sitrep.language = parts[0].toLowerCase();
             sitrep.title = parts[1];
           } else {
             console.warn("Unforseen narrative url", url);
@@ -165,17 +166,15 @@ class Index extends React.Component {
         else narrativesByLanguage[sitrep.language].narratives = [sitrep];
       });
     // get all the languages for which we have at least one narrative
-    const languageObjects = Object.values(narrativesByLanguage).filter(language => language.narratives !== undefined && language.narratives.length > 0);
+    const languageObjects = Object.entries(narrativesByLanguage)
+                                  .map((l) => Object.assign({}, l[1], {code: l[0]}))
+                                  .filter(language => language.narratives !== undefined && language.narratives.length > 0);
     // sort most recent dates first
     languageObjects.forEach((l) => {
       l.narratives.sort().reverse();
-      l.narratives[0].latest = true;
     });
-    // English first
-    const englishIdx = languageObjects.findIndex((l) => l.name === "English");
-    return [languageObjects[englishIdx]]
-      .concat(languageObjects.slice(0, englishIdx))
-      .concat(languageObjects.slice(englishIdx+1));
+    // English first then by language code
+    return _sortBy(languageObjects, [(o) => o.name !== "English", (o) => o.code]);
   }
 
   handleServerError(response) {
@@ -243,11 +242,11 @@ class Index extends React.Component {
                         >
                           {/* Begin collapsible content */}
                           <div className="row">
-                            {language.narratives.map((narrative) => (
+                            {Array.from(language.narratives.entries()).map(([index, narrative]) => (
                               <div className="col-sm-4">
                                 <FlexCenter>
                                   <a href={narrative.url}>
-                                    <splashStyles.SitRepTitle attn={narrative.latest}>
+                                    <splashStyles.SitRepTitle attn={index === 0}>
                                       <FaFile />
                                       {" "+narrative.title}
                                     </splashStyles.SitRepTitle>
