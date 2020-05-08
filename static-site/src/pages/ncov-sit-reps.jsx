@@ -1,6 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import Collapsible from "react-collapsible";
+import _cloneDeep from "lodash/cloneDeep";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
@@ -17,10 +18,11 @@ class Index extends React.Component {
     this.state = {hasError: false};
     this.handleError = this.handleServerError.bind(this);
     this.sitRepCards = this.getNarrativesByLanguageObject.bind(this);
+    this.isoLangs = _cloneDeep(isoLangs);
   }
 
   getNarrativesByLanguageObject(json) {
-    const narrativesByLanguage = Object.assign({}, isoLangs);
+    const narrativesByLanguage = this.isoLangs;
     json.narratives
       .filter((o) => o.request)
       .map((o) => "/"+o.request)
