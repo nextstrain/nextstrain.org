@@ -8,9 +8,111 @@ import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
 import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
-import { isoLangs } from "../components/Cards/languages";
 import Footer from "../components/Footer";
 import CollapseTitle from "../components/Misc/collapse-title";
+
+const translatedLanguages = {
+  ar: {
+    name: "Arabic",
+    nativeName: "العربية"
+  },
+  bn: {
+    name: "Bengali",
+    nativeName: "বাংলা"
+  },
+  cs: {
+    name: "Czech",
+    nativeName: "česky, čeština"
+  },
+  de: {
+    name: "German",
+    nativeName: "Deutsch"
+  },
+  el: {
+    name: "Greek, Modern",
+    nativeName: "Ελληνικά"
+  },
+  en: {
+    name: "English",
+    nativeName: "English"
+  },
+  es: {
+    name: "Spanish; Castilian",
+    nativeName: "español, castellano"
+  },
+  fa: {
+    name: "Persian",
+    nativeName: "فارسی"
+  },
+  fr: {
+    name: "French",
+    nativeName: "français, langue française"
+  },
+  hi: {
+    name: "Hindi",
+    nativeName: "हिन्दी, हिंदी"
+  },
+  id: {
+    name: "Indonesian",
+    nativeName: "Bahasa Indonesia"
+  },
+  it: {
+    name: "Italian",
+    nativeName: "Italiano"
+  },
+  ja: {
+    name: "Japanese",
+    nativeName: "日本語 (にほんご／にっぽんご)"
+  },
+  ko: {
+    name: "Korean",
+    nativeName: "한국어 (韓國語), 조선말 (朝鮮語)"
+  },
+  nl: {
+    name: "Dutch",
+    nativeName: "Nederlands, Vlaams"
+  },
+  pl: {
+    name: "Polish",
+    nativeName: "polski"
+  },
+  "pt-br": {
+    name: "Brazilian Portuguese",
+    nativeName: "Português do Brasil"
+  },
+  pt: {
+    name: "Portuguese",
+    nativeName: "Português"
+  },
+  ru: {
+    name: "Russian",
+    nativeName: "русский язык"
+  },
+  sw: {
+    name: "Swahili",
+    nativeName: "Kiswahili"
+  },
+  tl: {
+    name: "Tagalog",
+    nativeName: "Wikang Tagalog, ᜏᜒᜃᜅ᜔ ᜆᜄᜎᜓᜄ᜔"
+  },
+  tr: {
+    name: "Turkish",
+    nativeName: "Türkçe"
+  },
+  ur: {
+    name: "Urdu",
+    nativeName: "اردو"
+  },
+  vi: {
+    name: "Vietnamese",
+    nativeName: "Tiếng Việt"
+  },
+  zh: {
+    name: "Chinese",
+    nativeName: "中文 (Zhōngwén), 汉语, 漢語"
+  }
+};
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
@@ -19,11 +121,11 @@ class Index extends React.Component {
     this.state = {hasError: false};
     this.handleError = this.handleServerError.bind(this);
     this.sitRepCards = this.getNarrativesByLanguageObject.bind(this);
-    this.isoLangs = _cloneDeep(isoLangs);
+    this.translatedLanguages = _cloneDeep(translatedLanguages);
   }
 
   getNarrativesByLanguageObject(json) {
-    const narrativesByLanguage = this.isoLangs;
+    const narrativesByLanguage = this.translatedLanguages;
     json.narratives
       .filter((o) => o.request)
       .map((o) => "/"+o.request)
@@ -51,13 +153,16 @@ class Index extends React.Component {
       })
       .filter((sitrep) => sitrep !== null)
       .forEach((sitrep) => {
-        // add sitreps to the returned object according to their language
-        if (narrativesByLanguage[sitrep.language]) {
-          if (narrativesByLanguage[sitrep.language].narratives) narrativesByLanguage[sitrep.language].narratives.push(sitrep);
-          else narrativesByLanguage[sitrep.language].narratives = [sitrep];
-        } else {
-          console.warn("Language not recognized: ", sitrep.language);
+        if (!narrativesByLanguage[sitrep.language]) {
+          // define a language just using the 2 letter code if none exists in our dictionary
+          narrativesByLanguage[sitrep.language] = {
+            name: sitrep.language,
+            nativeName: sitrep.language
+          };
         }
+        // add sitreps to the language object
+        if (narrativesByLanguage[sitrep.language].narratives) narrativesByLanguage[sitrep.language].narratives.push(sitrep);
+        else narrativesByLanguage[sitrep.language].narratives = [sitrep];
       });
     // get all the languages for which we have at least one narrative
     const languageObjects = Object.values(narrativesByLanguage).filter(language => language.narratives !== undefined && language.narratives.length > 0);
