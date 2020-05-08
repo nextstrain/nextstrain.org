@@ -57,10 +57,10 @@ export const H3 = styled.div`
 
 export const SitRepTitle = styled.div`
   font-family: ${(props) => props.theme.generalFont};
-  font-weight: 500;
-  font-size: ${(props) => props.squashed ? "16px" : "18px"};
+  font-weight: ${(props) => props.attn ? "600": "500"};
+  font-size: 16px;
   @media (max-width: 768px) {
-    font-size: 22px;
+    font-size: 18px;
   }
   border-radius: 3px;
   padding: 10px 20px 10px 20px;

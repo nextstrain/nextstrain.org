@@ -2,6 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import Collapsible from "react-collapsible";
 import _cloneDeep from "lodash/cloneDeep";
+import FaFile from "react-icons/lib/fa/file";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
@@ -38,7 +39,7 @@ class Index extends React.Component {
             sitrep.title = parts[0];
           } else if (parts.length === 2) {
             sitrep.language = parts[0];
-            sitrep.title = `${parts[1]} (${sitrep.language.toUpperCase()})`;
+            sitrep.title = parts[1];
           } else {
             console.warn("Unforseen narrative url", url);
             return null;
@@ -58,8 +59,13 @@ class Index extends React.Component {
           console.warn("Language not recognized: ", sitrep.language);
         }
       });
-    // return all the languages for which we have at least one narrative
+    // get all the languages for which we have at least one narrative
     const languageObjects = Object.values(narrativesByLanguage).filter(language => language.narratives !== undefined && language.narratives.length > 0);
+    // sort most recent dates first
+    languageObjects.forEach((l) => {
+      l.narratives.sort().reverse();
+      l.narratives[0].latest = true;
+    });
     // English first
     const englishIdx = languageObjects.findIndex((l) => l.name === "English");
     return [languageObjects[englishIdx]]
@@ -103,7 +109,7 @@ class Index extends React.Component {
               </splashStyles.H2>
               <SmallSpacer />
               <FlexCenter>
-                <splashStyles.CenteredFocusParagraph>
+                <splashStyles.CenteredFocusParagraph theme={{niceFontSize: "14px"}}>
                   Each week we have been writing interactive situation reports
                   using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
                   to communicate how COVID-19 is moving around the world and spreading locally.
@@ -115,19 +121,20 @@ class Index extends React.Component {
                 <MediumSpacer />
                 <div className="col-md-1"/>
                 <div className="col-md-10">
-                  { this.state.hasError && <splashStyles.H2>
-                                  Something went wrong getting situation reports. Please
-                                  contact us at hello@nextstrain.org if this continues to
-                                  happen.</splashStyles.H2>}
+                  { this.state.hasError && <splashStyles.CenteredFocusParagraph>
+                                  Something went wrong getting situation reports.
+                                  Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+                                  if this continues to happen.</splashStyles.CenteredFocusParagraph>}
                   {/* Sit Reps */
                     !this.state.hasError &&
                     this.state.narrativesByLanguage &&
                     this.state.narrativesByLanguage.map((language) => (
                       <div key={language.name}>
-                        {/* TODO: seems like there is a better way to implement the different states of the collapsible title */}
-                        <Collapsible triggerWhenOpen={<CollapseTitle title={`${language.nativeName}    -`}/>}
-                          trigger={<CollapseTitle title={`${language.nativeName}    +`}/>}
-                          triggerStyle={{cursor: "pointer"}}
+                        <Collapsible
+                          triggerWhenOpen={<CollapseTitle name={language.nativeName} isExpanded />}
+                          trigger={<CollapseTitle name={language.nativeName} />}
+                          triggerStyle={{cursor: "pointer", textDecoration: "none"}}
+                          open={language.name === "English"} // start with English open. Later we can take this from browser settings using Jover's code?
                         >
                           {/* Begin collapsible content */}
                           <div className="row">
@@ -135,7 +142,10 @@ class Index extends React.Component {
                               <div className="col-sm-4">
                                 <FlexCenter>
                                   <a href={narrative.url}>
-                                    <splashStyles.SitRepTitle>{narrative.title}</splashStyles.SitRepTitle>
+                                    <splashStyles.SitRepTitle attn={narrative.latest}>
+                                      <FaFile />
+                                      {" "+narrative.title}
+                                    </splashStyles.SitRepTitle>
                                   </a>
                                 </FlexCenter>
                               </div>

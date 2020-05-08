@@ -1,20 +1,26 @@
 import React from "react";
-import * as splashStyles from "../splash/styles";
-import { Line } from "../../layouts/generalComponents";
+import styled from "styled-components";
+import FaAngleDown from "react-icons/lib/fa/angle-down";
+import FaAngleUp from "react-icons/lib/fa/angle-up";
 
-// eslint-disable-next-line react/prefer-stateless-function
-class CollapseTitle extends React.Component {
-  render() {
-    return (
-      <div>
-        <Line style={{margin: "10px 0px 10px 0px"}}/>
-        <a href={null}>
-          <splashStyles.H3>{this.props.title}</splashStyles.H3>
-        </a>
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #CCC;
+  margin: 0px;
+  padding: 15px 10px 10px 10px;
+`;
 
-        <br/>
-      </div>);
-  }
-}
+const Name = styled.span`
+  font-size: 20px;
+  font-weight: 500;
+`;
+
+const CollapseTitle = ({name, isExpanded=false}) => (
+  <TitleContainer>
+    <Name>{name}</Name>
+    {isExpanded ? <FaAngleUp /> : <FaAngleDown />}
+  </TitleContainer>
+);
 
 export default CollapseTitle;
