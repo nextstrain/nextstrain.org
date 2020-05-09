@@ -1,6 +1,7 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import {Link} from 'gatsby';
+import {MdTranslate} from "react-icons/md";
 import { tweets } from "./tweets";
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
@@ -66,9 +67,10 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <FlexCenter>
-          <Styles.CenteredFocusParagraph>
+          <Styles.CenteredFocusParagraph theme={{niceFontSize: "20px"}}>
             <Link to="/ncov-sit-reps">
-              See previous situation reports here
+              <MdTranslate style={{fontSize: "28px"}}/>
+              {" "}See all translated situation reports, including historical reports
             </Link>
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
