@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import FaAngleDown from "react-icons/lib/fa/angle-down";
-import FaAngleUp from "react-icons/lib/fa/angle-up";
+import {FaAngleUp, FaAngleDown} from "react-icons/fa";
 
 const TitleContainer = styled.div`
   display: flex;

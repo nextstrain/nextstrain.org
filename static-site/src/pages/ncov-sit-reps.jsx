@@ -3,7 +3,7 @@ import Helmet from "react-helmet";
 import Collapsible from "react-collapsible";
 import _sortBy from "lodash/sortBy";
 import _cloneDeep from "lodash/cloneDeep";
-import FaFile from "react-icons/lib/fa/file";
+import {FaFile} from "react-icons/fa";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
