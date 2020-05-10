@@ -62,7 +62,7 @@ const nCoVCards = [
   {
     img: "ncov_narrative.png",
     url: "/narratives/ncov/sit-rep/el/2020-05-08",
-    title: "Κατάσταση 2020-05-01"
+    title: "Κατάσταση 2020-05-08"
   },
   {
     img: "ncov_narrative.png",
