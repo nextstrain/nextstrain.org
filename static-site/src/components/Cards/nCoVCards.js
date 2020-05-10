@@ -56,13 +56,13 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/pt/2020-05-01",
-    title: "Relatório da situação até 2020-05-01"
+    url: "/narratives/ncov/sit-rep/pt/2020-05-08",
+    title: "Relatório da situação até 2020-05-08"
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/fr/2020-05-01",
-    title: "Rapport de situation 2020-05-01"
+    url: "/narratives/ncov/sit-rep/fr/2020-05-08",
+    title: "Rapport de situation 2020-05-08"
   },
   {
     img: "ncov_narrative.png",
@@ -96,8 +96,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/ar/2020-05-01",
-    title: "تقرير حالة 1 أيار 2020"
+    url: "/narratives/ncov/sit-rep/ar/2020-05-08",
+    title: "تقرير حالة 8 أيار 2020"
   },
   {
     img: "ncov_narrative.png",
@@ -116,8 +116,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/id/2020-05-01",
-    title: "Laporan keadaan per 2020-05-01"
+    url: "/narratives/ncov/sit-rep/id/2020-05-08",
+    title: "Laporan keadaan per 2020-05-08"
   },
   {
     img: "ncov_narrative.png",
