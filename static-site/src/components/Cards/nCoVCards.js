@@ -151,8 +151,8 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
-    url: "/narratives/ncov/sit-rep/zh/2020-05-01",
-    title: "状况报告2020-05-01"
+    url: "/narratives/ncov/sit-rep/zh/2020-05-08",
+    title: "状况报告2020-05-08"
   }
 ];
 
