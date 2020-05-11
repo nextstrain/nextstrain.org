@@ -131,6 +131,11 @@ const nCoVCards = [
   },
   {
     img: "ncov_narrative.png",
+    url: "/narratives/ncov/sit-rep/tl/2020-05-08",
+    title: "Ulat sa sitwasyon 2020-05-08"
+  },
+  {
+    img: "ncov_narrative.png",
     url: "/narratives/ncov/sit-rep/tr/2020-05-08",
     title: "2020-05-08 tarihli durum raporu"
   },
