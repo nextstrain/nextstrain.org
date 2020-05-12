@@ -1,8 +1,8 @@
 import React from "react";
 import Helmet from "react-helmet";
 import Collapsible from "react-collapsible";
+import ISO6391 from "iso-639-1/build/index";
 import _sortBy from "lodash/sortBy";
-import _cloneDeep from "lodash/cloneDeep";
 import {FaFile} from "react-icons/fa";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
@@ -12,106 +12,49 @@ import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import CollapseTitle from "../components/Misc/collapse-title";
 
-const translatedLanguages = {
-  ar: {
-    name: "Arabic",
-    nativeName: "العربية"
-  },
-  bn: {
-    name: "Bengali",
-    nativeName: "বাংলা"
-  },
-  cs: {
-    name: "Czech",
-    nativeName: "česky, čeština"
-  },
-  de: {
-    name: "German",
-    nativeName: "Deutsch"
-  },
-  el: {
-    name: "Greek, Modern",
-    nativeName: "Ελληνικά"
-  },
-  en: {
-    name: "English",
-    nativeName: "English"
-  },
-  es: {
-    name: "Spanish; Castilian",
-    nativeName: "español, castellano"
-  },
-  fa: {
-    name: "Persian",
-    nativeName: "فارسی"
-  },
-  fr: {
-    name: "French",
-    nativeName: "français, langue française"
-  },
-  hi: {
-    name: "Hindi",
-    nativeName: "हिन्दी, हिंदी"
-  },
-  id: {
-    name: "Indonesian",
-    nativeName: "Bahasa Indonesia"
-  },
-  it: {
-    name: "Italian",
-    nativeName: "Italiano"
-  },
-  ja: {
-    name: "Japanese",
-    nativeName: "日本語 (にほんご／にっぽんご)"
-  },
-  ko: {
-    name: "Korean",
-    nativeName: "한국어 (韓國語), 조선말 (朝鮮語)"
-  },
-  nl: {
-    name: "Dutch",
-    nativeName: "Nederlands, Vlaams"
-  },
-  pl: {
-    name: "Polish",
-    nativeName: "polski"
-  },
-  "pt-br": {
-    name: "Brazilian Portuguese",
-    nativeName: "Português do Brasil"
-  },
-  pt: {
-    name: "Portuguese",
-    nativeName: "Português"
-  },
-  ru: {
-    name: "Russian",
-    nativeName: "русский язык"
-  },
-  sw: {
-    name: "Swahili",
-    nativeName: "Kiswahili"
-  },
-  tl: {
-    name: "Tagalog",
-    nativeName: "Wikang Tagalog, ᜏᜒᜃᜅ᜔ ᜆᜄᜎᜓᜄ᜔"
-  },
-  tr: {
-    name: "Turkish",
-    nativeName: "Türkçe"
-  },
-  ur: {
-    name: "Urdu",
-    nativeName: "اردو"
-  },
-  vi: {
-    name: "Vietnamese",
-    nativeName: "Tiếng Việt"
-  },
-  zh: {
-    name: "Chinese",
-    nativeName: "中文 (Zhōngwén), 汉语, 漢語"
+/* This function is duplicated from ../../../src/utils
+(aka src/utils from top level repo) but included here to:
+(a) keep server & client code seperate
+(b) avoid any transpiling errors during client building */
+const parseNarrativeLanguage = (narrativeUrl) => {
+  const urlParts = narrativeUrl.split("/");
+  let language = urlParts[urlParts.length - 2];
+  if (language === 'sit-rep') language = 'en';
+  return language;
+};
+
+// This and some of the following functions are duplicated from
+// the static site (specifically ../../../auspice-client/customisations/languageSelector.js)
+// This language selector needs the exact same function as the static
+// page that shows all the ncov sitreps, so they are abstracted into these functions.
+// They can't be imported because they are in different parts of the site that are
+// built separately.
+const getNarrativeLanguageNativeName = (narrativeUrl) => {
+  const narrativeLanguage = parseNarrativeLanguage(narrativeUrl);
+  const nativeName = ISO6391.getNativeName(narrativeLanguage);
+  if (nativeName === "") {
+    console.warn("language code: ", narrativeLanguage, "not found in ISO standard. Using language code instead of native name.");
+    return narrativeLanguage;
+  }
+  return nativeName;
+};
+
+// Also duplicate, see comment above in getNarrativeLanguageNativeName.
+// This is simple but happens in too many places to not abstract
+const getSitRepDate = (url) => url.split('/').pop();
+
+// Also duplicate, see comment above in getNarrativeLanguageNativeName.
+const parseNcovSitRepInfo = (url) => {
+  if (!url.startsWith('narratives/ncov/sit-rep/')) return null;
+  try {
+    return {
+      url,
+      date: getSitRepDate(url),
+      languageCode: parseNarrativeLanguage(url),
+      languageNative: getNarrativeLanguageNativeName(url)
+    };
+  } catch (err) {
+    throw new Error("Unforseen narrative url", url, "caused error:", err);
   }
 };
 
@@ -121,60 +64,35 @@ class Index extends React.Component {
     super(props);
     this.state = {hasError: false};
     this.handleError = this.handleServerError.bind(this);
-    this.sitRepCards = this.getNarrativesByLanguageObject.bind(this);
-    this.translatedLanguages = _cloneDeep(translatedLanguages);
+    this.sitRepCards = this.getNarrativesByLanguage.bind(this);
   }
 
-  getNarrativesByLanguageObject(json) {
-    const narrativesByLanguage = this.translatedLanguages;
+  getNarrativesByLanguage(json) {
+    const narrativesByLanguage = {};
     json.narratives
       .filter((o) => o.request)
-      .map((o) => "/"+o.request)
-      .filter((o) => o.startsWith("/narratives/ncov/sit-rep/"))
-      .map((url) => {
-        try {
-          // here we're relying on the URLs all adhering to an undocumented scheme
-          // so we catch errors and filter out the narratives we couldn't parse
-          const parts = url.replace("/narratives/ncov/sit-rep/", "").split("/");
-          const sitrep = {url};
-          if (parts.length === 1) {
-            sitrep.language = "en";
-            sitrep.title = parts[0];
-          } else if (parts.length === 2) {
-            sitrep.language = parts[0].toLowerCase();
-            sitrep.title = parts[1];
-          } else {
-            console.warn("Unforseen narrative url", url);
-            return null;
-          }
-          return sitrep;
-        } catch (err) {
-          return null;
-        }
-      })
+      .map((o) => o.request)
+      .map(parseNcovSitRepInfo)
       .filter((sitrep) => sitrep !== null)
       .forEach((sitrep) => {
-        if (!narrativesByLanguage[sitrep.language]) {
-          // define a language just using the 2 letter code if none exists in our dictionary
-          narrativesByLanguage[sitrep.language] = {
-            name: sitrep.language,
-            nativeName: sitrep.language
+        sitrep.url = "/"+sitrep.url;
+        if (narrativesByLanguage[sitrep.languageCode]) {
+          narrativesByLanguage[sitrep.languageCode].narratives.push(sitrep);
+        } else {
+          narrativesByLanguage[sitrep.languageCode] = {
+            languageCode: sitrep.languageCode,
+            languageNative: sitrep.languageNative,
+            narratives: [sitrep]
           };
         }
-        // add sitreps to the language object
-        if (narrativesByLanguage[sitrep.language].narratives) narrativesByLanguage[sitrep.language].narratives.push(sitrep);
-        else narrativesByLanguage[sitrep.language].narratives = [sitrep];
       });
-    // get all the languages for which we have at least one narrative
-    const languageObjects = Object.entries(narrativesByLanguage)
-                                  .map((l) => Object.assign({}, l[1], {code: l[0]}))
-                                  .filter(language => language.narratives !== undefined && language.narratives.length > 0);
-    // sort most recent dates first
+    const languageObjects = Object.values(narrativesByLanguage);
+    // sort most recent dates first within each language
     languageObjects.forEach((l) => {
       l.narratives.sort().reverse();
     });
     // English first then by language code
-    return _sortBy(languageObjects, [(o) => o.name !== "English", (o) => o.code]);
+    return _sortBy(languageObjects, [(o) => o.languageNative !== "English", (o) => o.languageCode]);
   }
 
   handleServerError(response) {
@@ -189,7 +107,7 @@ class Index extends React.Component {
       .then(this.handleServerError)
       .then((res) => res.json())
       .then((json) => {
-        this.setState({ narrativesByLanguage: this.getNarrativesByLanguageObject(json) });
+        this.setState({ narrativesByLanguage: this.getNarrativesByLanguage(json) });
       })
       .catch(error => {
         console.log("The following error occured during fetching or parsing situation reports:", error);
@@ -233,12 +151,12 @@ class Index extends React.Component {
                     !this.state.hasError &&
                     this.state.narrativesByLanguage &&
                     this.state.narrativesByLanguage.map((language) => (
-                      <div key={language.name}>
+                      <div key={language.languageNative}>
                         <Collapsible
-                          triggerWhenOpen={<CollapseTitle name={language.nativeName} isExpanded />}
-                          trigger={<CollapseTitle name={language.nativeName} />}
+                          triggerWhenOpen={<CollapseTitle name={language.languageNative} isExpanded />}
+                          trigger={<CollapseTitle name={language.languageNative} />}
                           triggerStyle={{cursor: "pointer", textDecoration: "none"}}
-                          open={language.name === "English"} // start with English open. Later we can take this from browser settings using Jover's code?
+                          open={language.languageNative === "English"} // start with English open. Later we can take this from browser settings using Jover's code?
                         >
                           {/* Begin collapsible content */}
                           <div className="row">
@@ -248,7 +166,7 @@ class Index extends React.Component {
                                   <a href={narrative.url}>
                                     <splashStyles.SitRepTitle attn={index === 0}>
                                       <FaFile />
-                                      {" "+narrative.title}
+                                      {" "+narrative.date}
                                     </splashStyles.SitRepTitle>
                                   </a>
                                 </FlexCenter>
