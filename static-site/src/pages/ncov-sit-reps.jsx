@@ -6,6 +6,7 @@ import {FaFile} from "react-icons/fa";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
+import UserDataWrapper from "../layouts/userDataWrapper";
 import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
@@ -76,7 +77,9 @@ class Index extends React.Component {
           <Helmet title={config.siteTitle} />
           <main>
 
-            <NavBar location={this.props.location} />
+            <UserDataWrapper>
+              <NavBar location={this.props.location} />
+            </UserDataWrapper>
 
             <splashStyles.Container className="container">
               <HugeSpacer />
