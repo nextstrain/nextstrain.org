@@ -8,6 +8,7 @@ const favicon = require('serve-favicon');
 const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./src/utils");
+const fs = require("fs");
 
 const production = process.env.NODE_ENV === "production";
 
@@ -140,9 +141,13 @@ const auspicePaths = [
   "/community/:user/:repo/*",
 ];
 
+const auspiceIndexPath =
+  fs.existsSync(auspiceAssetPath("dist/index.html"))
+    ? auspiceAssetPath("dist/index.html")
+    : auspiceAssetPath("index.html");
 app.route(auspicePaths).get((req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
-  res.sendFile(auspiceAssetPath("index.html"));
+  res.sendFile(auspiceIndexPath);
 });
 
 /* handle redirects for inrb-drc (first of the Nextstrain groups) */
