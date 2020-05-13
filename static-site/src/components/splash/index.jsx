@@ -1,6 +1,7 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import {Link} from 'gatsby';
+import {MdTranslate} from "react-icons/md";
 import { tweets } from "./tweets";
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
@@ -62,6 +63,15 @@ class Splash extends React.Component {
           <Styles.CenteredFocusParagraph>
             We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
             Please see below for the latest analyses and situation reports.
+          </Styles.CenteredFocusParagraph>
+        </FlexCenter>
+
+        <FlexCenter>
+          <Styles.CenteredFocusParagraph theme={{niceFontSize: "20px"}}>
+            <Link to="/ncov-sit-reps">
+              <MdTranslate style={{fontSize: "28px"}}/>
+              {" "}See all translated situation reports and all previous reports
+            </Link>
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 

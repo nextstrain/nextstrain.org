@@ -44,6 +44,30 @@ export const H2 = styled.div`
   margin-bottom: 0px;
 `;
 
+export const H3 = styled.div`
+  text-align: center;
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 500;
+  color: ${(props) => props.theme.darkGrey};
+  min-width: 240px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+`;
+
+export const SitRepTitle = styled.div`
+  font-family: ${(props) => props.theme.generalFont};
+  font-weight: ${(props) => props.attn ? "600": "500"};
+  font-size: 16px;
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+  border-radius: 3px;
+  padding: 10px 20px 10px 20px;
+  top: 40px;
+  left: 20px;
+`;
+
 export const CenteredFocusParagraph = styled.p`
   max-width: 640px;
   margin-top: 0px;
