@@ -1,7 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
 import Collapsible from "react-collapsible";
-import ISO6391 from "iso-639-1/build/index";
 import _sortBy from "lodash/sortBy";
 import {FaFile} from "react-icons/fa";
 import config from "../../data/SiteConfig";
@@ -11,52 +10,7 @@ import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../layouts/ge
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import CollapseTitle from "../components/Misc/collapse-title";
-
-/* This function is duplicated from ../../../src/utils
-(aka src/utils from top level repo) but included here to:
-(a) keep server & client code seperate
-(b) avoid any transpiling errors during client building */
-const parseNarrativeLanguage = (narrativeUrl) => {
-  const urlParts = narrativeUrl.split("/");
-  let language = urlParts[urlParts.length - 2];
-  if (language === 'sit-rep') language = 'en';
-  return language;
-};
-
-// This and some of the following functions are duplicated from
-// the static site (specifically ../../../auspice-client/customisations/languageSelector.js)
-// This language selector needs the exact same function as the static
-// page that shows all the ncov sitreps, so they are abstracted into these functions.
-// They can't be imported because they are in different parts of the site that are
-// built separately.
-const getNarrativeLanguageNativeName = (narrativeUrl) => {
-  const narrativeLanguage = parseNarrativeLanguage(narrativeUrl);
-  const nativeName = ISO6391.getNativeName(narrativeLanguage);
-  if (nativeName === "") {
-    console.warn("language code: ", narrativeLanguage, "not found in ISO standard. Using language code instead of native name.");
-    return narrativeLanguage;
-  }
-  return nativeName;
-};
-
-// Also duplicate, see comment above in getNarrativeLanguageNativeName.
-// This is simple but happens in too many places to not abstract
-const getSitRepDate = (url) => url.split('/').pop();
-
-// Also duplicate, see comment above in getNarrativeLanguageNativeName.
-const parseNcovSitRepInfo = (url) => {
-  if (!url.startsWith('narratives/ncov/sit-rep/')) return null;
-  try {
-    return {
-      url,
-      date: getSitRepDate(url),
-      languageCode: parseNarrativeLanguage(url),
-      languageNative: getNarrativeLanguageNativeName(url)
-    };
-  } catch (err) {
-    throw new Error("Unforseen narrative url", url, "caused error:", err);
-  }
-};
+import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {

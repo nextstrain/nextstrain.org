@@ -1,7 +1,10 @@
 import React from "react"; // eslint-disable-line
 import ISO6391 from "iso-639-1/build/index";
 
-/* This function is duplicated from ../../src/utils
+/* This and some of the following functions are reused
+in the static site (specifically ../../static-site/src/pages/ncov-sit-reps.jsx)
+via parseNcovSitRepInfo (exported below) so changing them will affect behavior there.
+This one in particular is duplicated from ../../src/utils
 (aka src/utils from top level repo) but included here to:
 (a) keep server & client code seperate
 (b) avoid any transpiling errors during client building */
@@ -12,12 +15,7 @@ const parseNarrativeLanguage = (narrativeUrl) => {
   return language;
 };
 
-// This and some of the following functions are duplicated from
-// the static site (specifically ../../static-site/src/pages/ncov-sit-reps.jsx)
-// This language selector needs the exact same function as the static
-// page that shows all the ncov sitreps, so they are abstracted into these functions.
-// They can't be imported because they are in different parts of the site that are
-// built separately.
+// Indirectly used in static site, see above comment in parseNarrativeLanguage.
 const getNarrativeLanguageNativeName = (narrativeUrl) => {
   const narrativeLanguage = parseNarrativeLanguage(narrativeUrl);
   const nativeName = ISO6391.getNativeName(narrativeLanguage);
@@ -28,12 +26,12 @@ const getNarrativeLanguageNativeName = (narrativeUrl) => {
   return nativeName;
 };
 
-// Also duplicate, see comment above in getNarrativeLanguageNativeName.
-// This is simple but happens in too many places to not abstract
+// Indirectly used in static site, see above comment in parseNarrativeLanguage.
+// This is simple but happens in too many places to not abstract.
 const getSitRepDate = (url) => url.split('/').pop();
 
-// Also duplicate, see comment above in getNarrativeLanguageNativeName.
-const parseNcovSitRepInfo = (url) => {
+// Used in static site, see comment above in parseNarrativeLanguage.
+export const parseNcovSitRepInfo = (url) => {
   if (!url.startsWith('narratives/ncov/sit-rep/')) return null;
   try {
     return {
