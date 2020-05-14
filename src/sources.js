@@ -418,6 +418,11 @@ class SeattleFluSource extends PublicGroupSource {
   static get _name() { return "seattleflu"; }
 }
 
+class SwissSource extends PublicGroupSource {
+  /* Person to contact for enquiries: Richard Neher / Emma Hodcroft */
+  static get _name() { return "swiss"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -426,6 +431,7 @@ const sources = [
   BlabSource,
   SeattleFluSource,
   NextspainSource,
+  SwissSource,
   /* Private nextstain groups: */
   NzCovid19PrivateSource,
   AllWalesPrivateSource,
