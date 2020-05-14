@@ -37,7 +37,7 @@ Click **Add to group** button at the bottom.
 _This is a lot of steps, but in our early stages is a totally workable on-boarding process that can last us a while._
 _The steps will also change and shift a bit as we improve integrations, so automating it now seems premature._
 
-Add a new [source](glossary.md#source) class in [_nextstrain.org/auspice/server/sources.js_](https://github.com/nextstrain/nextstrain.org/blob/master/auspice/server/sources.js) based on the existing `InrbDrcSource` or `SeattleFluSource`.
+Add a new [source](glossary.md#source) class in [_nextstrain.org/src/sources.js_](https://github.com/nextstrain/nextstrain.org/blob/master/src/sources.js) based on the existing `InrbDrcSource` or `SeattleFluSource`.
 The `_name` you give the source will be used in the nextstrain.org URL and by default as the Cognito group name and in the S3 bucket name.
 For now, at least, names should be shorter than ~50 characters and only contain lowercase letters, numbers, and hyphens.
 Commit this change but do not push yet.
@@ -59,7 +59,29 @@ Navigate to the [S3 console](https://s3.console.aws.amazon.com/s3/home?region=us
 Create a new bucket named `nextstrain-<group>` where `<group>` is replaced by the group source name you choose above.
 Set the region to **US East (N. Virginia)** (`us-east-1`) for consistency with our other AWS resources.
 If this bucket is for a private group, then leave the default policy of **Block _all_ public access**.
-If the bucket is for a public group, you can disable the **Block _all_ public access** policy.
+If the bucket is for a public group, disable the **Block _all_ public access** policy.
+
+For a public group, you'll also need to add a bucket policy allowing public read-only access to objects.
+Under **Permissions** → **Bucket Policy**, add the following:
+
+```json
+{
+    "Version": "2008-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadForGetBucketObjects",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::nextstrain-<group>/*"
+        }
+    ]
+}
+```
+
+Replace `<group>` with the group name.
 
 _Until we integrate Nextstrain (Cognito) users into `nextstrain deploy`, separate IAM users are necessary to upload datasets to the group S3 bucket._
 _My suggestion in the short term is to limit these by sharing one IAM user for a group._
@@ -116,27 +138,5 @@ Add an entry like `arn:aws:s3:::nextstrain-<group>` to the `Resource` array of t
 Add an entry like `arn:aws:s3:::nextstrain-<group>/*` to the `Resource` array of the policy statement allowing `s3:GetObject`.
 
 Make sure to replace `<group>` with the group name.
-
-For a public group, you'll also need to add a bucket policy allowing public read-only access to objects.
-Under **Permissions** → **Bucket Policy**, add the following:
-
-```json
-{
-    "Version": "2008-10-17",
-    "Statement": [
-        {
-            "Sid": "PublicReadForGetBucketObjects",
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "*"
-            },
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::nextstrain-<group>/*"
-        }
-    ]
-}
-```
-
-Replace `<group>` with the group name.
 
 _The need to create new IAM groups, users, and policies for private buckets will go away once we integrate with Cognito Identity Pools._
