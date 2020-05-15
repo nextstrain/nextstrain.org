@@ -1,52 +1,22 @@
 ---
-title: "Format of Files Used and Created by Augur"
+title: "Data Formats Used by Nextstrain"
 ---
-
-#### Table of Contents:
-- [Output JSON(s) for Auspice](#output-jsons-for-auspice)
-    - [Tree JSON (required)](#tree-json-required)
-    - [Metadata JSON (required)](#metadata-json-required)
-    - [Frequency JSON (optional)](#frequency-json-optional)
-- [Input files for Auspice](#input-files-for-auspice)
-
-
----
-## Output JSON(s) for Auspice
+## Augur output
 
 We use JSONs as the interchange file format between Augur (the bioinformatics tooling) and Auspice (the visualization app).
 JSONs are human-readable, parsable in most languages, and extendable.
-Any compatible JSONs can be used by Auspice, not just those produced by Augur.
-Augur produces these JSONs via the `augur export` command -- see the [Augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html#export).
-We also define schemas for these JSONs (see below) and provide a validation tool to check JSONs against these schemas, `auspice validate` --  see the [Augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/cli.html#validate).
+Augur produces these JSONs via the `augur export` command -- see the [Augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/usage/cli/export.html).
 
-Auspice v1 requires two dataset JSONs (metadata + tree) with an optional, tip-frequencies JSON.
+## Auspice input
 
-Auspice v2 is backward compatible with v1, but also can take a single "v2" dataset JSON instead of the metadata + tree v1 JSONs.
+Any compatible JSONs can be used by Auspice, not just those produced by Augur. Regardless of whether your input JSONs for Auspice came from Augur, you can use Augur's validation tool, `augur validate`, to check JSONs against the appropriate schema(s) --  see the [Augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/usage/cli/validate.html).
 
-Here is a helpful table describing the JSONs for each version of Auspice:
+There are two ways to specify Auspice input, depending on the major version of Auspice:
+- Auspice v1 requires two dataset JSONs (metadata + tree) with an optional, tip-frequencies JSON.
+- Auspice v2 is backward compatible with v1, but also can take a single "v2" dataset JSON instead of the metadata + tree v1 JSONs.
 
-| file | schema | Auspice versions | description |
-| ---- | ---- | ---- | ---- |
-|"tree" JSON | [Link](https://github.com/nextstrain/augur/tree/master/augur/data/schema-export-v1-tree.json) | v1, v2 | Decorated phylogenetic tree |
-|"meta" JSON | [Link](https://github.com/nextstrain/augur/tree/master/augur/data/schema-export-v1-meta.json) | v1, v2 | The "metadata" associated with a phylogenetic tree |
-|"v2" JSON | [Link](https://github.com/nextstrain/augur/tree/master/augur/data/schema-export-v2.json) | v2 | The single input format required for Auspice v2 |
+For the relevant input JSON schema for each version of Auspice, check out the [Auspice docs [external link]](https://nextstrain.github.io/auspice/introduction/how-to-run#input-file-formats).
 
-#### Tree JSON (required)
-The tree structure is encoded as a deeply nested JSON object, with traits (such as country, divergence, collection date, attributions, etc.) stored on each node.
-The presence of a `children` property indicates that it's an internal node and contains the child objects.
+## Visualising and sharing results
 
-See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_tree.json) for more details, or see the current [live Zika build](/zika)'s tree JSON [here](http://data.nextstrain.org/zika_tree.json).
-
-The filename _must_ end with `_tree.json`.
-
-#### Metadata JSON (required)
-
-Additional data to control and inform the visualization is stored via the `metadata` property (key) at the top level of the JSON.
-
-See [the JSON schema](https://github.com/nextstrain/augur/blob/master/augur/data/schema_meta.json) for more details, or see the current [live Zika build](/zika)'s metadata JSON [here](http://data.nextstrain.org/zika_meta.json).
-
-The filename _must_ end with `_meta.json` and have the same prefix as the tree JSON above.
-
-#### Frequency JSON (optional)
-
-Currently this is only used by the flu builds, and generates the frequencies panel you can see at [nextstrain.org/flu](/flu). [Here](http://data.nextstrain.org/flu_seasonal_h3n2_ha_2y_tip-frequencies.json) is an example of this file.
+Once you have prepared your JSON(s) in the Auspice format, you can visualise and share these results in a variety of ways. To find one that meets your needs for privacy and collaboration, check out [our guide on sharing your results](/docs/contributing/sharing-data).
