@@ -11,12 +11,13 @@ Here is a summary of the different ways one can share data through [nextstrain.o
 
 <br/>
 
-| Name                   | Data lives where?           |  Accessed via             |  Access            |
-| ---------------------- | --------------------------- | ------------------------- | ------------------ |
-| [Nextstrain Community] | Your own github repo        | nextstrain.org/community/ | Public             |
-| Nextstrain Groups      | S3 bucket which you manage  | nextstrain.org/groups/... | Public or private  |
-| [auspice.us]           | On your computer            | [auspice.us]              | Private            |
-| [Custom auspice server]| Wherever you choose         | your own server's URL     | Your choice        |
+| Name                            | Data lives where?           |  Accessed via             |  Access            |
+| --------------------------------| --------------------------- | ------------------------- | ------------------ |
+| Nextstrain-maintained pathogens | S3 bucket which we manage   | [nextstrain.org]          | Public             |
+| [Nextstrain Community]          | Your own github repo        | nextstrain.org/community/ | Public             |
+| Nextstrain Groups               | S3 bucket which you manage  | nextstrain.org/groups/... | Public or private  |
+| [auspice.us]                    | On your computer            | [auspice.us]              | Private            |
+| [Custom auspice servers]        | Wherever you choose         | your own server's URL     | Your choice        |
 
 We are always excited to help you contribute to Nextstrain, no matter what shape this takes.
 Please [get in touch with us](mailto:hello@nextstrain.org) with any specific questions and we'll be happy to help.
@@ -54,7 +55,7 @@ Since the data never leaves your computer (it's all done client-side) this can b
 > Narratives don't yet work with [auspice.us] but we're hoping to allow this functionality in the future!
 
 
-### Bespoke Auspice Deployments
+### Custom Auspice Servers
 
 Auspice can be run on your own server, including customizations to the appearance and functionality.
 This may be appropriate when you want or need full control over how the website is deployed and where the data is stored.
@@ -62,5 +63,6 @@ Please see the [auspice docs](https://nextstrain.github.io/auspice/server/introd
 
 
 [Nextstrain Community]: ./community-builds
-[Custom auspice server]: https://nextstrain.github.io/auspice/server/introduction
+[Custom auspice servers]: https://nextstrain.github.io/auspice/server/introduction
 [auspice.us]: http://auspice.us
+[nextstrain.org]: http://nextstrain.org
