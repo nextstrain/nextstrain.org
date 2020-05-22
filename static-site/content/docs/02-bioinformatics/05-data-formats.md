@@ -11,11 +11,15 @@ Augur produces these JSONs via the `augur export` command -- see the [Augur docs
 
 Any compatible JSONs can be used by Auspice, not just those produced by Augur. Regardless of whether your input JSONs for Auspice came from Augur, you can use Augur's validation tool, `augur validate`, to check JSONs against the appropriate schema(s) --  see the [Augur docs for more information [external link]](https://nextstrain-augur.readthedocs.io/en/stable/usage/cli/validate.html).
 
-There are two ways to specify Auspice input, depending on the major version of Auspice:
-- Auspice v1 requires two dataset JSONs (metadata + tree) with an optional, tip-frequencies JSON.
-- Auspice v2 is backward compatible with v1, but also can take a single "v2" dataset JSON instead of the metadata + tree v1 JSONs.
+Auspice requires input in a single "v2" dataset JSON, which includes:
+- The phylogenetic tree in a nested format
+- Metadata about pathogen sequences on the tree
 
-For the relevant input JSON schema for each version of Auspice, check out the [Auspice docs [external link]](https://nextstrain.github.io/auspice/introduction/how-to-run#input-file-formats).
+and optionally, tip frequencies data specified in a _separate_ JSON file.
+
+For the Auspice input JSON schema, check out the [Auspice docs [external link]](https://nextstrain.github.io/auspice/introduction/how-to-run#input-file-formats).
+
+> If you happen to maintain builds that rely on Auspice v1, don't worry - Auspice v2 is backward compatible and accepts the v1 format as well. The v1 schema is also available at the link above.
 
 ## Visualising and sharing results
 
