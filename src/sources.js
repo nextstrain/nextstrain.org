@@ -423,6 +423,11 @@ class SwissSource extends PublicGroupSource {
   static get _name() { return "swiss"; }
 }
 
+class COGUKSource extends PublicGroupSource {
+  /* Person to contact for enquiries: Trevor / Emma / James */
+  static get _name() { return "cog-uk"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -432,6 +437,7 @@ const sources = [
   SeattleFluSource,
   NextspainSource,
   SwissSource,
+  COGUKSource,
   /* Private nextstain groups: */
   NzCovid19PrivateSource,
   AllWalesPrivateSource,
