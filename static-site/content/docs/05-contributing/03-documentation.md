@@ -5,9 +5,21 @@ title: "Contributing to Documentation"
 Documentation is crucial to a project's success, but often painful to write!
 We're always trying to improve our documentation here and would appreciate any and all contributions, whether you are a collaborator or simply a user.
 
+### Where documentation lives
+
+The docs you are reading here on nextstrain.org provide information on how the nextstrain.org website works.
+
+Augur and Auspice are tools we use to power nextstrain.org, and so they are introduced here in these docs. However, they are their own projects, with their own documentations and we make an effort to keep detailed usage documentation for each of those tools in their respective documentations:
+* [Augur docs](https://nextstrain-augur.readthedocs.io/en/stable/index.html)
+* [Auspice docs](https://nextstrain.github.io/auspice/introduction/overview)
+
+ If you are interested in contributing to the documentation for the _Augur or Auspice_ projects, check out the [nextstrain general contributing guide](https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md#contribute-documentation).  The rest of this document describes contributing to these nextstrain.org docs.
+ 
+ > If you are not sure which repository your docs contribution belongs in, make your best guess and open a pull request on [Github](https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md); we can discuss it there and you will be doing us a favor by describing your point of confusion.
+
 ### Built from Markdown Files
 
-Each page in this documentation website ([nextstrain.org/docs](/docs)) is built from a Markdown file -- for instance [here's the file for this page](https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/docs/05-contributing/04-development.md).
+Each page in this documentation website ([nextstrain.org/docs](/docs)) is built from a Markdown file -- for instance [here's the file for this page](https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/docs/05-contributing/03-documentation.md).
 
 
 > If you're new to Markdown, [here's a good guide](https://guides.github.com/features/mastering-markdown/) and [here's a cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) which is really useful to refer to.
@@ -41,8 +53,10 @@ The documention is all within the "static-site" part of nextstrain.org, and we c
 ```bash
 ## step 1: clone the nextstrain.org repo
 git clone https://github.com/nextstrain/nextstrain.org.git
-## step 2: install dependencies
-cd static-site
+## step 2: activate the conda environment
+conda activate nextstrain.org
+## step 3: install dependencies
+cd nextstrain.org/static-site
 npm install
 ```
 
