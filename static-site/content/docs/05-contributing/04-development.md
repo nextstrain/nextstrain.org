@@ -1,5 +1,5 @@
 ---
-title: "Contributing to Augur & Auspice Development"
+title: "Contributing to Nextstrain Development"
 ---
 
 Augur, Auspice, and all other components of the Nextstrain ecosystem are 100% open-source.
@@ -11,8 +11,4 @@ We would be grateful for code contributions, as well as constructive criticism a
 A list of potential issues is being actively maintained at https://github.com/orgs/nextstrain/projects/5.
 
 
-Please see the individual GitHub repos for more information about how to set up a local development environment, developer guidelines, and lists of current issues.
-
-* [Augur GitHub repo](https://github.com/nextstrain/augur)
-* [Auspice GitHub repo](https://github.com/nextstrain/auspice)
-* [Nextstrain CLI GitHub repo](https://github.com/nextstrain/cli)
+For a comprehensive guide to contributing to all Nextstrain projects (including Augur, Auspice, and nextstrain.org) see our organization's [contributing guide on Github](https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md).
