@@ -40,11 +40,10 @@ While this isn't strictly necessary, you could just edit the Markdown files and 
 
 Prerequisites:
 * `nodejs` version 10
-* `python` version 2.7
 
 If you use `conda` you can grab these via
 ```
-conda create -n nextstrain.org nodejs=10 python=2.7
+conda create -n nextstrain.org nodejs=10
 ```
 
 
