@@ -142,7 +142,7 @@ const auspicePaths = [
 
 app.route(auspicePaths).get((req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
-  res.sendFile(auspiceAssetPath("index.html"));
+  res.sendFile(auspiceAssetPath("dist", "index.html"));
 });
 
 /* handle redirects for inrb-drc (first of the Nextstrain groups) */
