@@ -79,7 +79,7 @@ redirects.setup(app);
 app.use(express.static(gatsbyAssetPath()));
 
 app.route("/dist/*")
-  .all(expressStaticGzip(auspiceAssetPath()));
+  .all(expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'}));
 
 
 /* Charon API used by Auspice.
@@ -142,7 +142,7 @@ const auspicePaths = [
 
 app.route(auspicePaths).get((req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
-  res.sendFile(auspiceAssetPath("dist", "index.html"));
+  res.sendFile(auspiceAssetPath("dist", "index.html"), {headers: {"Cache-Control": "no-cache, no-store, must-revalidate"}});
 });
 
 /* handle redirects for inrb-drc (first of the Nextstrain groups) */
