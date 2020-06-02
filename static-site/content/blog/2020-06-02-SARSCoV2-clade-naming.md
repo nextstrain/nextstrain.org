@@ -1,10 +1,8 @@
 ---
-author: "Emma B Hodcroft"
+author: "Emma B Hodcroft, James Hadfield, Richard A Neher, Trevor Bedford"
 date: "2020-06-02"
 title: "Year-letter Genetic Clade Naming for SARS-CoV-2 on Nextstain.org"
 ---
-
-## Year-letter Genetic Clade Naming for SARS-CoV-2 on Nextstain.org
 
 **Emma B Hodcroft, James Hadfield, Richard A Neher, Trevor Bedford**
 
