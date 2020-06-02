@@ -25,7 +25,7 @@ Within these major clades, we will monitor potential ‘emerging clades', which 
 ### Definition of major clades
 We propose to name a new major clade when it either reaches a frequency of 20% globally. When calculating these frequencies, care has to be taken to achieve approximately even sampling of sequences in time and space since sequencing effort varies strongly between countries. A clade name consists of the year it emerged and the next available letter in the alphabet. A new clade should be at least 2 mutations away from its parent major clade.
 
-![|624x404](https://lh3.googleusercontent.com/lB0hOr9rkZuwa1D6M7bsDj7_vHE605Dm7tQUrI1odjVpOwvogeEZD6H7ObmogpfS29KFZwg_uKVvXrMeqFiSGheZBQpMnaAlSL0AyzD3vuKlr0BfAkxbshIYUDsn4tKQ35rsRz_I)
+![nextstrain-global-ncov-clades](img/clades-2June.PNG)
 **Fig 1.** Nextstrain ‘global’ run with the new Nextstrain major clades labelled.
 
 By these criteria, the first two clades are 19A and 19B which correspond to the split marked by mutations C8782T and T28144C. These clades were both prevalent in Asia during the first months of the outbreak. The next clade that was named is 20A corresponding to the clade that dominated large European outbreak in early 2020. It is distinguished from its parent 19A by the mutations C3037T, C14408T and A23403G.
