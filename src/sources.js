@@ -443,6 +443,7 @@ const sources = [
   NextspainSource,
   SwissSource,
   COGUKSource,
+  SANGSSource,
   /* Private nextstain groups: */
   NzCovid19PrivateSource,
   AllWalesPrivateSource,
