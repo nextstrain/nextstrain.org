@@ -428,6 +428,11 @@ class COGUKSource extends PublicGroupSource {
   static get _name() { return "cog-uk"; }
 }
 
+class SANGSSource extends PublicGroupSource {
+  /* Person to contact for enquiries: Richard Neher / Emma Hodcroft */
+  static get _name() { return "sangs"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
