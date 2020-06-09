@@ -433,6 +433,11 @@ class SANGSSource extends PublicGroupSource {
   static get _name() { return "sangs"; }
 }
 
+class ECDCSource extends PublicGroupSource {
+  /* Person to contact for enquiries: Richard Neher / Emma Hodcroft */
+  static get _name() { return "ecdc"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -444,6 +449,7 @@ const sources = [
   SwissSource,
   COGUKSource,
   SANGSSource,
+  ECDCSource,
   /* Private nextstain groups: */
   NzCovid19PrivateSource,
   AllWalesPrivateSource,
