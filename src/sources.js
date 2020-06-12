@@ -438,6 +438,16 @@ class ECDCSource extends PublicGroupSource {
   static get _name() { return "ecdc"; }
 }
 
+class IllinoisGagnonPublicSource extends PublicGroupSource {
+  /* Person to contact for enquiries: Thomas Sibley */
+  static get _name() { return "illinois-gagnon-public"; }
+}
+
+class IllinoisGagnonPrivateSource extends PrivateGroupSource {
+  /* Person to contact for enquiries: Thomas Sibley */
+  static get _name() { return "illinois-gagnon-private"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -450,9 +460,11 @@ const sources = [
   COGUKSource,
   SANGSSource,
   ECDCSource,
+  IllinoisGagnonPublicSource,
   /* Private nextstain groups: */
   NzCovid19PrivateSource,
   AllWalesPrivateSource,
+  IllinoisGagnonPrivateSource,
   InrbDrcSource
 ];
 
