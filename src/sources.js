@@ -428,9 +428,9 @@ class COGUKSource extends PublicGroupSource {
   static get _name() { return "cog-uk"; }
 }
 
-class SANGSSource extends PublicGroupSource {
+class NGSSASource extends PublicGroupSource {
   /* Person to contact for enquiries: Richard Neher / Emma Hodcroft */
-  static get _name() { return "sangs"; }
+  static get _name() { return "ngs-sa"; }
 }
 
 class ECDCSource extends PublicGroupSource {
@@ -458,7 +458,7 @@ const sources = [
   NextspainSource,
   SwissSource,
   COGUKSource,
-  SANGSSource,
+  NGSSASource,
   ECDCSource,
   IllinoisGagnonPublicSource,
   /* Private nextstain groups: */
