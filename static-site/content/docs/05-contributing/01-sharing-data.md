@@ -38,7 +38,7 @@ This is behind the [community builds](/#community) which you can see on the main
 
 See [this page](community-builds) for more information, including a step-by-step guide on how you can get your datasets up as a community build.
 
-### Nextrain Groups
+### Nextstrain Groups
 
 Groups are an initiative to allow research labs, public health entities and others to manage their own datasets and narratives and share them through nextstrain.org.
 Groups can either be private or public in order to allow data sharing to the correct audience -- you can see an example of a public group [here](/groups/blab/).
