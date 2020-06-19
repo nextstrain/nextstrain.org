@@ -199,6 +199,12 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/pages/ncov-sit-reps.jsx")
         });
 
+        // Create page listing all sequences and which datasets they're included in
+        createPage({
+          path: "/ncov-sequence-to-dataset",
+          component: path.resolve("src/pages/ncov-sequence-to-dataset.jsx")
+        });
+
       })
     );
   });

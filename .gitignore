@@ -13,3 +13,6 @@ scratch
 
 # local sessions
 /sessions/
+
+# generated data
+/data

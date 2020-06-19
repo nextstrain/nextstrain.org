@@ -20,8 +20,11 @@ main() {
             build-static;;
         auspice)
             build-auspice;;
+        generate-data)
+            generate-data;;
         all)
             echo "Running the nextstrain.org build script"
+            generate-data # must come before build-static, as that depends on output from this
             build-static
             build-auspice
             echo "Build complete. Next step: \"npm run server\"";;
@@ -44,6 +47,11 @@ build-auspice() {
     cd auspice-client
     ../node_modules/.bin/auspice build --verbose --extend ./customisations/config.json
     cd ..
+}
+
+generate-data() {
+    echo "Running scripts to generate data at start time"
+    node scripts/collect-strains-sars-cov-2.js
 }
 
 main "$@"
