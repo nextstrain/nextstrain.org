@@ -45,8 +45,19 @@ export const H2 = styled.div`
 `;
 
 export const H3 = styled.div`
-  text-align: center;
+  text-align: ${(props) => props.left ? "left" : "center"};
   font-size: 20px;
+  line-height: 32px;
+  font-weight: 500;
+  color: ${(props) => props.theme.darkGrey};
+  min-width: 240px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+`;
+
+export const H4 = styled.div`
+  text-align: ${(props) => props.left ? "left" : "center"};
+  font-size: 18px;
   line-height: 32px;
   font-weight: 500;
   color: ${(props) => props.theme.darkGrey};

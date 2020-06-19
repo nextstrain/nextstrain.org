@@ -1,0 +1,133 @@
+builds:
+  - url: https://nextstrain.org/ncov/global
+    name: Global
+    geo: global
+    org:
+      name: Nextstrain Team
+      url: null
+  - url: https://nextstrain.org/ncov/south-america
+    name: Continental
+    geo: south-america
+    org:
+      name: Nextstrain Team
+      url: null
+  - url: https://nextstrain.org/ncov/europe
+    name: Continental
+    geo: europe
+    org:
+      name: Nextstrain Team
+      url: null
+  - url: https://nextstrain.org/ncov/africa
+    name: Continental
+    geo: africa
+    org:
+      name: Nextstrain Team
+      url: null
+  - url: https://nextstrain.org/ncov/asia
+    name: Continental
+    geo: asia
+    org:
+      name: Nextstrain Team
+      url: null
+  - url: https://nextstrain.org/ncov/oceania
+    name: Continental
+    geo: oceania
+    org:
+      name: Nextstrain Team
+      url: null
+  - url: https://nextstrain.org/ncov/north-america
+    name: Continental
+    geo: north-america
+    org:
+      name: Nextstrain Team
+      url: null
+  - url: https://nextstrain.org/community/czbiohub/covidtracker/ca
+    name: California
+    geo: usa
+    org:
+      name: CZ BioHub
+      url: https://www.czbiohub.org
+  - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/update7
+    name: Connecticut
+    geo: usa
+    org:
+      name: Grubaugh Lab
+      url: http://grubaughlab.com
+  - url: https://auspice.broadinstitute.org/sars-cov-2/boston/genbank
+    name: GenBank
+    geo: boston
+    org:
+      name: Broad Institute
+      url: https://auspice.broadinstitute.org 
+  - url: https://auspice.broadinstitute.org/sars-cov-2/boston/gisaid-4k
+    name: GISAID (4k)
+    geo: boston
+    org:
+      name: Broad Institute
+      url: https://auspice.broadinstitute.org
+  - url: https://nextstrain.org/community/bergthalerlab/SARSCoV2/NextstrainAustria
+    name: Austria
+    geo: austria
+    org:
+      name: Bergthaler Lab
+      url: https://cemm.at/en/research/groups/andreas-bergthaler-group/
+  - url: https://nextstrain.org/groups/nextspain/ncov19-Spain
+    name: Spain
+    geo: spain
+    org:
+      name: FISABIO Sequencing and Bioinformatics Service
+      url: http://www.fisabio-ngs.com/en/
+  - url: https://nextstrain.org/groups/swiss/ncov/switzerland
+    name: Switzerland
+    geo: switzerland
+    org:
+      name: nextstrain.org/groups/swiss
+      url: https://nextstrain.org/groups/swiss/
+  - url: https://nextstrain.org/groups/swiss/ncov/basel-stadt
+    name: Basel-Stadt
+    geo: switzerland
+    org:
+      name: nextstrain.org/groups/swiss
+      url: https://nextstrain.org/groups/swiss/
+  - url: https://nextstrain.org/groups/swiss/ncov/basel-land
+    name: Basel-Landschaft
+    geo: switzerland
+    org:
+      name: nextstrain.org/groups/swiss
+      url: https://nextstrain.org/groups/swiss/
+  - url: https://nextstrain.org/groups/swiss/ncov/geneva
+    name: Geneva
+    geo: switzerland
+    org:
+      name: nextstrain.org/groups/swiss
+      url: https://nextstrain.org/groups/swiss/
+  - url: https://nextstrain.org/groups/swiss/ncov/lac-leman
+    name: Lac Léman
+    geo: switzerland
+    org:
+      name: nextstrain.org/groups/swiss
+      url: https://nextstrain.org/groups/swiss/
+  - url: https://nextstrain.org/groups/swiss/ncov/ticino
+    name: Ticino
+    geo: switzerland
+    org:
+      name: nextstrain.org/groups/swiss
+      url: https://nextstrain.org/groups/swiss/
+  - url: https://nextstrain.org/groups/swiss/ncov/vaud
+    name: Vaud
+    geo: switzerland
+    org:
+      name: nextstrain.org/groups/swiss
+      url: https://nextstrain.org/groups/swiss/
+  - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
+    name: India
+    geo: india
+    org:
+      name: Vinod Scaria Lab
+      url: http://vinodscaria.rnabiology.org/
+  - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-Middle-East
+    name: Regional
+    geo: middle-east
+    org:
+      name: Vinod Scaria Lab
+      url: http://vinodscaria.rnabiology.org/
