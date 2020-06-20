@@ -142,8 +142,8 @@ builds:
     name: Portugal
     geo: portugal
     org:
-      name: INSA
-      url: https://insaflu.insa.pt/covid19/
+      name: INSA / Portugal NIH
+      url: http://www.insa.pt/
 
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
     name: India
