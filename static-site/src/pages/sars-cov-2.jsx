@@ -36,13 +36,12 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      builds: allSARSCoV2Builds.builds,
       hasError: false};
     this.buildsForGeo = this.buildsForGeo.bind(this);
   }
 
   buildsForGeo(geo) {
-    return this.state.builds
+    return allSARSCoV2Builds.builds
     .filter((b) => b.geo === geo)
     .map((build) => buildComponent(build));
   }
@@ -77,7 +76,7 @@ class Index extends React.Component {
                                   Something went wrong getting data.
                                   Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
                                   if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-                  {this.state.builds && this.state.builds.map((build) => buildComponent(build))}
+                  {allSARSCoV2Builds.builds.map((build) => buildComponent(build))}
                 </div>
               </div>
 
