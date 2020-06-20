@@ -85,6 +85,10 @@ class Index extends React.Component {
                   <div style={{marginLeft: "15px"}}>
                     <splashStyles.H4 left>USA</splashStyles.H4>
                     {this.buildsForGeo("usa")}
+                    <splashStyles.SitRepTitle>California</splashStyles.SitRepTitle>
+                    <div style={{marginLeft: "15px"}}>
+                      {this.buildsForGeo("california")}
+                    </div>
                     <splashStyles.SitRepTitle>Massachusetts</splashStyles.SitRepTitle>
                     <div style={{marginLeft: "15px"}}>
                       <splashStyles.SitRepTitle left>Boston</splashStyles.SitRepTitle>
@@ -97,11 +101,9 @@ class Index extends React.Component {
                   {this.buildsForGeo("europe")}
                   <div style={{marginLeft: "15px"}}>
                     {this.buildsForGeo("austria")}
+                    {this.buildsForGeo("portugal")}
                     {this.buildsForGeo("spain")}
-                    <splashStyles.SitRepTitle>Switzerland</splashStyles.SitRepTitle>
-                    <div style={{marginLeft: "15px"}}>
-                      {this.buildsForGeo("switzerland")}
-                    </div>
+                    {this.buildsForGeo("switzerland")}
                   </div>
                   <splashStyles.H3 left>Africa</splashStyles.H3>
                   {this.buildsForGeo("africa")}

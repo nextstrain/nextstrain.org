@@ -57,21 +57,21 @@ builds:
 
   - url: https://nextstrain.org/community/czbiohub/covidtracker/ca
     name: California
-    geo: usa
+    geo: california
     org:
       name: CZ BioHub
       url: https://www.czbiohub.org
 
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/california
     name: California
-    geo: usa
+    geo: california
     org:
       name: Anderson Lab, Scripps (!tbc!)
       url: https://andersen-lab.com/
 
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/sandiego
     name: San Diego
-    geo: san diego
+    geo: california
     org:
       name: Anderson Lab, Scripps (!tbc!)
       url: https://andersen-lab.com/
@@ -87,7 +87,7 @@ builds:
     name: Louisiana
     geo: louisiana
     org:
-      name: TBC
+      name: LCSC
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
 
   - url: https://auspice.broadinstitute.org/sars-cov-2/boston/genbank
@@ -110,12 +110,12 @@ builds:
       name: Hodcroft et al.
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
 
-  - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/texas?f_country=USA&p=grid
+  - url: https://go.wisc.edu/r7374f
     name: Wisconsin
     geo: wisconsin
     org:
-      name: WISC (!tbc!)
-      url: https://go.wisc.edu/r7374f
+      name: WISC
+      url: https://openresearch.labkey.com/Coven/project-begin.view?
 
   - url: https://nextstrain.org/community/bergthalerlab/SARSCoV2/NextstrainAustria
     name: Austria
@@ -137,6 +137,13 @@ builds:
     org:
       name: nextstrain.org/groups/swiss
       url: https://nextstrain.org/groups/swiss/
+
+  - url: https://insaflu.insa.pt/covid19/
+    name: Portugal
+    geo: portugal
+    org:
+      name: INSA
+      url: https://insaflu.insa.pt/covid19/
 
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
     name: India
