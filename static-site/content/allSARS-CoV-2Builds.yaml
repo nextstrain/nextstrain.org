@@ -73,8 +73,8 @@ builds:
     name: San Diego
     geo: california
     org:
-      name: Anderson Lab, Scripps (!tbc!)
-      url: https://andersen-lab.com/
+      name: SEARCH, San Diego
+      url: https://searchcovid.info/
 
   - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/update7
     name: Connecticut
