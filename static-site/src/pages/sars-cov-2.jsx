@@ -77,45 +77,7 @@ class Index extends React.Component {
                                   Something went wrong getting data.
                                   Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
                                   if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-                  {/* hardcoded structure for now */}
-                  <splashStyles.H3 left>Global</splashStyles.H3>
-                  {this.buildsForGeo("global")}
-                  <splashStyles.H3 left>North America</splashStyles.H3>
-                  {this.buildsForGeo("north-america")}
-                  <div style={{marginLeft: "15px"}}>
-                    <splashStyles.H4 left>USA</splashStyles.H4>
-                    {this.buildsForGeo("usa")}
-                    <splashStyles.SitRepTitle>California</splashStyles.SitRepTitle>
-                    <div style={{marginLeft: "15px"}}>
-                      {this.buildsForGeo("california")}
-                    </div>
-                    <splashStyles.SitRepTitle>Massachusetts</splashStyles.SitRepTitle>
-                    <div style={{marginLeft: "15px"}}>
-                      <splashStyles.SitRepTitle left>Boston</splashStyles.SitRepTitle>
-                      <div style={{marginLeft: "15px"}}>
-                        {this.buildsForGeo("boston")}
-                      </div>
-                    </div>
-                  </div>
-                  <splashStyles.H3 left>Europe</splashStyles.H3>
-                  {this.buildsForGeo("europe")}
-                  <div style={{marginLeft: "15px"}}>
-                    {this.buildsForGeo("austria")}
-                    {this.buildsForGeo("portugal")}
-                    {this.buildsForGeo("spain")}
-                    {this.buildsForGeo("switzerland")}
-                  </div>
-                  <splashStyles.H3 left>Africa</splashStyles.H3>
-                  {this.buildsForGeo("africa")}
-                  <splashStyles.H3 left>Middle East</splashStyles.H3>
-                  {this.buildsForGeo("middle-east")}
-                  <splashStyles.H3 left>Asia</splashStyles.H3>
-                  {this.buildsForGeo("asia")}
-                  <div style={{marginLeft: "15px"}}>
-                    {this.buildsForGeo("india")}
-                  </div>
-                  <splashStyles.H3 left>Oceania</splashStyles.H3>
-                  {this.buildsForGeo("oceania")}
+                  {this.state.builds && this.state.builds.map((build) => buildComponent(build))}
                 </div>
               </div>
 

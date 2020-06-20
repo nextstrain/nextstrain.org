@@ -7,42 +7,42 @@ builds:
       url: null
 
   - url: https://nextstrain.org/ncov/south-america
-    name: Continental
+    name: South America
     geo: south-america
     org:
       name: Nextstrain Team
       url: null
 
   - url: https://nextstrain.org/ncov/europe
-    name: Continental
+    name: Europe
     geo: europe
     org:
       name: Nextstrain Team
       url: null
 
   - url: https://nextstrain.org/ncov/africa
-    name: Continental
+    name: Africa
     geo: africa
     org:
       name: Nextstrain Team
       url: null
 
   - url: https://nextstrain.org/ncov/asia
-    name: Continental
+    name: Asia
     geo: asia
     org:
       name: Nextstrain Team
       url: null
 
   - url: https://nextstrain.org/ncov/oceania
-    name: Continental
+    name: Oceania
     geo: oceania
     org:
       name: Nextstrain Team
       url: null
 
   - url: https://nextstrain.org/ncov/north-america
-    name: Continental
+    name: North America
     geo: north-america
     org:
       name: Nextstrain Team
