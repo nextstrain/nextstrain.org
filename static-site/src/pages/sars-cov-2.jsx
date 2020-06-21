@@ -18,8 +18,8 @@ import allSARSCoV2Builds from "../../content/allSARS-CoV-2Builds.yaml";
 */
 
 const buildComponent = (build) => (
-  <div key={build.url}>
-    <splashStyles.SitRepTitle >
+  <splashStyles.SitRepTitle >
+    {build.url === null ? build.name : <div>
       <a href={build.url}>
         <FaFile />
         {` ${build.name} `}
@@ -28,8 +28,9 @@ const buildComponent = (build) => (
       {build.org.url === null ? build.org.name : <a href={build.org.url}>{build.org.name}</a>
       }
       )
-    </splashStyles.SitRepTitle>
-  </div>);
+    </div>}
+  </splashStyles.SitRepTitle>
+);
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
@@ -38,6 +39,27 @@ class Index extends React.Component {
     this.state = {
       hasError: false};
     this.buildsForGeo = this.buildsForGeo.bind(this);
+    this.subBuilds = this.subBuilds.bind(this);
+    this.buildTree = this.buildTree.bind(this);
+  }
+
+  subBuilds(parentBuild) {
+    const children = allSARSCoV2Builds.builds
+      .filter((b) => b.parentGeo === parentBuild.geo);
+    return (
+      <div key={parentBuild.url+parentBuild.name}>
+        {buildComponent(parentBuild)}
+        {children.length > 0 && children.map((child) => (
+          <div key={`${child.url+child.name}-children`} style={{marginLeft: "20px"}}>
+            {this.subBuilds(child)}
+          </div>
+        ))}
+      </div>);
+  }
+
+  buildTree() {
+    const roots = allSARSCoV2Builds.builds.filter((b) => b.parentGeo === null);
+    return roots.map((parentBuild) => this.subBuilds(parentBuild));
   }
 
   buildsForGeo(geo) {
@@ -76,7 +98,7 @@ class Index extends React.Component {
                                   Something went wrong getting data.
                                   Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
                                   if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-                  {allSARSCoV2Builds.builds.map((build) => buildComponent(build))}
+                  {this.buildTree()}
                 </div>
               </div>
 
