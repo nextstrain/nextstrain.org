@@ -20,8 +20,9 @@ const setup = (app) => {
   app.route(["/narratives/ncov", "/narratives/ncov/sit-rep"])
     .get((req, res) => res.redirect('/ncov-sit-reps'));
 
-  app.route(["/ncov"])
-  .get((req, res) => res.redirect('/sars-cov-2'));
+  // TODO uncomment this reroute when we are ready
+  // app.route(["/ncov"])
+  // .get((req, res) => res.redirect('/sars-cov-2'));
 
   /*
    * Redirect to translations of narratives if the client has
