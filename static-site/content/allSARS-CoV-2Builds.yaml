@@ -88,8 +88,8 @@ builds:
     geo: ca
     parentGeo: california
     org:
-      name: Anderson Lab, Scripps (!tbc!)
-      url: https://andersen-lab.com/
+      name: SEARCH, San Diego
+      url: https://searchcovid.info/
 
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/sandiego
     name: San Diego
