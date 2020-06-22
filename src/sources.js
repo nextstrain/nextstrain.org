@@ -326,7 +326,23 @@ class S3Source extends Source {
   async getInfo() {
     try {
       /* attempt to fetch customisable information from S3 bucket */
-      throw new Error();
+      const objects = await this._listObjects();
+      const objectKeys = objects.map((object) => object.Key);
+
+      let logoSrc;
+      if (objectKeys.includes("logo.png")) {
+        const logo = await S3.getObject({ Bucket: this.bucket, Key: "logo.png"}).promise();
+        logoSrc = "data:image/png;base64," + logo.Body.toString("base64");
+      }
+
+      return {
+        title: `"${this.name}" Nextstrain group`,
+        byline: `The available datasets and narratives in this group are listed below.`,
+        showDatasets: true,
+        showNarratives: true,
+        avatar: logoSrc
+      };
+
     } catch (err) {
       /* Appropriate fallback if no customised data is available */
       return {
