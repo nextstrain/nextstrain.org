@@ -19,10 +19,10 @@ import Footer from "../components/Footer";
 those which are either included in a dataset or included in the exclude list. (Or both!).
 In the future this could be a file fetch / GraphQL logic and part of the react component.
 There are plenty of improvements, but this is the simplest to begin with */
-let [selectableStrains, datasets, nSamplesInDatasets, nSamplesInExcludeList, nDatasets] = [[], [], 0, 0, 0];
+let [selectableStrains, datasets, nSamplesInDatasets, nSamplesInExcludeList, nDatasets, dateUpdated] = [[], [], 0, 0, 0, "unknown"];
 try {
   let strainMap;
-  ({datasets, strainMap} = require("../../../data/ncov-strains-to-datasets.json")); // eslint-disable-line
+  ({datasets, strainMap, dateUpdated} = require("../../../data/ncov-strains-to-datasets.json")); // eslint-disable-line
   nDatasets = datasets.length;
   nSamplesInDatasets = Object.keys(strainMap).length;
   const excludeMap = require("../../../data/ncov-excluded-strains.json"); // eslint-disable-line
@@ -41,6 +41,18 @@ try {
 } catch (err) {
   console.error("Error fetching / parsing data.", err.message);
 }
+
+
+const Ul = styled.ul`
+  font-size: 16px;
+  line-height: 1.7;
+  list-style: none;
+`;
+
+const Excluded = styled.div`
+  font-size: 18px;
+  color: red;
+`;
 
 class SequencesToDatasets extends React.Component {
   constructor(props) {
@@ -78,7 +90,7 @@ class SequencesToDatasets extends React.Component {
             <splashStyles.Container className="container">
               <HugeSpacer />
               <splashStyles.H2>
-                Search nCoV datasets by sample name
+                Search SARS-CoV-2 datasets by sample name
               </splashStyles.H2>
               <SmallSpacer />
               <FlexCenter>
@@ -88,16 +100,20 @@ class SequencesToDatasets extends React.Component {
                   will be shown. Additionally, if we have deliberately excluded a sample from the analysis we will attempt
                   to show the reason here.
                   <br/><br/>
-                  Current Limitations: Looking at datasets on the staging server. Data only regenerated when the server restarts.
-                  <br/><br/>
-                  Current database: {nSamplesInDatasets} samples, from {nDatasets} datasets on the staging bucket.
+                  Current database: {nSamplesInDatasets} samples, from {nDatasets} datasets on the core nextstrain bucket.
+                  <br/>
                   Additionally, {nSamplesInExcludeList} samples from our manually curated exclusion list are included.
+                  <br/>
+                  Data updated: {dateUpdated}
                 </splashStyles.CenteredFocusParagraph>
               </FlexCenter>
               <div className="row">
                 <MediumSpacer />
                 <div className="col-md-1"/>
                 <div className="col-md-10">
+                  {(nSamplesInDatasets===0 || nSamplesInExcludeList===0) && (
+                    <Excluded>There appears to have been a problem fetching the data for this page. Results, if any, may be incorrect!</Excluded>
+                  )}
                   <HugeSpacer/>
                   <Select
                     options={selectableStrains}
@@ -122,17 +138,6 @@ class SequencesToDatasets extends React.Component {
     );
   }
 }
-
-const Ul = styled.ul`
-  font-size: 16px;
-  line-height: 1.7;
-  list-style: none;
-`;
-
-const Excluded = styled.div`
-  font-size: 18px;
-  color: red;
-`;
 
 function InfoAboutSequence({selected}) {
   if (!selected || !selected.length) return null;

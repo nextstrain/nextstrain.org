@@ -54,6 +54,10 @@ Please see [the auspice documentation](https://nextstrain.github.io/auspice/cust
 
 ### Testing locally
 Make sure you've installed dependencies with `npm install` first (and activated your conda environment if using one).
+
+If you have AWS credentials make sure they are set as environment variables (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`).
+These are not necessary, but some functionality will be missing if these aren't available.
+
 Then run:
 
 ```bash

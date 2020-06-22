@@ -24,15 +24,16 @@ const collectStrainNames = (name, json) => {
 
 (async () => {
   const S3 = new AWS.S3();
-  const BUCKET = `nextstrain-staging`;
-  const NEXTSTRAIN_URL_PREFIX = `https://nextstrain.org/staging/`;
+  const BUCKET = `nextstrain-data`;
+  const NEXTSTRAIN_URL_PREFIX = `https://nextstrain.org/`;
+  console.log(`Collecting datasets from ${BUCKET} to link sample names -> datasets...`);
   let s3Objects;
   try {
     s3Objects = await S3.listObjectsV2({Bucket: BUCKET}).promise();
   } catch (err) {
     console.log("Error listing objects via the S3 API -- were credentials correctly set?");
     console.log(err.message);
-    process.exit(2);
+    process.exit(0); // exit zero so the build script doesn't fail causing the site to not be deployed.
   }
   if (s3Objects.isTruncated) console.log("WARNING: S3 listing is truncated. Results will be incomplete.");
   s3Objects = s3Objects.Contents
@@ -69,7 +70,8 @@ const collectStrainNames = (name, json) => {
     });
     return acc;
   }, {datasets: [], strainMap: {}});
+  const dateUpdated = (new Date()).toISOString().split("T")[0];
   if (!fs.existsSync("./data")) fs.mkdirSync("./data");
-  fs.writeFileSync("./data/ncov-strains-to-datasets.json", JSON.stringify({datasets, strainMap}, null, 0));
+  fs.writeFileSync("./data/ncov-strains-to-datasets.json", JSON.stringify({datasets, strainMap, dateUpdated}, null, 0));
 })();
 

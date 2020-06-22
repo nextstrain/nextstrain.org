@@ -4,6 +4,7 @@ const fetch = require("node-fetch");
 const fs = require('fs');
 
 (async () => {
+  console.log(`Fetching the SARS-CoV-2 exclude-list...`);
   let exclude = await fetch("https://raw.githubusercontent.com/nextstrain/ncov/master/config/exclude.txt");
   exclude = await exclude.text();
   exclude = exclude.split("\n")

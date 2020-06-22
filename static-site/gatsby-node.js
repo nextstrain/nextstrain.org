@@ -201,8 +201,8 @@ exports.createPages = ({graphql, actions}) => {
 
         // Create page listing all sequences and which datasets they're included in
         createPage({
-          path: "/ncov-sequence-to-dataset",
-          component: path.resolve("src/pages/ncov-sequence-to-dataset.jsx")
+          path: "/sars-cov-2-sequence-search",
+          component: path.resolve("src/pages/sars-cov-2-sequence-search.jsx")
         });
 
       })
