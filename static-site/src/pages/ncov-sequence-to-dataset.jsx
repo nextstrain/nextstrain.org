@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import Select, {createFilter} from 'react-select';
 import styled from 'styled-components';
-import {FaFile} from "react-icons/fa";
+import {FaFile, FaExclamation} from "react-icons/fa";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
@@ -10,14 +10,37 @@ import UserDataWrapper from "../layouts/userDataWrapper";
 import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import {datasets, strainMap} from "../../../data/ncov-strains-to-datasets.json";
-
 
 /**
  * See https://github.com/JedWatson/react-select/issues/3128 for ways to speed up <Select>
  */
 
-const selectableStrains = Object.keys(strainMap).map((s) => ({value: strainMap[s], label: s})); // .filter((_, i) => i<10);
+/* Parse the JSONs created on server-start to produce a list of selectable strains --
+those which are either included in a dataset or included in the exclude list. (Or both!).
+In the future this could be a file fetch / GraphQL logic and part of the react component.
+There are plenty of improvements, but this is the simplest to begin with */
+let [selectableStrains, datasets, nSamplesInDatasets, nSamplesInExcludeList, nDatasets] = [[], [], 0, 0, 0];
+try {
+  let strainMap;
+  ({datasets, strainMap} = require("../../../data/ncov-strains-to-datasets.json")); // eslint-disable-line
+  nDatasets = datasets.length;
+  nSamplesInDatasets = Object.keys(strainMap).length;
+  const excludeMap = require("../../../data/ncov-excluded-strains.json"); // eslint-disable-line
+  nSamplesInExcludeList = Object.keys(excludeMap).length;
+  const selectableStrainsDict = {};
+  Object.keys(strainMap).forEach((s) => {selectableStrainsDict[s] = {value: {included: strainMap[s]}, label: s};});
+  Object.entries(excludeMap).forEach(([strain, reason]) => {
+    if (selectableStrainsDict[strain]) {
+      selectableStrainsDict[strain].value.excluded = reason;
+    } else {
+      selectableStrainsDict[strain] = {value: {excluded: reason}, label: strain};
+    }
+  });
+  selectableStrains = Object.values(selectableStrainsDict)
+    .sort((a, b) => a.label.localeCompare(b.label)); // sort dropdown entries alphabetically
+} catch (err) {
+  console.error("Error fetching / parsing data.", err.message);
+}
 
 class SequencesToDatasets extends React.Component {
   constructor(props) {
@@ -60,9 +83,15 @@ class SequencesToDatasets extends React.Component {
               <SmallSpacer />
               <FlexCenter>
                 <splashStyles.CenteredFocusParagraph theme={{niceFontSize: "14px"}}>
-                  This is a prototype of how we can find which datasets a particular sample appears in.
-                  Limitations: currently it scans the datasets in the staging bucket and the scan is only done
-                  when the server starts up.
+                  If you know the name(s) of sequences, you can search here to find out which datasets, if any,
+                  the samples appear in. If you select multiple samples, then only datasets where they all appear
+                  will be shown. Additionally, if we have deliberately excluded a sample from the analysis we will attempt
+                  to show the reason here.
+                  <br/><br/>
+                  Current Limitations: Looking at datasets on the staging server. Data only regenerated when the server restarts.
+                  <br/><br/>
+                  Current database: {nSamplesInDatasets} samples, from {nDatasets} datasets on the staging bucket.
+                  Additionally, {nSamplesInExcludeList} samples from our manually curated exclusion list are included.
                 </splashStyles.CenteredFocusParagraph>
               </FlexCenter>
               <div className="row">
@@ -73,13 +102,14 @@ class SequencesToDatasets extends React.Component {
                   <Select
                     options={selectableStrains}
                     openMenuOnClick={false}
+                    getOptionValue={(option) => option.label}
                     filterOption={createFilter({ignoreAccents: false})}
                     isClearable
                     isMulti
                     onChange={this.onSelectChange}
                   />
                   <HugeSpacer/>
-                  <DatasetsWithSequence selected={this.state.selected}/>
+                  <InfoAboutSequence selected={this.state.selected}/>
                 </div>
               </div>
 
@@ -99,42 +129,59 @@ const Ul = styled.ul`
   list-style: none;
 `;
 
-function DatasetsWithSequence({selected}) {
+const Excluded = styled.div`
+  font-size: 18px;
+  color: red;
+`;
+
+function InfoAboutSequence({selected}) {
   if (!selected || !selected.length) return null;
-  if (selected.length === 1) {
-    return (
-      <div>
-        <h3>{`Sample "${selected[0].label}" appears in ${selected[0].value.length} datasets`}</h3>
-        <Ul>
-          {selected[0].value.map((datasetIdx) => {
-            const d = datasets[datasetIdx];
-            return (
-              <li key={d.filename}><a href={d.url}><FaFile />{" "+d.filename.replace(".json", "").replace("_", " / ")}</a>{` (last modified ${d.lastModified})`}</li>
-            );
-          })}
-        </Ul>
-      </div>
-    );
-  }
-  // else we want to find datsets which have all strains
-  const datasetIndicies = selected.map((s) => s.value);
-  const intersectedIndicies = datasetIndicies.reduce((a, b) => a.filter(c => b.includes(c)));
+
+  // Calculate the datasets where _all_ the selected strains are in.
+  const datasetIndicies = selected.map((s) => s.value.included || [])
+    .reduce((a, b) => a.filter(c => b.includes(c)));
+
+
   return (
-    <div>
-      <h3>{`The ${selected.length} samples appear (together) in ${intersectedIndicies.length} datasets`}</h3>
-      <h4>{selected.map((s) => s.label).join(", ")}</h4>
-      <Ul>
-        {intersectedIndicies.map((datasetIdx) => {
-          const d = datasets[datasetIdx];
-          return (
-            <li key={d.filename}><a href={d.url}><FaFile />{" "+d.filename.replace(".json", "").replace("_", " / ")}</a>{` (last modified ${d.lastModified})`}</li>
-          );
-        })}
-      </Ul>
-    </div>
+    <>
+      {selected.length === 1 ? (
+        <h3>{`Sample "${selected[0].label}" appears in ${datasetIndicies.length} datasets`}</h3>
+      ) : (
+        <h3>{`The ${selected.length} selected samples appear, together, in ${datasetIndicies.length} datasets`}</h3>
+      )}
+      <ListMatchingDatasets datasetIndicies={datasetIndicies}/>
+      <MediumSpacer/>
+      {selected.map((s) => (
+        s.value.excluded ? (
+          <Excluded key={s.label}>
+            <h3><FaExclamation/>{`Sample ${s.label} is excluded from current builds`}</h3>
+            {`reason: ${s.value.excluded}`}
+          </Excluded>
+        ) : null))}
+    </>
+  );
+
+}
+
+function ListMatchingDatasets({datasetIndicies}) {
+  if (!datasetIndicies || (Array.isArray(datasetIndicies) && !datasetIndicies.length)) return null;
+  return (
+    <Ul>
+      {datasetIndicies.map((datasetIdx) => {
+        const d = datasets[datasetIdx];
+        return (
+          <li key={d.filename}>
+            <a href={d.url}>
+              <FaFile />
+              {" "+d.filename.replace(".json", "").replace("_", " / ")}
+            </a>
+            {` (last modified ${d.lastModified})`}
+          </li>
+        );
+      })}
+    </Ul>
   );
 }
 
 
 export default SequencesToDatasets;
-

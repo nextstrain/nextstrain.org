@@ -52,6 +52,7 @@ build-auspice() {
 generate-data() {
     echo "Running scripts to generate data at start time"
     node scripts/collect-strains-sars-cov-2.js
+    node scripts/collect-exclusions-sars-cov-2.js
 }
 
 main "$@"
