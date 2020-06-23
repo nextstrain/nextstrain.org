@@ -3,6 +3,7 @@
 const AWS = require("aws-sdk");
 const fetch = require("node-fetch");
 const fs = require('fs');
+const pLimit = require('p-limit');
 
 const collectStrainNames = (name, json) => {
   const strains = [];
@@ -50,12 +51,13 @@ const collectStrainNames = (name, json) => {
     .filter((s3obj) => {
       return s3obj.Key.startsWith("ncov_");
     }); // .filter((_, i) => i<10);
-  s3Objects = await Promise.all(s3Objects.map(async (s3obj) => {
+  const limit = pLimit(5); // limit concurrent promises as this was causing memory (?) issues on Heroku
+  s3Objects = await Promise.all(s3Objects.map(async (s3obj) => limit(async () => {
     const dataset = await fetch(`https://${BUCKET}.s3.amazonaws.com/${s3obj.Key}`).then((res) => res.json());
     s3obj.strains = collectStrainNames(s3obj.Key, dataset);
     console.log(s3obj.Key, s3obj.strains.length);
     return s3obj;
-  }));
+  })));
   s3Objects = s3Objects.sort((a, b) => b.LastModified-a.LastModified);
   const {datasets, strainMap} = s3Objects.reduce((acc, s3obj, idx) => {
     acc.datasets.push({
