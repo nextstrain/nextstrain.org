@@ -1,6 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
-import {FaFile} from "react-icons/fa";
+import {FaChartArea} from "react-icons/fa";
 import config from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import MainLayout from "../components/layout";
@@ -21,7 +21,7 @@ const buildComponent = (build) => (
   <splashStyles.SitRepTitle >
     {build.url === null ? build.name : <div>
       <a href={build.url}>
-        <FaFile />
+        <FaChartArea />
         {` ${build.name} `}
       </a>
       (
