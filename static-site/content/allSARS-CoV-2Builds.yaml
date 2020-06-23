@@ -1,35 +1,61 @@
 builds:
-  - url: https://nextstrain.org/ncov/global
+  - url: null
     name: Global
     geo: global
     parentGeo: null
+    org: null
+
+  - url: https://nextstrain.org/ncov/global
+    name: Global
+    geo: global
     org:
       name: Nextstrain Team
       url: null
+
+  - url: null
+    name: South America
+    geo: south-america
+    parentGeo: null
+    org: null
 
   - url: https://nextstrain.org/ncov/south-america
     name: South America
     geo: south-america
-    parentGeo: null
     org:
       name: Nextstrain Team
       url: null
+
+  - url: null
+    name: Europe
+    geo: europe
+    parentGeo: null
+    org: null
 
   - url: https://nextstrain.org/ncov/europe
     name: Europe
     geo: europe
-    parentGeo: null
     org:
       name: Nextstrain Team
       url: null
 
-  - url: https://nextstrain.org/ncov/africa
+  - url: null
     name: Africa
     geo: africa
     parentGeo: null
+    org: null
+
+  - url: https://nextstrain.org/ncov/africa
+    name: Africa
+    geo: africa
     org:
       name: Nextstrain Team
       url: null
+
+  - url: null
+    name: Asia
+    geo: asia
+    parentGeo: null
+    org: null
 
   - url: https://nextstrain.org/ncov/asia
     name: Asia
@@ -39,6 +65,12 @@ builds:
       name: Nextstrain Team
       url: null
 
+  - url: null
+    name: Oceania
+    geo: oceania
+    parentGeo: null
+    org: null
+
   - url: https://nextstrain.org/ncov/oceania
     name: Oceania
     geo: oceania
@@ -47,10 +79,15 @@ builds:
       name: Nextstrain Team
       url: null
 
-  - url: https://nextstrain.org/ncov/north-america
+  - url: null
     name: North America
     geo: north-america
     parentGeo: null
+    org: null
+
+  - url: https://nextstrain.org/ncov/north-america
+    name: North America
+    geo: north-america
     org:
       name: Nextstrain Team
       url: null
@@ -63,8 +100,7 @@ builds:
 
   - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/south-central
     name: South-Central Region
-    geo: sc-usa
-    parentGeo: usa
+    geo: usa
     org:
       name: Hodcroft et al.
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
@@ -77,39 +113,46 @@ builds:
 
   - url: https://nextstrain.org/community/czbiohub/covidtracker/ca
     name: California
-    geo: ca
-    parentGeo: california
+    geo: california
     org:
       name: CZ BioHub
       url: https://www.czbiohub.org
 
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/california
     name: California
-    geo: ca
-    parentGeo: california
+    geo: california
     org:
       name: SEARCH, San Diego
       url: https://searchcovid.info/
 
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/sandiego
     name: San Diego
-    geo: san-diego
-    parentGeo: california
+    geo: california
     org:
       name: SEARCH, San Diego
       url: https://searchcovid.info/
 
-  - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/update7
+  - url: null
     name: Connecticut
     geo: connecticut
     parentGeo: usa
+    org: null
+
+  - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/update7
+    name: Connecticut
+    geo: connecticut
     org:
       name: Grubaugh Lab
       url: http://grubaughlab.com
 
+  - url: null
+    name: Louisiana
+    geo: louisiana
+    parentGeo: usa
+    org: null
+
   - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/louisiana
     name: Louisiana
-    parentGeo: usa
     geo: louisiana
     org:
       name: LCSC
@@ -123,79 +166,118 @@ builds:
 
   - url: https://auspice.broadinstitute.org/sars-cov-2/boston/genbank
     name: Boston GenBank
-    geo: boston
-    parentGeo: massachusetts
+    geo: massachusetts
     org:
       name: Broad Institute
       url: https://auspice.broadinstitute.org 
+
   - url: https://auspice.broadinstitute.org/sars-cov-2/boston/gisaid-4k
     name: Boston GISAID (4k)
-    geo: boston
-    parentGeo: massachusetts
+    geo: massachusetts
     org:
       name: Broad Institute
       url: https://auspice.broadinstitute.org
 
-  - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/texas?f_country=USA&p=grid
+  - url: null
     name: Texas
     geo: texas
     parentGeo: usa
+    org: null
+
+  - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/texas?f_country=USA&p=grid
+    name: Texas
+    geo: texas
     org:
       name: Hodcroft et al.
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
 
-  - url: https://go.wisc.edu/r7374f
+  - url: null
     name: Wisconsin
     geo: wisconsin
     parentGeo: usa
+    org: null
+
+  - url: https://go.wisc.edu/r7374f
+    name: Wisconsin
+    geo: wisconsin
     org:
       name: WISC
       url: https://openresearch.labkey.com/Coven/project-begin.view?
 
-  - url: https://nextstrain.org/community/bergthalerlab/SARSCoV2/NextstrainAustria
+  - url: null
     name: Austria
     geo: austria
     parentGeo: europe
+    org: null
+
+  - url: https://nextstrain.org/community/bergthalerlab/SARSCoV2/NextstrainAustria
+    name: Austria
+    geo: austria
     org:
       name: Bergthaler Lab
       url: https://cemm.at/en/research/groups/andreas-bergthaler-group/
 
-  - url: https://nextstrain.org/groups/nextspain/ncov19-Spain
+  - url: null
     name: Spain
     geo: spain
     parentGeo: europe
+    org: null
+
+  - url: https://nextstrain.org/groups/nextspain/ncov19-Spain
+    name: Spain
+    geo: spain
     org:
       name: FISABIO Sequencing and Bioinformatics Service
       url: http://www.fisabio-ngs.com/en/
 
-  - url: https://nextstrain.org/groups/swiss/ncov/switzerland
+  - url: null
     name: Switzerland
     geo: switzerland
     parentGeo: europe
+    org: null
+
+  - url: https://nextstrain.org/groups/swiss/ncov/switzerland
+    name: Switzerland
+    geo: switzerland
     org:
       name: nextstrain.org/groups/swiss
       url: https://nextstrain.org/groups/swiss/
 
-  - url: https://insaflu.insa.pt/covid19/
+  - url: null
     name: Portugal
     geo: portugal
     parentGeo: europe
+    org: null
+
+  - url: https://insaflu.insa.pt/covid19/
+    name: Portugal
+    geo: portugal
     org:
       name: INSA / NIH Portugal
       url: http://www.insa.pt/
 
-  - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
+  - url: null
     name: India
     geo: india
     parentGeo: asia
+    org: null
+
+  - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
+    name: India
+    geo: india
     org:
       name: Vinod Scaria Lab
       url: http://vinodscaria.rnabiology.org/
 
-  - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-Middle-East
+  - url: null
     name: Middle East
     geo: middle-east
     parentGeo: null
+    org: null
+
+  - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-Middle-East
+    name: Middle East
+    geo: middle-east
     org:
       name: Vinod Scaria Lab
       url: http://vinodscaria.rnabiology.org/

@@ -43,23 +43,25 @@ class Index extends React.Component {
     this.buildTree = this.buildTree.bind(this);
   }
 
-  subBuilds(parentBuild) {
+  subBuilds(header, fontSize=20) {
     const children = allSARSCoV2Builds.builds
-      .filter((b) => b.parentGeo === parentBuild.geo);
+      .filter((b) => b.geo === header.geo && b.url !== null);
+    const subHeaders = allSARSCoV2Builds.builds
+      .filter((b) => b.parentGeo === header.geo && b.url === null);
     return (
-      <div key={parentBuild.url+parentBuild.name}>
-        {buildComponent(parentBuild)}
-        {children.length > 0 && children.map((child) => (
-          <div key={`${child.url+child.name}-children`} style={{marginLeft: "20px"}}>
-            {this.subBuilds(child)}
-          </div>
-        ))}
+      <div key={header.name}>
+        <splashStyles.Heading fontSize={fontSize}>{header.name}</splashStyles.Heading>
+        <div key={`${header.name}-children`} style={{marginLeft: "20px"}}>
+          {children.length > 0 && children.map((child) => buildComponent(child))}
+          {subHeaders.length > 0 && subHeaders.map((subHeader) => this.subBuilds(subHeader, fontSize > 16 ? fontSize-2 : fontSize))}
+        </div>
       </div>);
   }
 
   buildTree() {
-    const roots = allSARSCoV2Builds.builds.filter((b) => b.parentGeo === null);
-    return roots.map((parentBuild) => this.subBuilds(parentBuild));
+    const headers = allSARSCoV2Builds.builds.filter((b) => b.url === null);
+    const roots = headers.filter((b) => b.parentGeo === null);
+    return roots.map((root) => this.subBuilds(root));
   }
 
   buildsForGeo(geo) {

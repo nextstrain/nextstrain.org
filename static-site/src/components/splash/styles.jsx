@@ -66,6 +66,19 @@ export const H4 = styled.div`
   margin-bottom: 0px;
 `;
 
+export const Heading = styled.div`
+  font-family: ${(props) => props.theme.generalFont};
+  font-weight: ${(props) => props.attn ? "600": "500"};
+  font-size: ${(props) => `${props.fontSize}px`};
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+  border-radius: 3px;
+  padding: 10px 20px 10px 20px;
+  top: 40px;
+  left: 20px;
+`;
+
 export const SitRepTitle = styled.div`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: ${(props) => props.attn ? "600": "500"};
