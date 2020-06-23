@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 const AWS = require("aws-sdk");
+const zlib = require("zlib");
 const {fetch} = require("./fetch");
 const queryString = require("query-string");
 const {NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
@@ -315,6 +316,13 @@ class S3Source extends Source {
         .split("_")
         .join("/"));
   }
+  async getAndDecompressObject(key) {
+    const object = await S3.getObject({ Bucket: this.bucket, Key: key}).promise();
+    if (object.ContentEncoding === 'gzip') {
+      object.Body = zlib.gunzipSync(object.Body);
+    }
+    return object.Body;
+  }
   /**
    * Get information about a (particular) source.
    * The data could be a JSON, or a markdown with YAML frontmatter. Or something else.
@@ -331,8 +339,8 @@ class S3Source extends Source {
 
       let logoSrc;
       if (objectKeys.includes("logo.png")) {
-        const logo = await S3.getObject({ Bucket: this.bucket, Key: "logo.png"}).promise();
-        logoSrc = "data:image/png;base64," + logo.Body.toString("base64");
+        const logo = await this.getAndDecompressObject("logo.png");
+        logoSrc = "data:image/png;base64," + logo.toString("base64");
       }
 
       return {
