@@ -199,6 +199,12 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/pages/ncov-sit-reps.jsx")
         });
 
+        // Create page listing all sequences and which datasets they're included in
+        createPage({
+          path: "/sars-cov-2-sequence-search",
+          component: path.resolve("src/pages/sars-cov-2-sequence-search.jsx")
+        });
+
       })
     );
   });

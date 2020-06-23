@@ -35,6 +35,7 @@
     "make-fetch-happen": "^7.1.1",
     "marked": "^0.7.0",
     "node-fetch": "^2.6.0",
+    "p-limit": "^3.0.1",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.5.0",
     "query-string": "^4.2.3",
