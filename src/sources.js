@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 const AWS = require("aws-sdk");
+const zlib = require("zlib");
 const {fetch} = require("./fetch");
 const queryString = require("query-string");
 const {NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
@@ -315,6 +316,13 @@ class S3Source extends Source {
         .split("_")
         .join("/"));
   }
+  async getAndDecompressObject(key) {
+    const object = await S3.getObject({ Bucket: this.bucket, Key: key}).promise();
+    if (object.ContentEncoding === 'gzip') {
+      object.Body = zlib.gunzipSync(object.Body);
+    }
+    return object.Body;
+  }
   /**
    * Get information about a (particular) source.
    * The data could be a JSON, or a markdown with YAML frontmatter. Or something else.
@@ -326,7 +334,23 @@ class S3Source extends Source {
   async getInfo() {
     try {
       /* attempt to fetch customisable information from S3 bucket */
-      throw new Error();
+      const objects = await this._listObjects();
+      const objectKeys = objects.map((object) => object.Key);
+
+      let logoSrc;
+      if (objectKeys.includes("group-logo.png")) {
+        const logo = await this.getAndDecompressObject("group-logo.png");
+        logoSrc = "data:image/png;base64," + logo.toString("base64");
+      }
+
+      return {
+        title: `"${this.name}" Nextstrain group`,
+        byline: `The available datasets and narratives in this group are listed below.`,
+        showDatasets: true,
+        showNarratives: true,
+        avatar: logoSrc
+      };
+
     } catch (err) {
       /* Appropriate fallback if no customised data is available */
       return {
