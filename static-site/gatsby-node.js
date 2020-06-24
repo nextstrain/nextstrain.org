@@ -3,7 +3,7 @@ const path = require("path");
 const webpackLodashPlugin = require("lodash-webpack-plugin");
 const structureEdges = require("./src/util/structureEdges");
 const redirects = require("./redirects.json");
-
+const searchPages = require("./search_pages.json");
 
 /* onCreateNode is called on each node and used to update information.
 Here we predominantly use it to set the slug (the URL)
@@ -205,10 +205,19 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/pages/ncov-sit-reps.jsx")
         });
 
-        // Create page listing all sequences and which datasets they're included in
+        // search pages
         createPage({
-          path: "/sars-cov-2-sequence-search",
-          component: path.resolve("src/pages/sars-cov-2-sequence-search.jsx")
+          path: `/search`,
+          component: path.resolve("src/pages/sequence-search-list.jsx"),
+          context: {searchPages}
+        });
+        searchPages.forEach(({urlName, displayName, jsonUrl}) => {
+          console.log(`created page at /search/${urlName}`);
+          createPage({
+            path: `/search/${urlName}`,
+            component: path.resolve("src/pages/sequence-search.jsx"),
+            context: {urlName, displayName, jsonUrl}
+          });
         });
 
       })

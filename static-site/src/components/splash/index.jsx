@@ -2,6 +2,7 @@ import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import {Link} from 'gatsby';
 import {MdTranslate} from "react-icons/md";
+// import {FaSearch} from "react-icons/fa";
 import { tweets } from "./tweets";
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
@@ -74,6 +75,16 @@ class Splash extends React.Component {
             </Link>
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
+        {/* <FlexCenter>
+          {true && (
+            <Styles.CenteredFocusParagraph theme={{niceFontSize: "20px"}}>
+              <Link to="/search/sars-cov-2">
+                <FaSearch style={{fontSize: "28px"}}/>
+                {" "}Search for a sample name(s) across datasets
+              </Link>
+            </Styles.CenteredFocusParagraph>
+          )}
+          </FlexCenter> */}
 
         <Cards
           squashed
