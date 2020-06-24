@@ -193,6 +193,12 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/sections/users.jsx")
         });
 
+        // Create page detailing all SARS-CoV-2 builds
+        createPage({
+          path: "/sars-cov-2",
+          component: path.resolve("src/pages/sars-cov-2.jsx")
+        });
+
         // Create page detailing all SARS-CoV-2 sit-reps
         createPage({
           path: "/ncov-sit-reps",
