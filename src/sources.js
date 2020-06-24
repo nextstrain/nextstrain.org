@@ -338,8 +338,8 @@ class S3Source extends Source {
       const objectKeys = objects.map((object) => object.Key);
 
       let logoSrc;
-      if (objectKeys.includes("logo.png")) {
-        const logo = await this.getAndDecompressObject("logo.png");
+      if (objectKeys.includes("group-logo.png")) {
+        const logo = await this.getAndDecompressObject("group-logo.png");
         logoSrc = "data:image/png;base64," + logo.toString("base64");
       }
 
