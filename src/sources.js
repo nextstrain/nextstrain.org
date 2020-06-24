@@ -1,6 +1,7 @@
 /* eslint-disable no-use-before-define */
 const AWS = require("aws-sdk");
 const zlib = require("zlib");
+const yamlFront = require("yaml-front-matter");
 const {fetch} = require("./fetch");
 const queryString = require("query-string");
 const {NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
@@ -324,6 +325,16 @@ class S3Source extends Source {
     }
     return object.Body;
   }
+  parseOverviewMarkdown(overviewMarkdown) {
+    const frontMatter = yamlFront.loadFront(overviewMarkdown);
+    if (!frontMatter.title || !frontMatter.byline) {
+      throw new Error("Incorrectly formatted frontmatter in overview file");
+    }
+    // handle files with CRLF endings (windows)
+    const content = frontMatter.__content.replace(/\r\n/g, "\n");
+
+    return [frontMatter.title, frontMatter.byline, content];
+  }
   /**
    * Get information about a (particular) source.
    * The data could be a JSON, or a markdown with YAML frontmatter. Or something else.
@@ -344,12 +355,21 @@ class S3Source extends Source {
         logoSrc = "data:image/png;base64," + logo.toString("base64");
       }
 
+      let title = `"${this.name}" Nextstrain group`;
+      let byline = `The available datasets and narratives in this group are listed below.`;
+      let overview;
+      if (objectKeys.includes("group-overview.md")) {
+        const overviewContent = await this.getAndDecompressObject("group-overview.md");
+        [title, byline, overview] = this.parseOverviewMarkdown(overviewContent);
+      }
+
       return {
-        title: `"${this.name}" Nextstrain group`,
-        byline: `The available datasets and narratives in this group are listed below.`,
+        title: title,
+        byline: byline,
         showDatasets: true,
         showNarratives: true,
-        avatar: logoSrc
+        avatar: logoSrc,
+        overview: overview
       };
 
     } catch (err) {

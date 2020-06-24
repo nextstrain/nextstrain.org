@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"; // eslint-disable-line
 import styled from 'styled-components'; // eslint-disable-line
+import MarkdownDisplay from "auspice/src/components/markdownDisplay";
 import NavBar from "./navbar";
 
 
@@ -32,6 +33,10 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
           {pageInfo.title}
         </Title>
         <Byline>{pageInfo.byline}</Byline>
+        {pageInfo.overview ?
+          <MarkdownDisplay mdstring={pageInfo.overview}/> :
+          null
+        }
         {pageInfo.showDatasets ?
           <ListAvailable type="datasets" data={available.datasets} width={browserDimensions.width} dispatch={dispatch} changePage={changePage}/> :
           null
