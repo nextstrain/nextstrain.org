@@ -415,6 +415,10 @@ class BlabSource extends PublicGroupSource {
   static get _name() { return "blab"; }
 }
 
+class BlabPrivateSource extends PrivateGroupSource {
+  static get _name() { return "blab-private"; }
+}
+
 class InrbDrcSource extends PrivateGroupSource {
   /* Person to contact for enquiries: Alli Black / James Hadfield */
   static get _name() { return "inrb-drc"; }
@@ -486,6 +490,7 @@ const sources = [
   ECDCSource,
   IllinoisGagnonPublicSource,
   /* Private nextstain groups: */
+  BlabPrivateSource,
   NzCovid19PrivateSource,
   AllWalesPrivateSource,
   IllinoisGagnonPrivateSource,
