@@ -310,6 +310,7 @@ class S3Source extends Source {
     const objects = await this._listObjects();
     return objects
       .map((object) => object.Key)
+      .filter((file) => file !== 'group-overview.md')
       .filter((file) => file.endsWith(".md"))
       .map((file) => file
         .replace(/[.]md$/, "")
