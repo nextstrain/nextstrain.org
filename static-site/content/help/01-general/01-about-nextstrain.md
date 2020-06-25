@@ -2,7 +2,8 @@
 title: "Nextstrain: analysis and visualization of pathogen sequence data"
 ---
 
-Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response. If you have any questions, or simply want to say hi, please give us a shout at [hello@nextstrain.org](mailto:hello@nextstrain.org).
+Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data with powerful analytics and visualizations showing pathogen evolution and epidemic spread. Our goal is to aid epidemiological understanding and improve outbreak response.
+If you have any questions, or simply want to say hi, please give us a shout at [hello@nextstrain.org](mailto:hello@nextstrain.org) or introduce yourself at discussion.nextstrain.org.
 
 
 #### Table of Contents:
@@ -47,7 +48,7 @@ Additionally, we have open-sourced all the tools we use, and hope to create a co
 ### Contact us
 
 We are keen to keep expanding the scope of Nextstrain and empowering other researchers to better analyze and understand their data.
-Please [get in touch with us](mailto:hello@nextstrain.org) if you have questions or comments.
+Please [get in touch with us](mailto:hello@nextstrain.org) if you have questions or comments, or create a post at [discussion.nextstrain.org](discussion.nextstrain.org).
 
 ---
 ### Publication

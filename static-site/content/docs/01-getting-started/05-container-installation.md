@@ -93,7 +93,7 @@ All good!
 
 If the final message doesn't indicate success (as with "All good!" in the
 example above), something may be wrong with your Docker installation.
-Please [get in touch with us](mailto:hello@nextstrain.org) if this is the case!
+Please get in touch with us [via email](mailto:hello@nextstrain.org) or create a post at [discussion.nextstrain.org](discussion.nextstrain.org) if this is the case!
 
 ---
 ## Usage
