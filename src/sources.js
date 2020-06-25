@@ -327,8 +327,8 @@ class S3Source extends Source {
   }
   parseOverviewMarkdown(overviewMarkdown) {
     const frontMatter = yamlFront.loadFront(overviewMarkdown);
-    if (!frontMatter.title || !frontMatter.byline) {
-      throw new Error("Incorrectly formatted frontmatter in overview file");
+    if (!frontMatter.title) {
+      throw new Error("The overview file requires `title` in the frontmatter.");
     }
     // handle files with CRLF endings (windows)
     const content = frontMatter.__content.replace(/\r\n/g, "\n");
