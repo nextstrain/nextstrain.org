@@ -285,6 +285,4 @@ If you want to force a re-run of the whole build, first remove any previous outp
 
 * Learn more about [Auspice visualizations](/docs/interpretation/auspice).
 
-* Learn more about [creating and modifying Snakemake files](/docs/bioinformatics/customizing-a-build).
-
 * Fork the [Zika tutorial pathogen repository on GitHub](https://github.com/nextstrain/zika-tutorial), modify the Snakefile to make your own pathogen build, and learn [how to contribute to nextstrain.org](/docs/contributing/community-builds).
