@@ -23,9 +23,11 @@ This repository provides the tools you need to [build nextstrain.org locally](#b
 ### Install prerequisites
 Install the node dependencies by running
 ```
-npm install
+npm ci
 ```
 from this directory (the "nextstrain.org" directory).
+
+> Using `npm ci` instead of `npm install` ensures your dependency tree matches those in `package-lock.json`.
 
 
 ### Build locally mirroring the deployed (live) website
@@ -54,7 +56,7 @@ The auspice customisations specific to nextstrain.org are found in `./auspice-cl
 Please see [the auspice documentation](https://nextstrain.github.io/auspice/customise-client/introduction) for more information on customising auspice.
 
 ### Testing locally
-Make sure you've installed dependencies with `npm install` first (and activated your conda environment if using one).
+Make sure you've installed dependencies with `npm ci` first (and activated your conda environment if using one).
 
 If you have AWS credentials make sure they are set as environment variables (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`).
 These are not necessary, but some functionality will be missing if these aren't available.
