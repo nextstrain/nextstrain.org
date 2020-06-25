@@ -392,7 +392,8 @@ class S3Source extends Source {
         title: `"${this.name}" Nextstrain group`,
         byline: `The available datasets and narratives in this group are listed below.`,
         showDatasets: true,
-        showNarratives: true
+        showNarratives: true,
+        error: `Error in custom group info: ${err.message}`
       };
     }
   }

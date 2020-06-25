@@ -24,6 +24,11 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
     [setPageInfo]
   );
 
+  // If there was an error in displaying the customized splash page, print error to console.
+  if (pageInfo.error) {
+    console.log(pageInfo.error);
+  }
+
   return (
     <>
       <NavBar sidebar={false}/>
