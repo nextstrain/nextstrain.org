@@ -330,10 +330,19 @@ class S3Source extends Source {
     if (!frontMatter.title) {
       throw new Error("The overview file requires `title` in the frontmatter.");
     }
+
+    if (frontMatter.showDatasets && typeof frontMatter.showDatasets !== 'boolean') {
+      throw new Error("The `showDatasets` field in the frontmatter must be a boolean.");
+    }
+
+    if (frontMatter.showNarratives && typeof frontMatter.showNarratives !== 'boolean') {
+      throw new Error("The `showNarratives` field in the frontmatter must be a boolean.");
+    }
+
     // handle files with CRLF endings (windows)
     const content = frontMatter.__content.replace(/\r\n/g, "\n");
 
-    return [frontMatter.title, frontMatter.byline, content];
+    return [frontMatter.title, frontMatter.byline, frontMatter.showDatasets, frontMatter.showNarratives, content];
   }
   /**
    * Get information about a (particular) source.
@@ -357,17 +366,22 @@ class S3Source extends Source {
 
       let title = `"${this.name}" Nextstrain group`;
       let byline = `The available datasets and narratives in this group are listed below.`;
+      let showDatasets = true;
+      let showNarratives = true;
       let overview;
       if (objectKeys.includes("group-overview.md")) {
         const overviewContent = await this.getAndDecompressObject("group-overview.md");
-        [title, byline, overview] = this.parseOverviewMarkdown(overviewContent);
+        [title, byline, showDatasets, showNarratives, overview] = this.parseOverviewMarkdown(overviewContent);
+        // Default show datasets & narratives if not specified in customization
+        if (showDatasets == null) showDatasets = true;
+        if (showNarratives == null) showNarratives = true;
       }
 
       return {
         title: title,
         byline: byline,
-        showDatasets: true,
-        showNarratives: true,
+        showDatasets: showDatasets,
+        showNarratives: showNarratives,
         avatar: logoSrc,
         overview: overview
       };
