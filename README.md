@@ -3,7 +3,7 @@ Current (master branch) travis status:[![Build Status](https://travis-ci.com/nex
 # Nextstrain.org
 
 Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data alongside powerful analytic and visualization tools for use by the community. Our goal is to aid epidemiological understanding and improve outbreak response.
-If you have any questions, or simply want to say hi, please give us a shout at hello@nextstrain.org or introduce yourself at [discussion.nextstrain.org](discussion.nextstrain.org).
+If you have any questions, or simply want to say hi, please give us a shout at hello@nextstrain.org or introduce yourself at [discussion.nextstrain.org](https://discussion.nextstrain.org).
 
 > We have received a number of generous offers to contribute front-end developer effort to nextstrain (and auspice) folowing our work on [SARS-CoV-2](https://nextstrain.org/ncov).
 We would be grateful for code contributions, as well as constructive criticism and advice.

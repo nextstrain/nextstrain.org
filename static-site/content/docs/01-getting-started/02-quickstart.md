@@ -4,7 +4,7 @@ title: Quickstart
 
 This guide uses the [Nextstrain command-line interface (CLI) tool [GitHub]](https://github.com/nextstrain/cli) to help you get started running and viewing the pathogen builds you see on nextstrain.org.
 It assumes you are comfortable using the command line and installing software on your computer.
-If you need help when following this guide, please reach out by [emailing us](mailto:hello@nextstrain.org?subject=Quickstart%20help), or create a post at [discussion.nextstrain.org](discussion.nextstrain.org).
+If you need help when following this guide, please reach out by [emailing us](mailto:hello@nextstrain.org?subject=Quickstart%20help), or create a post at [discussion.nextstrain.org](https://discussion.nextstrain.org).
 
 When you're done following this guide, you will have built a local version of [our example Zika analysis](https://github.com/nextstrain/zika-tutorial) and viewed the results on your computer.
 You'll have a basic understanding of how to run builds for other pathogens and a foundation for understanding the Nextstrain ecosystem in more depth.
