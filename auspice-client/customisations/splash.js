@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"; // eslint-disable-line
 import styled from 'styled-components'; // eslint-disable-line
+import MarkdownDisplay from "auspice/src/components/markdownDisplay";
 import NavBar from "./navbar";
 
 
@@ -23,6 +24,11 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
     [setPageInfo]
   );
 
+  // If there was an error in displaying the customized splash page, print error to console.
+  if (pageInfo.error) {
+    console.log(pageInfo.error);
+  }
+
   return (
     <>
       <NavBar sidebar={false}/>
@@ -30,8 +36,14 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
       <div className="static container">
         <Title avatarSrc={pageInfo.avatar}>
           {pageInfo.title}
+          <Byline>{pageInfo.byline}</Byline>
+          <Website>{pageInfo.website}</Website>
         </Title>
-        <Byline>{pageInfo.byline}</Byline>
+        {pageInfo.overview ?
+          <MarkdownDisplay mdstring={pageInfo.overview}/> :
+          null
+        }
+        <div style={{marginTop: "30px"}}/>
         {pageInfo.showDatasets ?
           <ListAvailable type="datasets" data={available.datasets} width={browserDimensions.width} dispatch={dispatch} changePage={changePage}/> :
           null
@@ -56,10 +68,11 @@ function ListAvailable({type, data, width, dispatch, changePage}) {
     -webkit-column-gap: 20px;
     column-count: ${numCols};
     column-gap: 20px;
+    margin-top: 0;
   `;
   return (
     <>
-      <div style={{fontSize: "26px"}}>
+      <div style={{fontSize: "24px", marginTop: "10px"}}>
         {`Available ${type}:`}
       </div>
       <div style={{display: "flex", flexWrap: "wrap"}}>
@@ -119,20 +132,20 @@ function formatDataset(requestPath, dispatch, changePage) {
 function Title({avatarSrc, children}) {
   if (!children) return null;
   const AvatarImg = styled.img`
-    width: 120px;
-    margin-right: 5%;
+    width: 140px;
+    margin-right: 20px;
   `;
   const TitleDiv = styled.div`
     && {
       font-weight: 500;
-      font-size: 150%;
+      font-size: 26px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
   `;
   return (
-    <div style={{display: "flex", justifyContent: "center", padding: "5% 0px"}}>
+    <div style={{display: "flex", justifyContent: "start", padding: "50px 0px 20px 0px"}}>
       {avatarSrc ?
         <AvatarImg alt="avatar" src={avatarSrc}/> :
         null
@@ -148,14 +161,23 @@ function Byline({children}) {
   if (!children) return null;
   const Div = styled.div`
     && {
-      max-width: 70%;
-      margin: 20px auto 40px auto;
-      text-align: center;
       font-weight: 400;
       line-height: 1.428;
+      color: #A9ADB1;
     }
   `;
   return (<Div>{children}</Div>);
+}
+
+function Website({children}) {
+  if (!children) return null;
+  return (
+    <a href={children}
+      style={{color: "#A9ADB1", lineHeight: "1.0", textDecoration: "none", cursor: "pointer", fontWeight: "400", fontSize: "16px"}}
+    >
+      {children}
+    </a>
+  );
 }
 
 async function getSourceInfo(setPageInfo) {

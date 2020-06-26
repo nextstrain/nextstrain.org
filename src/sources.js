@@ -1,6 +1,7 @@
 /* eslint-disable no-use-before-define */
 const AWS = require("aws-sdk");
 const zlib = require("zlib");
+const yamlFront = require("yaml-front-matter");
 const {fetch} = require("./fetch");
 const queryString = require("query-string");
 const {NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
@@ -252,6 +253,7 @@ class CommunitySource extends Source {
         repositories, in this case ${githubUrl}.  The available datasets and
         narratives in this repository are listed below.
       `,
+      website: null,
       showDatasets: true,
       showNarratives: true,
       /* avatar could be fetched here & sent in base64 or similar, or a link sent. The former (or similar) has the advantage
@@ -310,6 +312,7 @@ class S3Source extends Source {
     const objects = await this._listObjects();
     return objects
       .map((object) => object.Key)
+      .filter((file) => file !== 'group-overview.md')
       .filter((file) => file.endsWith(".md"))
       .map((file) => file
         .replace(/[.]md$/, "")
@@ -323,13 +326,37 @@ class S3Source extends Source {
     }
     return object.Body;
   }
+  parseOverviewMarkdown(overviewMarkdown) {
+    const frontMatter = yamlFront.loadFront(overviewMarkdown);
+    if (!frontMatter.title) {
+      throw new Error("The overview file requires `title` in the frontmatter.");
+    }
+
+    if (frontMatter.website) {
+      if (!frontMatter.website.includes("http")) {
+        throw new Error("The website field in the overview file requires \"http\" to be present.");
+      }
+    }
+
+    if (frontMatter.showDatasets && typeof frontMatter.showDatasets !== 'boolean') {
+      throw new Error("The `showDatasets` field in the frontmatter must be a boolean.");
+    }
+
+    if (frontMatter.showNarratives && typeof frontMatter.showNarratives !== 'boolean') {
+      throw new Error("The `showNarratives` field in the frontmatter must be a boolean.");
+    }
+
+    // handle files with CRLF endings (windows)
+    const content = frontMatter.__content.replace(/\r\n/g, "\n");
+
+    return [frontMatter.title, frontMatter.byline, frontMatter.website, frontMatter.showDatasets, frontMatter.showNarratives, content];
+  }
   /**
    * Get information about a (particular) source.
    * The data could be a JSON, or a markdown with YAML frontmatter. Or something else.
    * This is very similar to our previous discussions around moving the auspice footer
-   * content to the dataset JSON - it would be nice to allow links etc to be written in
-   * the title/byline. One advantage of this being outside of the auspice codebase is that
-   * we can iterate on it after pushing live to nextstrain.org
+   * content to the dataset JSON. One advantage of this being outside of the auspice
+   * codebase is that we can iterate on it after pushing live to nextstrain.org
    */
   async getInfo() {
     try {
@@ -339,16 +366,32 @@ class S3Source extends Source {
 
       let logoSrc;
       if (objectKeys.includes("group-logo.png")) {
-        const logo = await this.getAndDecompressObject("group-logo.png");
-        logoSrc = "data:image/png;base64," + logo.toString("base64");
+        // Use pre-signed URL to allow client to fetch from private S3 bucket
+        logoSrc = S3.getSignedUrl('getObject', {Bucket: this.bucket, Key: "group-logo.png"});
+      }
+
+      let title = `"${this.name}" Nextstrain group`;
+      let byline = `The available datasets and narratives in this group are listed below.`;
+      let website = null;
+      let showDatasets = true;
+      let showNarratives = true;
+      let overview;
+      if (objectKeys.includes("group-overview.md")) {
+        const overviewContent = await this.getAndDecompressObject("group-overview.md");
+        [title, byline, website, showDatasets, showNarratives, overview] = this.parseOverviewMarkdown(overviewContent);
+        // Default show datasets & narratives if not specified in customization
+        if (showDatasets == null) showDatasets = true;
+        if (showNarratives == null) showNarratives = true;
       }
 
       return {
-        title: `"${this.name}" Nextstrain group`,
-        byline: `The available datasets and narratives in this group are listed below.`,
-        showDatasets: true,
-        showNarratives: true,
-        avatar: logoSrc
+        title: title,
+        byline: byline,
+        website: website,
+        showDatasets: showDatasets,
+        showNarratives: showNarratives,
+        avatar: logoSrc,
+        overview: overview
       };
 
     } catch (err) {
@@ -356,8 +399,10 @@ class S3Source extends Source {
       return {
         title: `"${this.name}" Nextstrain group`,
         byline: `The available datasets and narratives in this group are listed below.`,
+        website: null,
         showDatasets: true,
-        showNarratives: true
+        showNarratives: true,
+        error: `Error in custom group info: ${err.message}`
       };
     }
   }
