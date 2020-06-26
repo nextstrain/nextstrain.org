@@ -360,8 +360,8 @@ class S3Source extends Source {
 
       let logoSrc;
       if (objectKeys.includes("group-logo.png")) {
-        const logo = await this.getAndDecompressObject("group-logo.png");
-        logoSrc = "data:image/png;base64," + logo.toString("base64");
+        // Use pre-signed URL to allow client to fetch from private S3 bucket
+        logoSrc = S3.getSignedUrl('getObject', {Bucket: this.bucket, Key: "group-logo.png"});
       }
 
       let title = `"${this.name}" Nextstrain group`;
