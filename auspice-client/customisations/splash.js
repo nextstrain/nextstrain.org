@@ -36,8 +36,8 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
       <div className="static container">
         <Title avatarSrc={pageInfo.avatar}>
           {pageInfo.title}
+          <Byline>{pageInfo.byline}</Byline>
         </Title>
-        <Byline>{pageInfo.byline}</Byline>
         {pageInfo.overview ?
           <MarkdownDisplay mdstring={pageInfo.overview}/> :
           null
@@ -158,11 +158,9 @@ function Byline({children}) {
   if (!children) return null;
   const Div = styled.div`
     && {
-      max-width: 70%;
-      margin: 20px auto 40px auto;
-      text-align: center;
       font-weight: 400;
       line-height: 1.428;
+      color: #b7bcc1;
     }
   `;
   return (<Div>{children}</Div>);
