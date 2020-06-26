@@ -37,7 +37,7 @@ main() {
 build-static() {
     echo "Building the static site (./static-site/public/)"
     cd static-site
-    npm install # this needs python 2
+    npm ci
     npm run build # build using gatsby. Can take a few minutes.
     cd ..
 }
