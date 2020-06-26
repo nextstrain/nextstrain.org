@@ -43,6 +43,7 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
           <MarkdownDisplay mdstring={pageInfo.overview}/> :
           null
         }
+        <div style={{marginTop: "30px"}}/>
         {pageInfo.showDatasets ?
           <ListAvailable type="datasets" data={available.datasets} width={browserDimensions.width} dispatch={dispatch} changePage={changePage}/> :
           null
@@ -67,10 +68,11 @@ function ListAvailable({type, data, width, dispatch, changePage}) {
     -webkit-column-gap: 20px;
     column-count: ${numCols};
     column-gap: 20px;
+    margin-top: 0;
   `;
   return (
     <>
-      <div style={{fontSize: "26px"}}>
+      <div style={{fontSize: "24px", marginTop: "10px"}}>
         {`Available ${type}:`}
       </div>
       <div style={{display: "flex", flexWrap: "wrap"}}>
@@ -130,20 +132,20 @@ function formatDataset(requestPath, dispatch, changePage) {
 function Title({avatarSrc, children}) {
   if (!children) return null;
   const AvatarImg = styled.img`
-    width: 120px;
-    margin-right: 5%;
+    width: 140px;
+    margin-right: 20px;
   `;
   const TitleDiv = styled.div`
     && {
       font-weight: 500;
-      font-size: 150%;
+      font-size: 26px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
   `;
   return (
-    <div style={{display: "flex", justifyContent: "center", padding: "5% 0px"}}>
+    <div style={{display: "flex", justifyContent: "start", padding: "50px 0px 20px 0px"}}>
       {avatarSrc ?
         <AvatarImg alt="avatar" src={avatarSrc}/> :
         null
@@ -161,7 +163,7 @@ function Byline({children}) {
     && {
       font-weight: 400;
       line-height: 1.428;
-      color: #b7bcc1;
+      color: #A9ADB1;
     }
   `;
   return (<Div>{children}</Div>);
@@ -171,7 +173,7 @@ function Website({children}) {
   if (!children) return null;
   return (
     <a href={children}
-      style={{color: "#b7bcc1", lineHeight: "1.0", textDecoration: "none", cursor: "pointer", fontWeight: "400", fontSize: "16px"}}
+      style={{color: "#A9ADB1", lineHeight: "1.0", textDecoration: "none", cursor: "pointer", fontWeight: "400", fontSize: "16px"}}
     >
       {children}
     </a>
