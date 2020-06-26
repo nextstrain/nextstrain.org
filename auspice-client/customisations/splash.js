@@ -134,6 +134,7 @@ function Title({avatarSrc, children}) {
   const AvatarImg = styled.img`
     width: 140px;
     margin-right: 20px;
+    object-fit: contain;
   `;
   const TitleDiv = styled.div`
     && {
