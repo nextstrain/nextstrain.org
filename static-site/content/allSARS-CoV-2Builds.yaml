@@ -138,7 +138,7 @@ builds:
     parentGeo: usa
     org: null
 
-  - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/update7
+  - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/current
     name: Connecticut
     geo: connecticut
     org:
