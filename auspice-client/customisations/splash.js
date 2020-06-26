@@ -37,6 +37,7 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
         <Title avatarSrc={pageInfo.avatar}>
           {pageInfo.title}
           <Byline>{pageInfo.byline}</Byline>
+          <Website>{pageInfo.website}</Website>
         </Title>
         {pageInfo.overview ?
           <MarkdownDisplay mdstring={pageInfo.overview}/> :
@@ -164,6 +165,17 @@ function Byline({children}) {
     }
   `;
   return (<Div>{children}</Div>);
+}
+
+function Website({children}) {
+  if (!children) return null;
+  return (
+    <a href={children}
+      style={{color: "#b7bcc1", lineHeight: "1.0", textDecoration: "none", cursor: "pointer", fontWeight: "400", fontSize: "16px"}}
+    >
+      {children}
+    </a>
+  );
 }
 
 async function getSourceInfo(setPageInfo) {

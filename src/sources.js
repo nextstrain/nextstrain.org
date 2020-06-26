@@ -253,6 +253,7 @@ class CommunitySource extends Source {
         repositories, in this case ${githubUrl}.  The available datasets and
         narratives in this repository are listed below.
       `,
+      website: null,
       showDatasets: true,
       showNarratives: true,
       /* avatar could be fetched here & sent in base64 or similar, or a link sent. The former (or similar) has the advantage
@@ -331,6 +332,12 @@ class S3Source extends Source {
       throw new Error("The overview file requires `title` in the frontmatter.");
     }
 
+    if (frontMatter.website) {
+      if (!frontMatter.website.includes("http")) {
+        throw new Error("The website field in the overview file requires \"http\" to be present.");
+      }
+    }
+
     if (frontMatter.showDatasets && typeof frontMatter.showDatasets !== 'boolean') {
       throw new Error("The `showDatasets` field in the frontmatter must be a boolean.");
     }
@@ -342,15 +349,14 @@ class S3Source extends Source {
     // handle files with CRLF endings (windows)
     const content = frontMatter.__content.replace(/\r\n/g, "\n");
 
-    return [frontMatter.title, frontMatter.byline, frontMatter.showDatasets, frontMatter.showNarratives, content];
+    return [frontMatter.title, frontMatter.byline, frontMatter.website, frontMatter.showDatasets, frontMatter.showNarratives, content];
   }
   /**
    * Get information about a (particular) source.
    * The data could be a JSON, or a markdown with YAML frontmatter. Or something else.
    * This is very similar to our previous discussions around moving the auspice footer
-   * content to the dataset JSON - it would be nice to allow links etc to be written in
-   * the title/byline. One advantage of this being outside of the auspice codebase is that
-   * we can iterate on it after pushing live to nextstrain.org
+   * content to the dataset JSON. One advantage of this being outside of the auspice
+   * codebase is that we can iterate on it after pushing live to nextstrain.org
    */
   async getInfo() {
     try {
@@ -366,12 +372,13 @@ class S3Source extends Source {
 
       let title = `"${this.name}" Nextstrain group`;
       let byline = `The available datasets and narratives in this group are listed below.`;
+      let website = null;
       let showDatasets = true;
       let showNarratives = true;
       let overview;
       if (objectKeys.includes("group-overview.md")) {
         const overviewContent = await this.getAndDecompressObject("group-overview.md");
-        [title, byline, showDatasets, showNarratives, overview] = this.parseOverviewMarkdown(overviewContent);
+        [title, byline, website, showDatasets, showNarratives, overview] = this.parseOverviewMarkdown(overviewContent);
         // Default show datasets & narratives if not specified in customization
         if (showDatasets == null) showDatasets = true;
         if (showNarratives == null) showNarratives = true;
@@ -380,6 +387,7 @@ class S3Source extends Source {
       return {
         title: title,
         byline: byline,
+        website: website,
         showDatasets: showDatasets,
         showNarratives: showNarratives,
         avatar: logoSrc,
@@ -391,6 +399,7 @@ class S3Source extends Source {
       return {
         title: `"${this.name}" Nextstrain group`,
         byline: `The available datasets and narratives in this group are listed below.`,
+        website: null,
         showDatasets: true,
         showNarratives: true,
         error: `Error in custom group info: ${err.message}`

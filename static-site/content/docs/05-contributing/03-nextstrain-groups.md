@@ -21,19 +21,21 @@ You can customize the content of the group's splash page by uploading two files 
 * `group-overview.md`: content customization of the page
 
 ##### YAML Frontmatter
-This defines the title, byline, and show options of the splash page.
+This defines the title, byline, website, and show options of the splash page.
 It must appear at the top of the `group-overview.md` file and looks like:
 
 ```yaml
 ---
 title: "Splash Page Title"
 byline: "Byline that is displayed directly below the title of the page"
+website: https://example.com
 showDatasets: true
 showNarratives: true
 ---
 ```
 * The only required field is `title`.
 * If no `byline` field is provided, then no byline will be displayed.
+* If no `website` field is provided, then no website will be displayed.
 * The `showDatasets` and `showNarratives` fields must be `true` or `false`, where `true` means to show the list of available datasets or narratives on the page.
 
 ##### Markdown Content
