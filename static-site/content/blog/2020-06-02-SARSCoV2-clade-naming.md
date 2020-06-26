@@ -32,13 +32,13 @@ After this, we've seen two further clades appear: 20B, another European clade se
 
 The clade definitions are coded in as a tabular file that defines a genotypic signature for each clade. We provide a script that generates a table with clade assignments for a set of sequences.
 
-Additionally, definitions of the clades, as well as a table of the current clades, with some detail on their characteristics and definition, is available on the ‘ncov’ github repository documentation (github.com/nextstrain/ncov) [here](https://github.com/nextstrain/ncov/blob/master/docs/clades.md). In parallel to the large-scale clade annotation, Nextstrain will support the Pangolin lineage nomenclature developed by Rambaut et al. 2020 (1), and continue to offer color-by for the ‘old’ Nextstrain clades so that exiting references to these clades are still identifiable.
+Additionally, definitions of the clades, as well as a table of the current clades, with some detail on their characteristics and definition, is available on the ‘ncov’ github repository documentation (github.com/nextstrain/ncov) [here](https://github.com/nextstrain/ncov/blob/master/docs/naming_clades.md). In parallel to the large-scale clade annotation, Nextstrain will support the Pangolin lineage nomenclature developed by Rambaut et al. 2020 (1), and continue to offer color-by for the ‘old’ Nextstrain clades so that exiting references to these clades are still identifiable.
 
 ### Using Nextstrain Clade Definitions
 To make it easy for users to identify the Nextstrain clade of their own sequences, we provide a [simple python script](https://github.com/nextstrain/ncov/blob/master/assign_clades.py) that can be run on any Fasta file to assign appropriate clades. This script is part of the ‘ncov’ github repository, but does not require running any other part of the pipeline. However ‘augur’ must be installed to run the script. This can be done [a number of different ways](https://nextstrain.org/docs/getting-started/local-installation#install-augur-with-python), but is often most easily done [using ‘pip’](https://nextstrain-augur.readthedocs.io/en/stable/installation/installation.html#using-pip-from-pypi).
 
 **Links:**
-* An up-to-date description of our approach to clade names and the current clades can be found on the Nextstrain ‘ncov’ github [here](https://github.com/nextstrain/ncov/blob/master/docs/clades.md).
+* An up-to-date description of our approach to clade names and the current clades can be found on the Nextstrain ‘ncov’ github [here](https://github.com/nextstrain/ncov/blob/master/docs/naming_clades.md).
 * Clades show on the current Nextstrain 'Global' SARS-CoV-2 tree can be viewed [here](https://nextstrain.org/ncov/global?branchLabel=clade&c=clade_membership).
 * Pangolin clades can be displayed on the Nextstrain runs, as demonstrated [here](https://nextstrain.org/ncov/global?branchLabel=none&c=pangolin_lineage).
 * The ‘old’ Nextstrain clades can still be viewed [here](https://nextstrain.org/ncov/global?branchLabel=none&c=legacy_clade_membership) as a color-by for those papers/references that have used them
