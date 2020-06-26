@@ -1,0 +1,12 @@
+[
+  {
+    "urlName": "sars-cov-2",
+    "displayName": "SARS-CoV-2",
+    "jsonUrl": "https://nextstrain-scratch.s3.amazonaws.com/search_sars-cov-2.json"
+  },
+  {
+    "urlName": "seasonal-flu",
+    "displayName": "seasonal influenza (H1N1, H3N2, B/Vic & B/Yam)",
+    "jsonUrl": "https://nextstrain-scratch.s3.amazonaws.com/search_seasonal-flu.json"
+  }
+]
