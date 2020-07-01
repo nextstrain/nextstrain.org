@@ -521,6 +521,11 @@ class IllinoisGagnonPrivateSource extends PrivateGroupSource {
   static get _name() { return "illinois-gagnon-private"; }
 }
 
+class GrubaughLabPrivateSource extends PrivateGroupSource {
+  /* Person to contact for enquiries: James */
+  static get _name() { return "grubaughlab"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -539,6 +544,7 @@ const sources = [
   NzCovid19PrivateSource,
   AllWalesPrivateSource,
   IllinoisGagnonPrivateSource,
+  GrubaughLabPrivateSource,
   InrbDrcSource
 ];
 
