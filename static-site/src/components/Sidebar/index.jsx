@@ -1,7 +1,9 @@
 import React from "react";
 import {Link} from 'gatsby';
 import styled from 'styled-components';
+import { FaExternalLinkAlt } from "react-icons/fa";
 import {formatFileName} from "../../util/formatFileName";
+import additionalSidebarEntries from "../../../additional_sidebar_entries.yaml";
 
 const parseSlug = require("../../util/parseSlug");
 const structureEdges = require("../../util/structureEdges");
@@ -28,16 +30,29 @@ class Sidebar extends React.Component {
         </ItemContainer>
       );
     });
-
+    const renderAdditionalLinks = (additionalLinks) => additionalLinks.map((post) => {
+      return (
+        <ItemContainer key={post.path}>
+          <a href={post.url}>
+            <li>
+              <FaExternalLinkAlt/>
+              <ExternalLinkTitle>{post.name}</ExternalLinkTitle>
+            </li>
+          </a>
+        </ItemContainer>
+      );
+    });
     /* RETURN JSX */
     if (hasChapters) {
-      return data.map((chapter) => (
+      const extendedData = addExternalLinks(hasChapters, selectedSlugInfo.section, data);
+      return extendedData.map((chapter) => (
         <li key={chapter.name} className="chapter">
           <h5 className="tocHeading">
             {formatFileName(chapter.name)}
           </h5>
           <ul className="chapterItems">
             {renderListOfPosts(chapter.posts, chapter.name)}
+            {renderAdditionalLinks(chapter.externalLinks || [])}
           </ul>
         </li>
       ));
@@ -48,7 +63,6 @@ class Sidebar extends React.Component {
       </div>
     );
   }
-
 
   render() {
     const selectedSlugInfo = parseSlug.parseSlug(this.props.selectedSlug);
@@ -77,6 +91,11 @@ const SelectedPostTitle = styled.h6`
   }
 `;
 const UnselectedPostTitle = styled.h6``;
+
+const ExternalLinkTitle = styled.h6`
+  padding-left: 5px;
+  text-decoration: none;
+`;
 
 const SidebarContainer = styled.div`
   padding-left: 25px;
@@ -129,5 +148,20 @@ const ItemContainer = styled.div`
     }
   }
 `;
+
+function addExternalLinks(hasChapters, section, data) {
+  // currently we assume chapter structure for additional links
+  // this can be relaxed in the future!
+  if (!hasChapters) return data;
+  return data.map((chapterData) => ({
+    name: chapterData.name,
+    posts: [...chapterData.posts],
+    externalLinks: additionalSidebarEntries.filter((entry) => {
+      if (entry.section !== section) return false;
+      if (entry.chapter !== chapterData.name) return false;
+      return true;
+    })
+  }));
+}
 
 export default Sidebar;

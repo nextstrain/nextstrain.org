@@ -1,0 +1,12 @@
+---
+# This YAML file defines external links which we wish to display
+# in the sidebar of the gtasby docs, help etc.
+# The rendering component is at src/components/Sidebar/index.jsx.
+# Note: this data could be injected in the graphQL data but it was easier
+# (for me) to do it on the react side as that's where i'm more
+# comfortable.
+#                                                   james, June 2020.
+- section: "docs"
+  chapter: "tutorials"
+  name: "Analysing SARS-CoV-2 data"
+  url: "https://nextstrain.github.io/ncov/"
