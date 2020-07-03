@@ -151,7 +151,6 @@ In this case, they're overwriting them with the handlers used in the nextstrain.
 See the [charon API auspice documentation](https://nextstrain.github.io/auspice/server/api) for more info.
 
 
-
 ---
 ## Deploy nextstrain.org
 All commits pushed to github trigger [Travis-CI](https://travis-ci.com/nextstrain/nextstrain.org), which runs the `npm run build` script & runs [eslint](https://eslint.org/) via `npm run lint`.
