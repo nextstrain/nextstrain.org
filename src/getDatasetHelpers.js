@@ -2,9 +2,8 @@ const utils = require("./utils");
 const sources = require("./sources");
 
 const handleError = (res, clientMsg, serverMsg="") => {
-  res.statusMessage = clientMsg;
   utils.warn(`${clientMsg} -- ${serverMsg}`);
-  return res.status(500).end();
+  return res.status(500).type("text/plain").send(clientMsg);
 };
 
 const unauthorized = (req, res) => {
