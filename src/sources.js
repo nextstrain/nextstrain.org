@@ -526,6 +526,11 @@ class GrubaughLabPrivateSource extends PrivateGroupSource {
   static get _name() { return "grubaughlab"; }
 }
 
+class NeherLabSource extends PublicGroupSource {
+  /* Person to contact for enquiries: Richard */
+  static get _name() { return "neherlab"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -539,6 +544,7 @@ const sources = [
   NGSSASource,
   ECDCSource,
   IllinoisGagnonPublicSource,
+  NeherLabSource,
   /* Private nextstain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
