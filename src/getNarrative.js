@@ -1,15 +1,15 @@
 const fetch = require('node-fetch');
-const queryString = require("query-string");
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
-const auspice = require("auspice");
 
 const getNarrative = async (req, res) => {
-  let prefix;
-  try {
-    prefix = queryString.parse(req.url.split("?")[1]).prefix;
-  } catch (err) {
-    return helpers.handleError(res, "No prefix in narrative URL query");
+  const query = req.query;
+  const prefix = query.prefix;
+  if (!prefix) {
+    return helpers.handleError(res, "No prefix in getNarrative URL query");
+  }
+  if (!query.type || !["markdown", "md"].includes(query.type.toLowerCase())) {
+    return helpers.handleError(res, "The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
   }
 
   /*
@@ -18,7 +18,7 @@ const getNarrative = async (req, res) => {
    * redirecting requests from "/inrb-drc" to "/groups/inrb-drc".
    */
   if (prefix.startsWith('/inrb-drc')) {
-    return res.redirect("getNarrative?prefix=/groups" + prefix);
+    return res.redirect("getNarrative?type=md&prefix=/groups" + prefix);
   }
 
   const {source, prefixParts} = helpers.splitPrefixIntoParts(prefix);
@@ -40,19 +40,14 @@ const getNarrative = async (req, res) => {
   const narrative = source.narrative(prefixParts);
   const fetchURL = narrative.url();
 
-  utils.log(`trying to fetch & parse narrative file: ${fetchURL}`);
   try {
+    utils.log(`Fetching narrative ${fetchURL} and streaming to client for parsing`);
     const response = await fetch(fetchURL);
-
-    if (!response.ok) {
+    if (!(response.status === 200 || response.status === 304)) {
       throw new Error(`Failed to fetch ${fetchURL}: ${response.status} ${response.statusText}`);
     }
-
-    const fileContents = await response.text();
-    const blocks = auspice.parseNarrativeFile(fileContents);
-    const blocksForClient = JSON.stringify(blocks).replace(/</g, '\\u003c');
-    utils.verbose("SUCCESS");
-    return res.send(blocksForClient);
+    res.set("Content-Type", "text/markdown");
+    return response.body.pipe(res);
   } catch (err) {
     return helpers.handleError(res, `Narratives couldn't be served -- ${err.message}`);
   }
