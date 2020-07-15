@@ -40,4 +40,4 @@ If you ever see a build which has a "Snakefile" then you can run this by typing 
 * Have a look at some of the tutorials (listed in the sidebar).
 Each one will use a slightly different combination of `augur` commands depending on the pathogen.
 
-* Read about [how to customize a build](/docs/bioinformatics/customizing-a-build)
+* Visit the [augur docs](https://nextstrain-augur.readthedocs.io/en/stable) for more information on the bioinformatics toolkit.

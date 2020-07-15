@@ -66,6 +66,12 @@ npm install
 4. Edit `./src/components/Cards/coreCards.js`, `./src/components/Cards/communityCards.js` or `./src/components/Cards/narrativeCards.js` to include the card & title.
 5. Edit `./src/Footer/index.jsx` to provide credit for the photo.
 
+### External Links in the sidebar
+
+The `./additional_sidebar_entries.yaml` file defines external links which we wish to display in the sidebar of the documentation & help pages.
+These will be displayed with a small icon indicating that they are external links (the rendering component is at `./src/components/Sidebar/index.jsx`).
+
+
 ## Deploying
 The static documentation is automatically rebuilt every time the (parent) repo is pushed to master.
 
