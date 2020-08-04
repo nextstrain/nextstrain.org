@@ -1,8 +1,6 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import {Link} from 'gatsby';
-import {MdTranslate} from "react-icons/md";
-// import {FaSearch} from "react-icons/fa";
 import { tweets } from "./tweets";
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
@@ -57,37 +55,15 @@ class Splash extends React.Component {
         {this.props.user && <UserGroups user={this.props.user} visibleGroups={this.props.visibleGroups} />}
 
         <ScrollableAnchor id={'ncov'}>
-          <Styles.H1>Novel coronavirus</Styles.H1>
+          <Styles.H1>SARS-CoV-2 (COVID-19)</Styles.H1>
         </ScrollableAnchor>
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
             We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
-            Please see below for the latest analyses and situation reports.
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
-
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph theme={{niceFontSize: "20px"}}>
-            <Link to="/sars-cov-2">
-              <MdTranslate style={{fontSize: "28px"}}/>
-              {" "}Main SARS-CoV-2 page
-            </Link>
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-        {/* <FlexCenter>
-          {true && (
-            <Styles.CenteredFocusParagraph theme={{niceFontSize: "20px"}}>
-              <Link to="/search/sars-cov-2">
-                <FaSearch style={{fontSize: "28px"}}/>
-                {" "}Search for a sample name(s) across datasets
-              </Link>
-            </Styles.CenteredFocusParagraph>
-          )}
-          </FlexCenter> */}
-
         <Cards
-          squashed
           cards={nCoVCards}
         />
 
