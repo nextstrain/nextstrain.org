@@ -69,9 +69,9 @@ class Splash extends React.Component {
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph theme={{niceFontSize: "20px"}}>
-            <Link to="/ncov-sit-reps">
+            <Link to="/sars-cov-2">
               <MdTranslate style={{fontSize: "28px"}}/>
-              {" "}See all translated situation reports and all previous reports
+              {" "}Main SARS-CoV-2 page
             </Link>
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
