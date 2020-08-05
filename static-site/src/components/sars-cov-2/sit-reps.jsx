@@ -7,7 +7,19 @@ import * as splashStyles from "../splash/styles";
 import CollapseTitle from "../Misc/collapse-title";
 import {parseNcovSitRepInfo} from "../../../../auspice-client/customisations/languageSelector";
 
-// eslint-disable-next-line react/prefer-stateless-function
+const charonGetAvailableAddress = process.env.NODE_ENV === "development" ?
+  "http://localhost:5000/charon/getAvailable" :
+  "/charon/getAvailable";
+
+/**
+ * A component to render all SARS-CoV-2 situation reports.
+ * Data is obtained on page load by a API call to /charon/getAvailable.
+ *
+ * Note for testing: when using the garsby dev server (i.e. `npm run dev`)
+ * the charon API is not available. In this case, the request will be made
+ * to localhost:5000 which allows you to run the nextstrain.org server
+ * as a separate process.
+ */
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -52,7 +64,7 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/charon/getAvailable`)
+    fetch(charonGetAvailableAddress)
       .then(this.handleServerError)
       .then((res) => res.json())
       .then((json) => {

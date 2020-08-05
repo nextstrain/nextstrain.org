@@ -21,6 +21,10 @@ npm install
 npm run develop
 ```
 
+Note that certain parts of the gatsby site rely on API handlers not implemented in the gatsby dev server.
+For these to work in development mode, you should also run the nextstrain.org server on port 5000 via
+`npm run server` from the root of this repo. 
+
 ### Testing the production build
 
 If you wish to test the production build of just the static-site portion of nextstrain.org, you may run:
