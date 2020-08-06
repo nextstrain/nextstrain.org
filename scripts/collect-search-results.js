@@ -6,13 +6,15 @@ const fetch = require("node-fetch");
 const fs = require('fs');
 const pLimit = require('p-limit');
 
+const bucket = "nextstrain-data";
+
 const parser = new argparse.ArgumentParser({
   addHelp: true,
   description: `A tool to make the (flat-file) database of sample-name -> dataset search results`,
   epilog: `
   This is a tool to create the JSON "database" file representing the sample-name -> dataset mapping
   for certain pathogens. For instance, the SARS-CoV-2 search page is at nextstrain.org/search/sars-cov-2
-  and is backed by a search/sars-cov-2.json currently hosted on the nextstrain-scratch bucket.
+  and is backed by a search/sars-cov-2.json currently hosted on the ${bucket} bucket.
 
   The pages are created by gatsby. The JSONs are created by this tool. This should be considered a proof-
   of-concept implementation - there is plenty of scope for improvements and automation.
@@ -57,7 +59,8 @@ async function main({args}) {
   fs.writeFileSync(`./data/${outputFilename}`, JSON.stringify({datasets, strainMap, dateUpdated, exclusions}, null, 0));
 
   console.log("\nSUCCESS!\nNext step: upload the JSON to the S3 bucket via the following command");
-  console.log(`\t\`nextstrain remote upload s3://nextstrain-scratch ./data/${outputFilename}\``);
+  console.log(`\t\`nextstrain remote upload s3://${bucket} ./data/${outputFilename}\``);
+  console.log(`and it will be picked up by users accessing the sample search functionality within nextstrain.org`);
 }
 
 
@@ -137,7 +140,7 @@ function filenameLooksLikeDataset(filename) {
 
 async function processSarsCov2ExclusionFile() {
   console.log(`Fetching the SARS-CoV-2 exclude-list...`);
-  let exclude = await fetch("https://raw.githubusercontent.com/nextstrain/ncov/master/config/exclude.txt");
+  let exclude = await fetch("https://raw.githubusercontent.com/nextstrain/ncov/master/defaults/exclude.txt");
   exclude = await exclude.text();
   exclude = exclude.split("\n")
     .reduce(
