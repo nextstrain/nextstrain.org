@@ -2,32 +2,52 @@
 import React from "react";
 import {Link} from 'gatsby';
 import styled from "styled-components";
+
 import { goToAnchor } from 'react-scrollable-anchor';
 import { FlexCenter } from "../../layouts/generalComponents";
-import * as splashStyles from "../splash/styles";
 
 function SarsCov2Introduction({data}) {
   return (
     <FlexCenter>
-      <splashStyles.FocusParagraph theme={{niceFontSize: "20px"}}>
+      <ListContainer>
         <ul>
-          {data.map((s) => {
-            switch (s.type) {
-              case "external":
-                return <li><a href={s.to}>{s.msg}</a></li>;
-              case "gatsby":
-                return <li><Link to={s.to}>{s.msg}</Link></li>;
-              case "anchor":
-                return <li><Clickable onClick={() => goToAnchor(s.to)}>{s.msg}</Clickable></li>;
-              default:
-                return null;
-            }
-          })}
+          {data.map((s) => (
+            <li key={s.to}>
+              {s.type === "external" ?
+                <a href={s.to}>{s.title}</a> :
+                s.type === "gatsby" ?
+                  <Link to={s.to}>{s.title}</Link> :
+                  s.type === "anchor" ?
+                    <Clickable onClick={() => goToAnchor(s.to)}>{s.title}</Clickable> :
+                    null
+              }
+              {s.subtext && (
+                <Subtext>{s.subtext}</Subtext>
+              )}
+            </li>
+          ))}
         </ul>
-      </splashStyles.FocusParagraph>
+      </ListContainer>
     </FlexCenter>
   );
 }
+
+const ListContainer = styled.div`
+  max-width: 640px;
+  margin: 0px auto;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: ${(props) => props.theme.niceLineHeight};
+  /* svg sub-elements represent icons (eg. external link) */
+  svg {
+    margin-left: 10px;
+    font-size: 14px;
+    color: ${(props) => props.theme.brandColor};
+  }
+  li {
+    padding-bottom: 10px;
+  }
+`;
 
 const Clickable = styled.span`
   cursor: pointer;
@@ -37,6 +57,13 @@ const Clickable = styled.span`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const Subtext = styled.div`
+  font-style: italic;
+  font-size: ${(props) => props.theme.niceFontSize};
+  font-weight: 300;
+  line-height: ${(props) => props.theme.niceLineHeight};
 `;
 
 export default SarsCov2Introduction;

@@ -2,7 +2,7 @@ const nCoVCards = [
   {
     img: "ncov_alt.png",
     url: "/sars-cov-2",
-    title: "All Nextstrain SARS-CoV-2 builds and resources"
+    title: "All builds and resources"
   },
   {
     img: "ncov.png",

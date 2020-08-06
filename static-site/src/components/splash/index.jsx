@@ -61,18 +61,14 @@ class Splash extends React.Component {
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
             We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
+            In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analysis.
+            Please see <Link to="/sars-cov-2">the main SARS-CoV-2 page</Link> for more.
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
         <Cards
+          squashed
           cards={nCoVCards}
         />
-
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            We have received a number of generous offers to contribute to the development of Nextstrain.
-            Please <Link to="/docs/contributing/development">see here</Link> for how you may be able help!
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
 
         <HugeSpacer/>
 

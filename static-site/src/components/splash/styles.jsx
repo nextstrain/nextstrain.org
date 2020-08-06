@@ -34,7 +34,7 @@ export const H1 = styled.div`
 `;
 
 export const H2 = styled.div`
-  text-align: center;
+  text-align: ${(props) => props.left ? "left" : "center"};
   font-size: 24px;
   line-height: 32px;
   font-weight: 500;

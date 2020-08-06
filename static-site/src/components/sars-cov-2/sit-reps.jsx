@@ -79,20 +79,18 @@ class Index extends React.Component {
   render() {
     return (
       <>
-        <HugeSpacer/>
-        <splashStyles.H2>
+        <HugeSpacer /><HugeSpacer />
+        <splashStyles.H2 left>
           All SARS-CoV-2 situation reports
         </splashStyles.H2>
         <SmallSpacer />
-        <FlexCenter>
-          <splashStyles.CenteredFocusParagraph theme={{niceFontSize: "14px"}}>
-            Each week we have been writing interactive situation reports
-            using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
-            to communicate how COVID-19 is moving around the world and spreading locally.
-            These are kindly translated into a number of different languages by volunteers
-            and Google-provided translators — click on any language below to see the list of situation reports available.
-          </splashStyles.CenteredFocusParagraph>
-        </FlexCenter>
+        <splashStyles.FocusParagraph>
+          We have been writing interactive situation reports
+          using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
+          to communicate how COVID-19 is moving around the world and spreading locally.
+          These are kindly translated into a number of different languages by volunteers
+          and Google-provided translators — click on any language below to see the list of situation reports available.
+        </splashStyles.FocusParagraph>
         <div className="row">
           <MediumSpacer />
           <div className="col-md-1"/>

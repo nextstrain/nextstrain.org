@@ -5,7 +5,7 @@ import {FaAngleUp, FaAngleDown} from "react-icons/fa";
 const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #CCC;
+  border-top: 1px solid #F0F0F0;
   margin: 0px;
   padding: 15px 10px 10px 10px;
 `;

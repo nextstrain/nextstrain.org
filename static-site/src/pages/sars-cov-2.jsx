@@ -7,6 +7,7 @@ import MainLayout from "../components/layout";
 import UserDataWrapper from "../layouts/userDataWrapper";
 import {
   SmallSpacer,
+  MediumSpacer,
   HugeSpacer,
   FlexCenter,
 } from "../layouts/generalComponents";
@@ -29,27 +30,70 @@ const contents = [
   {
     type: "external",
     to: "/ncov/global",
-    msg: "Latest global SARS-CoV-2 build (daily updates)",
+    title: "Latest global SARS-CoV-2 analysis",
+    subtext: (
+      <span>
+        Jump to our latest global SARS-CoV-2 build which is updated daily. We also maintain regional builds for
+        <a href="https://nextstrain.org/ncov/north-america"> North America</a>,
+        <a href="https://nextstrain.org/ncov/south-america"> South America</a>,
+        <a href="https://nextstrain.org/ncov/europe"> Europe</a>,
+        <a href="https://nextstrain.org/ncov/asia"> Asia</a>,
+        <a href="https://nextstrain.org/ncov/africa"> Africa</a>, and
+        <a href="https://nextstrain.org/ncov/oceania"> Oceania</a>,
+      </span>
+    )
+  },
+  {
+    type: "anchor",
+    to: "builds",
+    title: "Scroll down to all available builds (datasets)"
+  },
+  {
+    type: "anchor",
+    to: "sit-reps",
+    title: "Scroll down to all available interactive situation reports",
   },
   {
     type: "external",
     to: "https://clades.nextstrain.org",
-    msg: "Nextclade (drag-and-drop FASTA utility)",
+    title: "Nextclade (sequence analysis webapp)",
+    subtext: "Drag & drop your (FASTA) sequences to assign your sequences to clades and report potential sequence quality issues. You can use the tool to analyze sequences before you upload them to a database."
   },
   {
     type: "gatsby",
     to: "/search/sars-cov-2",
-    msg: "Search all our datasets by strain name(s)",
+    title: "Search builds by strain name(s)",
+    subtext: "Search all SARS-CoV-2 nextstrain builds, including historical ones, for particular strain name(s).",
   },
-  { type: "anchor", to: "builds", msg: "List all available builds" },
   {
-    type: "anchor",
-    to: "sit-reps",
-    msg: "List all available situation reports",
+    type: "external",
+    to: "https://nextstrain.github.io/ncov/",
+    title: "How to run your own phylogenetic analysis of SARS-CoV-2",
+    subtext: "A tutorial walking through running your own analysis using Nextstrain tools"
   },
+  {
+    type: "external",
+    to: "/groups/blab/sars-like-cov",
+    title: "Phylogeny of SARS-like betacoronaviruses",
+    subtext: (<span>
+      We also have a more general phylogeny of <a href="/groups/blab/beta-cov"> betacoronaviruses</a>.
+    </span>)
+  },
+  {
+    type: "external",
+    to: "https://discussion.nextstrain.org",
+    title: "Nextstrain discussion forum",
+    subtext: "See here for previously asked questions about Nextstrain or ask your own!"
+  },
+  {
+    type: "external",
+    to: "https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md",
+    title: "Developer contributions",
+    subtext: "We have received a number of generous offers to contribute to the development of Nextstrain - this provides an entry point for how you may be able help!"
+  }
 ];
 
-// eslint-disable-next-line react/prefer-stateless-function
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -67,7 +111,7 @@ class Index extends React.Component {
             </UserDataWrapper>
 
             <splashStyles.Container className="container">
-              <HugeSpacer />
+              <HugeSpacer /><HugeSpacer />
               <splashStyles.H1>{title}</splashStyles.H1>
               <SmallSpacer />
 
@@ -76,6 +120,7 @@ class Index extends React.Component {
                   {abstract}
                 </splashStyles.CenteredFocusParagraph>
               </FlexCenter>
+              <MediumSpacer />
 
               <TOC data={contents} />
 

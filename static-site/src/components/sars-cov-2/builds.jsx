@@ -1,6 +1,7 @@
 import React from "react";
+import {Link} from 'gatsby';
 import {FaChartArea} from "react-icons/fa";
-import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
+import { SmallSpacer, MediumSpacer, HugeSpacer } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import allSARSCoV2Builds from "../../../content/allSARS-CoV-2Builds.yaml";
 
@@ -66,16 +67,18 @@ class Index extends React.Component {
   render() {
     return (
       <>
-        <HugeSpacer />
-        <splashStyles.H2>
+        <HugeSpacer /><HugeSpacer />
+        <splashStyles.H2 left>
           All SARS-CoV-2 Builds
         </splashStyles.H2>
         <SmallSpacer />
-        <FlexCenter>
-          <splashStyles.CenteredFocusParagraph theme={{niceFontSize: "14px"}}>
-            This page is an index of public Nextstrain builds for SARS-CoV-2, organized by geography. If you know of a build not listed here, please let us know! Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
-          </splashStyles.CenteredFocusParagraph>
-        </FlexCenter>
+        <splashStyles.FocusParagraph>
+          This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
+          Some of these builds are maintained by the nextstrain team and others are maintained by independent research groups.
+          (<Link to="docs/bioinformatics/what-is-a-build">See here</Link> for more information on what a build is, and see <a href="https://nextstrain.github.io/ncov/">this tutorial</a> for a walkthrough of running your own phylogenetic analysis of SARS-CoV-2 data!)
+          If you know of a build not listed here, please let us know!
+          Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
+        </splashStyles.FocusParagraph>
         <div className="row">
           <MediumSpacer />
           <div className="col-md-1"/>
