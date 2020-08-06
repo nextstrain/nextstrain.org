@@ -89,7 +89,7 @@ class SequencesToDatasets extends React.Component {
               </splashStyles.H2>
               <SmallSpacer />
               <FlexCenter>
-                <splashStyles.CenteredFocusParagraph theme={{niceFontSize: "14px"}}>
+                <splashStyles.CenteredFocusParagraph>
                   If you know the name(s) of sequences, you can search here to find out which datasets, if any,
                   the samples appear in. If you select multiple samples, then only datasets where they all appear
                   will be shown. Additionally, if we have deliberately excluded a sample from the analysis we will attempt

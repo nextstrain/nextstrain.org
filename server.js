@@ -8,6 +8,7 @@ const favicon = require('serve-favicon');
 const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./src/utils");
+const cors = require('cors');
 
 const production = process.env.NODE_ENV === "production";
 
@@ -85,6 +86,7 @@ app.route("/dist/*")
 /* Charon API used by Auspice.
  */
 app.route("/charon/getAvailable")
+  .all(cors({origin: 'http://localhost:8000'})) // allow cross-origin from the gatsby dev server
   .get(auspiceServerHandlers.getAvailable);
 
 app.route("/charon/getDataset")
