@@ -32,7 +32,7 @@ While it is possible to run a build by running each of the individual steps, we 
 [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) is "a tool to create reproducible and scalable data analyses... via a human-readable, Python-based language."
 
 > Snakemake is installed as part of the [conda environment](/docs/getting-started/local-installation#install-augur--auspice-with-conda-recommended) or the [docker container](/docs/getting-started/container-installation#install-docker).
-If you ever see a build which has a "Snakefile" then you can run this by typing `snakemake` or `nextstrain build .`, respectively.
+If you ever see a build which has a "Snakefile" then you can run this by typing `snakemake --cores 1` or `nextstrain build . --cores 1`, respectively.
 
 
 ### Next steps

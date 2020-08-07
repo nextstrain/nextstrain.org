@@ -117,9 +117,9 @@ After unzipping the snapshot, you'll need to rename the resulting `zika-tutorial
 
 Nextstrain builds use the [Augur bioinformatics toolkit](/docs/bioinformatics) to subsample data, align sequences, build a phylogeny, estimate phylogeographic patterns, and save the results in a format suitable for [visualization with Auspice](/docs/interpretation).
 
-Run `nextstrain build zika-tutorial/` to run the build:
+Run `nextstrain build zika-tutorial/ --cores 1` to run the build:
 
-    $ nextstrain build zika-tutorial/
+    $ nextstrain build zika-tutorial/ --cores 1
     Building DAG of jobs...
     […a lot of output…]
 
