@@ -268,7 +268,7 @@ snakemake --cores 1
 or, if you're using the Nextstrain CLI tool, run:
 
 ```
-nextstrain build . --cores 1
+nextstrain build --cpus 1 .
 ```
 
 which will run the automated pathogen build.
@@ -277,7 +277,7 @@ View the results the same way you did before to confirm it produced the same Zik
 
 Note that automated builds will only re-run steps when the data changes.
 This means builds will pick up where they left off if they are restarted after being interrupted.
-If you want to force a re-run of the whole build, first remove any previous output with `snakemake --cores 1 clean` or `nextstrain build . --cores 1 clean`.
+If you want to force a re-run of the whole build, first remove any previous output with `snakemake --cores 1 clean` or `nextstrain build --cpus 1 . clean`.
 
 ## Next steps
 
