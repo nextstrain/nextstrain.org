@@ -98,6 +98,13 @@ builds:
     parentGeo: north-america
     org: null
 
+  - url: https://nextstrain.org/community/SESchmedes/sarscov2-southeast-usa/southeast
+    name: South-East Region
+    geo: usa
+    org:
+      name: FL-BPHL
+      url: http://www.floridahealth.gov/programs-and-services/public-health-laboratories/index.html
+
   - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/south-central
     name: South-Central Region
     geo: usa
@@ -144,6 +151,19 @@ builds:
     org:
       name: Grubaugh Lab
       url: http://grubaughlab.com
+
+  - url: null
+    name: Florida
+    geo: florida
+    parentGeo: usa
+    org: null
+
+  - url: https://nextstrain.org/community/SESchmedes/sarscov2-florida/florida
+    name: Florida
+    geo: florida
+    org:
+      name: FL-BPHL
+      url: http://www.floridahealth.gov/programs-and-services/public-health-laboratories/index.html
 
   - url: null
     name: Louisiana
