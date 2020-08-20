@@ -7,7 +7,7 @@ The map is a centerpiece of Nextstrain's visualisation, able to convey complex i
 This how-to is intended to provide an overview of what's being displayed, and hopefully dispel some potential misinterpretations.
 
 
-![](./img/labelled-map.png)
+![](./figures/labelled-map.png)
 _Figure 1. [Nextstrain map](https://nextstrain.org/zika?d=map) of Zika virus movement between countries. Numerical labels are referred to in the text._
 
 
@@ -24,7 +24,7 @@ As you **interact with Nextstrain** -- whether you zoom into the tree, filter th
 Perhaps the most fundamental aspect of Nextstrain's map, the circles (demes) associate samples (tips on the tree) with locations on the map.
 The demes use different visual techniques to convey different pieces of information:
 
-![](./img/labelled-deme.png)
+![](./figures/labelled-deme.png)
 _Figure 2. Examples of demes.
 B,C and D are representations of samples from the USA in [the Zika dataset](https://nextstrain.org/zika) with different choices of color-by._
 
@@ -60,7 +60,7 @@ Each individual line represents a parent-child branch in the phylogenetic tree w
 This means that if values for the geographic resolution haven't been inferred for internal nodes of the tree then no transmission lines can be drawn.
 There is a toggle to switch the transmission lines off in the sidebar (Figure 1, label "5").
 
-![](./img/labelled-movement.png)
+![](./figures/labelled-movement.png)
 _Figure 3.
 Left: Cartoon of how the tree determines the construction of transmission lines.
 Right: Example of transmission lines showing [between country movement of Ebola](https://nextstrain.org/ebola)._
