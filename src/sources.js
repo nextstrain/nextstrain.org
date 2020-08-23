@@ -294,13 +294,19 @@ class S3Source extends Source {
     return `https://${this.bucket}.s3.amazonaws.com`;
   }
   async _listObjects() {
-    // XXX TODO: This will only return the first 1000 objects.  That's fine for
-    // now (for comparison, nextstrain-data only has ~500), but we really
-    // should iterate over the whole bucket contents using the S3 client's
-    // pagination support.
-    //   -trs, 30 Aug 2019
-    const list = await S3.listObjectsV2({Bucket: this.bucket}).promise();
-    return list.Contents;
+    return new Promise((resolve, reject) => {
+      let contents = [];
+      S3.listObjectsV2({Bucket: this.bucket}).eachPage((err, data, done) => {
+        if (err) {
+          return reject(err);
+        }
+        if (data===null) { // no more data
+          return resolve(contents);
+        }
+        contents = contents.concat(data.Contents);
+        return done();
+      });
+    });
   }
   async availableDatasets() {
     const objects = await this._listObjects();
