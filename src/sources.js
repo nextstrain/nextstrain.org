@@ -181,7 +181,7 @@ class CommunitySource extends Source {
 
   static get _name() { return "community"; }
   get repo() { return `${this.owner}/${this.repoName}`; }
-  get baseUrl() { return `https://raw.githubusercontent.com/${this.repo}/${this.branch}/`; }
+  get baseUrl() { return `https://github.com/${this.repo}/raw/${this.branch}/`; }
 
   get repoNameWithBranch() {
     return this.branch === "master"
