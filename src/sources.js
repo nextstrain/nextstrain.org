@@ -286,6 +286,71 @@ class CommunityNarrative extends Narrative {
   }
 }
 
+
+class UrlDefinedSource extends Source {
+
+  static get _name() { return "urlDefined"; }
+  get baseUrl() {
+    throw new Error("UrlDefinedSource does not use `this.baseUrl`");
+  }
+
+  dataset(pathParts) {
+    return new UrlDefinedDataset(this, pathParts);
+  }
+  narrative(pathParts) {
+    return new UrlDefinedNarrative(this, pathParts);
+  }
+
+  // available datasets & narratives are unknown when the dataset is specified by the URL
+  async availableDatasets() { return []; }
+  async availableNarratives() { return []; }
+  async getInfo() { return {}; }
+}
+
+class UrlDefinedDataset extends Dataset {
+  get baseParts() {
+    return this.pathParts;
+  }
+  get isRequestValidWithoutDataset() {
+    return false;
+  }
+  baseNameFor(type) {
+    // mandate https
+    const datasetUrl = "https://" + this.baseParts.join("/");
+    if (type==="main") {
+      return datasetUrl;
+    }
+    // if the request is for A.json, then return A_<type>.json.
+    if (datasetUrl.endsWith(".json")) {
+      return `${datasetUrl.replace(/\.json$/, '')}_${type}.json`;
+    }
+    // if the request if for B, where B doesn't end with `.json`, then return B_<type>
+    return `${datasetUrl}_${type}`;
+  }
+  urlFor(type) {
+    // when `parsePrefix()` runs (which it does for each /charon/getDataset API request), it preemtively defines
+    // a `urlFor` tree, meta and main types. For `UrlDefinedDataset`s we can only serve v2 datasets, but be aware
+    // the `urlFor` function is still called for tree + meta "types".
+    if (type==="tree" || type==="meta") return undefined;
+    const url = new URL(this.baseNameFor(type));
+    return url.toString();
+  }
+}
+
+class UrlDefinedNarrative extends Narrative {
+  get baseParts() {
+    return this.pathParts;
+  }
+  get baseName() {
+    // mandate https
+    return "https://" + this.baseParts.join("/");
+  }
+  url() {
+    const url = new URL(this.baseName);
+    return url.toString();
+  }
+}
+
 class S3Source extends Source {
   get bucket() {
     throw new InvalidSourceImplementation("bucket() must be implemented by subclasses");
@@ -546,6 +611,7 @@ const sources = [
   CoreSource,
   CoreStagingSource,
   CommunitySource,
+  UrlDefinedSource,
   /* Public nextstrain groups: */
   BlabSource,
   SeattleFluSource,

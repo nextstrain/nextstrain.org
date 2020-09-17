@@ -46,6 +46,11 @@ const splitPrefixIntoParts = (prefix) => {
       prefixParts.shift();
       sourceName = prefixParts.shift();
       break;
+    case "fetch":
+      /* the `/fetch/ URLs are backed by the `UrlDefinedSource` as `FetchSource` was too confusing */
+      prefixParts.shift();
+      sourceName = "urlDefined";
+      break;
     default:
       sourceName = "core";
       break;
@@ -89,6 +94,9 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
     case "community":
     case "staging":
       leadingParts.push(source.name);
+      break;
+    case "urlDefined":
+      leadingParts.push("fetch");
       break;
     default:
       leadingParts.push("groups", source.name);
@@ -169,9 +177,10 @@ const parsePrefix = (prefix, otherQueries) => {
    * to only include the first.
    */
   let treeName, secondTreeName;
+  const treeSplitChar = /(?<!http[s]?):/;
   for (let i=0; i<prefixParts.length; i++) {
-    if (prefixParts[i].indexOf(":") !== -1) {
-      [treeName, secondTreeName] = prefixParts[i].split(":");
+    if (prefixParts[i].search(treeSplitChar) !== -1) {
+      [treeName, secondTreeName] = prefixParts[i].split(treeSplitChar);
       prefixParts[i] = treeName; // only use the first tree from now on
       break;
     }
