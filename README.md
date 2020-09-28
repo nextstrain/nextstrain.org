@@ -137,18 +137,17 @@ It can make the following API requests to a server:
 and as long as there is a server and the reponse is appropriate then the auspice client can visualise the data.
 
 
-The nextstrain.org server (`server.js`) sets up GET request handlers for those three endpoints.
-The code to handle these requests is imported from `./src/index.js`.
+The nextstrain.org server (`server.js`) sets up GET request handlers for those three endpoints using code imported from `./src/index.js`.
 
 
-These handlers have been written in such a way that they can be imported by:
-1. the nextstrain.org server (`server.js`, run via `npm run server`)
-2. `auspice view --handlers ./src/server/index.js` (rarely useful in this case)
-3. `auspice develop --handlers ./src/server/index.js` (useful for auspice development)
+The code for these handlers, which is exposed by `./src/index.js`, has been written in such a way that it can be imported by:
+1. The nextstrain.org server: `npm run server` (see `server.js`)
+2. The auspice server: `cd auspice-client && npx auspice view --handlers ../src/index.js --verbose` (rarely useful in this case, make sure you've run `npm run build -- auspice` first!)
+3. The auspice development server: `npx auspice develop --handlers ./src/index.js --verbose --extend ./auspice-client/customisations/config.json` (useful for auspice development, note the client customisations applied here too!)
 
-> Note that 2 and 3 are running auspice locally but overwriting the (default) auspice handlers for `/charon/...` GET requests.
-In this case, they're overwriting them with the handlers used in the nextstrain.org repo and are employing the nextstrain.org behavior (fetching datasets from S3, etc.).
-See the [charon API auspice documentation](https://nextstrain.github.io/auspice/server/api) for more info.
+> Note that 2 and 3 are running the auspice server locally but modifying it via functionality whereby the default request handlers (for `/charon/...` GET requests) can be overwritten by command line arguments.
+In this case, they're overwriting them with the handlers used by the nextstrain.org server (see `server.js`) and thus the auspice server mimics the nextstrain.org server behavior (fetching datasets from S3, etc.).
+See the [auspice API documentation](https://nextstrain.github.io/auspice/server/api) for more info.
 
 
 ---
