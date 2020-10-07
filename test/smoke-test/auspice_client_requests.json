@@ -76,5 +76,22 @@
     "url": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y&type=tip-frequencies",
     "expectStatusCode": 200,
     "responseIsJson": true
+  },
+  {
+    "name": "Fetch dataset using /fetch URLs (from S3 staging bucket)",
+    "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/flu_seasonal_h3n2_ha_2y.json",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Fetch sidecar file using /fetch URLs (root-sequence JSON from S3 staging bucket)",
+    "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/flu_seasonal_h3n2_ha_2y.json&type=root-sequence",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Fetch narrative using /fetch URLs (from nextstrain/narratives GitHub repo)",
+    "url": "/charon/getNarrative?prefix=/fetch/narratives/raw.githubusercontent.com/nextstrain/narratives/master/intro-to-narratives.md&type=md",
+    "expectStatusCode": 200
   }
 ]
