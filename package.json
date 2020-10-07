@@ -16,7 +16,10 @@
     "lint": "eslint --ext .js,.jsx .",
     "set-up": "npm run build",
     "server": "node server.js",
-    "start": "npm run server"
+    "start": "npm run server",
+    "smoke-test": "NODE_ENV=test ENV=dev jest ./test/smoke-test/auspice_client_requests.test.js",
+    "smoke-test:ci": "start-server-and-test server http://localhost:5000 smoke-test",
+    "test:ci": "npm run smoke-test:ci"
   },
   "dependencies": {
     "argparse": "^1.0.10",
@@ -54,12 +57,20 @@
     "eslint-config-defaults": "^7.0.1",
     "eslint-plugin-filenames": "^0.1.2",
     "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.2.1",
-    "eslint-plugin-react-hooks": "^1.6.0"
+    "eslint-plugin-react-hooks": "^1.6.0",
+    "jest": "^26.4.2",
+    "start-server-and-test": "^1.11.4"
   },
   "cacheDirectories": [
     "node_modules",
     "static-site/node_modules"
-  ]
+  ],
+  "jest": {
+    "globals": {
+      "BASE_URL": "http://localhost:5000"
+    }
+  }
 }
