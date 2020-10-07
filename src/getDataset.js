@@ -58,6 +58,7 @@ const requestMainDataset = async (res, fetchUrls) => {
     /* try to stream the (v2+) dataset JSON as the response */
     const req = request
       .get(fetchUrls.main)
+      .on('error', (err) => reject(err))
       .on("response", async (response) => { // eslint-disable-line consistent-return
         if (response.statusCode === 200) {
           utils.verbose(`Successfully streaming ${fetchUrls.main}.`);

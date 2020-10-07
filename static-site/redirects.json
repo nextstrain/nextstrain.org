@@ -22,5 +22,6 @@
   "/docs/getting-started/installation": "/docs/getting-started/local-installation",
   "/docs/contributing/philosophy": "/docs/contributing/sharing-data",
   "/docs/narratives/introduction": "https://nextstrain.github.io/auspice/narratives/introduction",
-  "/docs/contributing/development": "https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md"
+  "/docs/contributing/development": "https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md",
+  "/fetch": "/docs/contributing/fetch-data-from-custom-urls"
 }
