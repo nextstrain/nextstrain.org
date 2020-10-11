@@ -140,6 +140,11 @@ const auspicePaths = [
    */
   "/community/:user/:repo",
   "/community/:user/:repo/*",
+
+  /* auspice gets /fetch/X URLs which result in loading of dataset accessible at URL X
+   * note that gatsby will redirect /fetch to the docs page explaining this behavior
+   */
+  "/fetch/*"
 ];
 
 app.route(auspicePaths).get((req, res) => {

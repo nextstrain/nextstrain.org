@@ -1,7 +1,9 @@
 ---
 extends: "airbnb"
-plugins: ["react-hooks"]
+plugins: ["react-hooks", "jest"]
 parser: "babel-eslint"
+globals:
+  BASE_URL: true
 rules:
   camelcase: off # require camel case names
   prefer-template: off
@@ -60,5 +62,6 @@ parserOptions:
 env:
   es6: true
   browser: true
+  "jest/globals": true
 
 # https://gist.github.com/odedw/cf14a55aa154adbc3bf7#file-eslintrc-yaml-L4

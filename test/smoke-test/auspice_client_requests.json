@@ -1,0 +1,97 @@
+[
+  {
+    "name": "Fetch core Nextstrain dataset (flu/seasonal/h3n2/ha/2y)",
+    "url": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y",
+    "expectStatusCode": 200,
+    "responseIsJson": true,
+    "__comment": "We could define JSON schemas for each API and validate the response here"
+  },
+  {
+    "name": "Check that the dataset request for /flu redirects to a specific dataset",
+    "url": "/charon/getDataset?prefix=/flu",
+    "expectStatusCode": 302,
+    "responseIsJson": false,
+    "redirectsTo": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y"
+  },
+  {
+    "name": "Check that the main getAvailable API call returns a JSON",
+    "url": "/charon/getAvailable",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check getSourceInfo API for a community (GitHub) URL",
+    "url": "/charon/getSourceInfo?prefix=/community/jameshadfield/scratch",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check getDataset API call for a community source with no default datasets returns 204 (No Content)",
+    "url": "/charon/getDataset?prefix=/community/jameshadfield/scratch",
+    "expectStatusCode": 204
+  },
+  {
+    "name": "Check that getAvailable API call for a community source with datasets lists them",
+    "url": "/charon/getAvailable?prefix=/community/jameshadfield/scratch",
+    "expectStatusCode": 200
+  },
+  {
+    "name": "Check that getDataset works for a community build (Auspice v2 JSON)",
+    "url": "/charon/getDataset?prefix=/community/jameshadfield/scratch/placentalia",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check that getDataset works for a community build (Auspice v1 JSON)",
+    "url": "/charon/getDataset?prefix=/community/jameshadfield/scratch/ct",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check getSourceInfo API for a (public) nextstrain groups splash page",
+    "url": "/charon/getSourceInfo?prefix=/groups/blab/",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check getAvailable API for a (public) nextstrain group",
+    "url": "/charon/getAvailable?prefix=/groups/blab/",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check getDatset API for a (public) nextstrain group dataset",
+    "url": "/charon/getDataset?prefix=/groups/blab/sars-like-cov",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check getDatset API for a dataset which doesn't exist returns 500 (Internal Server Error)",
+    "__comment": "There are open issues to differentiate dataset errors vs datasets which don't exist",
+    "url": "/charon/getDataset?prefix=/ncov/doesntExist",
+    "expectStatusCode": 500
+  },
+  {
+    "name": "Check getDataset API for sidecar file tip-frequencies",
+    "url": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y&type=tip-frequencies",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Fetch dataset using /fetch URLs (from S3 staging bucket)",
+    "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/flu_seasonal_h3n2_ha_2y.json",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Fetch sidecar file using /fetch URLs (root-sequence JSON from S3 staging bucket)",
+    "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/flu_seasonal_h3n2_ha_2y.json&type=root-sequence",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Fetch narrative using /fetch URLs (from nextstrain/narratives GitHub repo)",
+    "url": "/charon/getNarrative?prefix=/fetch/narratives/raw.githubusercontent.com/nextstrain/narratives/master/intro-to-narratives.md&type=md",
+    "expectStatusCode": 200
+  }
+]
