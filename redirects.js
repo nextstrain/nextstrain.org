@@ -52,6 +52,42 @@ const setup = (app) => {
   conflates a language part ("zh") with a region ("europe") so we want to keep zh out of the manifest JSON */
   app.route("/ncov/zh").get((req, res) => res.redirect("/ncov/global/zh"));
 
+  // DOCS, HELP Redirects for docs migration:
+  const mainReadTheDocs = "https://docs.nextstrain.org/en/latest";
+  const augurReadTheDocs = "https://docs.nextstrain.org/projects/augur/en/migrate-docs";
+
+  const docsRedirects = {
+    "/docs/getting-started/introduction": `${mainReadTheDocs}/learn/about-nextstrain.html`,
+    "/docs/getting-started/local-installation": `${mainReadTheDocs}/guides/install/local-installation.html`,
+    "/docs/getting-started/local-vs-container-install": `${mainReadTheDocs}/guides/install/index.html`,
+    "/docs/getting-started/quickstart": `${mainReadTheDocs}/tutorials/quickstart.html`,
+    "/docs/getting-started/windows-help": `${mainReadTheDocs}/guides/install/windows-help.html`,
+    "/docs/bioinformatics/introduction-to-augur": `${augurReadTheDocs}/faq/introduction-to-augur.html`,
+    "/docs/bioinformatics/what-is-a-build": `${augurReadTheDocs}/faq/what-is-a-build.html`,
+    "/docs/bioinformatics/data-formats": `${mainReadTheDocs}/reference/formats/data-formats.html`,
+    "/docs/tutorials/defining-clades": `${mainReadTheDocs}/guides/bioinformatics/defining-clades.html`,
+    "/docs/tutorials/zika": `${mainReadTheDocs}/tutorials/zika.html`,
+    "/docs/contributing/community-builds": `${mainReadTheDocs}/guides/share/community-builds.html`,
+    "/docs/contributing/documentation": `${mainReadTheDocs}/guides/contribute/documentation.html`,
+    "/docs/contributing/fetch-data-from-custom-urls": `${mainReadTheDocs}/guides/share/fetch-via-urls.html`,
+    "/docs/contributing/nextstrain-groups": `${mainReadTheDocs}/guides/share/nextstrain-groups.html`,
+    "/docs/contributing/sharing-data": `${mainReadTheDocs}/guides/share/index.html`,
+    "/docs/visualisation/download-data": `${mainReadTheDocs}/guides/share/download-data.html`,
+    "/docs/visualisation/map-interpretation": `${mainReadTheDocs}/learn/interpret/map-interpretation.html`,
+    "/help/general/about-nextstrain": `${mainReadTheDocs}/learn/about-nextstrain.html`,
+    "/help/general/how-to-read-a-tree": `${mainReadTheDocs}/learn/interpret/how-to-read-a-tree.html`,
+    "/help/general/interacting-with-nextstrain": `${mainReadTheDocs}/learn/interpret/interacting-with-nextstrain.html`,
+    "/help/coronavirus/FAQ": `${mainReadTheDocs}/learn/pathogens/coronavirus/FAQ.html`,
+    "/help/coronavirus/SARS-CoV-2": `${mainReadTheDocs}/learn/pathogens/coronavirus/SARS-CoV-2.html`,
+    "/help/coronavirus/Technical-FAQ": `${mainReadTheDocs}/learn/pathogens/coronavirus/Technical-FAQ.html`,
+    "/help/coronavirus/human-CoV": `${mainReadTheDocs}/learn/pathogens/coronavirus/human-CoV.html`
+  };
+
+  for (const [from, to] of Object.entries(docsRedirects)) {
+    app.route([from])
+    .get((req, res) => res.redirect(to));
+  }
+
 };
 
 module.exports = {
