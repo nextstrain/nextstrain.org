@@ -1,6 +1,7 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import {Link} from 'gatsby';
+import { FaExternalLinkAlt } from "react-icons/fa";
 import { tweets } from "./tweets";
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
@@ -94,8 +95,8 @@ class Splash extends React.Component {
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
-            Analyses by independent groups <Link to="/docs/contributing/community-builds">stored and
-            accessed via public GitHub repos</Link>
+            Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html" target="_blank" rel="noopener noreferrer">stored and
+            accessed via public GitHub repos <FaExternalLinkAlt/></a>
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 
@@ -203,8 +204,8 @@ class Splash extends React.Component {
         <BigSpacer/>
 
         <FlexCenter>
-          <Styles.Button to="docs">
-            Read the documentation
+          <Styles.Button to="https://docs.nextstrain.org/en/latest/index.html" target="_blank" rel="noopener noreferrer">
+            Read the documentation <FaExternalLinkAlt/>
           </Styles.Button>
         </FlexCenter>
 
