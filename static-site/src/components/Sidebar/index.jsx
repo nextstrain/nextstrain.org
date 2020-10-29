@@ -152,11 +152,12 @@ const ItemContainer = styled.div`
 function addExternalLinks(hasChapters, section, data) {
   // currently we assume chapter structure for additional links
   // this can be relaxed in the future!
+  const externalLinks = additionalSidebarEntries || [];
   if (!hasChapters) return data;
   return data.map((chapterData) => ({
     name: chapterData.name,
     posts: [...chapterData.posts],
-    externalLinks: additionalSidebarEntries.filter((entry) => {
+    externalLinks: externalLinks.filter((entry) => {
       if (entry.section !== section) return false;
       if (entry.chapter !== chapterData.name) return false;
       return true;
