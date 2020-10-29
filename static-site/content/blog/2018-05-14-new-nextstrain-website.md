@@ -17,7 +17,7 @@ The only complicated aspect is deciding whether to serve auspice or Gatsby files
 
 **The static site:** can be found [here](https://github.com/nextstrain/static) and is build using [Gatsby](https://www.gatsbyjs.org/).
 This comprises the splash page and documentation (docs, about, blogs etc) all build from markdown files.
-[This page](/docs/static-content/introduction) explains the structure of the static page and shows how to add content – it's really easy ;).
+[This page](https://github.com/nextstrain/nextstrain.org/tree/master/static-site#nextstrain-static-site) explains the structure of the static page and shows how to add content – it's really easy ;).
 
 
 **Auspice:** is the visualisation app, build as a single page javascript application ([github](https://github.com/nextstrain/auspice)).
