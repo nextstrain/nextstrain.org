@@ -89,7 +89,7 @@ class WhoAmI extends React.Component {
     const styles = getStyles({minified: this.props.sidebar});
 
     if (this.state.user === undefined) return null;
-    
+
     return (
       <div>
         { this.state.user
