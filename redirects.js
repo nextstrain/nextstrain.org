@@ -57,6 +57,8 @@ const setup = (app) => {
   const augurReadTheDocs = "https://docs.nextstrain.org/projects/augur/en/migrate-docs";
 
   const docsRedirects = {
+    "/docs": `${mainReadTheDocs}`,
+    "/help": `${mainReadTheDocs}/learn/about-nextstrain.html`,
     "/docs/getting-started/introduction": `${mainReadTheDocs}/learn/about-nextstrain.html`,
     "/docs/getting-started/local-installation": `${mainReadTheDocs}/guides/install/local-installation.html`,
     "/docs/getting-started/local-vs-container-install": `${mainReadTheDocs}/guides/install/index.html`,
