@@ -3,9 +3,9 @@ const { parseNarrativeLanguage } = require("./src/utils");
 
 const setup = (app) => {
 
-  /* send auspice to the auspice docs (currently hosted as github pages) */
+  /* send auspice to the auspice docs (currently hosted on docs.nextstrain.org) */
   app.route("/auspice")
-    .get((req, res) => res.redirect('https://nextstrain.github.io/auspice/'));
+    .get((req, res) => res.redirect('https://docs.nextstrain.org/projects/auspice/en/migrate-docs/'));
 
   /* we don't yet have a community page */
   app.route("/community")
@@ -60,25 +60,48 @@ const setup = (app) => {
     "/docs": `${mainReadTheDocs}`,
     "/help": `${mainReadTheDocs}/learn/about-nextstrain.html`,
     "/docs/getting-started/introduction": `${mainReadTheDocs}/learn/about-nextstrain.html`,
+    "/about": `${mainReadTheDocs}/learn/about-nextstrain.html`,
+    "/about/overview/introduction": `${mainReadTheDocs}/learn/about-nextstrain.html`,
+    "/about/overview": `${mainReadTheDocs}/learn/about-nextstrain.html`,
+    "/about/methods/introduction": `${mainReadTheDocs}/learn/about-nextstrain.html`,
+    "/about/methods": `${mainReadTheDocs}/learn/about-nextstrain.html`,
     "/docs/getting-started/local-installation": `${mainReadTheDocs}/guides/install/local-installation.html`,
+    "/docs/getting-started/installation": `${mainReadTheDocs}/guides/install/local-installation.html`,
     "/docs/getting-started/local-vs-container-install": `${mainReadTheDocs}/guides/install/index.html`,
+    "/docs/getting-started/container-installation": `${mainReadTheDocs}/cli/doc/installation.html`,
     "/docs/getting-started/quickstart": `${mainReadTheDocs}/tutorials/quickstart.html`,
     "/docs/getting-started/windows-help": `${mainReadTheDocs}/guides/install/windows-help.html`,
     "/docs/bioinformatics/introduction-to-augur": `${augurReadTheDocs}/faq/introduction-to-augur.html`,
+    "/docs/bioinformatics/introduction": `${augurReadTheDocs}/faq/introduction-to-augur.html`,
     "/docs/bioinformatics/what-is-a-build": `${augurReadTheDocs}/faq/what-is-a-build.html`,
     "/docs/bioinformatics/data-formats": `${mainReadTheDocs}/reference/formats/data-formats.html`,
+    "/docs/bioinformatics/output-jsons": `${mainReadTheDocs}/reference/formats/data-formats.html`,
+    "/docs/bioinformatics/augur-commands": `${augurReadTheDocs}/usage/cli/cli.html`,
+    "/docs/bioinformatics/customizing-a-build": `${mainReadTheDocs}/guides/bioinformatics/index.html`,
     "/docs/tutorials/defining-clades": `${mainReadTheDocs}/guides/bioinformatics/defining-clades.html`,
     "/docs/tutorials/zika": `${mainReadTheDocs}/tutorials/zika.html`,
+    "/docs/getting-started/zika-tutorial": `${mainReadTheDocs}/tutorials/zika.html`,
+    "/docs/tutorials/tb": `${mainReadTheDocs}/augur/docs/tutorials/tb_tutorial.html`,
+    "/docs/getting-started/tb-tutorial": `${mainReadTheDocs}/augur/docs/tutorials/tb_tutorial.html`,
     "/docs/contributing/community-builds": `${mainReadTheDocs}/guides/share/community-builds.html`,
     "/docs/contributing/documentation": `${mainReadTheDocs}/guides/contribute/documentation.html`,
+    "/docs/contributing/development": `${mainReadTheDocs}/guides/contribute/index.html`,
     "/docs/contributing/fetch-data-from-custom-urls": `${mainReadTheDocs}/guides/share/fetch-via-urls.html`,
+    "/fetch": `${mainReadTheDocs}/guides/share/fetch-via-urls.html`,
     "/docs/contributing/nextstrain-groups": `${mainReadTheDocs}/guides/share/nextstrain-groups.html`,
     "/docs/contributing/sharing-data": `${mainReadTheDocs}/guides/share/index.html`,
+    "/docs/contributing/philosophy": `${mainReadTheDocs}/guides/share/index.html`,
     "/docs/visualisation/download-data": `${mainReadTheDocs}/guides/share/download-data.html`,
     "/docs/visualisation/map-interpretation": `${mainReadTheDocs}/learn/interpret/map-interpretation.html`,
+    "/docs/visualisation/narratives": `${mainReadTheDocs}/auspice/docs/narratives/introduction.html`,
+    "/docs/narratives/introduction": `${mainReadTheDocs}/auspice/docs/narratives/introduction.html`,
     "/help/general/about-nextstrain": `${mainReadTheDocs}/learn/about-nextstrain.html`,
     "/help/general/how-to-read-a-tree": `${mainReadTheDocs}/learn/interpret/how-to-read-a-tree.html`,
     "/help/general/interacting-with-nextstrain": `${mainReadTheDocs}/learn/interpret/interacting-with-nextstrain.html`,
+    "/docs/interpretation": `${mainReadTheDocs}/learn/interpret/index.html`,
+    "/docs/interpretation/auspice": `${mainReadTheDocs}/learn/interpret/index.html`,
+    "/docs/visualisation": `${mainReadTheDocs}/learn/interpret/index.html`,
+    "/docs/visualisation/introduction": `${mainReadTheDocs}/learn/interpret/index.html`,
     "/help/coronavirus/FAQ": `${mainReadTheDocs}/learn/pathogens/coronavirus/FAQ.html`,
     "/help/coronavirus/SARS-CoV-2": `${mainReadTheDocs}/learn/pathogens/coronavirus/SARS-CoV-2.html`,
     "/help/coronavirus/Technical-FAQ": `${mainReadTheDocs}/learn/pathogens/coronavirus/Technical-FAQ.html`,

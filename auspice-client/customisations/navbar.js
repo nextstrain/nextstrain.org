@@ -1,6 +1,5 @@
 /* eslint-disable no-multi-spaces */
 import React from "react"; // eslint-disable-line
-import { FaExternalLinkAlt } from "react-icons/fa";
 import LanguageSelector from "./languageSelector";
 
 const logoPNG = require("./nextstrain-logo-small.png");
@@ -124,8 +123,8 @@ const NavBar = ({sidebar, narrativeTitle, width}) => {
           null : (
             <div style={{...styles.flexColumns, paddingRight: "12px"}}>
               <div style={{flex: 5}}/>
-              <Link href="https://docs.nextstrain.org/en/latest/index.html" style={styles.link} target="_blank" rel="noopener noreferrer" text={<React.Fragment>DOCS <FaExternalLinkAlt/></React.Fragment>}/>
-              <Link href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" style={styles.link} target="_blank" rel="noopener noreferrer" text={<React.Fragment>HELP <FaExternalLinkAlt/></React.Fragment>}/>
+              <Link href="https://docs.nextstrain.org/en/latest/index.html" style={styles.link} text="DOCS"/>
+              <Link href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" style={styles.link} text="HELP"/>
               <WhoAmI sidebar={sidebar}/>
             </div>
           )

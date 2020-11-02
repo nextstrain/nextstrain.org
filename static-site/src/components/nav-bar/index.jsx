@@ -2,7 +2,6 @@ import React from "react";
 import {Link} from 'gatsby';
 import styled, {css} from 'styled-components';
 import { startsWith } from "lodash";
-import { FaExternalLinkAlt } from "react-icons/fa";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 
 
@@ -121,8 +120,8 @@ class NavBar extends React.Component {
         {this.getLogo()}
         {this.getLogoType()}
         <div style={{flex: 5}}/>
-        <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" target="_blank" rel="noopener noreferrer">HELP <FaExternalLinkAlt/></NavLinkToGoToServer>
-        <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" target="_blank" rel="noopener noreferrer">DOCS <FaExternalLinkAlt/></NavLinkToGoToServer>
+        <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" >HELP</NavLinkToGoToServer>
+        <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</NavLinkToGoToServer>
         { /* Only display "blog" if we're not minified */
           minified ?
             null :
