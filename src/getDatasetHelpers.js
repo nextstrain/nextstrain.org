@@ -24,9 +24,6 @@ const unauthorized = (req, res) => {
  * roundtrip losslessly.
  */
 const splitPrefixIntoParts = (prefix) => {
-  /* This could be const, but use let to signal to the reader that we use
-   * modifying methods like shift() and splice().
-   */
   const prefixParts = prefix
     .replace(/^\//, '')
     .replace(/\/$/, '')
