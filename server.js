@@ -83,8 +83,39 @@ app.use(express.static(gatsbyAssetPath()));
 app.route("/dist/*")
   .all(expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'}));
 
-
 /* Charon API used by Auspice.
+ */
+app.route("/charon/v2/dataset/")
+  .get([(req, res, next) => {
+    // Add empty prefix
+    req.prefix = '';
+    next();
+  }, auspiceServerHandlers.getAvailable]);
+
+app.route("/charon/v2/dataset/:path*/:type$")
+  .get([(req, res, next) => {
+    // Construct URL from parameters
+    req.query.prefix = path.join(req.params.path, req.params['0'], req.params.type);
+    next();
+  }, auspiceServerHandlers.getDataset]);
+
+app.route("/charon/v2/narrative/:name*")
+  .get([(req, res, next) => {
+    // Construct query prefix, type from parameters
+    [req.params['0'], req.query.type] = req.params['0'].split('.');
+    req.query.prefix = path.join('narratives', req.params.name, req.params['0']);
+    next();
+  }, auspiceServerHandlers.getNarrative]);
+
+app.route("/charon/v2/sourceInfo/:path*")
+.get([(req, res, next) => {
+  // Parse query
+  req.prefix = path.join(req.params.path, req.params['0']);
+  next();
+}, auspiceServerHandlers.getSourceInfo]);
+
+
+/* Preserve legacy (v1) charon API
  */
 app.route("/charon/getAvailable")
   .all(cors({origin: 'http://localhost:8000'})) // allow cross-origin from the gatsby dev server

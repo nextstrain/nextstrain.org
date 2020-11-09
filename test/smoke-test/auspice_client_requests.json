@@ -7,6 +7,13 @@
     "__comment": "We could define JSON schemas for each API and validate the response here"
   },
   {
+    "name": "Fetch core Nextstrain dataset (flu/seasonal/h3n2/ha/2y)",
+    "url": "/charon/v2/dataset/flu/seasonal/h3n2/ha/2y",
+    "expectStatusCode": 200,
+    "responseIsJson": true,
+    "__comment": "We could define JSON schemas for each API and validate the response here"
+  },
+  {
     "name": "Check that the dataset request for /flu redirects to a specific dataset",
     "url": "/charon/getDataset?prefix=/flu",
     "expectStatusCode": 302,
@@ -14,8 +21,21 @@
     "redirectsTo": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y"
   },
   {
+    "name": "Check that the dataset request for /flu redirects to a specific dataset",
+    "url": "/charon/v2/dataset/flu",
+    "expectStatusCode": 302,
+    "responseIsJson": false,
+    "redirectsTo": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y"
+  },
+  {
     "name": "Check that the main getAvailable API call returns a JSON",
     "url": "/charon/getAvailable",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check that the main getAvailable API call returns a JSON",
+    "url": "/charon/v2/dataset",
     "expectStatusCode": 200,
     "responseIsJson": true
   },
@@ -28,6 +48,11 @@
   {
     "name": "Check getDataset API call for a community source with no default datasets returns 204 (No Content)",
     "url": "/charon/getDataset?prefix=/community/jameshadfield/scratch",
+    "expectStatusCode": 204
+  },
+  {
+    "name": "Check getDataset API call for a community source with no default datasets returns 204 (No Content)",
+    "url": "/charon/v2/dataset/community/jameshadfield/scratch",
     "expectStatusCode": 204
   },
   {

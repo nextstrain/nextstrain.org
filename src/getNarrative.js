@@ -18,7 +18,9 @@ const getNarrative = async (req, res) => {
     assert(query.type);
     assert(["markdown", "md"].includes(query.type.toLowerCase()));
   } catch {
-    return res.status(400).send("The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
+    return res.status(400).send("The nextstrain.org server only serves " +
+      "getNarrative requests in markdown format. Please specify a `.md` or `.markdown` file " +
+      "ending for charon/v2/narrative requests (or `?type=md` if using the unversioned charon API)");
   }
 
   /*

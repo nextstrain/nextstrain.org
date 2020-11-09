@@ -2,7 +2,7 @@ const utils = require("./utils");
 const {splitPrefixIntoParts, joinPartsIntoPrefix, unauthorized} = require("./getDatasetHelpers");
 const {ResourceNotFoundError} = require("./exceptions");
 
-/* handler for /charon/getAvailable requests */
+/* handler for /charon/v2/dataset/ and /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
   const {source} = splitPrefixIntoParts(req.prefix);
 
