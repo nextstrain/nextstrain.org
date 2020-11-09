@@ -1,15 +1,24 @@
 const fetch = require('node-fetch');
+const assert = require('assert').strict;
+
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 
 const getNarrative = async (req, res) => {
   const query = req.query;
   const prefix = query.prefix;
-  if (!prefix) {
-    return helpers.handle500Error(res, "No prefix in getNarrative URL query");
+
+  try {
+    assert(prefix);
+  } catch {
+    return res.status(400).send("No prefix in getNarrative URL query");
   }
-  if (!query.type || !["markdown", "md"].includes(query.type.toLowerCase())) {
-    return helpers.handle500Error(res, "The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
+
+  try {
+    assert(query.type);
+    assert(["markdown", "md"].includes(query.type.toLowerCase()));
+  } catch {
+    return res.status(400).send("The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
   }
 
   /*

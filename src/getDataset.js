@@ -1,4 +1,6 @@
 const queryString = require("query-string");
+const assert = require('assert').strict;
+
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const {NoDatasetPathError} = require("./exceptions");
@@ -91,8 +93,10 @@ const requestMainDataset = async (res, fetchUrls) => {
  */
 const getDataset = async (req, res) => {
   const query = queryString.parse(req.url.split('?')[1]);
-  if (!query.prefix) {
-    return helpers.handle500Error(res, `getDataset request must define a prefix`);
+  try {
+    assert(query.prefix);
+  } catch {
+    return res.status(400).send('getDataset request must define a prefix');
   }
 
   /*
@@ -122,7 +126,7 @@ const getDataset = async (req, res) => {
       utils.verbose(err.message);
       return res.status(204).end();
     }
-    return helpers.handle500Error(res, `Couldn't parse the url "${query.prefix}"`, err.message);
+    return res.status(400).send(`Couldn't parse the url "${query.prefix}"`);
   }
 
   const {source, dataset, fetchUrls, auspiceDisplayUrl} = datasetInfo;
