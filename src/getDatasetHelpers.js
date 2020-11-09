@@ -1,7 +1,7 @@
 const utils = require("./utils");
 const sources = require("./sources");
 
-const handleError = (res, clientMsg, serverMsg="") => {
+const handle500Error = (res, clientMsg, serverMsg="") => {
   utils.warn(`${clientMsg} -- ${serverMsg}`);
   return res.status(500).type("text/plain").send(clientMsg);
 };
@@ -230,7 +230,7 @@ const parsePrefix = (prefix, otherQueries) => {
 module.exports = {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
-  handleError,
+  handle500Error,
   unauthorized,
   parsePrefix
 };

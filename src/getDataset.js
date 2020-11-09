@@ -92,7 +92,7 @@ const requestMainDataset = async (res, fetchUrls) => {
 const getDataset = async (req, res) => {
   const query = queryString.parse(req.url.split('?')[1]);
   if (!query.prefix) {
-    return helpers.handleError(res, `getDataset request must define a prefix`);
+    return helpers.handle500Error(res, `getDataset request must define a prefix`);
   }
 
   /*
@@ -122,7 +122,7 @@ const getDataset = async (req, res) => {
       utils.verbose(err.message);
       return res.status(204).end();
     }
-    return helpers.handleError(res, `Couldn't parse the url "${query.prefix}"`, err.message);
+    return helpers.handle500Error(res, `Couldn't parse the url "${query.prefix}"`, err.message);
   }
 
   const {source, dataset, fetchUrls, auspiceDisplayUrl} = datasetInfo;
@@ -148,7 +148,7 @@ const getDataset = async (req, res) => {
     try {
       await requestCertainFileType(res, req, fetchUrls.additional, query);
     } catch (err) {
-      return helpers.handleError(res, `Couldn't fetch JSON: ${fetchUrls.additional}`, err.message);
+      return helpers.handle500Error(res, `Couldn't fetch JSON: ${fetchUrls.additional}`, err.message);
     }
   } else {
     try {
@@ -158,7 +158,7 @@ const getDataset = async (req, res) => {
         utils.verbose("Request is valid, but no dataset available. Returning 204.");
         return res.status(204).end();
       }
-      return helpers.handleError(res, `Couldn't fetch JSONs`, err.message);
+      return helpers.handle500Error(res, `Couldn't fetch JSONs`, err.message);
     }
   }
   return undefined;

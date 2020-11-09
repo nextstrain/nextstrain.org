@@ -6,10 +6,10 @@ const getNarrative = async (req, res) => {
   const query = req.query;
   const prefix = query.prefix;
   if (!prefix) {
-    return helpers.handleError(res, "No prefix in getNarrative URL query");
+    return helpers.handle500Error(res, "No prefix in getNarrative URL query");
   }
   if (!query.type || !["markdown", "md"].includes(query.type.toLowerCase())) {
-    return helpers.handleError(res, "The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
+    return helpers.handle500Error(res, "The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
   }
 
   /*
@@ -49,7 +49,7 @@ const getNarrative = async (req, res) => {
     res.set("Content-Type", "text/markdown");
     return response.body.pipe(res);
   } catch (err) {
-    return helpers.handleError(res, `Narratives couldn't be served -- ${err.message}`);
+    return helpers.handle500Error(res, `Narratives couldn't be served -- ${err.message}`);
   }
 };
 
