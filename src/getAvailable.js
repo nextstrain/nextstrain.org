@@ -1,14 +1,10 @@
 const utils = require("./utils");
-const queryString = require("query-string");
 const {splitPrefixIntoParts, joinPartsIntoPrefix, unauthorized} = require("./getDatasetHelpers");
 const {ResourceNotFoundError} = require("./exceptions");
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
-  const prefix = queryString.parse(req.url.split('?')[1]).prefix || "";
-  utils.verbose(`getAvailable prefix: "${prefix}"`);
-
-  const {source} = splitPrefixIntoParts(prefix);
+  const {source} = splitPrefixIntoParts(req.prefix);
 
   // Authorization
   if (!source.visibleToUser(req.user)) {

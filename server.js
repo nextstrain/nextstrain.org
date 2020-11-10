@@ -9,6 +9,7 @@ const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./src/utils");
 const cors = require('cors');
+const queryString = require("query-string");
 
 const production = process.env.NODE_ENV === "production";
 
@@ -87,16 +88,29 @@ app.route("/dist/*")
  */
 app.route("/charon/getAvailable")
   .all(cors({origin: 'http://localhost:8000'})) // allow cross-origin from the gatsby dev server
-  .get(auspiceServerHandlers.getAvailable);
+  .get([(req, res, next) => {
+    // Parse prefix
+    req.prefix = queryString.parse(req.url.split('?')[1]).prefix || "";
+    utils.verbose(`getAvailable prefix: "${req.prefix}"`);
+    next();
+  }, auspiceServerHandlers.getAvailable]);
 
 app.route("/charon/getDataset")
-  .get(auspiceServerHandlers.getDataset);
+  .get([(req, res, next) => {
+    // Parse query
+    req.query = queryString.parse(req.url.split('?')[1]);
+    next();
+  }, auspiceServerHandlers.getDataset]);
 
 app.route("/charon/getNarrative")
   .get(auspiceServerHandlers.getNarrative);
 
 app.route("/charon/getSourceInfo")
-  .get(auspiceServerHandlers.getSourceInfo);
+  .get([(req, res, next) => {
+    // Parse query
+    req.prefix = queryString.parse(req.url.split('?')[1]).prefix;
+    next();
+  }, auspiceServerHandlers.getSourceInfo]);
 
 app.route("/charon/*")
   .all((req, res) => res.status(404).end());

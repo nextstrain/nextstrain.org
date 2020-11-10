@@ -1,4 +1,3 @@
-const queryString = require("query-string");
 const assert = require('assert').strict;
 
 const helpers = require("./getDatasetHelpers");
@@ -8,16 +7,17 @@ const {ResourceNotFoundError} = require("./exceptions");
  * Prototype implementation.
  */
 const getSourceInfo = async (req, res) => {
-  const query = queryString.parse(req.url.split('?')[1]);
+  const prefix = req.prefix;
+
   try {
-    assert(query.prefix);
+    assert(prefix);
   } catch {
     return res.status(400).send("No prefix defined");
   }
 
   let sourceInfo;
   try {
-    const {source} = helpers.splitPrefixIntoParts(query.prefix);
+    const {source} = helpers.splitPrefixIntoParts(prefix);
 
     // Authorization
     if (!source.visibleToUser(req.user)) {

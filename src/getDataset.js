@@ -1,4 +1,3 @@
-const queryString = require("query-string");
 const assert = require('assert').strict;
 const path = require('path');
 
@@ -96,7 +95,8 @@ const requestMainDataset = async (res, fetchUrls) => {
  * @param {Response} res
  */
 const getDataset = async (req, res) => {
-  const query = queryString.parse(req.url.split('?')[1]);
+  const query = req.query;
+
   try {
     assert(query.prefix);
   } catch {
