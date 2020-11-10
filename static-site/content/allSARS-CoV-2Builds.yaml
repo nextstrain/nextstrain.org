@@ -93,6 +93,25 @@ builds:
       url: null
 
   - url: null
+    name: Canada
+    geo: canada
+    parentGeo: north-america
+    org: null
+
+  - url: null
+    name: Quebec
+    geo: quebec
+    parentGeo: canada
+    org: null
+
+  - url: https://covseq.ca/
+    name: CoVSeQ
+    geo: quebec
+    org:
+      name: CoVSeQ Partnership
+      url: https://covseq.ca/about
+
+  - url: null
     name: USA
     geo: usa
     parentGeo: north-america
