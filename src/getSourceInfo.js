@@ -1,4 +1,6 @@
 const queryString = require("query-string");
+const assert = require('assert').strict;
+
 const helpers = require("./getDatasetHelpers");
 
 /**
@@ -6,9 +8,12 @@ const helpers = require("./getDatasetHelpers");
  */
 const getSourceInfo = async (req, res) => {
   const query = queryString.parse(req.url.split('?')[1]);
-  if (!query.prefix) {
-    throw new Error("No prefix defined");
+  try {
+    assert(query.prefix);
+  } catch {
+    return res.status(400).send("No prefix defined");
   }
+
   const {source} = helpers.splitPrefixIntoParts(query.prefix);
 
   // Authorization
