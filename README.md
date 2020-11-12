@@ -40,11 +40,20 @@ You'll need AWS credentials configured (via environment or `~/.aws/credentials`)
 If you add a new profile to `~/.aws/credentials`, you can then tell the local nextstrain.org server to use it by setting `AWS_PROFILE=...`.
 
 ---
-## Splash & documentation pages
-These are found in `./static-site/`.
-See [static-site/README.md](./static-site/README.md) for instructions on how to add content (e.g. docs) and develop this portion of the site in isolation.
-In production, this is built using Gatsby (`npm run build`) and served via the nextstrain.org server (`npm run server`).
 
+## Splash page (and other misc pages)
+There are a number of pages built using Gatsby and found in `./static-site/`.
+See [static-site/README.md](./static-site/README.md) for instructions on how to add content and develop this portion of the site in isolation.
+In production, these are compiled (`npm run build`) and served via the nextstrain.org server (`npm run server`).
+
+---
+## Documentation
+
+Nextstrain documentation is hosted by Read The Docs at [docs.nextstrain.org](https://docs.nextstrain.org).
+Please see [this GitHub repo](https://github.com/nextstrain/docs.nextstrain.org/) for more details.
+
+> Note that the documentation used to be served from the server in this repo at URLs such as nextstain.org/docs/... until [November 2020](https://github.com/nextstrain/nextstrain.org/pull/226).
+A number of [redirects](./redirects.js) have been added to preserve old URLs.
 
 ---
 ## Auspice client
