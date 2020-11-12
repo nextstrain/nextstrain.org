@@ -180,8 +180,8 @@ export const StrongerText = styled.span`
   font-weight: 500;
 `;
 
-export const Button = ({to, children}) => (
-  <a href={to}>
+export const Button = ({to, children, target, rel}) => (
+  <a href={to} target={target} rel={rel}>
     <ButtonContainer>
       {children}
     </ButtonContainer>

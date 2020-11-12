@@ -120,14 +120,8 @@ class NavBar extends React.Component {
         {this.getLogo()}
         {this.getLogoType()}
         <div style={{flex: 5}}/>
-        {this.selectedClass("help") ?
-          <NavLinkInactive minified={minified}>HELP</NavLinkInactive> :
-          <NavLinkToBeHandledByGatsby minified={minified} to="/help">HELP</NavLinkToBeHandledByGatsby>
-        }
-        {this.selectedClass("docs") ?
-          <NavLinkInactive minified={minified}>DOCS</NavLinkInactive> :
-          <NavLinkToBeHandledByGatsby minified={minified} to="/docs">DOCS</NavLinkToBeHandledByGatsby>
-        }
+        <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" >HELP</NavLinkToGoToServer>
+        <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</NavLinkToGoToServer>
         { /* Only display "blog" if we're not minified */
           minified ?
             null :

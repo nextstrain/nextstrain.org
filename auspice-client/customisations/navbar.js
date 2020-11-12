@@ -59,9 +59,9 @@ const getStyles = ({minified=true, width}={}) => ({
   }
 });
 
-const renderLink = (text, url, style) => (
-  <a key={text} style={style} href={url}>
-    {text}
+const Link = (props) => (
+  <a key={props.text} href={props.href} style={props.style} target={props.target} rel={props.rel}>
+    {props.text}
   </a>
 );
 
@@ -92,8 +92,8 @@ class WhoAmI extends React.Component {
     return (
       <div>
         { this.state.user
-          ? renderLink(`👤 ${this.state.user.username}`, "/whoami", styles.link)
-          : renderLink("LOGIN", "/login", styles.link) }
+          ? <Link text={`👤 ${this.state.user.username}`} href="/whoami" style={styles.link}/>
+          : <Link text="LOGIN" href="/login" style={styles.link}/> }
       </div>
     );
   }
@@ -123,8 +123,8 @@ const NavBar = ({sidebar, narrativeTitle, width}) => {
           null : (
             <div style={{...styles.flexColumns, paddingRight: "12px"}}>
               <div style={{flex: 5}}/>
-              {renderLink("DOCS", "/docs", styles.link)}
-              {renderLink("HELP", "/help", styles.link)}
+              <Link href="https://docs.nextstrain.org/en/latest/index.html" style={styles.link} text="DOCS"/>
+              <Link href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" style={styles.link} text="HELP"/>
               <WhoAmI sidebar={sidebar}/>
             </div>
           )

@@ -94,8 +94,8 @@ class Splash extends React.Component {
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
-            Analyses by independent groups <Link to="/docs/contributing/community-builds">stored and
-            accessed via public GitHub repos</Link>
+            Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
+            accessed via public GitHub repos</a>
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 
@@ -203,7 +203,7 @@ class Splash extends React.Component {
         <BigSpacer/>
 
         <FlexCenter>
-          <Styles.Button to="docs">
+          <Styles.Button to="https://docs.nextstrain.org/en/latest/index.html">
             Read the documentation
           </Styles.Button>
         </FlexCenter>
