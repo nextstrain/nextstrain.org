@@ -1,6 +1,7 @@
 const utils = require("./utils");
 const queryString = require("query-string");
 const {splitPrefixIntoParts, joinPartsIntoPrefix, unauthorized} = require("./getDatasetHelpers");
+const {ResourceNotFoundError} = require("./exceptions");
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
@@ -14,8 +15,17 @@ const getAvailable = async (req, res) => {
     return unauthorized(req, res);
   }
 
-  const datasets = await source.availableDatasets() || [];
-  const narratives = await source.availableNarratives() || [];
+  let datasets;
+  let narratives;
+
+  try {
+    datasets = await source.availableDatasets() || [];
+    narratives = await source.availableNarratives() || [];
+  } catch (err) {
+    if (err instanceof ResourceNotFoundError) {
+      return res.status(404).send("The requested URL does not exist.");
+    }
+  }
 
   if (!datasets || !datasets.length) {
     utils.verbose(`No datasets available for ${source.name}`);

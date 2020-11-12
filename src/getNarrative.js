@@ -52,7 +52,9 @@ const getNarrative = async (req, res) => {
   try {
     utils.log(`Fetching narrative ${fetchURL} and streaming to client for parsing`);
     const response = await fetch(fetchURL);
-    if (!(response.status === 200 || response.status === 304)) {
+    if (response.status === 404) {
+      return res.status(404).send("The requested URL does not exist.");
+    } else if (!(response.status === 200 || response.status === 304)) {
       throw new Error(`Failed to fetch ${fetchURL}: ${response.status} ${response.statusText}`);
     }
     res.set("Content-Type", "text/markdown");

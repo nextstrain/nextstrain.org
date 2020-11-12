@@ -2,6 +2,7 @@ const queryString = require("query-string");
 const assert = require('assert').strict;
 
 const helpers = require("./getDatasetHelpers");
+const {ResourceNotFoundError} = require("./exceptions");
 
 /**
  * Prototype implementation.
@@ -25,6 +26,10 @@ const getSourceInfo = async (req, res) => {
   try {
     sourceInfo = await source.getInfo();
   } catch (err) {
+    if (err instanceof ResourceNotFoundError) {
+      return res.status(404).send("The requested URL does not exist");
+    }
+
     return helpers.handle500Error(res, 'Error processing source info', err.message);
   }
   return res.json(sourceInfo);

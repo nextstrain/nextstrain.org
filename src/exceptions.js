@@ -7,6 +7,12 @@ class NextstrainError extends Error {
   }
 }
 
+class ResourceNotFoundError extends NextstrainError {
+  constructor(msg = "The requested URLs do not exist", ...rest) {
+    super(msg, ...rest);
+  }
+}
+
 /* Thrown when a valid Source object is asked to create a new Dataset object
  * without a dataset path.
  */
@@ -28,5 +34,6 @@ class InvalidSourceImplementation extends NextstrainError {
 
 module.exports = {
   InvalidSourceImplementation,
+  ResourceNotFoundError,
   NoDatasetPathError
 };

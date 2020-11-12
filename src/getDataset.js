@@ -3,7 +3,7 @@ const assert = require('assert').strict;
 
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
-const {NoDatasetPathError} = require("./exceptions");
+const {ResourceNotFoundError, NoDatasetPathError} = require("./exceptions");
 const auspice = require("auspice");
 const request = require('request');
 
@@ -73,6 +73,9 @@ const requestMainDataset = async (res, fetchUrls) => {
           res.send(dataToReturn);
           return resolve();
         }
+        /* Check for a 404 status code after we've had the opportunity to do a
+        follow-up request for a V1 dataset. */
+        if (response.statusCode === 404) reject(new ResourceNotFoundError());
         return reject(dataToReturn);
       });
   });
@@ -152,6 +155,9 @@ const getDataset = async (req, res) => {
     try {
       await requestCertainFileType(res, req, fetchUrls.additional, query);
     } catch (err) {
+      if (err instanceof ResourceNotFoundError) {
+        return res.status(404).send("The requested dataset does not exist.");
+      }
       return helpers.handle500Error(res, `Couldn't fetch JSON: ${fetchUrls.additional}`, err.message);
     }
   } else {
@@ -162,6 +168,11 @@ const getDataset = async (req, res) => {
         utils.verbose("Request is valid, but no dataset available. Returning 204.");
         return res.status(204).end();
       }
+
+      if (err instanceof ResourceNotFoundError) {
+        return res.status(404).send("The requested URL does not exist.");
+      }
+
       return helpers.handle500Error(res, `Couldn't fetch JSONs`, err.message);
     }
   }

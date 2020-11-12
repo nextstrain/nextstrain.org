@@ -71,10 +71,9 @@
     "responseIsJson": true
   },
   {
-    "name": "Check getDatset API for a dataset which doesn't exist returns 500 (Internal Server Error)",
-    "__comment": "There are open issues to differentiate dataset errors vs datasets which don't exist",
+    "name": "Check getDatset API for a dataset which doesn't exist returns 404",
     "url": "/charon/getDataset?prefix=/ncov/doesntExist",
-    "expectStatusCode": 500
+    "expectStatusCode": 404
   },
   {
     "name": "Check getDataset API for sidecar file tip-frequencies",
