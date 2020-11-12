@@ -5,7 +5,7 @@ const setup = (app) => {
 
   /* send auspice to the auspice docs (currently hosted on docs.nextstrain.org) */
   app.route("/auspice")
-    .get((req, res) => res.redirect('https://docs.nextstrain.org/projects/auspice/en/migrate-docs/'));
+    .get((req, res) => res.redirect('https://docs.nextstrain.org/projects/auspice/en/latest/'));
 
   /* we don't yet have a community page */
   app.route("/community")
@@ -52,10 +52,15 @@ const setup = (app) => {
   conflates a language part ("zh") with a region ("europe") so we want to keep zh out of the manifest JSON */
   app.route("/ncov/zh").get((req, res) => res.redirect("/ncov/global/zh"));
 
-  // DOCS, HELP Redirects for docs migration:
+  /**
+   * DOCS & HELP Redirects
+   * In November 2020 we shifted the docs from being hosted by this server
+   * at nextstrain.org/docs and nextstrain.org/help
+   * to a Read The Docs setup running at docs.nextstrain.org.
+   * This block contains the appropriate redirects
+   */
   const mainReadTheDocs = "https://docs.nextstrain.org/en/latest";
-  const augurReadTheDocs = "https://docs.nextstrain.org/projects/augur/en/migrate-docs";
-
+  const augurReadTheDocs = "https://docs.nextstrain.org/projects/augur/en/latest";
   const docsRedirects = {
     "/docs": `${mainReadTheDocs}`,
     "/help": `${mainReadTheDocs}/learn/about-nextstrain.html`,
@@ -71,8 +76,8 @@ const setup = (app) => {
     "/docs/getting-started/container-installation": `${mainReadTheDocs}/guides/install/cli-install.html`,
     "/docs/getting-started/quickstart": `${mainReadTheDocs}/tutorials/quickstart.html`,
     "/docs/getting-started/windows-help": `${mainReadTheDocs}/guides/install/windows-help.html`,
-    "/docs/bioinformatics/introduction-to-augur": `${augurReadTheDocs}/faq/introduction-to-augur.html`,
-    "/docs/bioinformatics/introduction": `${augurReadTheDocs}/faq/introduction-to-augur.html`,
+    "/docs/bioinformatics/introduction-to-augur": `${augurReadTheDocs}/index.html`,
+    "/docs/bioinformatics/introduction": `${augurReadTheDocs}/faq/index.html`,
     "/docs/bioinformatics/what-is-a-build": `${augurReadTheDocs}/faq/what-is-a-build.html`,
     "/docs/bioinformatics/data-formats": `${mainReadTheDocs}/reference/formats/data-formats.html`,
     "/docs/bioinformatics/output-jsons": `${mainReadTheDocs}/reference/formats/data-formats.html`,
@@ -110,7 +115,7 @@ const setup = (app) => {
 
   for (const [from, to] of Object.entries(docsRedirects)) {
     app.route([from])
-    .get((req, res) => res.redirect(to));
+      .get((req, res) => res.redirect(to));
   }
 
 };
