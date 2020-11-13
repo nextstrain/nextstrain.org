@@ -1,5 +1,6 @@
 const queryString = require("query-string");
 const assert = require('assert').strict;
+const path = require('path');
 
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
@@ -140,7 +141,7 @@ const getDataset = async (req, res) => {
   }
 
   const baseUrl = req.url.split(query.prefix)[0];
-  let redirectUrl = baseUrl + '/' + auspiceDisplayUrl;
+  let redirectUrl = path.join(baseUrl, auspiceDisplayUrl);
   if (query.type) {
     redirectUrl += `&type=${query.type}`;
   }
