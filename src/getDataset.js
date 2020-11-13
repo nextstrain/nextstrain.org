@@ -112,7 +112,7 @@ const getDataset = async (req, res) => {
     return res.redirect("getDataset?prefix=/groups" + query.prefix);
   }
 
-  utils.log(`Getting (nextstrain) datasets for: ${req.url.split('?')[1]}`);
+  utils.log(`Getting (nextstrain) datasets for prefix: ${query.prefix}`);
 
   // construct fetch URL
   let datasetInfo;
