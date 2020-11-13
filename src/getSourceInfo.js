@@ -25,7 +25,7 @@ const getSourceInfo = async (req, res) => {
   try {
     sourceInfo = await source.getInfo();
   } catch (err) {
-    return helpers.handle500Error(res, `No source info available`, err.message);
+    return helpers.handle500Error(res, 'Error processing source info', err.message);
   }
   return res.json(sourceInfo);
 };
