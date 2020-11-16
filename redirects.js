@@ -60,7 +60,7 @@ const setup = (app) => {
    * This block contains the appropriate redirects
    */
   const mainReadTheDocs = "https://docs.nextstrain.org/en/latest";
-  const augurReadTheDocs = "https://docs.nextstrain.org/projects/augur/en/latest";
+  const augurReadTheDocs = "https://docs.nextstrain.org/projects/augur/en/stable";
   const docsRedirects = {
     "/docs": `${mainReadTheDocs}`,
     "/help": `${mainReadTheDocs}/learn/about-nextstrain.html`,
