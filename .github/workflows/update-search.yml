@@ -1,6 +1,10 @@
 name: 'update nextstrain.org/search from latest datasets in s3'
 
 on:
+  push:
+    branches:
+      - update-search
+
   schedule:
     # * is a special character in YAML so you have to quote this string
     # "At 01:00 UTC on every day-of-week from Tuesday through Saturday. 
