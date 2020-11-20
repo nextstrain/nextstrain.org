@@ -21,20 +21,18 @@ on:
     types: update-search
 
 jobs:
-  ingest:
+  update-search:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
         node-version: 14
-    - name: install dependencies
+    - name: update sars-cov-2 search
       run: |
         npm ci
         python3 -m pip install --upgrade pip setuptools
         python3 -m pip install nextstrain-cli
-    - name: update sars-cov-2 search
-      run: |
         ./scripts/collect-search-results.js --pathogen sars-cov-2
         nextstrain remote upload s3://nextstrain-data ./data/search_sars-cov-2.json
       env:
