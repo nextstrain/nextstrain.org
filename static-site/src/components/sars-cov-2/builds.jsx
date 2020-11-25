@@ -1,8 +1,11 @@
 import React from "react";
 import { FaChartArea } from "react-icons/fa";
+import Collapsible from "react-collapsible";
+import { orderBy } from "lodash";
 import { SmallSpacer, MediumSpacer, HugeSpacer } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import allSARSCoV2Builds from "../../../content/allSARS-CoV-2Builds.yaml";
+import CollapseTitle from "../Misc/collapse-title";
 
 /*
 * This is a page to display all builds for SARS-CoV-2 in one place.
@@ -43,11 +46,25 @@ class Index extends React.Component {
       .filter((b) => b.parentGeo === header.geo && b.url === null);
     return (
       <div key={header.name}>
-        <splashStyles.Heading fontSize={fontSize}>{header.name}</splashStyles.Heading>
-        <div key={`${header.name}-children`} style={{marginLeft: "20px"}}>
-          {children.length > 0 && children.map((child) => buildComponent(child))}
-          {subHeaders.length > 0 && subHeaders.map((subHeader) => this.subBuilds(subHeader, fontSize > 16 ? fontSize-2 : fontSize))}
-        </div>
+        <Collapsible
+          triggerWhenOpen={<CollapseTitle name={header.name} isExpanded />}
+          trigger={<CollapseTitle name={header.name} />}
+          triggerStyle={{cursor: "pointer", textDecoration: "none"}}
+        >
+          {/* Begin collapsible content */}
+          <div key={`${header.name}-children`}>
+            <div className="row">
+              {children.length > 0 && children.map((child) => (
+                <div className="col-sm-4">
+                  {buildComponent(child)}
+                </div>
+              ))}
+            </div>
+            <div style={{marginLeft: "20px"}}>
+              {subHeaders.length > 0 && orderBy(subHeaders, ["name"]).map((subHeader) => this.subBuilds(subHeader, fontSize > 16 ? fontSize-2 : fontSize))}
+            </div>
+          </div>
+        </Collapsible>
       </div>);
   }
 
