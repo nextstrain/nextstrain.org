@@ -39,7 +39,7 @@ class Index extends React.Component {
     this.buildTree = this.buildTree.bind(this);
   }
 
-  subBuilds(header, fontSize=20) {
+  subBuilds(header, expanded=false, fontSize=20) {
     const children = allSARSCoV2Builds.builds
       .filter((b) => b.geo === header.geo && b.url !== null);
     const subHeaders = allSARSCoV2Builds.builds
@@ -50,6 +50,8 @@ class Index extends React.Component {
           triggerWhenOpen={<CollapseTitle name={header.name} isExpanded />}
           trigger={<CollapseTitle name={header.name} />}
           triggerStyle={{cursor: "pointer", textDecoration: "none"}}
+          transitionTime={100}
+          open={expanded}
         >
           {/* Begin collapsible content */}
           <div key={`${header.name}-children`}>
@@ -61,7 +63,10 @@ class Index extends React.Component {
               ))}
             </div>
             <div style={{marginLeft: "20px"}}>
-              {subHeaders.length > 0 && orderBy(subHeaders, ["name"]).map((subHeader) => this.subBuilds(subHeader, fontSize > 16 ? fontSize-2 : fontSize))}
+              {subHeaders.length > 0 && orderBy(subHeaders, ["name"]).map((subHeader) =>
+                this.subBuilds(subHeader,
+                  subHeaders.length < 5,
+                  fontSize > 16 ? fontSize-2 : fontSize))}
             </div>
           </div>
         </Collapsible>
