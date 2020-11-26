@@ -1,10 +1,6 @@
 name: 'update nextstrain.org/search from latest datasets in s3'
 
 on:
-  push:
-    branches:
-      - update-search
-
   schedule:
     # * is a special character in YAML so you have to quote this string
     # "At 01:00 UTC on every day-of-week from Tuesday through Saturday. 
@@ -15,10 +11,6 @@ on:
     # so this update will lag behind that by ~9 hours. It can also be
     # triggered from the command line at any time with a respository_dispatch (below)."
     - cron:  '0 1 * * TUE-SAT'
-
-  # Manually triggered using `./bin/trigger update-search`
-  repository_dispatch:
-    types: update-search
 
 jobs:
   update-search:
