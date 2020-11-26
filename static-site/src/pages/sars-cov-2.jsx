@@ -39,7 +39,7 @@ const contents = [
         <a href="https://nextstrain.org/ncov/europe"> Europe</a>,
         <a href="https://nextstrain.org/ncov/asia"> Asia</a>,
         <a href="https://nextstrain.org/ncov/africa"> Africa</a>, and
-        <a href="https://nextstrain.org/ncov/oceania"> Oceania</a>,
+        <a href="https://nextstrain.org/ncov/oceania"> Oceania</a>.
       </span>
     )
   },
