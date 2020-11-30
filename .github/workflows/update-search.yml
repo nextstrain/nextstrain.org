@@ -1,0 +1,34 @@
+name: 'update nextstrain.org/search from latest datasets in s3'
+
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # "At 01:00 UTC on every day-of-week from Tuesday through Saturday. 
+    # This works out to 17:00 Monday-Friday Pacific Time, i.e. the time
+    # by which the ncov build has usually been published to s3 when it
+    # is being run by folks in Seattle. When it is being run by folks
+    # in Switzerland, ncov build data is usually published by 16:00 UTC,
+    # so this update will lag behind that by ~9 hours. It can also be
+    # triggered from the command line at any time with a respository_dispatch (below)."
+    - cron:  '0 1 * * TUE-SAT'
+
+jobs:
+  update-search:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - name: update sars-cov-2 search
+      run: |
+        npm ci
+        python3 -m pip install --upgrade pip setuptools
+        python3 -m pip install nextstrain-cli
+        PATH="$HOME/.local/bin:$PATH"
+        ./scripts/collect-search-results.js --pathogen sars-cov-2
+        nextstrain remote upload s3://nextstrain-data ./data/search_sars-cov-2.json
+      env:
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
