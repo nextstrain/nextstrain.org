@@ -87,7 +87,7 @@ export const SitRepTitle = styled.div`
     font-size: 18px;
   }
   border-radius: 3px;
-  padding: 10px 20px 10px 20px;
+  padding: 5px 20px 10px 20px;
   top: 40px;
   left: 20px;
 `;

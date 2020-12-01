@@ -19,6 +19,13 @@ export const FlexGrid = styled.div`
   flex-wrap: wrap;
 `;
 
+export const FlexGridLeft = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+`;
+
 export const SmallSpacer = styled.div`
   height: 5px;
 `;

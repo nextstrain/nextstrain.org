@@ -2,7 +2,7 @@ import React from "react";
 import { FaChartArea } from "react-icons/fa";
 import Collapsible from "react-collapsible";
 import { orderBy } from "lodash";
-import { SmallSpacer, MediumSpacer, HugeSpacer } from "../../layouts/generalComponents";
+import { SmallSpacer, MediumSpacer, HugeSpacer, FlexGridLeft } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import allSARSCoV2Builds from "../../../content/allSARS-CoV-2Builds.yaml";
 import CollapseTitle from "../Misc/collapse-title";
@@ -55,19 +55,21 @@ class Index extends React.Component {
         >
           {/* Begin collapsible content */}
           <div key={`${header.name}-children`}>
-            <div className="row">
-              {children.length > 0 && children.map((child) => (
-                <div className="col-sm-4">
-                  {buildComponent(child)}
-                </div>
-              ))}
-            </div>
-            <div style={{marginLeft: "20px"}}>
-              {subHeaders.length > 0 && orderBy(subHeaders, ["name"]).map((subHeader) =>
-                this.subBuilds(subHeader,
-                  subHeaders.length < 5,
-                  fontSize > 16 ? fontSize-2 : fontSize))}
-            </div>
+            {children.length > 0 &&
+              <FlexGridLeft style={{marginBottom: "10px"}}>
+                {children.map((child) => (
+                  <div>
+                    {buildComponent(child)}
+                  </div>
+                ))}
+              </FlexGridLeft>}
+            {subHeaders.length > 0 &&
+              <div style={{marginLeft: "20px"}}>
+                {orderBy(subHeaders, ["name"]).map((subHeader) =>
+                  this.subBuilds(subHeader,
+                    subHeaders.length < 5,
+                    fontSize > 16 ? fontSize-2 : fontSize))}
+              </div>}
           </div>
         </Collapsible>
       </div>);
