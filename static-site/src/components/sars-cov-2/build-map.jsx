@@ -124,7 +124,7 @@ class BuildMap extends React.Component {
     this.setState({zoomToIndex: buildIndex});
   }
 
-  onMapMove(d) {
+  onMapMove() {
     this.setState({zoomToIndex: null});
   }
 
