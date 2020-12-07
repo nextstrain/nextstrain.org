@@ -104,7 +104,7 @@ const colorScale = zipObject(regions, colors);
 const Legend = () => (
   <FlexGridLeft style={{width: 500}}>
     {Object.entries(colorScale).map((regionColor) => (
-      <div>
+      <div key={regionColor[0]}>
         {circle(regionColor[1])}
         {regionColor[0]}
       </div>
@@ -130,9 +130,8 @@ class BuildMap extends React.Component {
 
   MapMarker = (build, index) => {
     const isNextstrainBuild = build.org.name === "Nextstrain Team";
-    return (<div>
+    return (<div key={index}>
       <Marker
-        key={index}
         coordinates={build.coords}
         anchor="bottom"
         onClick={() => this.onMarkerClick(index)}

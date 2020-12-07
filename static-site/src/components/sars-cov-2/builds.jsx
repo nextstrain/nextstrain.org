@@ -60,7 +60,7 @@ class Index extends React.Component {
             {children.length > 0 &&
               <FlexGridLeft style={{marginBottom: "10px"}}>
                 {children.map((child) => (
-                  <div>
+                  <div key={child.url}>
                     {buildComponent(child)}
                   </div>
                 ))}
