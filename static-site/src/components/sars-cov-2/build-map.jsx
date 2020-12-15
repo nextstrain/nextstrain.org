@@ -123,10 +123,6 @@ class BuildMap extends React.Component {
     };
   }
 
-  onMarkerClick(buildIndex) {
-    this.setState({zoomToIndex: buildIndex});
-  }
-
   onMapMove() {
     this.setState({zoomToIndex: null});
   }
@@ -137,28 +133,23 @@ class BuildMap extends React.Component {
       <Marker
         coordinates={build.coords}
         anchor="bottom"
-        onClick={() => this.onMarkerClick(index)}
       >
-        <MapMarkerContainer data-tip data-for={build.url} data-delay-hide="1000">
-          {isNextstrainBuild ?
-            <img alt="marker"
-              width="30px"
-              height="auto"
-              src={nextstrainLogo}
-            />
-            :
-            circle(colorScale[build.region] || "black")
-          }
+        <MapMarkerContainer data-tip data-for={build.url} data-delay-hide="500">
+          <a href={build.url}>
+            {isNextstrainBuild ?
+              <img alt="marker"
+                width="30px"
+                height="auto"
+                src={nextstrainLogo}
+              />
+              :
+              circle(colorScale[build.region] || "black")
+            }
+          </a>
         </MapMarkerContainer>
       </Marker>
-      <StyledTooltip type="light" id={build.url} effect="solid" data-delay-hide={1000}>
-        <a href={build.url}>{build.name}</a>
-        {" ("}
-        {isNextstrainBuild ?
-          "Nextstrain Team" :
-          <a href={build.org.url}>{build.org.name}</a>
-        }
-        {")"}
+      <StyledTooltip type="light" id={build.url} effect="solid" data-delay-hide={500}>
+        {`${build.name} (${build.org.name})`}
       </StyledTooltip>
     </div>
     );
