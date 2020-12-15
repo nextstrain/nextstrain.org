@@ -24,17 +24,10 @@ const getAvailable = async (req, res) => {
     utils.verbose(`No narratives available for ${source.name}`);
   }
 
-  // XXX TODO: This is bad and should go away by refactoring second tree
-  // enumeration into our source classes, potentially as part of the
-  // availableDatasets() method.
-  //   -trs, 3 Oct 2019
-  const secondTreeOptions = (dataset) =>
-    (global.availableDatasets.secondTreeOptions[source.name] || {})[dataset] || [];
-
   return res.json({
     datasets: datasets.map((path) => ({
       request: joinPartsIntoPrefix({source, prefixParts: [path]}),
-      secondTreeOptions: secondTreeOptions(path),
+      secondTreeOptions: source.secondTreeOptions(path),
       buildUrl: source.name === "community"
         ? `https://github.com/${source.repo}`
         : null

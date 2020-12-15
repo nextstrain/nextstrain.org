@@ -37,6 +37,12 @@ class Source {
   narrative(pathParts) {
     return new Narrative(this, pathParts);
   }
+
+  // The computation of these globals should move here.
+  secondTreeOptions(path) {
+    return (global.availableDatasets.secondTreeOptions[this.name] || {})[path] || [];
+  }
+
   availableDatasets() {
     return [];
   }
