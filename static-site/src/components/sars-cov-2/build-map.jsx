@@ -3,7 +3,7 @@ import ReactMapboxGl, { ZoomControl, Marker } from "react-mapbox-gl";
 import isTouchDevice from "is-touch-device";
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
-import { zipObject } from "lodash";
+import { sortBy } from "lodash";
 import nextstrainLogo from '../../../static/logos/nextstrain-logo-small.png';
 
 const MapMarkerContainer = styled.div`
@@ -79,6 +79,14 @@ const LegendContainer = styled.div`
   font-weight: bold;
 `;
 
+const LegendItem = styled.div`
+  padding: 4px;
+`;
+
+const LegendLabel = styled.span`
+  padding: 4px;
+`;
+
 const mapDefaults = {
   center: [0, 40],
   maxBounds: [[-180, -90], [180, 90]],
@@ -94,24 +102,32 @@ const Map = ReactMapboxGl({
   dragPan: !isTouchDevice()
 });
 
-const circle = (fill) => (
-  <svg height="30" width="30">
-    <circle cx="15" cy="11" r="10" stroke="white" strokeWidth="1" fill={fill} />
+const circle = (size, fill) => (
+  <svg height={size+2} width={size+2}>
+    <circle cx={(size+2)/2} cy={(size+2)/2} r={size/2} stroke="white" strokeWidth="1" fill={fill} />
   </svg>
 );
 
-const regions = ["Africa", "Asia", "Europe", "Middle East", "North America", "Oceania", "South America"];
-const colors = ["#3F63CF", "#529AB6", "#75B681", "#A6BE55", "#D4B13F", "#E68133", "#DC2F24"];
-const colorScale = zipObject(regions, colors);
+const NextstrainLogo = (size) => (
+  <img alt="marker"
+    width={`${size}px`}
+    height="auto"
+    src={nextstrainLogo}
+  />
+);
+
+const communityBuildColor = "#529AB6";
 
 const Legend = () => (
   <LegendContainer>
-    {Object.entries(colorScale).map((regionColor) => (
-      <div key={regionColor[0]}>
-        {circle(regionColor[1])}
-        {regionColor[0]}
-      </div>
-    ))}
+    <LegendItem>
+      {NextstrainLogo(20)}
+      <LegendLabel>Nextstrain build</LegendLabel>
+    </LegendItem>
+    <LegendItem>
+      {circle(10, communityBuildColor)}
+      <LegendLabel>Community build</LegendLabel>
+    </LegendItem>
   </LegendContainer>
 );
 
@@ -138,12 +154,12 @@ class BuildMap extends React.Component {
           <a href={build.url}>
             {isNextstrainBuild ?
               <img alt="marker"
-                width="30px"
+                width="20px"
                 height="auto"
                 src={nextstrainLogo}
               />
               :
-              circle(colorScale[build.region] || "black")
+              circle(10, communityBuildColor)
             }
           </a>
         </MapMarkerContainer>
@@ -157,8 +173,11 @@ class BuildMap extends React.Component {
 
   render() {
     let center, zoom;
-    // We don't map the stub builds that are used to define the hierarchy
-    const buildsToMap = this.props.builds.filter((build) => build.url !== null && build.coords !== undefined);
+    const buildsToMap = sortBy(
+      // We don't map the stub builds that are used to define the hierarchy
+      this.props.builds.filter((build) => build.url !== null && build.coords !== undefined),
+      // Nextstrain builds are last so they show up on top
+      (b) => b.org && b.org.name === "Nextstrain Team");
     if (this.state.zoomToIndex !== null) {
       /* map focused on one pin */
       center = buildsToMap[this.state.zoomToIndex].coords;
