@@ -4,7 +4,6 @@ import isTouchDevice from "is-touch-device";
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { zipObject } from "lodash";
-import { FlexGridLeft } from "../../layouts/generalComponents";
 import nextstrainLogo from '../../../static/logos/nextstrain-logo-small.png';
 
 const MapMarkerContainer = styled.div`
@@ -43,7 +42,7 @@ const Flex = styled.div`
 
 const MapContainer = styled.div`
   max-width: 1080px;
-  width: 600px;
+  width: 100%;
   @media (max-width: 720px) {
     width: 100%;
   }
@@ -64,7 +63,11 @@ const MapContainer = styled.div`
 `;
 
 const LegendContainer = styled.div`
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  max-width: 30%;
   position: absolute;
   top: 0;
   left: 0;
@@ -102,14 +105,14 @@ const colors = ["#3F63CF", "#529AB6", "#75B681", "#A6BE55", "#D4B13F", "#E68133"
 const colorScale = zipObject(regions, colors);
 
 const Legend = () => (
-  <FlexGridLeft style={{width: 500}}>
+  <LegendContainer>
     {Object.entries(colorScale).map((regionColor) => (
       <div key={regionColor[0]}>
         {circle(regionColor[1])}
         {regionColor[0]}
       </div>
     ))}
-  </FlexGridLeft>
+  </LegendContainer>
 );
 
 class BuildMap extends React.Component {
@@ -186,11 +189,9 @@ class BuildMap extends React.Component {
             maxBounds={mapDefaults.maxBounds}
             // onDragEnd={() => this.onMapMove()}
           >
-            <LegendContainer id="legend">
-              <Legend />
-            </LegendContainer>
+            <ZoomControl class="zoomcontrolz" zoomDiff={1.0} style={{top: "auto", bottom: "15px", right: "10px"}}/>
+            <Legend />
             {buildsToMap.map((build, index) => this.MapMarker(build, index))}
-            <ZoomControl zoomDiff={1.0}/>
           </Map>
         </MapContainer>
       </Flex>
