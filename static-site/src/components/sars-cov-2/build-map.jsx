@@ -4,6 +4,7 @@ import isTouchDevice from "is-touch-device";
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { sortBy } from "lodash";
+import { FaInfoCircle } from "react-icons/fa";
 import nextstrainLogo from '../../../static/logos/nextstrain-logo-small.png';
 
 const MapMarkerContainer = styled.div`
@@ -72,9 +73,10 @@ const LegendContainer = styled.div`
   top: 0;
   left: 0;
   margin: 12px;
-  background-color: #404040;
-  color: #ffffff;
+  background-color: #f9f9f9;
+  color: #000000;
   z-index: 1002 !important;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px;
   padding: 6px;
   font-weight: bold;
 `;
@@ -85,6 +87,12 @@ const LegendItem = styled.div`
 
 const LegendLabel = styled.span`
   padding: 4px;
+`;
+
+export const LegendIconContainer = styled.span`
+  padding: 2px;
+  cursor: help;
+  color: #888;
 `;
 
 const mapDefaults = {
@@ -123,10 +131,24 @@ const Legend = () => (
     <LegendItem>
       {NextstrainLogo(20)}
       <LegendLabel>Nextstrain build</LegendLabel>
+      <LegendIconContainer data-tip data-for={"nextstrain-build-info"}>
+        <FaInfoCircle/>
+      </LegendIconContainer>
+      <StyledTooltip place="bottom" type="dark" effect="solid" id={"nextstrain-build-info"}>
+        A build maintained by the Nextstrain team.
+      </StyledTooltip>
     </LegendItem>
     <LegendItem>
       {circle(10, communityBuildColor)}
       <LegendLabel>Community build</LegendLabel>
+      <LegendIconContainer data-tip data-for={"community-build-info"}>
+        <FaInfoCircle/>
+      </LegendIconContainer>
+      <StyledTooltip place="bottom" type="dark" effect="solid" id={"community-build-info"}>
+        A build maintained by a group in the scientific community.
+        Not affiliated with Nextstrain.
+        More info about these organizations can be found at the links in the dropdown menu below.
+      </StyledTooltip>
     </LegendItem>
   </LegendContainer>
 );
