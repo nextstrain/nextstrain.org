@@ -192,14 +192,14 @@ class BuildMap extends React.Component {
       <Flex>
         <MapContainer>
           <Map
-            style="mapbox://styles/mapbox/streets-v9" // eslint-disable-line
+            style="https://api.mapbox.com/styles/v1/trvrb/ciu03v244002o2in5hlm3q6w2?access_token=pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2l1MDRoMzg5MDEwbjJvcXBpNnUxMXdwbCJ9.PMqX7vgORuXLXxtI3wISjw" // eslint-disable-line
             containerStyle={{height: "100%", width: "100%"}}
             center={center}
             zoom={[zoom]}
             maxBounds={mapDefaults.maxBounds}
             // onDragEnd={() => this.onMapMove()}
           >
-            <ZoomControl class="zoomcontrolz" zoomDiff={1.0} style={{top: "auto", bottom: "15px", right: "10px"}}/>
+            <ZoomControl zoomDiff={1.0} style={{top: "auto", bottom: "15px", right: "10px"}}/>
             <Legend />
             {buildsToMap.map((build, index) => this.MapMarker(build, index))}
           </Map>
