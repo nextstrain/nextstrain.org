@@ -139,5 +139,10 @@
     "name": "Attempt to access a private Nextstrain Group when not logged in",
     "url": "/charon/getAvailable?prefix=/groups/blab-private",
     "expectStatusCode": 404
+  },
+  {
+    "name": "Fetch from a group which doesn't exist",
+    "url": "/charon/getSourceInfo?prefix=/groups/doesntexist",
+    "expectStatusCode": 500
   }
 ]

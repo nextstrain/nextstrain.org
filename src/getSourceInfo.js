@@ -15,15 +15,15 @@ const getSourceInfo = async (req, res) => {
     return res.status(400).send("No prefix defined");
   }
 
-  const {source} = helpers.splitPrefixIntoParts(query.prefix);
-
-  // Authorization
-  if (!source.visibleToUser(req.user)) {
-    return helpers.unauthorized(req, res);
-  }
-
   let sourceInfo;
   try {
+    const {source} = helpers.splitPrefixIntoParts(query.prefix);
+
+    // Authorization
+    if (!source.visibleToUser(req.user)) {
+      return helpers.unauthorized(req, res);
+    }
+
     sourceInfo = await source.getInfo();
   } catch (err) {
     if (err instanceof ResourceNotFoundError) {
