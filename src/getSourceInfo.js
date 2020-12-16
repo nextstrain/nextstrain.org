@@ -11,6 +11,11 @@ const getSourceInfo = async (req, res) => {
   }
   const {source} = helpers.splitPrefixIntoParts(query.prefix);
 
+  // Authorization
+  if (!source.visibleToUser(req.user)) {
+    return helpers.unauthorized(req, res);
+  }
+
   let sourceInfo;
   try {
     sourceInfo = await source.getInfo();

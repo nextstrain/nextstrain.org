@@ -54,6 +54,11 @@
     "responseIsJson": true
   },
   {
+    "name": "Check getSourceInfo API for a (private) nextstrain groups splash page",
+    "url": "/charon/getSourceInfo?prefix=/groups/blab-private/",
+    "expectStatusCode": 404
+  },
+  {
     "name": "Check getAvailable API for a (public) nextstrain group",
     "url": "/charon/getAvailable?prefix=/groups/blab/",
     "expectStatusCode": 200,
