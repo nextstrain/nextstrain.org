@@ -67,9 +67,9 @@ const contents = [
   },
   {
     type: "external",
-    to: "https://nextstrain.github.io/ncov/",
-    title: "How to run your own phylogenetic analysis of SARS-CoV-2",
-    subtext: "A tutorial walking through running your own analysis using Nextstrain tools"
+    to: "https://github.com/emmahodcroft/cluster_scripts/blob/master/README.md",
+    title: "SARS-CoV-2 Mutations of Interest",
+    subtext: "An overview (not necessarily complete) of a collection of SARS-CoV-2 mutations that are of interest. It should be noted that these mutations are primarily of interest due to spread in Europe: this is simply a reflection that the primary maintainer/author (Emma) is based in Europe and works mostly with European data."
   },
   {
     type: "external",
@@ -78,6 +78,12 @@ const contents = [
     subtext: (<span>
       We also have a more general phylogeny of <a href="/groups/blab/beta-cov"> betacoronaviruses</a>.
     </span>)
+  },
+  {
+    type: "external",
+    to: "https://nextstrain.github.io/ncov/",
+    title: "How to run your own phylogenetic analysis of SARS-CoV-2",
+    subtext: "A tutorial walking through running your own analysis using Nextstrain tools"
   },
   {
     type: "external",
