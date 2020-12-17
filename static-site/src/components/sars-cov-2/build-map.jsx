@@ -126,30 +126,35 @@ const NextstrainLogo = (size) => (
 
 const communityBuildColor = "#529AB6";
 
-const Legend = () => (
+const legendEntries = [{
+  icon: NextstrainLogo(20),
+  label: "Nextstrain build",
+  id: "nextstrain-build",
+  info: "A build maintained by the Nextstrain team."
+},
+{
+  icon: circle(10, communityBuildColor),
+  label: "Community build",
+  id: "community-build",
+  info: `A build maintained by a group in the scientific community.
+    Not affiliated with Nextstrain.
+    More info about these organizations can be found at the links in the dropdown menu below.`
+}];
+
+const Legend = (entries) => (
   <LegendContainer>
-    <LegendItem>
-      {NextstrainLogo(20)}
-      <LegendLabel>Nextstrain build</LegendLabel>
-      <LegendIconContainer data-tip data-for={"nextstrain-build-info"}>
-        <FaInfoCircle/>
-      </LegendIconContainer>
-      <StyledTooltip place="bottom" type="dark" effect="solid" id={"nextstrain-build-info"}>
-        A build maintained by the Nextstrain team.
-      </StyledTooltip>
-    </LegendItem>
-    <LegendItem>
-      {circle(10, communityBuildColor)}
-      <LegendLabel>Community build</LegendLabel>
-      <LegendIconContainer data-tip data-for={"community-build-info"}>
-        <FaInfoCircle/>
-      </LegendIconContainer>
-      <StyledTooltip place="bottom" type="dark" effect="solid" id={"community-build-info"}>
-        A build maintained by a group in the scientific community.
-        Not affiliated with Nextstrain.
-        More info about these organizations can be found at the links in the dropdown menu below.
-      </StyledTooltip>
-    </LegendItem>
+    {entries.map((legendEntry) => (
+      <LegendItem>
+        {legendEntry.icon}
+        <LegendLabel>{legendEntry.label}</LegendLabel>
+        <LegendIconContainer data-tip data-for={legendEntry.id}>
+          <FaInfoCircle/>
+        </LegendIconContainer>
+        <StyledTooltip place="bottom" type="dark" effect="solid" id={legendEntry.id}>
+          {legendEntry.info}
+        </StyledTooltip>
+      </LegendItem>
+    ))}
   </LegendContainer>
 );
 
@@ -222,7 +227,7 @@ class BuildMap extends React.Component {
             // onDragEnd={() => this.onMapMove()}
           >
             <ZoomControl zoomDiff={1.0} style={{top: "auto", bottom: "15px", right: "10px"}}/>
-            <Legend />
+            {Legend(legendEntries)}
             {buildsToMap.map((build, index) => this.MapMarker(build, index))}
           </Map>
         </MapContainer>
