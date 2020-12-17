@@ -36,6 +36,11 @@
     "expectStatusCode": 200
   },
   {
+    "name": "Check that getAvailable API call for a non-existent community source 404s",
+    "url": "/charon/getAvailable?prefix=/community/jameshadfield/doesntexist",
+    "expectStatusCode": 404
+  },
+  {
     "name": "Check that getDataset works for a community build (Auspice v2 JSON)",
     "url": "/charon/getDataset?prefix=/community/jameshadfield/scratch/placentalia",
     "expectStatusCode": 200,
@@ -71,10 +76,9 @@
     "responseIsJson": true
   },
   {
-    "name": "Check getDatset API for a dataset which doesn't exist returns 500 (Internal Server Error)",
-    "__comment": "There are open issues to differentiate dataset errors vs datasets which don't exist",
+    "name": "Check getDatset API for a dataset which doesn't exist returns 404",
     "url": "/charon/getDataset?prefix=/ncov/doesntExist",
-    "expectStatusCode": 500
+    "expectStatusCode": 404
   },
   {
     "name": "Check getDataset API for sidecar file tip-frequencies",
@@ -89,6 +93,22 @@
     "responseIsJson": true
   },
   {
+    "name": "Fetch dataset with a malformed API call",
+    "url": "/charon/getDataset",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Fetch dataset which doesn't exist",
+    "url": "/charon/getDataset?prefix=/ncov/XXXX-XX-XX",
+    "expectStatusCode": 404
+  },
+  {
+    "name": "Check getDataset API for non-existing a sidecar file tip-frequencies which doesn't exist",
+    "__comment": "Auspice only makes such a request if the dataset JSON indicates that the frequency panel is to be displayed",
+    "url": "/charon/getDataset?prefix=/ncov/2020-01-23&type=tip-frequencies",
+    "expectStatusCode": 404
+  },
+  {
     "name": "Fetch sidecar file using /fetch URLs (root-sequence JSON from S3 staging bucket)",
     "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/flu_seasonal_h3n2_ha_2y.json&type=root-sequence",
     "expectStatusCode": 200,
@@ -98,5 +118,31 @@
     "name": "Fetch narrative using /fetch URLs (from nextstrain/narratives GitHub repo)",
     "url": "/charon/getNarrative?prefix=/fetch/narratives/raw.githubusercontent.com/nextstrain/narratives/master/intro-to-narratives.md&type=md",
     "expectStatusCode": 200
+  },
+  {
+    "name": "Fetch (core) narrative",
+    "url": "/charon/getNarrative?prefix=/narratives/ncov/sit-rep/2020-05-15&type=md",
+    "expectStatusCode": 200,
+    "responseIsJson": false
+  },
+  {
+    "name": "Fetch narrative without specifying a type (invalid request)",
+    "url": "/charon/getNarrative?prefix=/narratives/ncov/sit-rep/2020-05-15",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Fetch narrative which doesn't exist",
+    "url": "/charon/getNarrative?prefix=/narratives/ncov/sit-rep/XXXX-XX-XX&type=md",
+    "expectStatusCode": 404
+  },
+  {
+    "name": "Attempt to access a private Nextstrain Group when not logged in",
+    "url": "/charon/getAvailable?prefix=/groups/blab-private",
+    "expectStatusCode": 404
+  },
+  {
+    "name": "Fetch from a group which doesn't exist",
+    "url": "/charon/getSourceInfo?prefix=/groups/doesntexist",
+    "expectStatusCode": 500
   }
 ]

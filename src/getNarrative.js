@@ -1,15 +1,24 @@
 const fetch = require('node-fetch');
+const assert = require('assert').strict;
+
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 
 const getNarrative = async (req, res) => {
   const query = req.query;
   const prefix = query.prefix;
-  if (!prefix) {
-    return helpers.handleError(res, "No prefix in getNarrative URL query");
+
+  try {
+    assert(prefix);
+  } catch {
+    return res.status(400).send("No prefix in getNarrative URL query");
   }
-  if (!query.type || !["markdown", "md"].includes(query.type.toLowerCase())) {
-    return helpers.handleError(res, "The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
+
+  try {
+    assert(query.type);
+    assert(["markdown", "md"].includes(query.type.toLowerCase()));
+  } catch {
+    return res.status(400).send("The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
   }
 
   /*
@@ -43,13 +52,15 @@ const getNarrative = async (req, res) => {
   try {
     utils.log(`Fetching narrative ${fetchURL} and streaming to client for parsing`);
     const response = await fetch(fetchURL);
-    if (!(response.status === 200 || response.status === 304)) {
+    if (response.status === 404) {
+      return res.status(404).send("The requested URL does not exist.");
+    } else if (!(response.status === 200 || response.status === 304)) {
       throw new Error(`Failed to fetch ${fetchURL}: ${response.status} ${response.statusText}`);
     }
     res.set("Content-Type", "text/markdown");
     return response.body.pipe(res);
   } catch (err) {
-    return helpers.handleError(res, `Narratives couldn't be served -- ${err.message}`);
+    return helpers.handle500Error(res, `Narratives couldn't be served -- ${err.message}`);
   }
 };
 

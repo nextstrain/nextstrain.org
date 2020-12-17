@@ -1,7 +1,7 @@
 const utils = require("./utils");
 const sources = require("./sources");
 
-const handleError = (res, clientMsg, serverMsg="") => {
+const handle500Error = (res, clientMsg, serverMsg="") => {
   utils.warn(`${clientMsg} -- ${serverMsg}`);
   return res.status(500).type("text/plain").send(clientMsg);
 };
@@ -24,9 +24,6 @@ const unauthorized = (req, res) => {
  * roundtrip losslessly.
  */
 const splitPrefixIntoParts = (prefix) => {
-  /* This could be const, but use let to signal to the reader that we use
-   * modifying methods like shift() and splice().
-   */
   const prefixParts = prefix
     .replace(/^\//, '')
     .replace(/\/$/, '')
@@ -233,7 +230,7 @@ const parsePrefix = (prefix, otherQueries) => {
 module.exports = {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
-  handleError,
+  handle500Error,
   unauthorized,
   parsePrefix
 };

@@ -2,6 +2,9 @@ const fs = require('fs');
 const chalk = require('chalk');
 const fetch = require('node-fetch');
 
+const { ResourceNotFoundError } = require('./exceptions');
+
+
 const getGitHash = () => {
   /* https://stackoverflow.com/questions/34518389/get-hash-of-most-recent-git-commit-in-node */
   try {
@@ -35,7 +38,9 @@ const fetchJSON = (pathToFetch) => {
   verbose(`Fetching ${pathToFetch}`);
   const p = fetch(pathToFetch)
     .then((res) => {
-      if (res.status !== 200) throw new Error(res.statusText);
+      if (res.status === 404) throw new ResourceNotFoundError();
+      else if (res.status !== 200) throw new Error(res.statusText);
+
       try {
         const header = res.headers[Object.getOwnPropertySymbols(res.headers)[0]] || res.headers._headers;
         verbose(`Got type ${header["content-type"]} with encoding ${header["content-encoding"] || "none"}`);
