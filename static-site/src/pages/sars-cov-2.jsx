@@ -69,7 +69,7 @@ const contents = [
     type: "external",
     to: "https://github.com/emmahodcroft/cluster_scripts/blob/master/README.md",
     title: "SARS-CoV-2 Mutations of Interest",
-    subtext: "An overview (not necessarily complete) of a collection of SARS-CoV-2 mutations that are of interest. It should be noted that these mutations are primarily of interest due to spread in Europe: this is simply a reflection that the primary maintainer/author (Emma) is based in Europe and works mostly with European data."
+    subtext: "An overview (not necessarily complete) of a collection of SARS-CoV-2 mutations that are of interest. It should be noted that these mutations are primarily of interest due to spread in Europe: this is simply a reflection that the primary maintainer/author (Emma Hodcroft) is based in Europe and works mostly with European data."
   },
   {
     type: "external",
