@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactMapboxGl, { ZoomControl, Marker } from "react-mapbox-gl";
-import isTouchDevice from "is-touch-device";
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { sortBy } from "lodash";
@@ -106,8 +105,7 @@ const mapDefaults = {
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2pyM3p4aTlmMWMwbjRibzlia3MyMjZhYiJ9.JCLCk3g-GiVOcKiNWGjOXA",
   minZoom: mapDefaults.minZoom,
-  scrollZoom: false,
-  dragPan: !isTouchDevice()
+  scrollZoom: false
 });
 
 const circle = (size, fill) => (
