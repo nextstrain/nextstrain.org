@@ -55,20 +55,25 @@ const requestV1Dataset = async (metaJsonUrl, treeJsonUrl) => {
  * If neither the v1 nor the v2 dataset fetch / parse is successful,
  * then the promise will reject.
  */
-const requestMainDataset = async (res, fetchUrls) => {
+const requestMainDataset = async (res, dataset) => {
+  const main = dataset.urlFor("main");
+
   return new Promise((resolve, reject) => {
     /* try to stream the (v2+) dataset JSON as the response */
     const req = request
-      .get(fetchUrls.main)
+      .get(main)
       .on('error', (err) => reject(err))
       .on("response", async (response) => { // eslint-disable-line consistent-return
         if (response.statusCode === 200) {
-          utils.verbose(`Successfully streaming ${fetchUrls.main}.`);
+          utils.verbose(`Successfully streaming ${main}.`);
           req.pipe(res);
           return resolve();
         }
-        utils.verbose(`The request for ${fetchUrls.main} returned ${response.statusCode}.`);
-        const [success, dataToReturn] = await requestV1Dataset(fetchUrls.meta, fetchUrls.tree);
+        utils.verbose(`The request for ${main} returned ${response.statusCode}.`);
+
+        const meta = dataset.urlFor("meta");
+        const tree = dataset.urlFor("tree");
+        const [success, dataToReturn] = await requestV1Dataset(meta, tree);
         if (success) {
           res.send(dataToReturn);
           return resolve();
@@ -132,7 +137,7 @@ const getDataset = async (req, res) => {
     return res.status(400).send(`Couldn't parse the url "${query.prefix}"`);
   }
 
-  const {source, dataset, fetchUrls, auspiceDisplayUrl} = datasetInfo;
+  const {source, dataset, auspiceDisplayUrl} = datasetInfo;
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
@@ -151,18 +156,19 @@ const getDataset = async (req, res) => {
     return undefined;
   }
 
-  if (fetchUrls.additional) {
+  if (query.type) {
+    const url = dataset.urlFor(query.type);
     try {
-      await requestCertainFileType(res, req, fetchUrls.additional, query);
+      await requestCertainFileType(res, req, url, query);
     } catch (err) {
       if (err instanceof ResourceNotFoundError) {
         return res.status(404).send("The requested dataset does not exist.");
       }
-      return helpers.handle500Error(res, `Couldn't fetch JSON: ${fetchUrls.additional}`, err.message);
+      return helpers.handle500Error(res, `Couldn't fetch JSON: ${url}`, err.message);
     }
   } else {
     try {
-      await requestMainDataset(res, fetchUrls);
+      await requestMainDataset(res, dataset);
     } catch (err) {
       if (dataset.isRequestValidWithoutDataset) {
         utils.verbose("Request is valid, but no dataset available. Returning 204.");

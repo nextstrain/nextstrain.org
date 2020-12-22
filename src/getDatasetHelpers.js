@@ -153,11 +153,10 @@ const correctPrefixFromAvailable = (sourceName, prefixParts) => {
 };
 
 
-/* Parse the prefix (normally URL) and decide which URLs to fetch etc
- * The prefix is case sensitive
+/* Parse the prefix (a path-like string specifying a source + dataset path)
+ * with canonicalization.  Prefixes are case-sensitive.
  */
-const parsePrefix = (prefix, otherQueries) => {
-  const fetchUrls = {};
+const parsePrefix = (prefix) => {
   let {source, prefixParts} = splitPrefixIntoParts(prefix);
 
   // Expand partial prefixes.  This would be cleaner if integerated into the
@@ -167,18 +166,9 @@ const parsePrefix = (prefix, otherQueries) => {
   // The URL to be displayed in Auspice
   const auspiceDisplayUrl = joinPartsIntoPrefix({source, prefixParts});
 
-  // Get the server fetch URLs
   const dataset = source.dataset(prefixParts);
 
-  fetchUrls.main = dataset.urlFor("main");
-  fetchUrls.tree = dataset.urlFor("tree");
-  fetchUrls.meta = dataset.urlFor("meta");
-
-  if (otherQueries.type) {
-    fetchUrls.additional = dataset.urlFor(otherQueries.type);
-  }
-
-  return ({fetchUrls, auspiceDisplayUrl, source, dataset});
+  return ({auspiceDisplayUrl, source, dataset});
 
 };
 
