@@ -153,14 +153,6 @@ const correctPrefixFromAvailable = (sourceName, prefixParts) => {
 };
 
 
-const guessTreeName = (prefixParts) => {
-  const guesses = ["HA", "NA", "PB1", "PB2", "PA", "NP", "NS", "MP", "L", "S"];
-  for (const part of prefixParts) {
-    if (guesses.indexOf(part.toUpperCase()) !== -1) return part;
-  }
-  return undefined;
-};
-
 /* Parse the prefix (normally URL) and decide which URLs to fetch etc
  * The prefix is case sensitive
  */
@@ -168,35 +160,12 @@ const parsePrefix = (prefix, otherQueries) => {
   const fetchUrls = {};
   let {source, prefixParts} = splitPrefixIntoParts(prefix);
 
-  /* Does the URL specify two trees?
-   *
-   * If so, we need to extract the two tree names and massage the prefixParts
-   * to only include the first.
-   */
-  let treeName, secondTreeName;
-  const treeSplitChar = /(?<!http[s]?):/;
-  for (let i=0; i<prefixParts.length; i++) {
-    if (prefixParts[i].search(treeSplitChar) !== -1) {
-      [treeName, secondTreeName] = prefixParts[i].split(treeSplitChar);
-      prefixParts[i] = treeName; // only use the first tree from now on
-      break;
-    }
-  }
-  if (!secondTreeName && otherQueries.deprecatedSecondTree) {
-    secondTreeName = otherQueries.deprecatedSecondTree;
-  }
-
   // Expand partial prefixes.  This would be cleaner if integerated into the
   // Source classes.
   prefixParts = correctPrefixFromAvailable(source.name, prefixParts);
 
-  if (!treeName) {
-    utils.verbose("Guessing tree name -- this should be improved");
-    treeName = guessTreeName(prefixParts);
-  }
-
-  // The URL to be displayed in Auspice, tweaked below if necessary
-  let auspiceDisplayUrl = joinPartsIntoPrefix({source, prefixParts});
+  // The URL to be displayed in Auspice
+  const auspiceDisplayUrl = joinPartsIntoPrefix({source, prefixParts});
 
   // Get the server fetch URLs
   const dataset = source.dataset(prefixParts);
@@ -205,24 +174,11 @@ const parsePrefix = (prefix, otherQueries) => {
   fetchUrls.tree = dataset.urlFor("tree");
   fetchUrls.meta = dataset.urlFor("meta");
 
-  if (secondTreeName) {
-    const idxOfTree = prefixParts.indexOf(treeName);
-    const secondTreePrefixParts = prefixParts.slice();
-    secondTreePrefixParts[idxOfTree] = secondTreeName;
-
-    const secondDataset = source.dataset(secondTreePrefixParts);
-    fetchUrls.secondTree = secondDataset.urlFor("tree");
-
-    const re = new RegExp(`\\/${treeName}(/|$)`); // note the double escape for special char
-    auspiceDisplayUrl = auspiceDisplayUrl.replace(re, `/${treeName}:${secondTreeName}/`);
-  }
-  auspiceDisplayUrl = auspiceDisplayUrl.replace(/\/$/, ''); // remove any trailing slash
-
   if (otherQueries.type) {
     fetchUrls.additional = dataset.urlFor(otherQueries.type);
   }
 
-  return ({fetchUrls, auspiceDisplayUrl, treeName, secondTreeName, source, dataset});
+  return ({fetchUrls, auspiceDisplayUrl, source, dataset});
 
 };
 
