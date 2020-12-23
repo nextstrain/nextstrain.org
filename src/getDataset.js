@@ -137,7 +137,7 @@ const getDataset = async (req, res) => {
     return res.status(400).send(`Couldn't parse the url "${query.prefix}"`);
   }
 
-  const {source, dataset, auspiceDisplayUrl} = datasetInfo;
+  const {source, dataset, resolvedPrefix} = datasetInfo;
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
@@ -145,7 +145,7 @@ const getDataset = async (req, res) => {
   }
 
   const baseUrl = req.url.split(query.prefix)[0];
-  let redirectUrl = baseUrl + '/' + auspiceDisplayUrl;
+  let redirectUrl = baseUrl + '/' + resolvedPrefix;
   if (query.type) {
     redirectUrl += `&type=${query.type}`;
   }

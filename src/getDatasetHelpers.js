@@ -154,7 +154,7 @@ const correctPrefixFromAvailable = (sourceName, prefixParts) => {
 
 
 /* Parse the prefix (a path-like string specifying a source + dataset path)
- * with canonicalization.  Prefixes are case-sensitive.
+ * with resolving of partial prefixes.  Prefixes are case-sensitive.
  */
 const parsePrefix = (prefix) => {
   let {source, prefixParts} = splitPrefixIntoParts(prefix);
@@ -163,12 +163,13 @@ const parsePrefix = (prefix) => {
   // Source classes.
   prefixParts = correctPrefixFromAvailable(source.name, prefixParts);
 
-  // The URL to be displayed in Auspice
-  const auspiceDisplayUrl = joinPartsIntoPrefix({source, prefixParts});
+  // The resolved prefix, possibly "corrected" above, which we want to use for
+  // display.
+  const resolvedPrefix = joinPartsIntoPrefix({source, prefixParts});
 
   const dataset = source.dataset(prefixParts);
 
-  return ({auspiceDisplayUrl, source, dataset});
+  return ({source, dataset, resolvedPrefix});
 
 };
 
