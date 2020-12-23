@@ -144,15 +144,18 @@ const getDataset = async (req, res) => {
     return helpers.unauthorized(req, res);
   }
 
-  const baseUrl = req.url.split(query.prefix)[0];
-  let redirectUrl = baseUrl + '/' + resolvedPrefix;
-  if (query.type) {
-    redirectUrl += `&type=${query.type}`;
-  }
+  /* If we got a partial prefix and resolved it into a full one, redirect to
+   * that.  Auspice will notice and update its displayed URL appropriately.
+   */
+  if (resolvedPrefix !== helpers.canonicalizePrefix(query.prefix)) {
+    // A absolute base is required but we won't use it, so use something bogus.
+    const resolvedUrl = new URL(req.originalUrl, "http://x");
+    resolvedUrl.searchParams.set("prefix", resolvedPrefix);
 
-  if (redirectUrl !== req.url) {
-    utils.log(`Redirecting client to: ${redirectUrl}`);
-    res.redirect(redirectUrl);
+    const relativeResolvedUrl = resolvedUrl.pathname + resolvedUrl.search;
+
+    utils.log(`Redirecting client to resolved dataset URL: ${relativeResolvedUrl}`);
+    res.redirect(relativeResolvedUrl);
     return undefined;
   }
 

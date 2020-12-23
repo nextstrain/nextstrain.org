@@ -174,10 +174,17 @@ const parsePrefix = (prefix) => {
 };
 
 
+/* Round-trip prefix through split/join to canonicalize it for comparison.
+ */
+const canonicalizePrefix = (prefix) =>
+  joinPartsIntoPrefix(splitPrefixIntoParts(prefix));
+
+
 module.exports = {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
   handle500Error,
   unauthorized,
-  parsePrefix
+  parsePrefix,
+  canonicalizePrefix,
 };
