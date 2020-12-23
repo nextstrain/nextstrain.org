@@ -42,15 +42,9 @@ const Flex = styled.div`
 const MapContainer = styled.div`
   max-width: 1080px;
   width: 100%;
-  @media (max-width: 720px) {
-    width: 100%;
-  }
-  @media (max-width: 1080px) {
-    width: 400px;
-  }
   background-color: #fff;
   margin: auto;
-  height: 470px;
+  height: 515px;
   padding-top: 5px;
   display: flex;
   flex-direction: row;
@@ -96,8 +90,8 @@ const LegendIconContainer = styled.span`
 `;
 
 const mapDefaults = {
-  center: [0, 40],
-  maxBounds: [[-180, -90], [180, 90]],
+  center: [0, 20],
+  maxBounds: [[-180, -85], [180, 85]],
   zoomOverall: 0,
   zoomPin: 3,
   minZoom: 0
