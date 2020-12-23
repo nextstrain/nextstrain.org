@@ -154,7 +154,7 @@ const legendEntries = [{
 const Legend = (entries) => (
   <LegendContainer>
     {entries.map((legendEntry) => (
-      <LegendItem>
+      <LegendItem key={legendEntry.id}>
         {legendEntry.icon}
         <LegendLabel>{legendEntry.label}</LegendLabel>
         <LegendIconContainer data-tip data-for={legendEntry.id}>
@@ -195,6 +195,7 @@ class BuildMap extends React.Component {
       </Marker>
       <StyledTooltip type="light" id={build.url} effect="solid" data-delay-hide={500}>
         {`${build.name} (${build.org.name})`}
+        <div style={{fontStyle: "italic"}}>Click to view</div>
       </StyledTooltip>
     </div>
     );
