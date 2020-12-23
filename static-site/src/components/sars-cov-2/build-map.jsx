@@ -190,7 +190,7 @@ class BuildMap extends React.Component {
     let center, zoom;
     const buildsToMap = sortBy(
       // We don't map the stub builds that are used to define the hierarchy
-      this.props.builds.filter((build) => build.url !== null && build.coords !== undefined),
+      this.props.builds.filter((build) => build.url !== null && build.coords !== undefined && build.name !== "Global"),
       // Nextstrain builds are last so they show up on top
       (b) => b.org && b.org.name === "Nextstrain Team");
     if (this.state.zoomToIndex !== null) {
