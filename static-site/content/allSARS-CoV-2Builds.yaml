@@ -9,6 +9,7 @@ builds:
     name: Global
     geo: global
     region: global
+    level: region
     coords: 
       - -30
       - 10
@@ -26,6 +27,7 @@ builds:
     name: South America
     geo: south-america
     region: South America
+    level: region
     coords:
       - -58.470721
       - -13.083583
@@ -43,6 +45,7 @@ builds:
     name: Europe
     geo: europe
     region: Europe
+    level: region
     coords:
       - 10.799454
       - 49.646237
@@ -54,6 +57,7 @@ builds:
     name: Europe
     geo: europe
     region: Europe
+    level: region
     coords:
       - 10.799454
       - 49.646237
@@ -71,6 +75,7 @@ builds:
     name: Africa
     geo: africa
     region: Africa
+    level: region
     coords:
       - 21.824559
       - 4.070194
@@ -88,6 +93,7 @@ builds:
     name: Asia
     geo: asia
     region: Asia
+    level: region
     coords:
       - 86.654576
       - 30.451098
@@ -106,6 +112,7 @@ builds:
     name: Oceania
     geo: oceania
     region: Oceania
+    level: region
     coords:
       - 152.008576
       - -25.0562891
@@ -124,6 +131,7 @@ builds:
     name: North America
     geo: north-america
     region: North America
+    level: region
     coords:
       - -97.738017
       - 28.2367447
@@ -147,6 +155,7 @@ builds:
     name: CoVSeQ
     geo: quebec
     region: North America
+    level: division
     coords:
       - -73.5491
       - 52.9399
@@ -164,6 +173,7 @@ builds:
     name: South-East Region
     geo: usa
     region: North America
+    level: country
     coords:
       - -80.0
       - 34.0
@@ -175,6 +185,7 @@ builds:
     name: South-Central Region
     geo: usa
     region: North America
+    level: country
     coords:
       - -95.0
       - 30.0
@@ -192,6 +203,7 @@ builds:
     name: California
     geo: california
     region: North America
+    level: division
     coords:
       - -119.690182
       - 36.357039
@@ -203,6 +215,7 @@ builds:
     name: California
     geo: california
     region: North America
+    level: division
     coords:
       - -119.690182
       - 36.357039
@@ -214,6 +227,7 @@ builds:
     name: San Diego
     geo: california
     region: North America
+    level: location
     coords:
       - -117.143358
       - 32.733024
@@ -231,6 +245,7 @@ builds:
     name: Connecticut
     geo: connecticut
     region: North America
+    level: division
     coords:
       - -72.669773
       - 41.678117
@@ -248,6 +263,7 @@ builds:
     name: Florida
     geo: florida
     region: North America
+    level: division
     coords:
       - -81.5158
       - 27.6648
@@ -265,6 +281,7 @@ builds:
     name: Louisiana
     geo: louisiana
     region: North America
+    level: division
     coords:
       - -91.9623
       - 30.9843
@@ -282,6 +299,7 @@ builds:
     name: Boston GenBank
     geo: massachusetts
     region: North America
+    level: location
     coords:
       - -71.998513
       - 42.340741
@@ -293,6 +311,7 @@ builds:
     name: Boston GISAID (4k)
     geo: massachusetts
     region: North America
+    level: location
     coords:
       - -71.998513
       - 42.340741
@@ -310,6 +329,7 @@ builds:
     name: Texas
     geo: texas
     region: North America
+    level: division
     coords:
       - -99.188758
       - 31.146868
@@ -327,6 +347,7 @@ builds:
     name: Wisconsin
     geo: wisconsin
     region: North America
+    level: division
     coords:
       - -89.527762
       - 44.535145
@@ -344,6 +365,7 @@ builds:
     name: Austria
     geo: austria
     region: Europe
+    level: country
     coords:
       - 14.5501
       - 47.5162
@@ -355,6 +377,7 @@ builds:
     name: Austria
     geo: austria
     region: Europe
+    level: country
     coords:
       - 14.5501
       - 47.5162
@@ -372,6 +395,7 @@ builds:
     name: Spain
     geo: spain
     region: Europe
+    level: country
     coords:
       - -3.7492
       - 40.4637
@@ -383,6 +407,7 @@ builds:
     name: Spain
     geo: spain
     region: Europe
+    level: country
     coords:
       - -3.7492
       - 40.4637
@@ -400,6 +425,7 @@ builds:
     name: Switzerland
     geo: switzerland
     region: Europe
+    level: country
     coords:
       - 8.2275
       - 46.8182
@@ -417,6 +443,7 @@ builds:
     name: Portugal
     geo: portugal
     region: Europe
+    level: country
     coords:
       - -8.174701
       - 39.54046
@@ -428,6 +455,7 @@ builds:
     name: Portugal
     geo: portugal
     region: Europe
+    level: country
     coords:
       - -8.174701
       - 39.54046
@@ -445,6 +473,7 @@ builds:
     name: Belarus
     geo: belarus
     region: Europe
+    level: country
     coords:
       - 28.247691
       - 53.704205
@@ -462,6 +491,7 @@ builds:
     name: Belgium
     geo: belgium
     region: Europe
+    level: country
     coords:
       - 4.677726
       - 50.707735
@@ -479,6 +509,7 @@ builds:
     name: Bosnia and Herzegovin
     geo: bosnia_and_herzegovin
     region: Europe
+    level: country
     coords:
       - 17.6791
       - 43.9159
@@ -497,6 +528,7 @@ builds:
     name: Bulgaria
     geo: bulgaria
     region: Europe
+    level: country
     coords:
       - 25.193668
       - 42.782450
@@ -514,6 +546,7 @@ builds:
     name: Croatia
     geo: croatia
     region: Europe
+    level: country
     coords:
       - 15.2
       - 45.1
@@ -531,6 +564,7 @@ builds:
     name: Czech Republic
     geo: czech_republic
     region: Europe
+    level: country
     coords:
       - 15.473
       - 49.8175
@@ -548,6 +582,7 @@ builds:
     name: Denmark
     geo: denmark
     region: Europe
+    level: country
     coords:
       - 9.5018
       - 56.2639
@@ -565,6 +600,7 @@ builds:
     name: Estonia
     geo: estonia
     region: Europe
+    level: country
     coords:
       - 25.808524
       - 58.850111
@@ -582,6 +618,7 @@ builds:
     name: Finland
     geo: finland
     region: Europe
+    level: country
     coords:
       - 26.186437
       - 61.751734
@@ -599,6 +636,7 @@ builds:
     name: France
     geo: france
     region: Europe
+    level: country
     coords:
       - 2.2137
       - 46.2276
@@ -616,6 +654,7 @@ builds:
     name: Germany
     geo: germany
     region: Europe
+    level: country
     coords:
       - 10.4515
       - 51.1657
@@ -633,6 +672,7 @@ builds:
     name: Greece
     geo: greece
     region: Europe
+    level: country
     coords:
       - 22.0
       - 39.0
@@ -650,6 +690,7 @@ builds:
     name: Hungary
     geo: hungary
     region: Europe
+    level: country
     coords:
       - 20.0
       - 47.0
@@ -667,6 +708,7 @@ builds:
     name: Iceland
     geo: iceland
     region: Europe
+    level: country
     coords:
       - -18.4826
       - 64.90614
@@ -684,6 +726,7 @@ builds:
     name: Ireland
     geo: ireland
     region: Europe
+    level: country
     coords:
       - -7.979
       - 52.865
@@ -701,6 +744,7 @@ builds:
     name: Israel
     geo: israel
     region: Europe
+    level: country
     coords:
       - 34.903129
       - 31.217736
@@ -718,6 +762,7 @@ builds:
     name: Italy
     geo: italy
     region: Europe
+    level: country
     coords:
       - 12.183629
       - 43.382775
@@ -735,6 +780,7 @@ builds:
     name: Latvia
     geo: latvia
     region: Europe
+    level: country
     coords:
       - 25.441386
       - 56.799689
@@ -752,6 +798,7 @@ builds:
     name: Lithuania
     geo: lithuania
     region: Europe
+    level: country
     coords:
       - 23.945328
       - 55.378752
@@ -769,6 +816,7 @@ builds:
     name: Luxembourg
     geo: luxembourg
     region: Europe
+    level: country
     coords:
       - 6.119486
       - 49.755428
@@ -786,6 +834,7 @@ builds:
     name: Netherlands
     geo: netherlands
     region: Europe
+    level: country
     coords:
       - 5.2913
       - 52.1326
@@ -803,6 +852,7 @@ builds:
     name: Norway
     geo: norway
     region: Europe
+    level: country
     coords:
       - 8.73701
       - 61.3109
@@ -820,6 +870,7 @@ builds:
     name: Poland
     geo: poland
     region: Europe
+    level: country
     coords:
       - 19.0258159
       - 52.0977181
@@ -837,6 +888,7 @@ builds:
     name: Romania
     geo: romania
     region: Europe
+    level: country
     coords:
       - 24.9668
       - 45.9432
@@ -854,6 +906,7 @@ builds:
     name: Russia
     geo: russia
     region: Europe
+    level: country
     coords:
       - 97.7453061
       - 64.6863136
@@ -871,6 +924,7 @@ builds:
     name: Serbia
     geo: serbia
     region: Europe
+    level: country
     coords:
       - 20.848918
       - 43.745902
@@ -888,6 +942,7 @@ builds:
     name: Slovakia
     geo: slovakia
     region: Europe
+    level: country
     coords:
       - 19.5
       - 48.66667
@@ -905,6 +960,7 @@ builds:
     name: Slovenia
     geo: slovenia
     region: Europe
+    level: country
     coords:
       - 14.4808369
       - 45.8133113
@@ -922,6 +978,7 @@ builds:
     name: Sweden
     geo: sweden
     region: Europe
+    level: country
     coords:
       - 14.5208584
       - 59.6749712
@@ -939,6 +996,7 @@ builds:
     name: United Kingdom
     geo: united_kingdom
     region: Europe
+    level: country
     coords:
       - -2.088739
       - 54.242833
@@ -956,6 +1014,7 @@ builds:
     name: India
     geo: india
     region: Asia
+    level: country
     coords:
       - 78.723951
       - 21.077353
@@ -973,6 +1032,7 @@ builds:
     name: Middle East
     geo: middle-east
     region: Middle East
+    level: region
     coords:
       - 50.0
       - 31.0

@@ -108,22 +108,47 @@ const circle = (size, fill) => (
   </svg>
 );
 
-const nextstrainColor = "#5DA8A3";
-const communityBuildColor = "#529AB6";
+const nextstrainBuild = circle(16, "#5DA8A3");
+const communityBuilds = {
+  region: circle(15, "#529AB6"),
+  country: circle(12, "#529AB6"),
+  division: circle(8, "#529AB6"),
+  location: circle(6, "#529AB6")
+};
+const communityBuildInfo = (level) =>
+  `A ${level}-level build maintained by a group in the scientific community.
+  Not affiliated with Nextstrain.
+  More info about these organizations can be found at the links in the dropdown menu below.`;
 
 const legendEntries = [{
-  icon: circle(15, nextstrainColor),
+  icon: nextstrainBuild,
   label: "Nextstrain build",
   id: "nextstrain-build",
   info: "A build maintained by the Nextstrain team."
 },
 {
-  icon: circle(10, communityBuildColor),
-  label: "Community build",
-  id: "community-build",
-  info: `A build maintained by a group in the scientific community.
-    Not affiliated with Nextstrain.
-    More info about these organizations can be found at the links in the dropdown menu below.`
+  icon: communityBuilds["region"],
+  label: "Regional build",
+  id: "region-build",
+  info: communityBuildInfo("region")
+},
+{
+  icon: communityBuilds["country"],
+  label: "National build",
+  id: "country-build",
+  info: communityBuildInfo("country")
+},
+{
+  icon: communityBuilds["division"],
+  label: "Divisional build",
+  id: "division",
+  info: communityBuildInfo("division")
+},
+{
+  icon: communityBuilds["location"],
+  label: "Local build",
+  id: "location-build",
+  info: communityBuildInfo("location")
 }];
 
 const Legend = (entries) => (
@@ -164,11 +189,7 @@ class BuildMap extends React.Component {
       >
         <MapMarkerContainer data-tip data-for={build.url} data-delay-hide="500">
           <a href={build.url}>
-            {isNextstrainBuild ?
-              circle(15, nextstrainColor)
-              :
-              circle(10, communityBuildColor)
-            }
+            {isNextstrainBuild ? nextstrainBuild : communityBuilds[build.level]}
           </a>
         </MapMarkerContainer>
       </Marker>
