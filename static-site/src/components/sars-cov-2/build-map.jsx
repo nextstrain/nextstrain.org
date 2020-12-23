@@ -57,7 +57,7 @@ const MapContainer = styled.div`
 
 const LegendContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
   flex-wrap: wrap;
   max-width: 35%;
@@ -76,7 +76,6 @@ const LegendContainer = styled.div`
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
-  padding: 4px;
 `;
 
 const LegendLabel = styled.span`
