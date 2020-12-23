@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { sortBy } from "lodash";
 import { FaInfoCircle } from "react-icons/fa";
-import nextstrainLogo from '../../../static/logos/nextstrain-logo-small.png';
 
 const MapMarkerContainer = styled.div`
   position: relative;
@@ -20,7 +19,7 @@ export const StyledTooltip = styled(ReactTooltip)`
   white-space: normal;
   line-height: 1.2;
   padding: 10px !important; /* override internal styling */
-  z-index: 1001 !important; /* on top of viz legend */
+  z-index: 1002 !important; /* on top of viz legend */
   pointer-events: auto !important;
 `;
 
@@ -67,20 +66,22 @@ const LegendContainer = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
-  max-width: 30%;
+  max-width: 35%;
   position: absolute;
   top: 0;
   left: 0;
   margin: 12px;
   background-color: #f9f9f9;
   color: #000000;
-  z-index: 1002 !important;
+  z-index: 1001 !important;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px;
   padding: 6px;
   font-weight: bold;
 `;
 
 const LegendItem = styled.div`
+  display: flex;
+  align-items: center;
   padding: 4px;
 `;
 
@@ -88,7 +89,7 @@ const LegendLabel = styled.span`
   padding: 4px;
 `;
 
-export const LegendIconContainer = styled.span`
+const LegendIconContainer = styled.span`
   padding: 2px;
   cursor: help;
   color: #888;
@@ -114,18 +115,11 @@ const circle = (size, fill) => (
   </svg>
 );
 
-const NextstrainLogo = (size) => (
-  <img alt="marker"
-    width={`${size}px`}
-    height="auto"
-    src={nextstrainLogo}
-  />
-);
-
+const nextstrainColor = "#5DA8A3";
 const communityBuildColor = "#529AB6";
 
 const legendEntries = [{
-  icon: NextstrainLogo(20),
+  icon: circle(15, nextstrainColor),
   label: "Nextstrain build",
   id: "nextstrain-build",
   info: "A build maintained by the Nextstrain team."
@@ -178,11 +172,7 @@ class BuildMap extends React.Component {
         <MapMarkerContainer data-tip data-for={build.url} data-delay-hide="500">
           <a href={build.url}>
             {isNextstrainBuild ?
-              <img alt="marker"
-                width="20px"
-                height="auto"
-                src={nextstrainLogo}
-              />
+              circle(15, nextstrainColor)
               :
               circle(10, communityBuildColor)
             }
