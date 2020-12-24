@@ -47,8 +47,8 @@ builds:
     region: Europe
     level: region
     coords:
-      - 10.799454
-      - 49.646237
+      - 11.74
+      - 39.646237
     org:
       name: Nextstrain Team
       url: null
@@ -133,7 +133,7 @@ builds:
     region: North America
     level: region
     coords:
-      - -97.738017
+      - -107.738017
       - 28.2367447
     org:
       name: Nextstrain Team
@@ -205,7 +205,7 @@ builds:
     region: North America
     level: division
     coords:
-      - -119.690182
+      - -119.64
       - 36.357039
     org:
       name: CZ BioHub
@@ -301,8 +301,8 @@ builds:
     region: North America
     level: location
     coords:
-      - -71.998513
-      - 42.340741
+      - -71.0589
+      - 42.3601
     org:
       name: Broad Institute
       url: https://auspice.broadinstitute.org
@@ -313,8 +313,8 @@ builds:
     region: North America
     level: location
     coords:
-      - -71.998513
-      - 42.340741
+      - -71.3
+      - 42.3601
     org:
       name: Broad Institute
       url: https://auspice.broadinstitute.org
@@ -379,7 +379,7 @@ builds:
     region: Europe
     level: country
     coords:
-      - 14.5501
+      - 14.5
       - 47.5162
     org:
       name: neherlab
@@ -409,7 +409,7 @@ builds:
     region: Europe
     level: country
     coords:
-      - -3.7492
+      - -3.65
       - 40.4637
     org:
       name: neherlab
@@ -445,7 +445,7 @@ builds:
     region: Europe
     level: country
     coords:
-      - -8.174701
+      - -8.1
       - 39.54046
     org:
       name: INSA / NIH Portugal
