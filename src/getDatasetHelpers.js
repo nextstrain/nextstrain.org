@@ -37,16 +37,12 @@ const splitPrefixIntoParts = (prefix) => {
   switch (prefixParts[0]) {
     case "community":
     case "staging":
+    case "fetch":
       sourceName = prefixParts.shift();
       break;
     case "groups":
       prefixParts.shift();
       sourceName = prefixParts.shift();
-      break;
-    case "fetch":
-      /* the `/fetch/ URLs are backed by the `UrlDefinedSource` as `FetchSource` was too confusing */
-      prefixParts.shift();
-      sourceName = "urlDefined";
       break;
     default:
       sourceName = "core";
@@ -90,10 +86,8 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
       break;
     case "community":
     case "staging":
+    case "fetch":
       leadingParts.push(source.name);
-      break;
-    case "urlDefined":
-      leadingParts.push("fetch");
       break;
     default:
       leadingParts.push("groups", source.name);

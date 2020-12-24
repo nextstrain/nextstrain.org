@@ -297,7 +297,7 @@ class CommunityNarrative extends Narrative {
 
 class UrlDefinedSource extends Source {
 
-  static get _name() { return "urlDefined"; }
+  static get _name() { return "fetch"; }
   get baseUrl() {
     throw new Error("UrlDefinedSource does not use `this.baseUrl`");
   }
