@@ -189,7 +189,7 @@ class BuildMap extends React.Component {
     this.setState({zoomToIndex: null});
   }
 
-  ClusterMarker = (coordinates, pointCount, getLeaves) => {
+  ClusterMarker = (coordinates, pointCount) => {
     const size = pointCount < 10 ? 20 : pointCount < 50 ? 30 : 40;
     return (
       <Marker
@@ -220,7 +220,7 @@ class BuildMap extends React.Component {
 
   MapMarkerTooltip = (build) => {
     return (
-      <StyledTooltip type="light" id={build.url} effect="solid">
+      <StyledTooltip type="light" key={build.url} id={build.url} effect="solid">
         {`${build.name} (${build.org.name})`}
         <div style={{fontStyle: "italic"}}>Click to view</div>
       </StyledTooltip>);
