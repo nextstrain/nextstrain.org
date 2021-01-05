@@ -64,6 +64,11 @@ const splitPrefixIntoParts = (prefix) => {
       source = new Source(...prefixParts.splice(0, 2));
       break;
 
+    // UrlDefined source requires a URL authority part
+    case "fetch":
+      source = new Source(prefixParts.shift());
+      break;
+
     default:
       source = new Source();
   }
@@ -102,6 +107,12 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
     case "community":
       leadingParts.push(source.owner, source.repoNameWithBranch);
       break;
+
+    // UrlDefined source requires a URL authority part
+    case "fetch":
+      leadingParts.push(source.authority);
+      break;
+
     // no default
   }
 
