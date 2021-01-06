@@ -108,9 +108,9 @@ const circle = (size, fill, text) => {
   const width = sizeAdjusted/2;
   const fontSize = `${width/12}em`;
   return (<svg height={sizeAdjusted} width={sizeAdjusted}>
-    <circle cx={width} cy={width} r={radius} stroke="white" strokeWidth="1" fill={fill}/>
+    <circle cx={width} cy={width} r={radius*1.1} stroke="white" strokeWidth="1" fill={fill}/>
     {text &&
-      <text x={width} y={width+1} fill="white" fontSize={fontSize} textAnchor="middle" dominantBaseline="middle">
+      <text x={width} y={width*1.1} fill="white" fontSize={fontSize} textAnchor="middle" dominantBaseline="middle">
         {text}
       </text>}
   </svg>);
