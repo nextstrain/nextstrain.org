@@ -116,13 +116,13 @@ const circle = (size, fill, text) => {
   </svg>);
 };
 
-const nextstrainBuild = circle(16, "#5DA8A3");
-const communityBuildColor = "#529AB6";
+
+const nextstrainBuild = circle(17, "#4C90C0");
 const communityBuilds = {
-  region: circle(15, communityBuildColor),
-  country: circle(12, communityBuildColor),
-  division: circle(8, communityBuildColor),
-  location: circle(6, communityBuildColor)
+  region: circle(14, "#75B681"),
+  country: circle(12, "#B2BD4D"),
+  division: circle(10, "#E1A03A"),
+  location: circle(8, "#E04929")
 };
 const communityBuildInfo = (level) =>
   `A ${level}-level build maintained by a group in the scientific community.
@@ -197,7 +197,7 @@ class BuildMap extends React.Component {
         coordinates={coordinates}
       >
         <MapMarkerContainer data-tip data-for={"cluster-tooltip"}>
-          {circle(size, communityBuildColor, pointCount)}
+          {circle(size, "grey", pointCount)}
         </MapMarkerContainer>
       </Marker>);
   };
