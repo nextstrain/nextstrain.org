@@ -61,8 +61,8 @@ class Splash extends React.Component {
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
             We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
-            In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analysis.
-            Please see <Link to="/sars-cov-2">the main SARS-CoV-2 page</Link> for more.
+            In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses.
+            Please see the <Link to="/sars-cov-2">SARS-CoV-2 resources page</Link> for more information.
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
         <Cards
@@ -123,13 +123,15 @@ class Splash extends React.Component {
 
         {/* <Styles.H1>Tutorials / Narrative links</Styles.H1> */}
 
-        {/* SOCIAL MEDIA AKA TWITTER */}
+        {/* SOCIAL MEDIA AKA TWITTER
 
         <Styles.H1>Mentions on Twitter</Styles.H1>
         <BigSpacer/>
         {tweets()}
 
-        <HugeSpacer/>
+        */}
+
+        <BigSpacer/>
         <ScrollableAnchor id={'philosophy'}>
           <Styles.H1>Philosophy</Styles.H1>
         </ScrollableAnchor>

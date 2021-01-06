@@ -22,12 +22,12 @@ const communityCards = [
   {
     img: "cassava.png",
     url: "/community/pestdisplace/CMDAFRICA",
-    title: "cassava geminiviruses"
+    title: "Cassava geminiviruses"
   },
   {
     img: "stripe_rust.png",
     url: "/community/saunderslab/PST",
-    title: "Wheat Yellow Rust"
+    title: "Wheat yellow rust"
   }
 ];
 

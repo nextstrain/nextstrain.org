@@ -6,7 +6,7 @@ const nCoVCards = [
   },
   {
     img: "ncov.png",
-    url: "/ncov/global?c=region",
+    url: "/ncov/global",
     title: "Latest global analysis"
   },
   {
