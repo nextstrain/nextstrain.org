@@ -18,7 +18,7 @@ builds:
     parentGeo: null
     org: null
 
-  - url: https://nextstrain.org/ncov/south-america
+  - url: https://nextstrain.org/ncov/south-america?f_region=South%20America
     name: South America
     geo: south-america
     org:
@@ -31,7 +31,7 @@ builds:
     parentGeo: null
     org: null
 
-  - url: https://nextstrain.org/ncov/europe
+  - url: https://nextstrain.org/ncov/europe?f_region=Europe
     name: Europe
     geo: europe
     org:
@@ -51,7 +51,7 @@ builds:
     parentGeo: null
     org: null
 
-  - url: https://nextstrain.org/ncov/africa
+  - url: https://nextstrain.org/ncov/africa?f_region=Africa
     name: Africa
     geo: africa
     org:
@@ -64,7 +64,7 @@ builds:
     parentGeo: null
     org: null
 
-  - url: https://nextstrain.org/ncov/asia
+  - url: https://nextstrain.org/ncov/asia?f_region=Asia
     name: Asia
     geo: asia
     parentGeo: null
@@ -78,7 +78,7 @@ builds:
     parentGeo: null
     org: null
 
-  - url: https://nextstrain.org/ncov/oceania
+  - url: https://nextstrain.org/ncov/oceania?f_region=Oceania
     name: Oceania
     geo: oceania
     parentGeo: null
@@ -92,7 +92,7 @@ builds:
     parentGeo: null
     org: null
 
-  - url: https://nextstrain.org/ncov/north-america
+  - url: https://nextstrain.org/ncov/north-america?f_region=North%20America
     name: North America
     geo: north-america
     org:

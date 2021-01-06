@@ -18,10 +18,11 @@ import SituationReports from "../components/sars-cov-2/sit-reps";
 import TOC from "../components/sars-cov-2/toc";
 
 const title = "Nextstrain SARS-CoV-2 resources";
-const abstract = `Around the world, people are sequencing SARS-CoV-2. The Nextstrain
-team analyzes these data on a global and continental level. More specific analysis
-are often provided by groups around the world. This page lists all SARS-CoV-2 analysis
-that use nextstrain that we are aware of. In addition to exploring SARS-CoV-2 evolution
+const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
+genomic data. The Nextstrain team analyzes these data on a global and continental
+level. More specific analysis are often performed by groups around the world.
+This page lists publicly available SARS-CoV-2 analyses that use Nextstrain from
+groups all over the world. In addition to exploring SARS-CoV-2 evolution
 in finished analyses, you can use our new Nextclade tool to compare your sequences
 to the SARS-CoV-2 reference sequence, assign them to clades, and see where they fall
 on a the SARS-CoV-2 tree.`;
@@ -34,12 +35,12 @@ const contents = [
     subtext: (
       <span>
         Jump to our latest global SARS-CoV-2 build which is updated daily. We also maintain regional builds for
-        <a href="https://nextstrain.org/ncov/north-america"> North America</a>,
-        <a href="https://nextstrain.org/ncov/south-america"> South America</a>,
-        <a href="https://nextstrain.org/ncov/europe"> Europe</a>,
-        <a href="https://nextstrain.org/ncov/asia"> Asia</a>,
-        <a href="https://nextstrain.org/ncov/africa"> Africa</a>, and
-        <a href="https://nextstrain.org/ncov/oceania"> Oceania</a>,
+        <a href="/ncov/africa?f_region=Africa"> Africa</a>,
+        <a href="/ncov/asia?f_region=Asia"> Asia</a>,
+        <a href="/ncov/europe?f_region=Europe"> Europe</a>,
+        <a href="/ncov/north-america?f_region=North%20America"> North America</a>,
+        <a href="/ncov/oceania?f_region=Oceania"> Oceania</a>, and
+        <a href="/ncov/south-america?f_region=South%20America"> South America</a>
       </span>
     )
   },
@@ -57,19 +58,19 @@ const contents = [
     type: "external",
     to: "https://clades.nextstrain.org",
     title: "Nextclade (sequence analysis webapp)",
-    subtext: "Drag & drop your (FASTA) sequences to assign your sequences to clades and report potential sequence quality issues. You can use the tool to analyze sequences before you upload them to a database."
+    subtext: "Drag and drop your sequences to assign them to clades and report potential sequence quality issues. You can use the tool to analyze sequences before you upload them to a database."
+  },
+  {
+    type: "external",
+    to: "https://github.com/hodcroftlab/covariants/blob/master/README.md",
+    title: "CoVariants (mutations and variants of interest)",
+    subtext: "An overview of SARS-CoV-2 mutations that are of interest. The featured mutations are currently mostly associated with spread in Europe; this is simply a reflection that the primary maintainer/author (Emma Hodcroft) works mostly with European data."
   },
   {
     type: "gatsby",
     to: "/search/sars-cov-2",
     title: "Search builds by strain name(s)",
-    subtext: "Search all SARS-CoV-2 nextstrain builds, including historical ones, for particular strain name(s).",
-  },
-  {
-    type: "external",
-    to: "https://github.com/emmahodcroft/cluster_scripts/blob/master/README.md",
-    title: "SARS-CoV-2 Mutations of Interest",
-    subtext: "An overview of SARS-CoV-2 mutations that are of interest. The featured mutations are currently mostly associated with spread in Europe; this is simply a reflection that the primary maintainer/author (Emma Hodcroft) works mostly with European data."
+    subtext: "Search all SARS-CoV-2 nextstrain builds, including historical ones, for particular strain name(s)",
   },
   {
     type: "external",
@@ -89,13 +90,13 @@ const contents = [
     type: "external",
     to: "https://discussion.nextstrain.org",
     title: "Nextstrain discussion forum",
-    subtext: "See here for previously asked questions about Nextstrain or ask your own!"
+    subtext: "See here for previously asked questions about Nextstrain or ask your own"
   },
   {
     type: "external",
     to: "https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md",
     title: "Developer contributions",
-    subtext: "We have received a number of generous offers to contribute to the development of Nextstrain - this provides an entry point for how you may be able help!"
+    subtext: "We have received a number of generous offers to contribute to the development of Nextstrain - this provides an entry point for how you may be able help"
   }
 ];
 

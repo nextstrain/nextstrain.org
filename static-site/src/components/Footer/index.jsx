@@ -71,18 +71,21 @@ class Footer extends React.Component {
                 <TeamMember name={"Emma Hodcroft"} image={"emma-hodcroft.jpg"} link={"http://emmahodcroft.com/"}/>,
                 <TeamMember name={"Thomas Sibley"} image={"thomas-sibley.jpg"} link={"https://bedford.io/team/thomas-sibley/"}/>,
                 <TeamMember name={"John Huddleston"} image={"john-huddleston.jpg"} link={"http://bedford.io/team/john-huddleston/"}/>,
+                <TeamMember name={"Ivan Aksamentov"} image={"ivan-aksamentov.jpg"} link={"https://neherlab.org/ivan-aksamentov.html"}/>,
                 <TeamMember name={"Jover Lee"} image={"jover-lee.jpg"} link={"http://bedford.io/team/jover-lee/"}/>,
                 <TeamMember name={"Kairsten Fay"} image={"kairsten-fay.jpg"} link={"http://bedford.io/team/kairsten-fay/"}/>,
+                <TeamMember name={"Moira Zuber"} image={"moira-zuber.jpg"}/>,
+                <TeamMember name={"Eli Harkins"} image={"eli-harkins.jpg"} link={"https://bedford.io/team/eli-harkins/"}/>,
+                <TeamMember name={"Misja Ilcisin"} image={"misja-ilcisin.jpg"} link={"http://bedford.io/team/misja-ilcisin/"}/>,
+                <TeamMember name={"Cassia Wagner"} image={"cassia-wagner.jpg"} link={"https://bedford.io/team/cassia-wagner/"}/>,
+                <TeamMember name={"Louise Moncla"} image={"louise-moncla.jpg"} link={"http://bedford.io/team/louise-moncla/"}/>,
+                <TeamMember name={"Allison Black"} image={"allison-black.jpg"} link={"http://bedford.io/team/allison-black/"}/>,
                 <TeamMember name={"Sidney Bell"} image={"sidney-bell.jpg"} link={"http://bedford.io/team/sidney-bell/"}/>,
+                <TeamMember name={"Miguel Parades"} image={"miguel-parades.jpg"} link={"https://bedford.io/team/miguel-parades/"}/>,
                 <TeamMember name={"Colin Megill"} image={"colin-megill.jpg"} link={"http://www.colinmegill.com/"}/>,
                 <TeamMember name={"Barney Potter"} image={"barney-potter.jpg"} link={"http://bedford.io/team/barney-potter/"}/>,
                 <TeamMember name={"Pavel Sagulenko"} image={"pavel-sagulenko.jpg"} link={"https://neherlab.org/pavel-sagulenko.html"}/>,
-                <TeamMember name={"Charlton Callender"} image={"charlton-callender.jpg"} link={"http://bedford.io/team/charlton-callender/"}/>,
-                <TeamMember name={"Misja Ilcisin"} image={"misja-ilcisin.jpg"} link={"http://bedford.io/team/misja-ilcisin/"}/>,
-                <TeamMember name={"Louise Moncla"} image={"louise-moncla.jpg"} link={"http://bedford.io/team/louise-moncla/"}/>,
-                <TeamMember name={"Allison Black"} image={"allison-black.jpg"} link={"http://bedford.io/team/allison-black/"}/>,
-                <TeamMember name={"Anderson Brito"} image={"anderson-brito.jpg"} link={"http://grubaughlab.com/team/anderson-brito/"}/>,
-                <TeamMember name={"Nate Grubaugh"} image={"nate-grubaugh.jpg"} link={"http://grubaughlab.com/team/nathan-grubaugh/"}/>
+                <TeamMember name={"Charlton Callender"} image={"charlton-callender.jpg"} link={"http://bedford.io/team/charlton-callender/"}/>
               </div>
             </Styles.IconParagraph>
           </div>
@@ -98,16 +101,26 @@ class Footer extends React.Component {
             </Styles.WideParagraph>
 
             <Styles.WideParagraph>
-              This work is made possible by the open sharing of genetic data by research groups from all over the world.
-              We gratefully acknowledge their contributions.
-              Special thanks to Kristian Andersen, David Blazes, Peter Bogner, Matt Cotten, Ana Crisan, Gytis Dudas, Vivien Dugan, Karl Erlandson, Nuno Faria, Jennifer Gardy, Becky Kondor, Dylan George, Ian Goodfellow, Betz Halloran, Christian Happi, Jeff Joy, Paul Kellam, Philippe Lemey, Nick Loman, Sebastian Maurer-Stroh, Oliver Pybus, Andrew Rambaut, Colin Russell, Pardis Sabeti, Katherine Siddle, Kristof Theys, Dave Wentworth, Shirlee Wohl and Nathan Yozwiak for comments, suggestions and data sharing.
+              This work is made possible by the open sharing of genetic data by
+              research groups from all over the world. We gratefully acknowledge
+              their contributions. Special thanks to Kristian Andersen, Josh
+              Batson, David Blazes, Jesse Bloom, Peter Bogner, Anderson Brito,
+              Matt Cotten, Ana Crisan, Tulio de Oliveira, Gytis Dudas, Vivien
+              Dugan, Karl Erlandson, Nuno Faria, Jennifer Gardy, Nate Grubaugh,
+              Becky Kondor, Dylan George, Ian Goodfellow, Betz Halloran,
+              Christian Happi, Jeff Joy, Paul Kellam, Philippe Lemey, Nick
+              Loman, Duncan MacCannell, Erick Matsen, Sebastian Maurer-Stroh,
+              Placide Mbala, Danny Park, Oliver Pybus, Andrew Rambaut, Colin
+              Russell, Pardis Sabeti, Katherine Siddle, Kristof Theys, Dave
+              Wentworth, Shirlee Wohl and Cecile Viboud for comments,
+              suggestions and data sharing.
             </Styles.WideParagraph>
           </div>
         </div>
 
         {this.props.splashImagesCredit ? <SplashImagesCredit/> : null}
 
-        <BigSpacer/>
+        <SmallSpacer/>
 
         {/* FOOTER / LOGOS */}
         <Logos />
@@ -117,7 +130,7 @@ class Footer extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <Styles.FooterParagraph>
-              © 2015-2020 Trevor Bedford and Richard Neher
+              © 2015-2021 Trevor Bedford and Richard Neher
             </Styles.FooterParagraph>
           </div>
         </div>
