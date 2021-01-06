@@ -120,7 +120,7 @@ class Footer extends React.Component {
 
         {this.props.splashImagesCredit ? <SplashImagesCredit/> : null}
 
-        <BigSpacer/>
+        <SmallSpacer/>
 
         {/* FOOTER / LOGOS */}
         <Logos />

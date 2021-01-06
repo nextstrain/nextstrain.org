@@ -1,11 +1,12 @@
 /* eslint global-require:"off" */
 import React from "react";
 import styled from "styled-components";
-import {Line} from "../layouts/generalComponents";
+import * as Styles from "./splash/styles";
 
 const fredHutchLogo = require("../../static/logos/fred-hutch-logo-small.png");
 const maxPlanckLogo = require("../../static/logos/max-planck-logo.png");
 const nihLogo = require("../../static/logos/nih-logo.jpg");
+const bmgfLogo = require("../../static/logos/bmgf.png");
 const mapBoxLogo = require("../../static/logos/mapbox-logo-black.svg");
 const ercLogo = require("../../static/logos/erc-logo.jpg");
 const ospLogo = require("../../static/logos/osp-logo-small.png");
@@ -43,16 +44,21 @@ const Logo = ({href, imgSrc, width=50}) => (
 
 export const Logos = () => (
   <div className="row">
-    <Line style={{marginBottom: 0}}/>
     <div className="col-md-12">
+
+      <Styles.FooterParagraph>
+        Nextstrain is supported by
+      </Styles.FooterParagraph>
+
       <AllLogosContainer>
         <Logo href="http://www.fredhutch.org/" imgSrc={fredHutchLogo} width={90}/>
-        <Logo href="http://www.eb.tuebingen.mpg.de/" imgSrc={maxPlanckLogo} width={90}/>
-        <Logo href="https://www.nih.gov/" imgSrc={nihLogo} width={65}/>
-        <Logo href="https://www.mapbox.com" imgSrc={mapBoxLogo} width={135}/>
-        <Logo href="https://erc.europa.eu/" imgSrc={ercLogo} width={70}/>
-        <Logo href="https://www.openscienceprize.org/" imgSrc={ospLogo} width={110}/>
-        <Logo href="http://biozentrum.org/" imgSrc={bzLogo} width={120}/>
+        <Logo href="http://www.eb.tuebingen.mpg.de/" imgSrc={maxPlanckLogo} width={85}/>
+        <Logo href="https://www.nih.gov/" imgSrc={nihLogo} width={60}/>
+        <Logo href="https://www.gatesfoundation.org/" imgSrc={bmgfLogo} width={130}/>
+        <Logo href="https://erc.europa.eu/" imgSrc={ercLogo} width={65}/>
+        <Logo href="https://www.mapbox.com" imgSrc={mapBoxLogo} width={110}/>
+        <Logo href="https://www.openscienceprize.org/" imgSrc={ospLogo} width={100}/>
+        <Logo href="http://biozentrum.org/" imgSrc={bzLogo} width={115}/>
       </AllLogosContainer>
     </div>
   </div>
