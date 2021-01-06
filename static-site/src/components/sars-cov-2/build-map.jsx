@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactMapboxGl, { ZoomControl, Marker } from "react-mapbox-gl";
+import ReactMapboxGl, { ZoomControl, Marker, Cluster } from "react-mapbox-gl";
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
-import { sortBy } from "lodash";
+import { remove } from "lodash";
 import { FaInfoCircle } from "react-icons/fa";
 
 const MapMarkerContainer = styled.div`
@@ -102,18 +102,27 @@ const Map = ReactMapboxGl({
   scrollZoom: false
 });
 
-const circle = (size, fill) => (
-  <svg height={size+2} width={size+2}>
-    <circle cx={(size+2)/2} cy={(size+2)/2} r={size/2} stroke="white" strokeWidth="1" fill={fill} />
-  </svg>
-);
+const circle = (size, fill, text) => {
+  const sizeAdjusted = size+2;
+  const radius = size/2;
+  const width = sizeAdjusted/2;
+  const fontSize = `${width/12}em`;
+  return (<svg height={sizeAdjusted} width={sizeAdjusted}>
+    <circle cx={width} cy={width} r={radius*1.1} stroke="white" strokeWidth="1" fill={fill}/>
+    {text &&
+      <text x={width} y={width*1.1} fill="white" fontSize={fontSize} textAnchor="middle" dominantBaseline="middle">
+        {text}
+      </text>}
+  </svg>);
+};
 
-const nextstrainBuild = circle(16, "#5DA8A3");
+
+const nextstrainBuild = circle(17, "#4C90C0");
 const communityBuilds = {
-  region: circle(15, "#529AB6"),
-  country: circle(12, "#529AB6"),
-  division: circle(8, "#529AB6"),
-  location: circle(6, "#529AB6")
+  region: circle(14, "#75B681"),
+  country: circle(12, "#B2BD4D"),
+  division: circle(10, "#E1A03A"),
+  location: circle(8, "#E04929")
 };
 const communityBuildInfo = (level) =>
   `A ${level}-level build maintained by a group in the scientific community.
@@ -180,43 +189,50 @@ class BuildMap extends React.Component {
     this.setState({zoomToIndex: null});
   }
 
-  MapMarker = (build, index) => {
+  ClusterMarker = (coordinates, pointCount) => {
+    const size = pointCount < 10 ? 20 : pointCount < 50 ? 30 : 40;
+    return (
+      <Marker
+        key={coordinates.toString()}
+        coordinates={coordinates}
+      >
+        <MapMarkerContainer data-tip data-for={"cluster-tooltip"}>
+          {circle(size, "grey", pointCount)}
+        </MapMarkerContainer>
+      </Marker>);
+  };
+
+  MapMarker = (build) => {
     const isNextstrainBuild = build.org.name === "Nextstrain Team";
-    return (<div key={index}>
+    return (
       <Marker
         coordinates={build.coords}
         anchor="bottom"
+        key={build.coords.toString()}
       >
-        <MapMarkerContainer data-tip data-for={build.url} data-delay-hide="500">
-          <a href={build.url}>
+        <MapMarkerContainer>
+          <a href={build.url} data-tip data-for={build.url} build={build}>
             {isNextstrainBuild ? nextstrainBuild : communityBuilds[build.level]}
           </a>
         </MapMarkerContainer>
-      </Marker>
-      <StyledTooltip type="light" id={build.url} effect="solid" data-delay-hide={500}>
+      </Marker>);
+  }
+
+  MapMarkerTooltip = (build) => {
+    return (
+      <StyledTooltip type="light" key={build.url} id={build.url} effect="solid">
         {`${build.name} (${build.org.name})`}
         <div style={{fontStyle: "italic"}}>Click to view</div>
-      </StyledTooltip>
-    </div>
-    );
+      </StyledTooltip>);
   }
 
   render() {
-    let center, zoom;
-    const buildsToMap = sortBy(
-      // We don't map the stub builds that are used to define the hierarchy
-      this.props.builds.filter((build) => build.url !== null && build.coords !== undefined && build.name !== "Global"),
-      // Nextstrain builds are last so they show up on top
-      (b) => b.org && b.org.name === "Nextstrain Team");
-    if (this.state.zoomToIndex !== null) {
-      /* map focused on one pin */
-      center = buildsToMap[this.state.zoomToIndex].coords;
-      zoom = buildsToMap[this.state.zoomToIndex].zoom || mapDefaults.zoomPin;
-    } else {
-      /* "overall" view */
-      zoom = mapDefaults.zoomOverall;
-      center = mapDefaults.center;
-    }
+    const center = mapDefaults.center;
+    const zoom = mapDefaults.zoomOverall;
+    // We don't map the stub builds that are used to define the hierarchy
+    const buildsToMap = this.props.builds.filter((build) => build.url !== null && build.coords !== undefined && build.name !== "Global");
+    // Nextstrain builds go separate from clustered community builds on the map
+    const nextstrainBuilds = remove(buildsToMap, (b) => b.org && b.org.name === "Nextstrain Team");
 
     return (
       <Flex>
@@ -227,11 +243,23 @@ class BuildMap extends React.Component {
             center={center}
             zoom={[zoom]}
             maxBounds={mapDefaults.maxBounds}
-            // onDragEnd={() => this.onMapMove()}
+            onZoomEnd={ReactTooltip.rebuild}
+            onDragEnd={ReactTooltip.rebuild}
           >
             <ZoomControl zoomDiff={1.0} style={{top: "auto", bottom: "15px", right: "10px"}}/>
             {Legend(legendEntries)}
-            {buildsToMap.map((build, index) => this.MapMarker(build, index))}
+            {/* Clustering of community builds according to https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md#cluster */}
+            <Cluster ClusterMarkerFactory={this.ClusterMarker} zoomOnClick zoomOnClickPadding={200} maxZoom={5} radius={30}>
+              {buildsToMap.map((build, index) => this.MapMarker(build, index))}
+            </Cluster>
+            {/* Tooltips for cluster markers: */}
+            <StyledTooltip type="light" id={"cluster-tooltip"} effect="solid">
+              <div style={{fontStyle: "italic"}}>Click to zoom on this cluster of builds</div>
+            </StyledTooltip>
+            {/* Nextstrain builds: */}
+            {nextstrainBuilds.map((build) => this.MapMarker(build))}
+            {/* Tooltips for map markers: */}
+            {[...nextstrainBuilds, ...buildsToMap].map((build) => this.MapMarkerTooltip(build))}
           </Map>
         </MapContainer>
       </Flex>
