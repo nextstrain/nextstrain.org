@@ -249,7 +249,7 @@ class BuildMap extends React.Component {
             <ZoomControl zoomDiff={1.0} style={{top: "auto", bottom: "15px", right: "10px"}}/>
             {Legend(legendEntries)}
             {/* Clustering of community builds according to https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md#cluster */}
-            <Cluster ClusterMarkerFactory={this.ClusterMarker} zoomOnClick zoomOnClickPadding={100} maxZoom={5} radius={30}>
+            <Cluster ClusterMarkerFactory={this.ClusterMarker} zoomOnClick zoomOnClickPadding={200} maxZoom={5} radius={30}>
               {buildsToMap.map((build, index) => this.MapMarker(build, index))}
             </Cluster>
             {/* Tooltips for cluster markers: */}
