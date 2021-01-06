@@ -1,8 +1,12 @@
 import React from "react";
 import { FaChartArea } from "react-icons/fa";
-import { SmallSpacer, MediumSpacer, HugeSpacer } from "../../layouts/generalComponents";
+import Collapsible from "react-collapsible";
+import { orderBy } from "lodash";
+import { SmallSpacer, MediumSpacer, HugeSpacer, FlexGridLeft } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import allSARSCoV2Builds from "../../../content/allSARS-CoV-2Builds.yaml";
+import CollapseTitle from "../Misc/collapse-title";
+import BuildMap from "./build-map";
 
 /*
 * This is a page to display all builds for SARS-CoV-2 in one place.
@@ -30,24 +34,46 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: false};
+      hasError: false
+    };
     this.buildsForGeo = this.buildsForGeo.bind(this);
     this.subBuilds = this.subBuilds.bind(this);
     this.buildTree = this.buildTree.bind(this);
   }
 
-  subBuilds(header, fontSize=20) {
+  subBuilds(header, expanded=false, fontSize=20) {
     const children = allSARSCoV2Builds.builds
       .filter((b) => b.geo === header.geo && b.url !== null);
     const subHeaders = allSARSCoV2Builds.builds
       .filter((b) => b.parentGeo === header.geo && b.url === null);
     return (
       <div key={header.name}>
-        <splashStyles.Heading fontSize={fontSize}>{header.name}</splashStyles.Heading>
-        <div key={`${header.name}-children`} style={{marginLeft: "20px"}}>
-          {children.length > 0 && children.map((child) => buildComponent(child))}
-          {subHeaders.length > 0 && subHeaders.map((subHeader) => this.subBuilds(subHeader, fontSize > 16 ? fontSize-2 : fontSize))}
-        </div>
+        <Collapsible
+          triggerWhenOpen={<CollapseTitle name={header.name} isExpanded />}
+          trigger={<CollapseTitle name={header.name} />}
+          triggerStyle={{cursor: "pointer", textDecoration: "none"}}
+          transitionTime={100}
+          open={expanded}
+        >
+          {/* Begin collapsible content */}
+          <div key={`${header.name}-children`}>
+            {children.length > 0 &&
+              <FlexGridLeft style={{marginBottom: "10px"}}>
+                {children.map((child) => (
+                  <div key={child.url}>
+                    {buildComponent(child)}
+                  </div>
+                ))}
+              </FlexGridLeft>}
+            {subHeaders.length > 0 &&
+              <div style={{marginLeft: "20px"}}>
+                {orderBy(subHeaders, ["name"]).map((subHeader) =>
+                  this.subBuilds(subHeader,
+                    subHeaders.length < 5,
+                    fontSize > 16 ? fontSize-2 : fontSize))}
+              </div>}
+          </div>
+        </Collapsible>
       </div>);
   }
 
@@ -78,6 +104,7 @@ class Index extends React.Component {
           If you know of a build not listed here, please let us know!
           Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
         </splashStyles.FocusParagraph>
+        <BuildMap builds={allSARSCoV2Builds.builds}/>
         <div className="row">
           <MediumSpacer />
           <div className="col-md-1"/>
