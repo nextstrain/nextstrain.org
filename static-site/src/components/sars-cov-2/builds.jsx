@@ -6,6 +6,7 @@ import { SmallSpacer, MediumSpacer, HugeSpacer, FlexGridLeft } from "../../layou
 import * as splashStyles from "../splash/styles";
 import allSARSCoV2Builds from "../../../content/allSARS-CoV-2Builds.yaml";
 import CollapseTitle from "../Misc/collapse-title";
+import BuildMap from "./build-map";
 
 /*
 * This is a page to display all builds for SARS-CoV-2 in one place.
@@ -33,7 +34,8 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: false};
+      hasError: false
+    };
     this.buildsForGeo = this.buildsForGeo.bind(this);
     this.subBuilds = this.subBuilds.bind(this);
     this.buildTree = this.buildTree.bind(this);
@@ -58,7 +60,7 @@ class Index extends React.Component {
             {children.length > 0 &&
               <FlexGridLeft style={{marginBottom: "10px"}}>
                 {children.map((child) => (
-                  <div>
+                  <div key={child.url}>
                     {buildComponent(child)}
                   </div>
                 ))}
@@ -102,6 +104,7 @@ class Index extends React.Component {
           If you know of a build not listed here, please let us know!
           Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
         </splashStyles.FocusParagraph>
+        <BuildMap builds={allSARSCoV2Builds.builds}/>
         <div className="row">
           <MediumSpacer />
           <div className="col-md-1"/>
