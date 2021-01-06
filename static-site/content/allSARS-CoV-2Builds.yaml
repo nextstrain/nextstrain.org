@@ -205,7 +205,7 @@ builds:
     region: North America
     level: division
     coords:
-      - -119.64
+      - -118.0
       - 36.357039
     org:
       name: CZ BioHub
@@ -217,8 +217,8 @@ builds:
     region: North America
     level: division
     coords:
-      - -119.690182
-      - 36.357039
+      - -121.0
+      - 37.357039
     org:
       name: SEARCH, San Diego
       url: https://searchcovid.info/
@@ -229,8 +229,8 @@ builds:
     region: North America
     level: location
     coords:
-      - -117.143358
-      - 32.733024
+      - -118.143358
+      - 33.733024
     org:
       name: SEARCH, San Diego
       url: https://searchcovid.info/
@@ -301,8 +301,8 @@ builds:
     region: North America
     level: location
     coords:
-      - -71.0589
-      - 42.3601
+      - -71.18
+      - 42.45
     org:
       name: Broad Institute
       url: https://auspice.broadinstitute.org
@@ -313,8 +313,8 @@ builds:
     region: North America
     level: location
     coords:
-      - -71.3
-      - 42.3601
+      - -71
+      - 42.25
     org:
       name: Broad Institute
       url: https://auspice.broadinstitute.org
@@ -367,8 +367,8 @@ builds:
     region: Europe
     level: country
     coords:
-      - 14.5501
-      - 47.5162
+      - 14.5
+      - 47
     org:
       name: Bergthaler Lab
       url: https://cemm.at/en/research/groups/andreas-bergthaler-group/
@@ -380,7 +380,7 @@ builds:
     level: country
     coords:
       - 14.5
-      - 47.5162
+      - 48
     org:
       name: neherlab
       url: https://neherlab.org
@@ -398,7 +398,7 @@ builds:
     level: country
     coords:
       - -3.7492
-      - 40.4637
+      - 41
     org:
       name: FISABIO Sequencing and Bioinformatics Service
       url: http://www.fisabio-ngs.com/en/
@@ -410,7 +410,7 @@ builds:
     level: country
     coords:
       - -3.65
-      - 40.4637
+      - 39
     org:
       name: neherlab
       url: https://neherlab.org
@@ -446,7 +446,7 @@ builds:
     level: country
     coords:
       - -8.1
-      - 39.54046
+      - 38
     org:
       name: INSA / NIH Portugal
       url: http://www.insa.pt/
@@ -458,7 +458,7 @@ builds:
     level: country
     coords:
       - -8.174701
-      - 39.54046
+      - 40
     org:
       name: neherlab
       url: https://neherlab.org
@@ -548,8 +548,8 @@ builds:
     region: Europe
     level: country
     coords:
-      - 15.2
-      - 45.1
+      - 16
+      - 45.4
     org:
       name: neherlab
       url: https://neherlab.org
