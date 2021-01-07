@@ -517,7 +517,7 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - url: https://nextstrain.org/community/GuyBaele/sars-cov-2-belgium?f_country=Belgium
+  - url: https://nextstrain.org/community/GuyBaele/sars-cov-2-belgium?c=clade_membership&f_country=Belgium
     name: Belgium
     geo: belgium
     region: Europe
