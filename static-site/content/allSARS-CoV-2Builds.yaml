@@ -337,23 +337,23 @@ builds:
       name: Hodcroft et al.
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
 
-    - url: null
-      name: Washington
-      geo: washington
-      parentGeo: usa
-      org: null
+  - url: null
+    name: Washington
+    geo: washington
+    parentGeo: usa
+    org: null
 
-    - url: https://nextstrain.org/groups/blab/ncov/wa/4m
-      name: Washington
-      geo: washington
-      region: North America
-      level: division
-      coords:
-        - -119.950361
-        - 47.183945
-      org:
-        name: Bedford Lab
-        url: https://bedford.io/
+  - url: https://nextstrain.org/groups/blab/ncov/wa/4m
+    name: Washington
+    geo: washington
+    region: North America
+    level: division
+    coords:
+      - -120.644869
+      - 46.988611
+    org:
+      name: Bedford Lab
+      url: https://bedford.io/
 
   - url: null
     name: Wisconsin
