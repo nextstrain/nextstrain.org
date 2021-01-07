@@ -511,11 +511,23 @@ builds:
     region: Europe
     level: country
     coords:
-      - 4.677726
-      - 50.707735
+      - 4.3517
+      - 50.8503
     org:
       name: neherlab
       url: https://neherlab.org
+
+  - url: https://nextstrain.org/community/GuyBaele/sars-cov-2-belgium?c=clade_membership&f_country=Belgium
+    name: Belgium
+    geo: belgium
+    region: Europe
+    level: country
+    coords:
+      - 4.7005
+      - 50.8798
+    org:
+      name: Baele Lab
+      url: https://rega.kuleuven.be/cev/ecv
 
   - url: null
     name: Bosnia and Herzegovin
