@@ -1,8 +1,7 @@
 const fs = require('fs');
 const chalk = require('chalk');
 const fetch = require('node-fetch');
-
-const { ResourceNotFoundError } = require('./exceptions');
+const {NotFound} = require('http-errors');
 
 
 const getGitHash = () => {
@@ -34,23 +33,21 @@ const error = (msg, ...rest) => {
   process.exit(2);
 };
 
-const fetchJSON = (pathToFetch) => {
-  verbose(`Fetching ${pathToFetch}`);
-  const p = fetch(pathToFetch)
-    .then((res) => {
-      if (res.status === 404) throw new ResourceNotFoundError();
-      else if (res.status !== 200) throw new Error(res.statusText);
+const fetchJSON = async (url) => {
+  verbose(`Fetching ${url}`);
+  const res = await fetch(url);
 
-      try {
-        const header = res.headers[Object.getOwnPropertySymbols(res.headers)[0]] || res.headers._headers;
-        verbose(`Got type ${header["content-type"]} with encoding ${header["content-encoding"] || "none"}`);
-      } catch (e) {
-        // potential errors here are inconsequential for the response
-      }
-      return res;
-    })
-    .then((res) => res.json());
-  return p;
+  if (res.status === 404) throw new NotFound();
+  else if (res.status !== 200) throw new Error(res.statusText);
+
+  try {
+    const header = res.headers[Object.getOwnPropertySymbols(res.headers)[0]] || res.headers._headers;
+    verbose(`Got type ${header["content-type"]} with encoding ${header["content-encoding"] || "none"}`);
+  } catch (e) {
+    // potential errors here are inconsequential for the response
+  }
+
+  return res.json();
 };
 
 const printStackTrace = (err) => {
