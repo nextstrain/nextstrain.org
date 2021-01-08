@@ -38,9 +38,9 @@ class Source {
     return new Narrative(this, pathParts);
   }
 
-  // The computation of these globals should move here.
+  // eslint-disable-next-line no-unused-vars
   secondTreeOptions(path) {
-    return (global.availableDatasets.secondTreeOptions[this.name] || {})[path] || [];
+    return [];
   }
 
   availableDatasets() {
@@ -128,6 +128,10 @@ class CoreSource extends Source {
   }
 
   // The computation of these globals should move here.
+  secondTreeOptions(path) {
+    return (global.availableDatasets.secondTreeOptions[this.name] || {})[path] || [];
+  }
+
   availableDatasets() {
     return global.availableDatasets[this.name] || [];
   }
