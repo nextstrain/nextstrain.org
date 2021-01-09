@@ -3,6 +3,218 @@ builds:
     geo: global
     parentGeo: null
 
+  - name: South America
+    geo: south-america
+    parentGeo: null
+
+  - name: Europe
+    geo: europe
+    parentGeo: null
+
+  - name: Oceania
+    geo: oceania
+    parentGeo: null
+
+  - name: Africa
+    geo: africa
+    parentGeo: null
+
+  - name: Asia
+    geo: asia
+    parentGeo: null
+
+  - name: North America
+    geo: north-america
+    parentGeo: null
+
+  - name: Canada
+    geo: canada
+    parentGeo: north-america
+
+  - name: Quebec
+    geo: quebec
+    parentGeo: canada
+
+  - name: USA
+    geo: usa
+    parentGeo: north-america
+
+  - name: California
+    geo: california
+    parentGeo: usa
+
+  - name: Connecticut
+    geo: connecticut
+    parentGeo: usa
+
+  - name: Florida
+    geo: florida
+    parentGeo: usa
+
+  - name: Louisiana
+    geo: louisiana
+    parentGeo: usa
+
+  - name: Massachusetts
+    parentGeo: usa
+    geo: massachusetts
+
+  - name: Texas
+    geo: texas
+    parentGeo: usa
+
+  - name: Washington
+    geo: washington
+    parentGeo: usa
+
+  - name: Wisconsin
+    geo: wisconsin
+    parentGeo: usa
+
+  - name: Austria
+    geo: austria
+    parentGeo: europe
+
+  - name: Spain
+    geo: spain
+    parentGeo: europe
+
+  - name: Switzerland
+    geo: switzerland
+    parentGeo: europe
+
+  - name: Portugal
+    geo: portugal
+    parentGeo: europe
+
+  - name: Belarus
+    geo: belarus
+    parentGeo: europe
+
+  - name: Belgium
+    geo: belgium
+    parentGeo: europe
+
+  - name: Bosnia and Herzegovina
+    geo: bosnia_and_herzegovina
+    parentGeo: europe
+
+  - name: Bulgaria
+    geo: bulgaria
+    parentGeo: europe
+
+  - name: Croatia
+    geo: croatia
+    parentGeo: europe
+
+  - name: Czech Republic
+    geo: czech_republic
+    parentGeo: europe
+
+  - name: Denmark
+    geo: denmark
+    parentGeo: europe
+
+  - name: Estonia
+    geo: estonia
+    parentGeo: europe
+
+  - name: Finland
+    geo: finland
+    parentGeo: europe
+
+  - name: France
+    geo: france
+    parentGeo: europe
+
+  - name: Germany
+    geo: germany
+    parentGeo: europe
+
+  - name: Greece
+    geo: greece
+    parentGeo: europe
+
+  - name: Hungary
+    geo: hungary
+    parentGeo: europe
+
+  - name: Iceland
+    geo: iceland
+    parentGeo: europe
+
+  - name: Ireland
+    geo: ireland
+    parentGeo: europe
+
+  - name: Israel
+    geo: israel
+    parentGeo: europe
+
+  - name: Italy
+    geo: italy
+    parentGeo: europe
+
+  - name: Latvia
+    geo: latvia
+    parentGeo: europe
+
+  - name: Lithuania
+    geo: lithuania
+    parentGeo: europe
+
+  - name: Luxembourg
+    geo: luxembourg
+    parentGeo: europe
+
+  - name: Netherlands
+    geo: netherlands
+    parentGeo: europe
+
+  - name: Norway
+    geo: norway
+    parentGeo: europe
+
+  - name: Poland
+    geo: poland
+    parentGeo: europe
+
+  - name: Romania
+    geo: romania
+    parentGeo: europe
+
+  - name: Russia
+    geo: russia
+    parentGeo: europe
+
+  - name: Serbia
+    geo: serbia
+    parentGeo: europe
+
+  - name: Slovakia
+    geo: slovakia
+    parentGeo: europe
+
+  - name: Slovenia
+    geo: slovenia
+    parentGeo: europe
+
+  - name: Sweden
+    geo: sweden
+    parentGeo: europe
+
+  - name: United Kingdom
+    geo: united_kingdom
+    parentGeo: europe
+
+  - name: India
+    geo: india
+    parentGeo: asia
+
+  - name: Middle East
+    geo: middle-east
+    parentGeo: null
+
   - url: https://nextstrain.org/ncov/global
     name: Global
     geo: global
@@ -14,10 +226,6 @@ builds:
       name: Nextstrain Team
       url: null
 
-  - name: South America
-    geo: south-america
-    parentGeo: null
-
   - url: https://nextstrain.org/ncov/south-america?f_region=South%20America
     name: South America
     geo: south-america
@@ -28,10 +236,6 @@ builds:
     org:
       name: Nextstrain Team
       url: null
-
-  - name: Europe
-    geo: europe
-    parentGeo: null
 
   - url: https://nextstrain.org/ncov/europe?f_region=Europe
     name: Europe
@@ -55,10 +259,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Africa
-    geo: africa
-    parentGeo: null
-
   - url: https://nextstrain.org/ncov/africa?f_region=Africa
     name: Africa
     geo: africa
@@ -70,10 +270,6 @@ builds:
       name: Nextstrain Team
       url: null
 
-  - name: Asia
-    geo: asia
-    parentGeo: null
-
   - url: https://nextstrain.org/ncov/asia?f_region=Asia
     name: Asia
     geo: asia
@@ -81,14 +277,9 @@ builds:
     coords:
       - 86.654576
       - 30.451098
-    parentGeo: null
     org:
       name: Nextstrain Team
       url: null
-
-  - name: Oceania
-    geo: oceania
-    parentGeo: null
 
   - url: https://nextstrain.org/ncov/oceania?f_region=Oceania
     name: Oceania
@@ -97,14 +288,9 @@ builds:
     coords:
       - 152.008576
       - -25.0562891
-    parentGeo: null
     org:
       name: Nextstrain Team
       url: null
-
-  - name: North America
-    geo: north-america
-    parentGeo: null
 
   - url: https://nextstrain.org/ncov/north-america?f_region=North%20America
     name: North America
@@ -117,14 +303,6 @@ builds:
       name: Nextstrain Team
       url: null
 
-  - name: Canada
-    geo: canada
-    parentGeo: north-america
-
-  - name: Quebec
-    geo: quebec
-    parentGeo: canada
-
   - url: https://covseq.ca/
     name: CoVSeQ
     geo: quebec
@@ -135,10 +313,6 @@ builds:
     org:
       name: CoVSeQ Partnership
       url: https://covseq.ca/about
-
-  - name: USA
-    geo: usa
-    parentGeo: north-america
 
   - url: https://nextstrain.org/community/SESchmedes/sarscov2-southeast-usa/southeast
     name: South-East Region
@@ -161,10 +335,6 @@ builds:
     org:
       name: Hodcroft et al.
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
-
-  - name: California
-    geo: california
-    parentGeo: usa
 
   - url: https://nextstrain.org/community/czbiohub/covidtracker/ca
     name: California
@@ -199,10 +369,6 @@ builds:
       name: SEARCH, San Diego
       url: https://searchcovid.info/
 
-  - name: Connecticut
-    geo: connecticut
-    parentGeo: usa
-
   - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/current
     name: Connecticut
     geo: connecticut
@@ -213,10 +379,6 @@ builds:
     org:
       name: Grubaugh Lab
       url: http://grubaughlab.com
-
-  - name: Florida
-    geo: florida
-    parentGeo: usa
 
   - url: https://nextstrain.org/community/SESchmedes/sarscov2-florida/florida
     name: Florida
@@ -229,10 +391,6 @@ builds:
       name: FL-BPHL
       url: http://www.floridahealth.gov/programs-and-services/public-health-laboratories/index.html
 
-  - name: Louisiana
-    geo: louisiana
-    parentGeo: usa
-
   - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/louisiana
     name: Louisiana
     geo: louisiana
@@ -243,10 +401,6 @@ builds:
     org:
       name: LCSC
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
-
-  - name: Massachusetts
-    parentGeo: usa
-    geo: massachusetts
 
   - url: https://auspice.broadinstitute.org/sars-cov-2/boston/genbank
     name: Boston GenBank
@@ -270,10 +424,6 @@ builds:
       name: Broad Institute
       url: https://auspice.broadinstitute.org
 
-  - name: Texas
-    geo: texas
-    parentGeo: usa
-
   - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/texas?f_country=USA&p=grid
     name: Texas
     geo: texas
@@ -284,10 +434,6 @@ builds:
     org:
       name: Hodcroft et al.
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
-
-  - name: Washington
-    geo: washington
-    parentGeo: usa
 
   - url: https://nextstrain.org/groups/blab/ncov/wa/4m
     name: Washington
@@ -300,10 +446,6 @@ builds:
       name: Bedford Lab
       url: https://bedford.io/
 
-  - name: Wisconsin
-    geo: wisconsin
-    parentGeo: usa
-
   - url: https://go.wisc.edu/r7374f
     name: Wisconsin
     geo: wisconsin
@@ -314,10 +456,6 @@ builds:
     org:
       name: WISC
       url: https://openresearch.labkey.com/Coven/project-begin.view?
-
-  - name: Austria
-    geo: austria
-    parentGeo: europe
 
   - url: https://nextstrain.org/community/bergthalerlab/SARSCoV2/NextstrainAustria
     name: Austria
@@ -341,10 +479,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Spain
-    geo: spain
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/nextspain/ncov19-Spain
     name: Spain
     geo: spain
@@ -367,10 +501,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Switzerland
-    geo: switzerland
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/swiss/ncov/switzerland
     name: Switzerland
     geo: switzerland
@@ -381,10 +511,6 @@ builds:
     org:
       name: nextstrain.org/groups/swiss
       url: https://nextstrain.org/groups/swiss/
-
-  - name: Portugal
-    geo: portugal
-    parentGeo: europe
 
   - url: https://insaflu.insa.pt/covid19/
     name: Portugal
@@ -408,10 +534,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Belarus
-    geo: belarus
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/belarus?c=clade_membership&f_country=Belarus&p=grid&r=division
     name: Belarus
     geo: belarus
@@ -422,10 +544,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Belgium
-    geo: belgium
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/belgium?c=clade_membership&f_country=Belgium&p=grid&r=division
     name: Belgium
@@ -449,11 +567,6 @@ builds:
       name: Baele Lab
       url: https://rega.kuleuven.be/cev/ecv
 
-  - url: null
-    name: Bosnia and Herzegovina
-    geo: bosnia_and_herzegovina
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/bosnia-and-herzegovina?c=clade_membership&f_country=Bosnia and Herzegovin&p=grid&r=division
     name: Bosnia and Herzegovina
     geo: bosnia_and_herzegovina
@@ -467,10 +580,6 @@ builds:
       url: https://neherlab.org
 
 
-  - name: Bulgaria
-    geo: bulgaria
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/bulgaria?c=clade_membership&f_country=Bulgaria&p=grid&r=division
     name: Bulgaria
     geo: bulgaria
@@ -481,10 +590,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Croatia
-    geo: croatia
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/croatia?c=clade_membership&f_country=Croatia&p=grid&r=division
     name: Croatia
@@ -497,10 +602,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Czech Republic
-    geo: czech_republic
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/czech-republic?c=clade_membership&f_country=Czech Republic&p=grid&r=division
     name: Czech Republic
     geo: czech_republic
@@ -511,10 +612,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Denmark
-    geo: denmark
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/denmark?c=clade_membership&f_country=Denmark&p=grid&r=division
     name: Denmark
@@ -527,10 +624,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Estonia
-    geo: estonia
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/estonia?c=clade_membership&f_country=Estonia&p=grid&r=division
     name: Estonia
     geo: estonia
@@ -541,10 +634,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Finland
-    geo: finland
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/finland?c=clade_membership&f_country=Finland&p=grid&r=division
     name: Finland
@@ -557,10 +646,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: France
-    geo: france
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/france?c=clade_membership&f_country=France&p=grid&r=division
     name: France
     geo: france
@@ -571,10 +656,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Germany
-    geo: germany
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/germany?c=clade_membership&f_country=Germany&p=grid&r=division
     name: Germany
@@ -587,10 +668,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Greece
-    geo: greece
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/greece?c=clade_membership&f_country=Greece&p=grid&r=division
     name: Greece
     geo: greece
@@ -601,10 +678,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Hungary
-    geo: hungary
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/hungary?c=clade_membership&f_country=Hungary&p=grid&r=division
     name: Hungary
@@ -617,10 +690,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Iceland
-    geo: iceland
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/iceland?c=clade_membership&f_country=Iceland&p=grid&r=division
     name: Iceland
     geo: iceland
@@ -631,10 +700,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Ireland
-    geo: ireland
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/ireland?c=clade_membership&f_country=Ireland&p=grid&r=division
     name: Ireland
@@ -647,10 +712,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Israel
-    geo: israel
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/israel?c=clade_membership&f_country=Israel&p=grid&r=division
     name: Israel
     geo: israel
@@ -661,10 +722,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Italy
-    geo: italy
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/italy?c=clade_membership&f_country=Italy&p=grid&r=division
     name: Italy
@@ -677,10 +734,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Latvia
-    geo: latvia
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/latvia?c=clade_membership&f_country=Latvia&p=grid&r=division
     name: Latvia
     geo: latvia
@@ -691,10 +744,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Lithuania
-    geo: lithuania
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/lithuania?c=clade_membership&f_country=Lithuania&p=grid&r=division
     name: Lithuania
@@ -707,10 +756,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Luxembourg
-    geo: luxembourg
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/luxembourg?c=clade_membership&f_country=Luxembourg&p=grid&r=division
     name: Luxembourg
     geo: luxembourg
@@ -721,10 +766,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Netherlands
-    geo: netherlands
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/netherlands?c=clade_membership&f_country=Netherlands&p=grid&r=division
     name: Netherlands
@@ -737,10 +778,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Norway
-    geo: norway
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/norway?c=clade_membership&f_country=Norway&p=grid&r=division
     name: Norway
     geo: norway
@@ -751,10 +788,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Poland
-    geo: poland
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/poland?c=clade_membership&f_country=Poland&p=grid&r=division
     name: Poland
@@ -767,10 +800,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Romania
-    geo: romania
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/romania?c=clade_membership&f_country=Romania&p=grid&r=division
     name: Romania
     geo: romania
@@ -781,10 +810,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Russia
-    geo: russia
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/russia?c=clade_membership&f_country=Russia&p=grid&r=division
     name: Russia
@@ -797,10 +822,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Serbia
-    geo: serbia
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/serbia?c=clade_membership&f_country=Serbia&p=grid&r=division
     name: Serbia
     geo: serbia
@@ -811,10 +832,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Slovakia
-    geo: slovakia
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/slovakia?c=clade_membership&f_country=Slovakia&p=grid&r=division
     name: Slovakia
@@ -827,10 +844,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: Slovenia
-    geo: slovenia
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/slovenia?c=clade_membership&f_country=Slovenia&p=grid&r=division
     name: Slovenia
     geo: slovenia
@@ -841,10 +854,6 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
-
-  - name: Sweden
-    geo: sweden
-    parentGeo: europe
 
   - url: https://nextstrain.org/groups/neherlab/ncov/sweden?c=clade_membership&f_country=Sweden&p=grid&r=division
     name: Sweden
@@ -857,10 +866,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: United Kingdom
-    geo: united_kingdom
-    parentGeo: europe
-
   - url: https://nextstrain.org/groups/neherlab/ncov/united-kingdom?c=clade_membership&f_country=United Kingdom&p=grid&r=division
     name: United Kingdom
     geo: united_kingdom
@@ -872,10 +877,6 @@ builds:
       name: neherlab
       url: https://neherlab.org
 
-  - name: India
-    geo: india
-    parentGeo: asia
-
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
     name: India
     geo: india
@@ -886,10 +887,6 @@ builds:
     org:
       name: Vinod Scaria Lab
       url: http://vinodscaria.rnabiology.org/
-
-  - name: Middle East
-    geo: middle-east
-    parentGeo: null
 
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-Middle-East
     name: Middle East
