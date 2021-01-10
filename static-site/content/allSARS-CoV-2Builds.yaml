@@ -1,9 +1,20 @@
+# This file defines the SARS-CoV-2 builds displayed on nextstrain.org/sars-cov-2/
+# (both as points on the map, and in the expandable tables).
+
+# Documentation on how to modify this YAML in order to add a build is forthcoming.
+# For now, please see https://github.com/nextstrain/docs.nextstrain.org/pull/42.
+# This message will be updated with the docs URL when that PR is merged.
+
 builds:
+
+  # The following section of heading entries, which don't themselves define a build,
+  # are used to organise the rendered table into appropriate hierarchies. They are not
+  # used for the <Map>
   - name: Global
     geo: global
     parentGeo: null
 
-  - name: South America
+  - name: South America`
     geo: south-america
     parentGeo: null
 
@@ -214,6 +225,10 @@ builds:
   - name: Middle East
     geo: middle-east
     parentGeo: null
+
+  # Entries below this comment define builds. They should have a URL pointing to the analysis
+  # visualisation as well as a name and coords for rendering on the map. The `geo` value should
+  # map to a non-build (stub) entry defined above.
 
   - url: https://nextstrain.org/ncov/global
     name: Global
