@@ -530,14 +530,14 @@ builds:
       url: https://rega.kuleuven.be/cev/ecv
 
   - url: null
-    name: Bosnia and Herzegovin
-    geo: bosnia_and_herzegovin
+    name: Bosnia and Herzegovina
+    geo: bosnia_and_herzegovina
     parentGeo: europe
     org: null
 
-  - url: https://nextstrain.org/groups/neherlab/ncov/bosnia_and_herzegovin?c=clade_membership&f_country=Bosnia and Herzegovin&p=grid&r=division
-    name: Bosnia and Herzegovin
-    geo: bosnia_and_herzegovin
+  - url: https://nextstrain.org/groups/neherlab/ncov/bosnia-and-herzegovina?c=clade_membership&f_country=Bosnia and Herzegovin&p=grid&r=division
+    name: Bosnia and Herzegovina
+    geo: bosnia_and_herzegovina
     region: Europe
     level: country
     coords:
