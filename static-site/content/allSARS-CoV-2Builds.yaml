@@ -590,7 +590,7 @@ builds:
     parentGeo: europe
     org: null
 
-  - url: https://nextstrain.org/groups/neherlab/ncov/czech_republic?c=clade_membership&f_country=Czech Republic&p=grid&r=division
+  - url: https://nextstrain.org/groups/neherlab/ncov/czech-republic?c=clade_membership&f_country=Czech Republic&p=grid&r=division
     name: Czech Republic
     geo: czech_republic
     region: Europe
@@ -1022,7 +1022,7 @@ builds:
     parentGeo: europe
     org: null
 
-  - url: https://nextstrain.org/groups/neherlab/ncov/united_kingdom?c=clade_membership&f_country=United Kingdom&p=grid&r=division
+  - url: https://nextstrain.org/groups/neherlab/ncov/united-kingdom?c=clade_membership&f_country=United Kingdom&p=grid&r=division
     name: United Kingdom
     geo: united_kingdom
     region: Europe
