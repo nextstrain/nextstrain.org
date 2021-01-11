@@ -1,9 +1,8 @@
 # This file defines the SARS-CoV-2 builds displayed on nextstrain.org/sars-cov-2/
 # (both as points on the map, and in the expandable tables).
 
-# Documentation on how to modify this YAML in order to add a build is forthcoming.
-# For now, please see https://github.com/nextstrain/docs.nextstrain.org/pull/42.
-# This message will be updated with the docs URL when that PR is merged.
+# Documentation on how to modify this YAML in order to add a build is at:
+# https://docs.nextstrain.org/en/latest/guides/share/sars-cov-2.html
 
 builds:
 
