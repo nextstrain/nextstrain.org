@@ -14,7 +14,7 @@ builds:
     geo: global
     parentGeo: null
 
-  - name: South America`
+  - name: South America
     geo: south-america
     parentGeo: null
 
