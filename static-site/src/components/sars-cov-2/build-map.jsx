@@ -230,7 +230,7 @@ class BuildMap extends React.Component {
     const center = mapDefaults.center;
     const zoom = mapDefaults.zoomOverall;
     // We don't map the stub builds that are used to define the hierarchy
-    const buildsToMap = this.props.builds.filter((build) => build.url !== null && build.coords !== undefined && build.name !== "Global");
+    const buildsToMap = this.props.builds.filter((build) => build.url !== undefined && build.coords !== undefined && build.name !== "Global");
     // Nextstrain builds go separate from clustered community builds on the map
     const nextstrainBuilds = remove(buildsToMap, (b) => b.org && b.org.name === "Nextstrain Team");
 

@@ -10,20 +10,17 @@ import BuildMap from "./build-map";
 
 /*
 * This is a page to display all builds for SARS-CoV-2 in one place.
-* TODO:
-* - abstract 15px left margin
-* - tweak yaml design for builds list as necessary
 */
 
 const buildComponent = (build) => (
   <splashStyles.SitRepTitle >
-    {build.url === null ? build.name : <div>
+    {build.url === undefined ? build.name : <div>
       <a href={build.url}>
         <FaChartArea />
         {` ${build.name} `}
       </a>
       (
-      {build.org.url === null ? build.org.name : <a href={build.org.url}>{build.org.name}</a>
+      {build.org.url === undefined ? build.org.name : <a href={build.org.url}>{build.org.name}</a>
       }
       )
     </div>}
@@ -43,9 +40,9 @@ class Index extends React.Component {
 
   subBuilds(header, expanded=false, fontSize=20) {
     const children = allSARSCoV2Builds.builds
-      .filter((b) => b.geo === header.geo && b.url !== null);
+      .filter((b) => b.geo === header.geo && b.url);
     const subHeaders = allSARSCoV2Builds.builds
-      .filter((b) => b.parentGeo === header.geo && b.url === null);
+      .filter((b) => b.parentGeo === header.geo && b.url === undefined);
     return (
       <div key={header.name}>
         <Collapsible
@@ -78,7 +75,7 @@ class Index extends React.Component {
   }
 
   buildTree() {
-    const headers = allSARSCoV2Builds.builds.filter((b) => b.url === null);
+    const headers = allSARSCoV2Builds.builds.filter((b) => b.url === undefined);
     const roots = headers.filter((b) => b.parentGeo === null);
     return roots.map((root) => this.subBuilds(root));
   }
