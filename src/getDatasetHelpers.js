@@ -1,3 +1,5 @@
+const {NotFound} = require("http-errors");
+
 const utils = require("./utils");
 const sources = require("./sources");
 
@@ -56,6 +58,8 @@ const splitPrefixIntoParts = (prefix) => {
   }
 
   const Source = sources.get(sourceName);
+  if (!Source) throw new NotFound();
+
   let source;
 
   switch (sourceName) {
