@@ -217,6 +217,10 @@ builds:
     geo: united_kingdom
     parentGeo: europe
 
+  - name: Bangladesh
+    geo: bangladesh
+    parentGeo: asia
+
   - name: India
     geo: india
     parentGeo: asia
@@ -890,6 +894,17 @@ builds:
     org:
       name: neherlab
       url: https://neherlab.org
+
+  - url: https://nextstrain.org/community/CHRF-Genomics/ncovBangladesh@main
+    name: Bangladesh
+    geo: bangladesh
+    level: country
+    coords:
+      - 90.3563
+      - 23.6850
+    org:
+      name: Child Health Research Foundation
+      url: http://chrfbd.org/
 
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
     name: India
