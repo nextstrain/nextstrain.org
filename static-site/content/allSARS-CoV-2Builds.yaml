@@ -17,6 +17,10 @@ builds:
     geo: south-america
     parentGeo: null
 
+  - name: Peru
+    geo: peru
+    parentGeo: south-america
+
   - name: Europe
     geo: europe
     parentGeo: null
@@ -243,6 +247,17 @@ builds:
     org:
       name: Nextstrain Team
       url: null
+
+  - url: https://nextstrain.org/community/quipupe/peru_dic
+    name: Peru
+    geo: peru
+    level: country
+    coords:
+      - -75.0152
+      - -9.1900
+    org:
+      name: Laboratorio de Genómica Microbiana - Universidad Peruana Cayetano Heredia
+      url: https://investigacion.cayetano.edu.pe/catalogo/saludintegral/genomicamicrobiana
 
   - url: https://nextstrain.org/ncov/south-america?f_region=South%20America
     name: South America
