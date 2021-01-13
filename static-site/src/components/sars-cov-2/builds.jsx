@@ -107,9 +107,9 @@ class Index extends React.Component {
           <div className="col-md-1"/>
           <div className="col-md-10">
             { this.state.hasError && <splashStyles.CenteredFocusParagraph>
-                            Something went wrong getting data.
-                            Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                            if this continues to happen.</splashStyles.CenteredFocusParagraph>}
+              Something went wrong getting data.
+              Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+              if this continues to happen.</splashStyles.CenteredFocusParagraph>}
             {this.buildTree()}
           </div>
         </div>

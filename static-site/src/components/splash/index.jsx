@@ -94,7 +94,7 @@ class Splash extends React.Component {
         <FlexCenter>
           <Styles.CenteredFocusParagraph>
             Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
-            accessed via public GitHub repos</a>
+              accessed via public GitHub repos</a>
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 
