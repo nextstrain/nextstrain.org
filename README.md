@@ -21,21 +21,24 @@ This repository provides the tools you need to [build nextstrain.org locally](#b
 ## Build nextstrain.org locally
 
 ### Install prerequisites
-Install the node dependencies by running
+
+We suggest you use a conda environment to mimic the heroku build environment.
+
+```sh
+conda create -c conda-forge --name nextstrain.org nodejs=14.15
+conda activate nextstrain.org
 ```
-npm ci
+
+Then run the build script to install dependencies and build the various components of the site (static-site, auspice etc).
+
+```sh
+npm run build
 ```
-from this directory (the "nextstrain.org" directory).
 
-> Using `npm ci` instead of `npm install` ensures your dependency tree matches those in `package-lock.json`.
-
-
-### Build locally mirroring the deployed (live) website
-1. `npm run build`, which runs `./build.sh` to build both the static site & an auspice client with customisations.
-2. `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
+Finally, start the server via `npm run server` which will make the site available at [localhost:5000](http://localhost:5000).
 This should mirror exactly what you see when you visit [nextstrain.org](https://nextstrain.org).
 
-#### Building with Nextstrain Groups (e.g. "Login") functionality
+#### Enable Nextstrain Groups (e.g. "Login") functionality
 You'll need AWS credentials configured (via environment or `~/.aws/credentials`) for the Bedford Lab account.
 If you add a new profile to `~/.aws/credentials`, you can then tell the local nextstrain.org server to use it by setting `AWS_PROFILE=...`.
 
