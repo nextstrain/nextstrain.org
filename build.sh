@@ -22,6 +22,7 @@ main() {
             build-auspice;;
         all)
             echo "Running the nextstrain.org build script"
+            install-node-modules
             build-static
             build-auspice
             echo "Build complete. Next step: \"npm run server\"";;
@@ -29,6 +30,13 @@ main() {
             echo "Unknown build step \"$step\"" >&2
             exit 1;;
     esac
+}
+
+# We have a separate build rule to run `npm ci` as it's hard to force heroku to do this (as opposed to npm install)
+# This means longer build times, but more reproducible results.
+install-node-modules() {
+    echo "Running npm ci"
+    npm ci
 }
 
 build-static() {

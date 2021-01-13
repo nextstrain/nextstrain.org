@@ -66,10 +66,6 @@
     "jest": "^26.4.2",
     "start-server-and-test": "^1.11.4"
   },
-  "cacheDirectories": [
-    "node_modules",
-    "static-site/node_modules"
-  ],
   "jest": {
     "globals": {
       "BASE_URL": "http://localhost:5000"
