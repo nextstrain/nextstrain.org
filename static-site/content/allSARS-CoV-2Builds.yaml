@@ -252,7 +252,7 @@ builds:
       name: Nextstrain Team
       url: null
 
-  - url: https://nextstrain.org/community/quipupe/peru_dic
+  - url: https://nextstrain.org/community/quipupe/Nextstrain_Peru
     name: Peru
     geo: peru
     level: country
