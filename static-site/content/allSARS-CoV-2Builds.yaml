@@ -49,6 +49,10 @@ builds:
     geo: quebec
     parentGeo: canada
 
+  - name: Ontario
+    geo: ontario
+    parentGeo: canada
+
   - name: USA
     geo: usa
     parentGeo: north-america
@@ -346,6 +350,28 @@ builds:
     org:
       name: CoVSeQ Partnership
       url: https://covseq.ca/about
+
+  - url: http://auspice.finlaymagui.re/ncov/north-america/canada?f_country=Canada
+    name: Canada
+    geo: canada
+    level: country
+    coords:
+      - -106.3468
+      - 56.1304
+    org:
+      name: Maguire et. al., for work with ONCoV/CanCOGeN
+      url: https://finlaymagui.re
+
+  - url: http://auspice.finlaymagui.re/ncov/north-america/canada/ontario?f_division=Ontario
+    name: Ontario, Canada
+    geo: ontario
+    level: division
+    coords:
+      - -85.3232
+      - 51.2538
+    org:
+      name: Maguire et. al., for work with ONCoV/CanCOGeN
+      url: https://finlaymagui.re
 
   - url: https://nextstrain.org/community/SESchmedes/sarscov2-southeast-usa/southeast
     name: South-East Region
