@@ -5,39 +5,7 @@ const AWS = require("aws-sdk");
 const fetch = require("node-fetch");
 const fs = require('fs');
 const pLimit = require('p-limit');
-const yaml = require('js-yaml');
-
-function dumpYaml(content, path) {
-  try {
-    fs.writeFileSync(path, yaml.dump(content), 'utf8');
-  } catch (e) {
-    console.log(`There was an error writing ${path}.`);
-    console.log(e);
-    process.exit(2);
-  }
-}
-
-// TODO duplicates function from ./check-sars-cov-2-builds-yaml.js
-function getYaml(buildsFilename) {
-  let allSARSCoV2Builds;
-  try {
-    allSARSCoV2Builds = yaml.load(fs.readFileSync(buildsFilename, 'utf8'));
-  } catch (e) {
-    console.log(`There was an error reading ${buildsFilename}. Please ensure it exists and it is valid YAML.`);
-    console.log(e);
-    process.exit(2);
-  }
-  if (!allSARSCoV2Builds.builds) {
-    console.log(`The builds YAML was missing a top-level entry for "builds".`);
-    process.exit(2);
-  }
-  return allSARSCoV2Builds.builds;
-}
-
-// TODO duplicates function from ./check-sars-cov-2-builds-yaml.js
-function blockDefinesBuild(block) {
-  return block.geo && block.name && block.url && block.coords;
-}
+const {getYaml, dumpYaml, blockDefinesBuild} = require('./build-yaml-utils');
 
 function blockDefinesCommunityBuild(block) {
   // TODO for now this excludes ones that are embeddded in another site; is this necessary or can we request charon at those urls too?

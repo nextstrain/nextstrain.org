@@ -5,6 +5,7 @@
 const fs = require('fs');
 const yaml = require('js-yaml');
 const argparse = require('argparse');
+const {getYaml, blockDefinesBuild} = require('./build-yaml-utils');
 
 const parser = new argparse.ArgumentParser({
   addHelp: true,
@@ -15,34 +16,13 @@ main(parser.parseArgs());
 
 
 function main(args) {
-  const blocks = getYaml();
+  const buildsFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
+  const blocks = getYaml(buildsFilename);
   ensureBlocksAreValid(blocks);
   ensureGeoParentsDefined(blocks);
   const builds = blocks.filter((block) => blockDefinesBuild(block));
   compareLatLongOverlaps(builds, args.precision);
   summarise(blocks, builds);
-}
-
-
-function getYaml() {
-  let allSARSCoV2Builds;
-  const buildsFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
-  try {
-    allSARSCoV2Builds = yaml.safeLoad(fs.readFileSync(buildsFilename, 'utf8'));
-  } catch (e) {
-    console.log(`There was an error reading ${buildsFilename}. Please ensure it exists and it is valid YAML.`);
-    console.log(e);
-    process.exit(2);
-  }
-  if (!allSARSCoV2Builds.builds) {
-    console.log(`The builds YAML was missing a top-level entry for "builds".`);
-    process.exit(2);
-  }
-  return allSARSCoV2Builds.builds;
-}
-
-function blockDefinesBuild(block) {
-  return block.geo && block.name && block.url && block.coords;
 }
 
 function ensureGeoParentsDefined(blocks) {
