@@ -5,6 +5,48 @@ const AWS = require("aws-sdk");
 const fetch = require("node-fetch");
 const fs = require('fs');
 const pLimit = require('p-limit');
+const yaml = require('js-yaml');
+
+function dumpYaml(content, path) {
+  try {
+    fs.writeFileSync(path, yaml.dump(content), 'utf8');
+  } catch (e) {
+    console.log(`There was an error writing ${path}.`);
+    console.log(e);
+    process.exit(2);
+  }
+}
+
+// TODO duplicates function from ./check-sars-cov-2-builds-yaml.js
+function getYaml(buildsFilename) {
+  let allSARSCoV2Builds;
+  try {
+    allSARSCoV2Builds = yaml.load(fs.readFileSync(buildsFilename, 'utf8'));
+  } catch (e) {
+    console.log(`There was an error reading ${buildsFilename}. Please ensure it exists and it is valid YAML.`);
+    console.log(e);
+    process.exit(2);
+  }
+  if (!allSARSCoV2Builds.builds) {
+    console.log(`The builds YAML was missing a top-level entry for "builds".`);
+    process.exit(2);
+  }
+  return allSARSCoV2Builds.builds;
+}
+
+// TODO duplicates function from ./check-sars-cov-2-builds-yaml.js
+function blockDefinesBuild(block) {
+  return block.geo && block.name && block.url && block.coords;
+}
+
+function blockDefinesCommunityBuild(block) {
+  // TODO for now this excludes ones that are embeddded in another site; is this necessary or can we request charon at those urls too?
+  return blockDefinesBuild(block) &&
+         block.url.startsWith("https://nextstrain.org") &&
+         (block.url.split("https://nextstrain.org")[1].startsWith("/community") ||
+         block.url.split("https://nextstrain.org")[1].startsWith("/groups") ||
+         block.url.split("https://nextstrain.org")[1].startsWith("/fetch"));
+}
 
 const bucket = "nextstrain-data";
 
@@ -30,7 +72,9 @@ async function main({args}) {
   switch (args.pathogen) {
     case "ncov": // fallthrough
     case "sars-cov-2":
+      const buildsFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
       outputFilename = `search_sars-cov-2.json`;
+      // Step 1. load nextstrain datasets from s3
       ({datasets, strainMap, dateUpdated} = await collectFromBucket({
         BUCKET: `nextstrain-data`,
         fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace('_', '/')}`,
@@ -38,6 +82,13 @@ async function main({args}) {
           return (fn.startsWith("ncov_") && !fn.endsWith("_gisaid.json") && !fn.endsWith("_zh.json"));
         }
       }));
+      // Step 2. load community datasets from charon
+      sarscov2BuildsYaml = getYaml(buildsFilename);
+      let buildEntries = sarscov2BuildsYaml.filter(blockDefinesCommunityBuild);
+      const hierarchyEntries = sarscov2BuildsYaml.filter((b) => !blockDefinesCommunityBuild(b));
+      const augmentedBuildEntries = await Promise.all(buildEntries.map(augmentedBuildEntry));
+      dumpYaml({builds: hierarchyEntries.concat(augmentedBuildEntries)}, buildsFilename.replace(".yaml", ".augmented.yaml"));
+      // Step 3. process exclusion of sars cov 2 seqs from search
       exclusions = await processSarsCov2ExclusionFile();
       break;
     case "flu-seasonal": // fallthrough
@@ -173,4 +224,27 @@ async function processSarsCov2ExclusionFile() {
       {excludeMap: {}, currentReason: ''}
     );
   return exclude.excludeMap;
+}
+
+function getDatasetMetaProperties(dataset) {
+  return {updated: dataset.meta.updated};
+}
+
+async function augmentedBuildEntry(build) {
+  const dataset = await fetchCommunityBuildCharon(build);
+  try {
+    build.meta = getDatasetMetaProperties(dataset);
+  } catch (err) {
+    console.error(`Error parsing metadata for dataset ${build.url}. Skipping adding metadata for this build.`);
+    build.meta = null;
+  }
+  return build;
+}
+
+function fetchCommunityBuildCharon(build) {
+  const path = build.url.split("https://nextstrain.org")[1].split("?")[0];
+  return fetch(`https://nextstrain.org/charon/getDataset?prefix=${path}`).then((res) => res.json()).catch((err) => {
+    console.error(`Error fetching dataset ${build.url}. Skipping adding metadata for this build.`);
+    return {};
+  });
 }
