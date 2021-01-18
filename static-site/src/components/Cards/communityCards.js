@@ -5,9 +5,9 @@ const communityCards = [
     title: "DRC Ebola (2018-19)"
   },
   {
-    img: "zika2.png",
-    url: "/community/blab/zika-colombia",
-    title: "Zika in Colombia"
+    img: "chikv.png",
+    url: "community/ViennaRNA/CHIKV",
+    title: "Chikungunya"
   },
   {
     img: "lassa2.png",
