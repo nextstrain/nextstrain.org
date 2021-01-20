@@ -237,7 +237,7 @@ builds:
     geo: middle-east
     parentGeo: null
     
-  - name: GCC
+  - name: Gulf Cooperation Council
     geo: gcc
     parentGeo: asia
 
@@ -974,12 +974,12 @@ builds:
       url: http://vinodscaria.rnabiology.org/
 
   - url: https://nextstrain.org/community/alghoribi-lab/ncov/gcc
-    name: GCC
+    name: Gulf Cooperation Council
     geo: gcc
     level: region
     coords:
-      - 24.7857025
       - 49.4726344
+      - 24.7857025
     org:
       name: Alghoribi Lab (MNGHA - KAIMRC)
       url: https://kaimrc.med.sa
