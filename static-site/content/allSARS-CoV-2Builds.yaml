@@ -233,6 +233,10 @@ builds:
     geo: india
     parentGeo: asia
 
+  - name: Thailand
+    geo: thailand
+    parentGeo: asia
+
   - name: Middle East
     geo: middle-east
     parentGeo: null
@@ -957,6 +961,17 @@ builds:
     org:
       name: Vinod Scaria Lab
       url: http://vinodscaria.rnabiology.org/
+
+  - url: https://nextstrain.org/community/fai-k/coni/Thailand
+    name: Thailand
+    geo: thailand
+    level: country
+    coords:
+      - 100.83273
+      - 14.8971921
+    org:
+      name: COVID-19 Network Investigations (CONI) Alliance
+      url: https://coni.team/
 
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-Middle-East
     name: Middle East
