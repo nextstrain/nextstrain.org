@@ -7,6 +7,8 @@ const fs = require('fs');
 const pLimit = require('p-limit');
 const {getYaml, dumpYaml, blockDefinesBuild} = require('./build-yaml-utils');
 
+const limit = pLimit(5); // limit concurrent promises as this was causing memory (?) issues on Heroku
+
 function blockDefinesCommunityBuild(block) {
   // TODO for now this excludes ones that are embeddded in another site; is this necessary or can we request charon at those urls too?
   return blockDefinesBuild(block) &&
@@ -36,37 +38,54 @@ main({args: parser.parseArgs()});
 // -------------------------------------------------------------------------------- //
 
 async function main({args}) {
-  let datasets, strainMap, dateUpdated, outputFilename, exclusions;
+  let s3datasetObjects, datasets, strainMap, dateUpdated, buildsFilename, outputFilename, exclusions;
   switch (args.pathogen) {
     case "ncov": // fallthrough
     case "sars-cov-2":
-      const buildsFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
+      buildsFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
       outputFilename = `search_sars-cov-2.json`;
       // Step 1. load nextstrain datasets from s3
-      ({datasets, strainMap, dateUpdated} = await collectFromBucket({
+      s3datasetObjects = await collectFromBucket({
         BUCKET: `nextstrain-data`,
         fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace('_', '/')}`,
         inclusionTest: (fn) => {
           return (fn.startsWith("ncov_") && !fn.endsWith("_gisaid.json") && !fn.endsWith("_zh.json"));
         }
-      }));
-      // Step 2. load community datasets from charon
-      sarscov2BuildsYaml = getYaml(buildsFilename);
-      let buildEntries = sarscov2BuildsYaml.filter(blockDefinesCommunityBuild);
-      const hierarchyEntries = sarscov2BuildsYaml.filter((b) => !blockDefinesCommunityBuild(b));
-      const augmentedBuildEntries = await Promise.all(buildEntries.map(augmentedBuildEntry));
-      dumpYaml({builds: hierarchyEntries.concat(augmentedBuildEntries)}, buildsFilename.replace(".yaml", ".augmented.yaml"));
-      // Step 3. process exclusion of sars cov 2 seqs from search
+      });
+      // Step 2. load community (includes /community, /groups, /fetch) datasets from charon
+      // TODO move all of step 2 into a function so that it can be reused for other pathogens
+      const communityBuildsYaml = getYaml(buildsFilename);
+      const communityBuilds = communityBuildsYaml.filter(blockDefinesCommunityBuild);
+      const communityBuildDatasetObjects = await Promise.all(
+        communityBuilds.map(async(build) => limit(async () => {
+          const dataset = await fetchCommunityBuildCharon(build);
+          const strains = collectStrainNamesFromDataset(build.url, dataset);
+          return {build, strains, dataset,
+            // surface these properties for getStrainMap
+            filename: build.url.split("/").slice(4).join('_') + '.json',
+            url: build.url,
+            lastModified: dataset.meta.updated
+          };
+        })
+      ));
+      // Step 3. augment the community builds list with metadata
+      const augmentedBuildEntries = communityBuildDatasetObjects.map(augmentedBuildEntry);
+      const hierarchyEntries = communityBuildsYaml.filter((b) => !blockDefinesCommunityBuild(b));
+      dumpYaml({builds: [...hierarchyEntries, ...augmentedBuildEntries]}, buildsFilename.replace(".yaml", ".augmented.yaml"));
+      // Step 4. create search results from s3 datasets and community builds
+      ({datasets, strainMap, dateUpdated} = getStrainMap([...s3datasetObjects, ...communityBuildDatasetObjects]));
+      // Step 5. process exclusion of sars cov 2 seqs from search
       exclusions = await processSarsCov2ExclusionFile();
       break;
     case "flu-seasonal": // fallthrough
     case "seasonal-flu":
       outputFilename = `search_seasonal-flu.json`;
-      ({datasets, strainMap, dateUpdated} = await collectFromBucket({
+      s3datasetObjects = await collectFromBucket({
         BUCKET: `nextstrain-data`,
         fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace('_', '/')}`,
         inclusionTest: (filename) => filename.startsWith("flu_seasonal_")
-      }));
+      });
+      ({datasets, strainMap, dateUpdated} = getStrainMap(s3datasetObjects));
       break;
     default:
       console.log("Unknown pathogen!");
@@ -101,22 +120,30 @@ async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
     .filter((s3obj) => filenameLooksLikeDataset(s3obj.Key))
     .filter((s3obj) => inclusionTest(s3obj.Key)) // eslint-disable-line semi
     // .filter((_, i) => i<2);
-  const limit = pLimit(5); // limit concurrent promises as this was causing memory (?) issues on Heroku
-  s3Objects = await Promise.all(s3Objects.map(async (s3obj) => limit(async () => {
+  const dataObjects = await Promise.all(s3Objects.map(async (s3obj) => limit(async () => {
     const dataset = await fetch(`https://${BUCKET}.s3.amazonaws.com/${s3obj.Key}`).then((res) => res.json());
     s3obj.strains = collectStrainNamesFromDataset(s3obj.Key, dataset);
+    // surface these properties for getStrainMap
+    s3obj.filename = s3obj.Key;
+    s3obj.url = fileToUrl(s3obj.Key);
+    s3obj.lastModified = s3obj.LastModified.toISOString().split("T")[0];
     console.log(s3obj.Key, s3obj.strains.length);
     return s3obj;
   })));
-  s3Objects = s3Objects.sort((a, b) => b.LastModified-a.LastModified);
-  const {datasets, strainMap} = s3Objects.reduce((acc, s3obj, idx) => {
+  return dataObjects;
+}
+
+function getStrainMap(datasetObjects) {
+  // Sort descending AKA newest first
+  datasetObjects = datasetObjects.sort((a, b) => b.lastModified-a.lastModified);
+  const {datasets, strainMap} = datasetObjects.reduce((acc, obj, idx) => {
     acc.datasets.push({
-      lastModified: s3obj.LastModified.toISOString().split("T")[0],
-      filename: s3obj.Key,
-      nGenomesInDataset: s3obj.strains.length,
-      url: fileToUrl(s3obj.Key)
+      lastModified: obj.lastModified,
+      filename: obj.filename,
+      nGenomesInDataset: obj.strains.length,
+      url: obj.url
     });
-    s3obj.strains.forEach((name) => {
+    obj.strains.forEach((name) => {
       if (acc.strainMap[name]) acc.strainMap[name].push(idx);
       else acc.strainMap[name] = [idx];
     });
@@ -198,8 +225,7 @@ function getDatasetMetaProperties(dataset) {
   return {updated: dataset.meta.updated};
 }
 
-async function augmentedBuildEntry(build) {
-  const dataset = await fetchCommunityBuildCharon(build);
+function augmentedBuildEntry({build, dataset}) {
   try {
     build.meta = getDatasetMetaProperties(dataset);
   } catch (err) {
