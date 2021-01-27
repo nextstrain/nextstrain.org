@@ -241,6 +241,10 @@ builds:
     geo: middle-east
     parentGeo: null
 
+  - name: Saudi Arabia
+    geo: saudi-arabia
+    parentGeo: asia
+
   # Entries below this comment define builds. They should have a URL pointing to the analysis
   # visualisation as well as a name and coords for rendering on the map. The `geo` value should
   # map to a non-build (stub) entry defined above.
@@ -983,3 +987,14 @@ builds:
     org:
       name: Vinod Scaria Lab
       url: http://vinodscaria.rnabiology.org/
+  
+  - url: https://nextstrain.org/community/alghoribi-lab/ncov/gcc?c=pangolin_lineage&f_country=Saudi%20Arabia&p=grid
+    name: Saudi Arabia
+    geo: saudi-arabia
+    level: country
+    coords:
+      - 45
+      - 25
+    org:
+      name: Alghoribi Lab (MNGHA - KAIMRC)
+      url: https://kaimrc.med.sa
