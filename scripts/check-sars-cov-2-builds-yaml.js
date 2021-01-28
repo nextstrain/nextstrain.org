@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 
 /* eslint-disable no-prototype-builtins */
-
-const fs = require('fs');
-const yaml = require('js-yaml');
 const argparse = require('argparse');
 const {getYaml, blockDefinesBuild} = require('./build-yaml-utils');
 
