@@ -9,8 +9,10 @@ const {getYaml, dumpYaml, blockDefinesBuild} = require('./build-yaml-utils');
 
 const limit = pLimit(5); // limit concurrent promises as this was causing memory (?) issues on Heroku
 
-function blockDefinesCommunityBuild(block) {
-  // TODO for now this excludes ones that are embeddded in another site; is this necessary or can we request charon at those urls too?
+function buildCanBeAugmented(block) {
+  // TODO for now this excludes nextstrain core builds and outside ones that
+  // are embeddded in another site (like the covseq one for quebec);
+  // we should make this script work for all urls that are serving auspice datasets.
   return blockDefinesBuild(block) &&
          block.url.startsWith("https://nextstrain.org") &&
          (block.url.split("https://nextstrain.org")[1].startsWith("/community") ||
@@ -38,11 +40,11 @@ main({args: parser.parseArgs()});
 // -------------------------------------------------------------------------------- //
 
 async function main({args}) {
-  let s3datasetObjects, datasets, strainMap, dateUpdated, buildsFilename, outputFilename, exclusions;
+  let s3datasetObjects, datasets, strainMap, dateUpdated, buildsCatalogueFilename, outputFilename, exclusions;
   switch (args.pathogen) {
     case "ncov": // fallthrough
     case "sars-cov-2":
-      buildsFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
+      buildsCatalogueFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
       outputFilename = `search_sars-cov-2.json`;
       // Step 1. load nextstrain datasets from s3
       s3datasetObjects = await collectFromBucket({
@@ -52,28 +54,29 @@ async function main({args}) {
           return (fn.startsWith("ncov_") && !fn.endsWith("_gisaid.json") && !fn.endsWith("_zh.json"));
         }
       });
-      // Step 2. load community (includes /community, /groups, /fetch) datasets from charon
+      // Step 2. load datasets from charon for catalogue builds
       // TODO move all of step 2 into a function so that it can be reused for other pathogens
-      const communityBuildsYaml = getYaml(buildsFilename);
-      const communityBuilds = communityBuildsYaml.filter(blockDefinesCommunityBuild);
-      const communityBuildDatasetObjects = await Promise.all(
-        communityBuilds.map(async(build) => limit(async () => {
-          const dataset = await fetchCommunityBuildCharon(build);
-          const strains = collectStrainNamesFromDataset(build.url, dataset);
-          return {build, strains, dataset,
+      const catalogueBuildsYaml = getYaml(buildsCatalogueFilename);
+      const catalogueBuilds = catalogueBuildsYaml.filter(buildCanBeAugmented);
+      const catalogueBuildDatasetObjects = await Promise.all(
+        catalogueBuilds.map(async (build) => limit(async () => {
+          const dataset = await fetchDatasetFromCharon(build.url);
+          return {
+            build,
+            strains: collectStrainNamesFromDataset(build.url, dataset),
+            dataset,
             // surface these properties for getStrainMap
             filename: build.url.split("/").slice(4).join('_') + '.json',
             url: build.url,
             lastModified: dataset.meta.updated
           };
-        })
-      ));
-      // Step 3. augment the community builds list with metadata
-      const augmentedBuildEntries = communityBuildDatasetObjects.map(augmentedBuildEntry);
-      const hierarchyEntries = communityBuildsYaml.filter((b) => !blockDefinesCommunityBuild(b));
-      dumpYaml({builds: [...hierarchyEntries, ...augmentedBuildEntries]}, buildsFilename.replace(".yaml", ".augmented.yaml"));
-      // Step 4. create search results from s3 datasets and community builds
-      ({datasets, strainMap, dateUpdated} = getStrainMap([...s3datasetObjects, ...communityBuildDatasetObjects]));
+        })));
+      // Step 3. augment the catalogue builds list with metadata
+      const augmentedBuildEntries = catalogueBuildDatasetObjects.map(augmentedBuildEntry);
+      const unchangedBuildEntries = catalogueBuildsYaml.filter((b) => !buildCanBeAugmented(b));
+      dumpYaml({builds: [...unchangedBuildEntries, ...augmentedBuildEntries]}, buildsCatalogueFilename.replace(".yaml", ".augmented.yaml"));
+      // Step 4. create search results from s3 datasets and catalogue builds
+      ({datasets, strainMap, dateUpdated} = getStrainMap([...s3datasetObjects, ...catalogueBuildDatasetObjects]));
       // Step 5. process exclusion of sars cov 2 seqs from search
       exclusions = await processSarsCov2ExclusionFile();
       break;
@@ -135,8 +138,8 @@ async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
 
 function getStrainMap(datasetObjects) {
   // Sort descending AKA newest first
-  datasetObjects = datasetObjects.sort((a, b) => b.lastModified-a.lastModified);
-  const {datasets, strainMap} = datasetObjects.reduce((acc, obj, idx) => {
+  const sortedDatasetObjects = datasetObjects.sort((a, b) => b.lastModified-a.lastModified);
+  const {datasets, strainMap} = sortedDatasetObjects.reduce((acc, obj, idx) => {
     acc.datasets.push({
       lastModified: obj.lastModified,
       filename: obj.filename,
@@ -227,18 +230,19 @@ function getDatasetMetaProperties(dataset) {
 
 function augmentedBuildEntry({build, dataset}) {
   try {
-    build.meta = getDatasetMetaProperties(dataset);
+    return Object.assign({}, build, getDatasetMetaProperties(dataset));
   } catch (err) {
     console.error(`Error parsing metadata for dataset ${build.url}. Skipping adding metadata for this build.`);
-    build.meta = null;
+    console.log(err.message);
+    return build;
   }
-  return build;
 }
 
-function fetchCommunityBuildCharon(build) {
-  const path = build.url.split("https://nextstrain.org")[1].split("?")[0];
+function fetchDatasetFromCharon(url) {
+  const path = url.split("https://nextstrain.org")[1].split("?")[0];
   return fetch(`https://nextstrain.org/charon/getDataset?prefix=${path}`).then((res) => res.json()).catch((err) => {
-    console.error(`Error fetching dataset ${build.url}. Skipping adding metadata for this build.`);
+    console.error(`Error fetching dataset ${url}. Skipping adding metadata for this build.`);
+    console.log(err.message);
     return {};
   });
 }
