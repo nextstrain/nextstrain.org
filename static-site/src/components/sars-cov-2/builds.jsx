@@ -8,10 +8,6 @@ import * as splashStyles from "../splash/styles";
 import CollapseTitle from "../Misc/collapse-title";
 import BuildMap from "./build-map";
 
-/*
-* This is a page to display all builds for SARS-CoV-2 in one place.
-*/
-
 const buildComponent = (build) => (
   <splashStyles.SitRepTitle >
     {build.url === undefined ? build.name : <div>
@@ -27,6 +23,14 @@ const buildComponent = (build) => (
   </splashStyles.SitRepTitle>
 );
 
+/*
+* This is a page to display a catalogue of builds for a
+* given pathogen. static-site/content/allSARS-CoV-2Builds.yaml
+* is a manually maintained example of such a catalogue, and
+* can be used directly here or augmented
+* (using scripts/collect-search-results.js) with metadata from
+* each build and stored in/fetched from props.buildsUrl
+*/
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -103,15 +107,11 @@ class Index extends React.Component {
       <>
         <HugeSpacer /><HugeSpacer />
         <splashStyles.H2 left>
-          All SARS-CoV-2 builds
+          {this.props.title || "Builds"}
         </splashStyles.H2>
         <SmallSpacer />
         <splashStyles.FocusParagraph>
-          This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
-          Some of these builds are maintained by the Nextstrain team and others are maintained by independent research groups.
-          See <a href="https://docs.nextstrain.org/projects/augur/en/stable/faq/what-is-a-build.html" >here</a> for more information on what a build is, and see <a href="https://nextstrain.github.io/ncov/">this tutorial</a> for a walkthrough of running your own phylogenetic analysis of SARS-CoV-2 data.
-          If you know of a build not listed here, please let us know!
-          Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
+          {this.props.info || ""}
         </splashStyles.FocusParagraph>
         { this.state.dataLoaded && <BuildMap builds={this.state.catalogueBuilds}/> }
         <div className="row">
