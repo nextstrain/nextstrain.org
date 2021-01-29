@@ -240,6 +240,10 @@ builds:
   - name: Middle East
     geo: middle-east
     parentGeo: null
+    
+  - name: Gulf Cooperation Council
+    geo: gcc
+    parentGeo: asia
 
   # Entries below this comment define builds. They should have a URL pointing to the analysis
   # visualisation as well as a name and coords for rendering on the map. The `geo` value should
@@ -983,3 +987,15 @@ builds:
     org:
       name: Vinod Scaria Lab
       url: http://vinodscaria.rnabiology.org/
+
+  - url: https://nextstrain.org/community/alghoribi-lab/ncov/gcc
+    name: Gulf Cooperation Council
+    geo: gcc
+    level: region
+    coords:
+      - 49.4726344
+      - 24.7857025
+    org:
+      name: Alghoribi Lab (MNGHA - KAIMRC)
+      url: https://kaimrc.med.sa
+      
