@@ -615,6 +615,10 @@ class SpheresSource extends PublicGroupSource {
   static get _name() { return "spheres"; }
 }
 
+class NIPHSource extends PublicGroupSource {
+  static get _name() { return "niph"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -631,6 +635,7 @@ const sources = [
   IllinoisGagnonPublicSource,
   NeherLabSource,
   SpheresSource,
+  NIPHSource,
   /* Private nextstain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
