@@ -132,7 +132,16 @@ class Index extends React.Component {
               <TOC data={contents} />
 
               <ScrollableAnchor id={"builds"}>
-                <BuildCatalogue buildsUrl="https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"/>
+                <BuildCatalogue title="All SARS-CoV-2 builds"
+                  buildsUrl="https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"
+                  info={
+                    <div>This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
+                    Some of these builds are maintained by the Nextstrain team and others are maintained by independent research groups.
+                    See <a href="https://docs.nextstrain.org/projects/augur/en/stable/faq/what-is-a-build.html" >here</a> for more information on what a build is, and see <a href="https://nextstrain.github.io/ncov/">this tutorial</a> for a walkthrough of running your own phylogenetic analysis of SARS-CoV-2 data.
+                    If you know of a build not listed here, please let us know!
+                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
+                    </div>}
+                />
               </ScrollableAnchor>
 
               <ScrollableAnchor id={"sit-reps"}>
