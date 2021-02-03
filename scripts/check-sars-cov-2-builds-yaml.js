@@ -6,15 +6,15 @@ const {getYaml, blockDefinesBuild} = require('./build-yaml-utils');
 
 const parser = new argparse.ArgumentParser({
   addHelp: true,
-  description: `A tool to perform basic sanity checking on the YAML file behind SARS-CoV-2 builds`
+  description: `A tool to perform basic sanity checking on the YAML build catalogue files (e.g. static-site/content/allSARS-CoV-2Builds.yaml)`
 });
+parser.addArgument('buildCatalogue', {action: "store", type: String, help: "YAML filename of build catalogue to check."});
 parser.addArgument('--precision', {action: "store", defaultValue: 0.1, type: Number, metavar: "NAME", help: "minimum (decimal degree) lat/long separation of points"});
 main(parser.parseArgs());
 
 
 function main(args) {
-  const buildsFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
-  const blocks = getYaml(buildsFilename);
+  const blocks = getYaml(args.buildCatalogue);
   ensureBlocksAreValid(blocks);
   ensureGeoParentsDefined(blocks);
   const builds = blocks.filter((block) => blockDefinesBuild(block));
