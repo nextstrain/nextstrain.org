@@ -4,6 +4,7 @@ const argparse = require('argparse');
 const AWS = require("aws-sdk");
 const fetch = require("node-fetch");
 const fs = require('fs');
+const path = require('path');
 const pLimit = require('p-limit');
 const {getYaml, dumpYaml, blockDefinesBuild} = require('./build-yaml-utils');
 
@@ -24,14 +25,27 @@ const bucket = "nextstrain-data";
 
 const parser = new argparse.ArgumentParser({
   addHelp: true,
-  description: `A tool to make the (flat-file) database of sample-name -> dataset search results`,
+  description: `
+  A tool to create the following pathogen page resources:
+  1. json flat-file database of sample-name -> dataset search results
+  2. yaml build catalogue file with selected dataset metadata`,
   epilog: `
-  This is a tool to create the JSON "database" file representing the sample-name -> dataset mapping
+  This is a tool to create data needed for pages like nextstrain.org/sars-cov-2
+  which serve as a collection of resources on a given pathogen.
+  
+  Files output by this script containing that data currently include:
+  - JSON "database" file representing the sample-name -> dataset mapping
   for certain pathogens. For instance, the SARS-CoV-2 search page is at nextstrain.org/search/sars-cov-2
-  and is backed by a search/sars-cov-2.json currently hosted on the ${bucket} bucket.
+  (created by gatsby) and is backed by a search/sars-cov-2.json (created by this tool)
+  which is currently hosted on the ${bucket} bucket.
 
-  The pages are created by gatsby. The JSONs are created by this tool. This should be considered a proof-
-  of-concept implementation - there is plenty of scope for improvements and automation.
+  - YAML "catalogue" file representing a catalogue of builds for a given
+  pathogen and displayed in a dropdown list and on a world map on a corresponding
+  gatsby page like nextstrain.org/sars-cov-2. This tool reads in a manually curated
+  version of the YAML catalogue (e.g. static-site/content/allSARS-CoV-2Builds.yaml)
+  and augments it by fetching each dataset and attaching a subset of relevant
+  metadata about the dataset to the catalogue entry such as the date
+  when the dataset was last updated. The augmented YAML is also hosted on the ${bucket} bucket.
   `
 });
 parser.addArgument('--pathogen', {action: "store", required: true, metavar: "NAME", help: "what set of datasets to scan"});
@@ -40,12 +54,12 @@ main({args: parser.parseArgs()});
 // -------------------------------------------------------------------------------- //
 
 async function main({args}) {
-  let s3datasetObjects, datasets, strainMap, dateUpdated, buildsCatalogueFilename, outputFilename, exclusions;
+  let s3datasetObjects, datasets, strainMap, dateUpdated, searchOutputFilename, exclusions, buildsCatalogueFilename, augmentedBuildsList;
   switch (args.pathogen) {
     case "ncov": // fallthrough
     case "sars-cov-2":
       buildsCatalogueFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
-      outputFilename = `search_sars-cov-2.json`;
+      searchOutputFilename = `search_sars-cov-2.json`;
       // Step 1. load nextstrain datasets from s3
       s3datasetObjects = await collectFromBucket({
         BUCKET: `nextstrain-data`,
@@ -72,9 +86,9 @@ async function main({args}) {
           };
         })));
       // Step 3. augment the catalogue builds list with metadata
-      const augmentedBuildEntries = catalogueBuildDatasetObjects.map(augmentedBuildEntry);
-      const unchangedBuildEntries = catalogueBuildsYaml.filter((b) => !buildCanBeAugmented(b));
-      dumpYaml({builds: [...unchangedBuildEntries, ...augmentedBuildEntries]}, buildsCatalogueFilename.replace(".yaml", ".augmented.yaml"));
+      augmentedBuildEntries = catalogueBuildDatasetObjects.map(augmentedBuildEntry);
+      unchangedBuildEntries = catalogueBuildsYaml.filter((b) => !buildCanBeAugmented(b));
+      augmentedBuildsList = [...unchangedBuildEntries, ...augmentedBuildEntries];
       // Step 4. create search results from s3 datasets and catalogue builds
       ({datasets, strainMap, dateUpdated} = getStrainMap([...s3datasetObjects, ...catalogueBuildDatasetObjects]));
       // Step 5. process exclusion of sars cov 2 seqs from search
@@ -82,7 +96,7 @@ async function main({args}) {
       break;
     case "flu-seasonal": // fallthrough
     case "seasonal-flu":
-      outputFilename = `search_seasonal-flu.json`;
+      searchOutputFilename = `search_seasonal-flu.json`;
       s3datasetObjects = await collectFromBucket({
         BUCKET: `nextstrain-data`,
         fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace('_', '/')}`,
@@ -95,12 +109,19 @@ async function main({args}) {
       process.exit(2);
   }
 
-  console.log("Writing data to file ", `./data/${outputFilename}`);
+  console.log("Writing search data to file ", `./data/${searchOutputFilename}`);
   if (!fs.existsSync("./data")) fs.mkdirSync("./data");
-  fs.writeFileSync(`./data/${outputFilename}`, JSON.stringify({datasets, strainMap, dateUpdated, exclusions}, null, 0));
+  fs.writeFileSync(`./data/${searchOutputFilename}`, JSON.stringify({datasets, strainMap, dateUpdated, exclusions}, null, 0));
+  const augmentedCatalogueFilename = path.basename(buildsCatalogueFilename).replace(".yaml", ".augmented.yaml")
+  console.log("Writing augmented build catalogue yaml ", `./data/${augmentedCatalogueFilename}`);
+  dumpYaml({builds: augmentedBuildsList},
+    path.join(
+      "./data/",
+      augmentedCatalogueFilename
+  ));
 
   console.log("\nSUCCESS!\nNext step: upload the JSON to the S3 bucket via the following command");
-  console.log(`\t\`nextstrain remote upload s3://${bucket} ./data/${outputFilename}\``);
+  console.log(`\t\`nextstrain remote upload s3://${bucket} ./data/${searchOutputFilename} ./data/${augmentedCatalogueFilename}\``);
   console.log(`and it will be picked up by users accessing the sample search functionality within nextstrain.org`);
 }
 
