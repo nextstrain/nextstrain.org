@@ -5,14 +5,13 @@ import {FaFile} from "react-icons/fa";
 import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import CollapseTitle from "../Misc/collapse-title";
-import {parseNcovSitRepInfo} from "../../../../auspice-client/customisations/languageSelector";
 
 const charonGetAvailableAddress = process.env.NODE_ENV === "development" ?
   "http://localhost:5000/charon/getAvailable" :
   "/charon/getAvailable";
 
 /**
- * A component to render all SARS-CoV-2 situation reports.
+ * A component to render all situation reports for a given pathogen.
  * Data is obtained on page load by a API call to /charon/getAvailable.
  *
  * Note for testing: when using the garsby dev server (i.e. `npm run dev`)
@@ -33,7 +32,7 @@ class Index extends React.Component {
     json.narratives
       .filter((o) => o.request)
       .map((o) => o.request)
-      .map(parseNcovSitRepInfo)
+      .map(this.props.parseSitRepInfo)
       .filter((sitrep) => sitrep !== null)
       .forEach((sitrep) => {
         sitrep.url = "/"+sitrep.url;
@@ -81,15 +80,11 @@ class Index extends React.Component {
       <>
         <HugeSpacer /><HugeSpacer />
         <splashStyles.H2 left>
-          All SARS-CoV-2 situation reports
+          {this.props.title}
         </splashStyles.H2>
         <SmallSpacer />
         <splashStyles.FocusParagraph>
-          We have been writing interactive situation reports
-          using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
-          to communicate how COVID-19 is moving around the world and spreading locally.
-          These are kindly translated into a number of different languages by volunteers
-          and Google-provided translators — click on any language below to see the list of situation reports available.
+          {this.props.info}
         </splashStyles.FocusParagraph>
         <div className="row">
           <MediumSpacer />

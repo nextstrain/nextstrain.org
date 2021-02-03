@@ -16,6 +16,7 @@ import Footer from "../components/Footer";
 import BuildCatalogue from "../components/sars-cov-2/builds";
 import SituationReports from "../components/sars-cov-2/sit-reps";
 import TOC from "../components/sars-cov-2/toc";
+import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
@@ -132,20 +133,25 @@ class Index extends React.Component {
               <TOC data={contents} />
 
               <ScrollableAnchor id={"builds"}>
-                <BuildCatalogue title="All SARS-CoV-2 builds"
-                  buildsUrl="https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"
-                  info={
-                    <div>This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
+                <BuildCatalogue buildsUrl="https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"
+                  title="All SARS-CoV-2 builds"
+                  info={<>This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
                     Some of these builds are maintained by the Nextstrain team and others are maintained by independent research groups.
                     See <a href="https://docs.nextstrain.org/projects/augur/en/stable/faq/what-is-a-build.html" >here</a> for more information on what a build is, and see <a href="https://nextstrain.github.io/ncov/">this tutorial</a> for a walkthrough of running your own phylogenetic analysis of SARS-CoV-2 data.
                     If you know of a build not listed here, please let us know!
-                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
-                    </div>}
+                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.</>}
                 />
               </ScrollableAnchor>
 
               <ScrollableAnchor id={"sit-reps"}>
-                <SituationReports />
+                <SituationReports parseSitRepInfo={parseNcovSitRepInfo}
+                  title="All SARS-CoV-2 situation reports"
+                  info={<>We have been writing interactive situation reports
+                      using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
+                      to communicate how COVID-19 is moving around the world and spreading locally.
+                      These are kindly translated into a number of different languages by volunteers
+                      and Google-provided translators — click on any language below to see the list of situation reports available.</>}
+                />
               </ScrollableAnchor>
 
               <Footer />
