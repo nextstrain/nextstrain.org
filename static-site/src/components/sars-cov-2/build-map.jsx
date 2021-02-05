@@ -222,6 +222,7 @@ class BuildMap extends React.Component {
     return (
       <StyledTooltip type="light" key={build.url} id={build.url} effect="solid">
         {`${build.name} (${build.org.name})`}
+        {build.updated && <div>{`Dataset updated: ${build.updated}`}</div>}
         <div style={{fontStyle: "italic"}}>Click to view</div>
       </StyledTooltip>);
   }
