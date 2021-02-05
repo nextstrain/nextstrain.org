@@ -54,7 +54,7 @@ main({args: parser.parseArgs()});
 // -------------------------------------------------------------------------------- //
 
 async function main({args}) {
-  let s3datasetObjects, datasets, strainMap, dateUpdated, searchOutputFilename, exclusions, buildsCatalogueFilename, augmentedBuildsList;
+  let s3datasetObjects, datasets, strainMap, dateUpdated, searchOutputFilename, exclusions, buildsCatalogueFilename, augmentedBuildsList, catalogueBuildDatasetObjects;
   switch (args.pathogen) {
     case "ncov": // fallthrough
     case "sars-cov-2":
@@ -68,30 +68,11 @@ async function main({args}) {
           return (fn.startsWith("ncov_") && !fn.endsWith("_gisaid.json") && !fn.endsWith("_zh.json"));
         }
       });
-      // Step 2. load datasets from charon for catalogue builds
-      // TODO move all of step 2 into a function so that it can be reused for other pathogens
-      const catalogueBuildsYaml = getYaml(buildsCatalogueFilename);
-      const catalogueBuilds = catalogueBuildsYaml.filter(buildCanBeAugmented);
-      const catalogueBuildDatasetObjects = await Promise.all(
-        catalogueBuilds.map(async (build) => limit(async () => {
-          const dataset = await fetchDatasetFromCharon(build.url);
-          return {
-            build,
-            strains: collectStrainNamesFromDataset(build.url, dataset),
-            dataset,
-            // surface these properties for getStrainMap
-            filename: build.url.split("/").slice(4).join('_') + '.json',
-            url: build.url,
-            lastModified: dataset.meta.updated
-          };
-        })));
-      // Step 3. augment the catalogue builds list with metadata
-      augmentedBuildEntries = catalogueBuildDatasetObjects.map(augmentedBuildEntry);
-      unchangedBuildEntries = catalogueBuildsYaml.filter((b) => !buildCanBeAugmented(b));
-      augmentedBuildsList = [...unchangedBuildEntries, ...augmentedBuildEntries];
-      // Step 4. create search results from s3 datasets and catalogue builds
+      // Step 2. augment build catalogue with dataset metadata (and get catalogue datasets for searchable strainmap)
+      ({augmentedBuildsList, catalogueBuildDatasetObjects} = await augmentBuildCatalogue(buildsCatalogueFilename));
+      // Step 3. create search results from s3 datasets and catalogue builds
       ({datasets, strainMap, dateUpdated} = getStrainMap([...s3datasetObjects, ...catalogueBuildDatasetObjects]));
-      // Step 5. process exclusion of sars cov 2 seqs from search
+      // Step 4. process exclusion of sars cov 2 seqs from search
       exclusions = await processSarsCov2ExclusionFile();
       break;
     case "flu-seasonal": // fallthrough
@@ -245,6 +226,33 @@ async function processSarsCov2ExclusionFile() {
   return exclude.excludeMap;
 }
 
+async function augmentBuildCatalogue(buildsCatalogueFilename) {
+  const catalogueBuildsYaml = getYaml(buildsCatalogueFilename);
+  const catalogueBuilds = catalogueBuildsYaml.filter(buildCanBeAugmented);
+  // get datasets for each build to be used in augmenting the build
+  // catalogue as well as adding to the strainmap
+  const catalogueBuildDatasetObjects = await Promise.all(
+    catalogueBuilds.map(async (build) => limit(async () => {
+      const dataset = await fetchDatasetFromCharon(build.url);
+      return {
+        build,
+        strains: collectStrainNamesFromDataset(build.url, dataset),
+        dataset,
+        // surface these properties for getStrainMap
+        filename: build.url.split("/").slice(4).join('_') + '.json',
+        url: build.url,
+        lastModified: dataset.meta.updated
+      };
+    })));
+  // augment the catalogue builds list with metadata (where possible)
+  const augmentedBuildEntries = catalogueBuildDatasetObjects.map(augmentedBuildEntry);
+  const unchangedBuildEntries = catalogueBuildsYaml.filter((b) => !buildCanBeAugmented(b));
+  return {
+    augmentedBuildsList: [...unchangedBuildEntries, ...augmentedBuildEntries],
+    catalogueBuildDatasetObjects
+  };
+}
+
 function getDatasetMetaProperties(dataset) {
   return {updated: dataset.meta.updated};
 }
@@ -260,8 +268,8 @@ function augmentedBuildEntry({build, dataset}) {
 }
 
 function fetchDatasetFromCharon(url) {
-  const path = url.split("https://nextstrain.org")[1].split("?")[0];
-  return fetch(`https://nextstrain.org/charon/getDataset?prefix=${path}`).then((res) => res.json()).catch((err) => {
+  const datasetPath = url.split("https://nextstrain.org")[1].split("?")[0];
+  return fetch(`https://nextstrain.org/charon/getDataset?prefix=${datasetPath}`).then((res) => res.json()).catch((err) => {
     console.error(`Error fetching dataset ${url}. Skipping adding metadata for this build.`);
     console.log(err.message);
     return {};
