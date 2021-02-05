@@ -28,7 +28,7 @@ const buildComponent = (build) => (
 * given pathogen. static-site/content/allSARS-CoV-2Builds.yaml
 * is a manually maintained example of such a catalogue, and
 * can be used directly here or augmented
-* (using scripts/collect-search-results.js) with metadata from
+* (using scripts/collect-pathogen-resources.js) with metadata from
 * each build and stored in/fetched from props.buildsUrl
 */
 class Index extends React.Component {
@@ -130,7 +130,7 @@ class Index extends React.Component {
   }
 }
 
-// scripts/collect-search-results.js reads in a list of builds in a manually
+// scripts/collect-pathogen-resources.js reads in a list of builds in a manually
 // maintained pathogen build catalogue yaml file such as static-site/content/allSARS-CoV-2Builds.yaml
 // and produces an augmented version with metadata from each corresponding dataset.
 // That augmented yaml file is stored on s3 and fetched here to populate the front-end
