@@ -90,20 +90,32 @@ async function main({args}) {
       process.exit(2);
   }
 
-  console.log("Writing search data to file ", `./data/${searchOutputFilename}`);
+  const outputs = [];
   if (!fs.existsSync("./data")) fs.mkdirSync("./data");
-  fs.writeFileSync(`./data/${searchOutputFilename}`, JSON.stringify({datasets, strainMap, dateUpdated, exclusions}, null, 0));
-  const augmentedCatalogueFilename = path.basename(buildsCatalogueFilename).replace(".yaml", ".augmented.yaml")
-  console.log("Writing augmented build catalogue yaml ", `./data/${augmentedCatalogueFilename}`);
-  dumpYaml({builds: augmentedBuildsList},
-    path.join(
+  if (searchOutputFilename && strainMap) {
+    searchOutputFilename = path.join("./data/", searchOutputFilename);
+    outputs.push(searchOutputFilename);
+    console.log("Writing search data to file ", `${searchOutputFilename}`);
+    fs.writeFileSync(searchOutputFilename, JSON.stringify({datasets, strainMap, dateUpdated, exclusions}, null, 0));
+  }
+  if (buildsCatalogueFilename && augmentedBuildsList) {
+    const augmentedCatalogueFilename = path.join(
       "./data/",
-      augmentedCatalogueFilename
-  ));
+      path.basename(buildsCatalogueFilename).replace(".yaml", ".augmented.yaml")
+    );
+    outputs.push(augmentedCatalogueFilename);
+    console.log("Writing augmented build catalogue yaml ", augmentedCatalogueFilename);
+    dumpYaml({builds: augmentedBuildsList}, augmentedCatalogueFilename);
+  }
 
-  console.log("\nSUCCESS!\nNext step: upload the JSON to the S3 bucket via the following command");
-  console.log(`\t\`nextstrain remote upload s3://${bucket} ./data/${searchOutputFilename} ./data/${augmentedCatalogueFilename}\``);
-  console.log(`and it will be picked up by users accessing the sample search functionality within nextstrain.org`);
+  if (outputs.length >= 1) {
+    console.log("\nSUCCESS!\nNext step: upload outputs to the S3 bucket via the following command");
+    console.log(`\t\`nextstrain remote upload s3://${bucket} ${outputs.join('  ')}\``);
+    console.log(`so they can be accessed by nextstrain.org`);
+  } else {
+    // this shouldn't happen but just in case it does, it's better than nothing
+    console.log("Something went wrong - not writing outputs.");
+  }
 }
 
 
