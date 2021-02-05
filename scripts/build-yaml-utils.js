@@ -3,7 +3,14 @@ const fs = require('fs');
 
 function dumpYaml(content, path) {
   try {
-    fs.writeFileSync(path, yaml.dump(content), 'utf8');
+    fs.writeFileSync(
+      path,
+      yaml.dump(
+        content,
+        {lineWidth: -1} // Don't wrap lines with block chomping indicators >-
+      ),
+      'utf8'
+    );
   } catch (e) {
     console.log(`There was an error writing ${path}.`);
     console.log(e);
