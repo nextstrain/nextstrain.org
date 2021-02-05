@@ -26,8 +26,8 @@ jobs:
         python3 -m pip install --upgrade pip setuptools
         python3 -m pip install nextstrain-cli
         PATH="$HOME/.local/bin:$PATH"
-        ./scripts/collect-search-results.js --pathogen sars-cov-2
-        nextstrain remote upload s3://nextstrain-data ./data/search_sars-cov-2.json
+        ./scripts/collect-pathogen-resources.js --pathogen sars-cov-2
+        nextstrain remote upload s3://nextstrain-data ./data/search_sars-cov-2.json ./data/allSARS-CoV-2Builds.augmented.yaml
       env:
         AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
