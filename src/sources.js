@@ -636,7 +636,7 @@ const sources = [
   NeherLabSource,
   SpheresSource,
   NIPHSource,
-  /* Private nextstain groups: */
+  /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
   AllWalesPrivateSource,
