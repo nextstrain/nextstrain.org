@@ -13,7 +13,7 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import ListOfBuilds from "../components/sars-cov-2/builds";
+import BuildCatalogue from "../components/sars-cov-2/builds";
 import SituationReports from "../components/sars-cov-2/sit-reps";
 import TOC from "../components/sars-cov-2/toc";
 
@@ -132,7 +132,7 @@ class Index extends React.Component {
               <TOC data={contents} />
 
               <ScrollableAnchor id={"builds"}>
-                <ListOfBuilds />
+                <BuildCatalogue buildsUrl="https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"/>
               </ScrollableAnchor>
 
               <ScrollableAnchor id={"sit-reps"}>
