@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "argparse": "^1.0.10",
-    "auspice": "2.22.2",
+    "auspice": "2.23.0",
     "aws-sdk": "^2.520.0",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",

@@ -1,7 +1,7 @@
 ---
 author: "Trevor Bedford, Emma B Hodcroft, Richard A Neher"
 date: "2021-01-06"
-title: "Updated Nextstain SARS-CoV-2 clade naming strategy"
+title: "Updated Nextstrain SARS-CoV-2 clade naming strategy"
 ---
 
 **Trevor Bedford**, **Emma B Hodcroft**, **Richard A Neher**

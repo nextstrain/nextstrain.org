@@ -240,6 +240,10 @@ builds:
   - name: Middle East
     geo: middle-east
     parentGeo: null
+    
+  - name: Gulf Cooperation Council
+    geo: gcc
+    parentGeo: asia
 
   - name: Saudi Arabia
     geo: saudi-arabia
@@ -987,7 +991,18 @@ builds:
     org:
       name: Vinod Scaria Lab
       url: http://vinodscaria.rnabiology.org/
-  
+
+  - url: https://nextstrain.org/community/alghoribi-lab/ncov/gcc
+    name: Gulf Cooperation Council
+    geo: gcc
+    level: region
+    coords:
+      - 49.4726344
+      - 24.7857025
+    org:
+      name: Alghoribi Lab (MNGHA - KAIMRC)
+      url: https://kaimrc.med.sa
+
   - url: https://nextstrain.org/community/alghoribi-lab/ncov/gcc?c=pangolin_lineage&f_country=Saudi%20Arabia&p=grid
     name: Saudi Arabia
     geo: saudi-arabia

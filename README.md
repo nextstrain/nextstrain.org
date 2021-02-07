@@ -52,7 +52,7 @@ In production, these are compiled (`npm run build`) and served via the nextstrai
 Nextstrain documentation is hosted by Read The Docs at [docs.nextstrain.org](https://docs.nextstrain.org).
 Please see [this GitHub repo](https://github.com/nextstrain/docs.nextstrain.org/) for more details.
 
-> Note that the documentation used to be served from the server in this repo at URLs such as nextstain.org/docs/... until [November 2020](https://github.com/nextstrain/nextstrain.org/pull/226).
+> Note that the documentation used to be served from the server in this repo at URLs such as nextstrain.org/docs/... until [November 2020](https://github.com/nextstrain/nextstrain.org/pull/226).
 A number of [redirects](./redirects.js) have been added to preserve old URLs.
 
 ---
