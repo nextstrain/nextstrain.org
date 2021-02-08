@@ -13,9 +13,9 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import BuildCatalogue from "../components/sars-cov-2/builds";
-import SituationReports from "../components/sars-cov-2/sit-reps";
-import TOC from "../components/sars-cov-2/toc";
+import BuildCatalogue from "../components/build-pages/builds";
+import SituationReports from "../components/build-pages/sit-reps";
+import TOC from "../components/build-pages/toc";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 
 const title = "Nextstrain SARS-CoV-2 resources";
