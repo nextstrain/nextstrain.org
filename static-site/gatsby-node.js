@@ -199,6 +199,12 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/pages/sars-cov-2.jsx")
         });
 
+        // Create page detailing all things seasonal influenza
+        createPage({
+          path: "/influenza",
+          component: path.resolve("src/pages/influenza.jsx")
+        });
+
         // search pages
         createPage({
           path: `/search`,
