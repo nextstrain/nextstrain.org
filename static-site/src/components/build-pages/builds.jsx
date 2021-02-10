@@ -39,9 +39,8 @@ class Index extends React.Component {
       errorFetchingData: false,
       buildsUrl: props.buildsUrl
     };
-    this.buildsForGeo = this.buildsForGeo.bind(this);
     this.subBuilds = this.subBuilds.bind(this);
-    this.buildTree = this.buildTree.bind(this);
+    this.buildHierarchy = this.buildHierarchy.bind(this);
   }
 
   async componentDidMount() {
@@ -54,11 +53,11 @@ class Index extends React.Component {
     }
   }
 
-  subBuilds(header, expanded=false, fontSize=20) {
+  subBuilds(header, groupingKey, parentGroupingKey, expanded=false, fontSize=20) {
     const children = this.state.catalogueBuilds
-      .filter((b) => b.geo === header.geo && b.url);
+      .filter((b) => b[groupingKey] === header[groupingKey] && b.url);
     const subHeaders = this.state.catalogueBuilds
-      .filter((b) => b.parentGeo === header.geo && b.url === undefined);
+      .filter((b) => b[parentGroupingKey] === header[groupingKey] && b.url === undefined);
     return (
       <div key={header.name}>
         <Collapsible
@@ -66,7 +65,7 @@ class Index extends React.Component {
           trigger={<CollapseTitle name={header.name} />}
           triggerStyle={{cursor: "pointer", textDecoration: "none"}}
           transitionTime={100}
-          open={expanded}
+          open={expanded && children.length < 5}
         >
           {/* Begin collapsible content */}
           <div key={`${header.name}-children`}>
@@ -82,6 +81,8 @@ class Index extends React.Component {
               <div style={{marginLeft: "20px"}}>
                 {orderBy(subHeaders, ["name"]).map((subHeader) =>
                   this.subBuilds(subHeader,
+                    groupingKey,
+                    parentGroupingKey,
                     subHeaders.length < 5,
                     fontSize > 16 ? fontSize-2 : fontSize))}
               </div>}
@@ -90,16 +91,13 @@ class Index extends React.Component {
       </div>);
   }
 
-  buildTree() {
+  buildHierarchy() {
+    let groupingKey = "grouping";
+    let parentGroupingKey = "parentGrouping";
+    if (this.props.hierarchyKeys) ({groupingKey, parentGroupingKey} = this.props.hierarchyKeys);
     const headers = this.state.catalogueBuilds.filter((b) => b.url === undefined);
-    const roots = headers.filter((b) => b.parentGeo === null);
-    return roots.map((root) => this.subBuilds(root));
-  }
-
-  buildsForGeo(geo) {
-    return this.state.catalogueBuilds
-    .filter((b) => b.geo === geo)
-    .map((build) => buildComponent(build));
+    const roots = headers.filter((b) => b[parentGroupingKey] === null);
+    return roots.map((root) => this.subBuilds(root, groupingKey, parentGroupingKey));
   }
 
   render() {
@@ -113,7 +111,7 @@ class Index extends React.Component {
         <splashStyles.FocusParagraph>
           {this.props.info || ""}
         </splashStyles.FocusParagraph>
-        { this.state.dataLoaded && <BuildMap builds={this.state.catalogueBuilds}/> }
+        { this.props.showMap && this.state.dataLoaded && <BuildMap builds={this.state.catalogueBuilds}/> }
         <div className="row">
           <MediumSpacer />
           <div className="col-md-1"/>
@@ -122,7 +120,7 @@ class Index extends React.Component {
                             Something went wrong getting data.
                             Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
                             if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-            { this.state.dataLoaded && this.buildTree()}
+            { this.state.dataLoaded && this.buildHierarchy()}
           </div>
         </div>
       </>
