@@ -134,6 +134,8 @@ class Index extends React.Component {
 
               <ScrollableAnchor id={"builds"}>
                 <BuildCatalogue buildsUrl="https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"
+                  showMap
+                  hierarchyKeys={{groupingKey: "geo", parentGroupingKey: "parentGeo"}}
                   title="All SARS-CoV-2 builds"
                   info={<>This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
                     Some of these builds are maintained by the Nextstrain team and others are maintained by independent research groups.
