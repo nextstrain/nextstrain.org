@@ -258,7 +258,6 @@ builds:
       - 10
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/community/quipupe/Nextstrain_Peru
     name: Peru
@@ -280,7 +279,6 @@ builds:
       - -13.083583
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/ncov/europe?f_region=Europe
     name: Europe
@@ -291,7 +289,6 @@ builds:
       - 39.646237
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/groups/neherlab/ncov/europe?f_region=Europe&p=grid
     name: Europe
@@ -313,7 +310,6 @@ builds:
       - 4.070194
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/ncov/asia?f_region=Asia
     name: Asia
@@ -324,7 +320,6 @@ builds:
       - 30.451098
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/ncov/oceania?f_region=Oceania
     name: Oceania
@@ -335,7 +330,6 @@ builds:
       - -25.0562891
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/ncov/north-america?f_region=North%20America
     name: North America
@@ -346,7 +340,6 @@ builds:
       - 28.2367447
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://covseq.ca/
     name: CoVSeQ
