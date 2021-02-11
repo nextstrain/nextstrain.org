@@ -62,7 +62,7 @@ const contents = [
   },
   {
     type: "external",
-    to: "https://github.com/hodcroftlab/covariants/blob/master/README.md",
+    to: "https://covariants.org/",
     title: "CoVariants (mutations and variants of interest)",
     subtext: "An overview of SARS-CoV-2 mutations that are of interest. The featured mutations are currently mostly associated with spread in Europe; this is simply a reflection that the primary maintainer/author (Emma Hodcroft) works mostly with European data."
   },
