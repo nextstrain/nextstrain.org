@@ -65,7 +65,7 @@ class Index extends React.Component {
           trigger={<CollapseTitle name={header.name} />}
           triggerStyle={{cursor: "pointer", textDecoration: "none"}}
           transitionTime={100}
-          open={expanded && children.length < 5}
+          open={expanded}
         >
           {/* Begin collapsible content */}
           <div key={`${header.name}-children`}>
