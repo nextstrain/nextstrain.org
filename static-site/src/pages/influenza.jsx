@@ -17,14 +17,10 @@ import BuildCatalogue from "../components/build-pages/builds";
 import TOC from "../components/build-pages/toc";
 
 const title = "Influenza resources";
-const abstract = `[replace with intro to flu] Around the world, people are sequencing and sharing SARS-CoV-2
-genomic data. The Nextstrain team analyzes these data on a global and continental
-level. More specific analysis are often performed by groups around the world.
-This page lists publicly available SARS-CoV-2 analyses that use Nextstrain from
-groups all over the world. In addition to exploring SARS-CoV-2 evolution
-in finished analyses, you can use our new Nextclade tool to compare your sequences
-to the SARS-CoV-2 reference sequence, assign them to clades, and see where they fall
-on a the SARS-CoV-2 tree.`;
+const abstract = `The Nextstrain team maintains datasets and other tools
+for analyzing a variety of influenza viruses. [Insert seasonal-flu-specific sentence] We also maintain
+datasets for a subset of avian influenza viruses that have caused recurrent
+outbreaks in humans and domestic birds, including novel reassortant H5 viruses.`;
 
 const contents = [
   {
@@ -50,28 +46,10 @@ const contents = [
     title: "Scroll down to all available builds (datasets)"
   },
   {
-    type: "external",
-    to: "https://clades.nextstrain.org",
-    title: "Nextclade (sequence analysis webapp)",
-    subtext: "Drag and drop your sequences to assign them to clades and report potential sequence quality issues. You can use the tool to analyze sequences before you upload them to a database."
-  },
-  {
     type: "gatsby",
     to: "/search/seasonal-flu",
     title: "Search seasonal flu builds by strain name(s)",
     subtext: "Search all seasonal influenza nextstrain builds, including historical ones, for particular strain name(s)",
-  },
-  {
-    type: "external",
-    to: "https://discussion.nextstrain.org",
-    title: "Nextstrain discussion forum",
-    subtext: "See here for previously asked questions about Nextstrain or ask your own"
-  },
-  {
-    type: "external",
-    to: "https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md",
-    title: "Developer contributions",
-    subtext: "We have received a number of generous offers to contribute to the development of Nextstrain - this provides an entry point for how you may be able help"
   }
 ];
 
