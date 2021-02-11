@@ -90,460 +90,394 @@ builds:
     grouping: h3n2/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/h3n2/ha/2y
     name: h3n2/ha/2y
     grouping: h3n2/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/h3n2/ha/3y
     name: h3n2/ha/3y
     grouping: h3n2/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/h3n2/ha/6y
     name: h3n2/ha/6y
     grouping: h3n2/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/h3n2/ha/12y
     name: h3n2/ha/12y
     grouping: h3n2/ha
     org:
       name: Nextstrain Team
-      url: null
  
   - url: https://nextstrain.org/flu/seasonal/h3n2/na/6m
     name: h3n2/na/6m
     grouping: h3n2/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/h3n2/na/2y
     name: h3n2/na/2y
     grouping: h3n2/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/h3n2/na/3y
     name: h3n2/na/3y
     grouping: h3n2/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/h3n2/na/6y
     name: h3n2/na/6y
     grouping: h3n2/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/h3n2/na/12y
     name: h3n2/na/12y
     grouping: h3n2/na
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/ha/6m
     name: h1n1pdm/ha/6m
     grouping: h1n1pdm/ha
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/ha/2y
     name: h1n1pdm/ha/2y
     grouping: h1n1pdm/ha
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/ha/3y
     name: h1n1pdm/ha/3y
     grouping: h1n1pdm/ha
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/ha/6y
     name: h1n1pdm/ha/6y
     grouping: h1n1pdm/ha
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/ha/12y
     name: h1n1pdm/ha/12y
     grouping: h1n1pdm/ha
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/ha/pandemic
     name: h1n1pdm/ha/pandemic
     grouping: h1n1pdm/ha
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/na/6m
     name: h1n1pdm/na/6m
     grouping: h1n1pdm/na
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/na/2y
     name: h1n1pdm/na/2y
     grouping: h1n1pdm/na
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/na/3y
     name: h1n1pdm/na/3y
     grouping: h1n1pdm/na
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/na/6y
     name: h1n1pdm/na/6y
     grouping: h1n1pdm/na
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/na/12y
     name: h1n1pdm/na/12y
     grouping: h1n1pdm/na
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/h1n1pdm/na/pandemic
     name: h1n1pdm/na/pandemic
     grouping: h1n1pdm/na
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/vic/ha/6m
     name: vic/ha/6m
     grouping: vic/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/vic/ha/2y
     name: vic/ha/2y
     grouping: vic/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/vic/ha/3y
     name: vic/ha/3y
     grouping: vic/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/vic/ha/6y
     name: vic/ha/6y
     grouping: vic/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/vic/ha/12y
     name: vic/ha/12y
     grouping: vic/ha
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/vic/na/6m
     name: vic/na/6m
     grouping: vic/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/vic/na/2y
     name: vic/na/2y
     grouping: vic/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/vic/na/3y
     name: vic/na/3y
     grouping: vic/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/vic/na/6y
     name: vic/na/6y
     grouping: vic/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/vic/na/12y
     name: vic/na/12y
     grouping: vic/na
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/seasonal/yam/ha/6m
     name: yam/ha/6m
     grouping: yam/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/ha/2y
     name: yam/ha/2y
     grouping: yam/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/ha/3y
     name: yam/ha/3y
     grouping: yam/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/ha/6y
     name: yam/ha/6y
     grouping: yam/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/ha/12y
     name: yam/ha/12y
     grouping: yam/ha
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/na/6m
     name: yam/na/6m
     grouping: yam/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/na/2y
     name: yam/na/2y
     grouping: yam/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/na/3y
     name: yam/na/3y
     grouping: yam/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/na/6y
     name: yam/na/6y
     grouping: yam/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/seasonal/yam/na/12y
     name: yam/na/12y
     grouping: yam/na
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h5n1/ha
     name: h5n1/ha
     grouping: h5n1
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h5n1/mp
     name: h5n1/mp
     grouping: h5n1
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h5n1/na
     name: h5n1/na
     grouping: h5n1
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h5n1/ns
     name: h5n1/ns
     grouping: h5n1
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h5n1/np
     name: h5n1/np
     grouping: h5n1
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h5n1/pa
     name: h5n1/pa
     grouping: h5n1
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h5nx/ha
     name: h5nx/ha
     grouping: h5nx
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h5nx/mp
     name: h5nx/mp
     grouping: h5nx
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h5nx/na
     name: h5nx/na
     grouping: h5nx
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h5nx/ns
     name: h5nx/ns
     grouping: h5nx
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h5nx/np
     name: h5nx/np
     grouping: h5nx
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h5nx/pa
     name: h5nx/pa
     grouping: h5nx
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h7n9/ha
     name: h7n9/ha
     grouping: h7n9
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h7n9/mp
     name: h7n9/mp
     grouping: h7n9
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h7n9/na
     name: h7n9/na
     grouping: h7n9
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h7n9/ns
     name: h7n9/ns
     grouping: h7n9
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h7n9/np
     name: h7n9/np
     grouping: h7n9
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h7n9/pa
     name: h7n9/pa
     grouping: h7n9
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h9n2/ha
     name: h9n2/ha
     grouping: h9n2
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h9n2/mp
     name: h9n2/mp
     grouping: h9n2
     org:
       name: Nextstrain Team
-      url: null
 
   - url: https://nextstrain.org/flu/avian/h9n2/na
     name: h9n2/na
     grouping: h9n2
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h9n2/ns
     name: h9n2/ns
     grouping: h9n2
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h9n2/np
     name: h9n2/np
     grouping: h9n2
     org:
       name: Nextstrain Team
-      url: null
   
   - url: https://nextstrain.org/flu/avian/h9n2/pa
     name: h9n2/pa
     grouping: h9n2
     org:
       name: Nextstrain Team
-      url: null
 
