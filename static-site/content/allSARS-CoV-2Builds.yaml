@@ -73,6 +73,10 @@ builds:
     geo: louisiana
     parentGeo: usa
 
+  - name: Maine
+    geo: maine
+    parentGeo: usa
+
   - name: Massachusetts
     parentGeo: usa
     geo: massachusetts
@@ -428,6 +432,17 @@ builds:
     org:
       name: SEARCH, San Diego
       url: https://searchcovid.info/
+
+  - url: https://nextstrain.org/community/tewhey-lab/ncov-ME/latest
+    name: Maine
+    geo: maine
+    level: division
+    coords:
+      - -69.4455
+      - 45.2538
+    org:
+      name: Tewhey Lab
+      url: http://www.tewheylab.org/
 
   - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/current
     name: Connecticut
