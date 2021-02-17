@@ -62,9 +62,9 @@ const LegendContainer = styled.div`
   flex-wrap: wrap;
   max-width: 35%;
   position: absolute;
-  bottom: 0;
-  left: 0;
-  margin: 12px 12px 35px 12px;
+  top: 0;
+  right: 0;
+  margin: 12px;
   background-color: #f9f9f9;
   color: #000000;
   z-index: 1001 !important;
@@ -89,7 +89,7 @@ const LegendIconContainer = styled.span`
 `;
 
 const mapDefaults = {
-  maxBounds: [[-185, -80], [185, 85]],
+  maxBounds: [[-175, -60], [190, 75]],
   zoomOverall: 0,
   zoomPin: 3,
 };
