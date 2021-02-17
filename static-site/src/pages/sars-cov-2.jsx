@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import yaml from "js-yaml";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import config from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
@@ -13,7 +14,8 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import BuildCatalogue from "../components/build-pages/builds";
+import BuildMap from "../components/build-pages/build-map";
+import BuildDropdownMenu from "../components/build-pages/builds";
 import SituationReports from "../components/build-pages/sit-reps";
 import TOC from "../components/build-pages/toc";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
@@ -101,11 +103,25 @@ const contents = [
   }
 ];
 
-
 class Index extends React.Component {
   constructor(props) {
     super(props);
     configureAnchors({ offset: -10 });
+    this.state = {
+      dataLoaded: false,
+      errorFetchingData: false,
+      buildsUrl: "https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const catalogueBuilds = await fetchAndParseBuildCatalogueYaml(this.state.buildsUrl);
+      this.setState({catalogueBuilds, dataLoaded: true});
+    } catch (err) {
+      console.error("Error fetching / parsing data.", err.message);
+      this.setState({errorFetchingData: true});
+    }
   }
 
   render() {
@@ -133,27 +149,56 @@ class Index extends React.Component {
               <TOC data={contents} />
 
               <ScrollableAnchor id={"builds"}>
-                <BuildCatalogue buildsUrl="https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"
-                  showMap
-                  hierarchyKeys={{groupingKey: "geo", parentGroupingKey: "parentGeo"}}
-                  title="All SARS-CoV-2 builds"
-                  info={<>This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
+                <>
+                  <HugeSpacer /><HugeSpacer />
+                  <splashStyles.H2 left>
+                    All SARS-CoV-2 builds
+                  </splashStyles.H2>
+                  <SmallSpacer />
+                  <splashStyles.FocusParagraph>
+                    This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
                     Some of these builds are maintained by the Nextstrain team and others are maintained by independent research groups.
                     See <a href="https://docs.nextstrain.org/projects/augur/en/stable/faq/what-is-a-build.html" >here</a> for more information on what a build is, and see <a href="https://nextstrain.github.io/ncov/">this tutorial</a> for a walkthrough of running your own phylogenetic analysis of SARS-CoV-2 data.
                     If you know of a build not listed here, please let us know!
-                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.</>}
-                />
+                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
+                  </splashStyles.FocusParagraph>
+                  { this.state.dataLoaded && <BuildMap builds={this.state.catalogueBuilds}/> }
+                  <div className="row">
+                    <MediumSpacer />
+                    <div className="col-md-1"/>
+                    <div className="col-md-10">
+                      { this.state.dataLoaded && <BuildDropdownMenu catalogueBuilds={this.state.catalogueBuilds} hierarchyKeys={{groupingKey: "geo", parentGroupingKey: "parentGeo"}}/>}
+                    </div>
+                  </div>
+                  { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
+                              Something went wrong getting data.
+                              Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+                              if this continues to happen.</splashStyles.CenteredFocusParagraph>}
+                </>
               </ScrollableAnchor>
 
               <ScrollableAnchor id={"sit-reps"}>
-                <SituationReports parseSitRepInfo={parseNcovSitRepInfo}
-                  title="All SARS-CoV-2 situation reports"
-                  info={<>We have been writing interactive situation reports
-                      using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
-                      to communicate how COVID-19 is moving around the world and spreading locally.
-                      These are kindly translated into a number of different languages by volunteers
-                      and Google-provided translators — click on any language below to see the list of situation reports available.</>}
-                />
+                <>
+                  <HugeSpacer /><HugeSpacer />
+                  <splashStyles.H2 left>
+                    All SARS-CoV-2 situation reports
+                  </splashStyles.H2>
+                  <SmallSpacer />
+                  <splashStyles.FocusParagraph>
+                    We have been writing interactive situation reports
+                    using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
+                    to communicate how COVID-19 is moving around the world and spreading locally.
+                    These are kindly translated into a number of different languages by volunteers
+                    and Google-provided translators — click on any language below to see the list of situation reports available.
+                  </splashStyles.FocusParagraph>
+                  <div className="row">
+                    <MediumSpacer />
+                    <div className="col-md-1"/>
+                    <div className="col-md-10">
+                      <SituationReports parseSitRepInfo={parseNcovSitRepInfo}/>
+                    </div>
+                  </div>
+                </>
               </ScrollableAnchor>
 
               <Footer />
@@ -163,6 +208,18 @@ class Index extends React.Component {
       </MainLayout>
     );
   }
+}
+
+// scripts/collect-pathogen-resources.js reads in a list of builds in a manually
+// maintained pathogen build catalogue yaml file such as static-site/content/allSARS-CoV-2Builds.yaml
+// and produces an augmented version with metadata from each corresponding dataset.
+// That augmented yaml file is stored on s3 and fetched here to populate the front-end
+// manisfestation of that pathogen build catalogue on the page (e.g. map of builds).
+async function fetchAndParseBuildCatalogueYaml(yamlUrl) {
+  const catalogueBuilds = await fetch(yamlUrl)
+    .then((res) => res.text())
+    .then((text) => yaml.load(text).builds);
+  return catalogueBuilds;
 }
 
 export default Index;
