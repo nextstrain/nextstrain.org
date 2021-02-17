@@ -57,40 +57,212 @@ builds:
     geo: usa
     parentGeo: north-america
 
-  - name: California
-    geo: california
+  - geo: alabama
+    name: Alabama
     parentGeo: usa
 
-  - name: Connecticut
-    geo: connecticut
+  - geo: alaska
+    name: Alaska
     parentGeo: usa
 
-  - name: Florida
-    geo: florida
+  - geo: arizona
+    name: Arizona
     parentGeo: usa
 
-  - name: Louisiana
-    geo: louisiana
+  - geo: arkansas
+    name: Arkansas
     parentGeo: usa
 
-  - name: Maine
-    geo: maine
+  - geo: california
+    name: California
     parentGeo: usa
 
-  - name: Massachusetts
-    parentGeo: usa
-    geo: massachusetts
-
-  - name: Texas
-    geo: texas
+  - geo: colorado
+    name: Colorado
     parentGeo: usa
 
-  - name: Washington
-    geo: washington
+  - geo: connecticut
+    name: Connecticut
     parentGeo: usa
 
-  - name: Wisconsin
-    geo: wisconsin
+  - geo: delaware
+    name: Delaware
+    parentGeo: usa
+
+  - geo: florida
+    name: Florida
+    parentGeo: usa
+
+  - geo: georgia
+    name: Georgia
+    parentGeo: usa
+
+  - geo: hawaii
+    name: Hawaii
+    parentGeo: usa
+
+  - geo: idaho
+    name: Idaho
+    parentGeo: usa
+
+  - geo: illinois
+    name: Illinois
+    parentGeo: usa
+
+  - geo: indiana
+    name: Indiana
+    parentGeo: usa
+
+  - geo: iowa
+    name: Iowa
+    parentGeo: usa
+
+  - geo: kansas
+    name: Kansas
+    parentGeo: usa
+
+  - geo: kentucky
+    name: Kentucky
+    parentGeo: usa
+
+  - geo: louisiana
+    name: Louisiana
+    parentGeo: usa
+
+  - geo: maine
+    name: Maine
+    parentGeo: usa
+
+  - geo: maryland
+    name: Maryland
+    parentGeo: usa
+
+  - geo: massachusetts
+    name: Massachusetts
+    parentGeo: usa
+
+  - geo: michigan
+    name: Michigan
+    parentGeo: usa
+
+  - geo: minnesota
+    name: Minnesota
+    parentGeo: usa
+
+  - geo: mississippi
+    name: Mississippi
+    parentGeo: usa
+
+  - geo: missouri
+    name: Missouri
+    parentGeo: usa
+
+  - geo: montana
+    name: Montana
+    parentGeo: usa
+
+  - geo: nebraska
+    name: Nebraska
+    parentGeo: usa
+
+  - geo: nevada
+    name: Nevada
+    parentGeo: usa
+
+  - geo: new_hampshire
+    name: New Hampshire
+    parentGeo: usa
+
+  - geo: new_jersey
+    name: New Jersey
+    parentGeo: usa
+
+  - geo: new_mexico
+    name: New Mexico
+    parentGeo: usa
+
+  - geo: new_york
+    name: New York
+    parentGeo: usa
+
+  - geo: north_carolina
+    name: North Carolina
+    parentGeo: usa
+
+  - geo: north_dakota
+    name: North Dakota
+    parentGeo: usa
+
+  - geo: ohio
+    name: Ohio
+    parentGeo: usa
+
+  - geo: oklahoma
+    name: Oklahoma
+    parentGeo: usa
+
+  - geo: oregon
+    name: Oregon
+    parentGeo: usa
+
+  - geo: pennsylvania
+    name: Pennsylvania
+    parentGeo: usa
+
+  - geo: puerto_rico
+    name: Puerto Rico
+    parentGeo: usa
+
+  - geo: rhode_island
+    name: Rhode Island
+    parentGeo: usa
+
+  - geo: south_carolina
+    name: South Carolina
+    parentGeo: usa
+
+  - geo: south_dakota
+    name: South Dakota
+    parentGeo: usa
+
+  - geo: tennessee
+    name: Tennessee
+    parentGeo: usa
+
+  - geo: texas
+    name: Texas
+    parentGeo: usa
+
+  - geo: utah
+    name: Utah
+    parentGeo: usa
+
+  - geo: vermont
+    name: Vermont
+    parentGeo: usa
+
+  - geo: virginia
+    name: Virginia
+    parentGeo: usa
+
+  - geo: washington
+    name: Washington
+    parentGeo: usa
+
+  - geo: washington_dc
+    name: Washington DC
+    parentGeo: usa
+
+  - geo: west_virginia
+    name: West Virginia
+    parentGeo: usa
+
+  - geo: wisconsin
+    name: Wisconsin
+    parentGeo: usa
+
+  - geo: wyoming
+    name: Wyoming
     parentGeo: usa
 
   - name: Austria
@@ -244,7 +416,7 @@ builds:
   - name: Middle East
     geo: middle-east
     parentGeo: null
-    
+
   - name: Gulf Cooperation Council
     geo: gcc
     parentGeo: asia
@@ -399,6 +571,578 @@ builds:
     org:
       name: Hodcroft et al.
       url: https://github.com/emmahodcroft/south-usa-sarscov2/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/alabama
+    name: Alabama
+    geo: alabama
+    level: division
+    coords:
+    - -86.8
+    - 33.5
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/alaska
+    name: Alaska
+    geo: alaska
+    level: division
+    coords:
+    - -149.9
+    - 61.2
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/arizona
+    name: Arizona
+    geo: arizona
+    level: division
+    coords:
+    - -112.1
+    - 33.4
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/arkansas
+    name: Arkansas
+    geo: arkansas
+    level: division
+    coords:
+    - -92.4
+    - 35.2
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/california
+    name: California
+    geo: california
+    level: division
+    coords:
+    - -122.0
+    - 37.9
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/colorado
+    name: Colorado
+    geo: colorado
+    level: division
+    coords:
+    - -105.0
+    - 39.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/connecticut
+    name: Connecticut
+    geo: connecticut
+    level: division
+    coords:
+    - -72.7
+    - 41.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/delaware
+    name: Delaware
+    geo: delaware
+    level: division
+    coords:
+    - -75.4
+    - 38.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/florida
+    name: Florida
+    geo: florida
+    level: division
+    coords:
+    - -82.4
+    - 27.9
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/georgia
+    name: Georgia
+    geo: georgia
+    level: division
+    coords:
+    - -84.4
+    - 33.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/hawaii
+    name: Hawaii
+    geo: hawaii
+    level: division
+    coords:
+    - -157.9
+    - 21.3
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/idaho
+    name: Idaho
+    geo: idaho
+    level: division
+    coords:
+    - -116.2
+    - 43.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/illinois
+    name: Illinois
+    geo: illinois
+    level: division
+    coords:
+    - -89.6
+    - 40.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/indiana
+    name: Indiana
+    geo: indiana
+    level: division
+    coords:
+    - -86.2
+    - 40.3
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/iowa
+    name: Iowa
+    geo: iowa
+    level: division
+    coords:
+    - -93.3
+    - 41.9
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/kansas
+    name: Kansas
+    geo: kansas
+    level: division
+    coords:
+    - -98.6
+    - 38.3
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/kentucky
+    name: Kentucky
+    geo: kentucky
+    level: division
+    coords:
+    - -85.2
+    - 37.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/louisiana
+    name: Louisiana
+    geo: louisiana
+    level: division
+    coords:
+    - -90.0
+    - 29.9
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/maine
+    name: Maine
+    geo: maine
+    level: division
+    coords:
+    - -68.9
+    - 45.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/maryland
+    name: Maryland
+    geo: maryland
+    level: division
+    coords:
+    - -76.9
+    - 39.5
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/massachusetts
+    name: Massachusetts
+    geo: massachusetts
+    level: division
+    coords:
+    - -72.0
+    - 42.4
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/michigan
+    name: Michigan
+    geo: michigan
+    level: division
+    coords:
+    - -84.6
+    - 42.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/minnesota
+    name: Minnesota
+    geo: minnesota
+    level: division
+    coords:
+    - -94.2
+    - 45.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/mississippi
+    name: Mississippi
+    geo: mississippi
+    level: division
+    coords:
+    - -89.7
+    - 32.9
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/missouri
+    name: Missouri
+    geo: missouri
+    level: division
+    coords:
+    - -92.6
+    - 38.8
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/montana
+    name: Montana
+    geo: montana
+    level: division
+    coords:
+    - -111.3
+    - 47.5
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/nebraska
+    name: Nebraska
+    geo: nebraska
+    level: division
+    coords:
+    - -99.6
+    - 41.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/nevada
+    name: Nevada
+    geo: nevada
+    level: division
+    coords:
+    - -116.9
+    - 39.5
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/new-hampshire
+    name: New Hampshire
+    geo: new_hampshire
+    level: division
+    coords:
+    - -71.7
+    - 43.5
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/new-jersey
+    name: New Jersey
+    geo: new_jersey
+    level: division
+    coords:
+    - -74.4
+    - 40.1
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/new-mexico
+    name: New Mexico
+    geo: new_mexico
+    level: division
+    coords:
+    - -106.9
+    - 34.0
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/new-york
+    name: New York
+    geo: new_york
+    level: division
+    coords:
+    - -74.0
+    - 40.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/north-carolina
+    name: North Carolina
+    geo: north_carolina
+    level: division
+    coords:
+    - -79.0
+    - 35.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/north-dakota
+    name: North Dakota
+    geo: north_dakota
+    level: division
+    coords:
+    - -100.5
+    - 47.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/ohio
+    name: Ohio
+    geo: ohio
+    level: division
+    coords:
+    - -82.7
+    - 40.2
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/oklahoma
+    name: Oklahoma
+    geo: oklahoma
+    level: division
+    coords:
+    - -97.2
+    - 34.9
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/oregon
+    name: Oregon
+    geo: oregon
+    level: division
+    coords:
+    - -120.7
+    - 44.0
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/pennsylvania
+    name: Pennsylvania
+    geo: pennsylvania
+    level: division
+    coords:
+    - -77.7
+    - 41.0
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/puerto-rico
+    name: Puerto Rico
+    geo: puerto_rico
+    level: division
+    coords:
+    - -66.4
+    - 18.2
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/rhode-island
+    name: Rhode Island
+    geo: rhode_island
+    level: division
+    coords:
+    - -71.6
+    - 41.8
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/south-carolina
+    name: South Carolina
+    geo: south_carolina
+    level: division
+    coords:
+    - -80.4
+    - 33.7
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/south-dakota
+    name: South Dakota
+    geo: south_dakota
+    level: division
+    coords:
+    - -100.3
+    - 44.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/tennessee
+    name: Tennessee
+    geo: tennessee
+    level: division
+    coords:
+    - -88.8
+    - 35.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/texas
+    name: Texas
+    geo: texas
+    level: division
+    coords:
+    - -96.3
+    - 30.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/utah
+    name: Utah
+    geo: utah
+    level: division
+    coords:
+    - -111.7
+    - 39.4
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/vermont
+    name: Vermont
+    geo: vermont
+    level: division
+    coords:
+    - -72.5
+    - 44.6
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/virginia
+    name: Virginia
+    geo: virginia
+    level: division
+    coords:
+    - -78.5
+    - 37.1
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/washington
+    name: Washington
+    geo: washington
+    level: division
+    coords:
+    - -119.0
+    - 46.9
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/washington-dc
+    name: Washington DC
+    geo: washington_dc
+    level: division
+    coords:
+    - -77.0
+    - 38.9
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/west-virginia
+    name: West Virginia
+    geo: west_virginia
+    level: division
+    coords:
+    - -80.8
+    - 38.5
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/wisconsin
+    name: Wisconsin
+    geo: wisconsin
+    level: division
+    coords:
+    - -89.4
+    - 43.1
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/spheres/ncov/wyoming
+    name: Wyoming
+    geo: wyoming
+    level: division
+    coords:
+    - -107.6
+    - 43.2
+    org:
+      name: CDC/AMD
+      url: https://www.cdc.gov/amd/
 
   - url: https://nextstrain.org/community/czbiohub/covidtracker/ca
     name: California
@@ -1006,4 +1750,3 @@ builds:
     org:
       name: Alghoribi Lab (MNGHA - KAIMRC)
       url: https://kaimrc.med.sa
-      
