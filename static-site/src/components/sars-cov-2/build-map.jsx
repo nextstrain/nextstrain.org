@@ -44,7 +44,7 @@ const MapContainer = styled.div`
   width: 100%;
   background-color: #fff;
   margin: auto;
-  height: 515px;
+  height: 575px;
   padding-top: 5px;
   display: flex;
   flex-direction: row;
@@ -63,7 +63,7 @@ const LegendContainer = styled.div`
   max-width: 35%;
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   margin: 12px;
   background-color: #f9f9f9;
   color: #000000;
@@ -89,16 +89,13 @@ const LegendIconContainer = styled.span`
 `;
 
 const mapDefaults = {
-  center: [0, 20],
-  maxBounds: [[-180, -85], [180, 85]],
+  maxBounds: [[-175, -60], [190, 75]],
   zoomOverall: 0,
   zoomPin: 3,
-  minZoom: 0
 };
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2pyM3p4aTlmMWMwbjRibzlia3MyMjZhYiJ9.JCLCk3g-GiVOcKiNWGjOXA",
-  minZoom: mapDefaults.minZoom,
   scrollZoom: false
 });
 
@@ -227,8 +224,6 @@ class BuildMap extends React.Component {
   }
 
   render() {
-    const center = mapDefaults.center;
-    const zoom = mapDefaults.zoomOverall;
     // We don't map the stub builds that are used to define the hierarchy
     const buildsToMap = this.props.builds.filter((build) => build.url !== undefined && build.coords !== undefined && build.name !== "Global");
     // Nextstrain builds go separate from clustered community builds on the map
@@ -240,8 +235,7 @@ class BuildMap extends React.Component {
           <Map
             style="https://api.mapbox.com/styles/v1/trvrb/ciu03v244002o2in5hlm3q6w2?access_token=pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2l1MDRoMzg5MDEwbjJvcXBpNnUxMXdwbCJ9.PMqX7vgORuXLXxtI3wISjw" // eslint-disable-line
             containerStyle={{height: "100%", width: "100%"}}
-            center={center}
-            zoom={[zoom]}
+            zoom={[mapDefaults.zoomOverall]}
             maxBounds={mapDefaults.maxBounds}
             onZoomEnd={ReactTooltip.rebuild}
             onDragEnd={ReactTooltip.rebuild}
