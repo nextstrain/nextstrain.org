@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import yaml from "js-yaml";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import config from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
@@ -13,7 +14,7 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import BuildCatalogue from "../components/build-pages/builds";
+import BuildDropdownMenu from "../components/build-pages/builds";
 import TOC from "../components/build-pages/toc";
 
 const title = "Influenza resources";
@@ -58,6 +59,21 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     configureAnchors({ offset: -10 });
+    this.state = {
+      dataLoaded: false,
+      errorFetchingData: false,
+      buildsUrl: "https://staging.nextstrain.org/all-influenza-builds.yaml"
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const catalogueBuilds = await fetchAndParseBuildCatalogueYaml(this.state.buildsUrl);
+      this.setState({catalogueBuilds, dataLoaded: true});
+    } catch (err) {
+      console.error("Error fetching / parsing data.", err.message);
+      this.setState({errorFetchingData: true});
+    }
   }
 
   render() {
@@ -85,13 +101,30 @@ class Index extends React.Component {
               <TOC data={contents} />
 
               <ScrollableAnchor id={"builds"}>
-                <BuildCatalogue buildsUrl="https://staging.nextstrain.org/all-influenza-builds.yaml"
-                  title="Influenza builds"
-                  info={<>This section is an index of public Nextstrain builds (datasets) for flu, organized by type.
+                <>
+                  <HugeSpacer /><HugeSpacer />
+                  <splashStyles.H2 left>
+                    Influenza builds
+                  </splashStyles.H2>
+                  <SmallSpacer />
+                  <splashStyles.FocusParagraph>
+                    This section is an index of public Nextstrain builds (datasets) for flu, organized by type.
                     See <a href="https://docs.nextstrain.org/projects/augur/en/stable/faq/what-is-a-build.html" >here</a> for more information on what a build is.
                     If you know of a build not listed here, please let us know!
-                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.</>}
-                />
+                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
+                  </splashStyles.FocusParagraph>
+                  <div className="row">
+                    <MediumSpacer />
+                    <div className="col-md-1"/>
+                    <div className="col-md-10">
+                      { this.state.dataLoaded && <BuildDropdownMenu catalogueBuilds={this.state.catalogueBuilds}/>}
+                    </div>
+                  </div>
+                  { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
+                              Something went wrong getting data.
+                              Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+                              if this continues to happen.</splashStyles.CenteredFocusParagraph>}
+                </>
               </ScrollableAnchor>
 
               <Footer />
@@ -101,6 +134,18 @@ class Index extends React.Component {
       </MainLayout>
     );
   }
+}
+
+// scripts/collect-pathogen-resources.js reads in a list of builds in a manually
+// maintained pathogen build catalogue yaml file such as static-site/content/allSARS-CoV-2Builds.yaml
+// and produces an augmented version with metadata from each corresponding dataset.
+// That augmented yaml file is stored on s3 and fetched here to populate the front-end
+// manisfestation of that pathogen build catalogue on the page (e.g. map of builds).
+async function fetchAndParseBuildCatalogueYaml(yamlUrl) {
+  const catalogueBuilds = await fetch(yamlUrl)
+    .then((res) => res.text())
+    .then((text) => yaml.load(text).builds);
+  return catalogueBuilds;
 }
 
 export default Index;

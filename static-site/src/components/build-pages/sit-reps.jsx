@@ -2,7 +2,7 @@ import React from "react";
 import Collapsible from "react-collapsible";
 import _sortBy from "lodash/sortBy";
 import {FaFile} from "react-icons/fa";
-import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
+import { FlexCenter } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import CollapseTitle from "../Misc/collapse-title";
 
@@ -78,53 +78,40 @@ class Index extends React.Component {
   render() {
     return (
       <>
-        <HugeSpacer /><HugeSpacer />
-        <splashStyles.H2 left>
-          {this.props.title}
-        </splashStyles.H2>
-        <SmallSpacer />
-        <splashStyles.FocusParagraph>
-          {this.props.info}
-        </splashStyles.FocusParagraph>
-        <div className="row">
-          <MediumSpacer />
-          <div className="col-md-1"/>
-          <div className="col-md-10">
-            { this.state.hasError && <splashStyles.CenteredFocusParagraph>
-                            Something went wrong getting situation reports.
-                            Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                            if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-            {/* Sit Reps */
-              !this.state.hasError &&
-              this.state.narrativesByLanguage &&
-              this.state.narrativesByLanguage.map((language) => (
-                <div key={language.languageNative}>
-                  <Collapsible
-                    triggerWhenOpen={<CollapseTitle name={language.languageNative} isExpanded />}
-                    trigger={<CollapseTitle name={language.languageNative} />}
-                    triggerStyle={{cursor: "pointer", textDecoration: "none"}}
-                    open={language.languageNative === "English"} // start with English open. Later we can take this from browser settings using Jover's code?
-                  >
-                    {/* Begin collapsible content */}
-                    <div className="row">
-                      {Array.from(language.narratives.entries()).map(([index, narrative]) => (
-                        <div className="col-sm-4">
-                          <FlexCenter>
-                            <a href={narrative.url}>
-                              <splashStyles.SitRepTitle attn={index === 0}>
-                                <FaFile />
-                                {" "+narrative.date}
-                              </splashStyles.SitRepTitle>
-                            </a>
-                          </FlexCenter>
-                        </div>
-                      ))}
+        { this.state.hasError && <splashStyles.CenteredFocusParagraph>
+                          Something went wrong getting situation reports.
+                          Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+                          if this continues to happen.</splashStyles.CenteredFocusParagraph>}
+
+        {/* Sit Reps */
+          !this.state.hasError &&
+          this.state.narrativesByLanguage &&
+          this.state.narrativesByLanguage.map((language) => (
+            <div key={language.languageNative}>
+              <Collapsible
+                triggerWhenOpen={<CollapseTitle name={language.languageNative} isExpanded />}
+                trigger={<CollapseTitle name={language.languageNative} />}
+                triggerStyle={{cursor: "pointer", textDecoration: "none"}}
+                open={language.languageNative === "English"} // start with English open. Later we can take this from browser settings using Jover's code?
+              >
+                {/* Begin collapsible content */}
+                <div className="row">
+                  {Array.from(language.narratives.entries()).map(([index, narrative]) => (
+                    <div className="col-sm-4">
+                      <FlexCenter>
+                        <a href={narrative.url}>
+                          <splashStyles.SitRepTitle attn={index === 0}>
+                            <FaFile />
+                            {" "+narrative.date}
+                          </splashStyles.SitRepTitle>
+                        </a>
+                      </FlexCenter>
                     </div>
-                  </Collapsible>
+                  ))}
                 </div>
-              ))}
-          </div>
-        </div>
+              </Collapsible>
+            </div>
+          ))}
       </>
     );
   }
