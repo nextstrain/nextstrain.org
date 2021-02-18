@@ -62,7 +62,7 @@ class Index extends React.Component {
     this.state = {
       dataLoaded: false,
       errorFetchingData: false,
-      buildsUrl: "https://staging.nextstrain.org/all-influenza-builds.yaml"
+      buildsUrl: "https://staging.nextstrain.org/all-influenza-builds-dataset-ui.yaml"
     };
   }
 
