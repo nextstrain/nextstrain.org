@@ -61,7 +61,6 @@ export const H4 = styled.div`
   line-height: 32px;
   font-weight: 500;
   color: ${(props) => props.theme.darkGrey};
-  min-width: 240px;
   margin-top: 0px;
   margin-bottom: 0px;
 `;

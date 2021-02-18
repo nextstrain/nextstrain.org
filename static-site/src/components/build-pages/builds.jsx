@@ -33,6 +33,49 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     this.subBuilds = this.subBuilds.bind(this);
+    this.displayChildren = this.displayChildren.bind(this);
+  }
+
+  displayChildren(children, variables) {
+    if (!variables) {
+      return (
+        <FlexGridLeft style={{marginBottom: "10px"}}>
+          {children.map((child) => (
+            <div key={child.url}>
+              {buildComponent(child)}
+            </div>
+          ))}
+        </FlexGridLeft>);
+    }
+    const firstVariableTypes = Array.from(new Set(children.map((c) => c.variable1)));
+    const secondVariableTypes = variables === 2 ? Array.from(new Set(children.map((c) => c.variable2))) : undefined;
+    // Rows are array of arrays nesting according to variable values
+    const rows = firstVariableTypes.map((v1) => {
+      let row = children.filter((c) => c.variable1 === v1);
+      if (secondVariableTypes) {
+        row = secondVariableTypes.map((v2) => row.filter((c) => c.variable2 === v2));
+      }
+      return row;
+    });
+    return (<div style={{paddingLeft: "20px", overflow: "auto"}}><table>
+      {/* Column header for second variable. Not needed if only one variable since will only be one entry per row-column */}
+      {secondVariableTypes && <tr><th/>{secondVariableTypes.map((secondVariable) => (
+        <th key={secondVariable}>
+          <splashStyles.H4>{secondVariable}</splashStyles.H4>
+        </th>))}
+      </tr>}
+      {rows.map((rowEntries, idx) => (
+        <tr key={`${firstVariableTypes[idx]}-row`}>
+          {/* Row header */}
+          <td key={`${firstVariableTypes[idx]}-header`}><splashStyles.H4>{firstVariableTypes[idx]}</splashStyles.H4></td>
+          {/* Row entries */}
+          {secondVariableTypes ?
+            rowEntries.map((entriesList, idx2) => <td key={`${secondVariableTypes[idx2]}-entries`}>{entriesList.map(buildComponent)}</td>)
+            :
+            rowEntries.map((entry) => <td key={entry.name}>{buildComponent(entry)}</td>)
+          }
+        </tr>))}
+    </table></div>);
   }
 
   subBuilds(header, groupingKey, parentGroupingKey, expanded=false, fontSize=20) {
@@ -51,14 +94,7 @@ class Index extends React.Component {
         >
           {/* Begin collapsible content */}
           <div key={`${header.name}-children`}>
-            {children.length > 0 &&
-              <FlexGridLeft style={{marginBottom: "10px"}}>
-                {children.map((child) => (
-                  <div key={child.url}>
-                    {buildComponent(child)}
-                  </div>
-                ))}
-              </FlexGridLeft>}
+            {children.length > 0 && this.displayChildren(children, header.variables)}
             {subHeaders.length > 0 &&
               <div style={{marginLeft: "20px"}}>
                 {orderBy(subHeaders, ["name"]).map((subHeader) =>
