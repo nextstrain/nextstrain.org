@@ -17,10 +17,11 @@ import BuildCatalogue from "../components/build-pages/builds";
 import TOC from "../components/build-pages/toc";
 
 const title = "Influenza resources";
-const abstract = `The Nextstrain team maintains datasets and other tools
-for analyzing a variety of influenza viruses. [Insert seasonal-flu-specific sentence] We also maintain
-datasets for a subset of avian influenza viruses that have caused recurrent
-outbreaks in humans and domestic birds, including novel reassortant H5 viruses.`;
+const abstract = `The Nextstrain team maintains datasets and other tools for analyzing a variety of influenza viruses.
+We track the evolution of seasonal influenza viruses (A/H3N2, A/H1N1pdm, B/Victoria, and B/Yamagata)
+and use these analyses to inform recommendations for the World Health Organization’s influenza vaccine composition meetings.
+We also maintain datasets for a subset of avian influenza viruses that have caused recurrent outbreaks in humans
+and domestic birds, including novel reassortant H5 viruses.`;
 
 const contents = [
   {
