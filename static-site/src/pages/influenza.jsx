@@ -14,8 +14,8 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import BuildDropdownMenu from "../components/build-pages/builds";
 import TOC from "../components/build-pages/toc";
+import BuildSelect from "../components/build-pages/build-select";
 
 const title = "Influenza resources";
 const abstract = `The Nextstrain team maintains datasets and other tools for analyzing a variety of influenza viruses.
@@ -118,7 +118,16 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      { this.state.dataLoaded && <BuildDropdownMenu catalogueBuilds={this.state.catalogueBuilds}/>}
+                      { this.state.dataLoaded &&
+                      <BuildSelect builds={this.state.catalogueBuilds}
+                        filterPropertyMappings={[
+                          ["org.name", "Organization name"],
+                          ["grouping", "Flu type"],
+                          ["pathogen", "Pathogen name"],
+                          ["segment", "Segment"],
+                          ["duration", "Duration"]
+                        ]}
+                      />}
                     </div>
                   </div>
                   { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
