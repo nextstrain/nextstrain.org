@@ -1,25 +1,10 @@
 import React from "react";
-import { FaChartArea } from "react-icons/fa";
 import Collapsible from "react-collapsible";
 import { orderBy } from "lodash";
 import { FlexGridLeft } from "../../layouts/generalComponents";
-import * as splashStyles from "../splash/styles";
+import buildLink from "./build-link";
 import CollapseTitle from "../Misc/collapse-title";
 
-const buildComponent = (build) => (
-  <splashStyles.SitRepTitle >
-    {build.url === undefined ? build.name : <div>
-      <a href={build.url}>
-        <FaChartArea />
-        {` ${build.name} `}
-      </a>
-      (
-      {build.org.url === undefined ? build.org.name : <a href={build.org.url}>{build.org.name}</a>
-      }
-      )
-    </div>}
-  </splashStyles.SitRepTitle>
-);
 
 /*
 * This is a page to display a catalogue of builds for a
@@ -55,7 +40,7 @@ class Index extends React.Component {
               <FlexGridLeft style={{marginBottom: "10px"}}>
                 {children.map((child) => (
                   <div key={child.url}>
-                    {buildComponent(child)}
+                    {buildLink(child)}
                   </div>
                 ))}
               </FlexGridLeft>}
