@@ -1,8 +1,23 @@
 import React from "react";
-import Select from "react-select/lib/Async";
+import "react-select/dist/react-select.css";
+import "react-virtualized-select/styles.css";
+import Select from "react-virtualized-select";
 import { debounce, get } from 'lodash';
+import styled from 'styled-components';
+import ReactTooltip from 'react-tooltip';
+import { FaInfoCircle } from "react-icons/fa";
 import { FilterBadge, Tooltip } from "./filterBadge";
 import buildLink from "./build-link";
+import * as splashStyles from "../splash/styles";
+
+const StyledTooltip = styled(ReactTooltip)`
+  max-width: 30vh;
+  white-space: normal;
+  line-height: 1.2;
+  padding: 10px !important; /* override internal styling */
+  z-index: 1002 !important; /* on top of viz legend */
+  pointer-events: auto !important;
+`;
 
 const Intersect = ({id}) => (
   <span style={{fontSize: "2rem", fontWeight: 300, padding: "0px 4px 0px 2px", cursor: 'help'}} data-tip data-for={id}>
@@ -193,6 +208,23 @@ class FilterBuilds extends React.Component {
     return (
       <>
         <div style={styles.base} key={divKey}>
+          <splashStyles.H3 left>
+            {`Filter builds `}
+            <>
+              <span style={{cursor: "help"}} data-tip data-for={"build-filter-info"}>
+                <FaInfoCircle/>
+              </span>
+              <StyledTooltip type="dark" effect="solid" id={"build-filter-info"}>
+                <>
+                  {`Use this box to filter the displayed list of datasets based upon filtering criteria.`}
+                  <br/>
+                  {/* TODO do we want to keep this set logic? It's currently broken */}
+                  Data is filtered by forming a union of selected values within each category, and then
+                  taking the intersection between categories (if more than one category is selected).
+                </>
+              </StyledTooltip>
+            </>
+          </splashStyles.H3>
           <Select
             async
             name="filterQueryBox"
