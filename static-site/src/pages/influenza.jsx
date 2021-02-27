@@ -15,7 +15,7 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import TOC from "../components/build-pages/toc";
-import BuildSelect from "../components/build-pages/build-select";
+import FilterBuilds from "../components/build-pages/build-select";
 
 const title = "Influenza resources";
 const abstract = `The Nextstrain team maintains datasets and other tools
@@ -118,7 +118,7 @@ class Index extends React.Component {
                     <div className="col-md-1"/>
                     <div className="col-md-10">
                       { this.state.dataLoaded &&
-                      <BuildSelect builds={this.state.catalogueBuilds}
+                      <FilterBuilds builds={this.state.catalogueBuilds}
                         filterPropertyMappings={[
                           ["org.name", "Organization name"],
                           ["grouping", "Flu type"],

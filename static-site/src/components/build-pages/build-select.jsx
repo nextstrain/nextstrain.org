@@ -28,7 +28,7 @@ const DEBOUNCE_TIME = 200;
  * in this component, but are useful to spell out: we take the union of
  * entries within each category and then take the intersection of those unions.
  */
-class FilterData extends React.Component {
+class FilterBuilds extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -254,4 +254,4 @@ class FilterData extends React.Component {
   }
 }
 
-export default FilterData;
+export default FilterBuilds;
