@@ -14,7 +14,7 @@ import CollapseTitle from "../Misc/collapse-title";
 * (using scripts/collect-search-results.js) with metadata from
 * each build and stored in/fetched from props.buildsUrl
 */
-class Index extends React.Component {
+class BuildCollapsibleMenus extends React.Component {
   constructor(props) {
     super(props);
     this.subBuilds = this.subBuilds.bind(this);
@@ -69,4 +69,4 @@ class Index extends React.Component {
 
 }
 
-export default Index;
+export default BuildCollapsibleMenus;
