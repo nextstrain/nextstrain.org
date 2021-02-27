@@ -15,7 +15,7 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import BuildMap from "../components/build-pages/build-map";
-import BuildDropdownMenu from "../components/build-pages/builds";
+import BuildDropdownMenu from "../components/build-pages/build-collapsible-menus";
 import BuildSelect from "../components/build-pages/build-select";
 import SituationReports from "../components/build-pages/sit-reps";
 import TOC from "../components/build-pages/toc";
