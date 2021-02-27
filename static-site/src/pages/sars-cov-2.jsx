@@ -16,6 +16,7 @@ import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import BuildMap from "../components/build-pages/build-map";
 import BuildDropdownMenu from "../components/build-pages/builds";
+import BuildSelect from "../components/build-pages/build-select";
 import SituationReports from "../components/build-pages/sit-reps";
 import TOC from "../components/build-pages/toc";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
@@ -167,6 +168,15 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
+                      { this.state.dataLoaded &&
+                        <BuildSelect builds={this.state.catalogueBuilds}
+                          filterPropertyMappings={[
+                            ["org.name", "Organization name"],
+                            ["level", "Level"],
+                            ["geo", "Geography"],
+                            ["name", "Name"]
+                          ]}
+                        />}
                       { this.state.dataLoaded && <BuildDropdownMenu catalogueBuilds={this.state.catalogueBuilds} hierarchyKeys={{groupingKey: "geo", parentGroupingKey: "parentGeo"}}/>}
                     </div>
                   </div>
