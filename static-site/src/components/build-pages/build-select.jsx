@@ -2,7 +2,7 @@ import React from "react";
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import Select from "react-virtualized-select";
-import { debounce, get } from 'lodash';
+import { debounce, get, sortBy } from 'lodash';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { FaInfoCircle } from "react-icons/fa";
@@ -142,7 +142,7 @@ class FilterBuilds extends React.Component {
       });
       return accumulator;
     }, {options: [], seenValues: {}});
-    return optionsObject.options;
+    return sortBy(optionsObject.options, "label");
   }
   selectionMade = (sel) => {
     this.applyFilter("add", sel.value[0], [sel.value[1]]);
@@ -176,13 +176,13 @@ class FilterBuilds extends React.Component {
       });
   }
   buildMatchesFilter(build, filterName, filterObjects) {
-    return filterObjects.every((filter) => {
-      if (!filter.active) return true; // inactive filter is the same as a match
-      return get(build, filterName) === filter.value; // active ones must match
+    const activeFilters = filterObjects.filter((f) => f.active);
+    if (!activeFilters.length) return true; // if all are turned off then automatch
+    return activeFilters.some((filter) => {
+      return get(build, filterName) === filter.value;
     });
   }
   getFilteredBuilds() {
-    // TODO this doesnt care about categories
     return this.props.builds
       .filter((b) => b.url !== undefined)
       .filter((b) => Object.entries(this.state.filters)
