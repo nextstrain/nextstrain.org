@@ -62,7 +62,7 @@ class Index extends React.Component {
     this.state = {
       dataLoaded: false,
       errorFetchingData: false,
-      datasetsUrl: "http://data.nextstrain.org/datasets_influenza.json"
+      datasetsUrl: "https://data.nextstrain.org/datasets_influenza.json"
     };
   }
 
