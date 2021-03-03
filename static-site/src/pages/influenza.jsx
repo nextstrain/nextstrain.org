@@ -1,6 +1,5 @@
 import React from "react";
 import Helmet from "react-helmet";
-import yaml from "js-yaml";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import config from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
@@ -15,7 +14,7 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import TOC from "../components/build-pages/toc";
-import FilterBuilds from "../components/build-pages/build-select";
+import DatasetSelect from "../components/build-pages/dataset-select";
 
 const title = "Influenza resources";
 const abstract = `The Nextstrain team maintains datasets and other tools
@@ -62,14 +61,14 @@ class Index extends React.Component {
     this.state = {
       dataLoaded: false,
       errorFetchingData: false,
-      buildsUrl: "https://staging.nextstrain.org/all-influenza-builds-branch-build-select.yaml"
+      datasetsUrl: "http://data.nextstrain.org/datasets_influenza.json"
     };
   }
 
   async componentDidMount() {
     try {
-      const catalogueBuilds = await fetchAndParseBuildCatalogueYaml(this.state.buildsUrl);
-      this.setState({catalogueBuilds, dataLoaded: true});
+      const datasets = await fetchAndParseDatasetsJSON(this.state.datasetsUrl);
+      this.setState({datasets, dataLoaded: true});
     } catch (err) {
       console.error("Error fetching / parsing data.", err.message);
       this.setState({errorFetchingData: true});
@@ -117,16 +116,8 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      { this.state.dataLoaded &&
-                      <FilterBuilds builds={this.state.catalogueBuilds}
-                        filterPropertyMappings={[
-                          ["org.name", "Organization name"],
-                          ["grouping", "Flu type"],
-                          ["pathogen", "Pathogen name"],
-                          ["segment", "Segment"],
-                          ["duration", "Duration"]
-                        ]}
-                      />}
+                      {this.state.dataLoaded &&
+                      <DatasetSelect datasets={this.state.datasets} />}
                     </div>
                   </div>
                   { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
@@ -150,11 +141,11 @@ class Index extends React.Component {
 // and produces an augmented version with metadata from each corresponding dataset.
 // That augmented yaml file is stored on s3 and fetched here to populate the front-end
 // manisfestation of that pathogen build catalogue on the page (e.g. map of builds).
-async function fetchAndParseBuildCatalogueYaml(yamlUrl) {
-  const catalogueBuilds = await fetch(yamlUrl)
+async function fetchAndParseDatasetsJSON(jsonUrl) {
+  const datasetsJSON = await fetch(jsonUrl)
     .then((res) => res.text())
-    .then((text) => yaml.load(text).builds);
-  return catalogueBuilds;
+    .then((text) => JSON.parse(text));
+  return datasetsJSON;
 }
 
 export default Index;
