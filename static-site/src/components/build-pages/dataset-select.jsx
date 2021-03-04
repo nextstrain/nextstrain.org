@@ -6,6 +6,7 @@ import { debounce, get } from 'lodash';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { FaInfoCircle } from "react-icons/fa";
+import {Grid, Col, Row} from 'react-styled-flexboxgrid';
 import { FilterBadge, Tooltip } from "./filterBadge";
 import * as splashStyles from "../splash/styles";
 
@@ -38,26 +39,17 @@ const closeBracketSmall = <span style={{fontSize: "1.8rem", fontWeight: 300, pad
 
 const DEBOUNCE_TIME = 200;
 
-const Flex = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-direction: row;
-  margin: 15px 1px 15px 1px;
-  max-width: 1080px;
+const DatasetSelectionContainer = styled.div`
+  overflow: scroll;
+  height: 600px;
+`;
+
+const DatasetContainer = styled.div`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 900;
   font-size: 18px;
-  line-height: 12px;
-  padding: 0px;
-  @media (max-width: 1080px) {
-    max-width: 100vw;
-  }
-  @media (max-width: 720px) {
-    flex-direction: column;
-    max-width: 100vw;
-    margin: 1em 0 3em;
-  }
+  padding: 10px 1px 10px 1px;
+  line-height: 24px;
 `;
 
 const LogoContainer = styled.a`
@@ -69,33 +61,47 @@ const LogoContainer = styled.a`
 
 const renderDatasets = (datasets) => {
   return (
-    <div className="datasetsList">
-      {
-        Array.from(datasets)
-          .map((dataset) => (
-            <div key={dataset.filename}>
-              <Flex>
-                <div width="500" style={{flexGrow: "0.6"}}>
+    <DatasetSelectionContainer>
+      <Grid fluid>
+        <DatasetContainer key="Column labels" style={{borderBottom: "1px solid #CCC"}}>
+          <Row>
+            <Col xs={8} sm={7}>
+              Dataset
+            </Col>
+            <Col xs={4} sm={3}>
+              Contributor
+            </Col>
+            <Col xs={false} sm={2}>
+              Updated
+            </Col>
+          </Row>
+        </DatasetContainer>
+        {
+          datasets.map((dataset) => (
+            <DatasetContainer key={dataset.filename}>
+              <Row>
+                <Col xs={8} sm={7}>
                   <a style={{fontWeight: "700", color: "#444"}} href={dataset.url}>
                     {dataset.filename.replace(/_/g, ' / ').replace('.json', '')}
                   </a>
-                </div>
-                <div>
+                </Col>
+                <Col xs={4} sm={3}>
                   <span>
                     <LogoContainer href="https://nextstrain.org">
                       <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
                     </LogoContainer>
                     {dataset.contributor}
                   </span>
-                </div>
-                <div>
+                </Col>
+                <Col xs={false} sm={2}>
                   {dataset.updated}
-                </div>
-              </Flex>
-            </div>
+                </Col>
+              </Row>
+            </DatasetContainer>
           ))
-      }
-    </div>
+        }
+      </Grid>
+    </DatasetSelectionContainer>
   );
 };
 

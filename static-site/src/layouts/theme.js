@@ -23,7 +23,26 @@ export const theme = {
   niceFontSize: "16px",
   smallFontSize: "12px",
 
-  sidebarWidth: "260px"
+  sidebarWidth: "260px",
+
+  flexboxgrid: {
+    gridSize: 12, // columns
+    gutterWidth: 1, // rem
+    outerMargin: 0, // rem
+    mediaQuery: 'only screen',
+    container: {
+      sm: 42, // rem
+      md: 64, // rem
+      lg: 76  // rem
+    },
+    breakpoints: {
+      xs: 0,  // em
+      sm: 42, // em
+      md: 64, // em
+      lg: 76  // em
+    }
+  }
+
 
 };
 
