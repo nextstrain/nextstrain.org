@@ -31,13 +31,13 @@ export const theme = {
     outerMargin: 0, // rem
     mediaQuery: 'only screen',
     container: {
-      sm: 42, // rem
+      sm: 38, // rem
       md: 64, // rem
       lg: 76  // rem
     },
     breakpoints: {
       xs: 0,  // em
-      sm: 42, // em
+      sm: 38, // em
       md: 64, // em
       lg: 76  // em
     }

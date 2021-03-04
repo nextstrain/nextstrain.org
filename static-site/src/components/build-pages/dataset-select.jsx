@@ -40,8 +40,9 @@ const closeBracketSmall = <span style={{fontSize: "1.8rem", fontWeight: 300, pad
 const DEBOUNCE_TIME = 200;
 
 const DatasetSelectionContainer = styled.div`
-  overflow: scroll;
   height: 600px;
+  overflow-x: hidden;
+  overflow-y: visible;
 `;
 
 const DatasetContainer = styled.div`
@@ -65,14 +66,17 @@ const renderDatasets = (datasets) => {
       <Grid fluid>
         <DatasetContainer key="Column labels" style={{borderBottom: "1px solid #CCC"}}>
           <Row>
-            <Col xs={8} sm={7}>
+            <Col xs={8} sm={6} md={7}>
               Dataset
             </Col>
-            <Col xs={4} sm={3}>
+            <Col xs={false} sm={3} md={3}>
               Contributor
             </Col>
-            <Col xs={false} sm={2}>
+            <Col xs={false} sm={3} md={2}>
               Updated
+            </Col>
+            <Col xs={4} sm={false} style={{textAlign: "right"}}>
+              Contributor
             </Col>
           </Row>
         </DatasetContainer>
@@ -80,12 +84,12 @@ const renderDatasets = (datasets) => {
           datasets.map((dataset) => (
             <DatasetContainer key={dataset.filename}>
               <Row>
-                <Col xs={8} sm={7}>
+                <Col xs={10} sm={6} md={7}>
                   <a style={{fontWeight: "700", color: "#444"}} href={dataset.url}>
                     {dataset.filename.replace(/_/g, ' / ').replace('.json', '')}
                   </a>
                 </Col>
-                <Col xs={4} sm={3}>
+                <Col xs={false} sm={3} md={3}>
                   <span>
                     <LogoContainer href="https://nextstrain.org">
                       <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
@@ -93,8 +97,13 @@ const renderDatasets = (datasets) => {
                     {dataset.contributor}
                   </span>
                 </Col>
-                <Col xs={false} sm={2}>
+                <Col xs={false} sm={3} md={2}>
                   {dataset.updated}
+                </Col>
+                <Col xs={2} sm={false} style={{textAlign: "right"}}>
+                  <LogoContainer href="https://nextstrain.org">
+                    <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
+                  </LogoContainer>
                 </Col>
               </Row>
             </DatasetContainer>
