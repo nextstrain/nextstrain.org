@@ -80,6 +80,6 @@ module.exports = {
           target: "http://localhost:5000",
         })
       );
-    })
+    });
   },
 };
