@@ -35,6 +35,12 @@ from this directory (the "nextstrain.org" directory).
 2. `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
 This should mirror exactly what you see when you visit [nextstrain.org](https://nextstrain.org).
 
+### Build nextstrain.org in development mode
+Run `npm run dev` from the root of this repository to launch a development server of nextstrain.org, by default available at [localhost:8000](http://localhost:8000).
+
+This works by running the main nextstrain server on port 5000 and then running the Gatsby (see below for more on Gatsby) server on port 8000 and directing requests outside of Gatsby to port 5000.
+See [nextstrain.org/pull/280](https://github.com/nextstrain/nextstrain.org/pull/280) for more on this.
+
 #### Building with Nextstrain Groups (e.g. "Login") functionality
 You'll need AWS credentials configured (via environment or `~/.aws/credentials`) for the Bedford Lab account.
 If you add a new profile to `~/.aws/credentials`, you can then tell the local nextstrain.org server to use it by setting `AWS_PROFILE=...`.
