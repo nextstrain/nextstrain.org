@@ -150,7 +150,7 @@ class Index extends React.Component {
               <TOC data={contents} />
 
               <ScrollableAnchor id={"builds"}>
-                <>
+                <div>
                   <HugeSpacer /><HugeSpacer />
                   <splashStyles.H2 left>
                     All SARS-CoV-2 builds
@@ -184,11 +184,11 @@ class Index extends React.Component {
                               Something went wrong getting data.
                               Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
                               if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-                </>
+                </div>
               </ScrollableAnchor>
 
               <ScrollableAnchor id={"sit-reps"}>
-                <>
+                <div>
                   <HugeSpacer /><HugeSpacer />
                   <splashStyles.H2 left>
                     All SARS-CoV-2 situation reports
@@ -208,7 +208,7 @@ class Index extends React.Component {
                       <SituationReports parseSitRepInfo={parseNcovSitRepInfo}/>
                     </div>
                   </div>
-                </>
+                </div>
               </ScrollableAnchor>
 
               <Footer />

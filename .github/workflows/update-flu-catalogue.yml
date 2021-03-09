@@ -1,0 +1,28 @@
+name: 'update nextstrain.org/influenza with latest flu datasets in s3'
+
+on:
+  schedule:
+    # once every 5 minutes
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '*/5 * * * *'
+
+jobs:
+  update-search:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - name: update flu catalogue
+      run: |
+        npm ci
+        python3 -m pip install --upgrade pip setuptools
+        python3 -m pip install nextstrain-cli
+        PATH="$HOME/.local/bin:$PATH"
+        ./scripts/collect-datasets.js --pathogen flu
+        nextstrain remote upload s3://nextstrain-data data/datasets_influenza.json
+      env:
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
