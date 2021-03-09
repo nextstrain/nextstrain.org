@@ -39,7 +39,7 @@ const closeBracketSmall = <span style={{fontSize: "1.8rem", fontWeight: 300, pad
 
 const DEBOUNCE_TIME = 200;
 
-const DatasetSelectionContainer = styled.div`
+const DatasetSelectionResultsContainer = styled.div`
   height: 600px;
   overflow-x: hidden;
   overflow-y: visible;
@@ -62,7 +62,7 @@ const LogoContainer = styled.a`
 
 const renderDatasets = (datasets) => {
   return (
-    <DatasetSelectionContainer>
+    <>
       <Grid fluid>
         <DatasetContainer key="Column labels" style={{borderBottom: "1px solid #CCC"}}>
           <Row>
@@ -80,8 +80,8 @@ const renderDatasets = (datasets) => {
             </Col>
           </Row>
         </DatasetContainer>
-        {
-          datasets.map((dataset) => (
+        <DatasetSelectionResultsContainer>
+          { datasets.map((dataset) => (
             <DatasetContainer key={dataset.filename}>
               <Row>
                 <Col xs={10} sm={6} md={7}>
@@ -108,9 +108,10 @@ const renderDatasets = (datasets) => {
               </Row>
             </DatasetContainer>
           ))
-        }
+          }
+        </DatasetSelectionResultsContainer>
       </Grid>
-    </DatasetSelectionContainer>
+    </>
   );
 };
 
