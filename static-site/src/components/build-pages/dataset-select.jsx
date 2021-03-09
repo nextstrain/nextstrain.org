@@ -2,7 +2,7 @@ import React from "react";
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import Select from "react-virtualized-select";
-import { debounce, get } from 'lodash';
+import { debounce, get, sortBy } from 'lodash';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { FaInfoCircle } from "react-icons/fa";
@@ -218,7 +218,7 @@ class DatasetSelect extends React.Component {
       });
       return accumulator;
     }, {options: [], seenValues: {}});
-    return optionsObject.options;
+    return sortBy(optionsObject.options, "label");
   }
   selectionMade = (sel) => {
     this.applyFilter("add", sel.value[0], [sel.value[1]]);
