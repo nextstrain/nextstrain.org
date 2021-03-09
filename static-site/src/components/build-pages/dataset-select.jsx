@@ -73,7 +73,7 @@ const renderDatasets = (datasets) => {
               Contributor
             </Col>
             <Col xs={false} sm={3} md={2}>
-              Updated
+              Uploaded date
             </Col>
             <Col xs={4} sm={false} style={{textAlign: "right"}}>
               Contributor
@@ -98,7 +98,7 @@ const renderDatasets = (datasets) => {
                   </span>
                 </Col>
                 <Col xs={false} sm={3} md={2}>
-                  {dataset.updated}
+                  {dataset.date_uploaded}
                 </Col>
                 <Col xs={2} sm={false} style={{textAlign: "right"}}>
                   <LogoContainer href="https://nextstrain.org">

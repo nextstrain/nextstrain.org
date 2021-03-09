@@ -88,7 +88,7 @@ async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
     // surface these properties for getDatasetMetadata
     s3obj.filename = s3obj.Key;
     s3obj.url = fileToUrl(s3obj.Key);
-    s3obj.updated = s3obj.LastModified.toISOString().split("T")[0];
+    s3obj.date_uploaded = s3obj.LastModified.toISOString().split("T")[0];
     s3obj.contributor = "Nextstrain";
     console.log(s3obj.Key);
     return s3obj;
@@ -99,7 +99,7 @@ async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
 function getDatasetMetadata(datasetObjects) {
   const datasetMetadata = datasetObjects.map((obj) => {
     const entry = {
-      updated: obj.updated,
+      date_uploaded: obj.date_uploaded,
       filename: obj.filename,
       url: obj.url,
       contributor: obj.contributor
