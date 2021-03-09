@@ -1,4 +1,4 @@
-const createProxyMiddleware = require("http-proxy-middleware");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 const config = require("./data/SiteConfig");
 const auspicePaths = require("../auspicePaths");
 
