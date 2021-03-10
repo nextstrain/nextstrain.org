@@ -14,7 +14,7 @@ See [the readme](../README.md#build-nextstrainorg-locally) in the parent directo
 
 ### Developing locally
 
-For most cases, development servers for nextstrain.org can by run from the root of this repo - see the main README section: [Build nextstrain.org in development mode](https://github.com/nextstrain/nextstrain.org#build-nextstrain.org-in-development-mode).
+For most cases, development servers for nextstrain.org can by run from the root of this repo - see the main README section: [Build nextstrain.org in development mode](../README.md#run-server-in-development-mode).
 
 To develop just the static-site part of nextstrain.org, you may run:
 
@@ -24,7 +24,7 @@ npm run develop
 ```
 
 Note that certain parts of the gatsby site rely on API handlers not implemented in the gatsby dev server.
-For these to work in development mode, you should run the gatsby dev server while also running the nextstrain.org server - see the main README section: [Build nextstrain.org in development mode](https://github.com/nextstrain/nextstrain.org#build-nextstrain.org-in-development-mode).
+For these to work in development mode, you should run the gatsby dev server while also running the nextstrain.org server - see the main README section: [Build nextstrain.org in development mode](../README.md#run-server-in-development-mode).
 
 ### Testing the production build
 
