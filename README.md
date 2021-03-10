@@ -20,7 +20,7 @@ This repository provides the tools you need to [build nextstrain.org locally](#b
 ---
 ## Build nextstrain.org locally
 
-### Install prerequisites
+### 1. Install prerequisites
 Install the node dependencies by running
 ```
 npm ci
@@ -30,10 +30,24 @@ from this directory (the "nextstrain.org" directory).
 > Using `npm ci` instead of `npm install` ensures your dependency tree matches those in `package-lock.json`.
 
 
-### Build locally mirroring the deployed (live) website
-1. `npm run build`, which runs `./build.sh` to build both the static site & an auspice client with customisations.
-2. `npm run server` will then start a local instance, by default available at [localhost:5000](http://localhost:5000).
+### 2. Build the site
+`npm run build` runs `./build.sh` to build both the static site & an auspice client with customisations.
+The following section details the different ways to serve these pages on a local server after building the site.
+
+### 3. Run server
+
+#### Run server mirroring the deployed (live) website
+`npm run server` will start a local server, by default available at [localhost:5000](http://localhost:5000).
 This should mirror exactly what you see when you visit [nextstrain.org](https://nextstrain.org).
+
+#### Run server in development mode
+If you are developing on nextstrain.org, we recommend running:
+
+`npm run dev` , which runs `./develop.sh` to launch a development server of nextstrain.org, by default available at [localhost:8000](http://localhost:8000).
+Changes to files in `./static-site` will be reflected in the corresponding pages on the development server without needing to refresh.
+
+This works by running the main nextstrain server on port 5000 and then running the Gatsby (see below for more on Gatsby) server on port 8000 and directing requests outside of Gatsby to port 5000.
+See [nextstrain.org/pull/280](https://github.com/nextstrain/nextstrain.org/pull/280) for more on this.
 
 #### Building with Nextstrain Groups (e.g. "Login") functionality
 You'll need AWS credentials configured (via environment or `~/.aws/credentials`) for the Bedford Lab account.
