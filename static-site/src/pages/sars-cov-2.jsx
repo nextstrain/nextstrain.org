@@ -1,6 +1,5 @@
 import React from "react";
 import Helmet from "react-helmet";
-import yaml from "js-yaml";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import config from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
@@ -19,6 +18,7 @@ import BuildDropdownMenu from "../components/build-pages/build-collapsible-menus
 import SituationReports from "../components/build-pages/sit-reps";
 import TOC from "../components/build-pages/toc";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
+import sarscov2Catalogue from "../../content/allSARS-CoV-2Builds.yaml";
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
@@ -108,20 +108,8 @@ class Index extends React.Component {
     super(props);
     configureAnchors({ offset: -10 });
     this.state = {
-      dataLoaded: false,
-      errorFetchingData: false,
-      buildsUrl: "https://data.nextstrain.org/allSARS-CoV-2Builds.augmented.yaml"
+      catalogueBuilds: sarscov2Catalogue.builds
     };
-  }
-
-  async componentDidMount() {
-    try {
-      const catalogueBuilds = await fetchAndParseBuildCatalogueYaml(this.state.buildsUrl);
-      this.setState({catalogueBuilds, dataLoaded: true});
-    } catch (err) {
-      console.error("Error fetching / parsing data.", err.message);
-      this.setState({errorFetchingData: true});
-    }
   }
 
   render() {
@@ -162,18 +150,14 @@ class Index extends React.Component {
                     If you know of a build not listed here, please let us know!
                     Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
                   </splashStyles.FocusParagraph>
-                  { this.state.dataLoaded && <BuildMap builds={this.state.catalogueBuilds}/> }
+                  <BuildMap builds={this.state.catalogueBuilds}/>
                   <div className="row">
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      { this.state.dataLoaded && <BuildDropdownMenu catalogueBuilds={this.state.catalogueBuilds} hierarchyKeys={{groupingKey: "geo", parentGroupingKey: "parentGeo"}}/>}
+                      <BuildDropdownMenu catalogueBuilds={this.state.catalogueBuilds} hierarchyKeys={{groupingKey: "geo", parentGroupingKey: "parentGeo"}}/>
                     </div>
                   </div>
-                  { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
-                              Something went wrong getting data.
-                              Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                              if this continues to happen.</splashStyles.CenteredFocusParagraph>}
                 </div>
               </ScrollableAnchor>
 
@@ -208,18 +192,6 @@ class Index extends React.Component {
       </MainLayout>
     );
   }
-}
-
-// scripts/collect-pathogen-resources.js reads in a list of builds in a manually
-// maintained pathogen build catalogue yaml file such as static-site/content/allSARS-CoV-2Builds.yaml
-// and produces an augmented version with metadata from each corresponding dataset.
-// That augmented yaml file is stored on s3 and fetched here to populate the front-end
-// manisfestation of that pathogen build catalogue on the page (e.g. map of builds).
-async function fetchAndParseBuildCatalogueYaml(yamlUrl) {
-  const catalogueBuilds = await fetch(yamlUrl)
-    .then((res) => res.text())
-    .then((text) => yaml.load(text).builds);
-  return catalogueBuilds;
 }
 
 export default Index;
