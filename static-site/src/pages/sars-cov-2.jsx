@@ -13,9 +13,12 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import ListOfBuilds from "../components/sars-cov-2/builds";
-import SituationReports from "../components/sars-cov-2/sit-reps";
-import TOC from "../components/sars-cov-2/toc";
+import BuildMap from "../components/build-pages/build-map";
+import BuildDropdownMenu from "../components/build-pages/build-collapsible-menus";
+import SituationReports from "../components/build-pages/sit-reps";
+import TOC from "../components/build-pages/toc";
+import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
+import sarscov2Catalogue from "../../content/allSARS-CoV-2Builds.yaml";
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
@@ -100,11 +103,13 @@ const contents = [
   }
 ];
 
-
 class Index extends React.Component {
   constructor(props) {
     super(props);
     configureAnchors({ offset: -10 });
+    this.state = {
+      catalogueBuilds: sarscov2Catalogue.builds
+    };
   }
 
   render() {
@@ -132,11 +137,52 @@ class Index extends React.Component {
               <TOC data={contents} />
 
               <ScrollableAnchor id={"builds"}>
-                <ListOfBuilds />
+                <div>
+                  <HugeSpacer /><HugeSpacer />
+                  <splashStyles.H2 left>
+                    All SARS-CoV-2 builds
+                  </splashStyles.H2>
+                  <SmallSpacer />
+                  <splashStyles.FocusParagraph>
+                    This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
+                    Some of these builds are maintained by the Nextstrain team and others are maintained by independent research groups.
+                    See <a href="https://docs.nextstrain.org/projects/augur/en/stable/faq/what-is-a-build.html" >here</a> for more information on what a build is, and see <a href="https://nextstrain.github.io/ncov/">this tutorial</a> for a walkthrough of running your own phylogenetic analysis of SARS-CoV-2 data.
+                    If you know of a build not listed here, please let us know!
+                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
+                  </splashStyles.FocusParagraph>
+                  <BuildMap builds={this.state.catalogueBuilds}/>
+                  <div className="row">
+                    <MediumSpacer />
+                    <div className="col-md-1"/>
+                    <div className="col-md-10">
+                      <BuildDropdownMenu catalogueBuilds={this.state.catalogueBuilds} hierarchyKeys={{groupingKey: "geo", parentGroupingKey: "parentGeo"}}/>
+                    </div>
+                  </div>
+                </div>
               </ScrollableAnchor>
 
               <ScrollableAnchor id={"sit-reps"}>
-                <SituationReports />
+                <div>
+                  <HugeSpacer /><HugeSpacer />
+                  <splashStyles.H2 left>
+                    All SARS-CoV-2 situation reports
+                  </splashStyles.H2>
+                  <SmallSpacer />
+                  <splashStyles.FocusParagraph>
+                    We have been writing interactive situation reports
+                    using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
+                    to communicate how COVID-19 is moving around the world and spreading locally.
+                    These are kindly translated into a number of different languages by volunteers
+                    and Google-provided translators — click on any language below to see the list of situation reports available.
+                  </splashStyles.FocusParagraph>
+                  <div className="row">
+                    <MediumSpacer />
+                    <div className="col-md-1"/>
+                    <div className="col-md-10">
+                      <SituationReports parseSitRepInfo={parseNcovSitRepInfo}/>
+                    </div>
+                  </div>
+                </div>
               </ScrollableAnchor>
 
               <Footer />
