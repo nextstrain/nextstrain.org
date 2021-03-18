@@ -60,7 +60,7 @@ const LogoContainer = styled.a`
   cursor: pointer;
 `;
 
-const renderDatasets = (datasets) => {
+const renderDatasets = (datasets, showDates) => {
   return (
     <>
       <Grid fluid>
@@ -72,9 +72,9 @@ const renderDatasets = (datasets) => {
             <Col xs={false} sm={3} md={3}>
               Contributor
             </Col>
-            <Col xs={false} sm={3} md={2}>
+            {showDates && <Col xs={false} sm={3} md={2}>
               Uploaded date
-            </Col>
+            </Col>}
             <Col xs={4} sm={false} style={{textAlign: "right"}}>
               Contributor
             </Col>
@@ -91,15 +91,17 @@ const renderDatasets = (datasets) => {
                 </Col>
                 <Col xs={false} sm={3} md={3}>
                   <span>
-                    <LogoContainer href="https://nextstrain.org">
+                    {dataset.contributor.includes("Nextstrain") && <LogoContainer href="https://nextstrain.org">
                       <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
-                    </LogoContainer>
-                    {dataset.contributor}
+                    </LogoContainer>}
+                    {dataset.contributorUrl === undefined ?
+                      dataset.contributor :
+                      <a href={dataset.contributorUrl}>{dataset.contributor}</a>}
                   </span>
                 </Col>
-                <Col xs={false} sm={3} md={2}>
+                {showDates && <Col xs={false} sm={3} md={2}>
                   {dataset.date_uploaded}
-                </Col>
+                </Col>}
                 <Col xs={2} sm={false} style={{textAlign: "right"}}>
                   <LogoContainer href="https://nextstrain.org">
                     <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
@@ -360,7 +362,7 @@ class DatasetSelect extends React.Component {
           ) : null}
         </div>
 
-        {renderDatasets(filteredDatasets)}
+        {renderDatasets(filteredDatasets, !this.props.noDates)}
 
       </>
     );
