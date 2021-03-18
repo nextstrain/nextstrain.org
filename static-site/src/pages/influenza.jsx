@@ -13,8 +13,8 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import TOC from "../components/build-pages/toc";
-import DatasetSelect from "../components/build-pages/dataset-select";
+import TOC from "../components/Datasets/toc";
+import DatasetSelect from "../components/Datasets/dataset-select";
 
 const title = "Influenza resources";
 const abstract = `The Nextstrain team maintains datasets and other tools for analyzing a variety of influenza viruses.
@@ -30,7 +30,7 @@ const contents = [
     title: "Latest A/H3N2 analysis",
     subtext: (
       <span>
-        Jump to our latest A/H3N2 seasonal influenza build which is updated weekly. We also maintain builds for:
+        Jump to our latest A/H3N2 seasonal influenza dataset which is updated weekly. We also maintain datasets for:
         <br/><a href="/flu/seasonal/h1n1pdm/ha/2y"> A/H1N1pdm</a>
         <br/><a href="/flu/seasonal/vic/ha/2y"> B/Vic</a>
         <br/><a href="/flu/seasonal/yam/ha/2y"> B/Yam</a>
@@ -43,14 +43,14 @@ const contents = [
   },
   {
     type: "anchor",
-    to: "builds",
-    title: "Scroll down to all available builds (datasets)"
+    to: "datasets",
+    title: "Scroll down to all available datasets"
   },
   {
     type: "gatsby",
     to: "/search/seasonal-flu",
-    title: "Search seasonal flu builds by strain name(s)",
-    subtext: "Search all seasonal influenza nextstrain builds, including historical ones, for particular strain name(s)",
+    title: "Search seasonal flu datasets by strain name(s)",
+    subtext: "Search all seasonal influenza nextstrain datasets, including historical ones, for particular strain name(s)",
   }
 ];
 
@@ -100,17 +100,16 @@ class Index extends React.Component {
 
               <TOC data={contents} />
 
-              <ScrollableAnchor id={"builds"}>
+              <ScrollableAnchor id={"datasets"}>
                 <div>
                   <HugeSpacer /><HugeSpacer />
                   <splashStyles.H2 left>
-                    Influenza builds
+                    Influenza datasets
                   </splashStyles.H2>
                   <SmallSpacer />
                   <splashStyles.FocusParagraph>
-                    This section is an index of public Nextstrain builds (datasets) for flu, organized by type.
-                    See <a href="https://docs.nextstrain.org/projects/augur/en/stable/faq/what-is-a-build.html" >here</a> for more information on what a build is.
-                    If you know of a build not listed here, please let us know!
+                    This section is an index of public Nextstrain datasets for flu, organized by type.
+                    If you know of a dataset not listed here, please let us know!
                     Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
                   </splashStyles.FocusParagraph>
                   <div className="row">
@@ -137,11 +136,11 @@ class Index extends React.Component {
   }
 }
 
-// scripts/collect-pathogen-resources.js reads in a list of builds in a manually
-// maintained pathogen build catalogue yaml file such as static-site/content/allSARS-CoV-2Builds.yaml
-// and produces an augmented version with metadata from each corresponding dataset.
-// That augmented yaml file is stored on s3 and fetched here to populate the front-end
-// manisfestation of that pathogen build catalogue on the page (e.g. map of builds).
+// scripts/collect-datasets.js collects datasets
+// from s3 and writes them to a JSON which is pushed
+// regularly to s3 as a resource we request here
+// representing a list of datasets to display on
+// this page with some info about each.
 async function fetchAndParseDatasetsJSON(jsonUrl) {
   const datasetsJSON = await fetch(jsonUrl)
     .then((res) => res.text())

@@ -114,47 +114,47 @@ const circle = (size, fill, text) => {
 };
 
 
-const nextstrainBuild = circle(17, "#4C90C0");
-const communityBuilds = {
+const nextstrainDataset = circle(17, "#4C90C0");
+const communityDatasets = {
   region: circle(14, "#75B681"),
   country: circle(12, "#B2BD4D"),
   division: circle(10, "#E1A03A"),
   location: circle(8, "#E04929")
 };
-const communityBuildInfo = (level) =>
-  `A ${level}-level build maintained by a group in the scientific community.
+const communityDatasetInfo = (level) =>
+  `A ${level}-level dataset maintained by a group in the scientific community.
   Not affiliated with Nextstrain.
   More info about these organizations can be found at the links in the dropdown menu below.`;
 
 const legendEntries = [{
-  icon: nextstrainBuild,
-  label: "Nextstrain build",
-  id: "nextstrain-build",
-  info: "A build maintained by the Nextstrain team."
+  icon: nextstrainDataset,
+  label: "Nextstrain dataset",
+  id: "nextstrain-dataset",
+  info: "A dataset maintained by the Nextstrain team."
 },
 {
-  icon: communityBuilds["region"],
-  label: "Regional build",
-  id: "region-build",
-  info: communityBuildInfo("region")
+  icon: communityDatasets["region"],
+  label: "Regional dataset",
+  id: "region-dataset",
+  info: communityDatasetInfo("region")
 },
 {
-  icon: communityBuilds["country"],
-  label: "National build",
-  id: "country-build",
-  info: communityBuildInfo("country")
+  icon: communityDatasets["country"],
+  label: "National dataset",
+  id: "country-dataset",
+  info: communityDatasetInfo("country")
 },
 {
-  icon: communityBuilds["division"],
-  label: "Divisional build",
+  icon: communityDatasets["division"],
+  label: "Divisional dataset",
   id: "division",
-  info: communityBuildInfo("division")
+  info: communityDatasetInfo("division")
 },
 {
-  icon: communityBuilds["location"],
-  label: "Local build",
-  id: "location-build",
-  info: communityBuildInfo("location")
+  icon: communityDatasets["location"],
+  label: "Local dataset",
+  id: "location-dataset",
+  info: communityDatasetInfo("location")
 }];
 
 const Legend = (entries) => (
@@ -174,7 +174,7 @@ const Legend = (entries) => (
   </LegendContainer>
 );
 
-class BuildMap extends React.Component {
+class DatasetMap extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -199,35 +199,35 @@ class BuildMap extends React.Component {
       </Marker>);
   };
 
-  MapMarker = (build) => {
-    const isNextstrainBuild = build.org.name === "Nextstrain Team";
+  MapMarker = (dataset) => {
+    const isNextstrainDataset = dataset.org.name === "Nextstrain Team";
     return (
       <Marker
-        coordinates={build.coords}
+        coordinates={dataset.coords}
         anchor="bottom"
-        key={build.coords.toString()}
+        key={dataset.coords.toString()}
       >
         <MapMarkerContainer>
-          <a href={build.url} data-tip data-for={build.url} build={build}>
-            {isNextstrainBuild ? nextstrainBuild : communityBuilds[build.level]}
+          <a href={dataset.url} data-tip data-for={dataset.url} dataset={dataset}>
+            {isNextstrainDataset ? nextstrainDataset : communityDatasets[dataset.level]}
           </a>
         </MapMarkerContainer>
       </Marker>);
   }
 
-  MapMarkerTooltip = (build) => {
+  MapMarkerTooltip = (dataset) => {
     return (
-      <StyledTooltip type="light" key={build.url} id={build.url} effect="solid">
-        {`${build.name} (${build.org.name})`}
+      <StyledTooltip type="light" key={dataset.url} id={dataset.url} effect="solid">
+        {`${dataset.name} (${dataset.org.name})`}
         <div style={{fontStyle: "italic"}}>Click to view</div>
       </StyledTooltip>);
   }
 
   render() {
-    // We don't map the stub builds that are used to define the hierarchy
-    const buildsToMap = this.props.builds.filter((build) => build.url !== undefined && build.coords !== undefined && build.name !== "Global");
-    // Nextstrain builds go separate from clustered community builds on the map
-    const nextstrainBuilds = remove(buildsToMap, (b) => b.org && b.org.name === "Nextstrain Team");
+    // We don't map the stub datasets that are used to define the hierarchy
+    const datasetsToMap = this.props.datasets.filter((dataset) => dataset.url !== undefined && dataset.coords !== undefined && dataset.name !== "Global");
+    // Nextstrain datasets go separate from clustered community datasets on the map
+    const nextstrainDatasets = remove(datasetsToMap, (b) => b.org && b.org.name === "Nextstrain Team");
 
     return (
       <Flex>
@@ -242,18 +242,18 @@ class BuildMap extends React.Component {
           >
             <ZoomControl zoomDiff={1.0} style={{top: "auto", bottom: "15px", right: "10px"}}/>
             {Legend(legendEntries)}
-            {/* Clustering of community builds according to https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md#cluster */}
+            {/* Clustering of community datasets according to https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md#cluster */}
             <Cluster ClusterMarkerFactory={this.ClusterMarker} zoomOnClick zoomOnClickPadding={200} maxZoom={5} radius={30}>
-              {buildsToMap.map((build, index) => this.MapMarker(build, index))}
+              {datasetsToMap.map((dataset, index) => this.MapMarker(dataset, index))}
             </Cluster>
             {/* Tooltips for cluster markers: */}
             <StyledTooltip type="light" id={"cluster-tooltip"} effect="solid">
-              <div style={{fontStyle: "italic"}}>Click to zoom on this cluster of builds</div>
+              <div style={{fontStyle: "italic"}}>Click to zoom on this cluster of datasets</div>
             </StyledTooltip>
-            {/* Nextstrain builds: */}
-            {nextstrainBuilds.map((build) => this.MapMarker(build))}
+            {/* Nextstrain datasets: */}
+            {nextstrainDatasets.map((dataset) => this.MapMarker(dataset))}
             {/* Tooltips for map markers: */}
-            {[...nextstrainBuilds, ...buildsToMap].map((build) => this.MapMarkerTooltip(build))}
+            {[...nextstrainDatasets, ...datasetsToMap].map((dataset) => this.MapMarkerTooltip(dataset))}
           </Map>
         </MapContainer>
       </Flex>
@@ -262,4 +262,4 @@ class BuildMap extends React.Component {
 
 }
 
-export default BuildMap;
+export default DatasetMap;

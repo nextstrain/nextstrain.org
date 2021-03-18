@@ -8,7 +8,7 @@ const argparse = require('argparse');
 
 const parser = new argparse.ArgumentParser({
   addHelp: true,
-  description: `A tool to perform basic sanity checking on the YAML file behind SARS-CoV-2 builds`
+  description: `A tool to perform basic sanity checking on the YAML file behind SARS-CoV-2 datasets`
 });
 parser.addArgument('--precision', {action: "store", defaultValue: 0.1, type: Number, metavar: "NAME", help: "minimum (decimal degree) lat/long separation of points"});
 main(parser.parseArgs());
@@ -18,27 +18,27 @@ function main(args) {
   const blocks = getYaml();
   ensureBlocksAreValid(blocks);
   ensureGeoParentsDefined(blocks);
-  const builds = blocks.filter((block) => blockDefinesBuild(block));
-  compareLatLongOverlaps(builds, args.precision);
-  summarise(blocks, builds);
+  const datasets = blocks.filter((block) => blockDefinesBuild(block));
+  compareLatLongOverlaps(datasets, args.precision);
+  summarise(blocks, datasets);
 }
 
 
 function getYaml() {
-  let allSARSCoV2Builds;
-  const buildsFilename = "./static-site/content/allSARS-CoV-2Builds.yaml";
+  let SARSCoV2Datasets;
+  const datasetsFilename = "./static-site/content/SARS-CoV-2-Datasets.yaml";
   try {
-    allSARSCoV2Builds = yaml.safeLoad(fs.readFileSync(buildsFilename, 'utf8'));
+    SARSCoV2Datasets = yaml.safeLoad(fs.readFileSync(datasetsFilename, 'utf8'));
   } catch (e) {
-    console.log(`There was an error reading ${buildsFilename}. Please ensure it exists and it is valid YAML.`);
+    console.log(`There was an error reading ${datasetsFilename}. Please ensure it exists and it is valid YAML.`);
     console.log(e);
     process.exit(2);
   }
-  if (!allSARSCoV2Builds.builds) {
-    console.log(`The builds YAML was missing a top-level entry for "builds".`);
+  if (!SARSCoV2Datasets.datasets) {
+    console.log(`The datasets YAML was missing a top-level entry for "datasets".`);
     process.exit(2);
   }
-  return allSARSCoV2Builds.builds;
+  return SARSCoV2Datasets.datasets;
 }
 
 function blockDefinesBuild(block) {
@@ -64,7 +64,7 @@ function ensureBlocksAreValid(blocks) {
         !Array.isArray(block.coords) || block.coords.length!==2 ||
         !(block.coords[0] >= -180 && block.coords[0] <= 180) || !(block.coords[1] >= -90 && block.coords[1] <= 90)
       ) {
-        console.log(`Invalid coords for build name "${block.name}"`);
+        console.log(`Invalid coords for dataset name "${block.name}"`);
       }
     }
   });
@@ -74,20 +74,20 @@ function ensureBlocksAreValid(blocks) {
  * Here we treat the world as a 2-d flat surface for simplicity and ensure that the straight-line distance
  * between 2 points is greater than the supplied `precision`. Units are decimal degrees.
  */
-function compareLatLongOverlaps(builds, precision) {
+function compareLatLongOverlaps(datasets, precision) {
   const p2 = precision**2;
-  for (let i=0; i<builds.length-1; i++) {
-    const ll1 = builds[i].coords;
-    for (let j=i+1; j<builds.length; j++) {
-      const ll2 = builds[j].coords;
+  for (let i=0; i<datasets.length-1; i++) {
+    const ll1 = datasets[i].coords;
+    for (let j=i+1; j<datasets.length; j++) {
+      const ll2 = datasets[j].coords;
       const sld2 = Math.abs(ll1[0]-ll2[0])**2 + Math.abs(ll1[1]-ll2[1])**2;
       if (sld2 < p2) {
-        console.log(`Lat-longs for builds "${builds[i].name}" & "${builds[j].name}" are too close`);
+        console.log(`Lat-longs for datasets "${datasets[i].name}" & "${datasets[j].name}" are too close`);
       }
     }
   }
 }
 
-function summarise(blocks, builds) {
-  console.log(`${blocks.length} blocks in YAML, defining ${builds.length} builds`);
+function summarise(blocks, datasets) {
+  console.log(`${blocks.length} blocks in YAML, defining ${datasets.length} datasets`);
 }
