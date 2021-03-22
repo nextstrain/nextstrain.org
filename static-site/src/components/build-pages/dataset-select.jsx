@@ -12,6 +12,18 @@ import * as splashStyles from "../splash/styles";
 
 const logoPNG = require("../../../static/logos/favicon.png");
 
+const StyledLinkContainer = styled.div`
+  a {
+    color: #444;
+    font-weight: ${(props) => props.bold ? 700 : "normal"};
+  }
+  a:hover,
+  a:focus {
+    color: #5097BA;
+    text-decoration: underline;
+  }
+`;
+
 const StyledTooltip = styled(ReactTooltip)`
   max-width: 30vh;
   white-space: normal;
@@ -85,9 +97,9 @@ const renderDatasets = (datasets, showDates) => {
             <DatasetContainer key={dataset.filename}>
               <Row>
                 <Col xs={10} sm={6} md={7}>
-                  <a style={{fontWeight: "700", color: "#444"}} href={dataset.url}>
-                    {dataset.filename.replace(/_/g, ' / ').replace('.json', '')}
-                  </a>
+                  <StyledLinkContainer bold>
+                    <a href={dataset.url}>{dataset.filename.replace(/_/g, ' / ').replace('.json', '')}</a>
+                  </StyledLinkContainer>
                 </Col>
                 <Col xs={false} sm={3} md={3}>
                   <span>
@@ -96,7 +108,9 @@ const renderDatasets = (datasets, showDates) => {
                     </LogoContainer>}
                     {dataset.contributorUrl === undefined ?
                       dataset.contributor :
-                      <a href={dataset.contributorUrl}>{dataset.contributor}</a>}
+                      <StyledLinkContainer>
+                        <a href={dataset.contributorUrl}>{dataset.contributor}</a>
+                      </StyledLinkContainer>}
                   </span>
                 </Col>
                 {showDates && <Col xs={false} sm={3} md={2}>
@@ -263,11 +277,12 @@ class DatasetSelect extends React.Component {
   }
   getFilteredDatasets() {
     // TODO this doesnt care about categories
-    return this.props.datasets
+    const filtered = this.props.datasets
       .filter((b) => b.url !== undefined)
       .filter((b) => Object.entries(this.state.filters)
                       .filter((filterEntry) => filterEntry[1].length)
                       .every(([filterName, filterValues]) => this.buildMatchesFilter(b, filterName, filterValues)));
+    return sortBy(filtered, [(d) => d.filename.toLowerCase()]);
   }
 
   render() {
