@@ -108,9 +108,7 @@ class Index extends React.Component {
                   </splashStyles.H2>
                   <SmallSpacer />
                   <splashStyles.FocusParagraph>
-                    This section is an index of public Nextstrain datasets for flu, organized by type.
-                    If you know of a dataset not listed here, please let us know!
-                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
+                    This section is an index of Nextstrain datasets for flu, organized by type.
                   </splashStyles.FocusParagraph>
                   <div className="row">
                     <MediumSpacer />

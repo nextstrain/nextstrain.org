@@ -38,7 +38,7 @@ const contents = [
     title: "Latest global SARS-CoV-2 analysis",
     subtext: (
       <span>
-        Jump to our latest global SARS-CoV-2 dataset which is updated daily. We also maintain regional datasets for
+        Jump to our globally-subsampled SARS-CoV-2 dataset which is updated daily. We also keep updated regional datasets for
         <a href="/ncov/africa?f_region=Africa"> Africa</a>,
         <a href="/ncov/asia?f_region=Asia"> Asia</a>,
         <a href="/ncov/europe?f_region=Europe"> Europe</a>,
