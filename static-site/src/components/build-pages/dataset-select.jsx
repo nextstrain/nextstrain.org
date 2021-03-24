@@ -235,7 +235,7 @@ class DatasetSelect extends React.Component {
       });
       return accumulator;
     }, {options: [], seenValues: {}});
-    return sortBy(optionsObject.options, "label");
+    return sortBy(optionsObject.options, [(o) => o.label.toLowerCase()]);
   }
   selectionMade = (sel) => {
     this.applyFilter("add", sel.value[0], [sel.value[1]]);
