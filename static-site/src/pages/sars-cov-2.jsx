@@ -166,7 +166,7 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      {this.state.filterParsed && <DatasetSelect datasets={this.state.catalogueBuilds} noDates/>}
+                      {this.state.filterParsed && <DatasetSelect datasets={this.state.filterList} noDates/>}
                     </div>
                   </div>
                 </div>
@@ -229,6 +229,5 @@ function parseDatasetsFilterList(datasets) {
     return dataset;
   });
 }
-
 
 export default Index;
