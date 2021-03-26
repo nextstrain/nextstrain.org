@@ -6,6 +6,7 @@ import { debounce, get, sortBy } from 'lodash';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { FaInfoCircle } from "react-icons/fa";
+import { MdPerson } from "react-icons/md";
 import {Grid, Col, Row} from 'react-styled-flexboxgrid';
 import { FilterBadge, Tooltip } from "./filterBadge";
 import * as splashStyles from "../splash/styles";
@@ -13,12 +14,12 @@ import * as splashStyles from "../splash/styles";
 const logoPNG = require("../../../static/logos/favicon.png");
 
 const StyledLinkContainer = styled.div`
-  a {
+  a,svg {
     color: #444;
     font-weight: ${(props) => props.bold ? 700 : "normal"};
   }
-  a:hover,
-  a:focus {
+  a,svg:hover,
+  a,svg:focus {
     color: #5097BA;
     text-decoration: underline;
   }
@@ -117,8 +118,11 @@ const renderDatasets = (datasets, showDates) => {
                   {dataset.date_uploaded}
                 </Col>}
                 <Col xs={2} sm={false} style={{textAlign: "right"}}>
-                  <LogoContainer href="https://nextstrain.org">
-                    <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
+                  <LogoContainer href={dataset.contributor.includes("Nextstrain") ? "https://nextstrain.org" : get(dataset, "contributorUrl")}>
+                    {dataset.contributor.includes("Nextstrain") ?
+                      <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/> :
+                      <StyledLinkContainer><MdPerson/></StyledLinkContainer>
+                    }
                   </LogoContainer>
                 </Col>
               </Row>
