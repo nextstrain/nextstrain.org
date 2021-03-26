@@ -12,6 +12,18 @@ import * as splashStyles from "../splash/styles";
 
 const logoPNG = require("../../../static/logos/favicon.png");
 
+const StyledLinkContainer = styled.div`
+  a {
+    color: #444;
+    font-weight: ${(props) => props.bold ? 700 : "normal"};
+  }
+  a:hover,
+  a:focus {
+    color: #5097BA;
+    text-decoration: underline;
+  }
+`;
+
 const StyledTooltip = styled(ReactTooltip)`
   max-width: 30vh;
   white-space: normal;
@@ -60,7 +72,7 @@ const LogoContainer = styled.a`
   cursor: pointer;
 `;
 
-const renderDatasets = (datasets) => {
+const renderDatasets = (datasets, showDates) => {
   return (
     <>
       <Grid fluid>
@@ -72,9 +84,9 @@ const renderDatasets = (datasets) => {
             <Col xs={false} sm={3} md={3}>
               Contributor
             </Col>
-            <Col xs={false} sm={3} md={2}>
+            {showDates && <Col xs={false} sm={3} md={2}>
               Uploaded date
-            </Col>
+            </Col>}
             <Col xs={4} sm={false} style={{textAlign: "right"}}>
               Contributor
             </Col>
@@ -85,21 +97,25 @@ const renderDatasets = (datasets) => {
             <DatasetContainer key={dataset.filename}>
               <Row>
                 <Col xs={10} sm={6} md={7}>
-                  <a style={{fontWeight: "700", color: "#444"}} href={dataset.url}>
-                    {dataset.filename.replace(/_/g, ' / ').replace('.json', '')}
-                  </a>
+                  <StyledLinkContainer bold>
+                    <a href={dataset.url}>{dataset.filename.replace(/_/g, ' / ').replace('.json', '')}</a>
+                  </StyledLinkContainer>
                 </Col>
                 <Col xs={false} sm={3} md={3}>
                   <span>
-                    <LogoContainer href="https://nextstrain.org">
+                    {dataset.contributor.includes("Nextstrain") && <LogoContainer href="https://nextstrain.org">
                       <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
-                    </LogoContainer>
-                    {dataset.contributor}
+                    </LogoContainer>}
+                    {dataset.contributorUrl === undefined ?
+                      dataset.contributor :
+                      <StyledLinkContainer>
+                        <a href={dataset.contributorUrl}>{dataset.contributor}</a>
+                      </StyledLinkContainer>}
                   </span>
                 </Col>
-                <Col xs={false} sm={3} md={2}>
+                {showDates && <Col xs={false} sm={3} md={2}>
                   {dataset.date_uploaded}
-                </Col>
+                </Col>}
                 <Col xs={2} sm={false} style={{textAlign: "right"}}>
                   <LogoContainer href="https://nextstrain.org">
                     <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
@@ -219,7 +235,7 @@ class DatasetSelect extends React.Component {
       });
       return accumulator;
     }, {options: [], seenValues: {}});
-    return sortBy(optionsObject.options, "label");
+    return sortBy(optionsObject.options, [(o) => o.label.toLowerCase()]);
   }
   selectionMade = (sel) => {
     this.applyFilter("add", sel.value[0], [sel.value[1]]);
@@ -261,11 +277,12 @@ class DatasetSelect extends React.Component {
   }
   getFilteredDatasets() {
     // TODO this doesnt care about categories
-    return this.props.datasets
+    const filtered = this.props.datasets
       .filter((b) => b.url !== undefined)
       .filter((b) => Object.entries(this.state.filters)
                       .filter((filterEntry) => filterEntry[1].length)
                       .every(([filterName, filterValues]) => this.buildMatchesFilter(b, filterName, filterValues)));
+    return sortBy(filtered, [(d) => d.filename.toLowerCase()]);
   }
 
   render() {
@@ -360,7 +377,7 @@ class DatasetSelect extends React.Component {
           ) : null}
         </div>
 
-        {renderDatasets(filteredDatasets)}
+        {renderDatasets(filteredDatasets, !this.props.noDates)}
 
       </>
     );

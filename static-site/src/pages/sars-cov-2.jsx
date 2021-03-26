@@ -1,6 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import { get } from 'lodash';
 import config from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
 import MainLayout from "../components/layout";
@@ -14,7 +15,7 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import BuildMap from "../components/build-pages/build-map";
-import BuildDropdownMenu from "../components/build-pages/build-collapsible-menus";
+import DatasetSelect from "../components/build-pages/dataset-select";
 import SituationReports from "../components/build-pages/sit-reps";
 import TOC from "../components/build-pages/toc";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
@@ -108,8 +109,18 @@ class Index extends React.Component {
     super(props);
     configureAnchors({ offset: -10 });
     this.state = {
-      catalogueBuilds: sarscov2Catalogue.builds
+      catalogueBuilds: sarscov2Catalogue.builds,
+      filterParsed: false
     };
+  }
+
+  componentDidMount() {
+    try {
+      const filterList = parseDatasetsFilterList(this.state.catalogueBuilds);
+      this.setState({filterList, filterParsed: true});
+    } catch (err) {
+      console.error("Error parsing data.", err.message);
+    }
   }
 
   render() {
@@ -155,7 +166,7 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      <BuildDropdownMenu catalogueBuilds={this.state.catalogueBuilds} hierarchyKeys={{groupingKey: "geo", parentGroupingKey: "parentGeo"}}/>
+                      {this.state.filterParsed && <DatasetSelect datasets={this.state.filterList} noDates/>}
                     </div>
                   </div>
                 </div>
@@ -192,6 +203,31 @@ class Index extends React.Component {
       </MainLayout>
     );
   }
+}
+
+// The dataset-select (dataset filter) component
+// requires certain properties.
+// We are still using a manually-curated YAML
+// for sars-cov-2 datasets which has a special
+// format that doesn't have some of those
+// properties so we try to add them in here.
+function parseDatasetsFilterList(datasets) {
+  return datasets
+  .filter((d) => d.url)
+  .map((dataset) => {
+    dataset.filename = dataset.url
+    .replace(/^.*?\/\//, '') // prefix and double slash
+    .replace(/^.*?\//, '') // everything up to and including first / (after removing prefix slashes, so should just be dataset path)
+    .replace('groups/', '')
+    .replace('community/', '')
+    .replace(/\?.*$/g, '') // query
+    .replace(/\/$/g, '') // trailing slash
+    .replace(/\//g, '_');
+    if (dataset.filename === '') dataset.filename = dataset.name;
+    dataset.contributor = get(dataset, "org.name");
+    dataset.contributorUrl = get(dataset, "org.url");
+    return dataset;
+  });
 }
 
 export default Index;
