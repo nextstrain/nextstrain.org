@@ -14,14 +14,24 @@ import * as splashStyles from "../splash/styles";
 const logoPNG = require("../../../static/logos/favicon.png");
 
 const StyledLinkContainer = styled.div`
-  a,svg {
+  a {
     color: #444;
     font-weight: ${(props) => props.bold ? 700 : "normal"};
   }
-  a,svg:hover,
-  a,svg:focus {
+  a:hover,
+  a:focus {
     color: #5097BA;
     text-decoration: underline;
+  }
+`;
+
+const StyledIconLinkContainer = styled.div`
+  svg {
+    color: #444;
+  }
+  svg:hover,
+  svg:focus {
+    color: #5097BA;
   }
 `;
 
@@ -121,7 +131,7 @@ const renderDatasets = (datasets, showDates) => {
                   <LogoContainer href={dataset.contributor.includes("Nextstrain") ? "https://nextstrain.org" : get(dataset, "contributorUrl")}>
                     {dataset.contributor.includes("Nextstrain") ?
                       <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/> :
-                      <StyledLinkContainer><MdPerson/></StyledLinkContainer>
+                      <StyledIconLinkContainer><MdPerson/></StyledIconLinkContainer>
                     }
                   </LogoContainer>
                 </Col>
