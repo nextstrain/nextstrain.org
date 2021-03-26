@@ -115,7 +115,7 @@ class Index extends React.Component {
                     <div className="col-md-1"/>
                     <div className="col-md-10">
                       {this.state.dataLoaded &&
-                      <DatasetSelect datasets={this.state.datasets} />}
+                      <DatasetSelect datasets={this.state.datasets} columns={["dataset", "contributor", "uploadedDate"]}/>}
                     </div>
                   </div>
                   { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>

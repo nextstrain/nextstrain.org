@@ -83,58 +83,83 @@ const LogoContainer = styled.a`
   cursor: pointer;
 `;
 
-const renderDatasets = (datasets, showDates) => {
+const datasetListingColumn = {
+  dataset: {
+    colHeader: (
+      <Col xs={8} sm={6} md={7}>
+       Dataset
+      </Col>),
+    colEntry: (dataset) => (
+      <Col xs={10} sm={6} md={7}>
+        <StyledLinkContainer bold>
+          <a href={dataset.url}>{dataset.filename.replace(/_/g, ' / ').replace('.json', '')}</a>
+        </StyledLinkContainer>
+      </Col>
+    )
+  },
+  contributor: {
+    colHeader: (
+      <>
+        <Col xs={false} sm={3} md={3}>
+          Contributor
+        </Col>
+        <Col xs={4} sm={false} style={{textAlign: "right"}}>
+          Contributor
+        </Col>
+      </>),
+    colEntry: (dataset) => (
+      <>
+        <Col xs={false} sm={3} md={3}>
+          <span>
+            {dataset.contributor.includes("Nextstrain") && <LogoContainer href="https://nextstrain.org">
+              <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
+            </LogoContainer>}
+            {dataset.contributorUrl === undefined ?
+              dataset.contributor :
+              <StyledLinkContainer>
+                <a href={dataset.contributorUrl}>{dataset.contributor}</a>
+              </StyledLinkContainer>}
+          </span>
+        </Col>
+        <Col xs={2} sm={false} style={{textAlign: "right"}}>
+          <LogoContainer href={dataset.contributor.includes("Nextstrain") ? "https://nextstrain.org" : get(dataset, "contributorUrl")}>
+            {dataset.contributor.includes("Nextstrain") ?
+              <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/> :
+              <StyledIconLinkContainer><MdPerson/></StyledIconLinkContainer>
+            }
+          </LogoContainer>
+        </Col>
+      </>
+    )
+  },
+  uploadedDate: {
+    colHeader: (
+      <Col xs={false} sm={3} md={2}>
+        Uploaded date
+      </Col>),
+    colEntry: (dataset) => (
+      <Col xs={false} sm={3} md={2}>
+        {dataset.date_uploaded}
+      </Col>
+    )
+  }
+
+};
+
+const renderDatasets = (datasets, columns) => {
   return (
     <>
       <Grid fluid>
         <DatasetContainer key="Column labels" style={{borderBottom: "1px solid #CCC"}}>
           <Row>
-            <Col xs={8} sm={6} md={7}>
-              Dataset
-            </Col>
-            <Col xs={false} sm={3} md={3}>
-              Contributor
-            </Col>
-            {showDates && <Col xs={false} sm={3} md={2}>
-              Uploaded date
-            </Col>}
-            <Col xs={4} sm={false} style={{textAlign: "right"}}>
-              Contributor
-            </Col>
+            {columns.map((colName) => datasetListingColumn[colName].colHeader)}
           </Row>
         </DatasetContainer>
         <DatasetSelectionResultsContainer>
           { datasets.map((dataset) => (
             <DatasetContainer key={dataset.filename}>
               <Row>
-                <Col xs={10} sm={6} md={7}>
-                  <StyledLinkContainer bold>
-                    <a href={dataset.url}>{dataset.filename.replace(/_/g, ' / ').replace('.json', '')}</a>
-                  </StyledLinkContainer>
-                </Col>
-                <Col xs={false} sm={3} md={3}>
-                  <span>
-                    {dataset.contributor.includes("Nextstrain") && <LogoContainer href="https://nextstrain.org">
-                      <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/>
-                    </LogoContainer>}
-                    {dataset.contributorUrl === undefined ?
-                      dataset.contributor :
-                      <StyledLinkContainer>
-                        <a href={dataset.contributorUrl}>{dataset.contributor}</a>
-                      </StyledLinkContainer>}
-                  </span>
-                </Col>
-                {showDates && <Col xs={false} sm={3} md={2}>
-                  {dataset.date_uploaded}
-                </Col>}
-                <Col xs={2} sm={false} style={{textAlign: "right"}}>
-                  <LogoContainer href={dataset.contributor.includes("Nextstrain") ? "https://nextstrain.org" : get(dataset, "contributorUrl")}>
-                    {dataset.contributor.includes("Nextstrain") ?
-                      <img alt="nextstrain.org" className="logo" width="24px" src={logoPNG}/> :
-                      <StyledIconLinkContainer><MdPerson/></StyledIconLinkContainer>
-                    }
-                  </LogoContainer>
-                </Col>
+                {columns.map((colName) => datasetListingColumn[colName].colEntry(dataset))}
               </Row>
             </DatasetContainer>
           ))
@@ -391,7 +416,7 @@ class DatasetSelect extends React.Component {
           ) : null}
         </div>
 
-        {renderDatasets(filteredDatasets, !this.props.noDates)}
+        {renderDatasets(filteredDatasets, this.props.columns)}
 
       </>
     );
