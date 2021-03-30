@@ -1,10 +1,9 @@
-# This file defines the SARS-CoV-2 builds displayed on nextstrain.org/sars-cov-2/
-# (both as points on the map, and in the expandable tables).
+# This file defines the SARS-CoV-2 datasets displayed on nextstrain.org/sars-cov-2/
 
 # Documentation on how to modify this YAML in order to add a build is at:
 # https://docs.nextstrain.org/en/latest/guides/share/sars-cov-2.html
 
-builds:
+datasets:
 
   # The following section of heading entries, which don't themselves define a build,
   # are used to organise the rendered table into appropriate hierarchies. They are not
@@ -421,9 +420,9 @@ builds:
     geo: gcc
     parentGeo: asia
 
-  # Entries below this comment define builds. They should have a URL pointing to the analysis
+  # Entries below this comment define datasets. They should have a URL pointing to the analysis
   # visualisation as well as a name and coords for rendering on the map. The `geo` value should
-  # map to a non-build (stub) entry defined above.
+  # map to a non-dataset (stub) entry defined above.
 
   - url: https://nextstrain.org/ncov/global
     name: Global

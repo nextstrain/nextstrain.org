@@ -14,12 +14,12 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import BuildMap from "../components/build-pages/build-map";
-import DatasetSelect from "../components/build-pages/dataset-select";
-import SituationReports from "../components/build-pages/sit-reps";
-import TOC from "../components/build-pages/toc";
+import DatasetSelect from "../components/Datasets/dataset-select";
+import DatasetMap from "../components/Datasets/dataset-map";
+import SituationReports from "../components/Datasets/sit-reps";
+import TOC from "../components/Datasets/toc";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
-import sarscov2Catalogue from "../../content/allSARS-CoV-2Builds.yaml";
+import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
@@ -38,7 +38,7 @@ const contents = [
     title: "Latest global SARS-CoV-2 analysis",
     subtext: (
       <span>
-        Jump to our latest global SARS-CoV-2 build which is updated daily. We also maintain regional builds for
+        Jump to our globally-subsampled SARS-CoV-2 dataset which is updated daily. We also keep updated regional datasets for
         <a href="/ncov/africa?f_region=Africa"> Africa</a>,
         <a href="/ncov/asia?f_region=Asia"> Asia</a>,
         <a href="/ncov/europe?f_region=Europe"> Europe</a>,
@@ -50,8 +50,8 @@ const contents = [
   },
   {
     type: "anchor",
-    to: "builds",
-    title: "Scroll down to all available builds (datasets)"
+    to: "datasets",
+    title: "Scroll down to all available datasets"
   },
   {
     type: "anchor",
@@ -73,8 +73,8 @@ const contents = [
   {
     type: "gatsby",
     to: "/search/sars-cov-2",
-    title: "Search builds by strain name(s)",
-    subtext: "Search all SARS-CoV-2 nextstrain builds, including historical ones, for particular strain name(s)",
+    title: "Search datasets by strain name(s)",
+    subtext: "Search all SARS-CoV-2 nextstrain datasets, including historical ones, for particular strain name(s)",
   },
   {
     type: "external",
@@ -109,14 +109,14 @@ class Index extends React.Component {
     super(props);
     configureAnchors({ offset: -10 });
     this.state = {
-      catalogueBuilds: sarscov2Catalogue.builds,
+      catalogueDatasets: sarscov2Catalogue.datasets,
       filterParsed: false
     };
   }
 
   componentDidMount() {
     try {
-      const filterList = parseDatasetsFilterList(this.state.catalogueBuilds);
+      const filterList = parseDatasetsFilterList(this.state.catalogueDatasets);
       this.setState({filterList, filterParsed: true});
     } catch (err) {
       console.error("Error parsing data.", err.message);
@@ -147,21 +147,20 @@ class Index extends React.Component {
 
               <TOC data={contents} />
 
-              <ScrollableAnchor id={"builds"}>
+              <ScrollableAnchor id={"datasets"}>
                 <div>
                   <HugeSpacer /><HugeSpacer />
                   <splashStyles.H2 left>
-                    All SARS-CoV-2 builds
+                    All SARS-CoV-2 datasets
                   </splashStyles.H2>
                   <SmallSpacer />
                   <splashStyles.FocusParagraph>
-                    This section is an index of public Nextstrain builds (datasets) for SARS-CoV-2, organized by geography.
-                    Some of these builds are maintained by the Nextstrain team and others are maintained by independent research groups.
-                    See <a href="https://docs.nextstrain.org/projects/augur/en/stable/faq/what-is-a-build.html" >here</a> for more information on what a build is, and see <a href="https://nextstrain.github.io/ncov/">this tutorial</a> for a walkthrough of running your own phylogenetic analysis of SARS-CoV-2 data.
-                    If you know of a build not listed here, please let us know!
+                    This section is an index of public Nextstrain datasets for SARS-CoV-2, organized by geography.
+                    Some of these datasets are maintained by the Nextstrain team and others are maintained by independent research groups.
+                    If you know of a dataset not listed here, please let us know!
                     Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
                   </splashStyles.FocusParagraph>
-                  <BuildMap builds={this.state.catalogueBuilds}/>
+                  <DatasetMap datasets={this.state.catalogueDatasets}/>
                   <div className="row">
                     <MediumSpacer />
                     <div className="col-md-1"/>
