@@ -147,6 +147,7 @@ function setup(app) {
       rolling: true,
       store: sessionStore(),
       cookie: {
+        httpOnly: true,
         sameSite: "lax",
         secure: PRODUCTION,
         maxAge: SESSION_MAX_AGE * 1000 // milliseconds
