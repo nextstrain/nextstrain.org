@@ -160,12 +160,16 @@ class Index extends React.Component {
                     If you know of a dataset not listed here, please let us know!
                     Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
                   </splashStyles.FocusParagraph>
-                  <DatasetMap datasets={this.state.catalogueDatasets}/>
                   <div className="row">
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      {this.state.filterParsed && <DatasetSelect datasets={this.state.filterList} columns={["dataset", "contributor"]}/>}
+                      {this.state.filterParsed &&
+                        <DatasetSelect
+                          datasets={this.state.filterList}
+                          viz={(filteredDatasets) => <DatasetMap datasets={filteredDatasets}/>}
+                          columns={["dataset", "contributor"]}
+                        />}
                     </div>
                   </div>
                 </div>

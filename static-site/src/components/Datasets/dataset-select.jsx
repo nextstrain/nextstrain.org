@@ -146,7 +146,7 @@ const datasetListingColumn = {
 
 };
 
-const renderDatasets = (datasets, columns) => {
+const renderDatasetTable = (datasets, columns) => {
   return (
     <>
       <Grid fluid>
@@ -189,6 +189,7 @@ class DatasetSelect extends React.Component {
     this.selectionMade = this.selectionMade.bind(this);
     this.createIndividualBadge = this.createIndividualBadge.bind(this);
     this.getFilteredDatasets = this.getFilteredDatasets.bind(this);
+    this.renderFilterBar = this.renderFilterBar.bind(this);
   }
 
   applyFilter = (mode, trait, values) => {
@@ -324,100 +325,119 @@ class DatasetSelect extends React.Component {
     return sortBy(filtered, [(d) => d.filename.toLowerCase()]);
   }
 
-  render() {
+  renderFilterBar = () => {
     // options only need to be calculated a single time per render, and by adding a debounce
     // to `loadOptions` we don't slow things down by comparing queries to a large number of options
     const options = this.makeOptions();
     const loadOptions = debounce((input, callback) => callback(null, {options}), DEBOUNCE_TIME);
-    const styles = this.getStyles();
     const filtersByCategory = [];
     Reflect.ownKeys(this.state.filters)
       .filter((filterName) => this.state.filters[filterName].length > 0)
       .forEach((filterName) => {
         filtersByCategory.push({name: filterName, badges: this.createFilterBadges(filterName)});
       });
-    const filteredDatasets = this.getFilteredDatasets();
+    const styles = this.getStyles();
     /* When filter categories were dynamically created (via metadata drag&drop) the `options` here updated but `<Async>`
     seemed to use a cached version of all values & wouldn't update. Changing the key forces a rerender, but it's not ideal */
     const divKey = String(Object.keys(this.state.filters).length);
     return (
-      <>
-        <div style={styles.base} key={divKey}>
-          <splashStyles.H3 left>
-            {`Filter datasets `}
-            <>
-              <span style={{cursor: "help"}} data-tip data-for={"build-filter-info"}>
-                <FaInfoCircle/>
-              </span>
-              <StyledTooltip type="dark" effect="solid" id={"build-filter-info"}>
-                <>
-                  {`Use this box to filter the displayed list of datasets based upon filtering criteria.`}
-                  <br/>
-                  {/* TODO do we want to keep this set logic? It's currently broken */}
-                  Data is filtered by forming a union of selected values within each category, and then
-                  taking the intersection between categories (if more than one category is selected).
-                </>
-              </StyledTooltip>
-            </>
-          </splashStyles.H3>
-          <Select
-            async
-            name="filterQueryBox"
-            placeholder="Type filter query here..."
-            value={undefined}
-            arrowRenderer={null}
-            loadOptions={loadOptions}
-            ignoreAccents={false}
-            clearable={false}
-            searchable
-            multi={false}
-            valueKey="label"
-            onChange={this.selectionMade}
-          />
-          {filtersByCategory.length ? (
-            <>
-              {"Filtered to "}
-              {filtersByCategory.map((filterCategory, idx) => {
-                const multipleFilterBadges = filterCategory.badges.length > 1;
-                const previousCategoriesRendered = idx!==0;
-                return (
-                  <span style={{fontSize: "2rem", padding: "0px 2px"}} key={filterCategory.name}>
-                    {previousCategoriesRendered && <Intersect id={'intersect'+idx}/>}
-                    {multipleFilterBadges && openBracketBig} {/* multiple badges => surround with set notation */}
-                    {filterCategory.badges.map((badge, badgeIdx) => {
-                      if (Array.isArray(badge)) { // if `badge` is an array then we wish to render a set-within-a-set
-                        return (
-                          <span key={badge.map((b) => b.props.id).join("")}>
-                            {openBracketSmall}
-                            {badge.map((el, elIdx) => (
-                              <span key={el.props.id}>
-                                {el}
-                                {elIdx!==badge.length-1 && <Union/>}
-                              </span>
-                            ))}
-                            {closeBracketSmall}
-                            {badgeIdx!==filterCategory.badges.length-1 && ", "}
-                          </span>
-                        );
-                      }
+      <div style={styles.base} key={divKey}>
+        <splashStyles.H3 left>
+          {`Filter datasets `}
+          <>
+            <span style={{cursor: "help"}} data-tip data-for={"build-filter-info"}>
+              <FaInfoCircle/>
+            </span>
+            <StyledTooltip type="dark" effect="solid" id={"build-filter-info"}>
+              <>
+                {`Use this box to filter the displayed list of datasets based upon filtering criteria.`}
+                <br/>
+                {/* TODO do we want to keep this set logic? It's currently broken */}
+                Data is filtered by forming a union of selected values within each category, and then
+                taking the intersection between categories (if more than one category is selected).
+              </>
+            </StyledTooltip>
+          </>
+        </splashStyles.H3>
+        <Select
+          async
+          name="filterQueryBox"
+          placeholder="Type filter query here..."
+          value={undefined}
+          arrowRenderer={null}
+          loadOptions={loadOptions}
+          ignoreAccents={false}
+          clearable={false}
+          searchable
+          multi={false}
+          valueKey="label"
+          onChange={this.selectionMade}
+        />
+        {filtersByCategory.length ? (
+          <>
+            {"Filtered to "}
+            {filtersByCategory.map((filterCategory, idx) => {
+              const multipleFilterBadges = filterCategory.badges.length > 1;
+              const previousCategoriesRendered = idx!==0;
+              return (
+                <span style={{fontSize: "2rem", padding: "0px 2px"}} key={filterCategory.name}>
+                  {previousCategoriesRendered && <Intersect id={'intersect'+idx}/>}
+                  {multipleFilterBadges && openBracketBig} {/* multiple badges => surround with set notation */}
+                  {filterCategory.badges.map((badge, badgeIdx) => {
+                    if (Array.isArray(badge)) { // if `badge` is an array then we wish to render a set-within-a-set
                       return (
-                        <span key={badge.props.id}>
-                          {badge}
+                        <span key={badge.map((b) => b.props.id).join("")}>
+                          {openBracketSmall}
+                          {badge.map((el, elIdx) => (
+                            <span key={el.props.id}>
+                              {el}
+                              {elIdx!==badge.length-1 && <Union/>}
+                            </span>
+                          ))}
+                          {closeBracketSmall}
                           {badgeIdx!==filterCategory.badges.length-1 && ", "}
                         </span>
                       );
-                    })}
-                    {multipleFilterBadges && closeBracketBig}
-                  </span>
-                );
-              })}
-              {". "}
-            </>
-          ) : null}
-        </div>
+                    }
+                    return (
+                      <span key={badge.props.id}>
+                        {badge}
+                        {badgeIdx!==filterCategory.badges.length-1 && ", "}
+                      </span>
+                    );
+                  })}
+                  {multipleFilterBadges && closeBracketBig}
+                </span>
+              );
+            })}
+            {". "}
+          </>
+        ) : null}
+      </div>
+    );
+  }
 
-        {renderDatasets(filteredDatasets, this.props.columns)}
-
+  render() {
+    const filteredDatasets = this.getFilteredDatasets();
+    // this allows you to pass interface as ["filterBar", "viz", "table"] if you want things to render in that order
+    const childrenToRender = this.props.interface || ["viz", "filterBar", "table"];
+    return (
+      <>
+        {childrenToRender.map((key) => {
+          switch (key) {
+            case "filterBar":
+              return this.renderFilterBar();
+            case "table":
+              return renderDatasetTable(filteredDatasets, this.props.columns);
+            case "viz":
+              // Viz function could take a second argument for viz-specific props if necessary.
+              // Said props could come in here via a prop like this.props.vizProps (object).
+              return this.props.viz && this.props.viz(filteredDatasets);
+            default:
+              console.log("unknown component, this shouldnt happen");
+              return null;
+          }
+        })}
       </>
     );
   }
