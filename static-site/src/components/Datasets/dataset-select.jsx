@@ -432,7 +432,7 @@ class DatasetSelect extends React.Component {
             case "viz":
               // Viz function could take a second argument for viz-specific props if necessary.
               // Said props could come in here via a prop like this.props.vizProps (object).
-              return this.props.viz && this.props.viz(filteredDatasets);
+              return this.props.viz && typeof this.props.viz === "function" && this.props.viz(filteredDatasets);
             default:
               console.log("unknown component, this shouldnt happen");
               return null;
