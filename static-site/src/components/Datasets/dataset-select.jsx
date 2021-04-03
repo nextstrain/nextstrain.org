@@ -155,7 +155,7 @@ class DatasetSelect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filters: {}
+      filters: props.initFilters ? {keyword: props.initFilters.map((k) => {return {value: k, active: true};})} : {}
     };
     this.applyFilter = this.applyFilter.bind(this);
     this.createFilterBadges = this.createFilterBadges.bind(this);

@@ -64,6 +64,10 @@ module.exports = {
     //   }
     // },
     {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/influenza/*`] },
+    },
+    {
       resolve: "gatsby-plugin-nprogress",
       options: {
         color: config.progressBarColor
