@@ -146,9 +146,9 @@ const datasetListingColumn = {
 
 };
 
-const renderDatasetTable = (datasets, columns) => {
+const renderDatasetTable = (datasets, columns, style) => {
   return (
-    <>
+    <div style={style}>
       <Grid fluid>
         <DatasetContainer key="Column labels" style={{borderBottom: "1px solid #CCC"}}>
           <Row>
@@ -166,7 +166,7 @@ const renderDatasetTable = (datasets, columns) => {
           }
         </DatasetSelectionResultsContainer>
       </Grid>
-    </>
+    </div>
   );
 };
 
@@ -249,7 +249,8 @@ class DatasetSelect extends React.Component {
   getStyles() {
     return {
       base: {
-        marginBottom: 0,
+        margin: "0px auto 0px auto",
+        maxWidth: 800,
         fontSize: 14
       }
     };
@@ -421,6 +422,7 @@ class DatasetSelect extends React.Component {
     const filteredDatasets = this.getFilteredDatasets();
     // this allows you to pass interface as ["filterBar", "viz", "table"] if you want things to render in that order
     const childrenToRender = this.props.interface || ["viz", "filterBar", "table"];
+    const styles = this.getStyles();
     return (
       <>
         {childrenToRender.map((key) => {
@@ -428,7 +430,7 @@ class DatasetSelect extends React.Component {
             case "filterBar":
               return this.renderFilterBar();
             case "table":
-              return renderDatasetTable(filteredDatasets, this.props.columns);
+              return renderDatasetTable(filteredDatasets, this.props.columns, styles.base);
             case "viz":
               // Viz function could take a second argument for viz-specific props if necessary.
               // Said props could come in here via a prop like this.props.vizProps (object).

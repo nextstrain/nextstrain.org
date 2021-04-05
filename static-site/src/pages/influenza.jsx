@@ -103,21 +103,17 @@ class Index extends React.Component {
               <ScrollableAnchor id={"datasets"}>
                 <div>
                   <HugeSpacer /><HugeSpacer />
-                  <splashStyles.H2 left>
-                    Influenza datasets
+                  <splashStyles.H2>
+                  Influenza datasets
                   </splashStyles.H2>
                   <SmallSpacer />
-                  <splashStyles.FocusParagraph>
+                  <FlexCenter>
+                    <splashStyles.CenteredFocusParagraph>
                     This section is an index of Nextstrain datasets for flu, organized by type.
-                  </splashStyles.FocusParagraph>
-                  <div className="row">
-                    <MediumSpacer />
-                    <div className="col-md-1"/>
-                    <div className="col-md-10">
-                      {this.state.dataLoaded &&
-                      <DatasetSelect datasets={this.state.datasets} columns={["dataset", "contributor", "uploadedDate"]}/>}
-                    </div>
-                  </div>
+                    </splashStyles.CenteredFocusParagraph>
+                  </FlexCenter>
+                  {this.state.dataLoaded &&
+                  <DatasetSelect datasets={this.state.datasets} columns={["dataset", "contributor", "uploadedDate"]}/>}
                   { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
                               Something went wrong getting data.
                               Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
