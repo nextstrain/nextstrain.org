@@ -39,8 +39,16 @@ const COGNITO_CLIENT_ID = PRODUCTION
   ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org
   : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost and heroku dev instances
 
+/* Arbitrary ids for the various strategies for Passport.  Makes explicit the
+ * implicit defaults; uses constants instead of string literals for better
+ * grepping, linting, and less magic; would be an enum if JS had them (or we
+ * had TypeScript).
+ */
+const STRATEGY_OAUTH2 = "oauth2";
+
 function setup(app) {
   passport.use(
+    STRATEGY_OAUTH2,
     new OAuth2Strategy(
       {
         authorizationURL: `${COGNITO_BASE_URL}/oauth2/authorize`,
@@ -177,12 +185,12 @@ function setup(app) {
       }
       next();
     },
-    passport.authenticate("oauth2")
+    passport.authenticate(STRATEGY_OAUTH2)
   );
 
   // Verify IdP response on /logged-in
   app.route("/logged-in").get(
-    passport.authenticate("oauth2", { failureRedirect: "/login" }),
+    passport.authenticate(STRATEGY_OAUTH2, { failureRedirect: "/login" }),
     (req, res) => {
       // We can trust this value from the session because we are the only ones
       // in control of it.
