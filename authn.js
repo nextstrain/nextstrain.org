@@ -7,9 +7,10 @@ const Redis = require("ioredis");
 const RedisStore = require("connect-redis")(session);
 const FileStore = require("session-file-store")(session);
 const passport = require("passport");
-const fetch = require("node-fetch");
-const AWS = require("aws-sdk");
 const OAuth2Strategy = require("passport-oauth2").Strategy;
+const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disable-line import/no-unresolved
+const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
+const {JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
 const sources = require("./src/sources");
 const utils = require("./src/utils");
 
@@ -28,6 +29,10 @@ const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
 
 const COGNITO_REGION = COGNITO_USER_POOL_ID.split("_")[0];
 
+const COGNITO_USER_POOL_URL = `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}`;
+
+const COGNITO_JWKS = createRemoteJWKSet(new URL(`${COGNITO_USER_POOL_URL}/.well-known/jwks.json`));
+
 const COGNITO_BASE_URL = "https://login.nextstrain.org";
 
 const COGNITO_CLIENT_ID = PRODUCTION
@@ -35,21 +40,6 @@ const COGNITO_CLIENT_ID = PRODUCTION
   : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost and heroku dev instances
 
 function setup(app) {
-  // Use OAuth2 to authenticate against AWS Cognito's identity provider (IdP)
-  // Implement OAuth2Strategy's stub for fetching user info.
-  OAuth2Strategy.prototype.userProfile = async (accessToken, done) => {
-    try {
-      const response = await fetch(
-        `${COGNITO_BASE_URL}/oauth2/userInfo`,
-        { headers: { Authorization: `Bearer ${accessToken}` }}
-      );
-      const profile = await response.json();
-      return done(null, profile);
-    } catch (error) {
-      return done(`Unable to fetch user info: ${error}`);
-    }
-  };
-
   passport.use(
     new OAuth2Strategy(
       {
@@ -60,24 +50,19 @@ function setup(app) {
         pkce: true,
         state: true
       },
-      async (accessToken, refreshToken, profile, done) => {
-        // Fetch groups from Cognito, which our data sources
-        // (auspice/server/sources.js) use for authorization.
-        //
-        // In the future we could use Cognito Identity Pools to get per-user
-        // AWS credentials, but that's more complicated and takes more to
-        // setup.
-        const cognitoIdp = new AWS.CognitoIdentityServiceProvider({region: COGNITO_REGION});
+      async (accessToken, refreshToken, {id_token: idToken}, profile, done) => {
+        // Verify both tokens for good measure, but pull user information from
+        // the identity token (which is its intended purpose).
+        await verifyToken(accessToken, "access");
 
-        const response = await cognitoIdp.adminListGroupsForUser({
-          UserPoolId: COGNITO_USER_POOL_ID,
-          Username: profile.username
-        }).promise();
-
-        const groups = response.Groups.map((g) => g.GroupName);
+        const idClaims = await verifyToken(idToken, "id");
+        const user = {
+          username: idClaims["cognito:username"],
+          groups: idClaims["cognito:groups"],
+        };
 
         // All users are ok, as we control the entire user pool.
-        return done(null, {...profile, groups});
+        return done(null, user);
       }
     )
   );
@@ -270,6 +255,34 @@ function setup(app) {
     // should fall through to Auspice.
     return next("route");
   });
+}
+
+/**
+ * Verifies all aspects of the given `token` (a signed JWT from our AWS Cognito
+ * user pool) which is expected to be used for the given `use`.
+ *
+ * Assertions about expected algorithms, audience, issuer, and token use follow
+ * guidelines from
+ * <https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html>.
+ *
+ * @param {String} token
+ * @param {String} use
+ * @returns {Object} Verified claims from the token's payload
+ */
+async function verifyToken(token, use) {
+  const {payload: claims} = await jwtVerify(token, COGNITO_JWKS, {
+    algorithms: ["RS256"],
+    issuer: COGNITO_USER_POOL_URL,
+    audience: use !== "access" ? COGNITO_CLIENT_ID : null,
+  });
+
+  const claimedUse = claims["token_use"];
+
+  if (claimedUse !== use) {
+    throw new JWTClaimValidationFailed(`unexpected "token_use" claim value: ${claimedUse}`, "token_use", "check_failed");
+  }
+
+  return claims;
 }
 
 function scrubUrl(url) {
