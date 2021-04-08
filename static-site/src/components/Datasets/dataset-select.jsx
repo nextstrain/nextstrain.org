@@ -5,7 +5,7 @@ import { get, sortBy } from 'lodash';
 import { DatasetFilteringSelection } from "./filter-selection";
 import { ListDatasets } from "./list-datasets";
 import { FilterDisplay } from "./filter-display";
-import { computeFilterValues } from "./filter-helpers";
+import { collectAvailableFilteringOptions, computeFilterValues } from "./filter-helpers";
 
 /**
  * <FilterData> is a (keyboard)-typing based search box intended to
@@ -21,7 +21,8 @@ class DatasetSelect extends React.Component {
       filters: {},
     };
     this.applyFilter = (mode, trait, values) => {
-      const filters = computeFilterValues(this.state.filters, mode, trait, values);
+      const availableFilterValues = collectAvailableFilteringOptions(this.props.datasets).map((o) => o.value);
+      const filters = computeFilterValues(this.state.filters, availableFilterValues, mode, trait, values);
       if (filters) this.setState({filters});
     };
     this.getFilteredDatasets = this.getFilteredDatasets.bind(this);

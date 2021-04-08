@@ -5,20 +5,28 @@
 
 import {get, sortBy } from 'lodash';
 
-export function computeFilterValues(currentFilters, mode, trait, values) {
+export function computeFilterValues(currentFilters, availableFilterValues, mode, trait, values) {
   let newValues;
   const currentlyFilteredTraits = Reflect.ownKeys(currentFilters);
+
+  /* restrict the values we are attempting to add/inactivate etc to those which are valid */
+  const availableFilterValuesSet = new Set(availableFilterValues.map((arr) => arr.join("__")));
+  const validValues = values.filter((value) =>
+    availableFilterValuesSet.has(`${trait}__${value}`)
+  );
+  if (!validValues.length) return false;
+
   switch (mode) {
     case "set":
-      newValues = values.map((value) => ({value, active: true}));
+      newValues = validValues.map((value) => ({value, active: true}));
       break;
     case "add":
       if (currentlyFilteredTraits.indexOf(trait) === -1) {
-        newValues = values.map((value) => ({value, active: true}));
+        newValues = validValues.map((value) => ({value, active: true}));
       } else {
         newValues = currentFilters[trait].slice();
         const currentItemNames = newValues.map((i) => i.value);
-        values.forEach((valueToAdd) => {
+        validValues.forEach((valueToAdd) => {
           const idx = currentItemNames.indexOf(valueToAdd);
           if (idx === -1) {
             newValues.push({value: valueToAdd, active: true});
@@ -37,7 +45,7 @@ export function computeFilterValues(currentFilters, mode, trait, values) {
       }
       newValues = currentFilters[trait].slice();
       const currentItemNames = newValues.map((i) => i.value);
-      for (const item of values) {
+      for (const item of validValues) {
         const idx = currentItemNames.indexOf(item);
         if (idx !== -1) {
           if (mode==="remove") {
