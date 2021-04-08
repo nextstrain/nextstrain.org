@@ -42,8 +42,6 @@ var passport = require('passport-strategy')
  * Options:
  *
  *   - `realm`  authentication realm, defaults to "Users"
- *   - `scope`  list of scope values indicating the required scope of the access
- *              token for accessing the requested resource
  *   - `passReqToCallback` pass `req` to the `verify` callback with the
  *                         signature `verify(req, token, done)` (defaults to
  *                         false)
@@ -80,9 +78,6 @@ function Strategy(options, verify) {
   this.name = 'bearer';
   this._verify = verify;
   this._realm = options.realm || 'Users';
-  if (options.scope) {
-    this._scope = (Array.isArray(options.scope)) ? options.scope : [ options.scope ];
-  }
   this._passReqToCallback = options.passReqToCallback;
   this._passIfMissing = options.passIfMissing === undefined ? false : options.passIfMissing;
 }
@@ -149,9 +144,6 @@ Strategy.prototype.authenticate = function(req) {
  */
 Strategy.prototype._challenge = function(code, desc, uri) {
   var challenge = 'Bearer realm="' + this._realm + '"';
-  if (this._scope) {
-    challenge += ', scope="' + this._scope.join(' ') + '"';
-  }
   if (code) {
     challenge += ', error="' + code + '"';
   }
