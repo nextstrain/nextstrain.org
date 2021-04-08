@@ -2,6 +2,9 @@
  * Originally copied from "lib/strategy.js" in the passport-http-bearer project.
  * The original copy is licensed under the MIT license.  See the
  * LICENSE.third-party file distributed alongside this project's own LICENSE file.
+ *
+ * Subsequent modifications have been made.  These and any future modifications
+ * are licensed under the same MIT license.
  */
 
 /* eslint-disable */
@@ -17,8 +20,7 @@ var passport = require('passport-strategy')
  * Creates an instance of `Strategy`.
  *
  * The HTTP Bearer authentication strategy authenticates requests based on
- * a bearer token contained in the `Authorization` header field, `access_token`
- * body parameter, or `access_token` query parameter.
+ * a bearer token contained in the `Authorization` header field.
  *
  * Applications must supply a `verify` callback, for which the function
  * signature is:
@@ -106,16 +108,6 @@ Strategy.prototype.authenticate = function(req) {
     } else {
       return this.fail(400);
     }
-  }
-
-  if (req.body && req.body.access_token) {
-    if (token) { return this.fail(400); }
-    token = req.body.access_token;
-  }
-
-  if (req.query && req.query.access_token) {
-    if (token) { return this.fail(400); }
-    token = req.query.access_token;
   }
   
   if (!token) { return this.fail(this._challenge()); }
