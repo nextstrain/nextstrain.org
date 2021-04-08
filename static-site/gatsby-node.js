@@ -199,10 +199,16 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/pages/sars-cov-2.jsx")
         });
 
-        // Create page detailing all things seasonal influenza
+        /* NOTE: we are using "influenza" URLs for dev purposes only. This will be switched to "flu"
+        when this functionality is released & publicized. For unknown reasons, if the component is named
+        `influenza.jsx` we lose the matchPath functionality. Therefore in a future commit we should simultaneously
+        change the path & matchPath to "flu", change the page back to `influenza.jsx`, and update the routing logic of the
+        server so that URLs starting with /flu which define valid (core) datasets, and only these, are sent to auspice,
+        with the rest falling through to Gatsby to be handled here */
         createPage({
           path: "/influenza",
-          component: path.resolve("src/pages/influenza.jsx")
+          matchPath: "/influenza/*",
+          component: path.resolve("src/pages/influenza-page.jsx")
         });
 
         // search pages
