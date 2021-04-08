@@ -44,6 +44,8 @@ var passport = require('passport-strategy')
  *   - `realm`  authentication realm, defaults to "Users"
  *   - `scope`  list of scope values indicating the required scope of the access
  *              token for accessing the requested resource
+ *   - `passIfMissing` instead of failing, pass if no `Authorization` header was
+ *                     present in the request (defaults to false)
  *
  * Examples:
  *
@@ -79,6 +81,7 @@ function Strategy(options, verify) {
     this._scope = (Array.isArray(options.scope)) ? options.scope : [ options.scope ];
   }
   this._passReqToCallback = options.passReqToCallback;
+  this._passIfMissing = options.passIfMissing === undefined ? false : options.passIfMissing;
 }
 
 /**
@@ -108,6 +111,9 @@ Strategy.prototype.authenticate = function(req) {
     } else {
       return this.fail(400);
     }
+  }
+  else if (this._passIfMissing) {
+    return this.pass();
   }
   
   if (!token) { return this.fail(this._challenge()); }
