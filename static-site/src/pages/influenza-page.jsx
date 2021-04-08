@@ -59,15 +59,12 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     configureAnchors({ offset: -10 });
-    const filterParams = props["*"].split("/");
     this.state = {
       dataLoaded: false,
-      filterParams,
       errorFetchingData: false,
       datasetsUrl: "https://data.nextstrain.org/datasets_influenza.json"
     };
   }
-
   async componentDidMount() {
     try {
       const datasets = await fetchAndParseDatasetsJSON(this.state.datasetsUrl);
@@ -116,8 +113,12 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      {this.state.dataLoaded &&
-                      <DatasetSelect datasets={this.state.datasets} initFilters={this.state.filterParams}/>}
+                      {this.state.dataLoaded && (
+                        <DatasetSelect
+                          datasets={this.state.datasets}
+                          urlDefinedFilterPath={this.props["*"]}
+                        />
+                      )}
                     </div>
                   </div>
                   { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>

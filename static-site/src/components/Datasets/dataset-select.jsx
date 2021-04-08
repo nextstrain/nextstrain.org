@@ -155,7 +155,7 @@ class DatasetSelect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filters: props.initFilters ? {keyword: props.initFilters.map((k) => {return {value: k, active: true};})} : {}
+      filters: {}
     };
     this.applyFilter = this.applyFilter.bind(this);
     this.createFilterBadges = this.createFilterBadges.bind(this);
@@ -219,6 +219,13 @@ class DatasetSelect extends React.Component {
     filters[trait] = newValues;
     this.setState({filters});
   };
+  componentDidMount() {
+    if (!this.props.urlDefinedFilterPath) return;
+    const filterValues = this.props.urlDefinedFilterPath
+      .split("/")           // how keywords are separated in the URL
+      .filter((x) => !!x);  // remove any empty strings
+    this.applyFilter("add", "keyword", filterValues);
+  }
 
   getStyles() {
     return {
