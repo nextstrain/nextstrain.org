@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { goToAnchor } from 'react-scrollable-anchor';
 import { FlexCenter } from "../../layouts/generalComponents";
 
-function PathogenPageIntroduction({data}) {
+export function PathogenPageIntroduction({data}) {
   return (
     <FlexCenter>
       <ListContainer>
@@ -65,5 +65,3 @@ const Subtext = styled.div`
   font-weight: 300;
   line-height: ${(props) => props.theme.niceLineHeight};
 `;
-
-export default PathogenPageIntroduction;

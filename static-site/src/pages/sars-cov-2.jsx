@@ -16,8 +16,8 @@ import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import DatasetMap from "../components/Datasets/dataset-map";
-import SituationReports from "../components/Datasets/sit-reps";
-import TOC from "../components/Datasets/toc";
+import { SituationReportsByLanguage } from "../components/Datasets/situation-reports-by-language";
+import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 
@@ -145,7 +145,7 @@ class Index extends React.Component {
               </FlexCenter>
               <MediumSpacer />
 
-              <TOC data={contents} />
+              <PathogenPageIntroduction data={contents} />
 
               <ScrollableAnchor id={"datasets"}>
                 <div>
@@ -189,7 +189,7 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      <SituationReports parseSitRepInfo={parseNcovSitRepInfo}/>
+                      <SituationReportsByLanguage parseSitRepInfo={parseNcovSitRepInfo}/>
                     </div>
                   </div>
                 </div>

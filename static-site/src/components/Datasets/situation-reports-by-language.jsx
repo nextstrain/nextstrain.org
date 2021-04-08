@@ -19,7 +19,7 @@ const charonGetAvailableAddress = process.env.NODE_ENV === "development" ?
  * to localhost:5000 which allows you to run the nextstrain.org server
  * as a separate process.
  */
-class Index extends React.Component {
+export class SituationReportsByLanguage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {hasError: false};
@@ -70,7 +70,7 @@ class Index extends React.Component {
         this.setState({ narrativesByLanguage: this.getNarrativesByLanguage(json) });
       })
       .catch(error => {
-        console.log("The following error occured during fetching or parsing situation reports:", error);
+        console.log("The following error occurred during fetching or parsing situation reports:", error);
         this.setState({ hasError: true });
       });
   }
@@ -116,5 +116,3 @@ class Index extends React.Component {
     );
   }
 }
-
-export default Index;

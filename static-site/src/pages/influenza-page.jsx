@@ -13,7 +13,7 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import TOC from "../components/Datasets/toc";
+import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import DatasetSelect from "../components/Datasets/dataset-select";
 
 const title = "Influenza resources";
@@ -97,7 +97,7 @@ class Index extends React.Component {
               </FlexCenter>
               <MediumSpacer />
 
-              <TOC data={contents} />
+              <PathogenPageIntroduction data={contents} />
 
               <ScrollableAnchor id={"datasets"}>
                 <div>
