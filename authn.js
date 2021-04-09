@@ -10,7 +10,7 @@ const passport = require("passport");
 const OAuth2Strategy = require("passport-oauth2").Strategy;
 const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disable-line import/no-unresolved
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
-const {JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
+const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
 const sources = require("./src/sources");
 const utils = require("./src/utils");
 
@@ -61,16 +61,22 @@ function setup(app) {
       async (accessToken, refreshToken, {id_token: idToken}, profile, done) => {
         // Verify both tokens for good measure, but pull user information from
         // the identity token (which is its intended purpose).
-        await verifyToken(accessToken, "access");
+        try {
+          await verifyToken(accessToken, "access");
 
-        const idClaims = await verifyToken(idToken, "id");
-        const user = {
-          username: idClaims["cognito:username"],
-          groups: idClaims["cognito:groups"],
-        };
+          const idClaims = await verifyToken(idToken, "id");
+          const user = {
+            username: idClaims["cognito:username"],
+            groups: idClaims["cognito:groups"],
+          };
 
-        // All users are ok, as we control the entire user pool.
-        return done(null, user);
+          // All users are ok, as we control the entire user pool.
+          return done(null, user);
+        } catch (e) {
+          return e instanceof JOSEError
+            ? done(null, false, "Error verifying token")
+            : done(e);
+        }
       }
     )
   );
@@ -190,7 +196,7 @@ function setup(app) {
 
   // Verify IdP response on /logged-in
   app.route("/logged-in").get(
-    passport.authenticate(STRATEGY_OAUTH2, { failureRedirect: "/login" }),
+    passport.authenticate(STRATEGY_OAUTH2, { failureRedirect: "/" }),
     (req, res) => {
       // We can trust this value from the session because we are the only ones
       // in control of it.
