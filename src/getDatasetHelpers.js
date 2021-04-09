@@ -37,16 +37,12 @@ const splitPrefixIntoParts = (prefix) => {
   switch (prefixParts[0]) {
     case "community":
     case "staging":
+    case "fetch":
       sourceName = prefixParts.shift();
       break;
     case "groups":
       prefixParts.shift();
       sourceName = prefixParts.shift();
-      break;
-    case "fetch":
-      /* the `/fetch/ URLs are backed by the `UrlDefinedSource` as `FetchSource` was too confusing */
-      prefixParts.shift();
-      sourceName = "urlDefined";
       break;
     default:
       sourceName = "core";
@@ -66,6 +62,11 @@ const splitPrefixIntoParts = (prefix) => {
     // Community source requires an owner and repo name
     case "community":
       source = new Source(...prefixParts.splice(0, 2));
+      break;
+
+    // UrlDefined source requires a URL authority part
+    case "fetch":
+      source = new Source(prefixParts.shift());
       break;
 
     default:
@@ -90,10 +91,8 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
       break;
     case "community":
     case "staging":
+    case "fetch":
       leadingParts.push(source.name);
-      break;
-    case "urlDefined":
-      leadingParts.push("fetch");
       break;
     default:
       leadingParts.push("groups", source.name);
@@ -108,6 +107,12 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
     case "community":
       leadingParts.push(source.owner, source.repoNameWithBranch);
       break;
+
+    // UrlDefined source requires a URL authority part
+    case "fetch":
+      leadingParts.push(source.authority);
+      break;
+
     // no default
   }
 
@@ -153,78 +158,31 @@ const correctPrefixFromAvailable = (sourceName, prefixParts) => {
 };
 
 
-const guessTreeName = (prefixParts) => {
-  const guesses = ["HA", "NA", "PB1", "PB2", "PA", "NP", "NS", "MP", "L", "S"];
-  for (const part of prefixParts) {
-    if (guesses.indexOf(part.toUpperCase()) !== -1) return part;
-  }
-  return undefined;
-};
-
-/* Parse the prefix (normally URL) and decide which URLs to fetch etc
- * The prefix is case sensitive
+/* Parse the prefix (a path-like string specifying a source + dataset path)
+ * with resolving of partial prefixes.  Prefixes are case-sensitive.
  */
-const parsePrefix = (prefix, otherQueries) => {
-  const fetchUrls = {};
+const parsePrefix = (prefix) => {
   let {source, prefixParts} = splitPrefixIntoParts(prefix);
-
-  /* Does the URL specify two trees?
-   *
-   * If so, we need to extract the two tree names and massage the prefixParts
-   * to only include the first.
-   */
-  let treeName, secondTreeName;
-  const treeSplitChar = /(?<!http[s]?):/;
-  for (let i=0; i<prefixParts.length; i++) {
-    if (prefixParts[i].search(treeSplitChar) !== -1) {
-      [treeName, secondTreeName] = prefixParts[i].split(treeSplitChar);
-      prefixParts[i] = treeName; // only use the first tree from now on
-      break;
-    }
-  }
-  if (!secondTreeName && otherQueries.deprecatedSecondTree) {
-    secondTreeName = otherQueries.deprecatedSecondTree;
-  }
 
   // Expand partial prefixes.  This would be cleaner if integerated into the
   // Source classes.
   prefixParts = correctPrefixFromAvailable(source.name, prefixParts);
 
-  if (!treeName) {
-    utils.verbose("Guessing tree name -- this should be improved");
-    treeName = guessTreeName(prefixParts);
-  }
+  // The resolved prefix, possibly "corrected" above, which we want to use for
+  // display.
+  const resolvedPrefix = joinPartsIntoPrefix({source, prefixParts});
 
-  // The URL to be displayed in Auspice, tweaked below if necessary
-  let auspiceDisplayUrl = joinPartsIntoPrefix({source, prefixParts});
-
-  // Get the server fetch URLs
   const dataset = source.dataset(prefixParts);
 
-  fetchUrls.main = dataset.urlFor("main");
-  fetchUrls.tree = dataset.urlFor("tree");
-  fetchUrls.meta = dataset.urlFor("meta");
-
-  if (secondTreeName) {
-    const idxOfTree = prefixParts.indexOf(treeName);
-    const secondTreePrefixParts = prefixParts.slice();
-    secondTreePrefixParts[idxOfTree] = secondTreeName;
-
-    const secondDataset = source.dataset(secondTreePrefixParts);
-    fetchUrls.secondTree = secondDataset.urlFor("tree");
-
-    const re = new RegExp(`\\/${treeName}(/|$)`); // note the double escape for special char
-    auspiceDisplayUrl = auspiceDisplayUrl.replace(re, `/${treeName}:${secondTreeName}/`);
-  }
-  auspiceDisplayUrl = auspiceDisplayUrl.replace(/\/$/, ''); // remove any trailing slash
-
-  if (otherQueries.type) {
-    fetchUrls.additional = dataset.urlFor(otherQueries.type);
-  }
-
-  return ({fetchUrls, auspiceDisplayUrl, treeName, secondTreeName, source, dataset});
+  return ({source, dataset, resolvedPrefix});
 
 };
+
+
+/* Round-trip prefix through split/join to canonicalize it for comparison.
+ */
+const canonicalizePrefix = (prefix) =>
+  joinPartsIntoPrefix(splitPrefixIntoParts(prefix));
 
 
 module.exports = {
@@ -232,5 +190,6 @@ module.exports = {
   joinPartsIntoPrefix,
   handle500Error,
   unauthorized,
-  parsePrefix
+  parsePrefix,
+  canonicalizePrefix,
 };

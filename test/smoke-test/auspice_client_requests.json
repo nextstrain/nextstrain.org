@@ -11,7 +11,7 @@
     "url": "/charon/getDataset?prefix=/flu",
     "expectStatusCode": 302,
     "responseIsJson": false,
-    "redirectsTo": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y"
+    "redirectsTo": "/charon/getDataset?prefix=flu%2Fseasonal%2Fh3n2%2Fha%2F2y"
   },
   {
     "name": "Check that the main getAvailable API call returns a JSON",
