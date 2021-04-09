@@ -16,7 +16,7 @@ import { collectAvailableFilteringOptions, computeFilterValues } from "./filter-
  * @prop {string | undefined} urlDefinedFilterPath slash-separated keywords which will be applied as filters
  * @prop {string | undefined} intendedUri Intended URI. Browser address will be replaced with this.
  * @prop {Array} datasets Available datasets. Array of Objects.
- * @prop {boolean} noDates Note: will be replaced in a subsequent commit
+ * @prop {Array} columns Columns to be rendered by the table. See <ListDatasets> for signature.
  * @prop {Array | undefined} interface What elements to render? Elements may be strings or functinos. Order is respected.
  *       Available strings: "FilterSelect" "FilterDisplay", "ListDatasets"
  *       Functions will be handed an object with key(s): `datasets` (which may be filtered), and should return a react component for rendering.
@@ -100,8 +100,8 @@ class DatasetSelect extends React.Component {
               return (
                 <ListDatasets
                   key="ListDatasets"
+                  columns={this.props.columns}
                   datasets={filteredDatasets}
-                  showDates={!this.props.noDates}
                 />
               );
             default:
@@ -126,7 +126,7 @@ DatasetSelect.propTypes = {
   urlDefinedFilterPath: PropTypes.string,
   intendedUri: PropTypes.string,
   interface: PropTypes.array,
-  noDates: PropTypes.bool,
+  columns: PropTypes.array.isRequired,
   datasets: PropTypes.array.isRequired
 };
 

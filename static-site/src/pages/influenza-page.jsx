@@ -16,6 +16,8 @@ import Footer from "../components/Footer";
 import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import DatasetSelect from "../components/Datasets/dataset-select";
 
+const nextstrainLogoPNG = require("../../static/logos/favicon.png");
+
 const title = "Influenza resources";
 const abstract = `The Nextstrain team maintains datasets and other tools for analyzing a variety of influenza viruses.
 We track the evolution of seasonal influenza viruses (A/H3N2, A/H1N1pdm, B/Victoria, and B/Yamagata)
@@ -51,6 +53,25 @@ const contents = [
     to: "/search/seasonal-flu",
     title: "Search seasonal flu datasets by strain name(s)",
     subtext: "Search all seasonal influenza nextstrain datasets, including historical ones, for particular strain name(s)",
+  }
+];
+
+const tableColumns = [
+  {
+    name: "Dataset",
+    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
+    url: (dataset) => dataset.url
+  },
+  {
+    name: "Contributor",
+    value: () => "Nextstrain",
+    valueMobile: () => "",
+    url: () => "https://nextstrain.org",
+    logo: () => (<img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/>)
+  },
+  {
+    name: "Uploaded Date",
+    value: (dataset) => dataset.date_uploaded
   }
 ];
 
@@ -109,6 +130,7 @@ class Index extends React.Component {
                   {this.state.dataLoaded && (
                     <DatasetSelect
                       datasets={this.state.datasets}
+                      columns={tableColumns}
                       urlDefinedFilterPath={this.props["*"]}
                       intendedUri={this.props.uri}
                     />
