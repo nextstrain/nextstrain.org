@@ -117,6 +117,7 @@ class Index extends React.Component {
                         <DatasetSelect
                           datasets={this.state.datasets}
                           urlDefinedFilterPath={this.props["*"]}
+                          intendedUri={this.props.uri}
                         />
                       )}
                     </div>

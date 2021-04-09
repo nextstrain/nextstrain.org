@@ -29,11 +29,17 @@ class DatasetSelect extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.urlDefinedFilterPath) return;
-    const filterValues = this.props.urlDefinedFilterPath
-      .split("/")           // how keywords are separated in the URL
-      .filter((x) => !!x);  // remove any empty strings
-    this.applyFilter("add", "keyword", filterValues);
+    if (this.props.urlDefinedFilterPath) {
+      const filterValues = this.props.urlDefinedFilterPath
+        .split("/")           // how keywords are separated in the URL
+        .filter((x) => !!x);  // remove any empty strings
+      this.applyFilter("add", "keyword", filterValues);
+    }
+    if (this.props.intendedUri) {
+      // switch the pathname to the intended URI of the page, thus removing any extraneous
+      // pathname fields (which are used to set filters but should not remain in the URL)
+      window.history.replaceState({}, "", this.props.intendedUri);
+    }
   }
 
   buildMatchesFilter(build, filterName, filterObjects) {
