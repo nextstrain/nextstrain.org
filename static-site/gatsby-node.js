@@ -196,7 +196,8 @@ exports.createPages = ({graphql, actions}) => {
         // Create page detailing all things SARS-CoV-2
         createPage({
           path: "/sars-cov-2",
-          component: path.resolve("src/pages/sars-cov-2.jsx")
+          matchPath: "/sars-cov-2/*",
+          component: path.resolve("src/pages/sars-cov-2-page.jsx")
         });
 
         /* NOTE: we are using "influenza" URLs for dev purposes only. This will be switched to "flu"

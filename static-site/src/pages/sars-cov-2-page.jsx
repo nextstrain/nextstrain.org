@@ -165,7 +165,14 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      {this.state.filterParsed && <DatasetSelect datasets={this.state.filterList} noDates/>}
+                      {this.state.filterParsed && (
+                        <DatasetSelect
+                          datasets={this.state.filterList}
+                          noDates
+                          urlDefinedFilterPath={this.props["*"]}
+                          intendedUri={this.props.uri}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
