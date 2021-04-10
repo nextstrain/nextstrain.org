@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import { get, sortBy } from 'lodash';
@@ -8,13 +9,21 @@ import { FilterDisplay } from "./filter-display";
 import { collectAvailableFilteringOptions, computeFilterValues } from "./filter-helpers";
 
 /**
- * <FilterData> is a (keyboard)-typing based search box intended to
- * allow users to filter samples. The filtering rules are not implemented
- * in this component, but are useful to spell out: we take the union of
- * entries within each category and then take the intersection of those unions.
+ * <DatasetSelect> is intended to render datasets [0] and expose a filtering UI to dynamically
+ * restrict the visible datasets.
+ *
+ * PROPS:
+ * @prop {string | undefined} urlDefinedFilterPath slash-separated keywords which will be applied as filters
+ * @prop {string | undefined} intendedUri Intended URI. Browser address will be replaced with this.
+ * @prop {Array} datasets Available datasets. Array of Objects.
+ * @prop {boolean} noDates Note: will be replaced in a subsequent commit
+ *
+ * @returns React Component
+ *
+ * [0] Currently only datasets are rendered, but in the future narratives and other assets
+ *     may be displayed
  */
 class DatasetSelect extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -82,5 +91,12 @@ class DatasetSelect extends React.Component {
     );
   }
 }
+
+DatasetSelect.propTypes = {
+  urlDefinedFilterPath: PropTypes.string,
+  intendedUri: PropTypes.string,
+  noDates: PropTypes.bool,
+  datasets: PropTypes.array.isRequired
+};
 
 export default DatasetSelect;
