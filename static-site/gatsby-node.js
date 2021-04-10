@@ -212,6 +212,13 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/pages/influenza-page.jsx")
         });
 
+        // proof-of-principle. Names may change.
+        createPage({
+          path: "/all",
+          matchPath: "/all/*",
+          component: path.resolve("src/pages/all-datasets.jsx")
+        });
+
         // search pages
         createPage({
           path: `/search`,

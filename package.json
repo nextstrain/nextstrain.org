@@ -40,6 +40,7 @@
     "js-yaml": "^4.0.0",
     "make-fetch-happen": "^7.1.1",
     "marked": "^0.7.0",
+    "ndjson-parse": "^1.0.4",
     "node-fetch": "^2.6.0",
     "p-limit": "^3.0.1",
     "passport": "^0.4.0",

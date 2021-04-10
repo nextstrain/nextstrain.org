@@ -150,7 +150,7 @@ export const ListDatasets = ({datasets, columns}) => {
         <HeaderRow columns={columns}/>
         <DatasetSelectionResultsContainer>
           {datasets.map((dataset) => (
-            <NormalRow dataset={dataset} columns={columns} key={columns[0].value(dataset)}/>
+            <NormalRow dataset={dataset} columns={columns} key={columns[0].url(dataset)}/>
           ))}
         </DatasetSelectionResultsContainer>
       </Grid>

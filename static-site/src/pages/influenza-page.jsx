@@ -156,7 +156,7 @@ class Index extends React.Component {
 // regularly to s3 as a resource we request here
 // representing a list of datasets to display on
 // this page with some info about each.
-async function fetchAndParseDatasetsJSON(jsonUrl) {
+export async function fetchAndParseDatasetsJSON(jsonUrl) {
   const datasetsJSON = await fetch(jsonUrl)
     .then((res) => res.text())
     .then((text) => JSON.parse(text));
