@@ -2,11 +2,10 @@ import React from "react";
 import PropTypes from 'prop-types';
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
-import { get, sortBy } from 'lodash';
 import { FilterSelect } from "./filter-selection";
 import { ListDatasets } from "./list-datasets";
 import { FilterDisplay } from "./filter-display";
-import { collectAvailableFilteringOptions, computeFilterValues } from "./filter-helpers";
+import { collectAvailableFilteringOptions, computeFilterValues, getFilteredDatasets } from "./filter-helpers";
 
 /**
  * <DatasetSelect> is intended to render datasets [0] and expose a filtering UI to dynamically
@@ -34,11 +33,11 @@ class DatasetSelect extends React.Component {
       filters: {},
     };
     this.applyFilter = (mode, trait, values) => {
-      const availableFilterValues = collectAvailableFilteringOptions(this.props.datasets).map((o) => o.value);
+      const availableFilterValues = collectAvailableFilteringOptions(this.props.datasets, this.props.columns)
+        .map((o) => o.value);
       const filters = computeFilterValues(this.state.filters, availableFilterValues, mode, trait, values);
       if (filters) this.setState({filters});
     };
-    this.getFilteredDatasets = this.getFilteredDatasets.bind(this);
   }
 
   componentDidMount() {
@@ -55,27 +54,9 @@ class DatasetSelect extends React.Component {
     }
   }
 
-  buildMatchesFilter(build, filterName, filterObjects) {
-    const keywordArray = get(build, "filename").replace('.json', '').split("_");
-    return filterObjects.every((filter) => {
-      if (!filter.active) return true; // inactive filter is the same as a match
-      return keywordArray.includes(filter.value);
-    });
-  }
-
-  getFilteredDatasets() {
-    // TODO this doesn't care about categories
-    const filtered = this.props.datasets
-      .filter((b) => b.url !== undefined)
-      .filter((b) => Object.entries(this.state.filters)
-        .filter((filterEntry) => filterEntry[1].length)
-        .every(([filterName, filterValues]) => this.buildMatchesFilter(b, filterName, filterValues)));
-    return sortBy(filtered, [(d) => d.filename.toLowerCase()]);
-  }
-
   render() {
     const childrenToRender = this.props.interface || ["FilterSelect", "FilterDisplay", "ListDatasets"];
-    const filteredDatasets = this.getFilteredDatasets();
+    const filteredDatasets = getFilteredDatasets(this.props.datasets, this.state.filters, this.props.columns);
     return (
       <>
         {childrenToRender.map((Child) => {
@@ -84,7 +65,7 @@ class DatasetSelect extends React.Component {
               return (
                 <FilterSelect
                   key={String(Object.keys(this.state.filters).length)}
-                  datasets={this.props.datasets}
+                  options={collectAvailableFilteringOptions(this.props.datasets, this.props.columns)}
                   applyFilter={this.applyFilter}
                 />
               );
