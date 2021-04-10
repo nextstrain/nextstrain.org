@@ -10,13 +10,9 @@ import { FaInfoCircle } from "react-icons/fa";
 import Select from "react-virtualized-select";
 import * as splashStyles from "../splash/styles";
 import { collectAvailableFilteringOptions } from "./filter-helpers";
+import { CenteredContainer } from "./styles";
 
 const DEBOUNCE_TIME = 200;
-
-const Container = styled.div`
-  margin-bottom: 0px;
-  font-size: 14px;
-`;
 
 const StyledTooltip = styled(ReactTooltip)`
   max-width: 30vh;
@@ -32,7 +28,7 @@ export const FilterSelect = ({datasets, applyFilter}) => {
   const options = collectAvailableFilteringOptions(datasets);
 
   return (
-    <Container>
+    <CenteredContainer>
       <splashStyles.H3 left>
         {`Filter datasets `}
         <>
@@ -64,7 +60,7 @@ export const FilterSelect = ({datasets, applyFilter}) => {
         valueKey="label"
         onChange={(sel) => applyFilter("add", sel.value[0], [sel.value[1]])}
       />
-    </Container>
+    </CenteredContainer>
   );
 };
 

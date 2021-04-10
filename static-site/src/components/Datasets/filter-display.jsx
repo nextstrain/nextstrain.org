@@ -5,6 +5,7 @@
 import { sum } from "lodash";
 import React from "react";
 import { Tooltip, FilterBadge} from "./filterBadge";
+import { CenteredContainer } from "./styles";
 
 
 const Intersect = ({id}) => (
@@ -31,7 +32,7 @@ export const FilterDisplay = ({filters, applyFilter}) => {
   if (!sum(filtersByCategory.map((c) => c.badges.length))) return null;
 
   return (
-    <>
+    <CenteredContainer>
       {"Filtered to "}
       {filtersByCategory.map((filterCategory, idx) => {
         const multipleFilterBadges = filterCategory.badges.length > 1;
@@ -68,7 +69,7 @@ export const FilterDisplay = ({filters, applyFilter}) => {
         );
       })}
       {". "}
-    </>
+    </CenteredContainer>
   );
 };
 

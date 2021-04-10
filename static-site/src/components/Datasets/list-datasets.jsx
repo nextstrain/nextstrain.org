@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import styled from 'styled-components';
 import { MdPerson } from "react-icons/md";
 import {Grid, Col, Row} from 'react-styled-flexboxgrid';
+import { CenteredContainer } from "./styles";
 
 const logoPNG = require("../../../static/logos/favicon.png");
 
@@ -53,7 +54,7 @@ const LogoContainer = styled.a`
 
 export const ListDatasets = ({datasets, showDates}) => {
   return (
-    <>
+    <CenteredContainer>
       <Grid fluid>
         <DatasetContainer key="Column labels" style={{borderBottom: "1px solid #CCC"}}>
           <Row>
@@ -109,6 +110,6 @@ export const ListDatasets = ({datasets, showDates}) => {
           }
         </DatasetSelectionResultsContainer>
       </Grid>
-    </>
+    </CenteredContainer>
   );
 };
