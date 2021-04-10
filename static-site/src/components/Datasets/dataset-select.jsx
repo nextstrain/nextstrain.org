@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import { get, sortBy } from 'lodash';
-import { DatasetFilteringSelection } from "./filter-selection";
+import { FilterSelect } from "./filter-selection";
 import { ListDatasets } from "./list-datasets";
 import { FilterDisplay } from "./filter-display";
 import { collectAvailableFilteringOptions, computeFilterValues } from "./filter-helpers";
@@ -17,6 +17,10 @@ import { collectAvailableFilteringOptions, computeFilterValues } from "./filter-
  * @prop {string | undefined} intendedUri Intended URI. Browser address will be replaced with this.
  * @prop {Array} datasets Available datasets. Array of Objects.
  * @prop {boolean} noDates Note: will be replaced in a subsequent commit
+ * @prop {Array | undefined} interface What elements to render? Elements may be strings or functinos. Order is respected.
+ *       Available strings: "FilterSelect" "FilterDisplay", "ListDatasets"
+ *       Functions will be handed an object with key(s): `datasets` (which may be filtered), and should return a react component for rendering.
+ *       Default: ["FilterSelect", "FilterDisplay", "ListDatasets"]
  *
  * @returns React Component
  *
@@ -70,23 +74,49 @@ class DatasetSelect extends React.Component {
   }
 
   render() {
-    // options only need to be calculated a single time per render, and by adding a debounce
-    // to `loadFilterOptions` we don't slow things down by comparing queries to a large number of options
+    const childrenToRender = this.props.interface || ["FilterSelect", "FilterDisplay", "ListDatasets"];
+    const filteredDatasets = this.getFilteredDatasets();
     return (
       <>
-        <DatasetFilteringSelection
-          key={String(Object.keys(this.state.filters).length)}
-          datasets={this.props.datasets}
-          applyFilter={this.applyFilter}
-        />
-        <FilterDisplay
-          filters={this.state.filters}
-          applyFilter={this.applyFilter}
-        />
-        <ListDatasets
-          datasets={this.getFilteredDatasets()}
-          showDates={!this.props.noDates}
-        />
+        {childrenToRender.map((Child) => {
+          switch (Child) {
+            case "FilterSelect":
+              return (
+                <FilterSelect
+                  key={String(Object.keys(this.state.filters).length)}
+                  datasets={this.props.datasets}
+                  applyFilter={this.applyFilter}
+                />
+              );
+            case "FilterDisplay":
+              return (
+                <FilterDisplay
+                  key="FilterDisplay"
+                  filters={this.state.filters}
+                  applyFilter={this.applyFilter}
+                />
+              );
+            case "ListDatasets":
+              return (
+                <ListDatasets
+                  key="ListDatasets"
+                  datasets={filteredDatasets}
+                  showDates={!this.props.noDates}
+                />
+              );
+            default:
+              if (typeof Child === "function") {
+                return (
+                  <Child
+                    key={Child.name}
+                    datasets={filteredDatasets}
+                  />
+                );
+              }
+              console.error("Unknown interface element passed to DatasetSelect");
+              return null;
+          }
+        })}
       </>
     );
   }
@@ -95,6 +125,7 @@ class DatasetSelect extends React.Component {
 DatasetSelect.propTypes = {
   urlDefinedFilterPath: PropTypes.string,
   intendedUri: PropTypes.string,
+  interface: PropTypes.array,
   noDates: PropTypes.bool,
   datasets: PropTypes.array.isRequired
 };

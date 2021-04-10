@@ -27,7 +27,7 @@ const StyledTooltip = styled(ReactTooltip)`
   pointer-events: auto !important;
 `;
 
-export const DatasetFilteringSelection = ({datasets, applyFilter}) => {
+export const FilterSelect = ({datasets, applyFilter}) => {
 
   const options = collectAvailableFilteringOptions(datasets);
 
