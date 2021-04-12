@@ -61,7 +61,7 @@ const sendV1Dataset = async (res, metaJsonUrl, treeJsonUrl) => {
  * @throws {NotFound} Throws if the dataset didn't exist (or the streaming failed)
  */
 const streamMainV2Dataset = async (res, dataset) => {
-  const main = dataset.urlFor("main");
+  const main = await dataset.urlFor("main");
   try {
     await new Promise((resolve, reject) => {
       let statusCode;
@@ -122,7 +122,7 @@ const getDataset = async (req, res) => {
   // construct fetch URL
   let datasetInfo;
   try {
-    datasetInfo = helpers.parsePrefix(query.prefix, query);
+    datasetInfo = await helpers.parsePrefix(query.prefix, query);
   } catch (err) {
     /* Return a 204 No Content when Auspice makes a dataset request to a
      * valid source root without a dataset path.
@@ -147,7 +147,7 @@ const getDataset = async (req, res) => {
   /* If we got a partial prefix and resolved it into a full one, redirect to
    * that.  Auspice will notice and update its displayed URL appropriately.
    */
-  if (resolvedPrefix !== helpers.canonicalizePrefix(query.prefix)) {
+  if (resolvedPrefix !== await helpers.canonicalizePrefix(query.prefix)) {
     // A absolute base is required but we won't use it, so use something bogus.
     const resolvedUrl = new URL(req.originalUrl, "http://x");
     resolvedUrl.searchParams.set("prefix", resolvedPrefix);
@@ -160,7 +160,7 @@ const getDataset = async (req, res) => {
   }
 
   if (query.type) {
-    const url = dataset.urlFor(query.type);
+    const url = await dataset.urlFor(query.type);
     return requestCertainFileType(res, req, url, query);
   }
 
@@ -170,7 +170,7 @@ const getDataset = async (req, res) => {
   } catch (errV2) {
     try {
       /* attempt to fetch the meta + tree JSONs, combine, and send */
-      return await sendV1Dataset(res, dataset.urlFor("meta"), dataset.urlFor("tree"));
+      return await sendV1Dataset(res, await dataset.urlFor("meta"), await dataset.urlFor("tree"));
     } catch (errV1) {
       if (dataset.isRequestValidWithoutDataset) {
         utils.verbose("Request is valid, but no dataset available. Returning 204.");

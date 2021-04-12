@@ -31,16 +31,16 @@ const getAvailable = async (req, res) => {
   }
 
   return res.json({
-    datasets: datasets.map((path) => ({
-      request: joinPartsIntoPrefix({source, prefixParts: [path]}),
+    datasets: await Promise.all(datasets.map(async (path) => ({
+      request: await joinPartsIntoPrefix({source, prefixParts: [path]}),
       secondTreeOptions: source.secondTreeOptions(path),
       buildUrl: source.name === "community"
         ? `https://github.com/${source.repo}`
         : null
-    })),
-    narratives: narratives.map((path) => ({
-      request: joinPartsIntoPrefix({source, prefixParts: [path], isNarrative: true})
-    }))
+    }))),
+    narratives: await Promise.all(narratives.map(async (path) => ({
+      request: await joinPartsIntoPrefix({source, prefixParts: [path], isNarrative: true})
+    })))
   });
 };
 
