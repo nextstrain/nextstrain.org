@@ -9,7 +9,6 @@ import ReactTooltip from 'react-tooltip';
 import { FaInfoCircle } from "react-icons/fa";
 import Select from "react-virtualized-select";
 import * as splashStyles from "../splash/styles";
-import { collectAvailableFilteringOptions } from "./filter-helpers";
 import { CenteredContainer } from "./styles";
 
 const DEBOUNCE_TIME = 200;
@@ -23,9 +22,7 @@ const StyledTooltip = styled(ReactTooltip)`
   pointer-events: auto !important;
 `;
 
-export const FilterSelect = ({datasets, applyFilter}) => {
-
-  const options = collectAvailableFilteringOptions(datasets);
+export const FilterSelect = ({options, applyFilter}) => {
 
   return (
     <CenteredContainer>

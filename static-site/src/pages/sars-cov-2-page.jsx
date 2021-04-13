@@ -1,6 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import { MdPerson } from "react-icons/md";
 import { get } from 'lodash';
 import config from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
@@ -20,6 +21,9 @@ import { SituationReportsByLanguage } from "../components/Datasets/situation-rep
 import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
+
+const nextstrainLogoPNG = require("../../static/logos/favicon.png");
+
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
@@ -104,6 +108,27 @@ const contents = [
   }
 ];
 
+const tableColumns = [
+  {
+    name: "Dataset",
+    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
+    url: (dataset) => dataset.url
+  },
+  {
+    name: "Contributor",
+    value: (dataset) => dataset.contributor,
+    valueMobile: () => "",
+    url: (dataset) => dataset.contributorUrl,
+    logo: (dataset) => dataset.contributor==="Nextstrain Team" ?
+      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
+      undefined,
+    logoMobile: (dataset) => dataset.contributor==="Nextstrain Team" ?
+      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
+      <MdPerson/>
+  }
+];
+
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -165,7 +190,7 @@ class Index extends React.Component {
                   {this.state.filterParsed && (
                     <DatasetSelect
                       datasets={this.state.filterList}
-                      noDates
+                      columns={tableColumns}
                       interface={[
                         DatasetMap,
                         "FilterSelect",

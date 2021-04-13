@@ -2,11 +2,10 @@ import React from "react";
 import PropTypes from 'prop-types';
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
-import { get, sortBy } from 'lodash';
 import { FilterSelect } from "./filter-selection";
 import { ListDatasets } from "./list-datasets";
 import { FilterDisplay } from "./filter-display";
-import { collectAvailableFilteringOptions, computeFilterValues } from "./filter-helpers";
+import { collectAvailableFilteringOptions, computeFilterValues, getFilteredDatasets } from "./filter-helpers";
 
 /**
  * <DatasetSelect> is intended to render datasets [0] and expose a filtering UI to dynamically
@@ -16,7 +15,7 @@ import { collectAvailableFilteringOptions, computeFilterValues } from "./filter-
  * @prop {string | undefined} urlDefinedFilterPath slash-separated keywords which will be applied as filters
  * @prop {string | undefined} intendedUri Intended URI. Browser address will be replaced with this.
  * @prop {Array} datasets Available datasets. Array of Objects.
- * @prop {boolean} noDates Note: will be replaced in a subsequent commit
+ * @prop {Array} columns Columns to be rendered by the table. See <ListDatasets> for signature.
  * @prop {Array | undefined} interface What elements to render? Elements may be strings or functinos. Order is respected.
  *       Available strings: "FilterSelect" "FilterDisplay", "ListDatasets"
  *       Functions will be handed an object with key(s): `datasets` (which may be filtered), and should return a react component for rendering.
@@ -34,11 +33,11 @@ class DatasetSelect extends React.Component {
       filters: {},
     };
     this.applyFilter = (mode, trait, values) => {
-      const availableFilterValues = collectAvailableFilteringOptions(this.props.datasets).map((o) => o.value);
+      const availableFilterValues = collectAvailableFilteringOptions(this.props.datasets, this.props.columns)
+        .map((o) => o.value);
       const filters = computeFilterValues(this.state.filters, availableFilterValues, mode, trait, values);
       if (filters) this.setState({filters});
     };
-    this.getFilteredDatasets = this.getFilteredDatasets.bind(this);
   }
 
   componentDidMount() {
@@ -55,27 +54,9 @@ class DatasetSelect extends React.Component {
     }
   }
 
-  buildMatchesFilter(build, filterName, filterObjects) {
-    const keywordArray = get(build, "filename").replace('.json', '').split("_");
-    return filterObjects.every((filter) => {
-      if (!filter.active) return true; // inactive filter is the same as a match
-      return keywordArray.includes(filter.value);
-    });
-  }
-
-  getFilteredDatasets() {
-    // TODO this doesn't care about categories
-    const filtered = this.props.datasets
-      .filter((b) => b.url !== undefined)
-      .filter((b) => Object.entries(this.state.filters)
-        .filter((filterEntry) => filterEntry[1].length)
-        .every(([filterName, filterValues]) => this.buildMatchesFilter(b, filterName, filterValues)));
-    return sortBy(filtered, [(d) => d.filename.toLowerCase()]);
-  }
-
   render() {
     const childrenToRender = this.props.interface || ["FilterSelect", "FilterDisplay", "ListDatasets"];
-    const filteredDatasets = this.getFilteredDatasets();
+    const filteredDatasets = getFilteredDatasets(this.props.datasets, this.state.filters, this.props.columns);
     return (
       <>
         {childrenToRender.map((Child) => {
@@ -84,7 +65,7 @@ class DatasetSelect extends React.Component {
               return (
                 <FilterSelect
                   key={String(Object.keys(this.state.filters).length)}
-                  datasets={this.props.datasets}
+                  options={collectAvailableFilteringOptions(this.props.datasets, this.props.columns)}
                   applyFilter={this.applyFilter}
                 />
               );
@@ -100,8 +81,8 @@ class DatasetSelect extends React.Component {
               return (
                 <ListDatasets
                   key="ListDatasets"
+                  columns={this.props.columns}
                   datasets={filteredDatasets}
-                  showDates={!this.props.noDates}
                 />
               );
             default:
@@ -126,7 +107,7 @@ DatasetSelect.propTypes = {
   urlDefinedFilterPath: PropTypes.string,
   intendedUri: PropTypes.string,
   interface: PropTypes.array,
-  noDates: PropTypes.bool,
+  columns: PropTypes.array.isRequired,
   datasets: PropTypes.array.isRequired
 };
 
