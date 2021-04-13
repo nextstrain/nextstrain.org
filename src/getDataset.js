@@ -4,6 +4,7 @@ const assert = require('assert').strict;
 const utils = require("./utils");
 const helpers = require("./getDatasetHelpers");
 const {ResourceNotFoundError, NoDatasetPathError} = require("./exceptions");
+const {getParentPage} = require("../redirects");
 const auspice = require("auspice");
 const request = require('request');
 
@@ -80,7 +81,9 @@ const requestMainDataset = async (res, dataset) => {
         }
         /* Check for a 404 status code after we've had the opportunity to do a
         follow-up request for a V1 dataset. */
-        if (response.statusCode === 404) reject(new ResourceNotFoundError());
+        if (response.statusCode === 404 && dataToReturn === 404) {
+          reject(new ResourceNotFoundError());
+        }
         return reject(dataToReturn);
       });
   });
@@ -179,6 +182,13 @@ const getDataset = async (req, res) => {
       }
 
       if (err instanceof ResourceNotFoundError) {
+        try {
+          const parentPage = getParentPage(dataset);
+          if (parentPage) {
+            res.set({'nextstrain-parent-page': parentPage}); // auspice will redirect the browser here
+            return res.status(404).send(`The requested dataset does not exist. Please visit the parent page ${parentPage}.`);
+          }
+        } catch (e) { /* no-op */ }
         return res.status(404).send("The requested URL does not exist.");
       }
 

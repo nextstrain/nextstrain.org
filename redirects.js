@@ -1,5 +1,6 @@
 const helpers = require("./src/getDatasetHelpers");
 const { parseNarrativeLanguage } = require("./src/utils");
+const sources = require("./src/sources");
 
 const setup = (app) => {
 
@@ -120,6 +121,21 @@ const setup = (app) => {
 
 };
 
+/**
+ * A getDataset request for the main dataset which 404s should redirect to the closest parent page.
+ * Normally this comes from Auspice when it attempts to load a page X but the dataset doesn't exist.
+ * Instead of returning 404 and letting auspice handle it, we return a redirect to a page which
+ * will be rendered by Gatsby.
+ */
+const getParentPage = (dataset) => {
+  // currently we only redirect core pages starting with "flu"
+  if (dataset.source.name==="core" && dataset.pathParts && dataset.pathParts[0]==="flu") {
+    return "influenza";
+  }
+  return false;
+};
+
 module.exports = {
-  setup
+  setup,
+  getParentPage
 };
