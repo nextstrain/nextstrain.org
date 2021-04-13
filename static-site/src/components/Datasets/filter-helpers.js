@@ -3,7 +3,7 @@
  * Most code and logic was originally lifted from Auspice
  */
 
-import {get, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 
 export function computeFilterValues(currentFilters, availableFilterValues, mode, trait, values) {
   let newValues;
@@ -67,31 +67,78 @@ export function computeFilterValues(currentFilters, availableFilterValues, mode,
   return filters;
 }
 
-
 /**
- * Todo - this function should consider currently selected filters and exclude them
+ * Given a list of datasets and columns (intended for display), create available options for
+ * selection in the dropdown.
+ * Note that the first column (dataset) is special cased, and ` / `-split into keywords
  */
-export function collectAvailableFilteringOptions(datasets) {
+export function collectAvailableFilteringOptions(datasets, columns) {
   /**
    * The <Select> component needs an array of options to display (and search across). We compute this
    * by looping across each filter and calculating all valid options for each. This function runs
    * each time a filter is toggled on / off.
    */
+  // Todo - this function should consider currently selected filters and exclude them
   const optionsObject = datasets
-    .filter((b) => b.url !== undefined)
     .reduce((accumulator, dataset) => {
-      const filename = get(dataset, "filename");
-      const keywordArray = filename.replace('.json', '').split("_");
-      keywordArray.forEach((keyword) => {
-        if (accumulator.seenValues["keyword"]) {
-          if (accumulator.seenValues["keyword"].has(keyword)) return;
-        } else {
-          accumulator.seenValues["keyword"] = new Set([]);
+      const pairs = parseFiltersForDataset(dataset, columns);
+      pairs.forEach(([filterType, filterValue]) => {
+        // init `seenValues` if the `filterType` is novel
+        if (!accumulator.seenValues[filterType]) {
+          accumulator.seenValues[filterType] = new Set([]);
         }
-        accumulator.seenValues["keyword"].add(keyword);
-        accumulator.options.push({label: `keyword → ${keyword}`, value: ["keyword", keyword]});
+        // add the filterValue to both `seenValues` and, if new, `options`
+        if (accumulator.seenValues[filterType].has(filterValue.toLowerCase())) return;
+        accumulator.seenValues[filterType].add(filterValue.toLowerCase());
+        accumulator.options.push({label: `${filterType} → ${filterValue}`, value: [filterType, filterValue]});
       });
       return accumulator;
     }, {options: [], seenValues: {}});
   return sortBy(optionsObject.options, [(o) => o.label.toLowerCase()]);
+}
+
+function parseFiltersForDataset(dataset, columns) {
+  const pairs = [];
+  columns.forEach((column, idx) => {
+    const filterType = idx===0 ? "keyword" : column.name;
+    const filterValues = (idx===0 ?
+      column.value(dataset).split(/\s?\/\s?/) :
+      [column.value(dataset)]
+    ).filter((v) => !!v);
+    if (!filterValues.length) return;
+    filterValues.forEach((filterValue) => {
+      pairs.push([filterType, filterValue]);
+    });
+  });
+  return pairs;
+}
+
+export function getFilteredDatasets(datasets, filters, columns) {
+  const activeFiltersPerType = {};
+  Object.keys(filters).forEach((filterType) => {
+    const pairs = [];
+    filters[filterType].forEach((filterObject) => {
+      if (filterObject.active) {
+        pairs.push(`${filterType}__${filterObject.value}`);
+      }
+    });
+    if (pairs.length) activeFiltersPerType[filterType] = pairs;
+  });
+
+  const filteredDatasets = datasets
+    .filter((dataset) => dataset.url !== undefined)
+    .filter((dataset) => {
+      // a given dataset defines a number of filter select option pairs [filterType, filterValue].
+      // For the currently active filterType(s) and corresponding values, at least one value _must_ be present in
+      // the dataset for it to be valid (i.e. pass filtering)
+      const datasetSelectOptions = new Set(
+        parseFiltersForDataset(dataset, columns)
+          .map((p) => p.join('__')) // same format as used in `activeFiltersPerType`;
+      );
+      return Object.values(activeFiltersPerType)
+        .every((activeFilterPairList) =>
+          activeFilterPairList.some((filterPair) => datasetSelectOptions.has(filterPair))
+        );
+    });
+  return sortBy(filteredDatasets, [(d) => d.filename.toLowerCase()]); // TODO: this relies on `filename` being present
 }
