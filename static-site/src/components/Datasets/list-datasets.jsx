@@ -18,7 +18,7 @@ const StyledLink = styled.a`
 const DatasetSelectionResultsContainer = styled.div`
   height: 600px;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: auto;
 `;
 
 const RowContainer = styled.div`

@@ -43,20 +43,22 @@ export const FilterSelect = ({options, applyFilter}) => {
           </StyledTooltip>
         </>
       </splashStyles.H3>
-      <Select
-        async
-        name="filterQueryBox"
-        placeholder="Type filter query here..."
-        value={undefined}
-        arrowRenderer={null}
-        loadOptions={debounce((input, callback) => callback(null, {options}), DEBOUNCE_TIME)}
-        ignoreAccents={false}
-        clearable={false}
-        searchable
-        multi={false}
-        valueKey="label"
-        onChange={(sel) => applyFilter("add", sel.value[0], [sel.value[1]])}
-      />
+      <span style={{fontSize: "14px"}}>
+        <Select
+          async
+          name="filterQueryBox"
+          placeholder="Type filter query here..."
+          value={undefined}
+          arrowRenderer={null}
+          loadOptions={debounce((input, callback) => callback(null, {options}), DEBOUNCE_TIME)}
+          ignoreAccents={false}
+          clearable={false}
+          searchable
+          multi={false}
+          valueKey="label"
+          onChange={(sel) => applyFilter("add", sel.value[0], [sel.value[1]])}
+        />
+      </span>
     </CenteredContainer>
   );
 };
