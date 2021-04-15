@@ -23,6 +23,11 @@ const setup = (app) => {
   app.route(["/ncov"])
     .get((req, res) => res.redirect('/sars-cov-2'));
 
+  /* handle redirects for inrb-drc (first of the Nextstrain groups) */
+  app.get("/inrb-drc*", (req, res) => {
+    res.redirect(`/groups${req.originalUrl}`);
+  });
+
   /*
    * Redirect to translations of narratives if the client has
    * set language preference and the translation is available
