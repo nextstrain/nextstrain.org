@@ -106,11 +106,6 @@ app.route(auspicePaths).get((req, res) => {
   res.sendFile(auspiceAssetPath("dist", "index.html"), {headers: {"Cache-Control": "no-cache, no-store, must-revalidate"}});
 });
 
-/* handle redirects for inrb-drc (first of the Nextstrain groups) */
-app.get("/inrb-drc*", (req, res) => {
-  res.redirect(`/groups${req.originalUrl}`);
-});
-
 /* Everything else hits our Gatsby app's entrypoint.
  */
 app.get("*", (req, res) => {
