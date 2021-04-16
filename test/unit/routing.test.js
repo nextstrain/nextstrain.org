@@ -32,7 +32,9 @@ describe('Check requests are handled by Auspice or Gatsby', () => {
     /* CORE datasets which don't (normally) exist */
     "/zika/no",
     "/flu/h3n2/ha/3y", // missing "seasonal"
-    "/ncov/antartica"
+    "/ncov/antartica",
+    /* STAGING datasets which don't exist are handled by Gatsby */
+    "/staging/not-a-dataset"
   ];
 
   for (let i=0; i<auspicePaths.length; i++) {
