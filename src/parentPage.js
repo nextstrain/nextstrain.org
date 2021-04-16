@@ -27,6 +27,8 @@ function getClosestParentPage(gatsbyAssetPath, path) {
       case ("sars-cov-2"): // fallthrough
       case ("ncov"):
         return gatsbyAssetPath("sars-cov-2", "index.html");
+      case ("staging"):
+        return gatsbyAssetPath("staging", "index.html");
       default:
         // unknown parent page
         return undefined;

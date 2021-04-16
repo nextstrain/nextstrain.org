@@ -39,7 +39,6 @@ const potentialAuspiceRoutes = [
   ...coreBuilds.map(url => url + "/*"),
   "/narratives",
   "/narratives/*",
-  "/staging",
   "/staging/*",
   ...groups.map((group) => `/groups/${group}`),
   ...groups.map((group) => `/groups/${group}/*`),
@@ -80,7 +79,6 @@ const isRequestBackedByAuspiceDataset = async (req, res, next) => {
     if (
       pathParts[0]==="status" ||
       pathParts[0]==="narratives" ||
-      pathParts[0]==="staging" ||
       pathParts[0]==="groups" ||
       pathParts[0]==="community" || // note that /community itself is redirected earlier
       pathParts[0]==="fetch"

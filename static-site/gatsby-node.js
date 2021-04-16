@@ -204,6 +204,11 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/sections/sars-cov-2-page.jsx")
         });
 
+        createPage({
+          path: "/staging",
+          component: path.resolve("src/sections/staging.jsx")
+        });
+
         /* NOTE: we are using "influenza" URLs for dev purposes only. This will be switched to "flu"
         when this functionality is released & publicized. For unknown reasons, if the component is named
         `influenza.jsx` we lose the matchPath functionality. Therefore in a future commit we should simultaneously
