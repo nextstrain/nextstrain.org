@@ -20,6 +20,7 @@
     "smoke-test": "NODE_ENV=test ENV=dev jest ./test/smoke-test/auspice_client_requests.test.js",
     "smoke-test:ci": "start-server-and-test server http://localhost:5000 smoke-test",
     "test:ci": "npm run smoke-test:ci",
+    "test:unit": "jest ./test/unit*",
     "dev": "./develop.sh"
   },
   "dependencies": {
