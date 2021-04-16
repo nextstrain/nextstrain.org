@@ -1,6 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import { MdPerson } from "react-icons/md";
 import { get } from 'lodash';
 import config from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
@@ -16,10 +17,13 @@ import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import DatasetMap from "../components/Datasets/dataset-map";
-import SituationReports from "../components/Datasets/sit-reps";
-import TOC from "../components/Datasets/toc";
+import { SituationReportsByLanguage } from "../components/Datasets/situation-reports-by-language";
+import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
+
+const nextstrainLogoPNG = require("../../static/logos/favicon.png");
+
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
@@ -104,6 +108,27 @@ const contents = [
   }
 ];
 
+const tableColumns = [
+  {
+    name: "Dataset",
+    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
+    url: (dataset) => dataset.url
+  },
+  {
+    name: "Contributor",
+    value: (dataset) => dataset.contributor,
+    valueMobile: () => "",
+    url: (dataset) => dataset.contributorUrl,
+    logo: (dataset) => dataset.contributor==="Nextstrain Team" ?
+      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
+      undefined,
+    logoMobile: (dataset) => dataset.contributor==="Nextstrain Team" ?
+      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
+      <MdPerson/>
+  }
+];
+
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -145,7 +170,7 @@ class Index extends React.Component {
               </FlexCenter>
               <MediumSpacer />
 
-              <TOC data={contents} />
+              <PathogenPageIntroduction data={contents} />
 
               <ScrollableAnchor id={"datasets"}>
                 <div>
@@ -160,14 +185,23 @@ class Index extends React.Component {
                     If you know of a dataset not listed here, please let us know!
                     Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
                   </splashStyles.FocusParagraph>
-                  <DatasetMap datasets={this.state.catalogueDatasets}/>
-                  <div className="row">
-                    <MediumSpacer />
-                    <div className="col-md-1"/>
-                    <div className="col-md-10">
-                      {this.state.filterParsed && <DatasetSelect datasets={this.state.filterList} noDates/>}
-                    </div>
-                  </div>
+
+                  <HugeSpacer/>
+                  {this.state.filterParsed && (
+                    <DatasetSelect
+                      datasets={this.state.filterList}
+                      columns={tableColumns}
+                      interface={[
+                        DatasetMap,
+                        "FilterSelect",
+                        "FilterDisplay",
+                        "ListDatasets"
+                      ]}
+                      urlDefinedFilterPath={this.props["*"]}
+                      intendedUri={this.props.uri}
+                    />
+                  )}
+
                 </div>
               </ScrollableAnchor>
 
@@ -189,7 +223,7 @@ class Index extends React.Component {
                     <MediumSpacer />
                     <div className="col-md-1"/>
                     <div className="col-md-10">
-                      <SituationReports parseSitRepInfo={parseNcovSitRepInfo}/>
+                      <SituationReportsByLanguage parseSitRepInfo={parseNcovSitRepInfo}/>
                     </div>
                   </div>
                 </div>

@@ -194,28 +194,39 @@ exports.createPages = ({graphql, actions}) => {
         });
 
         // Create page detailing all things SARS-CoV-2
+        // Note that this is in src/sections, not src/pages. This is because we don't
+        // want to render anything at the exact url of nextstrain.org/sars-cov-2-page
+        // and Gatsby auto-creates such pages from any jsx file in the src/pages directory.
+        // Many of the pages created here are in src/sections for the same reason.
         createPage({
           path: "/sars-cov-2",
-          component: path.resolve("src/pages/sars-cov-2.jsx")
+          matchPath: "/sars-cov-2/*",
+          component: path.resolve("src/sections/sars-cov-2-page.jsx")
         });
 
-        // Create page detailing all things seasonal influenza
+        /* NOTE: we are using "influenza" URLs for dev purposes only. This will be switched to "flu"
+        when this functionality is released & publicized. For unknown reasons, if the component is named
+        `influenza.jsx` we lose the matchPath functionality. Therefore in a future commit we should simultaneously
+        change the path & matchPath to "flu", change the page back to `influenza.jsx`, and update the routing logic of the
+        server so that URLs starting with /flu which define valid (core) datasets, and only these, are sent to auspice,
+        with the rest falling through to Gatsby to be handled here */
         createPage({
           path: "/influenza",
-          component: path.resolve("src/pages/influenza.jsx")
+          matchPath: "/influenza/*",
+          component: path.resolve("src/sections/influenza-page.jsx")
         });
 
         // search pages
         createPage({
           path: `/search`,
-          component: path.resolve("src/pages/sequence-search-list.jsx"),
+          component: path.resolve("src/sections/sequence-search-list.jsx"),
           context: {searchPages}
         });
         searchPages.forEach(({urlName, displayName, jsonUrl}) => {
           console.log(`created page at /search/${urlName}`);
           createPage({
             path: `/search/${urlName}`,
-            component: path.resolve("src/pages/sequence-search.jsx"),
+            component: path.resolve("src/sections/sequence-search.jsx"),
             context: {urlName, displayName, jsonUrl}
           });
         });

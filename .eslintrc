@@ -37,6 +37,7 @@ rules:
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
   react/jsx-first-prop-new-line: off
   react/no-did-mount-set-state: off
+  react/require-default-props: off
   react/no-did-update-set-state: off
   react/prop-types: off # possibly reinstate
   react/sort-comp: off # possibly reinstate

@@ -13,8 +13,10 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
-import TOC from "../components/Datasets/toc";
+import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import DatasetSelect from "../components/Datasets/dataset-select";
+
+const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
 const title = "Influenza resources";
 const abstract = `The Nextstrain team maintains datasets and other tools for analyzing a variety of influenza viruses.
@@ -54,6 +56,25 @@ const contents = [
   }
 ];
 
+const tableColumns = [
+  {
+    name: "Dataset",
+    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
+    url: (dataset) => dataset.url
+  },
+  {
+    name: "Contributor",
+    value: () => "Nextstrain",
+    valueMobile: () => "",
+    url: () => "https://nextstrain.org",
+    logo: () => (<img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/>)
+  },
+  {
+    name: "Uploaded Date",
+    value: (dataset) => dataset.date_uploaded
+  }
+];
+
 
 class Index extends React.Component {
   constructor(props) {
@@ -65,7 +86,6 @@ class Index extends React.Component {
       datasetsUrl: "https://data.nextstrain.org/datasets_influenza.json"
     };
   }
-
   async componentDidMount() {
     try {
       const datasets = await fetchAndParseDatasetsJSON(this.state.datasetsUrl);
@@ -98,26 +118,23 @@ class Index extends React.Component {
               </FlexCenter>
               <MediumSpacer />
 
-              <TOC data={contents} />
+              <PathogenPageIntroduction data={contents} />
 
               <ScrollableAnchor id={"datasets"}>
                 <div>
                   <HugeSpacer /><HugeSpacer />
-                  <splashStyles.H2 left>
+                  <splashStyles.H2>
                     Influenza datasets
                   </splashStyles.H2>
-                  <SmallSpacer />
-                  <splashStyles.FocusParagraph>
-                    This section is an index of Nextstrain datasets for flu, organized by type.
-                  </splashStyles.FocusParagraph>
-                  <div className="row">
-                    <MediumSpacer />
-                    <div className="col-md-1"/>
-                    <div className="col-md-10">
-                      {this.state.dataLoaded &&
-                      <DatasetSelect datasets={this.state.datasets} />}
-                    </div>
-                  </div>
+                  <HugeSpacer />
+                  {this.state.dataLoaded && (
+                    <DatasetSelect
+                      datasets={this.state.datasets}
+                      columns={tableColumns}
+                      urlDefinedFilterPath={this.props["*"]}
+                      intendedUri={this.props.uri}
+                    />
+                  )}
                   { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
                               Something went wrong getting data.
                               Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>

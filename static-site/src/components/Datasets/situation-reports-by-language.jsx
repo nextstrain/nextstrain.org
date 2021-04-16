@@ -12,7 +12,7 @@ const charonGetAvailableAddress = "/charon/getAvailable";
  * A component to render all situation reports for a given pathogen.
  * Data is obtained on page load by a API call to /charon/getAvailable.
  */
-class Index extends React.Component {
+export class SituationReportsByLanguage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {hasError: false};
@@ -63,7 +63,7 @@ class Index extends React.Component {
         this.setState({ narrativesByLanguage: this.getNarrativesByLanguage(json) });
       })
       .catch(error => {
-        console.log("The following error occured during fetching or parsing situation reports:", error);
+        console.log("The following error occurred during fetching or parsing situation reports:", error);
         this.setState({ hasError: true });
       });
   }
@@ -109,5 +109,3 @@ class Index extends React.Component {
     );
   }
 }
-
-export default Index;
