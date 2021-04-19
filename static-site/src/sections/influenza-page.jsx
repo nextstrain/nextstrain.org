@@ -1,10 +1,5 @@
 import React from "react";
-import Helmet from "react-helmet";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
-import config from "../../data/SiteConfig";
-import NavBar from "../components/nav-bar";
-import MainLayout from "../components/layout";
-import UserDataWrapper from "../layouts/userDataWrapper";
 import {
   SmallSpacer,
   MediumSpacer,
@@ -12,9 +7,9 @@ import {
   FlexCenter,
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
-import Footer from "../components/Footer";
 import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import DatasetSelect from "../components/Datasets/dataset-select";
+import GenericPage from "../layouts/generic-page";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -98,55 +93,41 @@ class Index extends React.Component {
 
   render() {
     return (
-      <MainLayout>
-        <div className="index-container">
-          <Helmet title={config.siteTitle} />
-          <main>
-            <UserDataWrapper>
-              <NavBar location={this.props.location} />
-            </UserDataWrapper>
+      <GenericPage location={this.props.location}>
+        <splashStyles.H1>{title}</splashStyles.H1>
+        <SmallSpacer />
 
-            <splashStyles.Container className="container">
-              <HugeSpacer /><HugeSpacer />
-              <splashStyles.H1>{title}</splashStyles.H1>
-              <SmallSpacer />
+        <FlexCenter>
+          <splashStyles.CenteredFocusParagraph>
+            {abstract}
+          </splashStyles.CenteredFocusParagraph>
+        </FlexCenter>
+        <MediumSpacer />
 
-              <FlexCenter>
-                <splashStyles.CenteredFocusParagraph>
-                  {abstract}
-                </splashStyles.CenteredFocusParagraph>
-              </FlexCenter>
-              <MediumSpacer />
+        <PathogenPageIntroduction data={contents} />
 
-              <PathogenPageIntroduction data={contents} />
-
-              <ScrollableAnchor id={"datasets"}>
-                <div>
-                  <HugeSpacer /><HugeSpacer />
-                  <splashStyles.H2>
-                    Influenza datasets
-                  </splashStyles.H2>
-                  <HugeSpacer />
-                  {this.state.dataLoaded && (
-                    <DatasetSelect
-                      datasets={this.state.datasets}
-                      columns={tableColumns}
-                      urlDefinedFilterPath={this.props["*"]}
-                      intendedUri={this.props.uri}
-                    />
-                  )}
-                  { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
-                              Something went wrong getting data.
-                              Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                              if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-                </div>
-              </ScrollableAnchor>
-
-              <Footer />
-            </splashStyles.Container>
-          </main>
-        </div>
-      </MainLayout>
+        <ScrollableAnchor id={"datasets"}>
+          <div>
+            <HugeSpacer /><HugeSpacer />
+            <splashStyles.H2>
+              Influenza datasets
+            </splashStyles.H2>
+            <HugeSpacer />
+            {this.state.dataLoaded && (
+              <DatasetSelect
+                datasets={this.state.datasets}
+                columns={tableColumns}
+                urlDefinedFilterPath={this.props["*"]}
+                intendedUri={this.props.uri}
+              />
+            )}
+            { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
+                        Something went wrong getting data.
+                        Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+                        if this continues to happen.</splashStyles.CenteredFocusParagraph>}
+          </div>
+        </ScrollableAnchor>
+      </GenericPage>
     );
   }
 }

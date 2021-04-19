@@ -1,15 +1,10 @@
 import React from "react";
-import Helmet from "react-helmet";
 import Select, {createFilter} from 'react-select';
 import styled from 'styled-components';
 import {FaFile, FaExclamation} from "react-icons/fa";
-import config from "../../data/SiteConfig";
-import NavBar from '../components/nav-bar';
-import MainLayout from "../components/layout";
-import UserDataWrapper from "../layouts/userDataWrapper";
 import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
-import Footer from "../components/Footer";
+import GenericPage from "../layouts/generic-page";
 
 /**
  * See https://github.com/JedWatson/react-select/issues/3128 for ways to speed up <Select>
@@ -73,82 +68,67 @@ class SequencesToDatasets extends React.Component {
 
   render() {
     return (
-      <MainLayout>
-        <div className="index-container">
-          <Helmet title={config.siteTitle} />
-          <main>
-
-            <UserDataWrapper>
-              <NavBar location={this.props.location} />
-            </UserDataWrapper>
-
-            <splashStyles.Container className="container">
-              <HugeSpacer />
-              <splashStyles.H2>
+      <GenericPage location={this.props.location}>
+        <splashStyles.H2>
                 Search {this.state.displayName} datasets by sample name
-              </splashStyles.H2>
-              <SmallSpacer />
-              <FlexCenter>
-                <splashStyles.CenteredFocusParagraph>
+        </splashStyles.H2>
+        <SmallSpacer />
+        <FlexCenter>
+          <splashStyles.CenteredFocusParagraph>
                   If you know the name(s) of sequences, you can search here to find out which datasets, if any,
                   the samples appear in. If you select multiple samples, then only datasets where they all appear
                   will be shown. Additionally, if we have deliberately excluded a sample from the analysis we will attempt
                   to show the reason here.
-                  {this.state.dataLoaded && (
-                    <>
-                      <br/><br/>
+            {this.state.dataLoaded && (
+              <>
+                <br/><br/>
                       Current database: {this.state.nSamplesInDatasets} samples, from {this.state.nDatasets} datasets on the core nextstrain bucket.
-                      {this.state.nSamplesInExcludeList!==0 && (
-                        <>
-                          <br/><br/>
+                {this.state.nSamplesInExcludeList!==0 && (
+                  <>
+                    <br/><br/>
                           Additionally, {this.state.nSamplesInExcludeList} samples from our manually curated exclusion list are included.
-                        </>
-                      )}
-                      <br/><br/>
+                  </>
+                )}
+                <br/><br/>
                       Data updated: {this.state.dateUpdated}
-                    </>
-                  )}
-                </splashStyles.CenteredFocusParagraph>
-              </FlexCenter>
-              <div className="row">
-                <MediumSpacer />
-                <div className="col-md-1"/>
-                <div className="col-md-10">
-                  {this.state.errorFetchingData && (
-                    <LargeRedSection>
+              </>
+            )}
+          </splashStyles.CenteredFocusParagraph>
+        </FlexCenter>
+        <div className="row">
+          <MediumSpacer />
+          <div className="col-md-1"/>
+          <div className="col-md-10">
+            {this.state.errorFetchingData && (
+              <LargeRedSection>
                       Something went wrong fetching the data!
                       Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
                       if this continues to happen.
-                    </LargeRedSection>
-                  )}
-                  <HugeSpacer/>
-                  {this.state.dataLoaded && (
-                    <Select
-                      options={this.state.selectableStrains}
-                      openMenuOnClick={false}
-                      getOptionValue={(option) => option.label}
-                      filterOption={createFilter({ignoreAccents: false})}
-                      isClearable
-                      isMulti
-                      onChange={this.onSelectChange}
-                    />
-                  )}
-                  {!this.state.dataLoaded && !this.state.errorFetchingData && (
-                    <splashStyles.CenteredFocusParagraph theme={{niceFontSize: "22px"}}>
+              </LargeRedSection>
+            )}
+            <HugeSpacer/>
+            {this.state.dataLoaded && (
+              <Select
+                options={this.state.selectableStrains}
+                openMenuOnClick={false}
+                getOptionValue={(option) => option.label}
+                filterOption={createFilter({ignoreAccents: false})}
+                isClearable
+                isMulti
+                onChange={this.onSelectChange}
+              />
+            )}
+            {!this.state.dataLoaded && !this.state.errorFetchingData && (
+              <splashStyles.CenteredFocusParagraph theme={{niceFontSize: "22px"}}>
                       Data loading...
-                    </splashStyles.CenteredFocusParagraph>
-                  )}
-                  <HugeSpacer/>
-                  <InfoAboutSequence datasets={this.state.datasets} selected={this.state.selected}/>
-                </div>
-              </div>
-
-              <Footer />
-
-            </splashStyles.Container>
-          </main>
+              </splashStyles.CenteredFocusParagraph>
+            )}
+            <HugeSpacer/>
+            <InfoAboutSequence datasets={this.state.datasets} selected={this.state.selected}/>
+          </div>
         </div>
-      </MainLayout>
+
+      </GenericPage>
     );
   }
 }
