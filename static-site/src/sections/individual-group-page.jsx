@@ -1,9 +1,7 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
-import { MdPerson } from "react-icons/md";
 import styled from 'styled-components';
 import {
-  SmallSpacer,
   HugeSpacer,
   FlexCenter
 } from "../layouts/generalComponents";
@@ -48,6 +46,7 @@ function Byline({children}) {
   if (!children) return null;
   const Div = styled.div`
     && {
+      font-size: 18px;
       font-weight: 400;
       line-height: 1.428;
       color: #A9ADB1;
@@ -66,29 +65,6 @@ function Website({children}) {
     </a>
   );
 }
-
-const nextstrainLogoPNG = require("../../static/logos/favicon.png");
-
-const tableColumns = [
-  {
-    name: "Dataset",
-    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
-    url: (dataset) => dataset.url
-  },
-  {
-    name: "Contributor",
-    value: (dataset) => dataset.contributor,
-    valueMobile: () => "",
-    url: (dataset) => dataset.contributorUrl,
-    logo: (dataset) => dataset.contributor==="Nextstrain Team" ?
-      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
-      undefined,
-    logoMobile: (dataset) => dataset.contributor==="Nextstrain Team" ?
-      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
-      <MdPerson/>
-  }
-];
-
 
 class Index extends React.Component {
   constructor(props) {
@@ -116,7 +92,7 @@ class Index extends React.Component {
       console.error("Cannot find group.", err.message);
       this.setState({groupNotFound: true});
     }
-    if (sourceInfo && sourceInfo.showDatasets || sourceInfo.showNarratives) {
+    if (sourceInfo && (sourceInfo.showDatasets || sourceInfo.showNarratives)) {
       const getAvailableUrl = `/charon/getAvailable?prefix=/groups/${groupName}/`;
       try {
         const {datasets, narratives} = await fetchAndParseJSON(getAvailableUrl, groupName);
@@ -141,30 +117,47 @@ class Index extends React.Component {
             </Title>
           </FlexCenter>
           {/* TODO display this.state.sourceInfo.overview (markdown) */}
-          <SmallSpacer />
-          <ScrollableAnchor id={"datasets"}>
-            <div>
-              <HugeSpacer />
-              {this.state.sourceInfo.showDatasets && (
+          <HugeSpacer />
+          {this.state.sourceInfo.showDatasets && (
+            <ScrollableAnchor id={"datasets"}>
+              <div>
+                <splashStyles.H3>Available datasets</splashStyles.H3>
                 <DatasetSelect
                   datasets={this.state.datasets}
-                  columns={tableColumns}
+                  columns={[
+                    {
+                      name: "Dataset",
+                      value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
+                      url: (dataset) => dataset.url
+                    }
+                  ]}
                 />
-              )}
-              <HugeSpacer />
-              <splashStyles.H3>Narratives</splashStyles.H3>
-              {this.state.sourceInfo.showNarratives && (
+              </div>
+            </ScrollableAnchor>
+          )}
+          <HugeSpacer />
+          {this.state.sourceInfo.showNarratives && (
+            <ScrollableAnchor id={"narratives"}>
+              <div>
+                <splashStyles.H3>Available narratives</splashStyles.H3>
                 <DatasetSelect
                   datasets={this.state.narratives}
-                  columns={tableColumns}
+                  columns={[
+                    {
+                      name: "Narrative",
+                      value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
+                      url: (dataset) => dataset.url
+                    }
+                  ]}
+                  unit="narrative"
                 />
-              )}
-              { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
+              </div>
+            </ScrollableAnchor>
+          )}
+          { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
                         Something went wrong getting data.
                         Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
                         if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-            </div>
-          </ScrollableAnchor>
         </>}
       </GenericPage>
     );
