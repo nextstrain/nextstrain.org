@@ -57,6 +57,7 @@ class DatasetSelect extends React.Component {
   render() {
     const childrenToRender = this.props.interface || ["FilterSelect", "FilterDisplay", "ListDatasets"];
     const filteredDatasets = getFilteredDatasets(this.props.datasets, this.state.filters, this.props.columns);
+    const unit = this.props.unit || "dataset"; // we want it it say "filter narratives" if we are passing narratives as the filterable list
     return (
       <>
         {childrenToRender.map((Child) => {
@@ -67,6 +68,7 @@ class DatasetSelect extends React.Component {
                   key={String(Object.keys(this.state.filters).length)}
                   options={collectAvailableFilteringOptions(this.props.datasets, this.props.columns)}
                   applyFilter={this.applyFilter}
+                  unit={unit}
                 />
               );
             case "FilterDisplay":
@@ -83,6 +85,7 @@ class DatasetSelect extends React.Component {
                   key="ListDatasets"
                   columns={this.props.columns}
                   datasets={filteredDatasets}
+                  unit={unit}
                 />
               );
             default:

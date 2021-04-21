@@ -22,19 +22,19 @@ const StyledTooltip = styled(ReactTooltip)`
   pointer-events: auto !important;
 `;
 
-export const FilterSelect = ({options, applyFilter}) => {
+export const FilterSelect = ({options, applyFilter, unit}) => {
 
   return (
     <CenteredContainer>
       <splashStyles.H3 left>
-        {`Filter datasets `}
+        {`Filter ${unit}s `}
         <>
           <span style={{cursor: "help"}} data-tip data-for={"build-filter-info"}>
             <FaInfoCircle/>
           </span>
           <StyledTooltip type="dark" effect="solid" id={"build-filter-info"}>
             <>
-              {`Use this box to filter the displayed list of datasets based upon filtering criteria.`}
+              {`Use this box to filter the displayed list of ${unit}s based upon filtering criteria.`}
               <br/>
               {/* TODO do we want to keep this set logic? It's currently broken */}
               Data is filtered by forming a union of selected values within each category, and then

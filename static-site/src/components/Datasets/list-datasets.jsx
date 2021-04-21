@@ -58,8 +58,12 @@ const HeaderRow = ({columns}) => {
         <Col {...columnStyles[0][0]} key={names[0]}>{names[0]}</Col>
 
         {/* column 2: (typically the contributor) - both main & mobile views */}
-        <Col {...columnStyles[1][0]} key={names[1]}>{names[1]}</Col>
-        <Col {...columnStyles[1][1]} key={`${names[1]}-mobile`}>{names[1]}</Col>
+        {names.length>=2 && (
+          <>
+            <Col {...columnStyles[1][0]} key={names[1]}>{names[1]}</Col>
+            <Col {...columnStyles[1][1]} key={`${names[1]}-mobile`}>{names[1]}</Col>
+          </>
+        )}
 
         {/* column 3: optional. Not rendered on small screens. */}
         {names.length===3 && (
@@ -81,12 +85,16 @@ const NormalRow = ({columns, dataset}) => {
         </Col>
 
         {/* column 2: (typically the contributor) - both main & mobile views */}
-        <Col {...columnStyles[1][0]} key={names[1]}>
-          <Value dataset={dataset} columnInfo={columns[1]}/>
-        </Col>
-        <Col {...columnStyles[1][1]} key={`${names[1]}-mobile`}>
-          <Value dataset={dataset} columnInfo={columns[1]} mobileView/>
-        </Col>
+        {names.length>=2 && (
+          <>
+            <Col {...columnStyles[1][0]} key={names[1]}>
+              <Value dataset={dataset} columnInfo={columns[1]}/>
+            </Col>
+            <Col {...columnStyles[1][1]} key={`${names[1]}-mobile`}>
+              <Value dataset={dataset} columnInfo={columns[1]} mobileView/>
+            </Col>
+          </>
+        )}
 
         {/* column 3: optional. Not rendered on small screens. */}
         {names.length===3 && (
