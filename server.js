@@ -113,7 +113,8 @@ app.routeAsync("/charon/*")
  */
 app.route([
   "/users/:user",
-  "/groups"
+  "/groups",
+  "/groups/:groupName"
 ]).get((req, res) => res.sendFile(gatsbyAssetPath("index.html")));
 
 /* Routes which are plausibly for auspice, as they have specific path signatures.

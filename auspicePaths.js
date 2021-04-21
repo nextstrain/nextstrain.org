@@ -40,7 +40,6 @@ const potentialAuspiceRoutes = [
   "/narratives",
   "/narratives/*",
   "/staging/*",
-  ...groups.map((group) => `/groups/${group}`),
   ...groups.map((group) => `/groups/${group}/*`),
 
   /* Auspice gets specific /community paths so it can show an index of datasets
