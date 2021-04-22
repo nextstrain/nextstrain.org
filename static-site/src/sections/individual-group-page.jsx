@@ -118,7 +118,7 @@ class Index extends React.Component {
           </FlexCenter>
           {/* TODO display this.state.sourceInfo.overview (markdown) */}
           <HugeSpacer />
-          {this.state.sourceInfo.showDatasets && (
+          {this.state.sourceInfo.showDatasets && this.state.datasets.length > 0 && (
             <ScrollableAnchor id={"datasets"}>
               <div>
                 <splashStyles.H3>Available datasets</splashStyles.H3>
@@ -136,7 +136,7 @@ class Index extends React.Component {
             </ScrollableAnchor>
           )}
           <HugeSpacer />
-          {this.state.sourceInfo.showNarratives && (
+          {this.state.sourceInfo.showNarratives && this.state.narratives.length > 0 && (
             <ScrollableAnchor id={"narratives"}>
               <div>
                 <splashStyles.H3>Available narratives</splashStyles.H3>
