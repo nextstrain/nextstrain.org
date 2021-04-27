@@ -173,7 +173,7 @@ class Index extends React.Component {
 const createDatasetListing = (list, groupName) => {
   return list.map((d) => {
     return {
-      filename: d.request,
+      filename: d.request.replace(`groups/${groupName}/`, '').replace('narratives/', ''),
       url: `https://nextstrain.org/${d.request}`,
       contributor: groupName
     };
