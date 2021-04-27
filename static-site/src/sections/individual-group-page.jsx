@@ -81,27 +81,31 @@ class Index extends React.Component {
   async componentDidMount() {
     const groupName = this.props["*"];
     const getSourceInfoUrl = `/charon/getSourceInfo?prefix=/groups/${groupName}/`;
-    let sourceInfo;
-    // TODO promise logic and error catching improvements here
-    try {
-      sourceInfo = await fetch(getSourceInfoUrl)
-        .then((res) => res.text())
-        .then((text) => JSON.parse(text));
-      this.setState({sourceInfo});
-    } catch (err) {
-      console.error("Cannot find group.", err.message);
-      this.setState({groupNotFound: true});
-    }
-    if (sourceInfo && (sourceInfo.showDatasets || sourceInfo.showNarratives)) {
-      const getAvailableUrl = `/charon/getAvailable?prefix=/groups/${groupName}/`;
-      try {
-        const {datasets, narratives} = await fetchAndParseJSON(getAvailableUrl, groupName);
+    fetch(getSourceInfoUrl)
+      .then((res) => res.text())
+      .then((text) => {
+        const sourceInfo = JSON.parse(text);
+        this.setState({sourceInfo});
+        return sourceInfo;
+      })
+      .catch((err) => {
+        console.error("Cannot find group.", err.message);
+        this.setState({groupNotFound: true});
+      })
+      .then((sourceInfo) => {
+        if (sourceInfo.showDatasets || sourceInfo.showNarratives) {
+          const getAvailableUrl = `/charon/getAvailable?prefix=/groups/${groupName}/`;
+          return fetchAndParseJSON(getAvailableUrl, groupName);
+        }
+        return undefined;
+      })
+      .then(({datasets, narratives}) => {
         this.setState({datasets, narratives, dataLoaded: true, groupName});
-      } catch (err) {
+      })
+      .catch((err) => {
         console.error("Error fetching / parsing data.", err.message);
         this.setState({errorFetchingData: true});
-      }
-    }
+      });
   }
 
   render() {
