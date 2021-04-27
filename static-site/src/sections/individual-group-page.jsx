@@ -111,58 +111,60 @@ class Index extends React.Component {
   render() {
     return (
       <GenericPage location={this.props.location}>
-        {this.state.sourceInfo && this.state.dataLoaded &&
-        <>
+        {this.state.sourceInfo &&
+        <FlexCenter>
+          <Title avatarSrc={this.state.sourceInfo.avatar}>
+            {this.state.sourceInfo.title}
+            <Byline>{this.state.sourceInfo.byline}</Byline>
+            <Website>{this.state.sourceInfo.website}</Website>
+          </Title>
+        </FlexCenter>
+        // TODO display this.state.sourceInfo.overview (markdown)
+        }
+        <HugeSpacer />
+        {this.state.dataLoaded && this.state.sourceInfo && this.state.sourceInfo.showDatasets && (
+          <ScrollableAnchor id={"datasets"}>
+            <div>
+              <splashStyles.H3>Available datasets</splashStyles.H3>
+              <DatasetSelect
+                datasets={this.state.datasets}
+                columns={[
+                  {
+                    name: "Dataset",
+                    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
+                    url: (dataset) => dataset.url
+                  }
+                ]}
+              />
+            </div>
+          </ScrollableAnchor>
+        )}
+        <HugeSpacer />
+        {this.state.dataLoaded && this.state.sourceInfo && this.state.sourceInfo.showNarratives && (
+          <ScrollableAnchor id={"narratives"}>
+            <div>
+              <splashStyles.H3>Available narratives</splashStyles.H3>
+              <DatasetSelect
+                datasets={this.state.narratives}
+                columns={[
+                  {
+                    name: "Narrative",
+                    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
+                    url: (dataset) => dataset.url
+                  }
+                ]}
+                unit="narrative"
+              />
+            </div>
+          </ScrollableAnchor>
+        )}
+        { this.state.errorFetchingData &&
           <FlexCenter>
-            <Title avatarSrc={this.state.sourceInfo.avatar}>
-              {this.state.sourceInfo.title}
-              <Byline>{this.state.sourceInfo.byline}</Byline>
-              <Website>{this.state.sourceInfo.website}</Website>
-            </Title>
-          </FlexCenter>
-          {/* TODO display this.state.sourceInfo.overview (markdown) */}
-          <HugeSpacer />
-          {this.state.sourceInfo.showDatasets && this.state.datasets.length > 0 && (
-            <ScrollableAnchor id={"datasets"}>
-              <div>
-                <splashStyles.H3>Available datasets</splashStyles.H3>
-                <DatasetSelect
-                  datasets={this.state.datasets}
-                  columns={[
-                    {
-                      name: "Dataset",
-                      value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
-                      url: (dataset) => dataset.url
-                    }
-                  ]}
-                />
-              </div>
-            </ScrollableAnchor>
-          )}
-          <HugeSpacer />
-          {this.state.sourceInfo.showNarratives && this.state.narratives.length > 0 && (
-            <ScrollableAnchor id={"narratives"}>
-              <div>
-                <splashStyles.H3>Available narratives</splashStyles.H3>
-                <DatasetSelect
-                  datasets={this.state.narratives}
-                  columns={[
-                    {
-                      name: "Narrative",
-                      value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
-                      url: (dataset) => dataset.url
-                    }
-                  ]}
-                  unit="narrative"
-                />
-              </div>
-            </ScrollableAnchor>
-          )}
-          { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
-                        Something went wrong getting data.
-                        Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                        if this continues to happen.</splashStyles.CenteredFocusParagraph>}
-        </>}
+            <splashStyles.CenteredFocusParagraph>
+                  Something went wrong getting data.
+                  Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+                  if this continues to happen.</splashStyles.CenteredFocusParagraph>
+          </FlexCenter>}
       </GenericPage>
     );
   }
