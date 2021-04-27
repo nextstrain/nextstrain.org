@@ -8,11 +8,8 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
+import MarkdownDisplay from "../components/splash/markdownDisplay";
 
-// TODO: these functions are copied from auspice-client/customizations/splash.js
-// We should abstract them into a util function JS file if we actually want to use
-// them in both places going forward, otherwise we can go another direction with the
-// interface here.
 function Title({avatarSrc, children}) {
   if (!children) return null;
   const AvatarImg = styled.img`
@@ -66,6 +63,18 @@ function Website({children}) {
   );
 }
 
+const OverviewContainer = styled.div`
+  text-align: justify;
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-weight: 300;
+  color: var(--darkGrey);
+  line-height: 1.42857143;
+  margin: 0px auto 0px auto;
+  max-width: 900px;
+`;
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -112,17 +121,24 @@ class Index extends React.Component {
     return (
       <GenericPage location={this.props.location}>
         {this.state.sourceInfo &&
-        <FlexCenter>
-          <Title avatarSrc={this.state.sourceInfo.avatar}>
-            {this.state.sourceInfo.title}
-            <Byline>{this.state.sourceInfo.byline}</Byline>
-            <Website>{this.state.sourceInfo.website}</Website>
-          </Title>
-        </FlexCenter>
-        // TODO display this.state.sourceInfo.overview (markdown)
-        }
+        <>
+          <FlexCenter>
+            <Title avatarSrc={this.state.sourceInfo.avatar}>
+              {this.state.sourceInfo.title}
+              <Byline>{this.state.sourceInfo.byline}</Byline>
+              <Website>{this.state.sourceInfo.website}</Website>
+            </Title>
+          </FlexCenter>
+          {this.state.sourceInfo.overview &&
+            <FlexCenter>
+              <OverviewContainer>
+                <MarkdownDisplay mdstring={this.state.sourceInfo.overview}/>
+              </OverviewContainer>
+            </FlexCenter>
+          }
+        </>}
         <HugeSpacer />
-        {this.state.dataLoaded && this.state.sourceInfo && this.state.sourceInfo.showDatasets && (
+        {this.state.dataLoaded && this.state.sourceInfo && this.state.sourceInfo.showDatasets && this.state.datasets.length > 0 && (
           <ScrollableAnchor id={"datasets"}>
             <div>
               <splashStyles.H3>Available datasets</splashStyles.H3>
@@ -140,7 +156,7 @@ class Index extends React.Component {
           </ScrollableAnchor>
         )}
         <HugeSpacer />
-        {this.state.dataLoaded && this.state.sourceInfo && this.state.sourceInfo.showNarratives && (
+        {this.state.dataLoaded && this.state.sourceInfo && this.state.sourceInfo.showNarratives && this.state.narratives.length > 0 &&(
           <ScrollableAnchor id={"narratives"}>
             <div>
               <splashStyles.H3>Available narratives</splashStyles.H3>
