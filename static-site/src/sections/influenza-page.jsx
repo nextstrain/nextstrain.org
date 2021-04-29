@@ -10,6 +10,7 @@ import * as splashStyles from "../components/splash/styles";
 import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
+import { fetchAndParseJSON } from "../util/datasetsHelpers";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -78,12 +79,17 @@ class Index extends React.Component {
     this.state = {
       dataLoaded: false,
       errorFetchingData: false,
+      // scripts/collect-datasets.js collects datasets
+      // from s3 and writes them to a JSON which is pushed
+      // regularly to s3 as a resource we request here
+      // representing a list of datasets to display on
+      // this page with some info about each.
       datasetsUrl: "https://data.nextstrain.org/datasets_influenza.json"
     };
   }
   async componentDidMount() {
     try {
-      const datasets = await fetchAndParseDatasetsJSON(this.state.datasetsUrl);
+      const datasets = await fetchAndParseJSON(this.state.datasetsUrl);
       this.setState({datasets, dataLoaded: true});
     } catch (err) {
       console.error("Error fetching / parsing data.", err.message);
@@ -130,18 +136,6 @@ class Index extends React.Component {
       </GenericPage>
     );
   }
-}
-
-// scripts/collect-datasets.js collects datasets
-// from s3 and writes them to a JSON which is pushed
-// regularly to s3 as a resource we request here
-// representing a list of datasets to display on
-// this page with some info about each.
-async function fetchAndParseDatasetsJSON(jsonUrl) {
-  const datasetsJSON = await fetch(jsonUrl)
-    .then((res) => res.text())
-    .then((text) => JSON.parse(text));
-  return datasetsJSON;
 }
 
 export default Index;
