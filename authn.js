@@ -10,7 +10,8 @@ const passport = require("passport");
 const OAuth2Strategy = require("passport-oauth2").Strategy;
 const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disable-line import/no-unresolved
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
-const {JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
+const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
+const BearerStrategy = require("./src/authn/bearer");
 const sources = require("./src/sources");
 const utils = require("./src/utils");
 
@@ -39,8 +40,27 @@ const COGNITO_CLIENT_ID = PRODUCTION
   ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org
   : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost and heroku dev instances
 
+/* Registered clients to accept for Bearer tokens.
+ *
+ * In the future, we could opt to pull this list dynamically from Cognito at
+ * server start and might want to if we start having third-party clients, but
+ * avoid a start-time dep for now.
+ */
+const BEARER_COGNITO_CLIENT_IDS = [
+  "2vmc93kj4fiul8uv40uqge93m5",   // Nextstrain CLI
+];
+
+/* Arbitrary ids for the various strategies for Passport.  Makes explicit the
+ * implicit defaults; uses constants instead of string literals for better
+ * grepping, linting, and less magic; would be an enum if JS had them (or we
+ * had TypeScript).
+ */
+const STRATEGY_OAUTH2 = "oauth2";
+const STRATEGY_BEARER = "bearer";
+
 function setup(app) {
   passport.use(
+    STRATEGY_OAUTH2,
     new OAuth2Strategy(
       {
         authorizationURL: `${COGNITO_BASE_URL}/oauth2/authorize`,
@@ -53,16 +73,38 @@ function setup(app) {
       async (accessToken, refreshToken, {id_token: idToken}, profile, done) => {
         // Verify both tokens for good measure, but pull user information from
         // the identity token (which is its intended purpose).
-        await verifyToken(accessToken, "access");
+        try {
+          await verifyToken(accessToken, "access");
 
-        const idClaims = await verifyToken(idToken, "id");
-        const user = {
-          username: idClaims["cognito:username"],
-          groups: idClaims["cognito:groups"],
-        };
+          const user = await userFromIdToken(idToken);
 
-        // All users are ok, as we control the entire user pool.
-        return done(null, user);
+          // All users are ok, as we control the entire user pool.
+          return done(null, user);
+        } catch (e) {
+          return e instanceof JOSEError
+            ? done(null, false, "Error verifying token")
+            : done(e);
+        }
+      }
+    )
+  );
+
+  passport.use(
+    STRATEGY_BEARER,
+    new BearerStrategy(
+      {
+        realm: "nextstrain.org",
+        passIfMissing: true,
+      },
+      async (idToken, done) => {
+        try {
+          const user = await userFromIdToken(idToken, BEARER_COGNITO_CLIENT_IDS);
+          return done(null, user);
+        } catch (e) {
+          return e instanceof JOSEError
+            ? done(null, false, "Error verifying token")
+            : done(e);
+        }
       }
     )
   );
@@ -139,7 +181,19 @@ function setup(app) {
       }
     })
   );
+
   app.use(passport.initialize());
+
+  // If an Authorization header is present, then it must container a valid
+  // Bearer token.  No session will be created for Bearer authn.
+  //
+  // If an Authorization header is not present, this authn strategy is
+  // configured (above) to pass to the next request handler (user restoration
+  // from session).
+  app.use(passport.authenticate(STRATEGY_BEARER, { session: false }));
+
+  // Restore user from the session, if any.  If no session, then req.user will
+  // be null.
   app.use(passport.session());
 
   // Set the app's origin centrally so other handlers can use it
@@ -177,12 +231,12 @@ function setup(app) {
       }
       next();
     },
-    passport.authenticate("oauth2")
+    passport.authenticate(STRATEGY_OAUTH2)
   );
 
   // Verify IdP response on /logged-in
   app.route("/logged-in").get(
-    passport.authenticate("oauth2", { failureRedirect: "/login" }),
+    passport.authenticate(STRATEGY_OAUTH2, { failureRedirect: "/" }),
     (req, res) => {
       // We can trust this value from the session because we are the only ones
       // in control of it.
@@ -257,6 +311,24 @@ function setup(app) {
   });
 }
 
+
+/**
+ * Creates a user record from the given `idToken` after verifying it.
+ *
+ * @param {String} idToken
+ * @param {String|String[]} client. Optional. Passed to `verifyToken()`.
+ * @returns {Object} User record with e.g. `username` and `groups` keys.
+ */
+async function userFromIdToken(idToken, client = undefined) {
+  const idClaims = await verifyToken(idToken, "id", client);
+  const user = {
+    username: idClaims["cognito:username"],
+    groups: idClaims["cognito:groups"],
+  };
+  return user;
+}
+
+
 /**
  * Verifies all aspects of the given `token` (a signed JWT from our AWS Cognito
  * user pool) which is expected to be used for the given `use`.
@@ -267,13 +339,16 @@ function setup(app) {
  *
  * @param {String} token
  * @param {String} use
+ * @param {String} client. Optional `client_id` or list of `client_id`s
+ *                 expected for the token. Only relevant when `use` is not
+ *                 `access`. Defaults to this server's client id.
  * @returns {Object} Verified claims from the token's payload
  */
-async function verifyToken(token, use) {
+async function verifyToken(token, use, client = COGNITO_CLIENT_ID) {
   const {payload: claims} = await jwtVerify(token, COGNITO_JWKS, {
     algorithms: ["RS256"],
     issuer: COGNITO_USER_POOL_URL,
-    audience: use !== "access" ? COGNITO_CLIENT_ID : null,
+    audience: use !== "access" ? client : null,
   });
 
   const claimedUse = claims["token_use"];
