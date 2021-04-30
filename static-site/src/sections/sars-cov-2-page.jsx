@@ -1,12 +1,7 @@
 import React from "react";
-import Helmet from "react-helmet";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import { MdPerson } from "react-icons/md";
 import { get } from 'lodash';
-import config from "../../data/SiteConfig";
-import NavBar from "../components/nav-bar";
-import MainLayout from "../components/layout";
-import UserDataWrapper from "../layouts/userDataWrapper";
 import {
   SmallSpacer,
   MediumSpacer,
@@ -14,13 +9,13 @@ import {
   FlexCenter,
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
-import Footer from "../components/Footer";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import DatasetMap from "../components/Datasets/dataset-map";
 import { SituationReportsByLanguage } from "../components/Datasets/situation-reports-by-language";
 import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
+import GenericPage from "../layouts/generic-page";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -150,90 +145,76 @@ class Index extends React.Component {
 
   render() {
     return (
-      <MainLayout>
-        <div className="index-container">
-          <Helmet title={config.siteTitle} />
-          <main>
-            <UserDataWrapper>
-              <NavBar location={this.props.location} />
-            </UserDataWrapper>
+      <GenericPage location={this.props.location}>
+        <splashStyles.H1>{title}</splashStyles.H1>
+        <SmallSpacer />
 
-            <splashStyles.Container className="container">
-              <HugeSpacer /><HugeSpacer />
-              <splashStyles.H1>{title}</splashStyles.H1>
-              <SmallSpacer />
+        <FlexCenter>
+          <splashStyles.CenteredFocusParagraph>
+            {abstract}
+          </splashStyles.CenteredFocusParagraph>
+        </FlexCenter>
+        <MediumSpacer />
 
-              <FlexCenter>
-                <splashStyles.CenteredFocusParagraph>
-                  {abstract}
-                </splashStyles.CenteredFocusParagraph>
-              </FlexCenter>
+        <PathogenPageIntroduction data={contents} />
+
+        <ScrollableAnchor id={"datasets"}>
+          <div>
+            <HugeSpacer /><HugeSpacer />
+            <splashStyles.H2 left>
+              All SARS-CoV-2 datasets
+            </splashStyles.H2>
+            <SmallSpacer />
+            <splashStyles.FocusParagraph>
+              This section is an index of public Nextstrain datasets for SARS-CoV-2, organized by geography.
+              Some of these datasets are maintained by the Nextstrain team and others are maintained by independent research groups.
+              If you know of a dataset not listed here, please let us know!
+              Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
+            </splashStyles.FocusParagraph>
+
+            <HugeSpacer/>
+            {this.state.filterParsed && (
+              <DatasetSelect
+                datasets={this.state.filterList}
+                columns={tableColumns}
+                interface={[
+                  DatasetMap,
+                  "FilterSelect",
+                  "FilterDisplay",
+                  "ListDatasets"
+                ]}
+                urlDefinedFilterPath={this.props["*"]}
+                intendedUri={this.props.uri}
+              />
+            )}
+
+          </div>
+        </ScrollableAnchor>
+
+        <ScrollableAnchor id={"sit-reps"}>
+          <div>
+            <HugeSpacer /><HugeSpacer />
+            <splashStyles.H2 left>
+              All SARS-CoV-2 situation reports
+            </splashStyles.H2>
+            <SmallSpacer />
+            <splashStyles.FocusParagraph>
+              We have been writing interactive situation reports
+              using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
+              to communicate how COVID-19 is moving around the world and spreading locally.
+              These are kindly translated into a number of different languages by volunteers
+              and Google-provided translators — click on any language below to see the list of situation reports available.
+            </splashStyles.FocusParagraph>
+            <div className="row">
               <MediumSpacer />
-
-              <PathogenPageIntroduction data={contents} />
-
-              <ScrollableAnchor id={"datasets"}>
-                <div>
-                  <HugeSpacer /><HugeSpacer />
-                  <splashStyles.H2 left>
-                    All SARS-CoV-2 datasets
-                  </splashStyles.H2>
-                  <SmallSpacer />
-                  <splashStyles.FocusParagraph>
-                    This section is an index of public Nextstrain datasets for SARS-CoV-2, organized by geography.
-                    Some of these datasets are maintained by the Nextstrain team and others are maintained by independent research groups.
-                    If you know of a dataset not listed here, please let us know!
-                    Please note that inclusion on this list does not indicate an endorsement by the Nextstrain team.
-                  </splashStyles.FocusParagraph>
-
-                  <HugeSpacer/>
-                  {this.state.filterParsed && (
-                    <DatasetSelect
-                      datasets={this.state.filterList}
-                      columns={tableColumns}
-                      interface={[
-                        DatasetMap,
-                        "FilterSelect",
-                        "FilterDisplay",
-                        "ListDatasets"
-                      ]}
-                      urlDefinedFilterPath={this.props["*"]}
-                      intendedUri={this.props.uri}
-                    />
-                  )}
-
-                </div>
-              </ScrollableAnchor>
-
-              <ScrollableAnchor id={"sit-reps"}>
-                <div>
-                  <HugeSpacer /><HugeSpacer />
-                  <splashStyles.H2 left>
-                    All SARS-CoV-2 situation reports
-                  </splashStyles.H2>
-                  <SmallSpacer />
-                  <splashStyles.FocusParagraph>
-                    We have been writing interactive situation reports
-                    using <a href="https://nextstrain.github.io/auspice/narratives/introduction">Nextstrain Narratives </a>
-                    to communicate how COVID-19 is moving around the world and spreading locally.
-                    These are kindly translated into a number of different languages by volunteers
-                    and Google-provided translators — click on any language below to see the list of situation reports available.
-                  </splashStyles.FocusParagraph>
-                  <div className="row">
-                    <MediumSpacer />
-                    <div className="col-md-1"/>
-                    <div className="col-md-10">
-                      <SituationReportsByLanguage parseSitRepInfo={parseNcovSitRepInfo}/>
-                    </div>
-                  </div>
-                </div>
-              </ScrollableAnchor>
-
-              <Footer />
-            </splashStyles.Container>
-          </main>
-        </div>
-      </MainLayout>
+              <div className="col-md-1"/>
+              <div className="col-md-10">
+                <SituationReportsByLanguage parseSitRepInfo={parseNcovSitRepInfo}/>
+              </div>
+            </div>
+          </div>
+        </ScrollableAnchor>
+      </GenericPage>
     );
   }
 }
