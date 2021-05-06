@@ -112,7 +112,8 @@ app.routeAsync("/charon/*")
 /* Specific routes to be handled by Gatsby client-side routing
  */
 app.route([
-  "/users/:user"
+  "/users/:user",
+  "/groups"
 ]).get((req, res) => res.sendFile(gatsbyAssetPath("index.html")));
 
 /* Routes which are plausibly for auspice, as they have specific path signatures.
