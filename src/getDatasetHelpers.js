@@ -1,5 +1,6 @@
 const utils = require("./utils");
 const sources = require("./sources");
+const {ResourceNotFoundError} = require("./exceptions");
 
 const handle500Error = (res, clientMsg, serverMsg="") => {
   utils.warn(`${clientMsg} -- ${serverMsg}`);
@@ -56,6 +57,8 @@ const splitPrefixIntoParts = (prefix) => {
   }
 
   const Source = sources.get(sourceName);
+  // Source not found error
+  if (typeof Source !== "function") throw new ResourceNotFoundError();
   let source;
 
   switch (sourceName) {
