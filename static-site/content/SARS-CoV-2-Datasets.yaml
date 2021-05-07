@@ -412,6 +412,10 @@ datasets:
     geo: thailand
     parentGeo: asia
 
+  - name: Japan
+    geo: japan
+    parentGeo: asia
+
   - name: Middle East
     geo: middle-east
     parentGeo: null
@@ -1749,3 +1753,14 @@ datasets:
     org:
       name: Alghoribi Lab (MNGHA - KAIMRC)
       url: https://kaimrc.med.sa
+
+  - url: https://nextstrain.org/community/kkosaki/ncov/japan
+    name: Japan
+    geo: japan
+    level: country
+    coords:
+      - 139.75309
+      - 35.68536
+    org:
+      name: Center for Medical Genetics, Keio University School of Medicine
+      url: https://cmg.med.keio.ac.jp/
