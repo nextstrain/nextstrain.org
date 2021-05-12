@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import ScrollableAnchor from "react-scrollable-anchor";
 import { MdPerson } from "react-icons/md";
 import { SmallSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import DatasetSelect from "../components/Datasets/dataset-select";
-import UserGroups from "../components/splash/userGroups";
+import { GroupCards } from "../components/splash/userGroups";
 import GenericPage from "../layouts/generic-page";
-import UserDataWrapper from "../layouts/userDataWrapper";
+import { UserContext } from "../layouts/userDataWrapper";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -16,12 +16,11 @@ const abstract = (<>
   We want to enable research labs, public health entities
   and others to share their datasets and narratives through Nextstrain with
   complete control of their data and audience. Nextstrain Groups is more scalable
-  than community builds in both data storage and viewing permissions. Each group
-  manages its own AWS S3 Bucket to store datasets and narratives, allowing many
-  large datasets. Data of a public group are accessible to the general public via
-  nextstrain.org, while private group data are only visible to logged in users
-  with permissions to see the data. A single entity can manage both a public and
-  a private group in order to share data with different audiences.
+  than community builds in both data storage and viewing permissions. Datasets in
+  a public group are accessible to the general public via nextstrain.org, while
+  private group data are only visible to logged in users with permission to see
+  the data. A single entity can manage both a public and a private group in order
+  to share data with different audiences.
   <br/>
   <br/>
   For more details about Nextstrain Groups
@@ -39,11 +38,7 @@ const tableColumns = [
     url: (dataset) => dataset.url
   },
   {
-    name: "Source",
-    value: (dataset) => dataset.source
-  },
-  {
-    name: "Contributor",
+    name: "Group Name",
     value: (dataset) => dataset.contributor,
     url: (dataset) => dataset.contributorUrl,
     logo: (dataset) => dataset.contributor==="Nextstrain" ?
@@ -52,7 +47,30 @@ const tableColumns = [
   }
 ];
 
-class Index extends React.Component {
+const GroupListingInfo = () => {
+  const { user } = useContext(UserContext);
+  return (
+    <FlexCenter>
+      <splashStyles.CenteredFocusParagraph>
+        Click on any tile to view the different datasets and narratives available for that group.
+        {user ?
+          <> A padlock icon indicates a private group which you ({user.username}) have access to.</> :
+          <> These groups are all public, to see private groups please <a href="/login">log in</a>.</>}
+      </splashStyles.CenteredFocusParagraph>
+    </FlexCenter>
+  );
+};
+
+// GenericPage needs to be a parent of GroupsPage for the latter to know about
+// UserContext, specifically for class functions to be able to use `this.context`.
+// We `export default Index` below.
+const Index = props => (
+  <GenericPage location={props.location}>
+    <GroupsPage/>
+  </GenericPage>
+);
+
+class GroupsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,6 +79,9 @@ class Index extends React.Component {
       datasetsUrl: "https://staging.nextstrain.org/james/tmp-all-datasets.json"
     };
   }
+
+  static contextType = UserContext;
+
   async componentDidMount() {
     try {
       const datasets = await fetchAndParseJSON(this.state.datasetsUrl);
@@ -76,7 +97,7 @@ class Index extends React.Component {
 
   render() {
     return (
-      <GenericPage location={this.props.location}>
+      <>
         <splashStyles.H1>{title}</splashStyles.H1>
         <SmallSpacer />
 
@@ -85,11 +106,12 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
-
         <HugeSpacer /><HugeSpacer />
-        <UserDataWrapper>
-          <UserGroups/>
-        </UserDataWrapper>
+
+        <splashStyles.H2>Available groups</splashStyles.H2>
+        <GroupListingInfo/>
+        {/* These cards dont go nicely into FlexCenter as they manage their own spacing */}
+        <GroupCards squashed/>
         <HugeSpacer />
 
         <ScrollableAnchor id={'datasets'}>
@@ -108,7 +130,7 @@ class Index extends React.Component {
                           Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
                           if this continues to happen.</splashStyles.CenteredFocusParagraph>}
 
-      </GenericPage>
+      </>
     );
   }
 }
