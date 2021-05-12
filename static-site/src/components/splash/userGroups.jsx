@@ -6,9 +6,7 @@ import { HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import { theme } from "../../layouts/theme";
 import { UserContext } from "../../layouts/userDataWrapper";
 
-const colors = [...theme.titleColors];
-
-const groupCards = (groups) => groups.map((group) => {
+const createGroupCards = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
   const groupColor = colors[0];
   colors.push(colors.shift());
 
@@ -23,24 +21,32 @@ const groupCards = (groups) => groups.map((group) => {
   );
 });
 
+export const GroupCards = ({squashed}) => {
+  const { visibleGroups } = useContext(UserContext);
+  return (
+    <Cards cards={createGroupCards(visibleGroups || [])} squashed={squashed}/>
+  );
+};
+
 const UserGroups = () => {
-  const { user, visibleGroups } = useContext(UserContext);
+  // Right now this component is only used when we know we have a user
+  const { user } = useContext(UserContext);
   return (
     <Fragment>
       <ScrollableAnchor id={'groups'}>
         <Styles.H1>Nextstrain Groups</Styles.H1>
       </ScrollableAnchor>
 
-      {user && <FlexCenter>
+      <FlexCenter>
         <Styles.CenteredFocusParagraph>
           Nextstrain groups represent collections of datasets, potentially with controlled access.
           You (
           <Styles.StrongerText>{user.username}</Styles.StrongerText>
           ) have access to the following groups (a padlock icon indicates a private group):
         </Styles.CenteredFocusParagraph>
-      </FlexCenter>}
+      </FlexCenter>
 
-      <Cards cards={groupCards(visibleGroups || [])} squashed/>
+      <GroupCards squashed/>
 
       <HugeSpacer/>
     </Fragment>

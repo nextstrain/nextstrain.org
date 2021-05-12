@@ -54,7 +54,7 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <HugeSpacer/>
-        {this.context.user && <UserGroups user={this.context.user} visibleGroups={this.context.visibleGroups} />}
+        {this.context.user && <UserGroups/>}
 
         <ScrollableAnchor id={'ncov'}>
           <Styles.H1>SARS-CoV-2 (COVID-19)</Styles.H1>
