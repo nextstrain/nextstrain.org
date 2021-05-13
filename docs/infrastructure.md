@@ -15,9 +15,6 @@
 The production Heroku app is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server), which is part of a [Heroku app pipeline of the same name](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d).
 Deploys of `master` happen automatically after Travis CI tests are successful.
 
-A testing/staging app, `nextstrain-dev`, is also used.
-Deploys to it are manual, via the dashboard or [git pushes to the Heroku remote](https://devcenter.heroku.com/articles/git).
-
 ### Environment variables
 
   - `SESSION_SECRET` must be set to a long, securely generated string.
@@ -34,6 +31,8 @@ Deploys to it are manual, via the dashboard or [git pushes to the Heroku remote]
   - `FETCH_CACHE` is not currently used, but can be set to change the location of the on-disk cache used by (some) server `fetch()`-es.
     The default location is `/tmp/fetch-cache`.
 
+  - `PAPERTRAIL_API_TOKEN` is used for logging through [papertrail](https://elements.heroku.com/addons/papertrail).
+
 ### Redis add-on
 
 The [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) add-on is attached to our `nextstrain-server` and `nextstrain-dev` apps.
@@ -46,6 +45,31 @@ This tries to optimize for being [outside/on the fringes of business hours](http
 If our Redis instance reaches its maximum memory limit, existing keys will be evicted using the [`volatile-ttl` policy](https://devcenter.heroku.com/articles/heroku-redis#maxmemory-policy) to make space for new keys.
 This should preserve the most active logged in sessions and avoid throwing errors if we hit the limit.
 If we regularly start hitting the memory limit, we should bump up to the next add-on plan, but I don't expect this to happen anytime soon with current usage.
+
+### Logs
+
+Server logs are available via the [papertrail web app](https://my.papertrailapp.com/systems/nextstrain-server/events) (requires heroku login).
+The dev server does not have papertrail enabled, but logs may be viewed using the heroku CLI via `heroku logs --app=nextstrain-dev --tail`.
+
+### Development server
+
+A testing app, `nextstrain-dev`, is also used, available at [dev.nextstrain.org](https://dev.nextstrain.org/).
+Deploys to it are manual, via the dashboard or [git pushes to the Heroku remote](https://devcenter.heroku.com/articles/git), e.g. `git push -f heroku-dev <branch>:master`, where the `heroku-dev` remote is https://git.heroku.com/nextstrain-dev.git.
+Note that the dev server runs in production mode (`NODE_ENV=production`), and also uses the `nextstrain.org` AWS IAM user.
+
+### Review apps
+
+We use [Heroku Review Apps](https://devcenter.heroku.com/articles/github-integration-review-apps) to create ephemeral apps for PRs to the [GitHub repo](https://github.com/nextstrain/nextstrain.org).
+These are automatically created for PRs submitted by Nextstrain team members.
+To recreate an inactivated app, or create one for a PR from a fork, you can use the heroku dashboard.
+(Make sure to review code for security purposes before creating such an app.)
+
+> It is not currently possible to login/logout of these apps due to our AWS Cognito setup; thus private datasets cannot be accessed.
+
+### Rolling back deployments
+
+Normal heroku deployments, which require TravisCI to pass and are subsequently built on Heroku, can take upwards of 10 minutes.
+Heroku allows us to immediately return to a previous version using `heroku rollback --app=nextstrain-server vX`, where X is the version number (available via the heroku dashboard).
 
 ## AWS
 
@@ -97,3 +121,8 @@ Nameservers for the nextstrain.org zone are hosted by [DNSimple](https://dnsimpl
 [nextstrain/nextstrain.org](https://github.com/nextstrain/nextstrain.org) is the GitHub repo for the Nextstrain website.
 
 Core and staging narratives are sourced from the [nextstrain/narratives](https://github.com/nextstrain/narratives) repo (the `master` and `staging` branches, respectively).
+
+## Travis CI
+
+CI is run via [TravisCI](https://travis-ci.com/nextstrain/nextstrain.org) using our [.travis.yml](https://github.com/nextstrain/nextstrain.org/blob/master/.travis.yml).
+All commits to the master branch on GitHub, or an open PR, will trigger a CI build.

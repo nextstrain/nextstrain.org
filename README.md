@@ -186,17 +186,10 @@ See the [auspice API documentation](https://nextstrain.github.io/auspice/server/
 
 
 ---
-## Deploy nextstrain.org
-All commits pushed to github trigger [Travis-CI](https://travis-ci.com/nextstrain/nextstrain.org), which runs the `npm run build` script & runs [eslint](https://eslint.org/) via `npm run lint`.
-Heroku will deploy commits pushed to the `master` branch automatically if there are no Travis CI errors.
-Heroku builds by running `npm run build` and, upon success, starts the server (`npm run server`).
 
+## Deployments
 
----
-## Deploy the development nextstrain.org server
-There is a [development heroku server](https://nextstrain-dev.herokuapp.com/) available which can be deployed via
-`git push -f heroku-dev <branch>:master`, where the `heroku-dev` remote is https://git.heroku.com/nextstrain-dev.git.
-It can be useful to test an unpublished auspice version -- modify `build.sh` to install the version of auspice you want (see comments in that file), commit the changes, and push to `heroku-dev`.
+See the (infrastructure documentation)[./docs/infrastructure.md) for details.
 
 
 ---
