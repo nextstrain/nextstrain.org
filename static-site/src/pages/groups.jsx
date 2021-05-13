@@ -29,22 +29,16 @@ const abstract = (<>
   Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a> and we’d be happy to set up a group for you.
 </>);
 
-// This is subject to change; it is determined by the
-// json file produced by the script which collects these datasets.
-const DATASET_GROUPNAME_KEY = "contributor";
-
-const tableColumns = [
+const datasetColumns = ({isNarrative}) => [
   {
-    name: "Dataset",
-    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
-    url: (dataset) => dataset.url
+    name: isNarrative ? "Narrative" : "Dataset",
+    value: (d) => d.request.replace("/groups/", "").replace(/\//g, " / "),
+    url: (d) => d.url
   },
   {
     name: "Group Name",
-    value: (dataset) => dataset[DATASET_GROUPNAME_KEY]
-    // TODO add a link when we collect groups datasets to individual group pages
-    // and pass it here with the 'url' key so that each entry links to a page like
-    // nextstrain.org/groups/blab
+    value: (d) => d.request.split("/")[2],
+    url: (d) => `/groups/${d.request.split("/")[2]}`
   }
 ];
 
@@ -77,7 +71,8 @@ class GroupsPage extends React.Component {
     this.state = {
       dataLoaded: false,
       errorFetchingData: false,
-      datasetsUrl: "https://staging.nextstrain.org/james/tmp-all-datasets.json"
+      datasets: [],
+      narratives: []
     };
   }
 
@@ -85,9 +80,10 @@ class GroupsPage extends React.Component {
 
   async componentDidMount() {
     try {
-      const datasets = await fetchAndParseJSON(this.state.datasetsUrl);
+      const available = await fetchAndParseJSON("/charon/getAvailable?prefix=/groups");
       this.setState({
-        datasets: datasets.filter((d) => d.source === "Public Group"),
+        datasets: cleanUpAvailable(available['datasets']),
+        narratives: cleanUpAvailable(available['narratives']),
         dataLoaded: true
       });
     } catch (err) {
@@ -116,14 +112,28 @@ class GroupsPage extends React.Component {
         <HugeSpacer />
 
         <ScrollableAnchor id={'datasets'}>
-          <splashStyles.H2>Nextstrain Groups datasets</splashStyles.H2>
+          <splashStyles.H2>Available Datasets</splashStyles.H2>
         </ScrollableAnchor>
+        <FlexCenter>
+          <splashStyles.CenteredFocusParagraph>
+            {`Note that this listing is refreshed every ~6 hours.
+            To see a current listing, visit the page for that group by clicking on that group's tile, above.`}
+          </splashStyles.CenteredFocusParagraph>
+        </FlexCenter>
         <HugeSpacer />
         {this.state.dataLoaded && (
           <DatasetSelect
             datasets={this.state.datasets}
-            columns={tableColumns}
-            intendedUri={this.props.uri}
+            columns={datasetColumns({isNarrative: false})}
+          />
+        )}
+        <ScrollableAnchor id={'datasets'}>
+          <splashStyles.H2>Available Narratives</splashStyles.H2>
+        </ScrollableAnchor>
+        {this.state.dataLoaded && (
+          <DatasetSelect
+            datasets={this.state.narratives}
+            columns={datasetColumns({isNarrative: true})}
           />
         )}
         { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
@@ -134,6 +144,17 @@ class GroupsPage extends React.Component {
       </>
     );
   }
+}
+
+function cleanUpAvailable(datasets) {
+  /* The dataset display & filtering has a number of hardcoded assumptions and TODOs, which
+  requires us to coerce dataset lists into a specific format */
+  if (!datasets) return [];
+  return datasets.map((d) => ({
+    ...d,
+    filename: d.request.replace(/\//g, "_").replace(/^_/, ''),
+    url: d.request
+  }));
 }
 
 export default Index;
