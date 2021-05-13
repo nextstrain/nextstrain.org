@@ -1,5 +1,7 @@
 import React from "react";
 
+export const UserContext = React.createContext();
+
 export default class UserDataWrapper extends React.Component {
   state = {
     user: undefined,
@@ -18,14 +20,9 @@ export default class UserDataWrapper extends React.Component {
   }
 
   render() {
-    const { children } = this.props;
-    const childElements = React.Children.map(children, child =>
-      // Passes the user state as a prop to all children elements via the prop `user`
-      child && React.cloneElement(child, {
-        user: this.state.user,
-        visibleGroups: this.state.visibleGroups,
-      })
-    );
-    return <div>{ childElements }</div>;
+    return (
+      <UserContext.Provider value={this.state}>
+        {this.props.children}
+      </UserContext.Provider>);
   }
 }

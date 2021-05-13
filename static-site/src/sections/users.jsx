@@ -1,12 +1,12 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useContext} from "react";
 import styled from "styled-components";
-import UserDataWrapper from "../layouts/userDataWrapper";
+import UserDataWrapper, { UserContext } from "../layouts/userDataWrapper";
 import NavBar from '../components/nav-bar';
 import { Logos } from "../components/logos";
 import MainLayout from "../components/layout";
 
-const UserPage = (props) => {
-  const { user, visibleGroups } = props;
+const UserPage = () => {
+  const { user, visibleGroups } = useContext(UserContext);
 
   const LoggedIn = () => (
     <Fragment>

@@ -1,14 +1,17 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import ScrollableAnchor from "react-scrollable-anchor";
 import * as Styles from "./styles";
 import Cards from "../Cards";
 import { HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import { theme } from "../../layouts/theme";
+import { UserContext } from "../../layouts/userDataWrapper";
 
-const UserGroups = (props) => {
+const UserGroups = () => {
   const colors = [...theme.titleColors];
 
-  const groupCards = props.visibleGroups.map((group) => {
+  const userContext = useContext(UserContext);
+
+  const groupCards = userContext.visibleGroups.map((group) => {
     const groupColor = colors[0];
     colors.push(colors.shift());
 
@@ -33,7 +36,7 @@ const UserGroups = (props) => {
         <Styles.CenteredFocusParagraph>
           Nextstrain groups represent collections of datasets, potentially with controlled access.
           You (
-          <Styles.StrongerText>{props.user.username}</Styles.StrongerText>
+          <Styles.StrongerText>{userContext.user.username}</Styles.StrongerText>
           ) have access to the following groups (a padlock icon indicates a private group):
         </Styles.CenteredFocusParagraph>
       </FlexCenter>
