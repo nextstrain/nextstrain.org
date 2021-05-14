@@ -3,7 +3,7 @@ import {Link} from 'gatsby';
 import styled, {css} from 'styled-components';
 import { startsWith } from "lodash";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
-
+import { UserContext } from "../../layouts/userDataWrapper";
 
 const NavContainer = styled.div`
   display: flex;
@@ -82,6 +82,8 @@ const NavLinkInactive = styled.div`
 `;
 
 class NavBar extends React.Component {
+  static contextType = UserContext;
+
   selectedClass(name) {
     if (!this.props.location || !this.props.location.pathname) return "";
     return startsWith(this.props.location.pathname, `/${name}`); // can't run this.props.location.pathname.startsWith(`/${name}`) on IE
@@ -129,10 +131,10 @@ class NavBar extends React.Component {
               <NavLinkInactive minified={minified}>BLOG</NavLinkInactive> :
               <NavLinkToBeHandledByGatsby minified={minified} to="/blog">BLOG</NavLinkToBeHandledByGatsby>
         }
-        {this.props.user ? (
+        {this.context.user ? (
           <NavLinkToGoToServer minified={minified} href="/whoami">
             <span role="img" aria-labelledby="userIcon">👤</span>
-            {` ${this.props.user.username}`}
+            {` ${this.context.user.username}`}
           </NavLinkToGoToServer>
         ) :
           <NavLinkToGoToServer minified={minified} href="/login">LOGIN</NavLinkToGoToServer>
