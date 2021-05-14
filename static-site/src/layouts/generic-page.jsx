@@ -15,12 +15,12 @@ const GenericPage = ({location, children}) => (
       <main>
         <UserDataWrapper>
           <NavBar location={location} />
+          <splashStyles.Container className="container">
+            <HugeSpacer /><HugeSpacer />
+            {children}
+            <Footer />
+          </splashStyles.Container>
         </UserDataWrapper>
-        <splashStyles.Container className="container">
-          <HugeSpacer /><HugeSpacer />
-          {children}
-          <Footer />
-        </splashStyles.Container>
       </main>
     </div>
   </MainLayout>
