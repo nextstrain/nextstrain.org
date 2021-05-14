@@ -113,16 +113,15 @@ const isRequestBackedByAuspiceDataset = async (req, res, next) => {
 /**
  * Does the main dataset file exist?
  * There is no attempt here to examine the validity or completeness of such a file.
- * Note: as we don't care about the file contents, there should be a
- * way to avoid fetching the data here and thus speed up this function.
  * @returns {bool}
  */
 async function datasetExists(dataset) {
+  const options = {method: 'HEAD'}; // only fetch headers to speed up
   try {
-    if ((await fetch(dataset.urlFor("main"))).status===200) {
+    if ((await fetch(dataset.urlFor("main"), options)).status===200) {
       return true;
     }
-    if ((await fetch(dataset.urlFor("meta"))).status===200) {
+    if ((await fetch(dataset.urlFor("meta"), options)).status===200) {
       return true;
     }
   } catch (err) {
