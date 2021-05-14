@@ -157,6 +157,14 @@ class CoreSource extends Source {
         .split("_")
         .join("/"));
   }
+
+  async getInfo() {
+    return {
+      title: `Nextstrain ${this.name} datasets & narratives`,
+      showDatasets: true,
+      showNarratives: true,
+    };
+  }
 }
 
 class CoreStagingSource extends CoreSource {

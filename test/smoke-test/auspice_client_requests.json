@@ -144,5 +144,23 @@
     "name": "Fetch from a group which doesn't exist",
     "url": "/charon/getSourceInfo?prefix=/groups/doesntexist",
     "expectStatusCode": 500
+  },
+  {
+    "name": "Getting Source Info for the core nextstrain source",
+    "__comment": "Used by the (customized) auspice splash page to list datasets",
+    "url": "/charon/getSourceInfo?prefix=/zika",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Getting Source Info for the staging nextstrain source",
+    "url": "/charon/getSourceInfo?prefix=/staging",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Unknown charon address should 404",
+    "url": "/charon/unknown",
+    "expectStatusCode": 404
   }
 ]
