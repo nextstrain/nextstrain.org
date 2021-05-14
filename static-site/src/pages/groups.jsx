@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import ScrollableAnchor from "react-scrollable-anchor";
-import { MdPerson } from "react-icons/md";
 import { SmallSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
@@ -8,8 +7,6 @@ import DatasetSelect from "../components/Datasets/dataset-select";
 import { GroupCards } from "../components/splash/userGroups";
 import GenericPage from "../layouts/generic-page";
 import { UserContext } from "../layouts/userDataWrapper";
-
-const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
 const title = "Scalable Sharing with Nextstrain Groups";
 const abstract = (<>
@@ -31,6 +28,11 @@ const abstract = (<>
   member to set up and add users.
   Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a> and we’d be happy to set up a group for you.
 </>);
+
+// This is subject to change; it is determined by the
+// json file produced by the script which collects these datasets.
+const DATASET_GROUPNAME_KEY = "contributor";
+
 const tableColumns = [
   {
     name: "Dataset",
@@ -39,11 +41,10 @@ const tableColumns = [
   },
   {
     name: "Group Name",
-    value: (dataset) => dataset.contributor,
-    url: (dataset) => dataset.contributorUrl,
-    logo: (dataset) => dataset.contributor==="Nextstrain" ?
-      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
-      <MdPerson/>
+    value: (dataset) => dataset[DATASET_GROUPNAME_KEY]
+    // TODO add a link when we collect groups datasets to individual group pages
+    // and pass it here with the 'url' key so that each entry links to a page like
+    // nextstrain.org/groups/blab
   }
 ];
 
