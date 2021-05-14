@@ -10,6 +10,8 @@ const argparse = require('argparse');
 const utils = require("./src/utils");
 const auspicePaths = require('./auspicePaths');
 const cors = require('cors');
+const {addAsync} = require("@awaitjs/express");
+const {NotFound} = require('http-errors');
 
 const production = process.env.NODE_ENV === "production";
 
@@ -51,7 +53,7 @@ const auspiceAssetPath = (...subpath) =>
 
 /* BASIC APP SETUP */
 // NOTE: order of app.get is first come first serve (https://stackoverflow.com/questions/32603818/order-of-router-precedence-in-express-js)
-const app = express();
+const app = addAsync(express());
 
 // In production, trust Heroku as a reverse proxy and Express will use request
 // metadata from the proxy.
@@ -85,21 +87,21 @@ app.route("/dist/*")
 
 /* Charon API used by Auspice.
  */
-app.route("/charon/getAvailable")
+app.routeAsync("/charon/getAvailable")
   .all(cors({origin: 'http://localhost:8000'})) // allow cross-origin from the gatsby dev server
-  .get(auspiceServerHandlers.getAvailable);
+  .getAsync(auspiceServerHandlers.getAvailable);
 
-app.route("/charon/getDataset")
-  .get(auspiceServerHandlers.getDataset);
+app.routeAsync("/charon/getDataset")
+  .getAsync(auspiceServerHandlers.getDataset);
 
-app.route("/charon/getNarrative")
-  .get(auspiceServerHandlers.getNarrative);
+app.routeAsync("/charon/getNarrative")
+  .getAsync(auspiceServerHandlers.getNarrative);
 
-app.route("/charon/getSourceInfo")
-  .get(auspiceServerHandlers.getSourceInfo);
+app.routeAsync("/charon/getSourceInfo")
+  .getAsync(auspiceServerHandlers.getSourceInfo);
 
-app.route("/charon/*")
-  .all((req, res) => res.status(404).end());
+app.routeAsync("/charon/*")
+  .all(() => { throw new NotFound(); });
 
 app.route(auspicePaths).get((req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);

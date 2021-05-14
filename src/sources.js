@@ -4,7 +4,8 @@ const zlib = require("zlib");
 const yamlFront = require("yaml-front-matter");
 const {fetch} = require("./fetch");
 const queryString = require("query-string");
-const {ResourceNotFoundError, NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
+const {NotFound} = require('http-errors');
+const {NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
 const utils = require("./utils");
 
 const S3 = new AWS.S3();
@@ -140,7 +141,7 @@ class CoreSource extends Source {
     const qs = queryString.stringify({ref: this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents?${qs}`);
 
-    if (response.status === 404) throw new ResourceNotFoundError();
+    if (response.status === 404) throw new NotFound();
     else if (response.status !== 200 && response.status !== 304) {
       utils.warn(`Error fetching available narratives from GitHub for source ${this.name}`, await utils.responseDetails(response));
       return [];
@@ -211,7 +212,7 @@ class CommunitySource extends Source {
     const qs = queryString.stringify({ref: this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/auspice?${qs}`);
 
-    if (response.status === 404) throw new ResourceNotFoundError();
+    if (response.status === 404) throw new NotFound();
     else if (response.status !== 200 && response.status !== 304) {
       utils.warn(`Error fetching available datasets from GitHub for source ${this.name}`, await utils.responseDetails(response));
       return [];

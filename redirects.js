@@ -30,8 +30,8 @@ const setup = (app) => {
    * Currently only used for nCoV narratives and requires the
    * language code to be the second to last part of the url.
    */
-  app.route("/narratives/ncov/sit-rep/*")
-    .get(async (req, res, next) => {
+  app.routeAsync("/narratives/ncov/sit-rep/*")
+    .getAsync(async (req, res, next) => {
       const {source, prefixParts} = helpers.splitPrefixIntoParts(req.url);
       const availableNarratives = await source.availableNarratives();
       const availableLanguages = new Set(availableNarratives
