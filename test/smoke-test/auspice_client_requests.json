@@ -121,6 +121,7 @@
   },
   {
     "name": "Fetch (core) narrative",
+    "__comment": "This fetch will fetch data from a GitHub repo (where our core narratives live)",
     "url": "/charon/getNarrative?prefix=/narratives/ncov/sit-rep/2020-05-15&type=md",
     "expectStatusCode": 200,
     "responseIsJson": false
@@ -141,9 +142,9 @@
     "expectStatusCode": 404
   },
   {
-    "name": "Fetch from a group which doesn't exist",
+    "name": "Get Source Info for a group which doesn't exist",
     "url": "/charon/getSourceInfo?prefix=/groups/doesntexist",
-    "expectStatusCode": 500
+    "expectStatusCode": 404
   },
   {
     "name": "Getting Source Info for the core nextstrain source",
