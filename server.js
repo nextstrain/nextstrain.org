@@ -101,7 +101,10 @@ app.routeAsync("/charon/getSourceInfo")
   .getAsync(auspiceServerHandlers.getSourceInfo);
 
 app.routeAsync("/charon/*")
-  .all(() => { throw new NotFound(); });
+  .all((req) => {
+    utils.warn(`(${req.method}) ${req.url} has not been handled / has no handler`);
+    throw new NotFound();
+  });
 
 app.route(auspicePaths).get((req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
