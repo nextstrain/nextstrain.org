@@ -8,6 +8,7 @@ install:
 script:
   - npm run build
   - npm run lint
+  - npm run test:ci
 notifications:
   email:
     on_success: never
