@@ -1,13 +1,13 @@
 const fetch = require('node-fetch');
 const assert = require('assert').strict;
+const {NotFound} = require("http-errors");
 
 const utils = require("./utils");
-const helpers = require("./getDatasetHelpers");
+const {unauthorized, splitPrefixIntoParts} = require("./getDatasetHelpers");
 
 const getNarrative = async (req, res) => {
   const query = req.query;
   const prefix = query.prefix;
-
   try {
     assert(prefix);
   } catch {
@@ -30,11 +30,11 @@ const getNarrative = async (req, res) => {
     return res.redirect("getNarrative?type=md&prefix=/groups" + prefix);
   }
 
-  const {source, prefixParts} = helpers.splitPrefixIntoParts(prefix);
+  const {source, prefixParts} = splitPrefixIntoParts(prefix);
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return helpers.unauthorized(req, res);
+    return unauthorized(req, res);
   }
 
   // Remove 'en' from nCoV narrative prefixParts
@@ -52,15 +52,11 @@ const getNarrative = async (req, res) => {
   try {
     utils.log(`Fetching narrative ${fetchURL} and streaming to client for parsing`);
     const response = await fetch(fetchURL);
-    if (response.status === 404) {
-      return res.status(404).send("The requested URL does not exist.");
-    } else if (!(response.status === 200 || response.status === 304)) {
-      throw new Error(`Failed to fetch ${fetchURL}: ${response.status} ${response.statusText}`);
-    }
-    res.set("Content-Type", "text/markdown");
-    return response.body.pipe(res);
+    if (response.status !== 200) throw new Error();
+    const narrativeContents = await response.text();
+    return res.set("Content-Type", "text/markdown").send(narrativeContents);
   } catch (err) {
-    return helpers.handle500Error(res, `Narratives couldn't be served -- ${err.message}`);
+    throw new NotFound(`Failed to fetch ${fetchURL}`);
   }
 };
 

@@ -3,11 +3,6 @@ const {NotFound} = require("http-errors");
 const utils = require("./utils");
 const sources = require("./sources");
 
-const handle500Error = (res, clientMsg, serverMsg="") => {
-  utils.warn(`${clientMsg} -- ${serverMsg}`);
-  return res.status(500).type("text/plain").send(clientMsg);
-};
-
 const unauthorized = (req, res) => {
   const user = req.user
     ? `user ${req.user.username}`
@@ -192,7 +187,6 @@ const canonicalizePrefix = (prefix) =>
 module.exports = {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
-  handle500Error,
   unauthorized,
   parsePrefix,
   canonicalizePrefix,
