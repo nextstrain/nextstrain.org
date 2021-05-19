@@ -57,7 +57,7 @@ export const Logos = () => (
         <Logo href="https://www.gatesfoundation.org/" imgSrc={bmgfLogo} width={130}/>
         <Logo href="https://erc.europa.eu/" imgSrc={ercLogo} width={65}/>
         <Logo href="https://www.mapbox.com" imgSrc={mapBoxLogo} width={110}/>
-        <Logo href="https://www.openscienceprize.org/" imgSrc={ospLogo} width={100}/>
+        <Logo href="https://www.nih.gov/news-events/news-releases/open-science-prize-announces-epidemic-tracking-tool-grand-prize-winner" imgSrc={ospLogo} width={100}/>
         <Logo href="http://biozentrum.org/" imgSrc={bzLogo} width={115}/>
       </AllLogosContainer>
     </div>
