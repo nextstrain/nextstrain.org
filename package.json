@@ -26,7 +26,7 @@
     "@awaitjs/express": "^0.6.3",
     "argparse": "^1.0.10",
     "auspice": "2.25.1",
-    "aws-sdk": "^2.520.0",
+    "aws-sdk": "^2.908.0",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
     "connect-redis": "^4.0.3",

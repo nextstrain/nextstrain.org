@@ -368,6 +368,7 @@ class S3Source extends Source {
       let contents = [];
       S3.listObjectsV2({Bucket: this.bucket}).eachPage((err, data, done) => {
         if (err) {
+          utils.warn(`Could not list S3 objects for group '${this.name}'\n${err.message}`);
           return reject(err);
         }
         if (data===null) { // no more data
