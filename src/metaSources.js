@@ -26,18 +26,26 @@ const Groups = (() => {
   const updateKnownDatasetsAndNarratives = async () => {
     // following loop is intentionally sequential to reduce load on server
     for await (const [groupName, source] of groupSources) {
-      datasetsPerGroup.set(
-        groupName,
-        (await source.availableDatasets()).map((p) => `/groups/${groupName}/${p}`)
-      );
-      narrativesPerGroup.set(
-        groupName,
-        (await source.availableNarratives()).map((p) => `/groups/${groupName}/narratives/${p}`)
-      );
+      try {
+        datasetsPerGroup.set(
+          groupName,
+          (await source.availableDatasets()).map((p) => `/groups/${groupName}/${p}`)
+        );
+      } catch (err) {
+        utils.warn(`Error fetching available datasets for group ${groupName}: ${err}`);
+      }
+      try {
+        narrativesPerGroup.set(
+          groupName,
+          (await source.availableNarratives()).map((p) => `/groups/${groupName}/narratives/${p}`)
+        );
+      } catch (err) {
+        utils.warn(`Error fetching available narratives for group ${groupName}: ${err}`);
+      }
     }
     utils.log("Updated known group datasets / narratives");
     for (const [name] of groupSources) {
-      utils.log(`\t${name}: ${datasetsPerGroup.get(name).length} datasets, ${narrativesPerGroup.get(name).length} narratives`);
+      utils.log(`\t${name}: ${(datasetsPerGroup.get(name) || []).length} datasets, ${(narrativesPerGroup.get(name) || []).length} narratives`);
     }
   };
 
