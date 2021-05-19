@@ -2,7 +2,7 @@
 
 trap 'kill 0' EXIT
 
-npm run server &
+NODE_ENV="dev" node server.js &
 cd static-site && npm run develop
 
 wait

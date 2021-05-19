@@ -39,6 +39,7 @@ The following section details the different ways to serve these pages on a local
 #### Run server mirroring the deployed (live) website
 `npm run server` will start a local server, by default available at [localhost:5000](http://localhost:5000).
 This should mirror exactly what you see when you visit [nextstrain.org](https://nextstrain.org).
+In order to replicate the live behavior, you will need the appropriate environment variables set (see below).
 
 #### Run server in development mode
 If you are developing on nextstrain.org, we recommend running:
@@ -49,9 +50,20 @@ Changes to files in `./static-site` will be reflected in the corresponding pages
 This works by running the main nextstrain server on port 5000 and then running the Gatsby (see below for more on Gatsby) server on port 8000 and directing requests outside of Gatsby to port 5000.
 See [nextstrain.org/pull/280](https://github.com/nextstrain/nextstrain.org/pull/280) for more on this.
 
-#### Building with Nextstrain Groups (e.g. "Login") functionality
-You'll need AWS credentials configured (via environment or `~/.aws/credentials`) for the Bedford Lab account.
-If you add a new profile to `~/.aws/credentials`, you can then tell the local nextstrain.org server to use it by setting `AWS_PROFILE=...`.
+An alternative approach is to build the site (as above) and then start the server:
+```sh
+NODE_ENV="dev" npm run server
+```
+
+### Environment variables
+
+See [docs/infrastructure.md](https://github.com/nextstrain/nextstrain.org/blob/master/docs/infrastructure.md#environment-variables) for a description of the environment variables used by the server.
+For running locally, you should ensure
+  - `NODE_ENV` is not set to "production", as authentication will not work on localhost.
+  - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are a valid AWS IAM user, in order for the server to access S3 buckets.
+  Alternatively, these may be configured using `~/.aws/credentials`.
+  If you add a new profile to `~/.aws/credentials`, you can then tell the server to use it by setting `AWS_PROFILE=...`.
+
 
 ---
 
@@ -174,17 +186,10 @@ See the [auspice API documentation](https://nextstrain.github.io/auspice/server/
 
 
 ---
-## Deploy nextstrain.org
-All commits pushed to github trigger [Travis-CI](https://travis-ci.com/nextstrain/nextstrain.org), which runs the `npm run build` script & runs [eslint](https://eslint.org/) via `npm run lint`.
-Heroku will deploy commits pushed to the `master` branch automatically if there are no Travis CI errors.
-Heroku builds by running `npm run build` and, upon success, starts the server (`npm run server`).
 
+## Deployments
 
----
-## Deploy the development nextstrain.org server
-There is a [development heroku server](https://nextstrain-dev.herokuapp.com/) available which can be deployed via
-`git push -f heroku-dev <branch>:master`, where the `heroku-dev` remote is https://git.heroku.com/nextstrain-dev.git.
-It can be useful to test an unpublished auspice version -- modify `build.sh` to install the version of auspice you want (see comments in that file), commit the changes, and push to `heroku-dev`.
+See the (infrastructure documentation)[./docs/infrastructure.md) for details.
 
 
 ---

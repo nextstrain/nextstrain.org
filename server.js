@@ -17,10 +17,11 @@ const production = process.env.NODE_ENV === "production";
 
 const version = utils.getGitHash();
 const nextstrainAbout = `
-  Nextstrain is an open-source project to harness the scientific and public health potential
-  of pathogen genome data. This is the server behind nextstrain.org.
-  It delivers the static content (https://github.com/nextstrain/static) as well as the interactive
-  visualisation app auspice (https://github.com/nextstrain/auspice), with customisations.
+  Nextstrain is an open-source project to harness the scientific and public
+  health potential of pathogen genome data.
+
+  This is the server behind nextstrain.org.
+  See https://github.com/nextstrain/nextstrain.org for more.
 `;
 const parser = new argparse.ArgumentParser({
   version,
@@ -128,12 +129,12 @@ app.get("*", (req, res) => {
 
 
 const server = app.listen(app.get('port'), () => {
-  console.log("-----------------------------------");
+  console.log("  -------------------------------------------------------------------------");
   console.log(nextstrainAbout);
   console.log(`  Server listening on port ${server.address().port}`);
   console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`);
-  console.log(`  Auspice datasets are sourced from S3 buckets.`);
-  console.log("\n-----------------------------------\n\n");
+  console.log(`  Server is running in ${production ? 'production' : 'development'} mode`);
+  console.log("\n  -------------------------------------------------------------------------\n\n");
 }).on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
     utils.error(`Port ${app.get('port')} is currently in use by another program.
