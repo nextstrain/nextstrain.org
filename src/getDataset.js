@@ -6,7 +6,7 @@ const helpers = require("./getDatasetHelpers");
 const {NoDatasetPathError} = require("./exceptions");
 const auspice = require("auspice");
 const request = require('request');
-const {NotFound} = require("http-errors");
+const {NotFound, InternalServerError} = require("http-errors");
 
 /**
  *
@@ -24,67 +24,67 @@ const requestCertainFileType = async (res, req, additional, query) => {
 
 
 /**
- * Fetch dataset in v1 format (meta + tree files).
- * Returns a array of [success {bool}, dataToSend or response code to return]
+ * Fetch dataset in v1 format (meta + tree files), converting to v2 format
+ * before sending as a JSON response to client.
+ * @param {Object} res express response object
+ * @param {string} metaJsonUrl
+ * @param {string} treeJsonUrl
+ * @returns {undefined} if successfully sent dataset
+ * @throws {NotFound} If either of the JSONs were not able to be fetched
+ * @throws {InternalServerError} If the parsing / conversion of the JSONs (into v2 format) failed
  */
-const requestV1Dataset = async (metaJsonUrl, treeJsonUrl) => {
+const sendV1Dataset = async (res, metaJsonUrl, treeJsonUrl) => {
   utils.verbose(`Trying to request v1 datasets at: "${metaJsonUrl}" & "${treeJsonUrl}`);
   let data, datasetJson;
   try {
     data = await Promise.all([utils.fetchJSON(metaJsonUrl), utils.fetchJSON(treeJsonUrl)]);
   } catch (err) {
     utils.warn("Failed to fetch v1 dataset JSONs");
-    return [false, 404]; // Not Found
+    throw new NotFound();
   }
   try {
     datasetJson = auspice.convertFromV1({tree: data[1], meta: data[0]});
   } catch (err) {
     utils.warn("Failed to convert v1 dataset JSONs to v2");
-    return [false, 500]; // Internal Server Error
+    throw new InternalServerError();
   }
   utils.verbose(`Success fetching & converting v1 auspice JSONs. Sending as a single v2 JSON.`);
-  return [true, datasetJson];
+  return res.send(datasetJson);
 };
 
 /**
- * Returns a promise which will fetch the main dataset.
- * The "main" dataset is assumed to be a v2+ (unified) JSON
- * If this request 404s, then we attempt to fetch a v1-version
- * of the dataset (i.e. meta + tree JSONs) and convert it
- * to v2 format for the response.
- * Successful dataset fetches will resolve.
- * If neither the v1 nor the v2 dataset fetch / parse is successful,
- * then the promise will reject.
+ * Attempt to stream the main (v2) auspice dataset. This function (when `await`ed)
+ * will finish streaming before returning.
+ * @param {Object} res express response object
+ * @param {Object} dataset
+ * @returns {undefined} Returns undefined if streaming was successful
+ * @throws {NotFound} Throws if the dataset didn't exist (or the streaming failed)
  */
-const requestMainDataset = async (res, dataset) => {
+const streamMainV2Dataset = async (res, dataset) => {
   const main = dataset.urlFor("main");
-
-  return new Promise((resolve, reject) => {
-    /* try to stream the (v2+) dataset JSON as the response */
-    const req = request
-      .get(main)
-      .on('error', (err) => reject(err))
-      .on("response", async (response) => { // eslint-disable-line consistent-return
-        if (response.statusCode === 200) {
-          utils.verbose(`Successfully streaming ${main}.`);
-          req.pipe(res);
-          return resolve();
-        }
-        utils.verbose(`The request for ${main} returned ${response.statusCode}.`);
-
-        const meta = dataset.urlFor("meta");
-        const tree = dataset.urlFor("tree");
-        const [success, dataToReturn] = await requestV1Dataset(meta, tree);
-        if (success) {
-          res.send(dataToReturn);
-          return resolve();
-        }
-        /* Check for a 404 status code after we've had the opportunity to do a
-        follow-up request for a V1 dataset. */
-        if (response.statusCode === 404) reject(new NotFound());
-        return reject(dataToReturn);
-      });
-  });
+  try {
+    await new Promise((resolve, reject) => {
+      let statusCode;
+      const req = request
+        .get(main)
+        .on('error', (err) => reject(err))
+        .on("response", (response) => {
+          statusCode = response.statusCode;
+          if (statusCode === 200) {
+            utils.verbose(`Successfully streaming ${main}.`);
+            req.pipe(res);
+          }
+        })
+        .on("end", () => {
+          if (statusCode===200) {
+            return resolve();
+          }
+          return reject(new NotFound());
+        });
+    });
+  } catch (err) {
+    throw err;
+  }
 };
 
 /**
@@ -162,19 +162,24 @@ const getDataset = async (req, res) => {
 
   if (query.type) {
     const url = dataset.urlFor(query.type);
-    await requestCertainFileType(res, req, url, query);
-  } else {
+    return requestCertainFileType(res, req, url, query);
+  }
+
+  try {
+    /* attempt to stream the v2 dataset */
+    return await streamMainV2Dataset(res, dataset);
+  } catch (errV2) {
     try {
-      await requestMainDataset(res, dataset);
-    } catch (err) {
+      /* attempt to fetch the meta + tree JSONs, combine, and send */
+      return await sendV1Dataset(res, dataset.urlFor("meta"), dataset.urlFor("tree"));
+    } catch (errV1) {
       if (dataset.isRequestValidWithoutDataset) {
         utils.verbose("Request is valid, but no dataset available. Returning 204.");
-        return res.status(204).end();
+        return res.status(204).send();
       }
-      throw err;
+      throw errV2;
     }
   }
-  return undefined;
 };
 
 module.exports = {
