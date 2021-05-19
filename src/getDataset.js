@@ -123,7 +123,6 @@ const getDataset = async (req, res) => {
   let datasetInfo;
   try {
     datasetInfo = helpers.parsePrefix(query.prefix, query);
-    utils.verbose("Dataset: ", datasetInfo);
   } catch (err) {
     /* Return a 204 No Content when Auspice makes a dataset request to a
      * valid source root without a dataset path.
