@@ -60,7 +60,7 @@ NODE_ENV="dev" npm run server
 See [docs/infrastructure.md](https://github.com/nextstrain/nextstrain.org/blob/master/docs/infrastructure.md#environment-variables) for a description of the environment variables used by the server.
 For running locally, you should ensure
   - `NODE_ENV` is not set to "production", as authentication will not work on localhost.
-  - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are a valid AWS IAM user, in order for the server to access S3 buckets.
+  - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are a valid [AWS IAM](https://aws.amazon.com/iam/) user, in order for the server to access S3 buckets.
   Alternatively, these may be configured using `~/.aws/credentials`.
   If you add a new profile to `~/.aws/credentials`, you can then tell the server to use it by setting `AWS_PROFILE=...`.
 
@@ -189,7 +189,7 @@ See the [auspice API documentation](https://nextstrain.github.io/auspice/server/
 
 ## Deployments
 
-See the (infrastructure documentation)[./docs/infrastructure.md) for details.
+See the [infrastructure documentation](./docs/infrastructure.md) for details.
 
 
 ---
