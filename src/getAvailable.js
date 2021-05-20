@@ -2,11 +2,17 @@ const utils = require("./utils");
 const queryString = require("query-string");
 const {splitPrefixIntoParts, joinPartsIntoPrefix, unauthorized} = require("./getDatasetHelpers");
 const {ResourceNotFoundError} = require("./exceptions");
+const metaSources = require("./metaSources");
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
   const prefix = queryString.parse(req.url.split('?')[1]).prefix || "";
   utils.verbose(`getAvailable prefix: "${prefix}"`);
+
+  // `prefix=/groups` is special-cased as it is not backed by a single Source
+  if (prefix.replace(/\//g, '')==="groups") {
+    return res.json(await collectAllAvailableGroups(req.user));
+  }
 
   const {source} = splitPrefixIntoParts(prefix);
 
@@ -47,6 +53,16 @@ const getAvailable = async (req, res) => {
     }))
   });
 };
+
+async function collectAllAvailableGroups(user) {
+  const source = new (metaSources.get("groups"))(user);
+  const datasets = await source.availableDatasets();
+  const narratives = await source.availableNarratives();
+  return {
+    datasets: datasets.map((request) => ({request})),
+    narratives: narratives.map((request) => ({request}))
+  };
+}
 
 module.exports = {
   default: getAvailable
