@@ -127,6 +127,7 @@ class GroupsPage extends React.Component {
             columns={datasetColumns({isNarrative: false})}
           />
         )}
+        <HugeSpacer />
         <ScrollableAnchor id={'datasets'}>
           <splashStyles.H2>Available Narratives</splashStyles.H2>
         </ScrollableAnchor>
