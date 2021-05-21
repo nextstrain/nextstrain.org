@@ -1,23 +1,12 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
-import {
-  HugeSpacer,
-  FlexCenter
-} from "../layouts/generalComponents";
+import { HugeSpacer } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GroupHeading from "../components/splash/groupHeading";
-
-const GroupNotFound = ({groupName}) => (
-  <FlexCenter>
-    <splashStyles.CenteredFocusParagraph>
-      {`The Nextstrain Group "${groupName}" doesn't exist yet, or there was an error getting data for that group. `}
-      Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-      if you believe this to be an error.</splashStyles.CenteredFocusParagraph>
-  </FlexCenter>
-);
+import { MissingGroupsDatasetBanner, GroupNotFound } from "../components/splash/errorMessages";
 
 class Index extends React.Component {
   constructor(props) {
@@ -50,7 +39,8 @@ class Index extends React.Component {
         sourceInfo,
         groupName,
         datasets: this.createDatasetListing(availableData.datasets, groupName),
-        narratives: this.createDatasetListing(availableData.narratives, groupName)
+        narratives: this.createDatasetListing(availableData.narratives, groupName),
+        missingDataset: this.props["*"]
       });
     } catch (err) {
       console.error("Cannot find group.", err.message);
@@ -76,6 +66,7 @@ class Index extends React.Component {
     }
     return (
       <GenericPage location={this.props.location}>
+        {this.state.missingDataset && <MissingGroupsDatasetBanner dataset={this.state.missingDataset} groupName={this.state.groupName}/>}
         <GroupHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (

@@ -202,7 +202,7 @@ exports.createPages = ({graphql, actions}) => {
         // Create individual groups pages
         createPage({
           path: "/groups/:groupName",
-          matchPath: "/groups/:groupName",
+          matchPath: "/groups/:groupName/*",
           component: path.resolve("src/sections/individual-group-page.jsx")
         });
 
