@@ -23,13 +23,11 @@ function Title({avatarSrc, children}) {
     object-fit: contain;
   `;
   const TitleDiv = styled.div`
-    && {
-      font-weight: 500;
-      font-size: 26px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+    font-weight: 500;
+    font-size: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   `;
   return (
     <div style={{display: "flex", justifyContent: "start", padding: "50px 0px 20px 0px"}}>
@@ -47,12 +45,10 @@ function Title({avatarSrc, children}) {
 function Byline({children}) {
   if (!children) return null;
   const Div = styled.div`
-    && {
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 1.428;
-      color: #A9ADB1;
-    }
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.428;
+    color: #A9ADB1;
   `;
   return (<Div>{children}</Div>);
 }
