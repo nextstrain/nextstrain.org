@@ -6,14 +6,16 @@ import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GroupHeading from "../components/splash/groupHeading";
-import { MissingGroupsDatasetBanner, GroupNotFound } from "../components/splash/errorMessages";
+import { BannerIfGroupsDatasetNotFound, GroupNotFound } from "../components/splash/errorMessages";
 
 class Index extends React.Component {
   constructor(props) {
     super(props);
     configureAnchors({ offset: -10 });
+    const nonExistentDatasetName = this.props["*"];
     this.state = {
-      groupNotFound: false
+      groupNotFound: false,
+      nonExistentDatasetName
     };
   }
 
@@ -40,7 +42,6 @@ class Index extends React.Component {
         groupName,
         datasets: this.createDatasetListing(availableData.datasets, groupName),
         narratives: this.createDatasetListing(availableData.narratives, groupName),
-        missingDataset: this.props["*"]
       });
     } catch (err) {
       console.error("Cannot find group.", err.message);
@@ -53,6 +54,7 @@ class Index extends React.Component {
     if (this.state.groupNotFound) {
       return (
         <GenericPage location={this.props.location}>
+          <BannerIfGroupsDatasetNotFound missingDatasetName={this.state.nonExistentDatasetName} groupName={this.state.groupName}/>
           <GroupNotFound groupName={groupName}/>
         </GenericPage>
       );
@@ -60,13 +62,14 @@ class Index extends React.Component {
     if (!this.state.sourceInfo) {
       return (
         <GenericPage location={this.props.location}>
+          <BannerIfGroupsDatasetNotFound missingDatasetName={this.state.nonExistentDatasetName} groupName={this.state.groupName}/>
           <splashStyles.H2>Data loading...</splashStyles.H2>
         </GenericPage>
       );
     }
     return (
       <GenericPage location={this.props.location}>
-        {this.state.missingDataset && <MissingGroupsDatasetBanner dataset={this.state.missingDataset} groupName={this.state.groupName}/>}
+        <BannerIfGroupsDatasetNotFound missingDatasetName={this.state.nonExistentDatasetName} groupName={this.state.groupName}/>
         <GroupHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (

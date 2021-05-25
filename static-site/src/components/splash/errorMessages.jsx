@@ -6,14 +6,16 @@ const PleaseEmailUsIfYouBelieveThisToBeAnError = () => (
   <p>Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a> if you believe this to be an error.</p>
 );
 
-export const MissingGroupsDatasetBanner = ({dataset, groupName}) => (
-  <FlexCenter>
-    <splashStyles.CenteredFocusParagraph>
-      {`The dataset "nextstrain.org/groups/${groupName}/${dataset}" doesn't exist.
-        Here is the groups page for the "${groupName}" group.`}
-      <PleaseEmailUsIfYouBelieveThisToBeAnError/>
-    </splashStyles.CenteredFocusParagraph>
-  </FlexCenter>
+export const BannerIfGroupsDatasetNotFound = ({missingDatasetName, groupName}) => (
+  <>{missingDatasetName &&
+    <FlexCenter>
+      <splashStyles.CenteredFocusParagraph>
+        {`The dataset "nextstrain.org/groups/${groupName}/${missingDatasetName}" doesn't exist.
+          Here is the groups page for the "${groupName}" group.`}
+        <PleaseEmailUsIfYouBelieveThisToBeAnError/>
+      </splashStyles.CenteredFocusParagraph>
+    </FlexCenter>}
+  </>
 );
 
 export const GroupNotFound = ({groupName}) => (
