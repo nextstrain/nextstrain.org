@@ -2,6 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 import { StyledLink } from "../Datasets/list-datasets";
 import { FlexCenter } from "../../layouts/generalComponents";
+import MarkdownDisplay from "./markdownDisplay";
 
 const OverviewContainer = styled.div`
   text-align: justify;
@@ -13,6 +14,19 @@ const OverviewContainer = styled.div`
   line-height: 1.42857143;
   margin: 0px auto 0px auto;
   max-width: 900px;
+  table, th {
+    border-style: none;
+    border-collapse: separate;
+    padding: 0;
+  }
+  td {
+    border-style: none;
+    width: 200px;
+    padding: 0;
+  }
+  a, p {
+    font-size: 94%;
+  }
 `;
 
 function Title({avatarSrc, children}) {
@@ -69,7 +83,7 @@ export default function GroupHeading({sourceInfo}) {
       {sourceInfo.overview &&
         <FlexCenter>
           <OverviewContainer>
-            {sourceInfo.overview}
+            <MarkdownDisplay mdstring={sourceInfo.overview}/>
           </OverviewContainer>
         </FlexCenter>
       }
