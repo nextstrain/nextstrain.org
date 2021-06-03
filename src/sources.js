@@ -621,6 +621,10 @@ class EPICOVIGALSource extends PublicGroupSource {
   static get _name() { return "epicovigal"; }
 }
 
+class WAPHLSource extends PublicGroupSource {
+  static get _name() { return "waphl"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -639,6 +643,7 @@ const sources = [
   SpheresSource,
   NIPHSource,
   EPICOVIGALSource,
+  WAPHLSource,
   /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
