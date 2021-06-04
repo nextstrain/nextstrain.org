@@ -73,7 +73,7 @@ module.exports = {
     // "gatsby-plugin-catch-links" // See https://github.com/nextstrain/nextstrain.org/issues/34
   ],
   developMiddleware: app => {
-    ['/charon', '/dist', ...potentialAuspiceRoutes].forEach(path => {
+    ['/charon', '/whoami', '/dist', ...potentialAuspiceRoutes].forEach(path => {
       app.use(
         path,
         createProxyMiddleware({
