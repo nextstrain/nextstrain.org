@@ -625,6 +625,10 @@ class WAPHLSource extends PublicGroupSource {
   static get _name() { return "waphl"; }
 }
 
+class ILRIPrivateSource extends PrivateGroupSource {
+  static get _name() { return "ilri"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -650,7 +654,8 @@ const sources = [
   AllWalesPrivateSource,
   IllinoisGagnonPrivateSource,
   GrubaughLabPrivateSource,
-  InrbDrcSource
+  InrbDrcSource,
+  ILRIPrivateSource
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
