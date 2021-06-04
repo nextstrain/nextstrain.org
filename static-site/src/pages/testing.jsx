@@ -1,6 +1,7 @@
 import React from "react";
-import {H1} from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
+import {version} from "styled-components";
+
 import PanelWithCards from "../components/panels/panelWithCards";
 import { Panel, PanelContainer} from "../components/panels/panelStyles";
 import { UserContext } from "../layouts/userDataWrapper";
@@ -8,18 +9,36 @@ import nCoVCards from "../components/Cards/nCoVCards";
 import coreCards from "../components/Cards/coreCards";
 import communityCards from "../components/Cards/communityCards";
 import narrativeCards from "../components/Cards/narrativeCards";
-
+import Blurb from "../components/Blurb/Blurb";
 
 const genericTitle = "Generic Title";
 const genericSubtitle = "A showcase of datasets created by independent researchers and shared through GitHub";
 
 class Index extends React.Component { //eslint-disable-line
   render() {
+    console.log(version)
     return (
       <GenericPage location={this.props.location}>
-        <H1>Testing Page for different collections of panels</H1>
 
-        <p>P.S. As we use media queries, to test mobile you must resize the viewport (we can't just create a small div here)</p>
+        <Blurb title="Testing Page for different collections of components">
+          As we use media queries, to test mobile you must resize the viewport (we can't just create a small div here)
+          P.S. This is rendered in a blurb component
+        </Blurb>
+
+        <Blurb title="Another Blurb component" buttons={[{to: "/", label: "splash page"}]}>
+          <div>
+            This time with the children as a div, buttons (prop) and a list, which we render as left-aligned
+            <ol>
+              <li>one</li>
+              <li>two</li>
+              <li>three</li>
+            </ol>
+            <ul>
+              <li>a point</li>
+              <li>another point</li>
+            </ul>
+          </div>
+        </Blurb>
 
         <p>Following card selection component isn't constrained (note that we don't intent to use this):</p>
         <PanelWithCards title={genericTitle} subtitle={genericSubtitle}/>
