@@ -404,6 +404,10 @@ datasets:
     geo: bangladesh
     parentGeo: asia
 
+  - name: Sri Lanka
+    geo: sri-lanka
+    parentGeo: asia
+
   - name: India
     geo: india
     parentGeo: asia
@@ -1709,6 +1713,17 @@ datasets:
     org:
       name: Child Health Research Foundation
       url: http://chrfbd.org/
+
+  - url: https://nextstrain.org/community/aicbu/ncov/srilanka
+    name: Sri Lanka
+    geo: sri-lanka
+    level: country
+    coords:
+      - 80.7718
+      - 7.8731
+    org:
+      name: AICBU at University of Sri Jayewardenepura
+      url: http://www.medical.sjp.ac.lk/index.php/immunology-introduction
 
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
     name: India
