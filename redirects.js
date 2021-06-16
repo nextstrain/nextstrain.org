@@ -24,6 +24,18 @@ const setup = (app) => {
     res.redirect(`/groups${req.originalUrl}`);
   });
 
+  /** prior to June 2021 our core nCoV builds were available at
+   * /ncov/global, ncov/asia etc. These used GISAID data exclusively.
+   * We now have GISAID builds and GenBank builds, and so the URLs
+   * (i.e. names on s3://nextstrain-data) have changed. We add redirects
+   * for the old URLs to point to the new GISAID URLs.
+   * The timestamped URLs (e.g. /ncov/:region/YYYY-MM-DD) which currently exist
+   * will not be redirected, but new URLs will be of the format
+   * /ncov/gisaid/:region/YYYY-MM-DD.
+   */
+  app.route('/ncov/:region((global|asia|oceania|north-america|south-america|europe|africa))')
+    .get((req, res) => res.redirect(`/ncov/gisaid/${req.params.region}`));
+
   /*
    * Redirect to translations of narratives if the client has
    * set language preference and the translation is available
