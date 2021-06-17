@@ -47,11 +47,17 @@ export const parseMarkdown = (mdString) => {
   const sanitizerConfig = {
     allowedTags,
     allowedAttributes: {"*": allowedAttributes},
-    // These two config settings come from https://github.com/cure53/DOMPurify
-    // and it's not clear how to set them in https://github.com/apostrophecms/sanitize-html
-    // which we are using here.
-    // KEEP_CONTENT: false,
-    // ALLOW_DATA_ATTR: false
+    nonTextTags: ['style', 'script', 'textarea', 'option'],
+    transformTags: {
+      'a': function(tagName, attribs) { // eslint-disable-line
+        const url = new URL(attribs.href); // URL is not supported on Internet Explorer
+        if (url.hostname !== location.hostname) {
+          attribs.target = '_blank';
+          attribs.rel = 'noreferrer nofollow';
+        }
+        return {tagName, attribs};
+      }
+    }
   };
   const rawDescription = marked(mdString);
   const cleanDescription = sanitizeHtml(rawDescription, sanitizerConfig);

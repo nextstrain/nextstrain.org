@@ -6,8 +6,8 @@ export default function MarkdownDisplay({ mdstring, ...props }) {
   try {
     cleanDescription = parseMarkdown(mdstring);
   } catch (error) {
-    console.error(`Error parsing footer description: ${error}`);
-    cleanDescription = '<p>There was an error parsing the footer description.</p>';
+    console.error(`Error parsing markdown: ${error}`);
+    cleanDescription = '<p>There was an error parsing markdown content.</p>';
   }
   return (
     <div
