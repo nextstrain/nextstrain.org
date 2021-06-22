@@ -12,12 +12,12 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import Footer from "../components/Footer";
 import DatasetSelect from "../components/Datasets/dataset-select";
-import { getDatasetsAndNarratives } from "./pathogens";
+import { fetchAndParseJSON } from "../util/datasetsHelpers";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
-const title = "Staging Datasets";
-const abstract = `This page details staging (i.e. not yet released) datasets maintained by the Nextstrain team.`;
+const title = "Nextstrain-maintained Datasets";
+const abstract = `This page details datasets maintained by the Nextstrain team.`;
 
 
 const tableColumns = [
@@ -48,7 +48,7 @@ class Index extends React.Component {
 
   async componentDidMount() {
     try {
-      const data = await getDatasetsAndNarratives("/charon/getAvailable?prefix=/staging");
+      const data = await getDatasetsAndNarratives("/charon/getAvailable");
       this.setState({data});
     } catch (err) {
       console.error("Error fetching / parsing data.", err.message);
@@ -99,6 +99,33 @@ class Index extends React.Component {
       </MainLayout>
     );
   }
+}
+
+export async function getDatasetsAndNarratives(url) {
+  const available = await fetchAndParseJSON(url);
+  const formatName = (x) => x.replace(/^\//, '').replace(/\/$/, '').replace(/\//g, " / ");
+  const data = [];
+  if (available.datasets) {
+    available.datasets.forEach((d) => {
+      data.push({
+        url: d.request,
+        filename: d.request,
+        name: formatName(d.request),
+        type: "Dataset"
+      });
+    });
+  }
+  if (available.narratives) {
+    available.narratives.forEach((d) => {
+      data.push({
+        url: d.request,
+        filename: d.request,
+        name: formatName(d.request),
+        type: "Narrative"
+      });
+    });
+  }
+  return data;
 }
 
 export default Index;
