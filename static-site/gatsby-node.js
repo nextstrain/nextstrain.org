@@ -219,11 +219,13 @@ exports.createPages = ({graphql, actions}) => {
 
         createPage({
           path: "/staging",
+          matchPath: "/staging/*",
           component: path.resolve("src/sections/staging.jsx")
         });
 
         createPage({
           path: "/pathogens",
+          matchPath: "/pathogens/*",
           component: path.resolve("src/sections/pathogens.jsx")
         });
 
