@@ -1,18 +1,13 @@
 import React from "react";
-import Helmet from "react-helmet";
-import config from "../../data/SiteConfig";
-import NavBar from "../components/nav-bar";
-import MainLayout from "../components/layout";
-import UserDataWrapper from "../layouts/userDataWrapper";
 import {
   SmallSpacer,
   HugeSpacer,
   FlexCenter,
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
-import Footer from "../components/Footer";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
+import GenericPage from "../layouts/generic-page";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -58,46 +53,32 @@ class Index extends React.Component {
 
   render() {
     return (
-      <MainLayout>
-        <div className="index-container">
-          <Helmet title={config.siteTitle} />
-          <main>
-            <UserDataWrapper>
-              <NavBar location={this.props.location} />
-            </UserDataWrapper>
+      <GenericPage location={this.props.location}>
+        <splashStyles.H1>{title}</splashStyles.H1>
+        <SmallSpacer />
 
-            <splashStyles.Container className="container">
-              <HugeSpacer /><HugeSpacer />
-              <splashStyles.H1>{title}</splashStyles.H1>
-              <SmallSpacer />
+        <FlexCenter>
+          <splashStyles.CenteredFocusParagraph>
+            {abstract}
+          </splashStyles.CenteredFocusParagraph>
+        </FlexCenter>
+        <HugeSpacer /> <HugeSpacer />
 
-              <FlexCenter>
-                <splashStyles.CenteredFocusParagraph>
-                  {abstract}
-                </splashStyles.CenteredFocusParagraph>
-              </FlexCenter>
-              <HugeSpacer /> <HugeSpacer />
-
-              {this.state.data && (
-                <DatasetSelect
-                  datasets={this.state.data}
-                  columns={tableColumns}
-                  urlDefinedFilterPath={this.props["*"]}
-                />
-              )}
-              {this.state.errorFetchingData && (
-                <splashStyles.CenteredFocusParagraph>
-                  Something went wrong getting data.
-                  Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                  if this continues to happen.
-                </splashStyles.CenteredFocusParagraph>
-              )}
-
-              <Footer />
-            </splashStyles.Container>
-          </main>
-        </div>
-      </MainLayout>
+        {this.state.data && (
+          <DatasetSelect
+            datasets={this.state.data}
+            columns={tableColumns}
+            urlDefinedFilterPath={this.props["*"]}
+          />
+        )}
+        {this.state.errorFetchingData && (
+          <splashStyles.CenteredFocusParagraph>
+            Something went wrong getting data.
+            Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+            if this continues to happen.
+          </splashStyles.CenteredFocusParagraph>
+        )}
+      </GenericPage>
     );
   }
 }
