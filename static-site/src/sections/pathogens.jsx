@@ -11,13 +11,24 @@ import GenericPage from "../layouts/generic-page";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
-const title = "Nextstrain-maintained Datasets";
-const abstract = `This page details datasets maintained by the Nextstrain team.`;
-
+const title = "Nextstrain-maintained Data";
+const abstract = (
+  <>
+    These data represent analyses and situation-reports produced by the core Nextstrain team.
+    We aim to provide a continually-updated view of publicly available data to show pathogen evolution and epidemic spread.
+    The pipeline used to generate each dataset is available on <a href="https://github.com/nextstrain/">our GitHub page</a> or by loading a dataset and
+    clicking the &ldquo;built with&rdquo; link at the top of the page.
+    While we strive to keep datasets updated, there may be some staleness; the date when the dataset was updated can be found in the footer of each visualisation.
+    In particular, data with a datestamp in the table below <small>(YYYY-MM-DD)</small> reflects an analysis at a point in time.
+    <br/><br/>
+    To learn more about nextstrain please see <a href="https://docs.nextstrain.org/en/latest/index.html">our documentation</a> or ask a question
+    on the <a href="https://discussion.nextstrain.org/">discussion forum</a>.
+  </>
+);
 
 const tableColumns = [
   {
-    name: "Dataset",
+    name: "Name",
     value: (dataset) => dataset.name,
     url: (dataset) => dataset.url
   },

@@ -11,13 +11,17 @@ import GenericPage from "../layouts/generic-page";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
-const title = "Staging Datasets";
-const abstract = `This page details staging (i.e. not yet released) datasets maintained by the Nextstrain team.`;
-
+const title = "Staging Data";
+const abstract = (
+  <>
+    This page details Nextstrain-managed datasets and narratives available on our staging server.
+    <strong> These datasets should be considered unreleased and/or out of date; they should not be used to draw scientific conclusions</strong>.
+  </>
+);
 
 const tableColumns = [
   {
-    name: "Dataset",
+    name: "Name",
     value: (dataset) => dataset.name,
     url: (dataset) => dataset.url
   },
@@ -66,6 +70,7 @@ class Index extends React.Component {
 
         {this.state.data && (
           <DatasetSelect
+            title="Filter Data "
             datasets={this.state.data}
             columns={tableColumns}
             urlDefinedFilterPath={this.props["*"]}
