@@ -116,7 +116,8 @@ Create an IAM policy for the new S3 bucket allowing management of the objects in
 ```
 
 Replace `<group>` with the group name.
-Save the policy itself with a name like `AllowEditingOfNextstrain<group>Bucket`.
+Save the policy itself with a name like `AllowEditingOfNextstrain<group>Bucket` where `<group>` is Snakecased.
+For example, for the group named `nebraska-dhhs`, the policy name is `AllowEditingOfNextstrainNebraskaDHHSBucket`
 
 Create a new IAM group called `nextstrain-<group>`.
 Attach the new policy you created above, as well as the `SeeCloudFrontDistributions` policy.
