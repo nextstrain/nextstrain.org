@@ -9,11 +9,11 @@ The historical design context and concrete needs the features arose from are sum
 
 Login to the [Bedford Lab AWS Console](https://bedfordlab.signin.aws.amazon.com/console) with an IAM user that has permission to manage Cognito user pools.
 
-Navigate to the [nextstrain.org Cognito user pool](https://console.aws.amazon.com/cognito/users/?region=us-east-1#/pool/us-east-1_Cg5rcTged/users).
+Navigate to the [nextstrain.org Cognito user pool](https://console.aws.amazon.com/cognito/users/?region=us-east-1#/pool/us-east-1_Cg5rcTged/users). Select "Manage User Pools", then "nextstrain.org", and then "Users and groups" from the "General settings" menu.
 
 Click the **Create user** button at the top.
 
-Fill in a username; check **Send an invitation to this user?**; check **Email**.
+Fill in a username; check **Send an invitation to this new user?**; check **Email**.
 
 Leave the temporary password blank to auto-generate one.
 
