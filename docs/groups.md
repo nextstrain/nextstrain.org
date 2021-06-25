@@ -129,7 +129,7 @@ _Note that for groups internal to the lab, this is not strictly necessary, since
 Copy the generated access credentials.
 These will need to provided to the group owner.
 If more then one individual Cognito user needs bucket management permissions, mint additional sets of access credentials from the IAM user page.
-These access credentials need to be provided to `nextstrain deploy`, as documented in that command's help.
+These access credentials need to be provided to `nextstrain deploy`, [as documented in the Nextstrain CLI's AWS help](https://docs.nextstrain.org/projects/cli/en/latest/aws-batch/#configuration-on-your-computer).
 
 You also need to update the existing IAM policy [NextstrainDotOrgServerInstance](https://console.aws.amazon.com/iam/home?region=us-east-1#/policies/arn:aws:iam::827581582529:policy/NextstrainDotOrgServerInstance$jsonEditor) which grants read-only access to the bucket for the `nextstrain.org` IAM user.
 This is the service user which the Nextstrain server itself uses to access the buckets of groups.
