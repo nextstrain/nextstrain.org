@@ -58,8 +58,9 @@ Existing users will have to logout and login again for Nextstrain to recognize t
 Navigate to the [S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-east-1).
 Create a new bucket named `nextstrain-<group>` where `<group>` is replaced by the group source name you choose above.
 Set the region to **US East (N. Virginia)** (`us-east-1`) for consistency with our other AWS resources.
-If this bucket is for a private group, then leave the default policy of **Block _all_ public access**.
+If this bucket is for a private group, then leave the default policy of **Block _all_ public access** and enable encryption.
 If the bucket is for a public group, disable the **Block _all_ public access** policy.
+Enable versioning for both public and private groups.
 
 For a public group, you'll also need to add a bucket policy allowing public read-only access to objects.
 Under **Permissions** → **Bucket Policy**, add the following:
