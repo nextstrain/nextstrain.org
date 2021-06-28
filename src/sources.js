@@ -629,6 +629,11 @@ class ILRIPrivateSource extends PrivateGroupSource {
   static get _name() { return "ilri"; }
 }
 
+class NebraskaDHHSPrivateSource extends PrivateGroupSource {
+  /* Person to contact: Bryan Temogoh */
+  static get _name() { return "nebraska-dhhs"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -655,7 +660,8 @@ const sources = [
   IllinoisGagnonPrivateSource,
   GrubaughLabPrivateSource,
   InrbDrcSource,
-  ILRIPrivateSource
+  ILRIPrivateSource,
+  NebraskaDHHSPrivateSource
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
