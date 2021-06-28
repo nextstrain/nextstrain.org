@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Link } from "gatsby";
 import ScrollableAnchor from "react-scrollable-anchor";
 import { SmallSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
@@ -20,8 +21,10 @@ const abstract = (<>
   to share data with different audiences.
   <br/>
   <br/>
-  For more details about Nextstrain Groups
-  , <a href="https://docs.nextstrain.org/en/latest/guides/share/nextstrain-groups.html">check out our documentation</a>.
+  For more details about Nextstrain Groups,
+  <a href="https://docs.nextstrain.org/en/latest/guides/share/nextstrain-groups.html"> please see our documentation</a>.
+  For an alternative approach to sharing data through nextstrain.org which leverages GitHub repositories, please see
+  <Link to="/community"> Community data sharing</Link>.
   <br/>
   <br/>
   Nextstrain Groups is still in the early stages and require a Nextstrain team

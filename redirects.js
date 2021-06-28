@@ -7,10 +7,6 @@ const setup = (app) => {
   app.route("/auspice")
     .get((req, res) => res.redirect('https://docs.nextstrain.org/projects/auspice/en/latest/'));
 
-  /* we don't yet have a community page */
-  app.route("/community")
-    .get((req, res) => res.redirect('/#community'));
-
   /* we don't yet have a narratives page. Send /narratives to the narratives section of the frontpage */
   app.route("/narratives")
     .get((req, res) => res.redirect('/#narratives'));

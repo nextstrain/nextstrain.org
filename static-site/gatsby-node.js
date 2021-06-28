@@ -206,6 +206,12 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/sections/individual-group-page.jsx")
         });
 
+        // Community splash page
+        createPage({
+          path: "/community",
+          component: path.resolve("src/pages/community.jsx")
+        });
+
         // Create page detailing all things SARS-CoV-2
         // Note that this is in src/sections, not src/pages. This is because we don't
         // want to render anything at the exact url of nextstrain.org/sars-cov-2-page
