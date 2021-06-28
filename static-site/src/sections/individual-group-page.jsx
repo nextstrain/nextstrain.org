@@ -6,7 +6,7 @@ import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GroupHeading from "../components/splash/groupHeading";
-import { BannerIfGroupsDatasetNotFound, GroupNotFound } from "../components/splash/errorMessages";
+import { ErrorBanner } from "../components/splash/errorMessages";
 
 class Index extends React.Component {
   constructor(props) {
@@ -49,27 +49,49 @@ class Index extends React.Component {
     }
   }
 
-  render() {
+  banner() {
     const groupName = this.props["groupName"];
+    let bannerTitle, bannerContents;
+    // Set up a banner if dataset doesn't exist
+    if (this.state.nonExistentDatasetName) {
+      bannerTitle = `The dataset "nextstrain.org/groups/${groupName}/${this.state.nonExistentDatasetName}" doesn't exist.`;
+      bannerContents = `Here is the page for the "${groupName}" Nextstrain Group.`;
+    }
+    // Set up a banner or update the existing one if the group doesn't exist
+    if (this.state.groupNotFound) {
+      const notFound = `The Nextstrain Group "${groupName}" doesn't exist yet, or there was an error getting data for that group.`;
+      const linkToGroupsPage = <p>For available Nextstrain Groups, check out the <a href="/groups">Groups page</a>.</p>;
+      if (!bannerTitle) {
+        bannerTitle = notFound;
+        bannerContents = linkToGroupsPage;
+      } else {
+        bannerContents = (<>
+          {notFound}
+          <br/>
+          {linkToGroupsPage}
+        </>);
+      }
+    }
+    return bannerTitle ? <ErrorBanner title={bannerTitle} contents={bannerContents}/> : null;
+  }
+
+  render() {
+    const location = this.props.location;
+    const banner = this.banner();
     if (this.state.groupNotFound) {
       return (
-        <GenericPage location={this.props.location}>
-          <BannerIfGroupsDatasetNotFound missingDatasetName={this.state.nonExistentDatasetName} groupName={this.state.groupName}/>
-          <GroupNotFound groupName={groupName}/>
-        </GenericPage>
+        <GenericPage location={location} banner={banner} />
       );
     }
     if (!this.state.sourceInfo) {
       return (
-        <GenericPage location={this.props.location}>
-          <BannerIfGroupsDatasetNotFound missingDatasetName={this.state.nonExistentDatasetName} groupName={this.state.groupName}/>
+        <GenericPage location={location} banner={banner}>
           <splashStyles.H2>Data loading...</splashStyles.H2>
         </GenericPage>
       );
     }
     return (
-      <GenericPage location={this.props.location}>
-        <BannerIfGroupsDatasetNotFound missingDatasetName={this.state.nonExistentDatasetName} groupName={this.state.groupName}/>
+      <GenericPage location={location} banner={banner}>
         <GroupHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (
