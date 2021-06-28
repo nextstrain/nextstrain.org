@@ -142,3 +142,14 @@ Add an entry like `arn:aws:s3:::nextstrain-<group>/*` to the `Resource` array of
 Make sure to replace `<group>` with the group name.
 
 _The need to create new IAM groups, users, and policies for private buckets will go away once we integrate with Cognito Identity Pools._
+
+Test the new group by building and running the nextstrain.org server locally, [as described in the nextstrain.org README](https://github.com/nextstrain/nextstrain.org/blob/master/README.md) and navigating to http://localhost:5000/groups/.
+If the group is public, it should appear in the list of available groups.
+If the group is private, you need to add your Cognito user the group via AWS and login to the local server with your Nextstrain account.
+After these changes, the private group should appear with a padlock.
+When you are done testing the new group, remove your user from the corresponding Cognito group.
+
+If the group appears as expected in the local nextstrain.org server, push your changes to the `sources.js` file to GitHub.
+When the CI tests pass, the main deployment for nextstrain.org should update and the new group should appear.
+
+Send documentation to the group's users about how to view their group through nextstrain.org and how to manage their data with the Nextstrain CLI.
