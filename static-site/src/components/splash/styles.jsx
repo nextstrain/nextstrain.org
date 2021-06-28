@@ -102,6 +102,9 @@ export const CenteredFocusParagraph = styled.p`
   font-size: ${(props) => props.theme.niceFontSize};
   font-weight: 300;
   line-height: ${(props) => props.theme.niceLineHeight};
+  strong {
+    font-weight: 500;
+  }
 `;
 
 export const FocusParagraph = styled.p`

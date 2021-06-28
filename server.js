@@ -8,7 +8,8 @@ const favicon = require('serve-favicon');
 const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./src/utils");
-const auspicePaths = require('./auspicePaths');
+const { potentialAuspiceRoutes, isRequestBackedByAuspiceDataset } = require('./auspicePaths');
+const { getClosestParentPage } = require('./src/parentPage');
 const cors = require('cors');
 const {addAsync} = require("@awaitjs/express");
 const {NotFound} = require('http-errors');
@@ -78,11 +79,12 @@ authn.setup(app);
 redirects.setup(app);
 
 
-/* Static assets.  Auspice hardcodes /dist/… in its Webpack config.
+/* Static assets.
+ * Any paths matching resources here will be handled and not fall through to our handlers below.
+ * E.g. URL `/influenza` gets sent `static-site/public/influenza/index.html`
  */
 app.use(express.static(gatsbyAssetPath()));
-
-app.route("/dist/*")
+app.route("/dist/*") // Auspice hardcodes /dist/… in its Webpack config.
   .all(expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'}));
 
 
@@ -107,25 +109,27 @@ app.routeAsync("/charon/*")
     throw new NotFound();
   });
 
-app.route(auspicePaths).get((req, res) => {
-  utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
-  res.sendFile(auspiceAssetPath("dist", "index.html"), {headers: {"Cache-Control": "no-cache, no-store, must-revalidate"}});
-});
-
-/* handle redirects for inrb-drc (first of the Nextstrain groups) */
-app.get("/inrb-drc*", (req, res) => {
-  res.redirect(`/groups${req.originalUrl}`);
-});
-
-/* Everything else hits our Gatsby app's entrypoint.
+/* Specific routes to be handled by Gatsby client-side routing
  */
-app.get("*", (req, res) => {
-  utils.verbose(`Sending Gatsby entrypoint for ${req.originalUrl}`);
-  res.sendFile(gatsbyAssetPath(""), {}, (err) => {
-    // This error callback is used to display the 404 page
-    if (err.code === 'EISDIR') res.status(404).sendFile(gatsbyAssetPath("404.html"));
-  });
-});
+app.route([
+  "/users/:user",
+  "/groups",
+  "/groups/:groupName"
+]).get((req, res) => res.sendFile(gatsbyAssetPath("index.html")));
+
+/* Routes which are plausibly for auspice, as they have specific path signatures.
+ * We verify if these are are backed by datasets and hand to auspice if so.
+ */
+app.route(potentialAuspiceRoutes).get(
+  isRequestBackedByAuspiceDataset,
+  sendAuspiceHandler,
+  sendGatsbyHandler
+);
+
+/**
+ * Finally, we catch all remaining routes and send to Gatsby
+ */
+app.get("*", sendGatsbyHandler);
 
 
 const server = app.listen(app.get('port'), () => {
@@ -144,3 +148,22 @@ const server = app.listen(app.get('port'), () => {
   }
   utils.error(`Uncaught error in app.listen(). Code: ${err.code}`);
 });
+
+
+function sendGatsbyHandler(req, res) {
+  utils.verbose(`Sending Gatsby entrypoint for ${req.originalUrl}`);
+  const closestPage = getClosestParentPage(gatsbyAssetPath, req.path) || gatsbyAssetPath("");
+  return res.sendFile(closestPage, {}, (err) => {
+    // callback runs when the transfer is complete or when an error occurs
+    if (err) res.status(404).sendFile(gatsbyAssetPath("404.html"));
+  });
+}
+
+function sendAuspiceHandler(req, res, next) {
+  if (!req.sendToAuspice) return next(); // see previous middleware
+  utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
+  return res.sendFile(
+    auspiceAssetPath("dist", "index.html"),
+    {headers: {"Cache-Control": "no-cache, no-store, must-revalidate"}}
+  );
+}

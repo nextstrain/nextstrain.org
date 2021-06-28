@@ -11,12 +11,15 @@ import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 import UserGroups from "./userGroups";
+import { UserContext } from "../../layouts/userDataWrapper";
 
 class Splash extends React.Component {
   constructor() {
     super();
     configureAnchors({ offset: -10 });
   }
+
+  static contextType = UserContext;
 
   render() {
     return (
@@ -51,7 +54,7 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <HugeSpacer/>
-        {this.props.user && <UserGroups user={this.props.user} visibleGroups={this.props.visibleGroups} />}
+        {this.context.user && <UserGroups/>}
 
         <ScrollableAnchor id={'ncov'}>
           <Styles.H1>SARS-CoV-2 (COVID-19)</Styles.H1>

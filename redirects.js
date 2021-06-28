@@ -7,10 +7,6 @@ const setup = (app) => {
   app.route("/auspice")
     .get((req, res) => res.redirect('https://docs.nextstrain.org/projects/auspice/en/latest/'));
 
-  /* we don't yet have a community page */
-  app.route("/community")
-    .get((req, res) => res.redirect('/#community'));
-
   /* we don't yet have a narratives page. Send /narratives to the narratives section of the frontpage */
   app.route("/narratives")
     .get((req, res) => res.redirect('/#narratives'));
@@ -22,6 +18,11 @@ const setup = (app) => {
 
   app.route(["/ncov"])
     .get((req, res) => res.redirect('/sars-cov-2'));
+
+  /* handle redirects for inrb-drc (first of the Nextstrain groups) */
+  app.get("/inrb-drc*", (req, res) => {
+    res.redirect(`/groups${req.originalUrl}`);
+  });
 
   /*
    * Redirect to translations of narratives if the client has
