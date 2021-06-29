@@ -96,7 +96,8 @@ const isRequestBackedByAuspiceDataset = async (req, res, next) => {
     }
 
     /* Extract dataset information & check if it exists, storing the result as `req.sendToAuspice` */
-    const { dataset } = parsePrefix(req.path);
+    /* (If a tangletree URL is requested, we only consider the first dataset here) */
+    const { dataset } = parsePrefix(req.path.split(":")[0]);
     if (await datasetExists(dataset)) {
       req.sendToAuspice = true;
     }
