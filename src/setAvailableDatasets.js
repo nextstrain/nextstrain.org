@@ -119,40 +119,24 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
  * SIDE EFFECT: sets global.availableDatasets
  */
 const setAvailableDatasetsFromManifest = async () => {
-  utils.verbose("Fetching manifests for core & staging");
+  utils.verbose("Fetching manifests for core datasets");
 
-  const servers = {
-    core: "data",
-    staging: "staging"
-  };
+  fetch(`https://data.nextstrain.org/manifest_guest.json`)
+    .then((result) => {
+      return result.json();
+    })
+    .then((data) => {
+      const {datasets, secondTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
+      global.availableDatasets.core = datasets;
+      global.availableDatasets.secondTreeOptions.core = secondTreeOptions;
+      global.availableDatasets.defaults.core = defaults;
 
-  const promises = Object.keys(servers).map((server) => {
-    return fetch(`http://${servers[server]}.nextstrain.org/manifest_guest.json`)
-      .then((result) => {
-        return result.json();
-      })
-      .then((data) => {
-        const {datasets, secondTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
-        utils.verbose(`Successfully got manifest for "${server}"`);
-
-        global.availableDatasets[server] = datasets;
-        global.availableDatasets.secondTreeOptions[server] = secondTreeOptions;
-        global.availableDatasets.defaults[server] = defaults;
-      })
-      .catch((e) => {
-        console.error(e);
-        utils.warn(`Failed to getch manifest for "${server}"`);
-      });
-  });
-
-  Promise.all(promises)
-    .then(() => {
-      utils.log(`Got manifests for ${Object.keys(global.availableDatasets).join(", ")}`);
+      utils.log(`Successfully got manifest for core datasets`);
     })
     .catch((e) => {
       console.error(e);
+      utils.warn(`Failed to fetch manifest for core datasets`);
     });
-
 };
 
 setAvailableDatasetsFromManifest();

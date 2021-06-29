@@ -172,6 +172,13 @@ class CoreStagingSource extends CoreSource {
   get baseUrl() { return "http://staging.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "staging"; }
+  async availableDatasets() {
+    const objects = await listBucketContents(this.name, "nextstrain-staging");
+    return utils.getDatasetsFromListOfFilenames(objects.map((object) => object.Key));
+  }
+  secondTreeOptions(path) { // eslint-disable-line no-unused-vars
+    return [];
+  }
 }
 
 class CoreNarrative extends Narrative {
@@ -363,30 +370,14 @@ class S3Source extends Source {
   get baseUrl() {
     return `https://${this.bucket}.s3.amazonaws.com`;
   }
-  async _listObjects() {
-    return new Promise((resolve, reject) => {
-      let contents = [];
-      S3.listObjectsV2({Bucket: this.bucket}).eachPage((err, data, done) => {
-        if (err) {
-          utils.warn(`Could not list S3 objects for group '${this.name}'\n${err.message}`);
-          return reject(err);
-        }
-        if (data===null) { // no more data
-          return resolve(contents);
-        }
-        contents = contents.concat(data.Contents);
-        return done();
-      });
-    });
-  }
   async availableDatasets() {
-    const objects = await this._listObjects();
+    const objects = await listBucketContents(this.name, this.bucket);
     const pathnames = utils.getDatasetsFromListOfFilenames(objects.map((object) => object.Key));
     return pathnames;
   }
   async availableNarratives() {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
-    const objects = await this._listObjects();
+    const objects = await listBucketContents(this.name, this.bucket);
     return objects
       .map((object) => object.Key)
       .filter((file) => file !== 'group-overview.md')
@@ -668,3 +659,26 @@ const sourceMap = new Map(sources.map(s => [s._name, s]));
 utils.verbose("Sources are:", sourceMap);
 
 module.exports = sourceMap;
+
+/**
+ * List the contents of a S3 bucket
+ * @param name name (source / group) for debugging / error messages
+ * @param bucket S3 bucket
+ * @returns Promise which resolves to a list of objects in the bucket or rejects with an error
+ */
+async function listBucketContents(name, bucket) {
+  return new Promise((resolve, reject) => {
+    let contents = [];
+    S3.listObjectsV2({Bucket: bucket}).eachPage((err, data, done) => {
+      if (err) {
+        utils.warn(`Could not list S3 objects for group '${name}'\n${err.message}`);
+        return reject(err);
+      }
+      if (data===null) { // no more data
+        return resolve(contents);
+      }
+      contents = contents.concat(data.Contents);
+      return done();
+    });
+  });
+}
