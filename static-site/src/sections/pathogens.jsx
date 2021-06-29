@@ -79,7 +79,6 @@ class Index extends React.Component {
           <DatasetSelect
             datasets={this.state.data}
             columns={tableColumns}
-            urlDefinedFilterPath={this.props["*"]}
           />
         )}
         {this.state.errorFetchingData && (
