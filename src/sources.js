@@ -91,7 +91,7 @@ class Dataset {
       ? `${baseName}.json`
       : `${baseName}_${type}.json`;
   }
-  urlFor(type) {
+  urlFor(type, method = 'GET') { // eslint-disable-line no-unused-vars
     const url = new URL(this.baseNameFor(type), this.source.baseUrl);
     return url.toString();
   }
@@ -498,8 +498,8 @@ class PrivateS3Source extends S3Source {
 }
 
 class PrivateS3Dataset extends Dataset {
-  urlFor(type) {
-    return S3.getSignedUrl("getObject", {
+  urlFor(type, method = 'GET') {
+    return S3.getSignedUrl(method === "HEAD" ? "headObject" : "getObject", {
       Bucket: this.source.bucket,
       Key: this.baseNameFor(type)
     });
