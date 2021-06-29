@@ -50,8 +50,15 @@ export const parseMarkdown = (mdString) => {
     nonTextTags: ['style', 'script', 'textarea', 'option'],
     transformTags: {
       'a': function(tagName, attribs) { // eslint-disable-line
-        const url = new URL(attribs.href); // URL is not supported on Internet Explorer
-        if (url.hostname !== location.hostname) {
+        try {
+          const url = new URL(attribs.href); // URL is not supported on Internet Explorer
+          if (url.hostname !== location.hostname) {
+            attribs.target = '_blank';
+            attribs.rel = 'noreferrer nofollow';
+          }
+        } catch (err) {
+          // some valid-looking (and commonly used) URLs will cause `new URL` to
+          // throw a TypeError
           attribs.target = '_blank';
           attribs.rel = 'noreferrer nofollow';
         }
