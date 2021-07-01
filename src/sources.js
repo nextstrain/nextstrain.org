@@ -634,6 +634,10 @@ class NebraskaDHHSPrivateSource extends PrivateGroupSource {
   static get _name() { return "nebraska-dhhs"; }
 }
 
+class PIGIEPrivateSource extends PrivateGroupSource {
+  static get _name() { return "pigie"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -661,7 +665,8 @@ const sources = [
   GrubaughLabPrivateSource,
   InrbDrcSource,
   ILRIPrivateSource,
-  NebraskaDHHSPrivateSource
+  NebraskaDHHSPrivateSource,
+  PIGIEPrivateSource,
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
