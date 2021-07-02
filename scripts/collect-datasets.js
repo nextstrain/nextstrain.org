@@ -25,14 +25,14 @@ const parser = new argparse.ArgumentParser({
   also hosted on the ${bucket} bucket.
   `
 });
-parser.addArgument('--pathogen', {action: "store", required: true, metavar: "NAME", help: "what set of datasets to scan, ie flu"});
+parser.addArgument('--keyword', {action: "store", required: true, metavar: "NAME", help: "what set of datasets to scan, ie flu"});
 main({args: parser.parseArgs()});
 
 // -------------------------------------------------------------------------------- //
 
 async function main({args}) {
   let s3datasetObjects, datasetMetadata, outputFilename;
-  switch (args.pathogen) {
+  switch (args.keyword) {
     case "flu":
       outputFilename = `datasets_influenza.json`;
       s3datasetObjects = await collectFromBucket({
@@ -42,8 +42,17 @@ async function main({args}) {
       });
       datasetMetadata = getDatasetMetadata(s3datasetObjects);
       break;
+    case "staging":
+      outputFilename = `datasets_staging.json`;
+      s3datasetObjects = await collectFromBucket({
+        BUCKET: `nextstrain-staging`,
+        fileToUrl: (filename) => `https://nextstrain.org/staging/${filename.replace('.json', '').replace(/_/g, '/')}`,
+        inclusionTest: (filename) => true // eslint-disable-line
+      });
+      datasetMetadata = getDatasetMetadata(s3datasetObjects);
+      break;
     default:
-      console.log("Unknown pathogen!");
+      console.log("Unknown keyword!");
       process.exit(2);
   }
 
@@ -114,10 +123,15 @@ function filenameLooksLikeDataset(filename) {
   if (!filename.endsWith(".json")) return false;
   if (filename.endsWith("_meta.json") || filename.endsWith("_tree.json")) return false;
   if (filename.endsWith("_frequencies.json")) return false;
+  if (filename.endsWith("_titers.json")) return false;
+  if (filename.endsWith("_frequencies.json")) return false;
   if (filename.endsWith("_tip-frequencies.json")) return false;
   if (filename.endsWith("_aa-mutation-frequencies.json")) return false;
   if (filename.endsWith("_sequences.json")) return false;
   if (filename.endsWith("_entropy.json")) return false;
   if (filename.endsWith("_root-sequence.json")) return false;
+  if (filename.includes("/")) return false;
+  if (filename.includes("manifest")) return false;
+  if (filename === ("datasets_staging.json")) return false;
   return true;
 }
