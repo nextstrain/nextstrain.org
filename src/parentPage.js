@@ -24,9 +24,6 @@ function getClosestParentPage(gatsbyAssetPath, path) {
     switch (pathParts[0].toLowerCase()) {
       case ("flu"):
         return gatsbyAssetPath("influenza", "index.html");
-      case ("sars-cov-2"): // fallthrough
-      case ("ncov"):
-        return gatsbyAssetPath("sars-cov-2", "index.html");
       case ("staging"):
         return gatsbyAssetPath("staging", "index.html");
       default:

@@ -223,6 +223,15 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/sections/sars-cov-2-page.jsx")
         });
 
+        // This should only be served for exactly:
+        // - `/ncov`
+        // - any `/ncov/*` where the * dataset does not exist.
+        createPage({
+          path: "/ncov",
+          matchPath: "/ncov/*",
+          component: path.resolve("src/sections/sars-cov-2-page.jsx")
+        });
+
         createPage({
           path: "/staging",
           component: path.resolve("src/sections/staging.jsx")

@@ -16,6 +16,7 @@ import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-i
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 import GenericPage from "../layouts/generic-page";
+import { ErrorBanner } from "../components/splash/errorMessages";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -132,6 +133,21 @@ class Index extends React.Component {
       catalogueDatasets: sarscov2Catalogue.datasets,
       filterParsed: false
     };
+    if (this.props.uri === "/sars-cov-2") {
+      // assume /sars-cov-2/* is intended to be a filter
+      // on the dataset-select and remove it from the URL and
+      // filter the dataset select component
+      // TODO do we really want to remove anything from
+      // the URL with indendedUri in any case?
+      this.state.urlDefinedFilterPath=this.props["*"];
+      this.state.intendedUri=this.props.uri;
+    }
+    if (this.props.uri === "/ncov") {
+      // assume /ncov/* is attempting to access dataset
+      // and if this page has been served then the dataset
+      // doesn't exist.
+      this.state.nonExistentDatasetName = this.props["*"];
+    }
   }
 
   componentDidMount() {
@@ -143,9 +159,27 @@ class Index extends React.Component {
     }
   }
 
+  banner() {
+    let bannerTitle, bannerContents;
+    if (this.state.nonExistentDatasetName) {
+      bannerTitle = `The dataset "nextstrain.org/ncov/${this.state.nonExistentDatasetName}" doesn't exist.`;
+      // TODO: current bannerContents message is simple enough to be condescending.
+      // I think in the future it will say:
+      // "Here is the SARS-CoV-2 page, where we have listed featured datasets,
+      // narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
+      // datasets may not be listed here. For a comprehensive list of
+      // Nextstrain-maintained (including SARS-CoV-2) datasets, check out /pathogens."
+      // , assuming we choose to make that distinction between those two pages
+      // (see https://bedfordlab.slack.com/archives/C7SDVPBLZ/p1625076964090800?thread_ts=1625073455.088100&cid=C7SDVPBLZ).
+      bannerContents = `Here is the SARS-CoV-2 page.`;
+    }
+    return bannerTitle ? <ErrorBanner title={bannerTitle} contents={bannerContents}/> : null;
+  }
+
   render() {
+    const banner = this.banner();
     return (
-      <GenericPage location={this.props.location}>
+      <GenericPage location={this.props.location} banner={banner}>
         <splashStyles.H1>{title}</splashStyles.H1>
         <SmallSpacer />
 
@@ -183,8 +217,8 @@ class Index extends React.Component {
                   "FilterDisplay",
                   "ListDatasets"
                 ]}
-                urlDefinedFilterPath={this.props["*"]}
-                intendedUri={this.props.uri}
+                urlDefinedFilterPath={this.state.urlDefinedFilterPath}
+                intendedUri={this.state.intendedUri}
               />
             )}
 
