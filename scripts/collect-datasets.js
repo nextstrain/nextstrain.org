@@ -124,14 +124,17 @@ function filenameLooksLikeDataset(filename) {
   if (filename.endsWith("_meta.json") || filename.endsWith("_tree.json")) return false;
   if (filename.endsWith("_frequencies.json")) return false;
   if (filename.endsWith("_titers.json")) return false;
-  if (filename.endsWith("_frequencies.json")) return false;
   if (filename.endsWith("_tip-frequencies.json")) return false;
   if (filename.endsWith("_aa-mutation-frequencies.json")) return false;
   if (filename.endsWith("_sequences.json")) return false;
   if (filename.endsWith("_entropy.json")) return false;
   if (filename.endsWith("_root-sequence.json")) return false;
-  if (filename.includes("/")) return false;
   if (filename.includes("manifest")) return false;
   if (filename === ("datasets_staging.json")) return false;
+  // The line below is due to the fact that
+  // S3 objects (files) in folders cannot be accessed by Auspice
+  // so we ingore them here as we collect datasets which will
+  // be turned into Auspice URLs.
+  if (filename.includes("/")) return false;
   return true;
 }

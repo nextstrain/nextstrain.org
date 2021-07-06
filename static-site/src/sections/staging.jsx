@@ -16,6 +16,9 @@ const abstract = (
   <>
     This page details Nextstrain-managed datasets and narratives available on our staging server.
     <strong> These datasets should be considered unreleased and/or out of date; they should not be used to draw scientific conclusions</strong>.
+    Note that this listing is refreshed about once per hour.
+    Narratives are not (yet) listed on this page;
+    &quot;Staging narratives&quot; can be found <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/nextstrain/narratives/tree/staging" >on GitHub</a>.
   </>
 );
 
