@@ -17,8 +17,8 @@ export const theme = {
   goColor: "#89B77F", // green
 
   /* FONTS / LINE HEIGHTS ETC */
-  niceLineHeight: 1.42857143,
-  tightLineHeight: 1.2,
+  niceLineHeight: 1.6,
+  tightLineHeight: 1.4,
   generalFont: "Lato, Helvetica Neue, Helvetica, sans-serif",
   niceFontSize: "16px",
   smallFontSize: "12px",
