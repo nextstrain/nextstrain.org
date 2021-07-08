@@ -19,7 +19,7 @@ export const StyledDiv = styled.div`
   margin-bottom: 5px;
   font-weight: 300;
   color: ${(props) => props.theme.darkGrey};
-  line-height: ${(props) => props.theme.niceLineHeight};
+  line-height: ${(props) => props.theme.tightLineHeight};
 `;
 
 export const H1 = styled.div`
@@ -101,7 +101,7 @@ export const CenteredFocusParagraph = styled.p`
   text-align: center;
   font-size: ${(props) => props.theme.niceFontSize};
   font-weight: 300;
-  line-height: ${(props) => props.theme.niceLineHeight};
+  line-height: ${(props) => props.theme.tightLineHeight};
   strong {
     font-weight: 500;
   }
@@ -115,7 +115,7 @@ export const FocusParagraph = styled.p`
   text-align: left;
   font-size: ${(props) => props.theme.niceFontSize};
   font-weight: 300;
-  line-height: ${(props) => props.theme.niceLineHeight};
+  line-height: ${(props) => props.theme.tightLineHeight};
 `;
 
 export const IconParagraph = styled.div`
@@ -134,7 +134,7 @@ export const WideParagraph = styled.p`
   margin-bottom: 0px;
   font-size: 14px !important;
   font-weight: 300;
-  line-height: ${(props) => props.theme.niceLineHeight};
+  line-height: ${(props) => props.theme.tightLineHeight};
 `;
 
 export const CenteredWideParagraph = styled.p`
@@ -145,7 +145,7 @@ export const CenteredWideParagraph = styled.p`
   text-align: center;
   font-size: 14px !important;
   font-weight: 300;
-  line-height: ${(props) => props.theme.niceLineHeight};
+  line-height: ${(props) => props.theme.tightLineHeight};
 `;
 
 export const FooterParagraph = styled.p`
@@ -157,7 +157,7 @@ export const FooterParagraph = styled.p`
   font-weight: 300;
   text-align: center;
   color: ${(props) => props.theme.medGrey} !important;
-  line-height: ${(props) => props.theme.niceLineHeight};
+  line-height: ${(props) => props.theme.tightLineHeight};
 `;
 
 const ButtonContainer = styled.button`
@@ -190,4 +190,3 @@ export const Button = ({to, children, target, rel}) => (
     </ButtonContainer>
   </a>
 );
-
