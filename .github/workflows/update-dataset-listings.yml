@@ -7,7 +7,7 @@ on:
     - cron:  '0 * * * *'
 
 jobs:
-  update-search:
+  update-dataset-listings:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
