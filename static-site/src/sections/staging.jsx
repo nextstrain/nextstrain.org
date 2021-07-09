@@ -6,7 +6,7 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
-import { getDatasetsAndNarratives } from "./pathogens";
+import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
@@ -16,18 +16,17 @@ const abstract = (
   <>
     This page details Nextstrain-managed datasets and narratives available on our staging server.
     <strong> These datasets should be considered unreleased and/or out of date; they should not be used to draw scientific conclusions</strong>.
+    Note that this listing is refreshed about once per hour.
+    Narratives are not (yet) listed on this page;
+    &quot;Staging narratives&quot; can be found <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/nextstrain/narratives/tree/staging" >on GitHub</a>.
   </>
 );
 
 const tableColumns = [
   {
     name: "Name",
-    value: (dataset) => dataset.name,
+    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
     url: (dataset) => dataset.url
-  },
-  {
-    name: "Type",
-    value: (dataset) => dataset.type
   },
   {
     name: "Contributor",
@@ -35,6 +34,10 @@ const tableColumns = [
     valueMobile: () => "",
     url: () => "https://nextstrain.org",
     logo: () => (<img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/>)
+  },
+  {
+    name: "Uploaded Date",
+    value: (dataset) => dataset.date_uploaded
   }
 ];
 
@@ -47,7 +50,7 @@ class Index extends React.Component {
 
   async componentDidMount() {
     try {
-      const data = await getDatasetsAndNarratives("/charon/getAvailable?prefix=/staging");
+      const data = await fetchAndParseJSON("https://staging.nextstrain.org/datasets_staging.json");
       this.setState({data});
     } catch (err) {
       console.error("Error fetching / parsing data.", err.message);
