@@ -7,6 +7,7 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
+import { ErrorBanner } from "../components/splash/errorMessages";
 
 const title = "Nextstrain Community: Data Sharing via GitHub";
 const abstract = (
@@ -32,11 +33,27 @@ const abstract = (
 class Index extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    // For some reason if this is set in the constructor it breaks the banner.
+    this.setState({nonExistentDatasetName: this.props["*"]});
+  }
+
+  banner() {
+    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
+      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+      const bannerContents = `Here is the staging page instead.`;
+      return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
+    }
+    return null;
   }
 
   render() {
+    const banner = this.banner();
     return (
-      <GenericPage location={this.props.location}>
+      <GenericPage location={this.props.location} banner={banner}>
         <splashStyles.H1>{title}</splashStyles.H1>
         <SmallSpacer />
 

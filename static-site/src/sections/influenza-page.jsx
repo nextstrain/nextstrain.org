@@ -11,6 +11,7 @@ import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-i
 import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
+import { ErrorBanner } from "../components/splash/errorMessages";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -88,18 +89,37 @@ class Index extends React.Component {
     };
   }
   async componentDidMount() {
+    let datasets;
+    let dataLoaded, errorFetchingData = false;
     try {
-      const datasets = await fetchAndParseJSON(this.state.datasetsUrl);
-      this.setState({datasets, dataLoaded: true});
+      datasets = await fetchAndParseJSON(this.state.datasetsUrl);
+      dataLoaded = true;
     } catch (err) {
       console.error("Error fetching / parsing data.", err.message);
-      this.setState({errorFetchingData: true});
+      errorFetchingData = true;
     }
+    this.setState({
+      datasets,
+      dataLoaded,
+      errorFetchingData,
+      // For some reason if this is set in the constructor it breaks the banner.
+      nonExistentDatasetName: this.props["*"]
+    });
+  }
+
+  banner() {
+    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
+      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+      const bannerContents = `Here is the influenza page with a list of Nextstrain-maintained influenza datasets.`;
+      return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
+    }
+    return null;
   }
 
   render() {
+    const banner = this.banner();
     return (
-      <GenericPage location={this.props.location}>
+      <GenericPage location={this.props.location} banner={banner}>
         <splashStyles.H1>{title}</splashStyles.H1>
         <SmallSpacer />
 
@@ -123,8 +143,6 @@ class Index extends React.Component {
               <DatasetSelect
                 datasets={this.state.datasets}
                 columns={tableColumns}
-                urlDefinedFilterPath={this.props["*"]}
-                intendedUri={this.props.uri}
               />
             )}
             { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>

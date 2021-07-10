@@ -9,7 +9,6 @@ const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./src/utils");
 const { potentialAuspiceRoutes, isRequestBackedByAuspiceDataset } = require('./auspicePaths');
-const { getClosestParentPage } = require('./src/parentPage');
 const cors = require('cors');
 const {addAsync} = require("@awaitjs/express");
 const {NotFound} = require('http-errors');
@@ -152,11 +151,14 @@ const server = app.listen(app.get('port'), () => {
 
 function sendGatsbyHandler(req, res) {
   utils.verbose(`Sending Gatsby entrypoint for ${req.originalUrl}`);
-  const closestPage = getClosestParentPage(gatsbyAssetPath, req.path) || gatsbyAssetPath("");
-  return res.sendFile(closestPage, {}, (err) => {
-    // callback runs when the transfer is complete or when an error occurs
-    if (err) res.status(404).sendFile(gatsbyAssetPath("404.html"));
-  });
+  return res.sendFile(
+    gatsbyAssetPath(""),
+    {},
+    (err) => {
+      // callback runs when the transfer is complete or when an error occurs
+      if (err) res.status(404).sendFile(gatsbyAssetPath("404.html"));
+    }
+  );
 }
 
 function sendAuspiceHandler(req, res, next) {

@@ -124,7 +124,6 @@ const tableColumns = [
   }
 ];
 
-
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -133,47 +132,39 @@ class Index extends React.Component {
       catalogueDatasets: sarscov2Catalogue.datasets,
       filterParsed: false
     };
-    if (this.props.uri === "/sars-cov-2") {
-      // assume /sars-cov-2/* is intended to be a filter
-      // on the dataset-select and remove it from the URL and
-      // filter the dataset select component
-      // TODO do we really want to remove anything from
-      // the URL with indendedUri in any case?
-      this.state.urlDefinedFilterPath=this.props["*"];
-      this.state.intendedUri=this.props.uri;
-    }
-    if (this.props.uri === "/ncov") {
-      // assume /ncov/* is attempting to access dataset
-      // and if this page has been served then the dataset
-      // doesn't exist.
-      this.state.nonExistentDatasetName = this.props["*"];
-    }
   }
 
   componentDidMount() {
+    let filterList;
+    let filterParsed = false;
     try {
-      const filterList = parseDatasetsFilterList(this.state.catalogueDatasets);
-      this.setState({filterList, filterParsed: true});
+      filterList = parseDatasetsFilterList(this.state.catalogueDatasets);
+      filterParsed = true;
     } catch (err) {
       console.error("Error parsing data.", err.message);
     }
+    this.setState({
+      filterList,
+      filterParsed,
+      // assume /ncov/* (or /sars-cov-2/*) is attempting to access dataset
+      // and if this page has been served then the dataset
+      // doesn't exist.
+      // For some reason if this is set in the constructor it breaks the banner.
+      nonExistentDatasetName: this.props["*"]
+    });
   }
 
   banner() {
-    let bannerTitle, bannerContents;
-    if (this.state.nonExistentDatasetName) {
-      bannerTitle = `The dataset "nextstrain.org/ncov/${this.state.nonExistentDatasetName}" doesn't exist.`;
-      // TODO: current bannerContents message is simple enough to be condescending.
-      // I think in the future it will say:
-      // "Here is the SARS-CoV-2 page, where we have listed featured datasets,
-      // narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
-      // datasets may not be listed here. For a comprehensive list of
-      // Nextstrain-maintained (including SARS-CoV-2) datasets, check out /pathogens."
-      // , assuming we choose to make that distinction between those two pages
-      // (see https://bedfordlab.slack.com/archives/C7SDVPBLZ/p1625076964090800?thread_ts=1625073455.088100&cid=C7SDVPBLZ).
-      bannerContents = `Here is the SARS-CoV-2 page.`;
+    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
+      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+      const bannerContents = `Here is the SARS-CoV-2 page, where we have listed featured datasets,
+      narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
+      datasets may not be listed here. For a more comprehensive list of
+      Nextstrain-maintained (including SARS-CoV-2) datasets,
+      check out ${<a href="/pathogens">nextstrain.org/pathogens</a>}.`;
+      return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
     }
-    return bannerTitle ? <ErrorBanner title={bannerTitle} contents={bannerContents}/> : null;
+    return null;
   }
 
   render() {
@@ -217,8 +208,6 @@ class Index extends React.Component {
                   "FilterDisplay",
                   "ListDatasets"
                 ]}
-                urlDefinedFilterPath={this.state.urlDefinedFilterPath}
-                intendedUri={this.state.intendedUri}
               />
             )}
 
