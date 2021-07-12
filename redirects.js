@@ -1,3 +1,4 @@
+const url = require('url');
 const helpers = require("./src/getDatasetHelpers");
 const { parseNarrativeLanguage } = require("./src/utils");
 
@@ -34,7 +35,12 @@ const setup = (app) => {
    * /ncov/gisaid/:region/YYYY-MM-DD.
    */
   app.route('/ncov/:region((global|asia|oceania|north-america|south-america|europe|africa))')
-    .get((req, res) => res.redirect(`/ncov/gisaid/${req.params.region}`));
+    .get((req, res) => res.redirect(
+      url.format({
+        pathname: `/ncov/gisaid/${req.params.region}`,
+        query: req.query
+      })
+    ));
 
   /*
    * Redirect to translations of narratives if the client has
