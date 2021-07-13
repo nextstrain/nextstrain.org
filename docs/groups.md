@@ -32,6 +32,20 @@ Select group.
 Click **Add to group** button at the bottom.
 
 
+### Reset a new user's expired temporary password
+
+If a new user doesn't sign in within a week of getting their invite, their temporary password will expire.
+This effectively disables their account until re-invited.
+The only way to re-invite currently is via the AWS CLI:
+
+    aws cognito-idp admin-create-user \
+      --user-pool-id us-east-1_Cg5rcTged \
+      --message-action RESEND \
+      --username …
+
+This will result in another email to the user with a new temporary password.
+
+
 ### On-board a new group
 
 _This is a lot of steps, but in our early stages is a totally workable on-boarding process that can last us a while._
