@@ -77,6 +77,7 @@ const isRequestBackedByAuspiceDataset = async (req, res, next) => {
     const pathParts = req.path.replace(/^\//, '').replace(/\/$/, '').split("/");
     if (
       pathParts[0]==="status" ||
+      pathParts[0]==="community" ||
       pathParts.includes("narratives") ||
       pathParts[0]==="fetch"
     ) {

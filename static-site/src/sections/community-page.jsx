@@ -43,8 +43,8 @@ class Index extends React.Component {
 
   banner() {
     if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
-      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
-      const bannerContents = `Here is the staging page instead.`;
+      const bannerTitle = `The community repository or dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+      const bannerContents = `Here is the community page instead.`;
       return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
     }
     return null;
