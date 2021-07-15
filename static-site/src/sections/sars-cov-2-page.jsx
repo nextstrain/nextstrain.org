@@ -157,11 +157,14 @@ class Index extends React.Component {
   banner() {
     if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
       const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
-      const bannerContents = `Here is the SARS-CoV-2 page, where we have listed featured datasets,
-      narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
-      datasets may not be listed here. For a more comprehensive list of
-      Nextstrain-maintained (including SARS-CoV-2) datasets,
-      check out ${<a href="/pathogens">nextstrain.org/pathogens</a>}.`;
+      const bannerContents = (<>
+        {`Here is the SARS-CoV-2 page, where we have listed featured datasets,
+        narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
+        datasets may not be listed here. For a more comprehensive list of
+        Nextstrain-maintained (including SARS-CoV-2) datasets,
+        check out `}
+        <a href="/pathogens">nextstrain.org/pathogens</a>.
+      </>);
       return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
     }
     return null;
