@@ -78,7 +78,6 @@ const isRequestBackedByAuspiceDataset = async (req, res, next) => {
     if (
       pathParts[0]==="status" ||
       pathParts.includes("narratives") ||
-      pathParts[0]==="community" || // note that /community itself is redirected earlier
       pathParts[0]==="fetch"
     ) {
       req.sendToAuspice = true;

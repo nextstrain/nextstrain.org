@@ -16,6 +16,7 @@ import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-i
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 import GenericPage from "../layouts/generic-page";
+import { ErrorBanner } from "../components/splash/errorMessages";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -123,7 +124,6 @@ const tableColumns = [
   }
 ];
 
-
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -135,17 +135,45 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
+    let filterList;
+    let filterParsed = false;
     try {
-      const filterList = parseDatasetsFilterList(this.state.catalogueDatasets);
-      this.setState({filterList, filterParsed: true});
+      filterList = parseDatasetsFilterList(this.state.catalogueDatasets);
+      filterParsed = true;
     } catch (err) {
       console.error("Error parsing data.", err.message);
     }
+    this.setState({
+      filterList,
+      filterParsed,
+      // assume /ncov/* (or /sars-cov-2/*) is attempting to access dataset
+      // and if this page has been served then the dataset
+      // doesn't exist.
+      // For some reason if this is set in the constructor it breaks the banner.
+      nonExistentDatasetName: this.props["*"]
+    });
+  }
+
+  banner() {
+    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
+      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+      const bannerContents = (<>
+        {`Here is the SARS-CoV-2 page, where we have listed featured datasets,
+        narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
+        datasets may not be listed here. For a more comprehensive list of
+        Nextstrain-maintained (including SARS-CoV-2) datasets,
+        check out `}
+        <a href="/pathogens">nextstrain.org/pathogens</a>.
+      </>);
+      return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
+    }
+    return null;
   }
 
   render() {
+    const banner = this.banner();
     return (
-      <GenericPage location={this.props.location}>
+      <GenericPage location={this.props.location} banner={banner}>
         <splashStyles.H1>{title}</splashStyles.H1>
         <SmallSpacer />
 
@@ -183,8 +211,6 @@ class Index extends React.Component {
                   "FilterDisplay",
                   "ListDatasets"
                 ]}
-                urlDefinedFilterPath={this.props["*"]}
-                intendedUri={this.props.uri}
               />
             )}
 

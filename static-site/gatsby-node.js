@@ -186,6 +186,13 @@ exports.createPages = ({graphql, actions}) => {
             });
           }
         });
+
+        // Note that many of the pages created here are in src/sections, not src/pages,
+        // e.g. src/sections/sars-cov-2-page.jsx. This is because we don't want to render
+        // anything at the exact url of nextstrain.org/sars-cov-2-page and
+        // Gatsby auto-creates such pages from any jsx file in the src/pages directory.
+        // So only pages whose jsx file match the desired url path can be in src/pages.
+
         // Create users page
         createPage({
           path: "/users",
@@ -209,23 +216,29 @@ exports.createPages = ({graphql, actions}) => {
         // Community splash page
         createPage({
           path: "/community",
-          component: path.resolve("src/pages/community.jsx")
+          matchPath: "/community/*",
+          component: path.resolve("src/sections/community-page.jsx")
         });
 
         // Create page detailing all things SARS-CoV-2
-        // Note that this is in src/sections, not src/pages. This is because we don't
-        // want to render anything at the exact url of nextstrain.org/sars-cov-2-page
-        // and Gatsby auto-creates such pages from any jsx file in the src/pages directory.
-        // Many of the pages created here are in src/sections for the same reason.
         createPage({
           path: "/sars-cov-2",
           matchPath: "/sars-cov-2/*",
           component: path.resolve("src/sections/sars-cov-2-page.jsx")
         });
+        // Serve the above page for certain /ncov/* urls, i.e.
+        // - `/ncov`
+        // - any `/ncov/*` where the * dataset does not exist.
+        createPage({
+          path: "/ncov",
+          matchPath: "/ncov/*",
+          component: path.resolve("src/sections/sars-cov-2-page.jsx")
+        });
 
         createPage({
           path: "/staging",
-          component: path.resolve("src/sections/staging.jsx")
+          matchPath: "/staging/*",
+          component: path.resolve("src/sections/staging-page.jsx")
         });
 
         createPage({
@@ -244,6 +257,12 @@ exports.createPages = ({graphql, actions}) => {
           matchPath: "/influenza/*",
           component: path.resolve("src/sections/influenza-page.jsx")
         });
+        createPage({
+          path: "/flu",
+          matchPath: "/flu/*",
+          component: path.resolve("src/sections/influenza-page.jsx")
+        });
+
 
         // search pages
         createPage({

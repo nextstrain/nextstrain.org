@@ -17,9 +17,6 @@ const setup = (app) => {
   app.route(["/narratives/ncov", "/narratives/ncov/sit-rep", "/ncov-sit-reps"])
     .get((req, res) => res.redirect('/sars-cov-2#sit-reps'));
 
-  app.route(["/ncov"])
-    .get((req, res) => res.redirect('/sars-cov-2'));
-
   /* handle redirects for inrb-drc (first of the Nextstrain groups) */
   app.get("/inrb-drc*", (req, res) => {
     res.redirect(`/groups${req.originalUrl}`);
