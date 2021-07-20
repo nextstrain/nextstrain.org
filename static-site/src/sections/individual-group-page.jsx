@@ -24,7 +24,7 @@ class Index extends React.Component {
     return list.map((d) => {
       return {
         filename: d.request.replace(`groups/${groupName}/`, '').replace('narratives/', ''),
-        url: `https://nextstrain.org/${d.request}`,
+        url: `/${d.request}`,
         contributor: groupName
       };
     });
