@@ -6,7 +6,7 @@ import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import { ErrorBanner } from "../components/splash/errorMessages";
-import GroupHeading from "../components/splash/groupHeading";
+import SourceInfoHeading from "../components/splash/sourceInfoHeading";
 
 class Index extends React.Component {
   constructor(props) {
@@ -93,7 +93,7 @@ class Index extends React.Component {
     }
     return (
       <GenericPage location={location} banner={banner}>
-        <GroupHeading sourceInfo={this.state.sourceInfo}/>
+        <SourceInfoHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (
           <ScrollableAnchor id={"datasets"}>

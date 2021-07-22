@@ -67,7 +67,7 @@ function Byline({children}) {
   return (<Div>{children}</Div>);
 }
 
-export default function GroupHeading({sourceInfo}) {
+export default function SourceInfoHeading({sourceInfo}) {
   return (
     <>
       <FlexCenter>
