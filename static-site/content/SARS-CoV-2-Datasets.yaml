@@ -1283,7 +1283,7 @@ datasets:
       name: WISC
       url: https://openresearch.labkey.com/Coven/project-begin.view?
 
-  - url: https://nextstrain.org/community/bergthalerlab/SARSCoV2/NextstrainAustria
+  - url: https://nextstrain.org/community/bergthalerlab/NextstrainAustria
     name: Austria
     geo: austria
     level: country
