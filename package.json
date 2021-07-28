@@ -26,7 +26,7 @@
   "dependencies": {
     "@awaitjs/express": "^0.6.3",
     "argparse": "^1.0.10",
-    "auspice": "2.29.1",
+    "auspice": "github:nextstrain/auspice#ca4c4176795b6a903239469111920fc6e1294f46",
     "aws-sdk": "^2.908.0",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
