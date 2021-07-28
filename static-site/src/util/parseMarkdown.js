@@ -52,7 +52,7 @@ export const parseMarkdown = (mdString) => {
       'a': function(tagName, attribs) { // eslint-disable-line
         try {
           const url = new URL(attribs.href); // URL is not supported on Internet Explorer
-          if (url.hostname !== location.hostname) {
+          if (url.hostname !== location.hostname) { // eslint-disable-line
             attribs.target = '_blank';
             attribs.rel = 'noreferrer nofollow';
           }

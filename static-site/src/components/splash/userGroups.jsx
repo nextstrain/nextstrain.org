@@ -6,7 +6,7 @@ import { HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import { theme } from "../../layouts/theme";
 import { UserContext } from "../../layouts/userDataWrapper";
 
-const createGroupCards = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
+export const createGroupCards = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
   const groupColor = colors[0];
   colors.push(colors.shift());
 

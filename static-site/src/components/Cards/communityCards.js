@@ -8,26 +8,6 @@ const communityCards = [
     img: "chikv.png",
     url: "community/ViennaRNA/CHIKV",
     title: "Chikungunya"
-  },
-  {
-    img: "lassa2.png",
-    url: "/community/pauloluniyi/lassa/l",
-    title: "Lassa in Nigeria (2015-18)"
-  },
-  {
-    img: "rsv.png",
-    url: "/community/JianiC/rsv/A/WGS",
-    title: "RSV (subtype A)"
-  },
-  {
-    img: "cassava.png",
-    url: "/community/pestdisplace/CMDAFRICA",
-    title: "Cassava geminiviruses"
-  },
-  {
-    img: "stripe_rust.png",
-    url: "/community/saunderslab/PST",
-    title: "Wheat yellow rust"
   }
 ];
 
