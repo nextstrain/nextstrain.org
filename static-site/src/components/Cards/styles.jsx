@@ -23,7 +23,7 @@ export const CardOuter = styled.div`
   padding: 15px 0px 15px 0px;
   height: ${(props) => props.squashed ? "150px" : "250px"};
   width: 250px;
-  @media (max-width: 992px) {
+  @media (max-width: 1200px) {
     height: ${(props) => props.squashed ? "150px" : "200px"};
     width: 200px;
   }

@@ -54,131 +54,143 @@ class Splash extends React.Component {
 
         <HugeSpacer/>
 
-        <ScrollableAnchor id={'ncov'}>
-          <Styles.H1>SARS-CoV-2 (COVID-19)</Styles.H1>
-        </ScrollableAnchor>
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
-            In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses.
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-        <FlexCenter>
-          <Cards
-            squashed
-            compactColumns
-            cards={nCoVCards}
-          />
-        </FlexCenter>
-        <BigSpacer/>
-        <FlexCenter>
-          <Styles.Button to="/sars-cov-2">
-            See all resources
-          </Styles.Button>
-        </FlexCenter>
+        <div className="row">
+          {/* SARSCOV2 */}
+          <div className="col-md-6">
+            <ScrollableAnchor id={'ncov'}>
+              <Styles.H1>SARS-CoV-2 (COVID-19)</Styles.H1>
+            </ScrollableAnchor>
+            <FlexCenter>
+              <Styles.CenteredFocusParagraph>
+                We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
+                In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses.
+              </Styles.CenteredFocusParagraph>
+            </FlexCenter>
+            <FlexCenter>
+              <Cards
+                squashed
+                compactColumns
+                cards={nCoVCards}
+              />
+            </FlexCenter>
+            <BigSpacer/>
+            <FlexCenter>
+              <Styles.Button to="/sars-cov-2">
+                See all resources
+              </Styles.Button>
+            </FlexCenter>
+          </div>
+
+          {/* GROUPS */}
+          <div className="col-md-6">
+            <ScrollableAnchor id={'groups'}>
+              <Styles.H1>Nextstrain Groups</Styles.H1>
+            </ScrollableAnchor>
+            <FlexCenter>
+              <Styles.CenteredFocusParagraph>
+                We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience.
+                Nextstrain groups represent collections of datasets, potentially with controlled access.
+              </Styles.CenteredFocusParagraph>
+            </FlexCenter>
+            <FlexCenter>
+              <Cards
+                squashed
+                compactColumns
+                cards={createGroupCards([{name: "neherlab"}, {name: "spheres"}])}
+              />
+            </FlexCenter>
+            <BigSpacer/>
+            <FlexCenter>
+              <Styles.Button to="/groups">
+                See all groups
+              </Styles.Button>
+            </FlexCenter>
+          </div>
+        </div>
+
+        <HugeSpacer/>
+        <div className="row">
+          {/* PATHOGENS */}
+          <div className="col-md-6">
+            <ScrollableAnchor id={'pathogens'}>
+              <Styles.H1>Explore pathogens</Styles.H1>
+            </ScrollableAnchor>
+            <FlexCenter>
+              <Styles.CenteredFocusParagraph>
+                Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team.
+              </Styles.CenteredFocusParagraph>
+            </FlexCenter>
+            <FlexCenter>
+              <Cards
+                squashed
+                compactColumns
+                cards={coreCards}
+              />
+            </FlexCenter>
+            <BigSpacer/>
+            <FlexCenter>
+              <Styles.Button to="/pathogens">
+                See all pathogens
+              </Styles.Button>
+            </FlexCenter>
+          </div>
+
+          {/* COMMUNITY */}
+          <div className="col-md-6">
+            <ScrollableAnchor id={'community'}>
+              <Styles.H1>From the community</Styles.H1>
+            </ScrollableAnchor>
+            <FlexCenter>
+              <Styles.CenteredFocusParagraph>
+                Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
+                accessed via public GitHub repos</a>.
+              </Styles.CenteredFocusParagraph>
+            </FlexCenter>
+            <FlexCenter>
+              <Cards
+                squashed
+                compactColumns
+                cards={communityCards}
+              />
+            </FlexCenter>
+            <BigSpacer/>
+            <FlexCenter>
+              <Styles.Button to="/community">
+                See featured community analyses
+              </Styles.Button>
+            </FlexCenter>
+          </div>
+        </div>
+
+        <HugeSpacer/>
+        {/* NARRATIVES */}
+        <div>
+          <ScrollableAnchor id={'narratives'}>
+            <Styles.H1>Narratives</Styles.H1>
+          </ScrollableAnchor>
+          <FlexCenter>
+            <Styles.CenteredFocusParagraph>
+              Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data.
+            </Styles.CenteredFocusParagraph>
+          </FlexCenter>
+          <FlexCenter>
+            <Cards
+              squashed
+              compactColumns
+              cards={narrativeCards}
+            />
+          </FlexCenter>
+          <BigSpacer/>
+          <FlexCenter>
+            <Styles.Button to="https://nextstrain.github.io/auspice/narratives/introduction">
+              Find out more
+            </Styles.Button>
+          </FlexCenter>
+        </div>
 
         <HugeSpacer/>
 
-        <ScrollableAnchor id={'groups'}>
-          <Styles.H1>Nextstrain Groups</Styles.H1>
-        </ScrollableAnchor>
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience.
-            Nextstrain groups represent collections of datasets, potentially with controlled access.
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-        <FlexCenter>
-          <Cards
-            squashed
-            compactColumns
-            cards={createGroupCards([{name: "neherlab"}, {name: "spheres"}])}
-          />
-        </FlexCenter>
-        <BigSpacer/>
-        <FlexCenter>
-          <Styles.Button to="/groups">
-            See all groups
-          </Styles.Button>
-        </FlexCenter>
-
-        <HugeSpacer/>
-
-        <ScrollableAnchor id={'pathogens'}>
-          <Styles.H1>Explore pathogens</Styles.H1>
-        </ScrollableAnchor>
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team.
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-        <FlexCenter>
-          <Cards
-            squashed
-            compactColumns
-            cards={coreCards}
-          />
-        </FlexCenter>
-        <BigSpacer/>
-        <FlexCenter>
-          <Styles.Button to="/pathogens">
-            See all pathogens
-          </Styles.Button>
-        </FlexCenter>
-
-        <HugeSpacer/>
-
-        <ScrollableAnchor id={'community'}>
-          <Styles.H1>From the community</Styles.H1>
-        </ScrollableAnchor>
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
-            accessed via public GitHub repos</a>.
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-        <FlexCenter>
-          <Cards
-            squashed
-            compactColumns
-            cards={communityCards}
-          />
-        </FlexCenter>
-        <BigSpacer/>
-        <FlexCenter>
-          <Styles.Button to="/community">
-            See featured community analyses
-          </Styles.Button>
-        </FlexCenter>
-
-        <HugeSpacer/>
-
-        <ScrollableAnchor id={'narratives'}>
-          <Styles.H1>Narratives</Styles.H1>
-        </ScrollableAnchor>
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data.
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-        <FlexCenter>
-          <Cards
-            squashed
-            compactColumns
-            cards={narrativeCards}
-          />
-        </FlexCenter>
-        <BigSpacer/>
-        <FlexCenter>
-          <Styles.Button to="https://nextstrain.github.io/auspice/narratives/introduction">
-            Find out more
-          </Styles.Button>
-        </FlexCenter>
-
-        <HugeSpacer/>
-        <BigSpacer/>
-
-        <BigSpacer/>
+        {/* PHILOSOPHY */}
         <ScrollableAnchor id={'philosophy'}>
           <Styles.H1>Philosophy</Styles.H1>
         </ScrollableAnchor>

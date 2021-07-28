@@ -11,7 +11,7 @@ class Cards extends React.Component {
   cards(bootstrapColumnSize) {
     return this.props.cards.map((d) => (
       <div key={d.title}>
-        <div key={d.title} className={`col-sm-${bootstrapColumnSize}`}>
+        <div className={`col-sm-${bootstrapColumnSize}`}>
           <Styles.CardOuter squashed={this.props.squashed}>
             <Styles.CardInner>
               <a href={`${d.url}`}>
