@@ -7,7 +7,7 @@ const nCoVCards = [
   {
     img: "ncov.png",
     url: "/ncov/open/global",
-    title: "Latest global analysis - public data"
+    title: "Latest global analysis - open data"
   }
 ];
 

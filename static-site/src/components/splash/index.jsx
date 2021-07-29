@@ -108,7 +108,7 @@ class Splash extends React.Component {
               accessed via public GitHub repos</a>
             </>)}
             cards={communityCards}
-            buttonText="See featured community analyses"
+            buttonText="Learn more"
             buttonLink="/community"
           />
           <Section
