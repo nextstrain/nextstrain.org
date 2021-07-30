@@ -19,13 +19,13 @@ const Section = ({title, abstract, cards, buttonText, buttonLink}) => (
       <Styles.CenteredFocusParagraph style={{flexGrow: 1}}>
         {abstract}
       </Styles.CenteredFocusParagraph>
-      <FlexCenter >
+      <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
         <Cards
           squashed
           compactColumns
           cards={cards}
         />
-      </FlexCenter>
+      </div>
       <BigSpacer/>
       <Styles.Button to={buttonLink}>
         {buttonText}

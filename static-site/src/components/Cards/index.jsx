@@ -10,24 +10,22 @@ import Padlock from "./padlock";
 class Cards extends React.Component {
   cards(bootstrapColumnSize) {
     return this.props.cards.map((d) => (
-      <div key={d.title}>
-        <div className={`col-sm-${bootstrapColumnSize}`}>
-          <Styles.CardOuter squashed={this.props.squashed}>
-            <Styles.CardInner>
-              <a href={`${d.url}`}>
-                <Styles.CardTitle squashed={this.props.squashed}>
-                  {d.title}
-                </Styles.CardTitle>
-                {d.private ? (
-                  <Styles.BottomRightLabel>
-                    <Padlock/>
-                  </Styles.BottomRightLabel>
-                ) : null}
-                {d.img ? <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} color={d.color}/> : null}
-              </a>
-            </Styles.CardInner>
-          </Styles.CardOuter>
-        </div>
+      <div className={`col-sm-${bootstrapColumnSize}`} key={d.title}>
+        <Styles.CardOuter squashed={this.props.squashed}>
+          <Styles.CardInner>
+            <a href={`${d.url}`}>
+              <Styles.CardTitle squashed={this.props.squashed}>
+                {d.title}
+              </Styles.CardTitle>
+              {d.private ? (
+                <Styles.BottomRightLabel>
+                  <Padlock/>
+                </Styles.BottomRightLabel>
+              ) : null}
+              {d.img ? <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} color={d.color}/> : null}
+            </a>
+          </Styles.CardInner>
+        </Styles.CardOuter>
       </div>
     ));
   }
