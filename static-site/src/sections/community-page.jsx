@@ -8,6 +8,8 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
+import communityCards from "../components/Cards/communityCards";
+import Cards from "../components/Cards";
 
 const title = "Nextstrain Community: Data Sharing via GitHub";
 const abstract = (
@@ -23,9 +25,7 @@ const abstract = (
     <Link to="/groups"> Scalable Sharing with Nextstrain Groups</Link>.
     <br/>
     <br/>
-    We will add a searchable showcase examples of datasets and narratives shared through Nextstrain Community to this page shortly.
-    In the meantime,
-    <Link to="/#community"> you can see some examples on the main page</Link>.
+    Here is a sample of community builds available:
   </>
 );
 
@@ -62,8 +62,9 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
-        <HugeSpacer /> <HugeSpacer />
-
+        <HugeSpacer />
+        <Cards cards={communityCards}/>
+        <HugeSpacer />
       </GenericPage>
     );
   }
