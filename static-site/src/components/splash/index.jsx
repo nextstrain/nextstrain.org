@@ -1,6 +1,5 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
-import {Link} from 'gatsby';
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
 import coreCards from "../Cards/coreCards";
@@ -10,8 +9,31 @@ import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import Footer from "../Footer";
-import UserGroups from "./userGroups";
+import { createGroupCards } from "./userGroups";
 import { UserContext } from "../../layouts/userDataWrapper";
+
+const Section = ({title, abstract, cards, buttonText, buttonLink}) => (
+  <div className="col-md-6" style={{paddingBottom: "40px"}}>
+    <div style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100%"}}>
+      <Styles.H1>{title}</Styles.H1>
+      <Styles.CenteredFocusParagraph style={{flexGrow: 1}}>
+        {abstract}
+      </Styles.CenteredFocusParagraph>
+      <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
+        <Cards
+          squashed
+          compactColumns
+          cards={cards}
+        />
+      </div>
+      <BigSpacer/>
+      <Styles.Button to={buttonLink}>
+        {buttonText}
+      </Styles.Button>
+    </div>
+  </div>
+);
+
 
 class Splash extends React.Component {
   constructor() {
@@ -54,86 +76,53 @@ class Splash extends React.Component {
         </FlexCenter>
 
         <HugeSpacer/>
-        {this.context.user && <UserGroups/>}
-
-        <ScrollableAnchor id={'ncov'}>
-          <Styles.H1>SARS-CoV-2 (COVID-19)</Styles.H1>
-        </ScrollableAnchor>
-
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
-            In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses.
-            Please see the <Link to="/sars-cov-2">SARS-CoV-2 resources page</Link> for more information.
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-        <Cards
-          squashed
-          cards={nCoVCards}
-        />
-
-        <HugeSpacer/>
-
-        <ScrollableAnchor id={'pathogens'}>
-          <Styles.H1>Explore pathogens</Styles.H1>
-        </ScrollableAnchor>
-
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-
-        <Cards
-          cards={coreCards}
-        />
-
-        <HugeSpacer/>
-
-        <ScrollableAnchor id={'community'}>
-          <Styles.H1>From the community</Styles.H1>
-        </ScrollableAnchor>
-
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
-            accessed via public GitHub repos</a>
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-
-        <Cards
-          cards={communityCards}
-        />
-
-
-        <HugeSpacer/>
-        <ScrollableAnchor id={'narratives'}>
-          <Styles.H1>Narratives</Styles.H1>
-        </ScrollableAnchor>
-
-        <FlexCenter>
-          <Styles.CenteredFocusParagraph>
-            Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data.
-            <a href="https://nextstrain.github.io/auspice/narratives/introduction"> See here to find out more.</a>
-          </Styles.CenteredFocusParagraph>
-        </FlexCenter>
-
-        <Cards cards={narrativeCards}/>
-
-        <HugeSpacer/>
         <BigSpacer/>
 
-        {/* <Styles.H1>Tutorials / Narrative links</Styles.H1> */}
+        <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
+          <Section
+            title="SARS-CoV-2 (COVID-19)"
+            abstract="We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
+            In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses."
+            cards={nCoVCards}
+            buttonText="See all resources"
+            buttonLink="/sars-cov-2"
+          />
+          <Section
+            title="Nextstrain Groups"
+            abstract="We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience."
+            cards={createGroupCards([{name: "neherlab"}, {name: "spheres"}])}
+            buttonText="See all groups"
+            buttonLink="/groups"
+          />
+          <Section
+            title="Explore pathogens"
+            abstract="Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team."
+            cards={coreCards}
+            buttonText="See all pathogens"
+            buttonLink="/pathogens"
+          />
+          <Section
+            title="From the community"
+            abstract={(<>
+              Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
+              accessed via public GitHub repos</a>
+            </>)}
+            cards={communityCards.filter((c) => c.frontpage)}
+            buttonText="Learn more"
+            buttonLink="/community"
+          />
+          <Section
+            title="Narratives"
+            abstract="Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data."
+            cards={narrativeCards}
+            buttonText="Find out more"
+            buttonLink="https://docs.nextstrain.org/en/latest/guides/communicate/narratives-intro.html"
+          />
+        </div>
 
-        {/* SOCIAL MEDIA AKA TWITTER
+        <HugeSpacer/>
 
-        <Styles.H1>Mentions on Twitter</Styles.H1>
-        <BigSpacer/>
-        {tweets()}
-
-        */}
-
-        <BigSpacer/>
+        {/* PHILOSOPHY */}
         <ScrollableAnchor id={'philosophy'}>
           <Styles.H1>Philosophy</Styles.H1>
         </ScrollableAnchor>
