@@ -116,7 +116,7 @@ class Splash extends React.Component {
             abstract="Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data."
             cards={narrativeCards}
             buttonText="Find out more"
-            buttonLink="https://nextstrain.github.io/auspice/narratives/introduction"
+            buttonLink="https://docs.nextstrain.org/en/latest/guides/communicate/narratives-intro.html"
           />
         </div>
 
