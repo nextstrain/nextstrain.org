@@ -192,16 +192,19 @@ class CommunitySource extends Source {
 
     this.owner = owner;
     [this.repoName, this.branch] = repoName.split(/@/, 2);
+    this.branchExplicitlyDefined = !!this.branch;
 
     if (!this.repoName) throw new Error(`Cannot construct a ${this.constructor.name} without a repoName after splitting on /@/`);
+
+    this.defaultBranch = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`)
+      .then((res) => res.json())
+      .then((data) => data.default_branch)
+      .catch(() => {
+        console.log(`Error interpreting the default branch of ${this.constructor.name} for ${this.owner}/${this.repoName}`);
+        return "master";
+      });
     if (!this.branch) {
-      this.branch = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`)
-        .then((res) => res.json())
-        .then((data) => data.default_branch || "master")
-        .catch(() => {
-          console.log(`Error interpreting the default branch of ${this.constructor.name}`);
-          return "master";
-        });
+      this.branch = this.defaultBranch;
     }
   }
 
@@ -212,8 +215,12 @@ class CommunitySource extends Source {
   }
 
   async repoNameWithBranch() {
-    // we don't keep track of the default branch, thus we always use repo@branch syntax
-    return `${this.repoName}@${await this.branch}`;
+    const branch = await this.branch;
+    const defaultBranch = await this.defaultBranch;
+    if (branch === defaultBranch && !this.branchExplicitlyDefined) {
+      return this.repoName;
+    }
+    return `${this.repoName}@${branch}`;
   }
 
   dataset(pathParts) {
@@ -274,13 +281,11 @@ class CommunitySource extends Source {
     /* could attempt to fetch a certain file from the repository if we want to implement
     this functionality in the future */
     const branch = await this.branch;
-    const githubUrl = `https://github.com/${this.owner}/${this.repoName}/tree/${branch}`;
     return {
-      title: `${this.owner}'s "${this.repoName}" Nextstrain community build`,
+      title: `${this.owner}'s "${this.repoName}" community builds`,
       byline: `
-        Nextstrain community builds are fetched directly from GitHub
-        repositories, in this case ${githubUrl}.  The available datasets and
-        narratives in this repository are listed below.
+        Nextstrain community builds for GitHub → ${this.owner}/${this.repoName} (${branch} branch).
+        The available datasets and narratives in this repository are listed below.
       `,
       website: null,
       showDatasets: true,
