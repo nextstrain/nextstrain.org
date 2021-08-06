@@ -7,7 +7,7 @@ const communityCards = [
   },
   {
     img: "chikv.png",
-    url: "community/ViennaRNA/CHIKV",
+    url: "/community/ViennaRNA/CHIKV",
     title: "Chikungunya",
     frontpage: true
   },
