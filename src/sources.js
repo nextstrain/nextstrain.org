@@ -638,6 +638,11 @@ class PIGIEPrivateSource extends PrivateGroupSource {
   static get _name() { return "pigie"; }
 }
 
+class ViennaRNASource extends PublicGroupSource {
+  static get _name() { return "ViennaRNA"; }
+  get bucket() { return "nextstrain-viennarna"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -657,6 +662,7 @@ const sources = [
   NIPHSource,
   EPICOVIGALSource,
   WAPHLSource,
+  ViennaRNASource,
   /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
