@@ -643,6 +643,20 @@ class ViennaRNASource extends PublicGroupSource {
   get bucket() { return "nextstrain-viennarna"; }
 }
 
+class SC2ZamPubSource extends PublicGroupSource {
+  static get _name() { return "SC2ZamPub"; }
+  get bucket() { return "nextstrain-sc2zampub"; }
+}
+
+class SC2ZamPrivateSource extends PrivateGroupSource {
+  static get _name() { return "SC2Zam"; }
+  get bucket() { return "nextstrain-sc2zam"; }
+}
+
+class WallauLabPrivateSource extends PrivateGroupSource {
+  static get _name() { return "wallaulab"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -663,6 +677,7 @@ const sources = [
   EPICOVIGALSource,
   WAPHLSource,
   ViennaRNASource,
+  SC2ZamPubSource,
   /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
@@ -673,6 +688,8 @@ const sources = [
   ILRIPrivateSource,
   NebraskaDHHSPrivateSource,
   PIGIEPrivateSource,
+  SC2ZamPrivateSource,
+  WallauLabPrivateSource,
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
