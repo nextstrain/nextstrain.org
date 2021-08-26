@@ -8,6 +8,8 @@ import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
+import Cards from "../components/Cards/index";
+import pathogenCards from "../components/Cards/pathogenCards";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -73,7 +75,10 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
-        <HugeSpacer /> <HugeSpacer />
+
+        <HugeSpacer />
+        <Cards squashed cards={pathogenCards}/>
+        <HugeSpacer />
 
         {this.state.data && (
           <DatasetSelect
