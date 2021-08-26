@@ -661,7 +661,7 @@ class NextfluPrivateSource extends PrivateGroupSource {
   static get _name() { return "nextflu-private"; }
 }
 
-class NcovHKPrivateSource extends PrivateGroupSource {
+class NcovHKSource extends PublicGroupSource {
   static get _name() { return "ncovHK"; }
   get bucket() { return "nextstrain-ncovhk"; }
 }
@@ -688,6 +688,7 @@ const sources = [
   ViennaRNASource,
   SC2ZamPubSource,
   NebraskaDHHSSource,
+  NcovHKSource,
   /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
@@ -700,7 +701,6 @@ const sources = [
   SC2ZamPrivateSource,
   WallauLabPrivateSource,
   NextfluPrivateSource,
-  NcovHKPrivateSource,
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
