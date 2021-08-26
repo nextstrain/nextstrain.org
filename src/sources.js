@@ -629,7 +629,7 @@ class ILRIPrivateSource extends PrivateGroupSource {
   static get _name() { return "ilri"; }
 }
 
-class NebraskaDHHSPrivateSource extends PrivateGroupSource {
+class NebraskaDHHSSource extends PublicGroupSource {
   /* Person to contact: Bryan Temogoh */
   static get _name() { return "nebraska-dhhs"; }
 }
@@ -678,6 +678,7 @@ const sources = [
   WAPHLSource,
   ViennaRNASource,
   SC2ZamPubSource,
+  NebraskaDHHSSource,
   /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
@@ -686,7 +687,6 @@ const sources = [
   GrubaughLabPrivateSource,
   InrbDrcSource,
   ILRIPrivateSource,
-  NebraskaDHHSPrivateSource,
   PIGIEPrivateSource,
   SC2ZamPrivateSource,
   WallauLabPrivateSource,
