@@ -40,6 +40,10 @@ datasets:
     geo: north-america
     parentGeo: null
 
+  - name: Cameroon
+    geo: cameroon
+    parentGeo: africa
+
   - name: Canada
     geo: canada
     parentGeo: north-america
@@ -494,6 +498,17 @@ datasets:
     org:
       name: Nextstrain Team
 
+  - url: https://nextstrain.org/community/BryanTegomoh/Nextstrain-Builds@main/Cameroon
+    name: Cameroon
+    geo: cameroon
+    level: country
+    coords:
+      - 13.1535811
+      - 4.6125522
+    org:
+      name: Bryan Tegomoh (CDCF/NDHHS)
+      url: https://github.com/BryanTegomoh
+
   - url: https://nextstrain.org/ncov/asia?f_region=Asia
     name: Asia
     geo: asia
@@ -870,11 +885,33 @@ datasets:
     geo: nebraska
     level: division
     coords:
-    - -99.6
+    - -98.6
     - 41.7
     org:
       name: CDC/AMD
       url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/nebraska-dhhs
+    name: Nebraska
+    geo: nebraska
+    level: division
+    coords:
+    - -101.6
+    - 41.7
+    org:
+      name: Nebraska Department of Health and Human Services (DHHS)
+      url: dhhs.ne.gov/
+
+  - url: https://nextstrain.org/community/BryanTegomoh/NebraskaDHHSNextStrainBuild/Nebraska/Last/Four/EpiWeeks
+    name: Nebraska Last Four EpiWeeks
+    geo: nebraska
+    level: division
+    coords:
+    - -100.6
+    - 41.7
+    org:
+      name: Bryan Tegomoh (CDCF/NDHHS)
+      url: dhhs.ne.gov/
 
   - url: https://nextstrain.org/groups/spheres/ncov/nevada
     name: Nevada
