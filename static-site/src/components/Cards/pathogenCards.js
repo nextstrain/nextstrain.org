@@ -1,5 +1,10 @@
 const pathogenCards = [
   {
+    img: "seasonalinfluenza.png",
+    url: "/influenza",
+    title: "Influenza"
+  },
+  {
     img: "ncov.png",
     url: "/sars-cov-2",
     title: "SARS-CoV-2"

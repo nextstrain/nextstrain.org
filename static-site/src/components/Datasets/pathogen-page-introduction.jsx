@@ -2,9 +2,10 @@
 import React from "react";
 import {Link} from 'gatsby';
 import styled from "styled-components";
-
 import { goToAnchor } from 'react-scrollable-anchor';
 import { FlexCenter } from "../../layouts/generalComponents";
+
+export const AnchorLink = ({to, title}) => <Clickable onClick={() => goToAnchor(to)}>{title}</Clickable>;
 
 export function PathogenPageIntroduction({data}) {
   return (
@@ -18,7 +19,7 @@ export function PathogenPageIntroduction({data}) {
                 s.type === "gatsby" ?
                   <Link to={s.to}>{s.title}</Link> :
                   s.type === "anchor" ?
-                    <Clickable onClick={() => goToAnchor(s.to)}>{s.title}</Clickable> :
+                    <AnchorLink to={s.to} title={s.title} /> :
                     null
               }
               {s.subtext && (
