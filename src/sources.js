@@ -657,6 +657,10 @@ class WallauLabPrivateSource extends PrivateGroupSource {
   static get _name() { return "wallaulab"; }
 }
 
+class NextfluPrivateSource extends PrivateGroupSource {
+  static get _name() { return "nextflu-private"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -690,6 +694,7 @@ const sources = [
   PIGIEPrivateSource,
   SC2ZamPrivateSource,
   WallauLabPrivateSource,
+  NextfluPrivateSource,
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
