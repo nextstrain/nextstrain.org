@@ -913,6 +913,17 @@ datasets:
       name: Bryan Tegomoh (CDCF/NDHHS)
       url: dhhs.ne.gov/
 
+  - url: https://nextstrain.org/community/josephfauver/ncovNE@main/
+    name: Nebraska
+    geo: nebraska
+    level: division
+    coords:
+    - -102.6
+    - 41.7
+    org:
+      name: Joseph Fauver
+      url: https://grubaughlab.com/
+
   - url: https://nextstrain.org/groups/spheres/ncov/nevada
     name: Nevada
     geo: nevada
@@ -1308,6 +1319,17 @@ datasets:
     org:
       name: Bedford Lab
       url: https://bedford.io/
+
+  - url: https://nextstrain.org/groups/waphl/
+    name: Washington
+    geo: washington
+    level: division
+    coords:
+      - -121.644869
+      - 46.988611
+    org:
+      name: Washington State Public Health Laboratories
+      url: www.doh.wa.gov/AboutUs/ProgramsandServices/DiseaseControlandHealthStatistics/PublicHealthLaboratories
 
   - url: https://go.wisc.edu/r7374f
     name: Wisconsin
