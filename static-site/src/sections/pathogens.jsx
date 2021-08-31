@@ -1,4 +1,5 @@
 import React from "react";
+import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import {
   SmallSpacer,
   HugeSpacer,
@@ -8,10 +9,13 @@ import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
+import Cards from "../components/Cards/index";
+import pathogenCards from "../components/Cards/pathogenCards";
+import { AnchorLink } from "../components/Datasets/pathogen-page-introduction";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
-const title = "Nextstrain-maintained Data";
+const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (
   <>
     These data represent analyses and situation-reports produced by the core Nextstrain team.
@@ -23,6 +27,8 @@ const abstract = (
     <br/><br/>
     To learn more about nextstrain please see <a href="https://docs.nextstrain.org/en/latest/index.html">our documentation</a> or ask a question
     on the <a href="https://discussion.nextstrain.org/">discussion forum</a>.
+    <br/><br/>
+    <AnchorLink to={"search"} title={"Click here to scroll down to all Nextstrain-maintained pathogen analyses"} />.
   </>
 );
 
@@ -49,6 +55,7 @@ const tableColumns = [
 class Index extends React.Component {
   constructor(props) {
     super(props);
+    configureAnchors({ offset: -10 });
     this.state = {data: undefined, errorFetchingData: false};
   }
 
@@ -73,21 +80,28 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
-        <HugeSpacer /> <HugeSpacer />
 
-        {this.state.data && (
-          <DatasetSelect
-            datasets={this.state.data}
-            columns={tableColumns}
-          />
-        )}
-        {this.state.errorFetchingData && (
-          <splashStyles.CenteredFocusParagraph>
-            Something went wrong getting data.
-            Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-            if this continues to happen.
-          </splashStyles.CenteredFocusParagraph>
-        )}
+        <HugeSpacer />
+        <Cards squashed cards={pathogenCards}/>
+        <HugeSpacer />
+
+        <ScrollableAnchor id={"search"}>
+          <div>
+            {this.state.data && (
+              <DatasetSelect
+                datasets={this.state.data}
+                columns={tableColumns}
+              />
+            )}
+            {this.state.errorFetchingData && (
+              <splashStyles.CenteredFocusParagraph>
+                Something went wrong getting data.
+                Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
+                if this continues to happen.
+              </splashStyles.CenteredFocusParagraph>
+            )}
+          </div>
+        </ScrollableAnchor>
       </GenericPage>
     );
   }

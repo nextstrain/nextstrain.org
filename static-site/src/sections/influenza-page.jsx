@@ -12,6 +12,8 @@ import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import { ErrorBanner } from "../components/splash/errorMessages";
+import Cards from "../components/Cards/index";
+import fluCards from "../components/Cards/fluCards";
 
 const nextstrainLogoPNG = require("../../static/logos/favicon.png");
 
@@ -23,23 +25,6 @@ We also maintain datasets for a subset of avian influenza viruses that have caus
 and domestic birds, including novel reassortant H5 viruses.`;
 
 const contents = [
-  {
-    type: "external",
-    to: "/flu/seasonal/h3n2/ha/2y",
-    title: "Latest A/H3N2 analysis",
-    subtext: (
-      <span>
-        Jump to our latest A/H3N2 seasonal influenza dataset which is updated weekly. We also maintain datasets for:
-        <br/><a href="/flu/seasonal/h1n1pdm/ha/2y"> A/H1N1pdm</a>
-        <br/><a href="/flu/seasonal/vic/ha/2y"> B/Vic</a>
-        <br/><a href="/flu/seasonal/yam/ha/2y"> B/Yam</a>
-        <br/><a href="/flu/avian/h5n1/ha"> A/H5N1 (Avian)</a>
-        <br/><a href="/flu/avian/h5nx/ha"> A/H5NX (Avian)</a>
-        <br/><a href="/flu/avian/h7n9/ha"> A/H7N9 (Avian)</a>
-        <br/><a href="/flu/avian/h9n2/ha"> A/H9N2 (Avian)</a>
-      </span>
-    )
-  },
   {
     type: "anchor",
     to: "datasets",
@@ -132,13 +117,16 @@ class Index extends React.Component {
 
         <PathogenPageIntroduction data={contents} />
 
+        <MediumSpacer/>
+        <Cards squashed cards={fluCards}/>
+
         <ScrollableAnchor id={"datasets"}>
           <div>
             <HugeSpacer /><HugeSpacer />
             <splashStyles.H2>
               Influenza datasets
             </splashStyles.H2>
-            <HugeSpacer />
+            <MediumSpacer />
             {this.state.dataLoaded && (
               <DatasetSelect
                 datasets={this.state.datasets}
