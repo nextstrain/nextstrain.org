@@ -621,11 +621,22 @@ datasets:
     geo: arizona
     level: division
     coords:
-    - -112.1
+    - -113.1
     - 33.4
     org:
       name: CDC/AMD
       url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/community/tgennorth/arizona-covid-19/AZ
+    name: Arizona
+    geo: arizona
+    level: division
+    coords:
+    - -111.1
+    - 33.4
+    org:
+      name: TGen North
+      url: https://www.tgen.org/patients/pathogen-microbiome/
 
   - url: https://nextstrain.org/groups/spheres/ncov/arkansas
     name: Arkansas
