@@ -40,6 +40,10 @@ datasets:
     geo: north-america
     parentGeo: null
 
+  - name: Cameroon
+    geo: cameroon
+    parentGeo: africa
+
   - name: Canada
     geo: canada
     parentGeo: north-america
@@ -494,6 +498,17 @@ datasets:
     org:
       name: Nextstrain Team
 
+  - url: https://nextstrain.org/community/BryanTegomoh/Nextstrain-Builds@main/Cameroon
+    name: Cameroon
+    geo: cameroon
+    level: country
+    coords:
+      - 13.1535811
+      - 4.6125522
+    org:
+      name: Bryan Tegomoh (CDCF/NDHHS)
+      url: https://github.com/BryanTegomoh
+
   - url: https://nextstrain.org/ncov/asia?f_region=Asia
     name: Asia
     geo: asia
@@ -606,11 +621,22 @@ datasets:
     geo: arizona
     level: division
     coords:
-    - -112.1
+    - -113.1
     - 33.4
     org:
       name: CDC/AMD
       url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/community/tgennorth/arizona-covid-19/AZ
+    name: Arizona
+    geo: arizona
+    level: division
+    coords:
+    - -111.1
+    - 33.4
+    org:
+      name: TGen North
+      url: https://www.tgen.org/patients/pathogen-microbiome/
 
   - url: https://nextstrain.org/groups/spheres/ncov/arkansas
     name: Arkansas
@@ -870,11 +896,44 @@ datasets:
     geo: nebraska
     level: division
     coords:
-    - -99.6
+    - -98.6
     - 41.7
     org:
       name: CDC/AMD
       url: https://www.cdc.gov/amd/
+
+  - url: https://nextstrain.org/groups/nebraska-dhhs
+    name: Nebraska
+    geo: nebraska
+    level: division
+    coords:
+    - -101.6
+    - 41.7
+    org:
+      name: Nebraska Department of Health and Human Services (DHHS)
+      url: dhhs.ne.gov/
+
+  - url: https://nextstrain.org/community/BryanTegomoh/NebraskaDHHSNextStrainBuild/Nebraska/Last/Four/EpiWeeks
+    name: Nebraska Last Four EpiWeeks
+    geo: nebraska
+    level: division
+    coords:
+    - -100.6
+    - 41.7
+    org:
+      name: Bryan Tegomoh (CDCF/NDHHS)
+      url: dhhs.ne.gov/
+
+  - url: https://nextstrain.org/community/josephfauver/ncovNE@main/
+    name: Nebraska
+    geo: nebraska
+    level: division
+    coords:
+    - -102.6
+    - 41.7
+    org:
+      name: Joseph Fauver
+      url: https://grubaughlab.com/
 
   - url: https://nextstrain.org/groups/spheres/ncov/nevada
     name: Nevada
@@ -1271,6 +1330,17 @@ datasets:
     org:
       name: Bedford Lab
       url: https://bedford.io/
+
+  - url: https://nextstrain.org/groups/waphl/
+    name: Washington
+    geo: washington
+    level: division
+    coords:
+      - -121.644869
+      - 46.988611
+    org:
+      name: Washington State Public Health Laboratories
+      url: www.doh.wa.gov/AboutUs/ProgramsandServices/DiseaseControlandHealthStatistics/PublicHealthLaboratories
 
   - url: https://go.wisc.edu/r7374f
     name: Wisconsin
