@@ -44,6 +44,10 @@ datasets:
     geo: cameroon
     parentGeo: africa
 
+  - name: New Zealand
+    geo: new_zealand
+    parentGeo: oceania
+
   - name: Canada
     geo: canada
     parentGeo: north-america
@@ -549,6 +553,26 @@ datasets:
     org:
       name: CoVSeQ Partnership
       url: https://covseq.ca/about
+
+  - url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/aotearoa-border-incursions
+    name: Real-time genomics to track COVID-19 post-elimination border incursions in Aotearoa New Zealand
+    geo: new_zealand
+    level: country
+    coords:
+      - 171.95
+      - -39.5
+    org:
+      name: Douglas et al
+
+  - url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/2020-10-01
+    name: Re-emergence of community transmission in Aotearoa New Zealand - Genomic overview of the Auckland Outbreak
+    geo: new_zealand
+    level: country
+    coords:
+      - 174.249
+      - -40.5470
+    org:
+      name: Hadfield, Douglas et al
 
   - url: http://auspice.finlaymagui.re/ncov/north-america/canada?f_country=Canada
     name: Canada
