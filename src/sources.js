@@ -661,6 +661,11 @@ class NextfluPrivateSource extends PrivateGroupSource {
   static get _name() { return "nextflu-private"; }
 }
 
+class NcovHKPrivateSource extends PrivateGroupSource {
+  static get _name() { return "ncovHK"; }
+  get bucket() { return "nextstrain-ncovhk"; }
+}
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -695,6 +700,7 @@ const sources = [
   SC2ZamPrivateSource,
   WallauLabPrivateSource,
   NextfluPrivateSource,
+  NcovHKPrivateSource,
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
