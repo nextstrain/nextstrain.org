@@ -521,7 +521,7 @@ datasets:
       name: Bryan Tegomoh (CDCF/NDHHS)
       url: https://github.com/BryanTegomoh
 
-  - url: https://nextstrain.org/groups/SC2ZamPub
+  - url: https://nextstrain.org/groups/SC2ZamPub/ncov/africa/zambia
     name: Zambia
     geo: zambia
     level: country
@@ -529,8 +529,8 @@ datasets:
       - 30
       - -15
     org:
-      name: Zambia National Public Health Authority (ZNPHI)
-      url: https://znphi.co.zm/
+      name: Zambia Genomic Sequencing Consortium
+      url: https://nextstrain.org/groups/SC2ZamPub
 
   - url: https://nextstrain.org/groups/ngs-sa
     name: South Africa
