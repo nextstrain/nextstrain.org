@@ -48,6 +48,14 @@ datasets:
     geo: new_zealand
     parentGeo: oceania
 
+  - name: Zambia
+    geo: zambia
+    parentGeo: africa
+
+  - name: South Africa
+    geo: south-africa
+    parentGeo: africa
+
   - name: Canada
     geo: canada
     parentGeo: north-america
@@ -512,6 +520,28 @@ datasets:
     org:
       name: Bryan Tegomoh (CDCF/NDHHS)
       url: https://github.com/BryanTegomoh
+
+  - url: https://nextstrain.org/groups/SC2ZamPub/ncov/africa/zambia
+    name: Zambia
+    geo: zambia
+    level: country
+    coords:
+      - 30
+      - -15
+    org:
+      name: Zambia Genomic Sequencing Consortium
+      url: https://nextstrain.org/groups/SC2ZamPub
+
+  - url: https://nextstrain.org/groups/ngs-sa
+    name: South Africa
+    geo: south-africa
+    level: country
+    coords:
+      - 30
+      - -25
+    org:
+      name: Network for Genomics Surveillance in South Africa (NGS-SA)
+      url: https://www.krisp.org.za/ngs-sa/index.php
 
   - url: https://nextstrain.org/ncov/asia?f_region=Asia
     name: Asia
