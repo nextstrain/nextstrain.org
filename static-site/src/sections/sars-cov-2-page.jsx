@@ -34,17 +34,33 @@ on a the SARS-CoV-2 tree.`;
 const contents = [
   {
     type: "external",
-    to: "/ncov/global",
-    title: "Latest global SARS-CoV-2 analysis",
+    to: "/ncov/gisaid/global",
+    title: "Latest global SARS-CoV-2 GISAID analysis",
     subtext: (
       <span>
-        Jump to our globally-subsampled SARS-CoV-2 dataset which is updated daily. We also keep updated regional datasets for
-        <a href="/ncov/africa?f_region=Africa"> Africa</a>,
-        <a href="/ncov/asia?f_region=Asia"> Asia</a>,
-        <a href="/ncov/europe?f_region=Europe"> Europe</a>,
-        <a href="/ncov/north-america?f_region=North%20America"> North America</a>,
-        <a href="/ncov/oceania?f_region=Oceania"> Oceania</a>, and
-        <a href="/ncov/south-america?f_region=South%20America"> South America</a>
+        Jump to our globally-subsampled SARS-CoV-2 GISAID dataset which is updated regularly. We also keep updated regional datasets for
+        <a href="/ncov/gisaid/africa?f_region=Africa"> Africa</a>,
+        <a href="/ncov/gisaid/asia?f_region=Asia"> Asia</a>,
+        <a href="/ncov/gisaid/europe?f_region=Europe"> Europe</a>,
+        <a href="/ncov/gisaid/north-america?f_region=North%20America"> North America</a>,
+        <a href="/ncov/gisaid/oceania?f_region=Oceania"> Oceania</a>, and
+        <a href="/ncov/gisaid/south-america?f_region=South%20America"> South America</a>
+      </span>
+    )
+  },
+  {
+    type: "external",
+    to: "/ncov/open/global",
+    title: "Latest global SARS-CoV-2 open analysis",
+    subtext: (
+      <span>
+        Jump to our globally-subsampled SARS-CoV-2 open dataset which is updated regularly. We also keep updated regional datasets for
+        <a href="/ncov/open/africa?f_region=Africa"> Africa</a>,
+        <a href="/ncov/open/asia?f_region=Asia"> Asia</a>,
+        <a href="/ncov/open/europe?f_region=Europe"> Europe</a>,
+        <a href="/ncov/open/north-america?f_region=North%20America"> North America</a>,
+        <a href="/ncov/open/oceania?f_region=Oceania"> Oceania</a>, and
+        <a href="/ncov/open/south-america?f_region=South%20America"> South America</a>
       </span>
     )
   },
@@ -57,6 +73,12 @@ const contents = [
     type: "anchor",
     to: "sit-reps",
     title: "Scroll down to all available interactive situation reports",
+  },
+  {
+    type: "external",
+    to: "https://docs.nextstrain.org/projects/ncov/en/latest/reference/remote_inputs.html",
+    title: "Starting points for the SARS-CoV-2 pipeline",
+    subtext: "An overview of intermediate files which the Nextstrain SARS-CoV-2 analysis produces. Where appropriate, these files can be starting points for the SARS-CoV-2 pipeline."
   },
   {
     type: "external",
@@ -86,7 +108,7 @@ const contents = [
   },
   {
     type: "external",
-    to: "https://nextstrain.github.io/ncov/",
+    to: "https://docs.nextstrain.org/projects/ncov/en/latest/",
     title: "How to run your own phylogenetic analysis of SARS-CoV-2",
     subtext: "A tutorial walking through running your own analysis using Nextstrain tools"
   },
