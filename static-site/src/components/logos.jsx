@@ -52,10 +52,10 @@ export const Logos = () => (
 
       <AllLogosContainer>
         <Logo href="http://www.fredhutch.org/" imgSrc={fredHutchLogo} width={90}/>
-        <Logo href="http://www.unibas.ch/" imgSrc={uniBasLogo} width={85}/>
+        <Logo href="http://www.unibas.ch/" imgSrc={uniBasLogo} width={110}/>
         <Logo href="https://www.nih.gov/" imgSrc={nihLogo} width={60}/>
         <Logo href="https://www.gatesfoundation.org/" imgSrc={bmgfLogo} width={130}/>
-        <Logo href="https://www.sib.swiss/" imgSrc={sibLogo} width={65}/>
+        <Logo href="https://www.sib.swiss/" imgSrc={sibLogo} width={80}/>
         <Logo href="https://www.mapbox.com" imgSrc={mapBoxLogo} width={110}/>
         <Logo href="https://www.nih.gov/news-events/news-releases/open-science-prize-announces-epidemic-tracking-tool-grand-prize-winner" imgSrc={ospLogo} width={100}/>
         <Logo href="http://biozentrum.org/" imgSrc={bzLogo} width={115}/>
