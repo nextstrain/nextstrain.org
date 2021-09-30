@@ -1,7 +1,6 @@
 {
+  "private": true,
   "name": "nextstrain.org",
-  "version": "0.1.0",
-  "description": "",
   "main": "server.js",
   "author": "James Hadfield",
   "license": "AGPL-3.0-only",
