@@ -8,7 +8,7 @@ const favicon = require('serve-favicon');
 const compression = require('compression');
 const argparse = require('argparse');
 const utils = require("./src/utils");
-const { potentialAuspiceRoutes, isRequestBackedByAuspiceDataset } = require('./auspicePaths');
+const { potentialAuspiceRoutes, isRequestBackedByAuspiceDataset } = require('./src/auspicePaths');
 const cors = require('cors');
 const {addAsync} = require("@awaitjs/express");
 const {NotFound} = require('http-errors');
@@ -37,8 +37,8 @@ global.verbose = args.verbose;
 // Import these after parsing CLI arguments and setting global.verbose so code
 // in them can use utils.verbose() at load time.
 const auspiceServerHandlers = require("./src/index.js");
-const authn = require("./authn");
-const redirects = require("./redirects");
+const authn = require("./src/authn");
+const redirects = require("./src/redirects");
 
 /* Path helpers for static assets, to make routes more readable.
  */

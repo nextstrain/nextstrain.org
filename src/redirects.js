@@ -1,6 +1,6 @@
 const url = require('url');
-const helpers = require("./src/getDatasetHelpers");
-const { parseNarrativeLanguage } = require("./src/utils");
+const helpers = require("./getDatasetHelpers");
+const { parseNarrativeLanguage } = require("./utils");
 
 const setup = (app) => {
 

@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
-const sources = require("./src/sources");
-const { warn } = require("./src/utils");
-const { splitPrefixIntoParts, parsePrefix } = require("./src/getDatasetHelpers");
+const sources = require("./sources");
+const { warn } = require("./utils");
+const { splitPrefixIntoParts, parsePrefix } = require("./getDatasetHelpers");
 
 /**
  * Auspice core builds have URLs where the first (`/`-separated) field matches the following list.
