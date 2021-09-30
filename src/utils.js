@@ -50,17 +50,6 @@ const fetchJSON = async (url) => {
   return res.json();
 };
 
-const printStackTrace = (err) => {
-  if (err.stack) {
-    warn('Stacktrace:');
-    console.log('====================');
-    console.log(err.stack);
-    console.log('====================');
-  } else {
-    warn("No available stacktrace");
-  }
-};
-
 const responseDetails = async (response) => [
   `${response.status} ${response.statusText}`,
   await response.text()
@@ -118,7 +107,6 @@ module.exports = {
   warn,
   error,
   fetchJSON,
-  printStackTrace,
   responseDetails,
   getDatasetsFromListOfFilenames,
   parseNarrativeLanguage
