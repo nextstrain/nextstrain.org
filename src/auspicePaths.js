@@ -24,7 +24,9 @@ const coreBuilds = [
   "/zika",
 ];
 
-const groups = [...sources.keys()].filter((k) => !["core", "staging", "community"].includes(k));
+const groups = Array.from(sources.entries())
+  .filter(([, Source]) => Source.isGroup())
+  .map(([name, ]) => name); // eslint-disable-line
 
 
 /**
