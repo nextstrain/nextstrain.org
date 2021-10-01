@@ -99,13 +99,13 @@ const parseNarrativeLanguage = (narrative) => {
   return language;
 };
 
-const unauthorized = (req, res) => {
+const unauthorized = (req) => {
   const user = req.user
     ? `user ${req.user.username}`
     : `an anonymous user`;
 
   warn(`Denying ${user} access to ${req.originalUrl}`);
-  return res.status(404).end();
+  throw new NotFound();
 };
 
 

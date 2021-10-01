@@ -16,7 +16,7 @@ const getSourceInfo = async (req, res) => {
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return utils.unauthorized(req, res);
+    return utils.unauthorized(req);
   }
 
   return res.json(await source.getInfo());

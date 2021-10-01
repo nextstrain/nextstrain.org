@@ -28,7 +28,7 @@ const getNarrative = async (req, res) => {
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return utils.unauthorized(req, res);
+    return utils.unauthorized(req);
   }
 
   // Remove 'en' from nCoV narrative prefixParts
