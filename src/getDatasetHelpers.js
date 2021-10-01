@@ -3,15 +3,6 @@ const {NotFound} = require("http-errors");
 const utils = require("./utils");
 const sources = require("./sources");
 
-const unauthorized = (req, res) => {
-  const user = req.user
-    ? `user ${req.user.username}`
-    : `an anonymous user`;
-
-  utils.warn(`Denying ${user} access to ${req.originalUrl}`);
-  return res.status(404).end();
-};
-
 /* All of the logic for mapping a dataset or narratives URL ("prefix") to a
  * source + path is intentionally encapsulated contained here.  This function
  * is essentially a router, and potentially should be refactored as such in the
@@ -184,7 +175,6 @@ const canonicalizePrefix = async (prefix) =>
 module.exports = {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
-  unauthorized,
   parsePrefix,
   canonicalizePrefix,
 };

@@ -137,7 +137,7 @@ const getDataset = async (req, res) => {
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return helpers.unauthorized(req, res);
+    return utils.unauthorized(req, res);
   }
 
   /* If we got a partial prefix and resolved it into a full one, redirect to

@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const {BadRequest, NotFound} = require("http-errors");
 
 const utils = require("./utils");
-const {unauthorized, splitPrefixIntoParts} = require("./getDatasetHelpers");
+const {splitPrefixIntoParts} = require("./getDatasetHelpers");
 
 const getNarrative = async (req, res) => {
   const query = req.query;
@@ -28,7 +28,7 @@ const getNarrative = async (req, res) => {
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return unauthorized(req, res);
+    return utils.unauthorized(req, res);
   }
 
   // Remove 'en' from nCoV narrative prefixParts

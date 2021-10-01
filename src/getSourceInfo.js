@@ -2,6 +2,7 @@ const queryString = require("query-string");
 const {BadRequest} = require("http-errors");
 
 const helpers = require("./getDatasetHelpers");
+const utils = require("./utils");
 
 /**
  * Prototype implementation.
@@ -15,7 +16,7 @@ const getSourceInfo = async (req, res) => {
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return helpers.unauthorized(req, res);
+    return utils.unauthorized(req, res);
   }
 
   return res.json(await source.getInfo());

@@ -99,6 +99,15 @@ const parseNarrativeLanguage = (narrative) => {
   return language;
 };
 
+const unauthorized = (req, res) => {
+  const user = req.user
+    ? `user ${req.user.username}`
+    : `an anonymous user`;
+
+  warn(`Denying ${user} access to ${req.originalUrl}`);
+  return res.status(404).end();
+};
+
 
 module.exports = {
   getGitHash,
@@ -109,5 +118,6 @@ module.exports = {
   fetchJSON,
   responseDetails,
   getDatasetsFromListOfFilenames,
-  parseNarrativeLanguage
+  parseNarrativeLanguage,
+  unauthorized,
 };
