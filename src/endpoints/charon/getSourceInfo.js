@@ -7,12 +7,22 @@ const utils = require("../../utils");
 /**
  * Prototype implementation.
  */
-const getSourceInfo = async (req, res) => {
+async function fromQuery(req, res) {
   const query = queryString.parse(req.url.split('?')[1]);
 
   if (!query.prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
 
-  const {source} = splitPrefixIntoParts(query.prefix);
+  return await _getInfo(req, res, query.prefix);
+}
+
+
+async function fromPath(req, res) {
+  return await _getInfo(req, res, req.path);
+}
+
+
+async function _getInfo(req, res, prefix) {
+  const {source} = splitPrefixIntoParts(prefix);
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
@@ -20,10 +30,11 @@ const getSourceInfo = async (req, res) => {
   }
 
   return res.json(await source.getInfo());
-};
+}
 
 
 module.exports = {
-  getSourceInfo,
-  default: getSourceInfo
+  fromQuery,
+  fromPath,
+  default: fromQuery
 };
