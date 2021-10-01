@@ -137,16 +137,17 @@ const correctPrefixFromAvailable = (sourceName, prefixParts) => {
     global.availableDatasets[sourceName]
       .includes(pathToCheck);
 
-  let prefix = prefixParts.join("/");
+  const prefix = prefixParts.join("/");
 
   if (doesPathExist(prefix)) {
     return prefixParts;
   }
 
   /* if we are here, then the path doesn't match any available datasets exactly */
-  if (prefix in global.availableDatasets.defaults[sourceName]) {
-    prefix = `${prefix}/${global.availableDatasets.defaults[sourceName][prefix]}`;
-    return correctPrefixFromAvailable(sourceName, prefix.split("/"));
+  const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
+
+  if (nextDefaultPart) {
+    return correctPrefixFromAvailable(sourceName, [...prefixParts, nextDefaultPart]);
   }
 
   return prefixParts;
