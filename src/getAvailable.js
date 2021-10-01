@@ -1,6 +1,6 @@
 const utils = require("./utils");
 const queryString = require("query-string");
-const {splitPrefixIntoParts, joinPartsIntoPrefix} = require("./getDatasetHelpers");
+const {splitPrefixIntoParts, joinPartsIntoPrefix} = require("./utils/prefix");
 const metaSources = require("./metaSources");
 
 /* handler for /charon/getAvailable requests */

@@ -13,7 +13,7 @@ const S3 = new AWS.S3();
 /* These Source, Dataset, and Narrative classes contain information to map an
  * array of dataset/narrative path parts onto a URL.  Source selection and
  * dataset path aliasing (/flu → /flu/seasonal/h3n2/ha/3y) is handled in
- * getDatasetHelpers.parsePrefix().
+ * utils/prefix.parsePrefix().
  *
  * The class definitions would be a bit shorter/prettier if we were using Babel
  * to allow class properties on Node.

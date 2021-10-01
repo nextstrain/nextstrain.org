@@ -1,7 +1,7 @@
 const queryString = require("query-string");
 const {BadRequest} = require("http-errors");
 
-const helpers = require("./getDatasetHelpers");
+const {splitPrefixIntoParts} = require("./utils/prefix");
 const utils = require("./utils");
 
 /**
@@ -12,7 +12,7 @@ const getSourceInfo = async (req, res) => {
 
   if (!query.prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
 
-  const {source} = helpers.splitPrefixIntoParts(query.prefix);
+  const {source} = splitPrefixIntoParts(query.prefix);
 
   // Authorization
   if (!source.visibleToUser(req.user)) {

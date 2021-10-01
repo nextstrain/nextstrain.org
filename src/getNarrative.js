@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const {BadRequest, NotFound} = require("http-errors");
 
 const utils = require("./utils");
-const {splitPrefixIntoParts} = require("./getDatasetHelpers");
+const {splitPrefixIntoParts} = require("./utils/prefix");
 
 const getNarrative = async (req, res) => {
   const query = req.query;

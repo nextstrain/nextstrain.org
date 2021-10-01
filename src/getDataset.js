@@ -1,7 +1,7 @@
 const queryString = require("query-string");
 
 const utils = require("./utils");
-const helpers = require("./getDatasetHelpers");
+const {canonicalizePrefix, parsePrefix} = require("./utils/prefix");
 const {NoDatasetPathError} = require("./exceptions");
 const auspice = require("auspice");
 const request = require('request');
@@ -118,7 +118,7 @@ const getDataset = async (req, res) => {
   // construct fetch URL
   let datasetInfo;
   try {
-    datasetInfo = await helpers.parsePrefix(query.prefix, query);
+    datasetInfo = await parsePrefix(query.prefix, query);
   } catch (err) {
     /* Return a 204 No Content when Auspice makes a dataset request to a
      * valid source root without a dataset path.
@@ -143,7 +143,7 @@ const getDataset = async (req, res) => {
   /* If we got a partial prefix and resolved it into a full one, redirect to
    * that.  Auspice will notice and update its displayed URL appropriately.
    */
-  if (resolvedPrefix !== await helpers.canonicalizePrefix(query.prefix)) {
+  if (resolvedPrefix !== await canonicalizePrefix(query.prefix)) {
     // A absolute base is required but we won't use it, so use something bogus.
     const resolvedUrl = new URL(req.originalUrl, "http://x");
     resolvedUrl.searchParams.set("prefix", resolvedPrefix);
