@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
-const assert = require('assert').strict;
-const {NotFound} = require("http-errors");
+const {BadRequest, NotFound} = require("http-errors");
 
 const utils = require("./utils");
 const {unauthorized, splitPrefixIntoParts} = require("./getDatasetHelpers");
@@ -8,17 +7,12 @@ const {unauthorized, splitPrefixIntoParts} = require("./getDatasetHelpers");
 const getNarrative = async (req, res) => {
   const query = req.query;
   const prefix = query.prefix;
-  try {
-    assert(prefix);
-  } catch {
-    return res.status(400).send("No prefix in getNarrative URL query");
-  }
+  const validTypes = new Set(["markdown", "md"]);
 
-  try {
-    assert(query.type);
-    assert(["markdown", "md"].includes(query.type.toLowerCase()));
-  } catch {
-    return res.status(400).send("The nextstrain.org server only serves getNarrative requests in markdown format. Please specify `?type=md`");
+  if (!prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
+
+  if (!validTypes.has((query.type || "").toLowerCase())) {
+    throw new BadRequest(`Required query parameter 'type' has an unsupported value ('${query.type}').  Supported values are: ${Array.from(validTypes).join(', ')}`);
   }
 
   /*
