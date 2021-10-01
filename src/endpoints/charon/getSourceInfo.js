@@ -1,8 +1,8 @@
 const queryString = require("query-string");
 const {BadRequest} = require("http-errors");
 
-const {splitPrefixIntoParts} = require("./utils/prefix");
-const utils = require("./utils");
+const {splitPrefixIntoParts} = require("../../utils/prefix");
+const utils = require("../../utils");
 
 /**
  * Prototype implementation.

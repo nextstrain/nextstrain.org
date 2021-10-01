@@ -14,7 +14,7 @@ const {NotFound} = require('http-errors');
 
 const production = process.env.NODE_ENV === "production";
 
-const auspiceServerHandlers = require("./index.js");
+const charon = require("./endpoints/charon");
 const authn = require("./authn");
 const redirects = require("./redirects");
 
@@ -70,16 +70,16 @@ app.route("/dist/*") // Auspice hardcodes /dist/… in its Webpack config.
  */
 app.routeAsync("/charon/getAvailable")
   .all(cors({origin: 'http://localhost:8000'})) // allow cross-origin from the gatsby dev server
-  .getAsync(auspiceServerHandlers.getAvailable);
+  .getAsync(charon.getAvailable);
 
 app.routeAsync("/charon/getDataset")
-  .getAsync(auspiceServerHandlers.getDataset);
+  .getAsync(charon.getDataset);
 
 app.routeAsync("/charon/getNarrative")
-  .getAsync(auspiceServerHandlers.getNarrative);
+  .getAsync(charon.getNarrative);
 
 app.routeAsync("/charon/getSourceInfo")
-  .getAsync(auspiceServerHandlers.getSourceInfo);
+  .getAsync(charon.getSourceInfo);
 
 app.routeAsync("/charon/*")
   .all((req) => {

@@ -112,7 +112,7 @@ Read the section below on the nextstrain.org server for more context.
 
 ```bash
 cd auspice-client
-npx auspice develop --verbose --extend ./customisations/config.json --handlers ../src/index.js
+npx auspice develop --verbose --extend ./customisations/config.json --handlers ../src/endpoints/charon/index.js
 ```
 
 > If you're not familiar with [`npx`](https://www.npmjs.com/package/npx), it's a command to easily run programs installed by `npm`.
@@ -140,7 +140,7 @@ or
 
 ```bash
 cd auspice-client
-npx auspice develop --verbose --extend ./customisations/config.json --handlers ../src/index.js
+npx auspice develop --verbose --extend ./customisations/config.json --handlers ../src/endpoints/charon/index.js
 ```
 
 If you're installing from a local development copy of Auspice's source, you can use [`npm link`](https://docs.npmjs.com/cli/link) to use your local copy without the need to continually re-install it after every change:
@@ -172,13 +172,13 @@ It can make the following API requests to a server:
 and as long as there is a server and the reponse is appropriate then the auspice client can visualise the data.
 
 
-The nextstrain.org server (`server.js`) sets up GET request handlers for those three endpoints using code imported from `./src/index.js`.
+The nextstrain.org server (`server.js`) sets up GET request handlers for those three endpoints using code imported from `./src/endpoints/charon/index.js`.
 
 
-The code for these handlers, which is exposed by `./src/index.js`, has been written in such a way that it can be imported by:
+The code for these handlers, which is exposed by `./src/endpoints/charon/index.js`, has been written in such a way that it can be imported by:
 1. The nextstrain.org server: `npm run server` (see `server.js`)
-2. The auspice server: `cd auspice-client && npx auspice view --handlers ../src/index.js --verbose` (rarely useful in this case, make sure you've run `npm run build -- auspice` first!)
-3. The auspice development server: `npx auspice develop --handlers ./src/index.js --verbose --extend ./auspice-client/customisations/config.json` (useful for auspice development, note the client customisations applied here too!)
+2. The auspice server: `cd auspice-client && npx auspice view --handlers ../src/endpoints/charon/index.js --verbose` (rarely useful in this case, make sure you've run `npm run build -- auspice` first!)
+3. The auspice development server: `npx auspice develop --handlers ./src/endpoints/charon/index.js --verbose --extend ./auspice-client/customisations/config.json` (useful for auspice development, note the client customisations applied here too!)
 
 > Note that 2 and 3 are running the auspice server locally but modifying it via functionality whereby the default request handlers (for `/charon/...` GET requests) can be overwritten by command line arguments.
 In this case, they're overwriting them with the handlers used by the nextstrain.org server (see `server.js`) and thus the auspice server mimics the nextstrain.org server behavior (fetching datasets from S3, etc.).
