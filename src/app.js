@@ -68,8 +68,12 @@ app.route("/dist/*") // Auspice hardcodes /dist/… in its Webpack config.
 
 /* Charon API used by Auspice.
  */
+if (!production) {
+  // allow cross-origin from the gatsby dev server
+  app.use("/charon", cors({origin: 'http://localhost:8000'}));
+}
+
 app.routeAsync("/charon/getAvailable")
-  .all(cors({origin: 'http://localhost:8000'})) // allow cross-origin from the gatsby dev server
   .getAsync(charon.getAvailable);
 
 app.routeAsync("/charon/getDataset")
