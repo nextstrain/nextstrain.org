@@ -95,6 +95,15 @@ class Dataset {
     const url = new URL(this.baseNameFor(type), await this.source.baseUrl());
     return url.toString();
   }
+  async exists() {
+    const method = "HEAD";
+    const _exists = async (type) =>
+      (await fetch(await this.urlFor(type, method), {method, cache: "no-store"})).status === 200;
+
+    return (await _exists("main"))
+        || (await _exists("meta"))
+        || false;
+  }
   get isRequestValidWithoutDataset() {
     return false;
   }

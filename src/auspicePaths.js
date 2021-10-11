@@ -1,6 +1,4 @@
-const fetch = require("node-fetch");
 const sources = require("./sources");
-const { warn } = require("./utils");
 const { splitPrefixIntoParts, parsePrefix } = require("./utils/prefix");
 
 /**
@@ -100,7 +98,7 @@ const isRequestBackedByAuspiceDataset = async (req, res, next) => {
     /* Extract dataset information & check if it exists, storing the result as `req.sendToAuspice` */
     /* (If a tangletree URL is requested, we only consider the first dataset here) */
     const { dataset } = await parsePrefix(req.path.split(":")[0]);
-    if (await datasetExists(dataset)) {
+    if (await dataset.exists()) {
       req.sendToAuspice = true;
     }
     return next();
@@ -110,26 +108,6 @@ const isRequestBackedByAuspiceDataset = async (req, res, next) => {
     return next();
   }
 };
-
-/**
- * Does the main dataset file exist?
- * There is no attempt here to examine the validity or completeness of such a file.
- * @returns {bool}
- */
-async function datasetExists(dataset) {
-  const options = {method: 'HEAD'}; // only fetch headers to speed up
-  try {
-    if ((await fetch(await dataset.urlFor("main", options.method), options)).status===200) {
-      return true;
-    }
-    if ((await fetch(await dataset.urlFor("meta", options.method), options)).status===200) {
-      return true;
-    }
-  } catch (err) {
-    warn("Error in datasetExists:", String(err));
-  }
-  return false;
-}
 
 
 module.exports = {
