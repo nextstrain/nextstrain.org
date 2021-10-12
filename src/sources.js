@@ -121,9 +121,16 @@ class Narrative {
     const baseName = this.baseParts.join("_");
     return `${baseName}.md`;
   }
-  async url() {
+  async url(method = 'GET') { // eslint-disable-line no-unused-vars
     const url = new URL(this.baseName, await this.source.baseUrl());
     return url.toString();
+  }
+  async exists() {
+    const method = "HEAD";
+    const _exists = async () =>
+      (await fetch(await this.url(method), {method, cache: "no-store"})).status === 200;
+
+    return (await _exists()) || false;
   }
 }
 
@@ -529,8 +536,8 @@ class PrivateS3Dataset extends Dataset {
 }
 
 class PrivateS3Narrative extends Narrative {
-  async url() {
-    return S3.getSignedUrl("getObject", {
+  async url(method = 'GET') {
+    return S3.getSignedUrl(method === "HEAD" ? "headObject" : "getObject", {
       Bucket: this.source.bucket,
       Key: this.baseName
     });
