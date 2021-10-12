@@ -100,8 +100,11 @@ class Dataset {
     const _exists = async (type) =>
       (await fetch(await this.urlFor(type, method), {method, cache: "no-store"})).status === 200;
 
+    const all = async (...promises) =>
+      (await Promise.all(promises)).every(x => x);
+
     return (await _exists("main"))
-        || (await _exists("meta"))
+        || (await all(_exists("meta"), _exists("tree")))
         || false;
   }
   get isRequestValidWithoutDataset() {
