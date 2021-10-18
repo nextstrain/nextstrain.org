@@ -1,5 +1,4 @@
 /* eslint no-console: off */
-const path = require("path");
 const sslRedirect = require('heroku-ssl-redirect');
 const nakedRedirect = require('express-naked-redirect');
 const express = require("express");
@@ -16,19 +15,9 @@ const production = process.env.NODE_ENV === "production";
 
 const charon = require("./endpoints/charon");
 const users = require("./endpoints/users");
+const {assetPath, auspiceAssetPath, gatsbyAssetPath, sendAuspiceHandler, sendGatsbyHandler} = require("./endpoints/static");
 const authn = require("./authn");
 const redirects = require("./redirects");
-
-/* Path helpers for static assets, to make routes more readable.
- */
-const relativePath = (...subpath) =>
-  path.join(__dirname, "..", ...subpath);
-
-const gatsbyAssetPath = (...subpath) =>
-  relativePath("static-site", "public", ...subpath);
-
-const auspiceAssetPath = (...subpath) =>
-  relativePath("auspice-client", ...subpath);
 
 
 /* BASIC APP SETUP */
@@ -44,8 +33,8 @@ if (production) app.enable("trust proxy");
 app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
 app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
-app.use(favicon(relativePath("favicon.ico")));
-app.use('/favicon.png', express.static(relativePath("favicon.png")));
+app.use(favicon(assetPath("favicon.ico")));
+app.use('/favicon.png', express.static(assetPath("favicon.png")));
 
 
 /* Authentication (authn)
@@ -130,26 +119,5 @@ app.route(potentialAuspiceRoutes).get(
  */
 app.get("*", sendGatsbyHandler);
 
-
-function sendGatsbyHandler(req, res) {
-  utils.verbose(`Sending Gatsby entrypoint for ${req.originalUrl}`);
-  return res.sendFile(
-    gatsbyAssetPath(""),
-    {},
-    (err) => {
-      // callback runs when the transfer is complete or when an error occurs
-      if (err) res.status(404).sendFile(gatsbyAssetPath("404.html"));
-    }
-  );
-}
-
-function sendAuspiceHandler(req, res, next) {
-  if (!req.sendToAuspice) return next(); // see previous middleware
-  utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
-  return res.sendFile(
-    auspiceAssetPath("dist", "index.html"),
-    {headers: {"Cache-Control": "no-cache, no-store, must-revalidate"}}
-  );
-}
 
 module.exports = app;
