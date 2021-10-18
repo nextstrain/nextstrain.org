@@ -55,6 +55,7 @@ rules:
   react-hooks/exhaustive-deps: "warn"
   react/no-danger: off # gatsby uses this a lot
   no-use-before-define: ["error", { "functions": false }]
+  no-return-await: off
 parserOptions:
   ecmaVersion: 6
   sourceType: module
