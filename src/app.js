@@ -15,6 +15,7 @@ const {NotFound} = require('http-errors');
 const production = process.env.NODE_ENV === "production";
 
 const charon = require("./endpoints/charon");
+const users = require("./endpoints/users");
 const authn = require("./authn");
 const redirects = require("./redirects");
 
@@ -90,6 +91,11 @@ app.routeAsync("/charon/*")
     utils.warn(`(${req.method}) ${req.url} has not been handled / has no handler`);
     throw new NotFound();
   });
+
+/* Users
+ */
+app.routeAsync("/whoami")
+  .getAsync(users.getWhoami);
 
 /* Specific routes to be handled by Gatsby client-side routing
  */
