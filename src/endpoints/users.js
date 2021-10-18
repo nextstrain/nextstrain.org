@@ -1,4 +1,6 @@
+const {contentTypesProvided} = require("../negotiate");
 const sources = require("../sources");
+const {sendGatsbyPage} = require("./static");
 
 
 /**
@@ -25,20 +27,16 @@ const visibleGroups = (user) => Array.from(sources)
 
 
 // Provide the client-side app with info about the current user
-const getWhoami = (req, res) => {
-  return res.format({
-    html: () => res.redirect(
-      req.user
-        ? `/users/${req.user.username}`
-        : "/users"),
-
+const getWhoami = contentTypesProvided([
+  ["html", sendGatsbyPage("whoami/index.html")],
+  ["json", (req, res) =>
     // Express's JSON serialization drops keys with undefined values
-    json: () => res.json({
+    res.json({
       user: req.user || null,
-      visibleGroups: visibleGroups(req.user)
+      visibleGroups: visibleGroups(req.user),
     })
-  });
-};
+  ],
+]);
 
 
 module.exports = {
