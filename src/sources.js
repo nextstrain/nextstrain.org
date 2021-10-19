@@ -666,6 +666,11 @@ class NcovHKSource extends PublicGroupSource {
   get bucket() { return "nextstrain-ncovhk"; }
 }
 
+class DatabiomicsPrivateSource extends PrivateGroupSource {
+  static get _name() { return "databiomics"; }
+}
+
+
 const sources = [
   CoreSource,
   CoreStagingSource,
@@ -701,6 +706,7 @@ const sources = [
   SC2ZamPrivateSource,
   WallauLabPrivateSource,
   NextfluPrivateSource,
+  DatabiomicsPrivateSource,
 ];
 
 const sourceMap = new Map(sources.map(s => [s._name, s]));
