@@ -11,6 +11,10 @@ datasets:
   - name: Global
     geo: global
     parentGeo: null
+    
+  - name: Pakistan
+    geo: pakistan
+    parentGeo: asia
 
   - name: South America
     geo: south-america
@@ -702,6 +706,17 @@ datasets:
     org:
       name: CDC/AMD
       url: https://www.cdc.gov/amd/
+      
+  - url: https://nextstrain.org/community/AKU-CITRIC-Center-for-Bioinformatics/ncov/pakistan
+    name: Pakistan
+    geo: pakistan
+    level: country
+    coords:
+    - 69.3451
+    - 30.3753
+    org:
+      name: CITRIC Center for Bioinformatics Aga Khan University Pakistan
+      url: https://www.aku.edu/Pages/home.aspx
 
   - url: https://nextstrain.org/groups/spheres/ncov/california
     name: California
