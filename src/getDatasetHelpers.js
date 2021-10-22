@@ -82,7 +82,7 @@ const splitPrefixIntoParts = (prefix) => {
  * automatically provided reverse URL-construction/interpolation function on
  * the matched route.
  */
-const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
+const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) => {
   const leadingParts = [];
 
   switch (source.name) {
@@ -104,7 +104,7 @@ const joinPartsIntoPrefix = ({source, prefixParts, isNarrative = false}) => {
   switch (source.name) {
     // Community source requires an owner and repo name
     case "community":
-      leadingParts.push(source.owner, source.repoNameWithBranch);
+      leadingParts.push(source.owner, await source.repoNameWithBranch());
       break;
 
     // UrlDefined source requires a URL authority part
@@ -160,7 +160,7 @@ const correctPrefixFromAvailable = (sourceName, prefixParts) => {
 /* Parse the prefix (a path-like string specifying a source + dataset path)
  * with resolving of partial prefixes.  Prefixes are case-sensitive.
  */
-const parsePrefix = (prefix) => {
+const parsePrefix = async (prefix) => {
   let {source, prefixParts} = splitPrefixIntoParts(prefix);
 
   // Expand partial prefixes.  This would be cleaner if integerated into the
@@ -169,7 +169,7 @@ const parsePrefix = (prefix) => {
 
   // The resolved prefix, possibly "corrected" above, which we want to use for
   // display.
-  const resolvedPrefix = joinPartsIntoPrefix({source, prefixParts});
+  const resolvedPrefix = await joinPartsIntoPrefix({source, prefixParts});
 
   const dataset = source.dataset(prefixParts);
 
@@ -180,7 +180,7 @@ const parsePrefix = (prefix) => {
 
 /* Round-trip prefix through split/join to canonicalize it for comparison.
  */
-const canonicalizePrefix = (prefix) =>
+const canonicalizePrefix = async (prefix) =>
   joinPartsIntoPrefix(splitPrefixIntoParts(prefix));
 
 

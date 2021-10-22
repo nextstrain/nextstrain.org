@@ -20,10 +20,12 @@ class Index extends React.Component {
   }
 
   // parse getAvailable listing into one that dataset-select component accepts
-  createDatasetListing = (list, userName, repoName) => {
+  createDatasetListing = (list, userName) => {
+    // Note that the `request` always includes @branch, irregardless of URL.
     return list.map((d) => {
       return {
-        filename: d.request.replace(`community/${userName}/${repoName}/`, '').replace('narratives/', ''),
+        // filename will be used by <DatasetSelect> as the display name
+        filename: d.request.replace(/\/?(community\/)?(narratives\/)?[^/]+\/[^/]+\/?/, ''),
         url: `/${d.request}`,
         contributor: userName
       };
@@ -41,8 +43,8 @@ class Index extends React.Component {
         sourceInfo,
         userName,
         repoName,
-        datasets: this.createDatasetListing(availableData.datasets, userName, repoName),
-        narratives: this.createDatasetListing(availableData.narratives, userName, repoName),
+        datasets: this.createDatasetListing(availableData.datasets, userName),
+        narratives: this.createDatasetListing(availableData.narratives, userName),
       });
     } catch (err) {
       console.error("Cannot find user/repo.", err.message);

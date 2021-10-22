@@ -26,8 +26,8 @@ class Source {
   get name() {
     return this.constructor._name;
   }
-  get baseUrl() {
-    throw new InvalidSourceImplementation("baseUrl() must be implemented by subclasses");
+  async baseUrl() {
+    throw new InvalidSourceImplementation("async baseUrl() must be implemented by subclasses");
   }
   static isGroup() { /* is the source a "nextstrain group"? */
     return false;
@@ -91,8 +91,8 @@ class Dataset {
       ? `${baseName}.json`
       : `${baseName}_${type}.json`;
   }
-  urlFor(type, method = 'GET') { // eslint-disable-line no-unused-vars
-    const url = new URL(this.baseNameFor(type), this.source.baseUrl);
+  async urlFor(type, method = 'GET') { // eslint-disable-line no-unused-vars
+    const url = new URL(this.baseNameFor(type), await this.source.baseUrl());
     return url.toString();
   }
   get isRequestValidWithoutDataset() {
@@ -112,15 +112,15 @@ class Narrative {
     const baseName = this.baseParts.join("_");
     return `${baseName}.md`;
   }
-  url() {
-    const url = new URL(this.baseName, this.source.baseUrl);
+  async url() {
+    const url = new URL(this.baseName, await this.source.baseUrl());
     return url.toString();
   }
 }
 
 class CoreSource extends Source {
   static get _name() { return "core"; }
-  get baseUrl() { return "http://data.nextstrain.org/"; }
+  async baseUrl() { return "http://data.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "master"; }
 
@@ -169,14 +169,14 @@ class CoreSource extends Source {
 
 class CoreStagingSource extends CoreSource {
   static get _name() { return "staging"; }
-  get baseUrl() { return "http://staging.nextstrain.org/"; }
+  async baseUrl() { return "http://staging.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "staging"; }
 }
 
 class CoreNarrative extends Narrative {
-  url() {
-    const repoBaseUrl = `https://raw.githubusercontent.com/${this.source.repo}/${this.source.branch}/`;
+  async url() {
+    const repoBaseUrl = `https://raw.githubusercontent.com/${this.source.repo}/${await this.source.branch}/`;
     const url = new URL(this.baseName, repoBaseUrl);
     return url.toString();
   }
@@ -192,21 +192,35 @@ class CommunitySource extends Source {
 
     this.owner = owner;
     [this.repoName, this.branch] = repoName.split(/@/, 2);
+    this.branchExplicitlyDefined = !!this.branch;
 
     if (!this.repoName) throw new Error(`Cannot construct a ${this.constructor.name} without a repoName after splitting on /@/`);
+
+    this.defaultBranch = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`)
+      .then((res) => res.json())
+      .then((data) => data.default_branch)
+      .catch(() => {
+        console.log(`Error interpreting the default branch of ${this.constructor.name} for ${this.owner}/${this.repoName}`);
+        return "master";
+      });
     if (!this.branch) {
-      this.branch = "master";
+      this.branch = this.defaultBranch;
     }
   }
 
   static get _name() { return "community"; }
   get repo() { return `${this.owner}/${this.repoName}`; }
-  get baseUrl() { return `https://github.com/${this.repo}/raw/${this.branch}/`; }
+  async baseUrl() {
+    return `https://github.com/${this.repo}/raw/${await this.branch}/`;
+  }
 
-  get repoNameWithBranch() {
-    return this.branch === "master"
-      ? this.repoName
-      : `${this.repoName}@${this.branch}`;
+  async repoNameWithBranch() {
+    const branch = await this.branch;
+    const defaultBranch = await this.defaultBranch;
+    if (branch === defaultBranch && !this.branchExplicitlyDefined) {
+      return this.repoName;
+    }
+    return `${this.repoName}@${branch}`;
   }
 
   dataset(pathParts) {
@@ -217,7 +231,7 @@ class CommunitySource extends Source {
   }
 
   async availableDatasets() {
-    const qs = queryString.stringify({ref: this.branch});
+    const qs = queryString.stringify({ref: await this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/auspice?${qs}`);
 
     if (response.status === 404) throw new NotFound();
@@ -239,7 +253,7 @@ class CommunitySource extends Source {
   }
 
   async availableNarratives() {
-    const qs = queryString.stringify({ref: this.branch});
+    const qs = queryString.stringify({ref: await this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/narratives?${qs}`);
 
     if (response.status !== 200 && response.status !== 304) {
@@ -266,13 +280,12 @@ class CommunitySource extends Source {
   async getInfo() {
     /* could attempt to fetch a certain file from the repository if we want to implement
     this functionality in the future */
-    const githubUrl = `https://github.com/${this.owner}/${this.repoName}/tree/${this.branch}`;
+    const branch = await this.branch;
     return {
-      title: `${this.owner}'s "${this.repoName}" Nextstrain community build`,
+      title: `${this.owner}'s "${this.repoName}" community builds`,
       byline: `
-        Nextstrain community builds are fetched directly from GitHub
-        repositories, in this case ${githubUrl}.  The available datasets and
-        narratives in this repository are listed below.
+        Nextstrain community builds for GitHub → ${this.owner}/${this.repoName} (${branch} branch).
+        The available datasets and narratives in this repository are listed below.
       `,
       website: null,
       showDatasets: true,
@@ -319,7 +332,7 @@ class UrlDefinedSource extends Source {
     this.authority = authority;
   }
 
-  get baseUrl() {
+  async baseUrl() {
     return `https://${this.authority}`;
   }
   dataset(pathParts) {
@@ -360,7 +373,7 @@ class S3Source extends Source {
   get bucket() {
     throw new InvalidSourceImplementation("bucket() must be implemented by subclasses");
   }
-  get baseUrl() {
+  async baseUrl() {
     return `https://${this.bucket}.s3.amazonaws.com`;
   }
   async _listObjects() {
@@ -498,7 +511,7 @@ class PrivateS3Source extends S3Source {
 }
 
 class PrivateS3Dataset extends Dataset {
-  urlFor(type, method = 'GET') {
+  async urlFor(type, method = 'GET') {
     return S3.getSignedUrl(method === "HEAD" ? "headObject" : "getObject", {
       Bucket: this.source.bucket,
       Key: this.baseNameFor(type)
@@ -507,7 +520,7 @@ class PrivateS3Dataset extends Dataset {
 }
 
 class PrivateS3Narrative extends Narrative {
-  url() {
+  async url() {
     return S3.getSignedUrl("getObject", {
       Bucket: this.source.bucket,
       Key: this.baseName

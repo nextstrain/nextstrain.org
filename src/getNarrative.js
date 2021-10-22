@@ -47,7 +47,7 @@ const getNarrative = async (req, res) => {
 
   // Generate the narrative's origin URL for fetching.
   const narrative = source.narrative(prefixParts);
-  const fetchURL = narrative.url();
+  const fetchURL = await narrative.url();
 
   try {
     utils.log(`Fetching narrative ${fetchURL} and streaming to client for parsing`);
