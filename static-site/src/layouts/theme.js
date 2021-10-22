@@ -41,8 +41,11 @@ export const theme = {
       md: 64, // em
       lg: 76  // em
     }
-  }
+  },
 
+  // cross reference following with the thresholds we use in <GenericPage>
+  mobileThreshold: "775px", // todo - cross reference with auspice
+  bigScreenThreshold: '1500px' // todo - more testing needed
 
 };
 
