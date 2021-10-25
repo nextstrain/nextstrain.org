@@ -707,6 +707,17 @@ datasets:
       name: CDC/AMD
       url: https://www.cdc.gov/amd/
       
+  - url: https://nextstrain.org/community/NIH-BIGVI-PAKISTAN/ncov/Pakistan
+    name: Pakistan
+    geo: pakistan
+    level: country
+    coords:
+    - 69.3451
+    - 30.3753
+    org:
+      name: NIH BIGVI BioInformatics Group of VIrology - Pakistan
+      url: https://www.nih.org.pk/
+      
   - url: https://nextstrain.org/community/AKU-CITRIC-Center-for-Bioinformatics/ncov/Pakistan
     name: Pakistan
     geo: pakistan
