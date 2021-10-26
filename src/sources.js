@@ -107,6 +107,54 @@ class Dataset {
         || (await all(_exists("meta"), _exists("tree")))
         || false;
   }
+
+  /**
+   * Resolve this Dataset to its full canonical path, if this one is partially
+   * specified and defaults exist (i.e. if this one is an alias).
+   *
+   * For example, in our core source, /flu/seasonal/h3n2 is an alias for
+   * /flu/seasonal/h3n2/ha/2y.
+   *
+   * Returns this Dataset itself if it's already the canonical one or no
+   * aliases exist.  Thus, you can compare `dataset === dataset.resolve()` to
+   * see if `dataset` is an alias.
+   *
+   * @returns {Dataset}
+   */
+  resolve() {
+    /* XXX TODO: Reimplement this in terms of methods on the source, not by
+     * breaking encapsulation by using a process-wide global.
+     *   -trs, 26 Oct 2021 (based on a similar comment 5 Sept 2019)
+     */
+    const sourceName = this.source.name;
+    const prefixParts = this.pathParts;
+
+    if (!global.availableDatasets[sourceName]) {
+      utils.verbose("Can't compare against available datasets as there are none!");
+      return this;
+    }
+
+    const doesPathExist = (pathToCheck) =>
+      global.availableDatasets[sourceName]
+        .includes(pathToCheck);
+
+    const prefix = prefixParts.join("/");
+
+    if (doesPathExist(prefix)) {
+      return this;
+    }
+
+    /* if we are here, then the path doesn't match any available datasets exactly */
+    const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
+
+    if (nextDefaultPart) {
+      const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart]);
+      return dataset.resolve();
+    }
+
+    return this;
+  }
+
   get isRequestValidWithoutDataset() {
     return false;
   }

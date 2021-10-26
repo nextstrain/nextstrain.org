@@ -1,6 +1,5 @@
 const {NotFound} = require("http-errors");
 
-const utils = require(".");
 const sources = require("../sources");
 
 /* All of the logic for mapping a dataset or narratives URL ("prefix") to a
@@ -109,60 +108,20 @@ const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) =
   return [...leadingParts, ...prefixParts.filter((x) => x.length)].join("/");
 };
 
-/* Given the prefix (split on "/") -- is there an exact match in
- * the available datasets? If not, we use these to pick the
- * "default" one.
- */
-const correctPrefixFromAvailable = (sourceName, prefixParts) => {
-  // XXX FIXME: This should be consulting our source objects, not breaking
-  // encapsulation by accessing the global directly.  Punting on that for now
-  // as this work is time-sensitive.  I'll loop back around to it, though!
-  //   -trs, 5 Sept 2019
-  //
-  if (!global.availableDatasets[sourceName]) {
-    utils.verbose("Can't compare against available datasets as there are none!");
-    return prefixParts;
-  }
-
-  const doesPathExist = (pathToCheck) =>
-    global.availableDatasets[sourceName]
-      .includes(pathToCheck);
-
-  const prefix = prefixParts.join("/");
-
-  if (doesPathExist(prefix)) {
-    return prefixParts;
-  }
-
-  /* if we are here, then the path doesn't match any available datasets exactly */
-  const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
-
-  if (nextDefaultPart) {
-    return correctPrefixFromAvailable(sourceName, [...prefixParts, nextDefaultPart]);
-  }
-
-  return prefixParts;
-};
-
 
 /* Parse the prefix (a path-like string specifying a source + dataset path)
  * with resolving of partial prefixes.  Prefixes are case-sensitive.
  */
 const parsePrefix = async (prefix) => {
-  let {source, prefixParts} = splitPrefixIntoParts(prefix);
+  const {source, prefixParts} = splitPrefixIntoParts(prefix);
 
-  // Expand partial prefixes.  This would be cleaner if integerated into the
-  // Source classes.
-  prefixParts = correctPrefixFromAvailable(source.name, prefixParts);
+  const dataset = source.dataset(prefixParts).resolve();
 
-  // The resolved prefix, possibly "corrected" above, which we want to use for
-  // display.
-  const resolvedPrefix = await joinPartsIntoPrefix({source, prefixParts});
-
-  const dataset = source.dataset(prefixParts);
+  // If prefixParts was partially-specified (an alias), we want to display the
+  // resolved prefix.
+  const resolvedPrefix = await joinPartsIntoPrefix({source, prefixParts: dataset.pathParts});
 
   return ({source, dataset, resolvedPrefix});
-
 };
 
 
