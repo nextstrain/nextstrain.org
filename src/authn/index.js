@@ -12,7 +12,6 @@ const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disa
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
 const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
 const BearerStrategy = require("./bearer");
-const sources = require("../sources");
 const utils = require("../utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
@@ -253,23 +252,6 @@ function setup(app) {
       };
       res.redirect(`${COGNITO_BASE_URL}/logout?${querystring.stringify(params)}`);
     });
-  });
-
-  const nonPublicSources = Array.from(sources.entries())
-    .filter(([name, Source]) => !Source.visibleToUser(null)) // eslint-disable-line no-unused-vars
-    .map(([name, Source]) => `/groups/${name}`); // eslint-disable-line no-unused-vars
-
-  app.use(nonPublicSources, (req, res, next) => {
-    // Prompt for login if an anonymous user asks for a non-public source.
-    if (!req.user) {
-      utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
-      req.session.afterLoginReturnTo = req.originalUrl;
-      return res.redirect("/login");
-    }
-
-    // Otherwise, let the server's normal route handle this request, which
-    // should fall through to Auspice.
-    return next("route");
   });
 }
 

@@ -1,3 +1,4 @@
+const {InternalServerError} = require("http-errors");
 const path = require("path");
 
 const utils = require("../utils");
@@ -15,26 +16,58 @@ const gatsbyAssetPath = (...subpath) =>
   assetPath("static-site", "public", ...subpath);
 
 
-function sendGatsbyHandler(req, res) {
-  utils.verbose(`Sending Gatsby entrypoint for ${req.originalUrl}`);
-  return res.sendFile(
-    gatsbyAssetPath(""),
-    {},
-    (err) => {
-      // callback runs when the transfer is complete or when an error occurs
-      if (err) res.status(404).sendFile(gatsbyAssetPath("404.html"));
-    }
-  );
-}
+/**
+ * Send the file at the given `filePath` as the response.
+ *
+ * Uses `res.sendFile()` and accepts the same `options` object, but presents an
+ * async interface instead of a callback interface.
+ *
+ * Unlike `res.sendFile()`, the response is automatically finalized with
+ * `res.end()` once the file is successfully sent.  This avoids the default
+ * behaviour of continuing on to the `next()` handler, which very rarely is
+ * desired when sending a static file.
+ *
+ * Returns a Promise which resolves without any value on a successful transfer
+ * or rejects with an `InternalServerError` providing detail on what went
+ * wrong.
+ *
+ * @param {ServerResponse} res
+ * @param {String} filePath
+ * @param {Object} [options]
+ *
+ * @returns {Promise}
+ */
+const sendFile = async (res, filePath, options) => {
+  return new Promise((resolve, reject) => {
+    res.sendFile(filePath, options, (err) => {
+      if (err) return reject(new InternalServerError(err));
 
-function sendAuspiceHandler(req, res, next) {
-  if (!req.sendToAuspice) return next(); // see isRequestBackedByAuspiceDataset middleware
+      res.end();
+      return resolve();
+    });
+  });
+};
+
+const sendAuspiceEntrypoint = async (req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
-  return res.sendFile(
+  return await sendFile(
+    res,
     auspiceAssetPath("dist", "index.html"),
     {headers: {"Cache-Control": "no-cache, no-store, must-revalidate"}}
   );
-}
+};
+
+const sendGatsbyPage = (page) => async (req, res) => {
+  utils.verbose(`Sending Gatsby page ${page} for ${req.originalUrl}`);
+  return await sendFile(res, gatsbyAssetPath(page));
+};
+
+const sendGatsbyEntrypoint = sendGatsbyPage("index.html");
+
+const sendGatsby404 = async (req, res) => {
+  res.status(404);
+  return await sendGatsbyPage("404.html")(req, res);
+};
 
 
 module.exports = {
@@ -42,6 +75,9 @@ module.exports = {
   auspiceAssetPath,
   gatsbyAssetPath,
 
-  sendAuspiceHandler,
-  sendGatsbyHandler,
+  sendFile,
+  sendAuspiceEntrypoint,
+  sendGatsbyPage,
+  sendGatsbyEntrypoint,
+  sendGatsby404,
 };
