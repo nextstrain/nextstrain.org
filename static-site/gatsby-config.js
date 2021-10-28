@@ -1,6 +1,4 @@
-const { createProxyMiddleware } = require("http-proxy-middleware");
 const config = require("./data/SiteConfig");
-const {potentialAuspiceRoutes} = require("../src/auspicePaths");
 
 // const pathPrefix = config.pathPrefix === "/" ? "" : config.pathPrefix;
 
@@ -72,14 +70,4 @@ module.exports = {
     "gatsby-plugin-sharp",
     // "gatsby-plugin-catch-links" // See https://github.com/nextstrain/nextstrain.org/issues/34
   ],
-  developMiddleware: app => {
-    ['/charon', '/dist', ...potentialAuspiceRoutes].forEach(path => {
-      app.use(
-        path,
-        createProxyMiddleware({
-          target: "http://localhost:5000",
-        })
-      );
-    });
-  },
 };

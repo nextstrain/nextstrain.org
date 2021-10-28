@@ -58,6 +58,27 @@ const sendAuspiceEntrypoint = async (req, res) => {
 };
 
 const sendGatsbyPage = (page) => async (req, res) => {
+  if (req.app.locals.gatsbyDevUrl) {
+    const pageUrl = (new URL(page, req.app.locals.gatsbyDevUrl)).toString();
+
+    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+    const proxy = require("http-proxy").createProxyServer({
+      target: pageUrl,
+      ignorePath: true, // ignore req.path since pageUrl is fully specified
+    });
+
+    utils.verbose(`Sending Gatsby page ${pageUrl} for ${req.originalUrl}`);
+
+    return new Promise((resolve, reject) => {
+      // eslint-disable-next-line no-shadow
+      proxy.on("end", (req, res) => {
+        res.end();
+        resolve();
+      });
+      proxy.web(req, res, (err) => reject(err));
+    });
+  }
+
   utils.verbose(`Sending Gatsby page ${page} for ${req.originalUrl}`);
   return await sendFile(res, gatsbyAssetPath(page));
 };
@@ -65,6 +86,12 @@ const sendGatsbyPage = (page) => async (req, res) => {
 const sendGatsbyEntrypoint = sendGatsbyPage("index.html");
 
 const sendGatsby404 = async (req, res) => {
+  /* When app.locals.gatsbyDevUrl is in use, the following 404 status is
+   * overwritten with the upstream response status (usually 200).  Not a big
+   * deal during development, but a difference worth noting.  Fixable if
+   * needed, but kinda annoying to do so.
+   *   -trs, 28 Oct 2021
+   */
   res.status(404);
   return await sendGatsbyPage("404.html")(req, res);
 };

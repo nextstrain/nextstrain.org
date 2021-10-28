@@ -27,6 +27,7 @@ const esc = encodeURIComponent;
 const app = addAsync(express());
 
 app.locals.production = production;
+app.locals.gatsbyDevUrl = production ? null : process.env.GATSBY_DEV_URL;
 
 // In production, trust Heroku as a reverse proxy and Express will use request
 // metadata from the proxy.
@@ -251,8 +252,25 @@ app.route("/dist/*")
  *
  * Any URLs matching Gatsby's static files will be handled here, e.g.
  * static-site/public/influenza/index.html will be served for /influenza.
+ *
+ * When a Gatsby dev server is in use, assets are proxied from the dev server
+ * instead of served straight from disk.
  */
-app.use(express.static(gatsbyAssetPath()));
+if (app.locals.gatsbyDevUrl) {
+  // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+  const {createProxyMiddleware} = require("http-proxy-middleware");
+
+  // WebSocket endpoint
+  app.get("/socket.io/", createProxyMiddleware(app.locals.gatsbyDevUrl, {ws: true}));
+
+  /* This is the end of the line in gatsbyDevUrl mode, as the proxy middleware
+   * doesn't fallthrough on 404 and even if it did the Gatsby dev server
+   * returns a 200 Ok for missing pages.
+   */
+  app.use(createProxyMiddleware(app.locals.gatsbyDevUrl));
+} else {
+  app.use(express.static(gatsbyAssetPath()));
+}
 
 
 /* Everything else gets 404ed.
