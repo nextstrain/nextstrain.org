@@ -4,7 +4,14 @@ const sources = require("../sources");
 const utils = require("../utils");
 
 
-/* Source
+/**
+ * Generate Express middleware that instantiates a {@link Source} instance and
+ * stashes it in the request context.
+ *
+ * @param {String} sourceName - Name of a source (from `src/sources.js`)
+ * @param {argsExtractor} [argsExtractor] - Function to extract {@link Source}
+ *   constructor arguments from the request
+ * @returns {expressMiddleware}
  */
 // eslint-disable-next-line no-unused-vars
 const setSource = (sourceName, argsExtractor = (req) => []) => (req, res, next) => {
@@ -36,6 +43,13 @@ const setSource = (sourceName, argsExtractor = (req) => []) => (req, res, next) 
  *
  *   -trs, 25 Oct 2021
  */
+/**
+ * Generate Express middleware that instantiates a {@link Source} instance for
+ * a group and stashes it in the request context.
+ *
+ * @param {nameExtractor} nameExtractor - Function to extract the group name from the request
+ * @returns {expressMiddleware}
+ */
 const setGroupSource = (nameExtractor) => (req, res, next) => {
   const groupName = nameExtractor(req);
   const Source = sources.get(groupName);
@@ -49,12 +63,27 @@ const setGroupSource = (nameExtractor) => (req, res, next) => {
 
 /* Datasets
  */
+
+/**
+ * Generate Express middleware that instantiates a {@link Dataset} instance and
+ * stashes it in the request context.
+ *
+ * @param {pathExtractor} pathExtractor - Function to extract a dataset path from the request
+ * @returns {expressMiddleware}
+ */
 const setDataset = (pathExtractor) => (req, res, next) => {
   req.context.dataset = req.context.source.dataset(pathParts(pathExtractor(req)));
   next();
 };
 
 
+/**
+ * Generate Express middleware that redirects to the canonical path for the
+ * current {@link Dataset} if it is not fully resolved.
+ *
+ * @param {pathBuilder} pathBuilder - Function to build a fully-specified path
+ * @returns {expressMiddleware}
+ */
 const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
   const dataset = req.context.dataset;
   const resolvedDataset = dataset.resolve();
@@ -68,6 +97,12 @@ const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
 };
 
 
+/**
+ * Express middleware function that throws a {@link NotFound} error if {@link
+ * Dataset#exists} returns false.
+ *
+ * @type {expressMiddleware}
+ */
 const ifDatasetExists = async (req, res, next) => {
   if (!(await req.context.dataset.exists())) throw new NotFound();
   next();
@@ -76,12 +111,26 @@ const ifDatasetExists = async (req, res, next) => {
 
 /* Narratives
  */
+
+/**
+ * Generate Express middleware that instantiates a {@link Narrative} instance
+ * and stashes it in the request context.
+ *
+ * @param {pathExtractor} pathExtractor - Function to extract a narrative path from the request
+ * @returns {expressMiddleware}
+ */
 const setNarrative = (pathExtractor) => (req, res, next) => {
   req.context.narrative = req.context.source.narrative(pathParts(pathExtractor(req)));
   next();
 };
 
 
+/**
+ * Express middleware function that throws a {@link NotFound} error if {@link
+ * Narrative#exists} returns false.
+ *
+ * @type {expressMiddleware}
+ */
 const ifNarrativeExists = async (req, res, next) => {
   if (!(await req.context.narrative.exists())) throw new NotFound();
   next();
@@ -108,6 +157,39 @@ function pathParts(path = "") {
 
   return normalizedPath.split("/");
 }
+
+
+/**
+ * @callback argsExtractor
+ * @param {express.request} req
+ * @returns {Array} Arguments for a {@link Source} constructor.
+ */
+
+/**
+ * @callback nameExtractor
+ * @param {express.request} req
+ * @returns {String} Name of a Group
+ */
+
+/**
+ * @callback pathExtractor
+ * @param {express.request} req
+ * @returns {String} Path for {@link Source#dataset} or {@link Source#narrative}
+ */
+
+/**
+ * @callback pathBuilder
+ * @param {String} path - Canonical path for the dataset within the context of
+ *   the current {@link Source}
+ * @returns {String} Fully-specified path to redirect to
+ */
+
+/**
+ * @callback expressMiddleware
+ * @param {express.request} req
+ * @param {express.response} res
+ * @param {Function} next
+ */
 
 
 module.exports = {

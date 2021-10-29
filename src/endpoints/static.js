@@ -48,6 +48,14 @@ const sendFile = async (res, filePath, options) => {
   });
 };
 
+/**
+ * Send the Auspice entrypoint (index.html) to display a dataset or narrative.
+ *
+ * Auspice will identify the dataset or narrative to display by inspecting the
+ * browser location, which will match the current request path.
+ *
+ * @type {asyncExpressHandler}
+ */
 const sendAuspiceEntrypoint = async (req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
   return await sendFile(
@@ -57,6 +65,21 @@ const sendAuspiceEntrypoint = async (req, res) => {
   );
 };
 
+
+/**
+ * Generate Express handler that sends the specified Gatsby page.
+ *
+ * Note that Gatsby may perform client-side routing if the browser location
+ * (i.e. the current request path) doesn't match the page served (i.e. the
+ * page's `path` and/or `matchPath` configuration).
+ *
+ * If the application is in `gatsbyDevUrl` mode, pages are transparently
+ * sourced from the configured `gatsby develop` server instead of the
+ * filesystem.
+ *
+ * @param {String} page - Path to a Gatsby page's rendered static HTML file
+ * @returns {asyncExpressHandler}
+ */
 const sendGatsbyPage = (page) => async (req, res) => {
   if (req.app.locals.gatsbyDevUrl) {
     const pageUrl = (new URL(page, req.app.locals.gatsbyDevUrl)).toString();
@@ -83,8 +106,27 @@ const sendGatsbyPage = (page) => async (req, res) => {
   return await sendFile(res, gatsbyAssetPath(page));
 };
 
+
+/**
+ * Send the Gatsby entrypoint (index.html).
+ *
+ * Gatsby will likely perform client-side routing based on the browser
+ * location.
+ *
+ * @type {asyncExpressHandler}
+ */
 const sendGatsbyEntrypoint = sendGatsbyPage("index.html");
 
+
+/**
+ * Send the Gatsby 404 page.
+ *
+ * Note that Gatsby may perform client-side routing if the browser location
+ * (i.e. the current request path) doesn't match the page served (i.e. the
+ * page's `path` and/or `matchPath` configuration).
+ *
+ * @type {asyncExpressHandler}
+ */
 const sendGatsby404 = async (req, res) => {
   /* When app.locals.gatsbyDevUrl is in use, the following 404 status is
    * overwritten with the upstream response status (usually 200).  Not a big
@@ -95,6 +137,14 @@ const sendGatsby404 = async (req, res) => {
   res.status(404);
   return await sendGatsbyPage("404.html")(req, res);
 };
+
+
+/**
+ * @callback asyncExpressHandler
+ * @async
+ * @param {express.request} req
+ * @param {express.response} res
+ */
 
 
 module.exports = {
