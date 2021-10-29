@@ -1,6 +1,6 @@
 const url = require('url');
-const helpers = require("./src/getDatasetHelpers");
-const { parseNarrativeLanguage } = require("./src/utils");
+const { splitPrefixIntoParts } = require("./utils/prefix");
+const { parseNarrativeLanguage } = require("./utils");
 
 const setup = (app) => {
 
@@ -48,7 +48,7 @@ const setup = (app) => {
    */
   app.routeAsync("/narratives/ncov/sit-rep/*")
     .getAsync(async (req, res, next) => {
-      const {source, prefixParts} = helpers.splitPrefixIntoParts(req.url);
+      const {source, prefixParts} = splitPrefixIntoParts(req.url);
       const availableNarratives = await source.availableNarratives();
       const availableLanguages = new Set(availableNarratives
         .filter((narrative) => narrative.startsWith('ncov/sit-rep/'))

@@ -1,24 +1,22 @@
 const queryString = require("query-string");
-const assert = require('assert').strict;
+const {BadRequest} = require("http-errors");
 
-const helpers = require("./getDatasetHelpers");
+const {splitPrefixIntoParts} = require("../../utils/prefix");
+const utils = require("../../utils");
 
 /**
  * Prototype implementation.
  */
 const getSourceInfo = async (req, res) => {
   const query = queryString.parse(req.url.split('?')[1]);
-  try {
-    assert(query.prefix);
-  } catch {
-    return res.status(400).send("No prefix defined");
-  }
 
-  const {source} = helpers.splitPrefixIntoParts(query.prefix);
+  if (!query.prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
+
+  const {source} = splitPrefixIntoParts(query.prefix);
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return helpers.unauthorized(req, res);
+    return utils.unauthorized(req);
   }
 
   return res.json(await source.getInfo());

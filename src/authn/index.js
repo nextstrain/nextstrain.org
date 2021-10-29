@@ -11,9 +11,9 @@ const OAuth2Strategy = require("passport-oauth2").Strategy;
 const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disable-line import/no-unresolved
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
 const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
-const BearerStrategy = require("./src/authn/bearer");
-const sources = require("./src/sources");
-const utils = require("./src/utils");
+const BearerStrategy = require("./bearer");
+const sources = require("../sources");
+const utils = require("../utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 

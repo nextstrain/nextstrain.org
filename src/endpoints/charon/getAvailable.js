@@ -1,7 +1,7 @@
-const utils = require("./utils");
+const utils = require("../../utils");
 const queryString = require("query-string");
-const {splitPrefixIntoParts, joinPartsIntoPrefix, unauthorized} = require("./getDatasetHelpers");
-const metaSources = require("./metaSources");
+const {splitPrefixIntoParts, joinPartsIntoPrefix} = require("../../utils/prefix");
+const metaSources = require("../../metaSources");
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
@@ -17,7 +17,7 @@ const getAvailable = async (req, res) => {
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return unauthorized(req, res);
+    return utils.unauthorized(req);
   }
 
   const datasets = await source.availableDatasets() || [];

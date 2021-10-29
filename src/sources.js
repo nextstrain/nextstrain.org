@@ -13,7 +13,7 @@ const S3 = new AWS.S3();
 /* These Source, Dataset, and Narrative classes contain information to map an
  * array of dataset/narrative path parts onto a URL.  Source selection and
  * dataset path aliasing (/flu → /flu/seasonal/h3n2/ha/3y) is handled in
- * getDatasetHelpers.parsePrefix().
+ * utils/prefix.parsePrefix().
  *
  * The class definitions would be a bit shorter/prettier if we were using Babel
  * to allow class properties on Node.
@@ -95,6 +95,18 @@ class Dataset {
     const url = new URL(this.baseNameFor(type), await this.source.baseUrl());
     return url.toString();
   }
+  async exists() {
+    const method = "HEAD";
+    const _exists = async (type) =>
+      (await fetch(await this.urlFor(type, method), {method, cache: "no-store"})).status === 200;
+
+    const all = async (...promises) =>
+      (await Promise.all(promises)).every(x => x);
+
+    return (await _exists("main"))
+        || (await all(_exists("meta"), _exists("tree")))
+        || false;
+  }
   get isRequestValidWithoutDataset() {
     return false;
   }
@@ -112,9 +124,16 @@ class Narrative {
     const baseName = this.baseParts.join("_");
     return `${baseName}.md`;
   }
-  async url() {
+  async url(method = 'GET') { // eslint-disable-line no-unused-vars
     const url = new URL(this.baseName, await this.source.baseUrl());
     return url.toString();
+  }
+  async exists() {
+    const method = "HEAD";
+    const _exists = async () =>
+      (await fetch(await this.url(method), {method, cache: "no-store"})).status === 200;
+
+    return (await _exists()) || false;
   }
 }
 
@@ -520,8 +539,8 @@ class PrivateS3Dataset extends Dataset {
 }
 
 class PrivateS3Narrative extends Narrative {
-  async url() {
-    return S3.getSignedUrl("getObject", {
+  async url(method = 'GET') {
+    return S3.getSignedUrl(method === "HEAD" ? "headObject" : "getObject", {
       Bucket: this.source.bucket,
       Key: this.baseName
     });

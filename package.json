@@ -1,7 +1,6 @@
 {
+  "private": true,
   "name": "nextstrain.org",
-  "version": "0.1.0",
-  "description": "",
   "main": "server.js",
   "author": "James Hadfield",
   "license": "AGPL-3.0-only",
@@ -44,7 +43,7 @@
     "iso-639-1": "^2.1.0",
     "jose": "npm:jose-node-cjs-runtime@^3.11.3",
     "js-yaml": "^4.0.0",
-    "make-fetch-happen": "^7.1.1",
+    "make-fetch-happen": "^9.1.0",
     "marked": "^0.7.0",
     "node-fetch": "^2.6.0",
     "p-limit": "^3.0.1",

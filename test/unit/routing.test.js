@@ -1,4 +1,4 @@
-const {isRequestBackedByAuspiceDataset} = require("../../auspicePaths.js");
+const {isRequestBackedByAuspiceDataset} = require("../../src/auspicePaths.js");
 
 jest.setTimeout(10000);
 

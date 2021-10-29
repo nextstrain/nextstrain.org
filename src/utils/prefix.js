@@ -1,16 +1,7 @@
 const {NotFound} = require("http-errors");
 
-const utils = require("./utils");
-const sources = require("./sources");
-
-const unauthorized = (req, res) => {
-  const user = req.user
-    ? `user ${req.user.username}`
-    : `an anonymous user`;
-
-  utils.warn(`Denying ${user} access to ${req.originalUrl}`);
-  return res.status(404).end();
-};
+const utils = require(".");
+const sources = require("../sources");
 
 /* All of the logic for mapping a dataset or narratives URL ("prefix") to a
  * source + path is intentionally encapsulated contained here.  This function
@@ -137,20 +128,17 @@ const correctPrefixFromAvailable = (sourceName, prefixParts) => {
     global.availableDatasets[sourceName]
       .includes(pathToCheck);
 
-  let prefix = prefixParts.join("/");
+  const prefix = prefixParts.join("/");
 
   if (doesPathExist(prefix)) {
     return prefixParts;
   }
 
   /* if we are here, then the path doesn't match any available datasets exactly */
-  if (prefix in global.availableDatasets.defaults[sourceName]) {
-    prefix = `${prefix}/${global.availableDatasets.defaults[sourceName][prefix]}`;
-    const parts = prefix.split("/");
-    if (doesPathExist(prefix)) {
-      return parts;
-    }
-    return correctPrefixFromAvailable(sourceName, parts);
+  const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
+
+  if (nextDefaultPart) {
+    return correctPrefixFromAvailable(sourceName, [...prefixParts, nextDefaultPart]);
   }
 
   return prefixParts;
@@ -187,7 +175,6 @@ const canonicalizePrefix = async (prefix) =>
 module.exports = {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
-  unauthorized,
   parsePrefix,
   canonicalizePrefix,
 };

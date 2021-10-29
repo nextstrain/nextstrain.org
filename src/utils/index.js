@@ -37,8 +37,18 @@ const fetchJSON = async (url) => {
   verbose(`Fetching ${url}`);
   const res = await fetch(url);
 
-  if (res.status === 404) throw new NotFound();
-  else if (res.status !== 200) throw new Error(res.statusText);
+  /* Treat 403s as 404s since S3 returns 403 Forbidden for a non-existent
+   * object if the principal has s3:GetObject but not s3:ListBucket.¹  This is
+   * the case for many of our public-access bucket policies.
+   *
+   * If we need to distinguish 403s and 404s from non-S3 upstream sources in
+   * the future, we can scope this check to only *.s3.amazonaws.com URLs.
+   *    -trs, 13 Oct 2021
+   *
+   * ¹ https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html
+   */
+  if (res.status === 404 || res.status === 403) throw new NotFound();
+  else if (res.status !== 200) throw new Error(`Couldn't fetch JSON: ${res.status} ${res.statusText}`);
 
   try {
     const header = res.headers[Object.getOwnPropertySymbols(res.headers)[0]] || res.headers._headers;
@@ -48,17 +58,6 @@ const fetchJSON = async (url) => {
   }
 
   return res.json();
-};
-
-const printStackTrace = (err) => {
-  if (err.stack) {
-    warn('Stacktrace:');
-    console.log('====================');
-    console.log(err.stack);
-    console.log('====================');
-  } else {
-    warn("No available stacktrace");
-  }
 };
 
 const responseDetails = async (response) => [
@@ -110,6 +109,15 @@ const parseNarrativeLanguage = (narrative) => {
   return language;
 };
 
+const unauthorized = (req) => {
+  const user = req.user
+    ? `user ${req.user.username}`
+    : `an anonymous user`;
+
+  warn(`Denying ${user} access to ${req.originalUrl}`);
+  throw new NotFound();
+};
+
 
 module.exports = {
   getGitHash,
@@ -118,8 +126,8 @@ module.exports = {
   warn,
   error,
   fetchJSON,
-  printStackTrace,
   responseDetails,
   getDatasetsFromListOfFilenames,
-  parseNarrativeLanguage
+  parseNarrativeLanguage,
+  unauthorized,
 };

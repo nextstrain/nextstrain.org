@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const config = require("./data/SiteConfig");
-const {potentialAuspiceRoutes} = require("../auspicePaths");
+const {potentialAuspiceRoutes} = require("../src/auspicePaths");
 
 // const pathPrefix = config.pathPrefix === "/" ? "" : config.pathPrefix;
 

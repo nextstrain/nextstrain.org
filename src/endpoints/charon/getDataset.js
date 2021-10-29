@@ -1,12 +1,11 @@
 const queryString = require("query-string");
-const assert = require('assert').strict;
 
-const utils = require("./utils");
-const helpers = require("./getDatasetHelpers");
-const {NoDatasetPathError} = require("./exceptions");
+const utils = require("../../utils");
+const {canonicalizePrefix, parsePrefix} = require("../../utils/prefix");
+const {NoDatasetPathError} = require("../../exceptions");
 const auspice = require("auspice");
 const request = require('request');
-const {NotFound, InternalServerError} = require("http-errors");
+const {BadRequest, NotFound, InternalServerError} = require("http-errors");
 
 /**
  *
@@ -102,11 +101,8 @@ const streamMainV2Dataset = async (res, dataset) => {
  */
 const getDataset = async (req, res) => {
   const query = queryString.parse(req.url.split('?')[1]);
-  try {
-    assert(query.prefix);
-  } catch {
-    return res.status(400).send('getDataset request must define a prefix');
-  }
+
+  if (!query.prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
 
   /*
    * "inrb-drc" was the first of the Nextstrain groups. Groups now live at
@@ -122,7 +118,7 @@ const getDataset = async (req, res) => {
   // construct fetch URL
   let datasetInfo;
   try {
-    datasetInfo = await helpers.parsePrefix(query.prefix, query);
+    datasetInfo = await parsePrefix(query.prefix, query);
   } catch (err) {
     /* Return a 204 No Content when Auspice makes a dataset request to a
      * valid source root without a dataset path.
@@ -134,20 +130,20 @@ const getDataset = async (req, res) => {
       utils.verbose(err.message);
       return res.status(204).end();
     }
-    return res.status(400).send(`Couldn't parse the url "${query.prefix}"`);
+    throw new BadRequest(`Couldn't parse the prefix '${query.prefix}': ${err}`);
   }
 
   const {source, dataset, resolvedPrefix} = datasetInfo;
 
   // Authorization
   if (!source.visibleToUser(req.user)) {
-    return helpers.unauthorized(req, res);
+    return utils.unauthorized(req);
   }
 
   /* If we got a partial prefix and resolved it into a full one, redirect to
    * that.  Auspice will notice and update its displayed URL appropriately.
    */
-  if (resolvedPrefix !== await helpers.canonicalizePrefix(query.prefix)) {
+  if (resolvedPrefix !== await canonicalizePrefix(query.prefix)) {
     // A absolute base is required but we won't use it, so use something bogus.
     const resolvedUrl = new URL(req.originalUrl, "http://x");
     resolvedUrl.searchParams.set("prefix", resolvedPrefix);
