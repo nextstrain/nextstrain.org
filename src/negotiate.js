@@ -27,7 +27,13 @@ function contentTypesProvided(providers) {
       throw new NotAcceptable();
     }
 
-    const normalizedContentType = mime.getType(contentType) || contentType;
+    let normalizedContentType = mime.getType(contentType) || contentType;
+
+    // Express adds the charset for application/json, but not
+    // application/*+json, so do that ourselves.
+    if (normalizedContentType.match(/^application\/.*?\+json$/)) {
+      normalizedContentType += "; charset=utf-8";
+    }
 
     res.set("Content-Type", normalizedContentType);
 
