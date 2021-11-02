@@ -297,7 +297,6 @@ app.useAsync(async (err, req, res, next) => {
      * properties), then Gatsby will perform client-side routing to load that
      * page even though we're serving a static page (404.html) here.
      */
-    utils.verbose(`Sending Gatsby 404`);
     return await sendGatsby404(req, res);
   }
 
