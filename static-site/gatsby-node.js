@@ -193,13 +193,6 @@ exports.createPages = ({graphql, actions}) => {
         // Gatsby auto-creates such pages from any jsx file in the src/pages directory.
         // So only pages whose jsx file match the desired url path can be in src/pages.
 
-        // Create users page
-        createPage({
-          path: "/users",
-          matchPath: "/users/*",
-          component: path.resolve("src/sections/users.jsx")
-        });
-
         // Create individual groups pages
         createPage({
           path: "/groups/:groupName",

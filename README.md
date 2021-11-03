@@ -44,11 +44,10 @@ In order to replicate the live behavior, you will need the appropriate environme
 #### Run server in development mode
 If you are developing on nextstrain.org, we recommend running:
 
-`npm run dev` , which runs `./develop.sh` to launch a development server of nextstrain.org, by default available at [localhost:8000](http://localhost:8000).
+`npm run dev` , which runs `./develop.sh` to launch a development server of nextstrain.org, by default available at [localhost:5000](http://localhost:5000).
 Changes to files in `./static-site` will be reflected in the corresponding pages on the development server without needing to refresh.
 
-This works by running the main nextstrain server on port 5000 and then running the Gatsby (see below for more on Gatsby) server on port 8000 and directing requests outside of Gatsby to port 5000.
-See [nextstrain.org/pull/280](https://github.com/nextstrain/nextstrain.org/pull/280) for more on this.
+This works by running the main nextstrain server on port 5000, running the Gatsby (see below for more on Gatsby) server on port 8000, and proxying requests to the Gatsby server as necessary.
 
 An alternative approach is to build the site (as above) and then start the server:
 ```sh
