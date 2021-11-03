@@ -12,7 +12,7 @@ const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disa
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
 const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
 const BearerStrategy = require("./bearer");
-const utils = require("../utils");
+const utils = require("@./src/utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 

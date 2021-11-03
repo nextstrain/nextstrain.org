@@ -1,3 +1,5 @@
+require("module-alias/register");
+
 const argparse = require('argparse');
 const http = require("http");
 

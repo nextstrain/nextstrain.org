@@ -1,7 +1,7 @@
 const {Forbidden, NotFound} = require("http-errors");
 
-const sources = require("../sources");
-const utils = require("../utils");
+const sources = require("@./src/sources");
+const utils = require("@./src/utils");
 
 
 /**

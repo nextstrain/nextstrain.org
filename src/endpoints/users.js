@@ -1,5 +1,5 @@
-const {contentTypesProvided} = require("../negotiate");
-const sources = require("../sources");
+const {contentTypesProvided} = require("@./src/negotiate");
+const sources = require("@./src/sources");
 const {sendGatsbyPage} = require("./static");
 
 

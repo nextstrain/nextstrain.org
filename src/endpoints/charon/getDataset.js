@@ -1,8 +1,8 @@
 const queryString = require("query-string");
 
-const utils = require("../../utils");
-const {canonicalizePrefix, parsePrefix} = require("../../utils/prefix");
-const {NoDatasetPathError} = require("../../exceptions");
+const utils = require("@./src/utils");
+const {canonicalizePrefix, parsePrefix} = require("@./src/utils/prefix");
+const {NoDatasetPathError} = require("@./src/exceptions");
 const auspice = require("auspice");
 const request = require('request');
 const {BadRequest, NotFound, InternalServerError} = require("http-errors");

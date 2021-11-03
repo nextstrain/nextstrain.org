@@ -1,7 +1,7 @@
 const {InternalServerError} = require("http-errors");
 const path = require("path");
 
-const utils = require("../utils");
+const utils = require("@./src/utils");
 
 
 /* Path helpers for static assets, to make routes more readable.

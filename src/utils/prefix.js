@@ -1,6 +1,6 @@
 const {NotFound} = require("http-errors");
 
-const sources = require("../sources");
+const sources = require("@./src/sources");
 
 /* All of the logic for mapping a dataset or narratives URL ("prefix") to a
  * source + path is intentionally encapsulated contained here.  This function
