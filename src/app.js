@@ -148,21 +148,14 @@ app.routeAsync("/staging/*")
 
 /* Community on GitHub
  */
-app.use("/community/:user/:repo",
+app.use(["/community/narratives/:user/:repo", "/community/:user/:repo"],
   setSource("community", req => [req.params.user, req.params.repo]));
 
-app.routeAsync("/community/:user/:repo/narratives")
-  .getAsync((req, res) => res.redirect(`/community/${esc(req.params.user)}/${esc(req.params.repo)}`));
-
-app.routeAsync("/community/:user/:repo/narratives/*")
-  .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, sendAuspiceEntrypoint)
-;
-
-/* Unlike other dataset routes, /community/:user/:repo can go to either Auspice
- * or Gatsby, depending on the existence of a top-level dataset file.  The two
- * cases depend on the existence of a dataset file named auspice/:repo.json in
- * the GitHub :user/:repo.
+/* Unlike other dataset and narrative routes, /community/:user/:repo and
+ * /community/narratives/:user/:repo can go to either Auspice or Gatsby,
+ * depending on the existence of a top-level dataset or narrative file.  The
+ * two cases depend on the existence of a dataset file named auspice/:repo.json
+ * or narrative file in narratives/:repo.md in the GitHub :user/:repo.
  *
  * If it exists, Auspice's entrypoint is sent (for HTML-accepting requests).
  *
@@ -170,6 +163,11 @@ app.routeAsync("/community/:user/:repo/narratives/*")
  * Gatsby's 404 page is sent which then does client-side routing to show
  * the Gatsby page static-site/src/sections/community-repo-page.jsx.
  */
+app.routeAsync(["/community/narratives/:user/:repo", "/community/narratives/:user/:repo/*"])
+  .all(setNarrative(req => req.params[0]))
+  .getAsync(ifNarrativeExists, sendAuspiceEntrypoint)
+;
+
 app.routeAsync(["/community/:user/:repo", "/community/:user/:repo/*"])
   .all(setDataset(req => req.params[0]))
   .getAsync(ifDatasetExists, sendAuspiceEntrypoint)
@@ -178,8 +176,18 @@ app.routeAsync(["/community/:user/:repo", "/community/:user/:repo/*"])
 
 /* Datasets and narratives at ~arbitrary remote URLs.
  */
+app.use(["/fetch/narratives/:authority", "/fetch/:authority"],
+  setSource("fetch", req => req.params.authority));
+
+app.routeAsync("/fetch/narratives/:authority/*")
+  .all(setNarrative(req => req.params[0]))
+
+  // Assume existence; little benefit to checking when we don't have a fallback page.
+  .getAsync(sendAuspiceEntrypoint)
+;
+
 app.routeAsync("/fetch/:authority/*")
-  .all(setSource("fetch", req => req.params.authority), setDataset(req => req.params[0]))
+  .all(setDataset(req => req.params[0]))
 
   // Assume existence; little benefit to checking when we don't have a fallback page.
   .getAsync(sendAuspiceEntrypoint)
