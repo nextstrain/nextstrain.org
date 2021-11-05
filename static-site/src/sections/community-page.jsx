@@ -38,12 +38,12 @@ class Index extends React.Component {
 
   componentDidMount() {
     // For some reason if this is set in the constructor it breaks the banner.
-    this.setState({nonExistentDatasetName: this.props["*"]});
+    this.setState({nonExistentPath: this.props["*"]});
   }
 
   banner() {
-    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
-      const bannerTitle = `The community repository or dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+    if (this.state.nonExistentPath && (this.state.nonExistentPath.length > 0)) {
+      const bannerTitle = `The community repository, dataset, or narrative "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
       const bannerContents = `Here is the community page instead.`;
       return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
     }

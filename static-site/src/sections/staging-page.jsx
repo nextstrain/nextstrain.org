@@ -65,13 +65,15 @@ class Index extends React.Component {
       data,
       errorFetchingData,
       // For some reason if this is set in the constructor it breaks the banner.
-      nonExistentDatasetName: this.props["*"]
+      nonExistentPath: this.props["*"]
     });
   }
 
   banner() {
-    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
-      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+    if (this.state.nonExistentPath && (this.state.nonExistentPath.length > 0)) {
+      const bannerTitle = this.state.nonExistentPath.startsWith("narratives/")
+        ? `The staging narrative "nextstrain.org${this.props.location.pathname}" doesn't exist.`
+        : `The staging dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
       const bannerContents = `Here is the staging page instead.`;
       return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
     }
