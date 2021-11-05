@@ -14,7 +14,7 @@ const production = process.env.NODE_ENV === "production";
 
 const charon = require("./endpoints/charon");
 const users = require("./endpoints/users");
-const {assetPath, auspiceAssetPath, gatsbyAssetPath, sendAuspiceEntrypoint, sendGatsbyEntrypoint, sendGatsby404} = require("./endpoints/static");
+const {assetPath, auspiceAssetPath, gatsbyAssetPath, sendAuspiceEntrypoint, sendGatsbyEntrypoint, sendGatsbyPage, sendGatsby404} = require("./endpoints/static");
 const {setSource, setGroupSource, setDataset, setNarrative, canonicalizeDataset, ifDatasetExists, ifNarrativeExists} = require("./endpoints/sources");
 const authn = require("./authn");
 const redirects = require("./redirects");
@@ -131,6 +131,10 @@ app.routeAsync("/narratives/*")
 /* Staging datasets and narratives
  */
 app.use("/staging", setSource("staging"));
+
+app.routeAsync("/staging")
+  .getAsync(sendGatsbyPage("staging/index.html"))
+;
 
 app.routeAsync("/staging/narratives")
   .getAsync((req, res) => res.redirect("/staging"));
