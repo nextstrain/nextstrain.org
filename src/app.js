@@ -181,7 +181,7 @@ app.routeAsync(["/community/:user/:repo", "/community/:user/:repo/*"])
 /* Datasets and narratives at ~arbitrary remote URLs.
  */
 app.use(["/fetch/narratives/:authority", "/fetch/:authority"],
-  setSource("fetch", req => req.params.authority));
+  setSource("fetch", req => [req.params.authority]));
 
 app.routeAsync("/fetch/narratives/:authority/*")
   .all(setNarrative(req => req.params[0]))
