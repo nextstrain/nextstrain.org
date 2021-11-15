@@ -5,7 +5,7 @@ const yamlFront = require("yaml-front-matter");
 const {fetch} = require("./fetch");
 const queryString = require("query-string");
 const {NotFound} = require('http-errors');
-const {NoDatasetPathError, InvalidSourceImplementation} = require("./exceptions");
+const {NoDatasetPathError} = require("./exceptions");
 const utils = require("./utils");
 
 const S3 = new AWS.S3();
@@ -21,13 +21,13 @@ const S3 = new AWS.S3();
 
 class Source {
   static get _name() {
-    throw new InvalidSourceImplementation("_name() must be implemented by subclasses");
+    throw new Error("_name() must be implemented by subclasses");
   }
   get name() {
     return this.constructor._name;
   }
   async baseUrl() {
-    throw new InvalidSourceImplementation("async baseUrl() must be implemented by subclasses");
+    throw new Error("async baseUrl() must be implemented by subclasses");
   }
   static isGroup() { /* is the source a "nextstrain group"? */
     return false;
@@ -66,7 +66,7 @@ class Source {
   }
 
   async getInfo() {
-    throw new InvalidSourceImplementation("getInfo() must be implemented by subclasses");
+    throw new Error("getInfo() must be implemented by subclasses");
   }
 }
 
@@ -438,7 +438,7 @@ class UrlDefinedNarrative extends Narrative {
 
 class S3Source extends Source {
   get bucket() {
-    throw new InvalidSourceImplementation("bucket() must be implemented by subclasses");
+    throw new Error("bucket() must be implemented by subclasses");
   }
   async baseUrl() {
     return `https://${this.bucket}.s3.amazonaws.com`;
@@ -573,7 +573,7 @@ class PrivateS3Source extends S3Source {
     return new PrivateS3Narrative(this, pathParts);
   }
   static visibleToUser(user) { // eslint-disable-line no-unused-vars
-    throw new InvalidSourceImplementation("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
+    throw new Error("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
   }
 }
 

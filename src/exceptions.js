@@ -16,17 +16,7 @@ class NoDatasetPathError extends NextstrainError {
   }
 }
 
-/* Thrown when a Source (sub-)class is improperly accessedobject is asked to create a new Dataset object
- * without a dataset path.
- */
-class InvalidSourceImplementation extends NextstrainError {
-  constructor(msg = "Invalid implementation of Source (sub-)class", ...rest) {
-    super(msg, ...rest);
-  }
-}
-
 
 module.exports = {
-  InvalidSourceImplementation,
   NoDatasetPathError
 };
