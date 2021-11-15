@@ -5,7 +5,7 @@ const yamlFront = require("yaml-front-matter");
 const {fetch} = require("./fetch");
 const queryString = require("query-string");
 const {NotFound} = require('http-errors');
-const {NoDatasetPathError} = require("./exceptions");
+const {NoResourcePathError} = require("./exceptions");
 const utils = require("./utils");
 
 const S3 = new AWS.S3();
@@ -28,6 +28,10 @@ class Source {
   }
   async baseUrl() {
     throw new Error("async baseUrl() must be implemented by subclasses");
+  }
+  async urlFor(path, method = 'GET') { // eslint-disable-line no-unused-vars
+    const url = new URL(path, await this.baseUrl());
+    return url.toString();
   }
   static isGroup() { /* is the source a "nextstrain group"? */
     return false;
@@ -70,35 +74,80 @@ class Source {
   }
 }
 
-class Dataset {
+class Resource {
   constructor(source, pathParts) {
     this.source = source;
     this.pathParts = pathParts;
 
-    // Require baseParts, otherwise we have no actual dataset path.  This
-    // inspects baseParts because some of the pathParts (above) may not apply,
-    // which each Dataset subclass determines for itself.
+    // Require baseParts, otherwise we have no actual dataset/narrative path.
+    // This inspects baseParts because some of the pathParts (above) may not
+    // apply, which each Dataset/Narrative subclass determines for itself.
     if (!this.baseParts.length) {
-      throw new NoDatasetPathError();
+      throw new NoResourcePathError();
     }
   }
   get baseParts() {
     return this.pathParts.slice();
   }
-  baseNameFor(type) {
-    const baseName = this.baseParts.join("_");
-    return type === "main"
-      ? `${baseName}.json`
-      : `${baseName}_${type}.json`;
+  get baseName() {
+    return this.baseParts.join("_");
   }
-  async urlFor(type, method = 'GET') { // eslint-disable-line no-unused-vars
-    const url = new URL(this.baseNameFor(type), await this.source.baseUrl());
-    return url.toString();
+  async exists() {
+    throw new Error("exists() must be implemented by Resource subclasses");
   }
+  subresource(type) { // eslint-disable-line no-unused-vars
+    throw new Error("subresource() must be implemented by Resource subclasses");
+  }
+}
+
+class Subresource {
+  constructor(resource, type) {
+    if (this.constructor === Subresource) {
+      throw new Error("Subresource interface class must be subclassed");
+    }
+    if (!(resource instanceof Resource)) {
+      throw new Error(`invalid Subresource parent resource type: ${resource.constructor}`);
+    }
+    if (!this.constructor.validTypes.includes(type)) {
+      throw new Error(`invalid Subresource type: ${type}`);
+    }
+    this.resource = resource;
+    this.type = type;
+  }
+  static get validTypes() {
+    throw new Error("validTypes() must be implemented by Subresource subclasses");
+  }
+  async url(method = 'GET') {
+    return await this.resource.source.urlFor(this.baseName, method);
+  }
+  get baseName() {
+    throw new Error("baseName() must be implemented by Subresource subclasses");
+  }
+}
+
+class DatasetSubresource extends Subresource {
+  static validTypes = ["main", "root-sequence", "tip-frequencies", "meta", "tree"];
+
+  get baseName() {
+    return this.type === "main"
+      ? `${this.resource.baseName}.json`
+      : `${this.resource.baseName}_${this.type}.json`;
+  }
+}
+
+class NarrativeSubresource extends Subresource {
+  static validTypes = ["md"];
+
+  get baseName() {
+    return `${this.resource.baseName}.md`;
+  }
+}
+
+class Dataset extends Resource {
   async exists() {
     const method = "HEAD";
     const _exists = async (type) =>
-      (await fetch(await this.urlFor(type, method), {method, cache: "no-store"})).status === 200;
+      (await fetch(await this.subresource(type).url(method), {method, cache: "no-store"})).status === 200;
 
     const all = async (...promises) =>
       (await Promise.all(promises)).every(x => x);
@@ -158,30 +207,23 @@ class Dataset {
   get isRequestValidWithoutDataset() {
     return false;
   }
+
+  subresource(type) {
+    return new DatasetSubresource(this, type);
+  }
 }
 
-class Narrative {
-  constructor(source, pathParts) {
-    this.source = source;
-    this.pathParts = pathParts;
-  }
-  get baseParts() {
-    return this.pathParts.slice();
-  }
-  get baseName() {
-    const baseName = this.baseParts.join("_");
-    return `${baseName}.md`;
-  }
-  async url(method = 'GET') { // eslint-disable-line no-unused-vars
-    const url = new URL(this.baseName, await this.source.baseUrl());
-    return url.toString();
-  }
+class Narrative extends Resource {
   async exists() {
     const method = "HEAD";
     const _exists = async () =>
-      (await fetch(await this.url(method), {method, cache: "no-store"})).status === 200;
+      (await fetch(await this.subresource("md").url(method), {method, cache: "no-store"})).status === 200;
 
     return (await _exists()) || false;
+  }
+
+  subresource(type) {
+    return new NarrativeSubresource(this, type);
   }
 }
 
@@ -191,8 +233,13 @@ class CoreSource extends Source {
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "master"; }
 
-  narrative(pathParts) {
-    return new CoreNarrative(this, pathParts);
+  async urlFor(path, method = 'GET') { // eslint-disable-line no-unused-vars
+    const baseUrl = path.endsWith(".md")
+      ? `https://raw.githubusercontent.com/${this.repo}/${await this.branch}/`
+      : await this.baseUrl();
+
+    const url = new URL(path, baseUrl);
+    return url.toString();
   }
 
   // The computation of these globals should move here.
@@ -239,14 +286,6 @@ class CoreStagingSource extends CoreSource {
   async baseUrl() { return "http://staging.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "staging"; }
-}
-
-class CoreNarrative extends Narrative {
-  async url() {
-    const repoBaseUrl = `https://raw.githubusercontent.com/${this.source.repo}/${await this.source.branch}/`;
-    const url = new URL(this.baseName, repoBaseUrl);
-    return url.toString();
-  }
 }
 
 class CommunitySource extends Source {
@@ -416,8 +455,18 @@ class UrlDefinedSource extends Source {
 }
 
 class UrlDefinedDataset extends Dataset {
-  baseNameFor(type) {
-    const baseName = this.baseParts.join("/");
+  get baseName() {
+    return this.baseParts.join("/");
+  }
+  subresource(type) {
+    return new UrlDefinedDatasetSubresource(this, type);
+  }
+}
+
+class UrlDefinedDatasetSubresource extends DatasetSubresource {
+  get baseName() {
+    const type = this.type;
+    const baseName = this.resource.baseName;
 
     if (type === "main") {
       return baseName;
@@ -432,6 +481,15 @@ class UrlDefinedDataset extends Dataset {
 class UrlDefinedNarrative extends Narrative {
   get baseName() {
     return this.baseParts.join("/");
+  }
+  subresource(type) {
+    return new UrlDefinedNarrativeSubresource(this, type);
+  }
+}
+
+class UrlDefinedNarrativeSubresource extends NarrativeSubresource {
+  get baseName() {
+    return this.resource.baseName;
   }
 }
 
@@ -566,31 +624,13 @@ class S3Source extends Source {
 }
 
 class PrivateS3Source extends S3Source {
-  dataset(pathParts) {
-    return new PrivateS3Dataset(this, pathParts);
-  }
-  narrative(pathParts) {
-    return new PrivateS3Narrative(this, pathParts);
-  }
   static visibleToUser(user) { // eslint-disable-line no-unused-vars
     throw new Error("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
   }
-}
-
-class PrivateS3Dataset extends Dataset {
-  async urlFor(type, method = 'GET') {
+  async urlFor(path, method = 'GET') {
     return S3.getSignedUrl(method === "HEAD" ? "headObject" : "getObject", {
-      Bucket: this.source.bucket,
-      Key: this.baseNameFor(type)
-    });
-  }
-}
-
-class PrivateS3Narrative extends Narrative {
-  async url(method = 'GET') {
-    return S3.getSignedUrl(method === "HEAD" ? "headObject" : "getObject", {
-      Bucket: this.source.bucket,
-      Key: this.baseName
+      Bucket: this.bucket,
+      Key: path
     });
   }
 }
