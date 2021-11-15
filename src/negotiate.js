@@ -27,10 +27,9 @@ function contentTypesProvided(providers) {
       throw new NotAcceptable();
     }
 
-    const normalizedContentType = mime.getType(contentType);
-    if (normalizedContentType) {
-      res.set("Content-Type", normalizedContentType);
-    }
+    const normalizedContentType = mime.getType(contentType) || contentType;
+
+    res.set("Content-Type", normalizedContentType);
 
     return await handlers[contentType](req, res, next);
   };
