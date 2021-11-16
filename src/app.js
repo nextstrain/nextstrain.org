@@ -19,6 +19,8 @@ const redirects = require("./redirects");
 
 const esc = encodeURIComponent;
 
+const jsonMediaType = type => type.match(/^application\/(.+\+)?json$/);
+
 
 /* Express boilerplate.
  */
@@ -297,6 +299,15 @@ app.useAsync(async (err, req, res, next) => {
   if (res.headersSent) {
     utils.verbose("Headers already sent; using Express' default error handler");
     return next(err);
+  }
+
+  res.vary("Accept");
+
+  if (req.accepts().some(jsonMediaType) && !req.accepts("html")) {
+    utils.verbose(`Sending ${err} error as JSON`);
+    return res.status(err.status || err.statusCode || 500)
+      .json({ error: err.message || String(err) })
+      .end();
   }
 
   if (err instanceof NotFound) {

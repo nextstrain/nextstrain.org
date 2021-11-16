@@ -21,11 +21,16 @@ const setSource = (sourceName, argsExtractor = (req) => []) => (req, res, next) 
 
   const source = new Source(...argsExtractor(req));
 
+  res.vary("Accept");
+
   if (!source.visibleToUser(req.user)) {
     if (!req.user) {
-      utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
-      req.session.afterLoginReturnTo = req.originalUrl;
-      return res.redirect("/login");
+      if (req.accepts("html")) {
+        utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
+        req.session.afterLoginReturnTo = req.originalUrl;
+        return res.redirect("/login");
+      }
+      throw new Unauthorized();
     }
     throw new Forbidden();
   }
