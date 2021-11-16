@@ -1,4 +1,4 @@
-const {NotAcceptable} = require("http-errors");
+const {NotAcceptable, UnsupportedMediaType} = require("http-errors");
 const mime = require("mime");
 
 
@@ -85,6 +85,39 @@ function Links(links) {
 }
 
 
+/**
+ * Generates a routing function which dispatches to Content-Type specific
+ * handlers depending on the request Content-Type.
+ *
+ * @param {Array[]}  providers      - Array of [Content-Type, handler] tuples
+ * @param {String}   providers[][0] - Content-Type or shorthand like `json` or `html`
+ * @param {Function} providers[][1] - Handler function that consumes the associated Content-Type; may be async
+ *
+ * @returns {Function} An async routing function which will perform the dispatch.
+ */
+function contentTypesConsumed(providers) {
+  const types = providers.map(([type, handler]) => type); // eslint-disable-line no-unused-vars
+  const handlers = Object.fromEntries(providers);
+
+  return async function dispatchByContentType(req, res, next) {
+    /* Vary probably doesn't matter because we're only going to be handling
+     * non-cacheable methods (PUT, POST, DELETE) anyway, but cross our t's and
+     * dot our i's.
+     */
+    res.vary("Content-Type");
+
+    for (const contentType of types) {
+      if (req.is(contentType)) {
+        return await handlers[contentType](req, res, next); // eslint-disable-line no-await-in-loop
+      }
+    }
+
+    throw new UnsupportedMediaType();
+  };
+}
+
+
 module.exports = {
   contentTypesProvided,
+  contentTypesConsumed,
 };
