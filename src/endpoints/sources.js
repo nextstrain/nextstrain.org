@@ -101,7 +101,7 @@ const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
  * Express middleware function that throws a {@link NotFound} error if {@link
  * Dataset#exists} returns false.
  *
- * @type {expressMiddleware}
+ * @type {expressMiddlewareAsync}
  */
 const ifDatasetExists = async (req, res, next) => {
   if (!(await req.context.dataset.exists())) throw new NotFound();
@@ -129,7 +129,7 @@ const setNarrative = (pathExtractor) => (req, res, next) => {
  * Express middleware function that throws a {@link NotFound} error if {@link
  * Narrative#exists} returns false.
  *
- * @type {expressMiddleware}
+ * @type {expressMiddlewareAsync}
  */
 const ifNarrativeExists = async (req, res, next) => {
   if (!(await req.context.narrative.exists())) throw new NotFound();
@@ -186,6 +186,14 @@ function pathParts(path = "") {
 
 /**
  * @callback expressMiddleware
+ * @param {express.request} req
+ * @param {express.response} res
+ * @param {Function} next
+ */
+
+/**
+ * @callback expressMiddlewareAsync
+ * @async
  * @param {express.request} req
  * @param {express.response} res
  * @param {Function} next
