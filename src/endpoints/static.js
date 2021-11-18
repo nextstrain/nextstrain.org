@@ -1,3 +1,5 @@
+const express = require("express");
+const expressStaticGzip = require("express-static-gzip");
 const {InternalServerError} = require("http-errors");
 const path = require("path");
 
@@ -14,6 +16,13 @@ const auspiceAssetPath = (...subpath) =>
 
 const gatsbyAssetPath = (...subpath) =>
   assetPath("static-site", "public", ...subpath);
+
+
+/* Handlers for static assets.
+ */
+const auspiceAssets = expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'});
+
+const gatsbyAssets = express.static(gatsbyAssetPath());
 
 
 /**
@@ -149,8 +158,8 @@ const sendGatsby404 = async (req, res) => {
 
 module.exports = {
   assetPath,
-  auspiceAssetPath,
-  gatsbyAssetPath,
+  auspiceAssets,
+  gatsbyAssets,
 
   sendFile,
   sendAuspiceEntrypoint,

@@ -2,7 +2,6 @@
 const sslRedirect = require('heroku-ssl-redirect');
 const nakedRedirect = require('express-naked-redirect');
 const express = require("express");
-const expressStaticGzip = require("express-static-gzip");
 const favicon = require('serve-favicon');
 const compression = require('compression');
 const utils = require("./utils");
@@ -14,7 +13,7 @@ const production = process.env.NODE_ENV === "production";
 
 const charon = require("./endpoints/charon");
 const users = require("./endpoints/users");
-const {assetPath, auspiceAssetPath, gatsbyAssetPath, sendAuspiceEntrypoint, sendGatsbyEntrypoint, sendGatsbyPage, sendGatsby404} = require("./endpoints/static");
+const {assetPath, auspiceAssets, gatsbyAssets, sendAuspiceEntrypoint, sendGatsbyEntrypoint, sendGatsbyPage, sendGatsby404} = require("./endpoints/static");
 const {setSource, setGroupSource, setDataset, setNarrative, canonicalizeDataset, ifDatasetExists, ifNarrativeExists} = require("./endpoints/sources");
 const authn = require("./authn");
 const redirects = require("./redirects");
@@ -257,7 +256,7 @@ app.route(["/users", "/users/:name"])
  * so we must use that prefix here too.
  */
 app.route("/dist/*")
-  .all(expressStaticGzip(auspiceAssetPath(), {fallthrough: false, maxAge: '30d'}));
+  .all(auspiceAssets, (req, res, next) => next(new NotFound()));
 
 
 /* Gatsby static HTML pages and other assets.
@@ -281,7 +280,7 @@ if (app.locals.gatsbyDevUrl) {
    */
   app.use(createProxyMiddleware(app.locals.gatsbyDevUrl));
 } else {
-  app.use(express.static(gatsbyAssetPath()));
+  app.use(gatsbyAssets);
 }
 
 
