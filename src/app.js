@@ -2,7 +2,6 @@
 const sslRedirect = require('heroku-ssl-redirect');
 const nakedRedirect = require('express-naked-redirect');
 const express = require("express");
-const favicon = require('serve-favicon');
 const compression = require('compression');
 const utils = require("./utils");
 const cors = require('cors');
@@ -13,7 +12,7 @@ const production = process.env.NODE_ENV === "production";
 
 const charon = require("./endpoints/charon");
 const users = require("./endpoints/users");
-const {assetPath, auspiceAssets, gatsbyAssets, sendAuspiceEntrypoint, sendGatsbyEntrypoint, sendGatsbyPage, sendGatsby404} = require("./endpoints/static");
+const {auspiceAssets, gatsbyAssets, sendAuspiceEntrypoint, sendGatsbyEntrypoint, sendGatsbyPage, sendGatsby404} = require("./endpoints/static");
 const {setSource, setGroupSource, setDataset, setNarrative, canonicalizeDataset, ifDatasetExists, ifNarrativeExists} = require("./endpoints/sources");
 const authn = require("./authn");
 const redirects = require("./redirects");
@@ -35,8 +34,6 @@ if (production) app.enable("trust proxy");
 app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
 app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
-app.use(favicon(assetPath("favicon.ico")));
-app.use('/favicon.png', express.static(assetPath("favicon.png")));
 
 
 /* Setup a request-scoped context object for passing arbitrary request-local

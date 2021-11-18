@@ -2,7 +2,7 @@
 /* eslint import/extensions:"off" */
 /* eslint global-require:"off" */
 import React from "react";
-import favicon from "../../favicon.png";
+import favicon from "../static/favicon.png";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HTML extends React.Component {

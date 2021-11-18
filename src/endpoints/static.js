@@ -6,7 +6,7 @@ const path = require("path");
 const utils = require("../utils");
 
 
-/* Path helpers for static assets, to make routes more readable.
+/* Path helpers for our handlers below.
  */
 const assetPath = (...subpath) =>
   path.join(__dirname, "..", "..", ...subpath);
@@ -157,7 +157,6 @@ const sendGatsby404 = async (req, res) => {
 
 
 module.exports = {
-  assetPath,
   auspiceAssets,
   gatsbyAssets,
 
