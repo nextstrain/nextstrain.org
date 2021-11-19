@@ -241,10 +241,7 @@ app.routeAsync("/fetch/:authority/*")
 app.use("/groups/:groupName", setGroupSource(req => req.params.groupName));
 
 app.routeAsync("/groups/:groupName")
-  /* sendGatsbyPage("groups/:groupName/index.html") should work, but it
-   * renders wrong for some reason that's not clear.
-   */
-  .getAsync(endpoints.static.sendGatsbyEntrypoint)
+  .getAsync(endpoints.groups.getGroup)
 ;
 
 // Avoid matching "narratives" as a dataset name.
