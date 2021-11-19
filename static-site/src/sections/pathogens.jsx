@@ -13,7 +13,7 @@ import Cards from "../components/Cards/index";
 import pathogenCards from "../components/Cards/pathogenCards";
 import { AnchorLink } from "../components/Datasets/pathogen-page-introduction";
 
-const nextstrainLogoPNG = require("../../static/favicon.png");
+const nextstrainLogoPNG = "/favicon.png";
 
 const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (

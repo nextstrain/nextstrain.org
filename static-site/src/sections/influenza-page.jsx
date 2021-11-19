@@ -15,7 +15,7 @@ import { ErrorBanner } from "../components/splash/errorMessages";
 import Cards from "../components/Cards/index";
 import fluCards from "../components/Cards/fluCards";
 
-const nextstrainLogoPNG = require("../../static/favicon.png");
+const nextstrainLogoPNG = "/favicon.png";
 
 const title = "Influenza resources";
 const abstract = `The Nextstrain team maintains datasets and other tools for analyzing a variety of influenza viruses.
