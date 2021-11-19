@@ -10,7 +10,7 @@ import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
 
-const nextstrainLogoPNG = require("../../static/logos/favicon.png");
+const nextstrainLogoPNG = require("../../static/favicon.png");
 
 const title = "Staging Data";
 const abstract = (

@@ -18,7 +18,7 @@ import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
 
-const nextstrainLogoPNG = require("../../static/logos/favicon.png");
+const nextstrainLogoPNG = require("../../static/favicon.png");
 
 
 const title = "Nextstrain SARS-CoV-2 resources";
