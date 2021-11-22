@@ -1,7 +1,9 @@
 const {Forbidden, NotFound} = require("http-errors");
 
+const {contentTypesProvided} = require("../negotiate");
 const sources = require("../sources");
 const utils = require("../utils");
+const {sendAuspiceEntrypoint} = require("./static");
 
 
 /**
@@ -110,8 +112,13 @@ const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
  */
 const ifDatasetExists = async (req, res, next) => {
   if (!(await req.context.dataset.exists())) throw new NotFound();
-  next();
+  return next();
 };
+
+
+const getDataset = contentTypesProvided([
+  ["text/html", ifDatasetExists, sendAuspiceEntrypoint],
+]);
 
 
 /* Narratives
@@ -138,8 +145,13 @@ const setNarrative = (pathExtractor) => (req, res, next) => {
  */
 const ifNarrativeExists = async (req, res, next) => {
   if (!(await req.context.narrative.exists())) throw new NotFound();
-  next();
+  return next();
 };
+
+
+const getNarrative = contentTypesProvided([
+  ["text/html", ifNarrativeExists, sendAuspiceEntrypoint],
+]);
 
 
 /**
@@ -212,7 +224,9 @@ module.exports = {
   setDataset,
   canonicalizeDataset,
   ifDatasetExists,
+  getDataset,
 
   setNarrative,
   ifNarrativeExists,
+  getNarrative,
 };

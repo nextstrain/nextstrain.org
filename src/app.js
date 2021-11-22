@@ -20,8 +20,8 @@ const {
   setDataset,
   setNarrative,
   canonicalizeDataset,
-  ifDatasetExists,
-  ifNarrativeExists,
+  getDataset,
+  getNarrative,
 } = endpoints.sources;
 
 const esc = encodeURIComponent;
@@ -124,12 +124,12 @@ app.use([coreBuildRoutes, "/narratives/*"], setSource("core"));
 
 app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
-  .getAsync(ifDatasetExists, endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 app.routeAsync("/narratives/*")
   .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 
@@ -146,12 +146,12 @@ app.routeAsync("/staging/narratives")
 
 app.routeAsync("/staging/narratives/*")
   .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 app.routeAsync("/staging/*")
   .all(setDataset(req => req.params[0]), canonicalizeDataset(path => `/staging/${path}`))
-  .getAsync(ifDatasetExists, endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 
@@ -174,12 +174,12 @@ app.use(["/community/narratives/:user/:repo", "/community/:user/:repo"],
  */
 app.routeAsync(["/community/narratives/:user/:repo", "/community/narratives/:user/:repo/*"])
   .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 app.routeAsync(["/community/:user/:repo", "/community/:user/:repo/*"])
   .all(setDataset(req => req.params[0]))
-  .getAsync(ifDatasetExists, endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 
@@ -192,14 +192,14 @@ app.routeAsync("/fetch/narratives/:authority/*")
   .all(setNarrative(req => req.params[0]))
 
   // Assume existence; little benefit to checking when we don't have a fallback page.
-  .getAsync(endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 app.routeAsync("/fetch/:authority/*")
   .all(setDataset(req => req.params[0]))
 
   // Assume existence; little benefit to checking when we don't have a fallback page.
-  .getAsync(endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 
@@ -229,12 +229,12 @@ app.routeAsync("/groups/:groupName/narratives")
 
 app.routeAsync("/groups/:groupName/narratives/*")
   .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 app.routeAsync("/groups/:groupName/*")
   .all(setDataset(req => req.params[0]))
-  .getAsync(ifDatasetExists, endpoints.static.sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 
