@@ -37,9 +37,5 @@ function testRedirect(res, expectedRedirectAddress) {
   if (res.status!==302) {
     throw Error(`Test asked to check redirect address, but statusCode wasn't 302`);
   }
-  expect(getRedirectLocation(res)).toEqual(expectedRedirectAddress);
-}
-
-function getRedirectLocation(res) {
-  return res.headers[Object.getOwnPropertySymbols(res.headers)[0]].location[0];
+  expect(res.headers.get("Location")).toEqual(expectedRedirectAddress);
 }
