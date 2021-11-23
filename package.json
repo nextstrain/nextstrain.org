@@ -18,8 +18,8 @@
     "start": "npm run server",
     "smoke-test": "NODE_ENV=test ENV=dev jest --roots ./test/smoke-test/",
     "e2e-test": "NODE_ENV=test ENV=dev jest --roots ./test/end-to-end/",
-    "e2e-test:ci": "start-server-and-test server http://localhost:5000 e2e-test",
-    "smoke-test:ci": "start-server-and-test server http://localhost:5000 smoke-test",
+    "e2e-test:ci": "start-server-and-test 'node server.js --verbose >./test/end-to-end/server.log 2>&1' http://localhost:5000 e2e-test",
+    "smoke-test:ci": "start-server-and-test 'node server.js --verbose >./test/smoke-test/server.log 2>&1' http://localhost:5000 smoke-test",
     "test:ci": "npm run smoke-test:ci && npm run e2e-test:ci;",
     "test:unit": "jest ./test/unit*",
     "dev": "./develop.sh"
