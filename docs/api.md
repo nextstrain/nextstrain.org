@@ -23,5 +23,5 @@ if (!source.visibleToUser(req.user)) {
 
 ## Tests
 
-There are a number of smoke-tests for these API calls.
-See `tests/smoke-test/` for details and run via `npm run smoke-test:ci`
+There are a number of tests for these API calls.
+See `test/auspice_client_requests.test.js` for details and run via `npm run test:ci`

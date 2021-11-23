@@ -18,5 +18,4 @@ scratch
 /data
 
 # test logs
-/test/end-to-end/server.log
-/test/smoke-test/server.log
+/test/server.log

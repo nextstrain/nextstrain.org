@@ -193,15 +193,21 @@ See the [infrastructure documentation](./docs/infrastructure.md) for details.
 
 ---
 ## Testing
-Nextstrain.org currently implements limited smoke-testing to test requests originiating from the Auspice client to the nextstrain.org server (i.e. API GET requests starting with `/charon/`).
-These are defined [in this JSON file](./test/smoke-test/auspice_client_requests.json) and can be run via
+Nextstrain.org currently uses limited automated testing defined in `test/*.test.js` files.
+Run the tests with:
 
-```
-npm run test:ci
-```
+    npm run test:ci
 
-Which will run a local server for the duration of the tests.
-Alternatively, you can run your own server in the background and run `npm run smoke-test`.
+This will run a local server for the duration of the tests.
+Alternatively, you can run your own server in the background and run:
+
+    npm run test
+
+instead.
+
+To run a single test or small number of test files, run a local server and invoke Jest directly, for example:
+
+    npx jest --run-tests-by-path test/routing.test.js
 
 ---
 
