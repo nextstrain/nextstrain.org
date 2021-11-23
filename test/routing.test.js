@@ -4,6 +4,7 @@
  *   no-multi-spaces: Aligned paths make for easier reading
  */
 
+const {parse: parseContentType} = require("content-type");
 const fetch = require("node-fetch");
 const fs = require("fs");
 
@@ -28,24 +29,35 @@ const gatsby404 = fs.readFileSync("static-site/public/404.html").toString();
  */
 jest.setTimeout(15000);
 
+describe.skipIf = (condition) =>
+  condition ? describe.skip : describe;
+
+
 describe("datasets", () => {
+  const noSidecars = { rootSequence: false, tipFrequencies: false };
 
   describe("core", () => {
-    testPath("nested",        "/flu/seasonal/h3n2/ha/2y");
-    testPath("canonicalized", "/flu/seasonal");
-    testPath("top-level",     "/zika");
+    testPaths([
+      { case: "nested",        path: "/flu/seasonal/h3n2/ha/2y" },
+      { case: "canonicalized", path: "/flu/seasonal" },
+      { case: "top-level",     path: "/zika", tipFrequencies: false },
+    ]);
   });
 
   describe("staging", () => {
-    testPath("nested",        "/staging/flu/seasonal/h3n2/ha/2y");
-    testPath("canonicalized", "/staging/flu/seasonal");
-    testPath("top-level",     "/staging/zika");
+    testPaths([
+      { case: "nested",        path: "/staging/flu/seasonal/h3n2/ha/2y" },
+      { case: "canonicalized", path: "/staging/flu/seasonal" },
+      { case: "top-level",     path: "/staging/zika", tipFrequencies: false },
+    ]);
   });
 
   describe("community", () => {
-    testPath("nested",     "/community/nextstrain/community-test/zika/tutorial");
-    testPath("top-level",  "/community/nextstrain/community-test@top-level");
-    testPath("alt branch", "/community/nextstrain/community-test@alt/beta-cov");
+    testPaths([
+      { case: "nested",     path: "/community/nextstrain/community-test/zika/tutorial", ...noSidecars },
+      { case: "top-level",  path: "/community/nextstrain/community-test@top-level", ...noSidecars },
+      { case: "alt branch", path: "/community/nextstrain/community-test@alt/beta-cov", ...noSidecars },
+    ]);
     describe("bogus", () => {
       testGatsby404("/community/nextstrain/community-test@does-not-exist");
       testGatsby404("/community/nextstrain/does-not-exist");
@@ -53,8 +65,10 @@ describe("datasets", () => {
   });
 
   describe("groups", () => {
-    testPath("nested",    "/groups/blab/ncov/19B");
-    testPath("top-level", "/groups/blab/beta-cov");
+    testPaths([
+      { case: "nested",    path: "/groups/blab/ncov/19B" },
+      { case: "top-level", path: "/groups/blab/beta-cov", ...noSidecars },
+    ]);
     describe("bogus", () => {
       testGatsby404("/groups/blab/does-not-exist");
       testGatsby404("/groups/does-not-exist");
@@ -62,68 +76,227 @@ describe("datasets", () => {
   });
 
   describe("fetch", () => {
-    testPath("with extension",    "/fetch/github.com/nextstrain/community-test/raw/master/auspice/community-test_zika_tutorial.json", false);
-    testPath("without extension", "/fetch/github.com/nextstrain/community-test/raw/master/auspice/community-test_zika_tutorial", false);
+    testPaths([
+      { case: "with extension",
+        path: "/fetch/github.com/nextstrain/community-test/raw/master/auspice/community-test_zika_tutorial.json",
+        ...noSidecars },
+
+      { case: "without extension",
+        path: "/fetch/github.com/nextstrain/community-test/raw/master/auspice/community-test_zika_tutorial",
+        ...noSidecars },
+    ]);
   });
 
+  function testPaths(cases) {
+    cases.forEach(testPath);
+  }
+
+  function testPath({case: case_, path, rootSequence = true, tipFrequencies = true}) {
+    describe(case_, () => {
+      // Auspice
+      testIsAuspice(path);
+
+      // Main JSON
+      testPathMediaTypes({
+        path,
+        mediaTypes: [
+          "application/vnd.nextstrain.dataset.main+json",
+          "application/json",
+        ],
+        additionalAcceptableTypes: ["application/json"],
+        checkBody(mediaType, req) {
+          // Really naive quick body check
+          test("looks like main json", async () => {
+            const res = await req;
+            const body = await res.json();
+            expect(body).toHaveProperty("version", "v2");
+            expect(body).toHaveProperty("meta");
+            expect(body).toHaveProperty("tree");
+          });
+        },
+      });
+
+      // Root sequence
+      testPathMediaTypes({
+        path,
+        mediaTypes: ["application/vnd.nextstrain.dataset.root-sequence+json"],
+        additionalAcceptableTypes: ["application/json"],
+        status: rootSequence ? 200 : 404,
+        checkBody(mediaType, req) {
+          // Really naive quick body check
+          test("looks like root-sequence", async () => {
+            const res = await req;
+            const body = await res.json();
+            expect(body).toHaveProperty("nuc");
+          });
+        },
+      });
+
+      // Tip frequencies
+      testPathMediaTypes({
+        path,
+        mediaTypes: ["application/vnd.nextstrain.dataset.tip-frequencies+json"],
+        additionalAcceptableTypes: ["application/json"],
+        status: tipFrequencies ? 200 : 404,
+        checkBody(mediaType, req) {
+          // Really naive quick body check
+          test("looks like root-sequence", async () => {
+            const res = await req;
+            const body = await res.json();
+            expect(body).toHaveProperty("pivots");
+          });
+        },
+      });
+
+      // Non-existent datasets under this path
+      testGatsby404(`${path}/does-not-exist`);
+    });
+  }
 });
 
 describe("narratives", () => {
 
   describe("core", () => {
-    testPath("top-level", "/narratives/intro-to-narratives");
-    testPath("nested",    "/narratives/ncov/sit-rep/2020-08-14");
+    testPaths([
+      { case: "top-level", path: "/narratives/intro-to-narratives" },
+      { case: "nested",    path: "/narratives/ncov/sit-rep/2020-08-14" },
+    ]);
   });
 
   describe("staging", () => {
-    testPath("top-level", "/staging/narratives/intro-to-narratives");
-    testPath("nested",    "/staging/narratives/test/fixture/intro-to-narratives");
+    testPaths([
+      { case: "top-level", path: "/staging/narratives/intro-to-narratives" },
+      { case: "nested",    path: "/staging/narratives/test/fixture/intro-to-narratives" },
+    ]);
   });
 
   describe("community", () => {
-    testPath("nested",     "/community/narratives/nextstrain/community-test/intro-to-narratives");
-    testPath("top-level",  "/community/narratives/nextstrain/community-test@top-level");
-    testPath("alt branch", "/community/narratives/nextstrain/community-test@alt/alternate-branch");
+    testPaths([
+      { case: "nested",     path: "/community/narratives/nextstrain/community-test/intro-to-narratives" },
+      { case: "top-level",  path: "/community/narratives/nextstrain/community-test@top-level" },
+      { case: "alt branch", path: "/community/narratives/nextstrain/community-test@alt/alternate-branch" },
+    ]);
     describe("bad branch", () => {
       testGatsby404("/community/narratives/nextstrain/community-test@does-not-exist");
     });
   });
 
   describe("groups", () => {
-    testPath("nested", "/groups/blab/narratives/test/fixture");
+    testPaths([
+      { case: "nested", path: "/groups/blab/narratives/test/fixture" },
+    ]);
     describe("bogus", () => {
       testGatsby404("/groups/blab/narratives/does-not-exist");
     });
   });
 
   describe("fetch", () => {
-    testPath("with extension", "/fetch/narratives/github.com/nextstrain/community-test/raw/master/narratives/community-test_intro-to-narratives.md", false);
+    testPaths([
+      { case: "with extension",
+        path: "/fetch/narratives/github.com/nextstrain/community-test/raw/master/narratives/community-test_intro-to-narratives.md" },
+
+      { case: "without extension",
+        path: "/fetch/narratives/github.com/nextstrain/community-test/raw/master/narratives/community-test_intro-to-narratives" },
+    ]);
   });
 
+  function testPaths(cases) {
+    cases.forEach(testPath);
+  }
+
+  function testPath({case: case_, path}) {
+    describe(case_, () => {
+      // Auspice
+      testIsAuspice(path);
+
+      // Markdown
+      testPathMediaTypes({
+        path,
+        mediaTypes: [
+          "text/vnd.nextstrain.narrative+markdown",
+          "text/markdown",
+        ],
+        additionalAcceptableTypes: ["text/markdown", "text/plain"],
+        checkBody(mediaType, req) {
+          // Really naive quick body check
+          test("looks like frontmatter", async () => {
+            const res = await req;
+            const body = await res.text();
+            expect(body.startsWith("---\n")).toBe(true);
+          });
+        },
+      });
+
+      // Non-existent narratives under this path
+      testGatsby404(`${path}/does-not-exist`);
+    });
+  }
 });
 
-function testPath(reason, path, test404 = true) {
-  describe(reason, () => {
-    test(`${path} sends Auspice`, async () => {
-      const res = await fetch(url(path));
 
-      expect(res.status).toBe(200);
-      expect(await res.text()).toBe(auspiceEntrypoint);
+function testIsAuspice(path) {
+  testPathMediaTypes({
+    path,
+    mediaTypes: ["*/*"],
+    additionalAcceptableTypes: ["text/html"],
+    checkBody(mediaType, req) {
+      test("looks like Auspice", async () => {
+        const res = await req;
+        const body = await res.text();
+        expect(body).toBe(auspiceEntrypoint);
+      });
+    },
+  });
+}
+
+function testPathMediaTypes({path, mediaTypes, additionalAcceptableTypes, checkBody, status = 200}) {
+  describe.each(mediaTypes)(`${path} (accept: %s)`, (mediaType) => {
+    const req = fetch(url(path), accept(mediaType));
+
+    test(`status is ${status}`, async () => {
+      const res = await req;
+      expect(res.status).toBe(status);
     });
 
-    if (test404) testGatsby404(`${path}/does-not-exist`);
+    describe.skipIf(status === 404)("body", () => {
+      const acceptableMediaTypes = [mediaType, ...(additionalAcceptableTypes || [])];
+
+      test(`content-type is one of ${acceptableMediaTypes.join(", ")}`, async () => {
+        const res = await req;
+
+        expect(parseContentType(res.headers.get("Content-Type")).type)
+          .toBeOneOf(acceptableMediaTypes);
+      });
+
+      if (checkBody) checkBody(mediaType, req);
+    });
   });
 }
 
 function testGatsby404(path) {
-  test(`${path} sends Gatsby 404`, async () => {
-    const res = await fetch(url(path));
+  describe(`${path} sends Gatsby 404`, () => {
+    const req = fetch(url(path));
 
-    expect(res.status).toBe(404);
-    expect(await res.text()).toBe(gatsby404);
+    test("status is 404", async () => {
+      const res = await req;
+      expect(res.status).toBe(404);
+    });
+
+    test("body looks like 404 page", async () => {
+      const res = await req;
+      expect(await res.text()).toBe(gatsby404);
+    });
   });
 }
 
 function url(path) {
   return new URL(path, BASE_URL);
+}
+
+function accept(mediaType) {
+  return {
+    headers: {
+      Accept: mediaType
+    }
+  };
 }
