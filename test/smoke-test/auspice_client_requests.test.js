@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 // we set a lenient timeout
 jest.setTimeout(15000);
 
-describe("smoke testing URLs described in urls.json", () => {
+describe("smoke testing URLs described in auspice_client_requests.json", () => {
   for (const testCase of urlsToTest) {
     // eslint-disable-next-line no-loop-func
     it(testCase.name, async () => {
