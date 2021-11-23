@@ -16,8 +16,8 @@
     "set-up": "npm run build",
     "server": "node server.js",
     "start": "npm run server",
-    "smoke-test": "NODE_ENV=test ENV=dev jest ./test/smoke-test/auspice_client_requests.test.js",
-    "e2e-test": "NODE_ENV=test ENV=dev jest ./test/end-to-end/*.test.js",
+    "smoke-test": "NODE_ENV=test ENV=dev jest --roots ./test/smoke-test/",
+    "e2e-test": "NODE_ENV=test ENV=dev jest --roots ./test/end-to-end/",
     "e2e-test:ci": "start-server-and-test server http://localhost:5000 e2e-test",
     "smoke-test:ci": "start-server-and-test server http://localhost:5000 smoke-test",
     "test:ci": "npm run smoke-test:ci && npm run e2e-test:ci;",
@@ -80,6 +80,9 @@
     "static-site/node_modules"
   ],
   "jest": {
+    "testMatch": [
+      "**/*.test.js"
+    ],
     "globals": {
       "BASE_URL": "http://localhost:5000"
     }
