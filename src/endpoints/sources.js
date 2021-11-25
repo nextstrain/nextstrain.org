@@ -520,8 +520,12 @@ module.exports = {
   canonicalizeDataset,
   ifDatasetExists,
   getDataset,
+  getDatasetMain,
+  getDatasetRootSequence,
+  getDatasetTipFrequencies,
 
   setNarrative,
   ifNarrativeExists,
   getNarrative,
+  getNarrativeMarkdown,
 };

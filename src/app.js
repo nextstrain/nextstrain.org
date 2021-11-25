@@ -21,7 +21,11 @@ const {
   setNarrative,
   canonicalizeDataset,
   getDataset,
+  getDatasetMain,
+  getDatasetRootSequence,
+  getDatasetTipFrequencies,
   getNarrative,
+  getNarrativeMarkdown,
 } = endpoints.sources;
 
 const esc = encodeURIComponent;
@@ -122,9 +126,19 @@ const coreBuildRoutes = coreBuildPaths.map(path => [
 
 app.use([coreBuildRoutes, "/narratives/*"], setSource("core"));
 
+app.routeAsync(coreBuildPaths.map(path => [`${path}.json`, `${path}/*.json`]))
+  .all(setSource("core"), setDataset(req => req.path.replace(/[.]json$/, "")), canonicalizeDataset(path => `/${path}.json`))
+  .getAsync(getDatasetMain)
+;
+
 app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
   .getAsync(getDataset)
+;
+
+app.routeAsync("/narratives/*.md")
+  .all(setNarrative(req => req.params[0]))
+  .getAsync(getNarrativeMarkdown)
 ;
 
 app.routeAsync("/narratives/*")
@@ -143,6 +157,11 @@ app.routeAsync("/staging")
 
 app.routeAsync("/staging/narratives")
   .getAsync((req, res) => res.redirect("/staging"));
+
+app.routeAsync("/staging/narratives/*.md")
+  .all(setNarrative(req => req.params[0]))
+  .getAsync(getNarrativeMarkdown)
+;
 
 app.routeAsync("/staging/narratives/*")
   .all(setNarrative(req => req.params[0]))
@@ -172,6 +191,11 @@ app.use(["/community/narratives/:user/:repo", "/community/:user/:repo"],
  * Gatsby's 404 page is sent which then does client-side routing to show
  * the Gatsby page static-site/src/sections/community-repo-page.jsx.
  */
+app.routeAsync(["/community/narratives/:user/:repo.md", "/community/narratives/:user/:repo/*.md"])
+  .all(setNarrative(req => req.params[0]))
+  .getAsync(getNarrativeMarkdown)
+;
+
 app.routeAsync(["/community/narratives/:user/:repo", "/community/narratives/:user/:repo/*"])
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
@@ -227,9 +251,29 @@ app.routeAsync("/groups/:groupName")
 app.routeAsync("/groups/:groupName/narratives")
   .getAsync((req, res) => res.redirect(`/groups/${esc(req.params.groupName)}`));
 
+app.routeAsync("/groups/:groupName/narratives/*.md")
+  .all(setNarrative(req => req.params[0]))
+  .getAsync(getNarrativeMarkdown)
+;
+
 app.routeAsync("/groups/:groupName/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+;
+
+app.routeAsync("/groups/:groupName/*_root-sequence.json")
+  .all(setDataset(req => req.params[0]))
+  .getAsync(getDatasetRootSequence)
+;
+
+app.routeAsync("/groups/:groupName/*_tip-frequencies.json")
+  .all(setDataset(req => req.params[0]))
+  .getAsync(getDatasetTipFrequencies)
+;
+
+app.routeAsync("/groups/:groupName/*.json")
+  .all(setDataset(req => req.params[0]))
+  .getAsync(getDatasetMain)
 ;
 
 app.routeAsync("/groups/:groupName/*")

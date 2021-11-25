@@ -97,56 +97,62 @@ describe("datasets", () => {
       testIsAuspice(path);
 
       // Main JSON
-      testPathMediaTypes({
-        path,
-        mediaTypes: [
-          "application/vnd.nextstrain.dataset.main+json",
-          "application/json",
-        ],
-        additionalAcceptableTypes: ["application/json"],
-        checkBody(mediaType, req) {
-          // Really naive quick body check
-          test("looks like main json", async () => {
-            const res = await req;
-            const body = await res.json();
-            expect(body).toHaveProperty("version", "v2");
-            expect(body).toHaveProperty("meta");
-            expect(body).toHaveProperty("tree");
-          });
-        },
-      });
+      for (const path_ of [path, `${path}.json`]) {
+        testPathMediaTypes({
+          path: path_,
+          mediaTypes: [
+            "application/vnd.nextstrain.dataset.main+json",
+            "application/json",
+          ],
+          additionalAcceptableTypes: ["application/json"],
+          checkBody(mediaType, req) {
+            // Really naive quick body check
+            test("looks like main json", async () => {
+              const res = await req;
+              const body = await res.json();
+              expect(body).toHaveProperty("version", "v2");
+              expect(body).toHaveProperty("meta");
+              expect(body).toHaveProperty("tree");
+            });
+          },
+        });
+      }
 
       // Root sequence
-      testPathMediaTypes({
-        path,
-        mediaTypes: ["application/vnd.nextstrain.dataset.root-sequence+json"],
-        additionalAcceptableTypes: ["application/json"],
-        status: rootSequence ? 200 : 404,
-        checkBody(mediaType, req) {
-          // Really naive quick body check
-          test("looks like root-sequence", async () => {
-            const res = await req;
-            const body = await res.json();
-            expect(body).toHaveProperty("nuc");
-          });
-        },
-      });
+      for (const path_ of [path, `${path}_root-sequence.json`]) {
+        testPathMediaTypes({
+          path: path_,
+          mediaTypes: ["application/vnd.nextstrain.dataset.root-sequence+json"],
+          additionalAcceptableTypes: ["application/json"],
+          status: rootSequence ? 200 : 404,
+          checkBody(mediaType, req) {
+            // Really naive quick body check
+            test("looks like root-sequence", async () => {
+              const res = await req;
+              const body = await res.json();
+              expect(body).toHaveProperty("nuc");
+            });
+          },
+        });
+      }
 
       // Tip frequencies
-      testPathMediaTypes({
-        path,
-        mediaTypes: ["application/vnd.nextstrain.dataset.tip-frequencies+json"],
-        additionalAcceptableTypes: ["application/json"],
-        status: tipFrequencies ? 200 : 404,
-        checkBody(mediaType, req) {
-          // Really naive quick body check
-          test("looks like root-sequence", async () => {
-            const res = await req;
-            const body = await res.json();
-            expect(body).toHaveProperty("pivots");
-          });
-        },
-      });
+      for (const path_ of [path, `${path}_tip-frequencies.json`]) {
+        testPathMediaTypes({
+          path: path_,
+          mediaTypes: ["application/vnd.nextstrain.dataset.tip-frequencies+json"],
+          additionalAcceptableTypes: ["application/json"],
+          status: tipFrequencies ? 200 : 404,
+          checkBody(mediaType, req) {
+            // Really naive quick body check
+            test("looks like root-sequence", async () => {
+              const res = await req;
+              const body = await res.json();
+              expect(body).toHaveProperty("pivots");
+            });
+          },
+        });
+      }
 
       // Non-existent datasets under this path
       testGatsby404(`${path}/does-not-exist`);
@@ -210,22 +216,24 @@ describe("narratives", () => {
       testIsAuspice(path);
 
       // Markdown
-      testPathMediaTypes({
-        path,
-        mediaTypes: [
-          "text/vnd.nextstrain.narrative+markdown",
-          "text/markdown",
-        ],
-        additionalAcceptableTypes: ["text/markdown", "text/plain"],
-        checkBody(mediaType, req) {
-          // Really naive quick body check
-          test("looks like frontmatter", async () => {
-            const res = await req;
-            const body = await res.text();
-            expect(body.startsWith("---\n")).toBe(true);
-          });
-        },
-      });
+      for (const path_ of [path, `${path}.md`]) {
+        testPathMediaTypes({
+          path: path_,
+          mediaTypes: [
+            "text/vnd.nextstrain.narrative+markdown",
+            "text/markdown",
+          ],
+          additionalAcceptableTypes: ["text/markdown", "text/plain"],
+          checkBody(mediaType, req) {
+            // Really naive quick body check
+            test("looks like frontmatter", async () => {
+              const res = await req;
+              const body = await res.text();
+              expect(body.startsWith("---\n")).toBe(true);
+            });
+          },
+        });
+      }
 
       // Non-existent narratives under this path
       testGatsby404(`${path}/does-not-exist`);
