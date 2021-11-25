@@ -9,6 +9,7 @@ class CoreSource extends Source {
   async baseUrl() { return "http://data.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "master"; }
+  get supportsCors() { return true; }
 
   async urlFor(path, method = 'GET') { // eslint-disable-line no-unused-vars
     const baseUrl = path.endsWith(".md")

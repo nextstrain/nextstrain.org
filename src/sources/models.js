@@ -27,6 +27,9 @@ class Source {
     const url = new URL(path, await this.baseUrl());
     return url.toString();
   }
+  get supportsCors() {
+    return false;
+  }
   static isGroup() { /* is the source a "nextstrain group"? */
     return false;
   }

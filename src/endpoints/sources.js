@@ -249,7 +249,28 @@ function sendSubresource(subresourceExtractor) {
     const subresource = subresourceExtractor(req);
     const subresourceUrl = await subresource.url();
 
-    /* Proxy the data through us:
+    /* Happy path of upstream CORS support means we can just redirect the client
+     * to have it fetch the data directly.
+     *
+     * In doing so, we give up direct ability to control the ultimate response
+     * the client receives (although we often own the upstream source too).  This
+     * manifests, for example, as the client receiving whatever Content-Type the
+     * upstream sends, instead of verifying it ourselves.  Or another example:
+     * the upstream 404s and other errors received by the client probably won't
+     * be JSON like ours.  It still seems worth it to use CORS when we can, but
+     * maybe in the future the costs of inconsistency or new needs arising will
+     * tip the balance in favor of always proxying.
+     *
+     * Alternatively, consider using the various S3 GetObject "response-*"
+     * parameters to override the objects' response headers and force things like
+     * Cache-Control to a value we want.
+     *   -trs, 9 Nov 2021
+     */
+    if (subresource.resource.source.supportsCors) {
+      return res.redirect(subresourceUrl);
+    }
+
+    /* Without upstream CORS support, we need to proxy the data through us:
      *
      *    client (browser, CLI, etc) ⟷ us (nextstrain.org) ⟷ upstream source
      */
