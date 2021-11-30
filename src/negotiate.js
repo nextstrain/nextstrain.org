@@ -29,6 +29,13 @@ function contentTypesProvided(providers) {
     // Check request Accept: against our Content-Type providers.
     res.vary("Accept");
 
+    // Automatically provide a Link: header for alternate types we support,
+    // even if we end up sending a 406 Not Acceptable.
+    if (!res.get("Link")) {
+      const alternates = types.map(t => ({url: req.path, rel: "alternate", type: t}));
+      res.set("Link", Links(alternates));
+    }
+
     const contentType = req.accepts(types);
     if (!contentType) {
       throw new NotAcceptable();
@@ -61,6 +68,20 @@ function contentTypesProvided(providers) {
 
     return await nextHandler();
   };
+}
+
+
+function Links(links) {
+  const quoted = x => `"${x.replace(/"/g, '\\"')}"`;
+
+  return links.map(({url, rel, type}) => {
+    let link = `<${url}>`;
+
+    if (rel)  link += `; rel=${quoted(rel)}`;     // eslint-disable-line no-multi-spaces
+    if (type) link += `; type=${quoted(type)}`;
+
+    return link;
+  }).join(", ");
 }
 
 
