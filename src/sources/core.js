@@ -14,7 +14,7 @@ class CoreSource extends Source {
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "master"; }
 
-  async urlFor(path, method = 'GET') { // eslint-disable-line no-unused-vars
+  async urlFor(path, method = 'GET', headers = {}) { // eslint-disable-line no-unused-vars
     const baseUrl = path.endsWith(".md")
       ? `https://raw.githubusercontent.com/${this.repo}/${await this.branch}/`
       : await this.baseUrl();

@@ -99,7 +99,7 @@ class Source {
   async baseUrl() {
     throw new Error("async baseUrl() must be implemented by subclasses");
   }
-  async urlFor(path, method = 'GET') { // eslint-disable-line no-unused-vars
+  async urlFor(path, method = 'GET', headers = {}) { // eslint-disable-line no-unused-vars
     const url = new URL(path, await this.baseUrl());
     return url.toString();
   }
@@ -187,8 +187,8 @@ class Subresource {
   static get validTypes() {
     throw new Error("validTypes() must be implemented by Subresource subclasses");
   }
-  async url(method = 'GET') {
-    return await this.resource.source.urlFor(this.baseName, method);
+  async url(method = 'GET', headers = {}) {
+    return await this.resource.source.urlFor(this.baseName, method, headers);
   }
   get baseName() {
     throw new Error("baseName() must be implemented by Subresource subclasses");

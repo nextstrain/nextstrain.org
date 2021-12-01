@@ -21,7 +21,9 @@ const {
   setNarrative,
   canonicalizeDataset,
   getDataset,
+  putDataset,
   getNarrative,
+  putNarrative,
 } = endpoints.sources;
 
 const esc = encodeURIComponent;
@@ -125,11 +127,13 @@ app.use([coreBuildRoutes, "/narratives/*"], setSource("core"));
 app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
   .getAsync(getDataset)
+  .putAsync(putDataset)
 ;
 
 app.routeAsync("/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+  .putAsync(putNarrative)
 ;
 
 
@@ -147,11 +151,13 @@ app.routeAsync("/staging/narratives")
 app.routeAsync("/staging/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+  .putAsync(putNarrative)
 ;
 
 app.routeAsync("/staging/*")
   .all(setDataset(req => req.params[0]), canonicalizeDataset(path => `/staging/${path}`))
   .getAsync(getDataset)
+  .putAsync(putDataset)
 ;
 
 
@@ -226,11 +232,13 @@ app.routeAsync("/groups/:groupName/narratives")
 app.routeAsync("/groups/:groupName/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+  .putAsync(putNarrative)
 ;
 
 app.routeAsync("/groups/:groupName/*")
   .all(setDataset(req => req.params[0]))
   .getAsync(getDataset)
+  .putAsync(putDataset)
 ;
 
 

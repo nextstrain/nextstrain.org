@@ -13,6 +13,42 @@ class S3Source extends Source {
   async baseUrl() {
     return `https://${this.bucket}.s3.amazonaws.com`;
   }
+  async urlFor(path, method = 'GET', headers = {}) {
+    switch (method) {
+      case "GET":
+      case "HEAD":
+        const url = new URL(path, await this.baseUrl());
+        return url.toString();
+
+      case "PUT":
+        return await this.signedUrlFor(path, method, headers);
+
+      default:
+        throw new Error(`Unsupported method: ${method}`);
+    }
+  }
+  async signedUrlFor(path, method = 'GET', headers = {}) {
+    const normalizedHeaders = utils.normalizeHeaders(headers);
+    const action = {
+      GET: { name: "getObject" },
+      HEAD: { name: "headObject" },
+      PUT: {
+        name: "putObject",
+        params: {
+          ContentType: normalizedHeaders["content-type"],
+          ContentEncoding: normalizedHeaders["content-encoding"],
+        },
+      },
+    };
+
+    if (!action[method]) throw new Error(`Unsupported method: ${method}`);
+
+    return S3.getSignedUrl(action[method].name, {
+      Bucket: this.bucket,
+      Key: path,
+      ...action[method].params,
+    });
+  }
   async _listObjects() {
     return new Promise((resolve, reject) => {
       let contents = [];
@@ -139,11 +175,8 @@ class PrivateS3Source extends S3Source {
   static visibleToUser(user) { // eslint-disable-line no-unused-vars
     throw new Error("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
   }
-  async urlFor(path, method = 'GET') {
-    return S3.getSignedUrl(method === "HEAD" ? "headObject" : "getObject", {
-      Bucket: this.bucket,
-      Key: path
-    });
+  async urlFor(path, method = 'GET', headers = {}) {
+    return await this.signedUrlFor(path, method, headers);
   }
 }
 

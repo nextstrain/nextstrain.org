@@ -118,6 +118,22 @@ const unauthorized = (req) => {
   throw new NotFound();
 };
 
+/**
+ * Normalize a plain object of HTTP headers.
+ *
+ * Header names are lowercased. Headers with a null, undefined, or empty string
+ * value are omitted in the returned object.
+ *
+ * @params {object} headers
+ * @returns {object}
+ */
+const normalizeHeaders = (headers) => {
+  const withValues =
+    Object.entries(headers)
+      .filter(([, value]) => value != null && value !== "");
+
+  return Object.fromEntries((new fetch.Headers(withValues)).entries());
+};
 
 module.exports = {
   getGitHash,
@@ -130,4 +146,5 @@ module.exports = {
   getDatasetsFromListOfFilenames,
   parseNarrativeLanguage,
   unauthorized,
+  normalizeHeaders,
 };
