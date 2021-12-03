@@ -16,3 +16,6 @@ scratch
 
 # generated data
 /data
+
+# test logs
+/test/server.log

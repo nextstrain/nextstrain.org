@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 // we set a lenient timeout
 jest.setTimeout(15000);
 
-describe("smoke testing URLs described in urls.json", () => {
+describe("smoke testing URLs described in auspice_client_requests.json", () => {
   for (const testCase of urlsToTest) {
     // eslint-disable-next-line no-loop-func
     it(testCase.name, async () => {
@@ -37,9 +37,5 @@ function testRedirect(res, expectedRedirectAddress) {
   if (res.status!==302) {
     throw Error(`Test asked to check redirect address, but statusCode wasn't 302`);
   }
-  expect(getRedirectLocation(res)).toEqual(expectedRedirectAddress);
-}
-
-function getRedirectLocation(res) {
-  return res.headers[Object.getOwnPropertySymbols(res.headers)[0]].location[0];
+  expect(res.headers.get("Location")).toEqual(expectedRedirectAddress);
 }

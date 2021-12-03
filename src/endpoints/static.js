@@ -1,10 +1,12 @@
+const express = require("express");
+const expressStaticGzip = require("express-static-gzip");
 const {InternalServerError} = require("http-errors");
 const path = require("path");
 
 const utils = require("../utils");
 
 
-/* Path helpers for static assets, to make routes more readable.
+/* Path helpers for our handlers below.
  */
 const assetPath = (...subpath) =>
   path.join(__dirname, "..", "..", ...subpath);
@@ -14,6 +16,13 @@ const auspiceAssetPath = (...subpath) =>
 
 const gatsbyAssetPath = (...subpath) =>
   assetPath("static-site", "public", ...subpath);
+
+
+/* Handlers for static assets.
+ */
+const auspiceAssets = expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'});
+
+const gatsbyAssets = express.static(gatsbyAssetPath());
 
 
 /**
@@ -148,9 +157,8 @@ const sendGatsby404 = async (req, res) => {
 
 
 module.exports = {
-  assetPath,
-  auspiceAssetPath,
-  gatsbyAssetPath,
+  auspiceAssets,
+  gatsbyAssets,
 
   sendFile,
   sendAuspiceEntrypoint,

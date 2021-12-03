@@ -2,7 +2,7 @@ const queryString = require("query-string");
 
 const utils = require("../../utils");
 const {canonicalizePrefix, parsePrefix} = require("../../utils/prefix");
-const {NoDatasetPathError} = require("../../exceptions");
+const {NoResourcePathError} = require("../../exceptions");
 const auspice = require("auspice");
 const request = require('request');
 const {BadRequest, NotFound, InternalServerError} = require("http-errors");
@@ -60,7 +60,7 @@ const sendV1Dataset = async (res, metaJsonUrl, treeJsonUrl) => {
  * @throws {NotFound} Throws if the dataset didn't exist (or the streaming failed)
  */
 const streamMainV2Dataset = async (res, dataset) => {
-  const main = await dataset.urlFor("main");
+  const main = await dataset.subresource("main").url();
   try {
     await new Promise((resolve, reject) => {
       let statusCode;
@@ -126,7 +126,7 @@ const getDataset = async (req, res) => {
      * Note that this leaks the existence of private sources, but I think
      * broader discussions are leaning towards that anyhow.
      */
-    if (err instanceof NoDatasetPathError) {
+    if (err instanceof NoResourcePathError) {
       utils.verbose(err.message);
       return res.status(204).end();
     }
@@ -156,7 +156,7 @@ const getDataset = async (req, res) => {
   }
 
   if (query.type) {
-    const url = await dataset.urlFor(query.type);
+    const url = await dataset.subresource(query.type).url();
     return requestCertainFileType(res, req, url, query);
   }
 
@@ -166,7 +166,7 @@ const getDataset = async (req, res) => {
   } catch (errV2) {
     try {
       /* attempt to fetch the meta + tree JSONs, combine, and send */
-      return await sendV1Dataset(res, await dataset.urlFor("meta"), await dataset.urlFor("tree"));
+      return await sendV1Dataset(res, await dataset.subresource("meta").url(), await dataset.subresource("tree").url());
     } catch (errV1) {
       if (dataset.isRequestValidWithoutDataset) {
         utils.verbose("Request is valid, but no dataset available. Returning 204.");

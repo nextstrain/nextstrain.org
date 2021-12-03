@@ -74,3 +74,29 @@ A named set of [users](#user) with access to see and update a set of builds.
 Each group has a related [source](#source), which typically authorizes access based on the group.
 Managed in an AWS Cognito User Pool called `nextstrain.org`.
 Not to be confused with AWS IAM groups.
+
+## Route
+
+A URL path (e.g. `/zika`), possibly parameterized (e.g. `/groups/:groupName/*`), at which nextstrain.org provides content.
+Routes map paths to resources (i.e. HTML pages, images, datasets, narratives, etc).
+
+The process of finding a matching route, if any exists, is called _routing_.
+
+The Express server performs server-side routing, which means it responds to HTTP requests for a matching path.
+Express route declarations include the stack of [request handlers](#request-handler) to use.
+
+The Gatsby app performs client-side routing, which means it displays content based on the browser's `location`.
+
+## Request handler
+
+Either an [endpoint](#endpoint) or [middleware](#middleware).
+Sometimes called an _Express handler_, _route handler_, or just _handler_.
+
+## Endpoint
+
+Function that sends the response to a request.
+Specific to an HTTP method and a resource or type of resource.
+
+## Middleware
+
+Function that either responds to a request or does some preparation and then hands processing to the next [handler](#request-handler) in the stack.
