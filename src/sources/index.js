@@ -1,3 +1,6 @@
+/* See ./models.js for an explanation of the design of these classes.
+ */
+
 const utils = require("../utils");
 const {CoreSource, CoreStagingSource} = require("./core");
 const {CommunitySource} = require("./community");

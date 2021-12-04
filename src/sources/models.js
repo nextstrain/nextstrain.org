@@ -3,14 +3,67 @@ const {fetch} = require("../fetch");
 const {NoResourcePathError} = require("../exceptions");
 const utils = require("../utils");
 
-
-/* These Source, Dataset, and Narrative classes contain information to map an
- * array of dataset/narrative path parts onto a URL.  Source selection and
- * dataset path aliasing (/flu → /flu/seasonal/h3n2/ha/3y) is handled in
- * utils/prefix.parsePrefix().
+/* The model classes here are the base classes for the classes defined in
+ * ./core.js, ./community.js, ./groups.js, etc.
  *
- * The class definitions would be a bit shorter/prettier if we were using Babel
- * to allow class properties on Node.
+ * Sources represent a remote HTTP data source.  Sources contain Datasets and
+ * Narratives (both Resources).  Datasets and Narratives have Subresources
+ * representing specific files/data that make up the conceptual Resource as a
+ * whole.
+ *
+ * Source
+ *   Dataset                (implements Resource interface)
+ *     DatasetSubresource   (implements Subresource interface)
+ *   Narrative              (implements Resource interface)
+ *     NarrativeSubresource (implements Subresource interface)
+ *
+ * Subresources are separate from Resources so that our code can more easily
+ * talk about, address, and pass around values representing both the conceptual
+ * whole of a dataset or narrative and the concrete individual files making up
+ * those wholes.
+ *
+ * A concrete example:
+ *
+ * CoreSource (in ./core.js) represents a Cloudfront distribution
+ * (https://data.nextstrain.org) in front of an S3 bucket
+ * (s3://nextstrain-data).
+ *
+ *   const coreSource = new CoreSource()
+ *
+ * The core dataset "flu/seasonal/h3n2/ha/2y" is represented by a Dataset
+ * instance you get by calling:
+ *
+ *   const dataset = coreSource.dataset(["flu", "seasonal", "h3n2", "ha", "2y"])
+ *
+ * That Dataset has Subresources identified by the names "main" and
+ * "tip-frequencies", which you get by calling:
+ *
+ *   dataset.subresource("main")
+ *   dataset.subresource("tip-frequencies")
+ *
+ * These Subresources can be retrieved at the following URLs, which you obtain
+ * using the Subresource.url() method:
+ *
+ *   https://data.nextstrain.org/flu_seasonal_h3n2_ha_2y.json
+ *   https://data.nextstrain.org/flu_seasonal_h3n2_ha_2y_tip-frequencies.json
+ *
+ * Typically, the URL for a specific Subresource is composed from details in
+ * the Source, Resource, and Subresource instances.  For example:
+ *
+ *   https://data.nextstrain.org/flu_seasonal_h3n2_ha_2y_tip-frequencies.json
+ *   \_________________________/ \_____________________/ \__________________/
+ *          from Source               from Dataset              from
+ *                                                        DatasetSubresource
+ *
+ * The actual URL construction varies between implementations but is broadly
+ * similar.
+ *
+ * These abstract model classes make it possible for the codebase to support
+ * interchangable data sources with different ways of actually storing the
+ * data.  They provide places to attach information like authorization rules
+ * and URL structure.  Subclasses of these model classes define their specific
+ * implementation details and override any base behaviour which doesn't apply
+ * to them (ideally limited).
  */
 
 class Source {
