@@ -202,6 +202,39 @@ const putDataset = contentTypesConsumed([
 ]);
 
 
+/* DELETE
+ */
+
+/**
+ * Generate an Express endpoint that deletes a dataset or narrative Resource
+ * determined by the request.
+ *
+ * Internally, the Resource is deleted by deleting all of its Subresources.
+ *
+ * @param {resourceExtractor} resourceExtractor - Function to provide the Resource instance from the request
+ * @returns {expressEndpointAsync}
+ */
+const deleteResource = resourceExtractor => async (req, res) => {
+  const resource = resourceExtractor(req);
+
+  const method = "DELETE";
+  const upstreamUrls = await Promise.all(resource.subresources().map(s => s.url(method)));
+  const upstreamResponses = await Promise.all(upstreamUrls.map(url => fetch(url, {method})));
+
+  const goodStatuses = new Set([204, 404]);
+
+  if (!upstreamResponses.every(r => goodStatuses.has(r.status))) {
+    throw new InternalServerError("failed to delete all subresources");
+  }
+
+  return res.status(204).end();
+};
+
+
+const deleteDataset = deleteResource(req => req.context.dataset);
+const deleteNarrative = deleteResource(req => req.context.narrative);
+
+
 /* Narratives
  */
 
@@ -621,6 +654,12 @@ function copyHeaders(headerSource, headerNames) {
  */
 
 /**
+ * @callback resourceExtractor
+ * @param {express.request} req
+ * @returns {module:../sources/models.Resource} A Resource instance.
+ */
+
+/**
  * @callback expressMiddleware
  * @param {express.request} req
  * @param {express.response} res
@@ -652,9 +691,11 @@ module.exports = {
   ifDatasetExists,
   getDataset,
   putDataset,
+  deleteDataset,
 
   setNarrative,
   ifNarrativeExists,
   getNarrative,
   putNarrative,
+  deleteNarrative,
 };

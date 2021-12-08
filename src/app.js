@@ -22,8 +22,10 @@ const {
   canonicalizeDataset,
   getDataset,
   putDataset,
+  deleteDataset,
   getNarrative,
   putNarrative,
+  deleteNarrative,
 } = endpoints.sources;
 
 const esc = encodeURIComponent;
@@ -128,12 +130,14 @@ app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
   .getAsync(getDataset)
   .putAsync(putDataset)
+  .deleteAsync(deleteDataset)
 ;
 
 app.routeAsync("/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
   .putAsync(putNarrative)
+  .deleteAsync(deleteNarrative)
 ;
 
 
@@ -152,12 +156,14 @@ app.routeAsync("/staging/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
   .putAsync(putNarrative)
+  .deleteAsync(deleteNarrative)
 ;
 
 app.routeAsync("/staging/*")
   .all(setDataset(req => req.params[0]), canonicalizeDataset(path => `/staging/${path}`))
   .getAsync(getDataset)
   .putAsync(putDataset)
+  .deleteAsync(deleteDataset)
 ;
 
 
@@ -233,12 +239,14 @@ app.routeAsync("/groups/:groupName/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
   .putAsync(putNarrative)
+  .deleteAsync(deleteNarrative)
 ;
 
 app.routeAsync("/groups/:groupName/*")
   .all(setDataset(req => req.params[0]))
   .getAsync(getDataset)
   .putAsync(putDataset)
+  .deleteAsync(deleteDataset)
 ;
 
 

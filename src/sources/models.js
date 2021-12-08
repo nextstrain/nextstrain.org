@@ -174,6 +174,9 @@ class Resource {
   subresource(type) {
     return new this.Subresource(this, type);
   }
+  subresources() {
+    return this.Subresource.validTypes.map(type => this.subresource(type));
+  }
 }
 
 class Subresource {

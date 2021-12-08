@@ -21,6 +21,7 @@ class S3Source extends Source {
         return url.toString();
 
       case "PUT":
+      case "DELETE":
         return await this.signedUrlFor(path, method, headers);
 
       default:
@@ -39,6 +40,7 @@ class S3Source extends Source {
           ContentEncoding: normalizedHeaders["content-encoding"],
         },
       },
+      DELETE: { name: "deleteObject" },
     };
 
     if (!action[method]) throw new Error(`Unsupported method: ${method}`);
