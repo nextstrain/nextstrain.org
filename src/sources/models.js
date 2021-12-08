@@ -165,8 +165,14 @@ class Resource {
   async exists() {
     throw new Error("exists() must be implemented by Resource subclasses");
   }
-  subresource(type) { // eslint-disable-line no-unused-vars
-    throw new Error("subresource() must be implemented by Resource subclasses");
+  static get Subresource() {
+    throw new Error("static Subresource property must be set by Resource subclasses");
+  }
+  get Subresource() {
+    return this.constructor.Subresource;
+  }
+  subresource(type) {
+    return new this.Subresource(this, type);
   }
 }
 
@@ -203,6 +209,10 @@ class Subresource {
 
 
 class Dataset extends Resource {
+  static get Subresource() {
+    return DatasetSubresource;
+  }
+
   async exists() {
     const method = "HEAD";
     const _exists = async (type) =>
@@ -266,10 +276,6 @@ class Dataset extends Resource {
   get isRequestValidWithoutDataset() {
     return false;
   }
-
-  subresource(type) {
-    return new DatasetSubresource(this, type);
-  }
 }
 
 class DatasetSubresource extends Subresource {
@@ -292,16 +298,16 @@ class DatasetSubresource extends Subresource {
 
 
 class Narrative extends Resource {
+  static get Subresource() {
+    return NarrativeSubresource;
+  }
+
   async exists() {
     const method = "HEAD";
     const _exists = async () =>
       (await fetch(await this.subresource("md").url(method), {method, cache: "no-store"})).status === 200;
 
     return (await _exists()) || false;
-  }
-
-  subresource(type) {
-    return new NarrativeSubresource(this, type);
   }
 }
 
