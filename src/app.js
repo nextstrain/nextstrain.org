@@ -247,6 +247,34 @@ app.route(["/users", "/users/:name"])
   .get((req, res) => res.redirect("/whoami"));
 
 
+/* JSON Schemas.
+ *
+ * Our schemas identity themselves using nextstrain.org URLs so that we can
+ * move the actual file location around (e.g. renaming in Augur's repo or
+ * moving hosting on S3) without changing the ids.  This is important as ids
+ * should be ~permanent since they're consumed and used externally.  The
+ * indirection will also let us present rendered, human-friendly versions of
+ * the schemas to browsers/humans while still returning the JSON representation
+ * to programmatic clients, though we're not this fancy yet.
+ */
+/* eslint-disable no-multi-spaces */
+const schemaRoutes = [
+  ["/schemas/auspice/config/v2", "https://github.com/nextstrain/augur/raw/master/augur/data/schema-auspice-config-v2.json"],
+  ["/schemas/dataset/v1/meta",   "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v1-meta.json"],
+  ["/schemas/dataset/v1/tree",   "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v1-tree.json"],
+  ["/schemas/dataset/v2",        "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v2.json"],
+];
+/* eslint-enable no-multi-spaces */
+
+for (const [schemaRoute, url] of schemaRoutes) {
+  app.route(schemaRoute)
+    .get((req, res) => res.redirect(url));
+}
+
+app.route("/schemas/*")
+  .all((req, res, next) => next(new NotFound()));
+
+
 /* Auspice HTML pages and assets.
  *
  * Auspice hardcodes URL paths that start with /dist/… in its Webpack config,
