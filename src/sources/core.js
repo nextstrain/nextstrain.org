@@ -4,6 +4,10 @@ const {NotFound} = require('http-errors');
 const utils = require("../utils");
 const {Source} = require("./models");
 
+const authorization = process.env.GITHUB_TOKEN
+  ? `token ${process.env.GITHUB_TOKEN}`
+  : "";
+
 class CoreSource extends Source {
   static get _name() { return "core"; }
   async baseUrl() { return "http://data.nextstrain.org/"; }
@@ -30,7 +34,7 @@ class CoreSource extends Source {
 
   async availableNarratives() {
     const qs = queryString.stringify({ref: this.branch});
-    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents?${qs}`);
+    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents?${qs}`, {headers: {authorization}});
 
     if (response.status === 404) throw new NotFound();
     else if (response.status !== 200 && response.status !== 304) {
