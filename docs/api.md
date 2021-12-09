@@ -12,7 +12,7 @@ The handlers are attached within `server.js` and are typical [express](https://e
 Each handler is defined in an file of the same name within `src`.
 
 
-### Autorization
+### Authorization
 
 Each handler is responsible for checking authorization by calling a `Source` class method like so:
 ```js
