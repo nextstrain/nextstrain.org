@@ -51,7 +51,7 @@ This will result in another email to the user with a new temporary password.
 _This is a lot of steps, but in our early stages is a totally workable on-boarding process that can last us a while._
 _The steps will also change and shift a bit as we improve integrations, so automating it now seems premature._
 
-Add a new [source](glossary.md#source) class in [_nextstrain.org/src/sources.js_](https://github.com/nextstrain/nextstrain.org/blob/master/src/sources.js) based on the existing `InrbDrcSource` or `SeattleFluSource`.
+Add a new [source](glossary.md#source) class in [_nextstrain.org/src/sources/groups.js_](https://github.com/nextstrain/nextstrain.org/blob/master/src/sources/groups.js) based on the existing `InrbDrcSource` or `SeattleFluSource`.
 The `_name` you give the source will be used in the nextstrain.org URL and by default as the Cognito group name and in the S3 bucket name.
 For now, at least, names should be shorter than ~50 characters and only contain lowercase letters, numbers, and hyphens.
 Commit this change but do not push yet.
