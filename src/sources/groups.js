@@ -119,6 +119,11 @@ class NebraskaDHHSSource extends PublicGroupSource {
   static get _name() { return "nebraska-dhhs"; }
 }
 
+class AfricaCDCSource extends PublicGroupSource {
+  /* Person to contact: Gerald Mboowa */
+  static get _name() { return "africa-cdc"; }
+}
+
 class PIGIEPrivateSource extends PrivateGroupSource {
   static get _name() { return "pigie"; }
 }
@@ -174,6 +179,7 @@ const groupSources = [
   SC2ZamPubSource,
   NebraskaDHHSSource,
   NcovHKSource,
+  AfricaCDCSource,
   /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
