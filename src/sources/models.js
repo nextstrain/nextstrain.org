@@ -64,6 +64,27 @@ const utils = require("../utils");
  * and URL structure.  Subclasses of these model classes define their specific
  * implementation details and override any base behaviour which doesn't apply
  * to them (ideally limited).
+ *
+ * The advantages of passing around URLs (i.e. passing data by reference)
+ * instead of directly returning the data or even an IO stream include:
+ *
+ *    - You can implement the latter (returning the data or IO streams) with
+ *      the former (URLs), but not vice versa.
+ *
+ *    - URLs and HTTP are a looser coupling between components, which for
+ *      example, makes it easier to change one component later without
+ *      affecting another.
+ *
+ *    - We can re-use the design decisions already made by the HTTP spec for
+ *      how to transmit metadata about some data stream (encoding, content
+ *      type, caching, last modified, etc) so we don't have to re-invent this.
+ *
+ *    - HTTP for the upstream sources aligns with our most common context of
+ *      responding to downstream HTTP clients, and so the opportunities for
+ *      optimization through alignment are greater.  For example, one
+ *      optimization might be to dynamically choose to redirect a downstream
+ *      client to a subresource URL if the upstream source supports CORs
+ *      (instead of always proxying the data through us).
  */
 
 class Source {
