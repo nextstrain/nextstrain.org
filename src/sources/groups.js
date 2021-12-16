@@ -88,6 +88,10 @@ class GrubaughLabPrivateSource extends PrivateGroupSource {
   static get _name() { return "grubaughlab"; }
 }
 
+class GrubaughLabPublicSource extends PublicGroupSource {
+  static get _name() { return "grubaughlab-public"; }
+}
+
 class NeherLabSource extends PublicGroupSource {
   /* Person to contact for enquiries: Richard */
   static get _name() { return "neherlab"; }
@@ -180,6 +184,7 @@ const groupSources = [
   NebraskaDHHSSource,
   NcovHKSource,
   AfricaCDCSource,
+  GrubaughLabPublicSource,
   /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
