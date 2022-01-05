@@ -12,10 +12,10 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     configureAnchors({ offset: -10 });
-    const nonExistentDatasetName = this.props["*"];
+    const nonExistentPath = this.props["*"];
     this.state = {
       repoNotFound: false,
-      nonExistentDatasetName
+      nonExistentPath
     };
   }
 
@@ -53,11 +53,13 @@ class Index extends React.Component {
   }
 
   banner() {
-    const {userName, repoName} = this.props;
+    const {userName, repoName, location} = this.props;
     let bannerTitle, bannerContents;
-    // Set up a banner if dataset doesn't exist
-    if (this.state.nonExistentDatasetName) {
-      bannerTitle = `The dataset "nextstrain.org/community/${userName}/${repoName}/${this.state.nonExistentDatasetName}" doesn't exist.`;
+    // Set up a banner if dataset or narrative doesn't exist
+    if (this.state.nonExistentPath) {
+      bannerTitle = location.pathname.startsWith("/community/narratives/")
+        ? `The narrative "nextstrain.org/community/narratives/${userName}/${repoName}/${this.state.nonExistentPath}" doesn't exist.`
+        : `The dataset "nextstrain.org/community/${userName}/${repoName}/${this.state.nonExistentPath}" doesn't exist.`;
       bannerContents = `Here is the page for the "${repoName}" repository.`;
     }
     // Set up a banner or update the existing one if the repo doesn't exist

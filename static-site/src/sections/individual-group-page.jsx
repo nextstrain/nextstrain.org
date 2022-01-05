@@ -12,10 +12,10 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     configureAnchors({ offset: -10 });
-    const nonExistentDatasetName = this.props["*"];
+    const nonExistentPath = this.props["*"];
     this.state = {
       groupNotFound: false,
-      nonExistentDatasetName
+      nonExistentPath
     };
   }
 
@@ -53,8 +53,10 @@ class Index extends React.Component {
     const groupName = this.props["groupName"];
     let bannerTitle, bannerContents;
     // Set up a banner if dataset doesn't exist
-    if (this.state.nonExistentDatasetName) {
-      bannerTitle = `The dataset "nextstrain.org/groups/${groupName}/${this.state.nonExistentDatasetName}" doesn't exist.`;
+    if (this.state.nonExistentPath) {
+      bannerTitle = this.state.nonExistentPath.startsWith("narratives/")
+        ? `The narrative "nextstrain.org/groups/${groupName}/${this.state.nonExistentPath}" doesn't exist.`
+        : `The dataset "nextstrain.org/groups/${groupName}/${this.state.nonExistentPath}" doesn't exist.`;
       bannerContents = `Here is the page for the "${groupName}" Nextstrain Group.`;
     }
     // Set up a banner or update the existing one if the group doesn't exist

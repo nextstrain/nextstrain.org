@@ -214,6 +214,12 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/sections/community-repo-page.jsx")
         });
 
+        createPage({
+          path: "/community/narratives/:userName/:repoName",
+          matchPath: "/community/narratives/:userName/:repoName/*",
+          component: path.resolve("src/sections/community-repo-page.jsx")
+        });
+
         // Create page detailing all things SARS-CoV-2
         createPage({
           path: "/sars-cov-2",
