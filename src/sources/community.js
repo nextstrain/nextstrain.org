@@ -5,6 +5,10 @@ const {NotFound} = require('http-errors');
 const utils = require("../utils");
 const {Source, Dataset, Narrative} = require("./models");
 
+const authorization = process.env.GITHUB_TOKEN
+  ? `token ${process.env.GITHUB_TOKEN}`
+  : "";
+
 class CommunitySource extends Source {
   constructor(owner, repoName) {
     super();
@@ -19,7 +23,7 @@ class CommunitySource extends Source {
 
     if (!this.repoName) throw new Error(`Cannot construct a ${this.constructor.name} without a repoName after splitting on /@/`);
 
-    this.defaultBranch = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`)
+    this.defaultBranch = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`, {headers: {authorization}})
       .then((res) => res.json())
       .then((data) => data.default_branch)
       .catch(() => {
@@ -55,7 +59,7 @@ class CommunitySource extends Source {
 
   async availableDatasets() {
     const qs = queryString.stringify({ref: await this.branch});
-    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/auspice?${qs}`);
+    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/auspice?${qs}`, {headers: {authorization}});
 
     if (response.status === 404) throw new NotFound();
     else if (response.status !== 200 && response.status !== 304) {
@@ -77,7 +81,7 @@ class CommunitySource extends Source {
 
   async availableNarratives() {
     const qs = queryString.stringify({ref: await this.branch});
-    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/narratives?${qs}`);
+    const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/narratives?${qs}`, {headers: {authorization}});
 
     if (response.status !== 200 && response.status !== 304) {
       if (response.status !== 404) {

@@ -33,6 +33,11 @@ Deploys of `master` happen automatically after Travis CI tests are successful.
 
   - `PAPERTRAIL_API_TOKEN` is used for logging through [papertrail](https://elements.heroku.com/addons/papertrail).
 
+  - `GITHUB_TOKEN` is used to make authenticated requests to the GitHub API so that we get increased rate limits.
+    The token should have public access only, i.e. no permission scopes granted (including `public_repo`, which grants write access to public repos).
+    If not provided, requests to the GitHub API are unauthenticated.
+    The token we use in production is associated with the `nextstrain-bot` GitHub user.
+
 ### Redis add-on
 
 The [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) add-on is attached to our `nextstrain-server` and `nextstrain-dev` apps.
