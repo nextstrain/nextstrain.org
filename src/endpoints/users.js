@@ -1,3 +1,4 @@
+const authz = require("../authz");
 const {contentTypesProvided} = require("../negotiate");
 const sources = require("../sources");
 const {sendGatsbyPage} = require("./static");
@@ -19,10 +20,11 @@ const {sendGatsbyPage} = require("./static");
  */
 const visibleGroups = (user) => Array.from(sources)
   .filter(([, Source]) => Source.isGroup())
-  .filter(([, Source]) => Source.visibleToUser(user))
-  .map(([sourceName, Source]) => ({
+  .map(([sourceName, Source]) => [sourceName, new Source()])
+  .filter(([, source]) => authz.authorized(user, authz.actions.Read, source))
+  .map(([sourceName, source]) => ({
     name: sourceName,
-    private: !Source.visibleToUser(undefined)
+    private: !authz.authorized(null, authz.actions.Read, source),
   }));
 
 

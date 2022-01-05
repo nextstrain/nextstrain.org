@@ -12,7 +12,7 @@ const {promisify} = require("util");
 const zlib = require("zlib");
 const readStream = require("raw-body");
 
-const {AuthzDenied} = require("../exceptions");
+const authz = require("../authz");
 const {contentTypesProvided, contentTypesConsumed} = require("../negotiate");
 const {fetch, Request} = require("../fetch");
 const sources = require("../sources");
@@ -45,9 +45,7 @@ const setSource = (sourceName, argsExtractor = (req) => []) => (req, res, next) 
 
   res.vary("Accept");
 
-  if (!source.visibleToUser(req.user)) {
-    throw new AuthzDenied();
-  }
+  authz.assertAuthorized(req.user, authz.actions.Read, source);
 
   req.context.source = source;
   return next();
@@ -123,6 +121,8 @@ const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
  * @type {expressMiddlewareAsync}
  */
 const ifDatasetExists = async (req, res, next) => {
+  authz.assertAuthorized(req.user, authz.actions.Read, req.context.dataset);
+
   if (!(await req.context.dataset.exists())) throw new NotFound();
   return next();
 };
@@ -209,6 +209,8 @@ const putDataset = contentTypesConsumed([
 const deleteResource = resourceExtractor => async (req, res) => {
   const resource = resourceExtractor(req);
 
+  authz.assertAuthorized(req.user, authz.actions.Write, resource);
+
   const method = "DELETE";
   const upstreamUrls = await Promise.all(resource.subresources().map(s => s.url(method)));
   const upstreamResponses = await Promise.all(upstreamUrls.map(url => fetch(url, {method})));
@@ -250,6 +252,8 @@ const setNarrative = (pathExtractor) => (req, res, next) => {
  * @type {expressMiddlewareAsync}
  */
 const ifNarrativeExists = async (req, res, next) => {
+  authz.assertAuthorized(req.user, authz.actions.Read, req.context.narrative);
+
   if (!(await req.context.narrative.exists())) throw new NotFound();
   return next();
 };
@@ -322,6 +326,9 @@ function pathParts(path = "") {
 function sendSubresource(subresourceExtractor) {
   return async (req, res) => {
     const subresource = subresourceExtractor(req);
+
+    authz.assertAuthorized(req.user, authz.actions.Read, subresource.resource);
+
     const subresourceUrl = await subresource.url();
 
     /* Proxy the data through us:
@@ -370,6 +377,8 @@ function receiveSubresource(subresourceExtractor) {
   return async (req, res) => {
     const method = "PUT";
     const subresource = subresourceExtractor(req);
+
+    authz.assertAuthorized(req.user, authz.actions.Write, subresource.resource);
 
     /* Proxy the data through us:
      *

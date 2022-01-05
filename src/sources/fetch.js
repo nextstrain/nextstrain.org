@@ -1,4 +1,5 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
+const authz = require("../authz");
 const {Source, Dataset, DatasetSubresource, Narrative, NarrativeSubresource} = require("./models");
 
 class UrlDefinedSource extends Source {
@@ -26,6 +27,23 @@ class UrlDefinedSource extends Source {
   async availableDatasets() { return []; }
   async availableNarratives() { return []; }
   async getInfo() { return {}; }
+
+  get authzPolicy() {
+    return [
+      {tag: authz.tags.Visibility.Public, role: "*", allow: [authz.actions.Read]},
+    ];
+  }
+  get authzTags() {
+    return new Set([
+      authz.tags.Type.Source,
+      authz.tags.Visibility.Public,
+    ]);
+  }
+  get authzTagsToPropagate() {
+    return new Set([
+      authz.tags.Visibility.Public,
+    ]);
+  }
 }
 
 class UrlDefinedDataset extends Dataset {

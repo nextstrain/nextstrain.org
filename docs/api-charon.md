@@ -14,11 +14,9 @@ Each handler is defined in an file of the same name within `src`.
 
 ### Authorization
 
-Each handler is responsible for checking authorization by calling a `Source` class method like so:
+Each handler is responsible for checking authorization:
 ```js
-if (!source.visibleToUser(req.user)) {
-  return helpers.unauthorized(req, res);
-}
+authz.assertAuthorized(req.user, authz.actions.Read, source);
 ```
 
 ## Tests

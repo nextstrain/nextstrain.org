@@ -109,15 +109,6 @@ const parseNarrativeLanguage = (narrative) => {
   return language;
 };
 
-const unauthorized = (req) => {
-  const user = req.user
-    ? `user ${req.user.username}`
-    : `an anonymous user`;
-
-  warn(`Denying ${user} access to ${req.originalUrl}`);
-  throw new NotFound();
-};
-
 /**
  * Normalize a plain object of HTTP headers.
  *
@@ -145,6 +136,5 @@ module.exports = {
   responseDetails,
   getDatasetsFromListOfFilenames,
   parseNarrativeLanguage,
-  unauthorized,
   normalizeHeaders,
 };

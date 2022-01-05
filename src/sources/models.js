@@ -1,4 +1,5 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
+const authzTags = require("../authz/tags");
 const {fetch} = require("../fetch");
 const {NoResourcePathError} = require("../exceptions");
 const utils = require("../utils");
@@ -124,23 +125,20 @@ class Source {
   availableNarratives() {
     return [];
   }
-
-  /* Static access control for this entire source, regardless of any
-   * instance-specific parameters.
-   */
-  static visibleToUser(user) { // eslint-disable-line no-unused-vars
-    return true;
-  }
-
-  /* Instance-specific access control delegates to the static method by
-   * default.
-   */
-  visibleToUser(user) {
-    return this.constructor.visibleToUser(user);
-  }
-
   async getInfo() {
     throw new Error("getInfo() must be implemented by subclasses");
+  }
+
+  get authzPolicy() {
+    throw new Error("get authzPolicy() must be implemented by subclasses");
+  }
+  get authzTags() {
+    return new Set([
+      authzTags.Type.Source,
+    ]);
+  }
+  get authzTagsToPropagate() {
+    return new Set();
   }
 }
 
@@ -279,6 +277,13 @@ class Dataset extends Resource {
   get isRequestValidWithoutDataset() {
     return false;
   }
+
+  get authzTags() {
+    return new Set([
+      ...this.source.authzTagsToPropagate,
+      authzTags.Type.Dataset,
+    ]);
+  }
 }
 
 class DatasetSubresource extends Subresource {
@@ -311,6 +316,13 @@ class Narrative extends Resource {
       (await fetch(await this.subresource("md").url(method), {method, cache: "no-store"})).status === 200;
 
     return (await _exists()) || false;
+  }
+
+  get authzTags() {
+    return new Set([
+      ...this.source.authzTagsToPropagate,
+      authzTags.Type.Narrative,
+    ]);
   }
 }
 

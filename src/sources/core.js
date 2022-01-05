@@ -1,3 +1,4 @@
+const authz = require("../authz");
 const {fetch} = require("../fetch");
 const queryString = require("query-string");
 const {NotFound} = require('http-errors');
@@ -59,6 +60,23 @@ class CoreSource extends Source {
       showDatasets: true,
       showNarratives: true,
     };
+  }
+
+  get authzPolicy() {
+    return [
+      {tag: authz.tags.Visibility.Public, role: "*", allow: [authz.actions.Read]},
+    ];
+  }
+  get authzTags() {
+    return new Set([
+      authz.tags.Type.Source,
+      authz.tags.Visibility.Public,
+    ]);
+  }
+  get authzTagsToPropagate() {
+    return new Set([
+      authz.tags.Visibility.Public,
+    ]);
   }
 }
 

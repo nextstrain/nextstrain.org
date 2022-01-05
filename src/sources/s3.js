@@ -174,9 +174,6 @@ class S3Source extends Source {
 }
 
 class PrivateS3Source extends S3Source {
-  static visibleToUser(user) { // eslint-disable-line no-unused-vars
-    throw new Error("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
-  }
   async urlFor(path, method = 'GET', headers = {}) {
     return await this.signedUrlFor(path, method, headers);
   }
