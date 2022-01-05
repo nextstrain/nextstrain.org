@@ -18,11 +18,11 @@ const {sendGatsbyPage} = require("./static");
  *                  `private` -> {bool} (group is private)
  */
 const visibleGroups = (user) => Array.from(sources)
-  .filter(([, source]) => source.isGroup())
-  .filter(([, source]) => source.visibleToUser(user))
-  .map(([sourceName, source]) => ({
+  .filter(([, Source]) => Source.isGroup())
+  .filter(([, Source]) => Source.visibleToUser(user))
+  .map(([sourceName, Source]) => ({
     name: sourceName,
-    private: !source.visibleToUser(undefined)
+    private: !Source.visibleToUser(undefined)
   }));
 
 
