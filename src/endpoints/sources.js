@@ -5,17 +5,17 @@
  */
 
 const {parse: parseContentType} = require("content-type");
-const {Forbidden, InternalServerError, NotFound, Unauthorized, UnsupportedMediaType} = require("http-errors");
+const {InternalServerError, NotFound, UnsupportedMediaType} = require("http-errors");
 const negotiateMediaType = require("negotiator/lib/mediaType");
 const stream = require("stream");
 const {promisify} = require("util");
 const zlib = require("zlib");
 const readStream = require("raw-body");
 
+const {AuthzDenied} = require("../exceptions");
 const {contentTypesProvided, contentTypesConsumed} = require("../negotiate");
 const {fetch, Request} = require("../fetch");
 const sources = require("../sources");
-const utils = require("../utils");
 const {sendAuspiceEntrypoint} = require("./static");
 
 
@@ -46,15 +46,7 @@ const setSource = (sourceName, argsExtractor = (req) => []) => (req, res, next) 
   res.vary("Accept");
 
   if (!source.visibleToUser(req.user)) {
-    if (!req.user) {
-      if (req.accepts("html")) {
-        utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
-        req.session.afterLoginReturnTo = req.originalUrl;
-        return res.redirect("/login");
-      }
-      throw new Unauthorized();
-    }
-    throw new Forbidden();
+    throw new AuthzDenied();
   }
 
   req.context.source = source;

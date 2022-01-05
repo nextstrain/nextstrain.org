@@ -6,12 +6,13 @@ const compression = require('compression');
 const utils = require("./utils");
 const cors = require('cors');
 const {addAsync} = require("@awaitjs/express");
-const {NotFound} = require('http-errors');
+const {Forbidden, NotFound, Unauthorized} = require("http-errors");
 
 const production = process.env.NODE_ENV === "production";
 
 const authn = require("./authn");
 const endpoints = require("./endpoints");
+const {AuthzDenied} = require("./exceptions");
 const redirects = require("./redirects");
 
 const {
@@ -349,6 +350,21 @@ app.useAsync(async (err, req, res, next) => {
   }
 
   res.vary("Accept");
+
+  /* Handle our authorization denied errors differently depending on if the
+   * request is authenticated or not and if the client is browser-like or not.
+   */
+  if (err instanceof AuthzDenied) {
+    if (!req.user) {
+      if (req.accepts("html")) {
+        utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
+        req.session.afterLoginReturnTo = req.originalUrl;
+        return res.redirect("/login");
+      }
+      err = new Unauthorized(err.message); // eslint-disable-line no-param-reassign
+    }
+    err = new Forbidden(err.message); // eslint-disable-line no-param-reassign
+  }
 
   if (req.accepts().some(jsonMediaType) && !req.accepts("html")) {
     utils.verbose(`Sending ${err} error as JSON`);
