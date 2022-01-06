@@ -13,6 +13,7 @@ const production = process.env.NODE_ENV === "production";
 const authn = require("./authn");
 const endpoints = require("./endpoints");
 const {AuthzDenied} = require("./exceptions");
+const {replacer: jsonReplacer} = require("./json");
 const redirects = require("./redirects");
 
 const {
@@ -37,6 +38,8 @@ const jsonMediaType = type => type.match(/^application\/(.+\+)?json$/);
 /* Express boilerplate.
  */
 const app = addAsync(express());
+
+app.set("json replacer", jsonReplacer);
 
 app.locals.production = production;
 app.locals.gatsbyDevUrl = production ? null : process.env.GATSBY_DEV_URL;
