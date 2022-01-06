@@ -284,8 +284,22 @@ async function userFromIdToken(idToken, client = undefined) {
 
   const user = {
     username: idClaims["cognito:username"],
+
+    // Just the Nextstrain Group names, which for now means all Cognito groups
+    // (excluding an optional "/role" suffix).
     groups: [...new Set(cognitoGroups.map(g => splitGroupRole(g).group))],
-    authzRoles: new Set(cognitoGroups),
+
+    /* During a transition period while we move users from unsuffixed Cognito
+     * groups to role-suffixed Cognito groups, assume the least privileged
+     * Nextstrain Group role (viewer) for each unsuffixed group membership we
+     * find.  This matches the existing capabilities via nextstrain.org before
+     * the existence of group membership roles.
+     *
+     * XXX TODO: Remove this .map(...) immediately after the transition period
+     * is over.
+     *   -trs, 5 Jan 2022
+     */
+    authzRoles: new Set(cognitoGroups.map(g => g.includes("/") ? g : `${g}/viewers`)),
   };
   return user;
 }
