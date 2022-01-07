@@ -85,6 +85,8 @@ const utils = require("../utils");
  *      optimization might be to dynamically choose to redirect a downstream
  *      client to a subresource URL if the upstream source supports CORs
  *      (instead of always proxying the data through us).
+ *
+ *  -trs, Dec 2021
  */
 
 class Source {
