@@ -172,6 +172,14 @@ class OffluSwinePrivateSource extends PrivateGroupSource {
   static get _name() { return "offlu-swine-private"; }
 }
 
+class ValldHebronVirologySource extends PublicGroupSource {
+  static get _name() { return "valldhebronvirology"; }
+}
+
+class ValldHebronVirologyPrivateSource extends PrivateGroupSource {
+  static get _name() { return "valldhebronvirology-private"; }
+}
+
 const groupSources = [
   /* Public nextstrain groups: */
   BlabSource,
@@ -194,6 +202,7 @@ const groupSources = [
   AfricaCDCSource,
   GrubaughLabPublicSource,
   UsdaArsFluCrewSource,
+  ValldHebronVirologySource,
   /* Private nextstrain groups: */
   BlabPrivateSource,
   NzCovid19PrivateSource,
@@ -208,6 +217,7 @@ const groupSources = [
   NextfluPrivateSource,
   DatabiomicsPrivateSource,
   OffluSwinePrivateSource,
+  ValldHebronVirologyPrivateSource,
 ];
 
 module.exports = {
