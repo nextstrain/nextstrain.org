@@ -356,7 +356,7 @@ app.useAsync(async (err, req, res, next) => {
    */
   if (err instanceof AuthzDenied) {
     if (!req.user) {
-      if (req.accepts("html")) {
+      if (["GET", "HEAD"].includes(req.method) && req.accepts("html")) {
         utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
         req.session.afterLoginReturnTo = req.originalUrl;
         return res.redirect("/login");
