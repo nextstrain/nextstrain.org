@@ -46,6 +46,7 @@ class S3Source extends Source {
     if (!action[method]) throw new Error(`Unsupported method: ${method}`);
 
     return S3.getSignedUrl(action[method].name, {
+      Expires: expires(),
       Bucket: this.bucket,
       Key: path,
       ...action[method].params,
@@ -177,6 +178,28 @@ class PrivateS3Source extends S3Source {
   async urlFor(path, method = 'GET', headers = {}) {
     return await this.signedUrlFor(path, method, headers);
   }
+}
+
+/**
+ * Seconds until current expiration point.
+ *
+ * A fixed expiration point of 2 hours after the start of the current clock
+ * hour is calculated, and the time remaining until then is returned.  This
+ * will range between 1 and 2 hours.
+ *
+ * This technique allows us to generate stable S3 signed URLs for each clock
+ * hour, thus making them cachable.
+ *
+ * @returns {number} seconds
+ */
+function expires() {
+  const now = Math.ceil(Date.now() / 1000); // seconds since Unix epoch
+  const hours = 3600; // seconds
+
+  const startOfCurrentHour = now - (now % hours);
+  const expiresAt = startOfCurrentHour + 2*hours;
+
+  return expiresAt - now;
 }
 
 module.exports = {
