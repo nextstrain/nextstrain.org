@@ -312,7 +312,7 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
       throw new NotFound();
 
     default:
-      throw new InternalServerError(upstreamRes);
+      throw new InternalServerError(`upstream said: ${upstreamRes.status} ${upstreamRes.statusText}`);
   }
 
   /* Check that the upstream returned something acceptable to us.  This ensures
