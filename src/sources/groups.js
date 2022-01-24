@@ -1,5 +1,7 @@
 const {S3Source, PrivateS3Source} = require("./s3");
 
+const PRODUCTION = process.env.NODE_ENV === "production";
+
 class PublicGroupSource extends S3Source {
   get bucket() { return `nextstrain-${this.name}`; }
   static isGroup() {
@@ -17,6 +19,22 @@ class PrivateGroupSource extends PrivateS3Source {
     return true;
   }
 }
+
+
+/* Dev/testing groups */
+
+class TestSource extends PublicGroupSource {
+  static get _name() { return "test"; }
+  get bucket() { return "nextstrain-group-test"; }
+}
+
+class TestPrivateSource extends PrivateGroupSource {
+  static get _name() { return "test-private"; }
+  get bucket() { return "nextstrain-group-test-private"; }
+}
+
+
+/* Real groups */
 
 class BlabSource extends PublicGroupSource {
   static get _name() { return "blab"; }
@@ -218,6 +236,12 @@ const groupSources = [
   DatabiomicsPrivateSource,
   OffluSwinePrivateSource,
   ValldHebronVirologyPrivateSource,
+
+  /* Groups for dev/testing.  Might be nice to expose these in production too,
+   * but we'd need additional changes first to support "unlisted" Groups.
+   *   -trs, 24 Jan 2022
+   * */
+  ...(PRODUCTION ? [] : [TestSource, TestPrivateSource]),
 ];
 
 module.exports = {
