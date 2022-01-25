@@ -351,12 +351,35 @@ app.useAsync(async (err, req, res, next) => {
 
   res.vary("Accept");
 
+  /* "Is this request browser-like?"  Checking for explicit inclusion of
+   * "text/html" is an imperfect heuristic, but still useful enough and doesn't
+   * require user-agent matching, which seems more fraught and more opaque.
+   *
+   * Note that we don't check req.accepts("text/html"), because that'll match
+   * wildcard Accept values which are sent by ~every client.
+   *   -trs, 25 Jan 2022
+   */
+  const isBrowserLike = req.accepts().includes("text/html");
+
   /* Handle our authorization denied errors differently depending on if the
    * request is authenticated or not and if the client is browser-like or not.
+   *
+   * The intended audience for the redirect is humans following bookmarks,
+   * browser history, or other saved links, which will only ever be GET (and
+   * _maybe_ HEAD).
+   *
+   * An additional redirect condition on navigation (vs. background request)
+   * would also be nice, but I can't find any good heuristic for that.
+   * The following seems ideal:
+   *
+   *    const isNavigation = req.headers['sec-fetch-mode'] === "navigate";
+   *
+   * but it is not supported by Safari (macOS or iOS).
+   *   -trs, 25 Jan 2022
    */
   if (err instanceof AuthzDenied) {
     if (!req.user) {
-      if (["GET", "HEAD"].includes(req.method) && req.accepts("html")) {
+      if (["GET", "HEAD"].includes(req.method) && isBrowserLike) {
         utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
         req.session.afterLoginReturnTo = req.originalUrl;
         return res.redirect("/login");
@@ -366,7 +389,11 @@ app.useAsync(async (err, req, res, next) => {
     err = new Forbidden(err.message); // eslint-disable-line no-param-reassign
   }
 
-  if (req.accepts().some(jsonMediaType) && !req.accepts("html")) {
+  /* Browser-like clients get JSON if they explicitly ask for it (regardless of
+   * priority, and including our custom +json types) and all non-browser like
+   * clients get JSON.
+   */
+  if (req.accepts().some(jsonMediaType) || !isBrowserLike) {
     utils.verbose(`Sending ${err} error as JSON`);
     return res.status(err.status || err.statusCode || 500)
       .json({ error: err.message || String(err) })
