@@ -1141,11 +1141,22 @@ datasets:
     geo: puerto_rico
     level: division
     coords:
-    - -66.4
+    - -65.9
     - 18.2
     org:
       name: CDC/AMD
       url: https://www.cdc.gov/amd/
+      
+  - url: https://nextstrain.org/community/arodzh-sudo/ncov-puertorico/Puerto-Rico
+    name: Puerto Rico
+    geo: puerto_rico
+    level: division
+    coords:
+      - -66.9
+      - 18.2
+    org:
+      name: Puerto Rico Public Health Laboratory
+      url: https://www.salud.gov.pr/
 
   - url: https://nextstrain.org/groups/spheres/ncov/rhode-island
     name: Rhode Island
