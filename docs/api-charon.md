@@ -1,4 +1,4 @@
-# Data API between clients and nextstrain.org
+# Charon API
 
 The main data communications between clients (such as Auspice) and the nextstrain.org server occur at URLs beginning with `https://nextstrain.org/charon`.
 Currently the only client accessing these is Auspice (more specifically, a nextstrain.org customised version of Auspice).
