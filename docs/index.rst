@@ -25,6 +25,7 @@ nextstrain.org
     :caption: Internals
     :maxdepth: 2
 
+    authz
     routing
     infrastructure
     glossary
