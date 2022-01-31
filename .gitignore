@@ -19,3 +19,6 @@ scratch
 
 # test logs
 /test/server.log
+
+# docs build
+/docs/build/
