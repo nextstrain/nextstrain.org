@@ -25,6 +25,7 @@ API a foundation for serving other software clients and user audiences.
 .. _content negotiation: https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation
 .. _nextstrain remote: https://docs.nextstrain.org/projects/cli/en/stable/commands/remote/
 
+.. highlight:: none
 
 Synopsis
 ========

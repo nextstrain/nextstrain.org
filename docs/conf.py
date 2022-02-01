@@ -8,6 +8,9 @@ project = 'nextstrain.org'
 copyright = '2022, Trevor Bedford and Richard Neher'
 author = 'The Nextstrain Team'
 
+primary_domain = 'js'
+highlight_language = 'js'
+
 default_role = 'literal'
 
 html_theme = 'nextstrain-sphinx-theme'
