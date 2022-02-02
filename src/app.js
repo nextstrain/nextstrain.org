@@ -10,14 +10,23 @@ const {NotFound} = require('http-errors');
 
 const production = process.env.NODE_ENV === "production";
 
-const charon = require("./endpoints/charon");
-const users = require("./endpoints/users");
-const {auspiceAssets, gatsbyAssets, sendAuspiceEntrypoint, sendGatsbyEntrypoint, sendGatsbyPage, sendGatsby404} = require("./endpoints/static");
-const {setSource, setGroupSource, setDataset, setNarrative, canonicalizeDataset, ifDatasetExists, ifNarrativeExists} = require("./endpoints/sources");
 const authn = require("./authn");
+const endpoints = require("./endpoints");
 const redirects = require("./redirects");
 
+const {
+  setSource,
+  setGroupSource,
+  setDataset,
+  setNarrative,
+  canonicalizeDataset,
+  getDataset,
+  getNarrative,
+} = endpoints.sources;
+
 const esc = encodeURIComponent;
+
+const jsonMediaType = type => type.match(/^application\/(.+\+)?json$/);
 
 
 /* Express boilerplate.
@@ -69,16 +78,16 @@ if (!production) {
 }
 
 app.routeAsync("/charon/getAvailable")
-  .getAsync(charon.getAvailable);
+  .getAsync(endpoints.charon.getAvailable);
 
 app.routeAsync("/charon/getDataset")
-  .getAsync(charon.getDataset);
+  .getAsync(endpoints.charon.getDataset);
 
 app.routeAsync("/charon/getNarrative")
-  .getAsync(charon.getNarrative);
+  .getAsync(endpoints.charon.getNarrative);
 
 app.routeAsync("/charon/getSourceInfo")
-  .getAsync(charon.getSourceInfo);
+  .getAsync(endpoints.charon.getSourceInfo);
 
 app.routeAsync("/charon/*")
   .all((req) => {
@@ -115,12 +124,12 @@ app.use([coreBuildRoutes, "/narratives/*"], setSource("core"));
 
 app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
-  .getAsync(ifDatasetExists, sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 app.routeAsync("/narratives/*")
   .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 
@@ -129,7 +138,7 @@ app.routeAsync("/narratives/*")
 app.use("/staging", setSource("staging"));
 
 app.routeAsync("/staging")
-  .getAsync(sendGatsbyPage("staging/index.html"))
+  .getAsync(endpoints.static.sendGatsbyPage("staging/index.html"))
 ;
 
 app.routeAsync("/staging/narratives")
@@ -137,12 +146,12 @@ app.routeAsync("/staging/narratives")
 
 app.routeAsync("/staging/narratives/*")
   .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 app.routeAsync("/staging/*")
   .all(setDataset(req => req.params[0]), canonicalizeDataset(path => `/staging/${path}`))
-  .getAsync(ifDatasetExists, sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 
@@ -165,12 +174,12 @@ app.use(["/community/narratives/:user/:repo", "/community/:user/:repo"],
  */
 app.routeAsync(["/community/narratives/:user/:repo", "/community/narratives/:user/:repo/*"])
   .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 app.routeAsync(["/community/:user/:repo", "/community/:user/:repo/*"])
   .all(setDataset(req => req.params[0]))
-  .getAsync(ifDatasetExists, sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 
@@ -183,14 +192,14 @@ app.routeAsync("/fetch/narratives/:authority/*")
   .all(setNarrative(req => req.params[0]))
 
   // Assume existence; little benefit to checking when we don't have a fallback page.
-  .getAsync(sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 app.routeAsync("/fetch/:authority/*")
   .all(setDataset(req => req.params[0]))
 
   // Assume existence; little benefit to checking when we don't have a fallback page.
-  .getAsync(sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 
@@ -211,7 +220,7 @@ app.routeAsync("/groups/:groupName")
   /* sendGatsbyPage("groups/:groupName/index.html") should work, but it
    * renders wrong for some reason that's not clear.
    */
-  .getAsync(sendGatsbyEntrypoint)
+  .getAsync(endpoints.static.sendGatsbyEntrypoint)
 ;
 
 // Avoid matching "narratives" as a dataset name.
@@ -220,19 +229,19 @@ app.routeAsync("/groups/:groupName/narratives")
 
 app.routeAsync("/groups/:groupName/narratives/*")
   .all(setNarrative(req => req.params[0]))
-  .getAsync(ifNarrativeExists, sendAuspiceEntrypoint)
+  .getAsync(getNarrative)
 ;
 
 app.routeAsync("/groups/:groupName/*")
   .all(setDataset(req => req.params[0]))
-  .getAsync(ifDatasetExists, sendAuspiceEntrypoint)
+  .getAsync(getDataset)
 ;
 
 
 /* Users
  */
 app.routeAsync("/whoami")
-  .getAsync(users.getWhoami);
+  .getAsync(endpoints.users.getWhoami);
 
 /* For requests for text/html, the first /whoami implementation returned bare
  * bones HTML dynamic on the logged in user.  This was later replaced by a
@@ -281,7 +290,7 @@ app.route("/schemas/*")
  * so we must use that prefix here too.
  */
 app.route("/dist/*")
-  .all(auspiceAssets, (req, res, next) => next(new NotFound()));
+  .all(endpoints.static.auspiceAssets, (req, res, next) => next(new NotFound()));
 
 
 /* Gatsby static HTML pages and other assets.
@@ -305,7 +314,7 @@ if (app.locals.gatsbyDevUrl) {
    */
   app.use(createProxyMiddleware(app.locals.gatsbyDevUrl));
 } else {
-  app.use(gatsbyAssets);
+  app.use(endpoints.static.gatsbyAssets);
 }
 
 
@@ -327,13 +336,22 @@ app.useAsync(async (err, req, res, next) => {
     return next(err);
   }
 
+  res.vary("Accept");
+
+  if (req.accepts().some(jsonMediaType) && !req.accepts("html")) {
+    utils.verbose(`Sending ${err} error as JSON`);
+    return res.status(err.status || err.statusCode || 500)
+      .json({ error: err.message || String(err) })
+      .end();
+  }
+
   if (err instanceof NotFound) {
     /* A note about routing: if the current URL path (i.e. req.path) matches a
      * a page known to Gatsby (e.g. via the Gatsby page's "path" or "matchPath"
      * properties), then Gatsby will perform client-side routing to load that
      * page even though we're serving a static page (404.html) here.
      */
-    return await sendGatsby404(req, res);
+    return await endpoints.static.sendGatsby404(req, res);
   }
 
   utils.verbose(`Sending ${err} error as HTML with Express' default error handler`);

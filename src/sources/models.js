@@ -193,6 +193,12 @@ class Subresource {
   get baseName() {
     throw new Error("baseName() must be implemented by Subresource subclasses");
   }
+  get mediaType() {
+    throw new Error("mediaType() must be implemented by SubResource subclasses");
+  }
+  get accept() {
+    return this.mediaType;
+  }
 }
 
 
@@ -269,6 +275,14 @@ class Dataset extends Resource {
 class DatasetSubresource extends Subresource {
   static validTypes = ["main", "root-sequence", "tip-frequencies", "meta", "tree"];
 
+  mediaType = `application/vnd.nextstrain.dataset.${this.type}+json`;
+
+  accept = [
+    this.mediaType,
+    "application/json; q=0.9",
+    "text/plain; q=0.1",
+  ].join(", ")
+
   get baseName() {
     return this.type === "main"
       ? `${this.resource.baseName}.json`
@@ -293,6 +307,14 @@ class Narrative extends Resource {
 
 class NarrativeSubresource extends Subresource {
   static validTypes = ["md"];
+
+  mediaType = "text/vnd.nextstrain.narrative+markdown";
+
+  accept = [
+    this.mediaType,
+    "text/markdown; q=0.9",
+    "text/*; q=0.1",
+  ].join(", ")
 
   get baseName() {
     return `${this.resource.baseName}.md`;
