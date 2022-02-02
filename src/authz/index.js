@@ -58,9 +58,27 @@ const authorized = (user, action, object) => {
   const objectTags = object.authzTags;
   const userRoles = user ? user.authzRoles : new Set();
 
+  return evaluatePolicy(policy, userRoles, action, objectTags); // eslint-disable-line no-use-before-define
+};
+
+
+/**
+ * Evaluates *policy* using the given *userRoles*, *action*, and *objectTags*.
+ *
+ * Returns true when the policy permits and false otherwise.
+ *
+ * @param {Object[]} policy - Array of rules to evaluate.
+ * @param {Set} userRoles - Roles of user taking action.
+ * @param {Symbol} action - Action being taken, from {@link module:./actions}.
+ * @param {Set} objectTags - Tags of object being acted upon.
+ * @returns {boolean}
+ */
+const evaluatePolicy = (policy, userRoles, action, objectTags) => {
   assert(Array.isArray(policy));
+  assert(policy.every(({tag, role, allow}) => tag && role && allow));
   assert(objectTags instanceof Set);
   assert(userRoles instanceof Set);
+  assert(actions.has(action), "action is known");
 
   /* Policy rules apply to this (user, object) combo if the user roles and
    * object tags match those specified by the rule, or the rule uses a
@@ -106,6 +124,7 @@ const assertAuthorized = (user, action, object) => {
 module.exports = {
   authorized,
   assertAuthorized,
+  evaluatePolicy,
 
   actions,
   tags,
