@@ -35,6 +35,16 @@ class UrlDefinedDataset extends Dataset {
   subresource(type) {
     return new UrlDefinedDatasetSubresource(this, type);
   }
+  async exists() {
+    /* Assume existence.  There's little benefit to checking with extra
+     * requests when we don't have a natural fallback page (e.g. the Group page
+     * or Community page) and checking means that AWS S3 signed URLs can't be
+     * used with /fetch since they dictate a single action (i.e. can't work for
+     * both HEAD and GET).
+     *   -trs, 2 Feb 2022
+     */
+    return true;
+  }
 }
 
 class UrlDefinedDatasetSubresource extends DatasetSubresource {
@@ -58,6 +68,16 @@ class UrlDefinedNarrative extends Narrative {
   }
   subresource(type) {
     return new UrlDefinedNarrativeSubresource(this, type);
+  }
+  async exists() {
+    /* Assume existence.  There's little benefit to checking with extra
+     * requests when we don't have a natural fallback page (e.g. the Group page
+     * or Community page) and checking means that AWS S3 signed URLs can't be
+     * used with /fetch since they dictate a single action (i.e. can't work for
+     * both HEAD and GET).
+     *   -trs, 2 Feb 2022
+     */
+    return true;
   }
 }
 

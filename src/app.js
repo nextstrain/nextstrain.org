@@ -190,15 +190,11 @@ app.use(["/fetch/narratives/:authority", "/fetch/:authority"],
 
 app.routeAsync("/fetch/narratives/:authority/*")
   .all(setNarrative(req => req.params[0]))
-
-  // Assume existence; little benefit to checking when we don't have a fallback page.
   .getAsync(getNarrative)
 ;
 
 app.routeAsync("/fetch/:authority/*")
   .all(setDataset(req => req.params[0]))
-
-  // Assume existence; little benefit to checking when we don't have a fallback page.
   .getAsync(getDataset)
 ;
 
