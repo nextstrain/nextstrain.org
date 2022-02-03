@@ -75,7 +75,7 @@ class CommunitySource extends Source {
     const pathnames = utils.getDatasetsFromListOfFilenames(filenames)
       // strip out the repo name from the start of the pathnames
       // as CommunityDataset().baseParts will add this in
-      .map((pathname) => pathname.replace(`${this.repoName}/`, ""));
+      .map((pathname) => this.removeLeadingRepoName(pathname));
     return pathnames;
   }
 
@@ -98,12 +98,26 @@ class CommunitySource extends Source {
       .filter((file) => file.name.endsWith(".md"))
       .filter((file) => file.name.startsWith(this.repoName))
       .map((file) => file.name
-        .replace(this.repoName, "")
-        .replace(/^_/, "")
         .replace(/[.]md$/, "")
         .split("_")
-        .join("/"));
+        .join("/"))
+      .map((path) => this.removeLeadingRepoName(path));
   }
+
+  removeLeadingRepoName(path) {
+    // nested dataset for repo
+    if (path.startsWith(`${this.repoName}/`)) {
+      return path.slice(`${this.repoName}/`.length);
+    }
+
+    // default dataset for repo
+    if (path.startsWith(this.repoName)) {
+      return path.slice(this.repoName.length);
+    }
+
+    return path;
+  }
+
   async getInfo() {
     /* could attempt to fetch a certain file from the repository if we want to implement
     this functionality in the future */
