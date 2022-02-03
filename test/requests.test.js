@@ -79,10 +79,12 @@ describe("datasets", () => {
     testPaths([
       { case: "with extension",
         path: "/fetch/github.com/nextstrain/community-test/raw/master/auspice/community-test_zika_tutorial.json",
+        testDoesNotExist: false,
         ...noSidecars },
 
       { case: "without extension",
         path: "/fetch/github.com/nextstrain/community-test/raw/master/auspice/community-test_zika_tutorial",
+        testDoesNotExist: false,
         ...noSidecars },
     ]);
   });
@@ -91,7 +93,7 @@ describe("datasets", () => {
     cases.forEach(testPath);
   }
 
-  function testPath({case: case_, path, rootSequence = true, tipFrequencies = true}) {
+  function testPath({case: case_, path, rootSequence = true, tipFrequencies = true, testDoesNotExist = true}) {
     describe(case_, () => {
       // Auspice
       testIsAuspice(path);
@@ -149,7 +151,9 @@ describe("datasets", () => {
       });
 
       // Non-existent datasets under this path
-      testGatsby404(`${path}/does-not-exist`);
+      if (testDoesNotExist) {
+        testGatsby404(`${path}/does-not-exist`);
+      }
     });
   }
 });
@@ -193,10 +197,13 @@ describe("narratives", () => {
   describe("fetch", () => {
     testPaths([
       { case: "with extension",
-        path: "/fetch/narratives/github.com/nextstrain/community-test/raw/master/narratives/community-test_intro-to-narratives.md" },
-
+        path: "/fetch/narratives/github.com/nextstrain/community-test/raw/master/narratives/community-test_intro-to-narratives.md",
+        testDoesNotExist: false
+      },
       { case: "without extension",
-        path: "/fetch/narratives/github.com/nextstrain/community-test/raw/master/narratives/community-test_intro-to-narratives" },
+        path: "/fetch/narratives/github.com/nextstrain/community-test/raw/master/narratives/community-test_intro-to-narratives",
+        testDoesNotExist: false
+      },
     ]);
   });
 
@@ -204,7 +211,7 @@ describe("narratives", () => {
     cases.forEach(testPath);
   }
 
-  function testPath({case: case_, path}) {
+  function testPath({case: case_, path, testDoesNotExist = true}) {
     describe(case_, () => {
       // Auspice
       testIsAuspice(path);
@@ -228,7 +235,9 @@ describe("narratives", () => {
       });
 
       // Non-existent narratives under this path
-      testGatsby404(`${path}/does-not-exist`);
+      if (testDoesNotExist) {
+        testGatsby404(`${path}/does-not-exist`);
+      }
     });
   }
 });
