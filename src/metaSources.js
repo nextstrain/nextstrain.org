@@ -1,5 +1,6 @@
 const authz = require("./authz");
-const sources = require("./sources");
+const {ALL_GROUPS} = require("./groups");
+const {GroupSource} = require("./sources");
 const utils = require("./utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
@@ -17,9 +18,8 @@ const Groups = (() => {
     authz.authorized(null, authz.actions.Read, source);
 
   const groupSources = new Map( // instances of each group Source
-    Array.from((sources))
-      .filter(([name, Source]) => Source.isGroup())  // eslint-disable-line no-unused-vars
-      .map(([name, Source]) => [name, new Source()])
+    ALL_GROUPS
+      .map(g => [g.name, new GroupSource(g)])
       // restrict development server's private groups to "blab-private"
       .filter(([name, source]) => PRODUCTION ? true : (publiclyVisible(source) || name==="blab-private"))
   );
@@ -65,9 +65,6 @@ const Groups = (() => {
   updateKnownDatasetsAndNarratives(); // initial collection on server start
 
   class MetaGroupSource {
-    static get _name() { return "groups"; }
-    get name() { return "groups"; }
-
     constructor(user) {
       this.visibleGroups = new Set(
         Array.from(groupSources)
@@ -91,8 +88,6 @@ const Groups = (() => {
   return MetaGroupSource;
 })();
 
-const metaSourceMap = new Map([
-  ["groups", Groups]
-]);
-
-module.exports = metaSourceMap;
+module.exports = {
+  Groups,
+};

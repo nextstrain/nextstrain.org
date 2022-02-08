@@ -10,25 +10,7 @@ class S3Source extends Source {
   get bucket() {
     throw new Error("bucket() must be implemented by subclasses");
   }
-  async baseUrl() {
-    return `https://${this.bucket}.s3.amazonaws.com`;
-  }
   async urlFor(path, method = 'GET', headers = {}) {
-    switch (method) {
-      case "GET":
-      case "HEAD":
-        const url = new URL(path, await this.baseUrl());
-        return url.toString();
-
-      case "PUT":
-      case "DELETE":
-        return await this.signedUrlFor(path, method, headers);
-
-      default:
-        throw new Error(`Unsupported method: ${method}`);
-    }
-  }
-  async signedUrlFor(path, method = 'GET', headers = {}) {
     const normalizedHeaders = utils.normalizeHeaders(headers);
     const action = {
       GET: { name: "getObject" },
@@ -57,7 +39,7 @@ class S3Source extends Source {
       let contents = [];
       S3.listObjectsV2({Bucket: this.bucket}).eachPage((err, data, done) => {
         if (err) {
-          utils.warn(`Could not list S3 objects for group '${this.name}'\n${err.message}`);
+          utils.warn(`Could not list S3 objects for group '${this.group.name}'\n${err.message}`);
           return reject(err);
         }
         if (data===null) { // no more data
@@ -136,7 +118,7 @@ class S3Source extends Source {
         logoSrc = S3.getSignedUrl('getObject', {Bucket: this.bucket, Key: "group-logo.png"});
       }
 
-      let title = `"${this.name}" Nextstrain group`;
+      let title = `"${this.group.name}" Nextstrain group`;
       let byline = `The available datasets and narratives in this group are listed below.`;
       let website = null;
       let showDatasets = true;
@@ -163,7 +145,7 @@ class S3Source extends Source {
     } catch (err) {
       /* Appropriate fallback if no customised data is available */
       return {
-        title: `"${this.name}" Nextstrain group`,
+        title: `"${this.group.name}" Nextstrain group`,
         byline: `The available datasets and narratives in this group are listed below.`,
         website: null,
         showDatasets: true,
@@ -171,12 +153,6 @@ class S3Source extends Source {
         error: `Error in custom group info: ${err.message}`
       };
     }
-  }
-}
-
-class PrivateS3Source extends S3Source {
-  async urlFor(path, method = 'GET', headers = {}) {
-    return await this.signedUrlFor(path, method, headers);
   }
 }
 
@@ -204,5 +180,4 @@ function expires() {
 
 module.exports = {
   S3Source,
-  PrivateS3Source,
 };

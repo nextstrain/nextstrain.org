@@ -36,7 +36,6 @@ class CommunitySource extends Source {
     }
   }
 
-  static get _name() { return "community"; }
   get repo() { return `${this.owner}/${this.repoName}`; }
   async baseUrl() {
     return `https://github.com/${this.repo}/raw/${await this.branch}/`;
@@ -64,7 +63,7 @@ class CommunitySource extends Source {
 
     if (response.status === 404) throw new NotFound();
     else if (response.status !== 200 && response.status !== 304) {
-      utils.warn(`Error fetching available datasets from GitHub for source ${this.name}`, await utils.responseDetails(response));
+      utils.warn(`Error fetching available datasets from GitHub for ${this}`, await utils.responseDetails(response));
       return [];
     }
 
@@ -87,7 +86,7 @@ class CommunitySource extends Source {
     if (response.status !== 200 && response.status !== 304) {
       if (response.status !== 404) {
         // not found doesn't warrant an error print, it means there are no narratives for this repo
-        utils.warn(`Error fetching available narratives from GitHub for source ${this.name}`, await utils.responseDetails(response));
+        utils.warn(`Error fetching available narratives from GitHub for ${this}`, await utils.responseDetails(response));
       }
       return [];
     }

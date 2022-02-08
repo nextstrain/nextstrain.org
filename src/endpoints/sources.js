@@ -15,7 +15,6 @@ const readStream = require("raw-body");
 const authz = require("../authz");
 const {contentTypesProvided, contentTypesConsumed} = require("../negotiate");
 const {fetch, Request} = require("../fetch");
-const sources = require("../sources");
 const {sendAuspiceEntrypoint} = require("./static");
 
 
@@ -27,21 +26,16 @@ const pipeline = promisify(stream.pipeline);
 
 
 /**
- * Generate Express middleware that instantiates a {@link Source} instance and
- * stashes it in the request context.
+ * Generate Express middleware that extracts a {@link Source} instance from the
+ * request and stashes it in the request context.
  *
- * @param {String} sourceName - Name of a source (from `src/sources.js`)
- * @param {argsExtractor} [argsExtractor] - Function to extract {@link Source}
- *   constructor arguments from the request
+ * @param {sourceExtractor} sourceExtractor - Function to extract {@link Source}
+ *   instance from the request
  * @returns {expressMiddleware}
  */
 // eslint-disable-next-line no-unused-vars
-const setSource = (sourceName, argsExtractor = (req) => []) => (req, res, next) => {
-  const Source = sources.get(sourceName);
-
-  if (!Source) throw new NotFound();
-
-  const source = new Source(...argsExtractor(req));
+const setSource = (sourceExtractor) => (req, res, next) => {
+  const source = sourceExtractor(req);
 
   res.vary("Accept");
 
@@ -49,32 +43,6 @@ const setSource = (sourceName, argsExtractor = (req) => []) => (req, res, next) 
 
   req.context.source = source;
   return next();
-};
-
-
-/* XXX TODO: Remove setGroupSource() once we move from one source per group to
- * one source parameterized by group name, which will enable us to use the
- * standard setSource() like so:
- *
- *    app.use("/groups/:groupName", setSource("group", req => req.params.groupName))
- *
- *   -trs, 25 Oct 2021
- */
-/**
- * Generate Express middleware that instantiates a {@link Source} instance for
- * a group and stashes it in the request context.
- *
- * @param {nameExtractor} nameExtractor - Function to extract the group name from the request
- * @returns {expressMiddleware}
- */
-const setGroupSource = (nameExtractor) => (req, res, next) => {
-  const groupName = nameExtractor(req);
-  const Source = sources.get(groupName);
-
-  // Don't allow group names that happen to be non-group source names.
-  if (!Source || !Source.isGroup()) throw new NotFound();
-
-  return setSource(groupName)(req, res, next);
 };
 
 
@@ -626,9 +594,9 @@ function copyHeaders(headerSource, headerNames) {
 
 
 /**
- * @callback argsExtractor
+ * @callback sourceExtractor
  * @param {express.request} req
- * @returns {Array} Arguments for a {@link Source} constructor.
+ * @returns {Source} A {@link Source} instance.
  */
 
 /**
@@ -687,7 +655,6 @@ function copyHeaders(headerSource, headerNames) {
 
 module.exports = {
   setSource,
-  setGroupSource,
 
   setDataset,
   canonicalizeDataset,

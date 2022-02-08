@@ -3,8 +3,6 @@ const authz = require("../authz");
 const {Source, Dataset, DatasetSubresource, Narrative, NarrativeSubresource} = require("./models");
 
 class UrlDefinedSource extends Source {
-  static get _name() { return "fetch"; }
-
   constructor(authority) {
     super();
 

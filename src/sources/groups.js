@@ -1,60 +1,49 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 const authz = require("../authz");
-const {Group, GROUP_RECORDS} = require("../groups");
-const {S3Source, PrivateS3Source} = require("./s3");
+const {Group} = require("../groups");
+const {S3Source} = require("./s3");
 
 
-const GroupSource = (name) => {
-  const group = new Group(name);
+class GroupSource extends S3Source {
+  constructor(groupOrName) {
+    super();
 
-  const BaseSource = group.isPublic
-    ? PublicGroupSource
-    : PrivateGroupSource;
+    this.group = groupOrName instanceof Group
+      ? groupOrName
+      : new Group(groupOrName);
+  }
 
-  // eslint-disable-next-line no-shadow
-  return class GroupSource extends BaseSource {
-    static get _name() { return group.name; }
-    get bucket() { return group.bucket; }
-  };
-};
-
-
-class PublicGroupSource extends S3Source {
-  static isGroup() {
-    return true;
+  get bucket() {
+    return this.group.bucket;
   }
 
   get authzPolicy() {
-    return [
-      ...authzPolicy(this.name),
+    const basePolicy = authzPolicy(this.group.name);
 
+    const publicPolicy = [
       /* No role restriction on reading anything tagged "public".
        */
       {tag: authz.tags.Visibility.Public, role: "*", allow: [authz.actions.Read]},
     ];
+
+    return this.group.isPublic
+      ? basePolicy.concat(publicPolicy)
+      : basePolicy;
   }
 
   get authzTags() {
-    return new Set([
-      authz.tags.Type.Source,
-      authz.tags.Visibility.Public,
-    ]);
+    return new Set(
+      this.group.isPublic
+        ? [authz.tags.Type.Source, authz.tags.Visibility.Public]
+        : [authz.tags.Type.Source]
+    );
   }
   get authzTagsToPropagate() {
-    return new Set([
-      authz.tags.Visibility.Public,
-    ]);
-  }
-}
-
-
-class PrivateGroupSource extends PrivateS3Source {
-  static isGroup() {
-    return true;
-  }
-
-  get authzPolicy() {
-    return authzPolicy(this.name);
+    return new Set(
+      this.group.isPublic
+        ? [authz.tags.Visibility.Public]
+        : []
+    );
   }
 }
 
@@ -98,10 +87,6 @@ function authzPolicy(groupName) {
   ];
 }
 
-const groupSources = Array.from(GROUP_RECORDS.values())
-  .map(groupRecord => GroupSource(groupRecord.name));
-
 module.exports = {
   GroupSource,
-  groupSources,
 };

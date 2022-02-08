@@ -55,7 +55,22 @@ class Group {
 }
 
 
+/**
+ * Group objects for all Nextstrain Groups.
+ *
+ * I expect this to go away once our groups are defined in a database (or other
+ * dynamic datastore) instead of a static file.  Code that needs a listing of
+ * all groups will then query it at runtime instead of consulting a predefined
+ * array, for reasons of freshness and size in memory.
+ *   -trs, 15 Feb 2022
+ *
+ * @type {Group[]}
+ */
+const ALL_GROUPS = Array.from(GROUP_RECORDS.keys())
+  .map(name => new Group(name));
+
+
 module.exports = {
   Group,
-  GROUP_RECORDS,
+  ALL_GROUPS,
 };

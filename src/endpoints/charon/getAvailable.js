@@ -1,4 +1,5 @@
 const authz = require("../../authz");
+const {CommunitySource} = require("../../sources");
 const utils = require("../../utils");
 const queryString = require("query-string");
 const {splitPrefixIntoParts, joinPartsIntoPrefix} = require("../../utils/prefix");
@@ -23,17 +24,17 @@ const getAvailable = async (req, res) => {
   const narratives = await source.availableNarratives() || [];
 
   if (!datasets.length) {
-    utils.verbose(`No datasets available for ${source.name}`);
+    utils.verbose(`No datasets available for ${source}`);
   }
   if (!narratives.length) {
-    utils.verbose(`No narratives available for ${source.name}`);
+    utils.verbose(`No narratives available for ${source}`);
   }
 
   return res.json({
     datasets: await Promise.all(datasets.map(async (path) => ({
       request: await joinPartsIntoPrefix({source, prefixParts: [path]}),
       secondTreeOptions: source.secondTreeOptions(path),
-      buildUrl: source.name === "community"
+      buildUrl: source instanceof CommunitySource
         ? `https://github.com/${source.repo}`
         : null
     }))),
@@ -44,7 +45,7 @@ const getAvailable = async (req, res) => {
 };
 
 async function collectAllAvailableGroups(user) {
-  const source = new (metaSources.get("groups"))(user);
+  const source = new metaSources.Groups(user);
   const datasets = await source.availableDatasets();
   const narratives = await source.availableNarratives();
   return {

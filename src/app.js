@@ -15,10 +15,10 @@ const endpoints = require("./endpoints");
 const {AuthzDenied} = require("./exceptions");
 const {replacer: jsonReplacer} = require("./json");
 const redirects = require("./redirects");
+const sources = require("./sources");
 
 const {
   setSource,
-  setGroupSource,
   setDataset,
   setNarrative,
   canonicalizeDataset,
@@ -29,6 +29,14 @@ const {
   putNarrative,
   deleteNarrative,
 } = endpoints.sources;
+
+const {
+  CoreSource,
+  CoreStagingSource,
+  CommunitySource,
+  UrlDefinedSource,
+  GroupSource,
+} = sources;
 
 const esc = encodeURIComponent;
 
@@ -128,7 +136,7 @@ const coreBuildRoutes = coreBuildPaths.map(path => [
   `${path}:*`, // Tangletrees at top-level, e.g. /a:/a/b
 ]);
 
-app.use([coreBuildRoutes, "/narratives/*"], setSource("core"));
+app.use([coreBuildRoutes, "/narratives/*"], setSource(req => new CoreSource())); // eslint-disable-line no-unused-vars
 
 app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
@@ -147,7 +155,7 @@ app.routeAsync("/narratives/*")
 
 /* Staging datasets and narratives
  */
-app.use("/staging", setSource("staging"));
+app.use("/staging", setSource(req => new CoreStagingSource())); // eslint-disable-line no-unused-vars
 
 app.routeAsync("/staging")
   .getAsync(endpoints.static.sendGatsbyPage("staging/index.html"))
@@ -174,7 +182,7 @@ app.routeAsync("/staging/*")
 /* Community on GitHub
  */
 app.use(["/community/narratives/:user/:repo", "/community/:user/:repo"],
-  setSource("community", req => [req.params.user, req.params.repo]));
+  setSource(req => new CommunitySource(req.params.user, req.params.repo)));
 
 /* Unlike other dataset and narrative routes, /community/:user/:repo and
  * /community/narratives/:user/:repo can go to either Auspice or Gatsby,
@@ -202,7 +210,7 @@ app.routeAsync(["/community/:user/:repo", "/community/:user/:repo/*"])
 /* Datasets and narratives at ~arbitrary remote URLs.
  */
 app.use(["/fetch/narratives/:authority", "/fetch/:authority"],
-  setSource("fetch", req => [req.params.authority]));
+  setSource(req => new UrlDefinedSource(req.params.authority)));
 
 app.routeAsync("/fetch/narratives/:authority/*")
   .all(setNarrative(req => req.params[0]))
@@ -218,15 +226,7 @@ app.routeAsync("/fetch/:authority/*")
 /* Groups
  */
 
-/* XXX TODO: Remove setGroupSource() once we move from one source per group to
- * one source parameterized by group name, which will enable us to use the
- * standard setSource() like so:
- *
- *    app.use("/groups/:groupName", setSource("group", req => req.params.groupName))
- *
- *   -trs, 25 Oct 2021
- */
-app.use("/groups/:groupName", setGroupSource(req => req.params.groupName));
+app.use("/groups/:groupName", setSource(req => new GroupSource(req.params.groupName)));
 
 app.routeAsync("/groups/:groupName")
   /* sendGatsbyPage("groups/:groupName/index.html") should work, but it

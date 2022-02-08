@@ -3,20 +3,20 @@ const yaml = require("js-yaml");
 const authz = require("../src/authz");
 const {AuthzDenied} = require("../src/exceptions");
 const json = require("../src/json");
-const sources = require("../src/sources");
+const {CoreSource, GroupSource} = require("../src/sources");
 
 const {Read, Write} = authz.actions;
 const {Type, Visibility} = authz.tags;
 
-const coreSource = new (sources.get("core"))();
+const coreSource = new CoreSource();
 const coreDataset = coreSource.dataset(["example"]);
 const coreNarrative = coreSource.narrative(["example"]);
 
-const testSource = new (sources.get("test"))();
+const testSource = new GroupSource("test");
 const testDataset = testSource.dataset(["example"]);
 const testNarrative = testSource.narrative(["example"]);
 
-const testPrivateSource = new (sources.get("test-private"))();
+const testPrivateSource = new GroupSource("test-private");
 const testPrivateDataset = testPrivateSource.dataset(["example"]);
 const testPrivateNarrative = testPrivateSource.narrative(["example"]);
 

@@ -1,16 +1,17 @@
+/* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 const authz = require("../authz");
 const {fetch} = require("../fetch");
 const queryString = require("query-string");
 const {NotFound} = require('http-errors');
 const utils = require("../utils");
-const {Source} = require("./models");
+const {Source, Dataset} = require("./models");
 
 const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
   : "";
 
 class CoreSource extends Source {
-  static get _name() { return "core"; }
+  get name() { return "core"; }
   async baseUrl() { return "http://data.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "master"; }
@@ -22,6 +23,10 @@ class CoreSource extends Source {
 
     const url = new URL(path, baseUrl);
     return url.toString();
+  }
+
+  dataset(pathParts) {
+    return new CoreDataset(this, pathParts);
   }
 
   // The computation of these globals should move here.
@@ -39,7 +44,7 @@ class CoreSource extends Source {
 
     if (response.status === 404) throw new NotFound();
     else if (response.status !== 200 && response.status !== 304) {
-      utils.warn(`Error fetching available narratives from GitHub for source ${this.name}`, await utils.responseDetails(response));
+      utils.warn(`Error fetching available narratives from GitHub for ${this}`, await utils.responseDetails(response));
       return [];
     }
 
@@ -81,10 +86,46 @@ class CoreSource extends Source {
 }
 
 class CoreStagingSource extends CoreSource {
-  static get _name() { return "staging"; }
+  get name() { return "staging"; }
   async baseUrl() { return "http://staging.nextstrain.org/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "staging"; }
+}
+
+class CoreDataset extends Dataset {
+  resolve() {
+    /* XXX TODO: Reimplement this in terms of methods on the source, not by
+     * breaking encapsulation by using a process-wide global.
+     *   -trs, 26 Oct 2021 (based on a similar comment 5 Sept 2019)
+     */
+    const sourceName = this.source.name;
+    const prefixParts = this.pathParts;
+
+    if (!global.availableDatasets[sourceName]) {
+      utils.verbose("Can't compare against available datasets as there are none!");
+      return this;
+    }
+
+    const doesPathExist = (pathToCheck) =>
+      global.availableDatasets[sourceName]
+        .includes(pathToCheck);
+
+    const prefix = prefixParts.join("/");
+
+    if (doesPathExist(prefix)) {
+      return this;
+    }
+
+    /* if we are here, then the path doesn't match any available datasets exactly */
+    const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
+
+    if (nextDefaultPart) {
+      const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart]);
+      return dataset.resolve();
+    }
+
+    return this;
+  }
 }
 
 module.exports = {
