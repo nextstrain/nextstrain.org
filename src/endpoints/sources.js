@@ -424,7 +424,9 @@ function receiveSubresource(subresourceExtractor) {
      * header (i.e. doesn't accept streaming PUTs).  If we don't have a
      * Content-Length from the request (i.e. the request is a streaming PUT or
      * we're doing on-the-fly compression), then we have to buffer the entire
-     * body into memory so we can calculate length for S3.
+     * body into memory so we can calculate length for S3.  When passed a
+     * buffer instead of a stream, fetch() will calculate Content-Length for us
+     * before sending the request.
      *
      * An alternative to buffering the whole body is to use S3's multipart
      * upload API, but the minimum part size is 5MB so some buffering would be

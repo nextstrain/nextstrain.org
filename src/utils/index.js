@@ -123,6 +123,9 @@ const normalizeHeaders = (headers) => {
     Object.entries(headers)
       .filter(([, value]) => value != null && value !== "");
 
+  /* Use the WHATWG Headers object to do most of the normalization, including
+   * lowercasing and combining duplicate headers as appropriate.
+   */
   return Object.fromEntries((new fetch.Headers(withValues)).entries());
 };
 
