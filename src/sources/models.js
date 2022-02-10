@@ -140,6 +140,12 @@ class Source {
   get authzTagsToPropagate() {
     return new Set();
   }
+  static toString() {
+    return `[${this.name} class]`;
+  }
+  toString() {
+    return `[${this.constructor.name} object]`;
+  }
 }
 
 class Resource {
