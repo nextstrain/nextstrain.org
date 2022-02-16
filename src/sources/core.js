@@ -34,7 +34,7 @@ class CoreSource extends Source {
     return (global.availableDatasets.secondTreeOptions[this.name] || {})[path] || [];
   }
 
-  availableDatasets() {
+  async availableDatasets() {
     return global.availableDatasets[this.name] || [];
   }
 

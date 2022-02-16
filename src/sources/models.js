@@ -109,10 +109,10 @@ class Source {
     return [];
   }
 
-  availableDatasets() {
+  async availableDatasets() {
     return [];
   }
-  availableNarratives() {
+  async availableNarratives() {
     return [];
   }
   async getInfo() {
