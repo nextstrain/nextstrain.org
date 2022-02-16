@@ -1,9 +1,10 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 const AWS = require("aws-sdk");
+const {Buffer} = require("buffer");
 const yamlFront = require("yaml-front-matter");
-const zlib = require("zlib");
 
 const authz = require("../authz");
+const {fetch} = require("../fetch");
 const {Group} = require("../groups");
 const utils = require("../utils");
 const {Source} = require("./models");
@@ -110,13 +111,6 @@ class GroupSource extends Source {
         .split("_")
         .join("/"));
   }
-  async getAndDecompressObject(key) {
-    const object = await S3.getObject({ Bucket: this.bucket, Key: key}).promise();
-    if (object.ContentEncoding === 'gzip') {
-      object.Body = zlib.gunzipSync(object.Body);
-    }
-    return object.Body;
-  }
   parseOverviewMarkdown(overviewMarkdown) {
     const frontMatter = yamlFront.loadFront(overviewMarkdown);
     if (!frontMatter.title) {
@@ -152,14 +146,14 @@ class GroupSource extends Source {
   async getInfo() {
     try {
       /* attempt to fetch customisable information from S3 bucket */
-      const objects = await this._listObjects();
-      const objectKeys = objects.map((object) => object.Key);
+      const [logoResponse, overviewResponse] = await Promise.all([
+        fetch(await this.urlFor("group-logo.png"), {cache: "no-cache"}),
+        fetch(await this.urlFor("group-overview.md"), {cache: "no-cache"}),
+      ]);
 
-      let logoSrc;
-      if (objectKeys.includes("group-logo.png")) {
-        // Use pre-signed URL to allow client to fetch from private S3 bucket
-        logoSrc = S3.getSignedUrl('getObject', {Bucket: this.bucket, Key: "group-logo.png"});
-      }
+      const logoSrc = logoResponse.status === 200
+        ? await asDataUrl(logoResponse)
+        : null;
 
       let title = `"${this.group.name}" Nextstrain group`;
       let byline = `The available datasets and narratives in this group are listed below.`;
@@ -167,8 +161,8 @@ class GroupSource extends Source {
       let showDatasets = true;
       let showNarratives = true;
       let overview;
-      if (objectKeys.includes("group-overview.md")) {
-        const overviewContent = await this.getAndDecompressObject("group-overview.md");
+      if (overviewResponse.status === 200) {
+        const overviewContent = await overviewResponse.text();
         [title, byline, website, showDatasets, showNarratives, overview] = this.parseOverviewMarkdown(overviewContent);
         // Default show datasets & narratives if not specified in customization
         if (showDatasets == null) showDatasets = true;
@@ -260,6 +254,23 @@ function expires() {
   const expiresAt = startOfCurrentHour + 2*hours;
 
   return expiresAt - now;
+}
+
+
+/**
+ * Construct a data: URL from a Response.
+ *
+ * The data: URL will be constructed from the response Content-Type and the
+ * response body after base64-encoding.
+ *
+ * @param {fetch.Response} response
+ * @returns {string}
+ */
+async function asDataUrl(response) {
+  const data = Buffer.from(await response.arrayBuffer()).toString("base64");
+  const type = response.headers.get("content-type");
+
+  return `data:${type};base64,${data}`;
 }
 
 
