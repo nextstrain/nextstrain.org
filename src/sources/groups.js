@@ -112,29 +112,38 @@ class GroupSource extends Source {
         .join("/"));
   }
   parseOverviewMarkdown(overviewMarkdown) {
-    const frontMatter = yamlFront.loadFront(overviewMarkdown);
-    if (!frontMatter.title) {
-      throw new Error("The overview file requires `title` in the frontmatter.");
-    }
+    const frontMatter = yamlFront.safeLoadFront(overviewMarkdown);
 
-    if (frontMatter.website) {
-      if (!frontMatter.website.includes("http")) {
-        throw new Error("The website field in the overview file requires \"http\" to be present.");
+    let {title, byline, website, showDatasets, showNarratives} = frontMatter;
+
+    // Must be an allowed protocol
+    if (website != null) {
+      const {protocol} = parseUrl(website) ?? {};
+      const allowedProtocols = new Set(["https:", "http:", "ftp:", "ftps:", "mailto:"]);
+      if (!allowedProtocols.has(protocol)) {
+        website = undefined;
       }
     }
 
-    if (frontMatter.showDatasets && typeof frontMatter.showDatasets !== 'boolean') {
-      throw new Error("The `showDatasets` field in the frontmatter must be a boolean.");
+    // Must be booleans
+    if (typeof showDatasets !== 'boolean') {
+      showDatasets = undefined;
     }
-
-    if (frontMatter.showNarratives && typeof frontMatter.showNarratives !== 'boolean') {
-      throw new Error("The `showNarratives` field in the frontmatter must be a boolean.");
+    if (typeof showNarratives !== 'boolean') {
+      showNarratives = undefined;
     }
 
     // handle files with CRLF endings (windows)
     const content = frontMatter.__content.replace(/\r\n/g, "\n");
 
-    return [frontMatter.title, frontMatter.byline, frontMatter.website, frontMatter.showDatasets, frontMatter.showNarratives, content];
+    return {
+      title,
+      byline,
+      website,
+      showDatasets,
+      showNarratives,
+      content
+    };
   }
   /**
    * Get information about a (particular) source.
@@ -144,6 +153,13 @@ class GroupSource extends Source {
    * codebase is that we can iterate on it after pushing live to nextstrain.org
    */
   async getInfo() {
+    const defaults = {
+      title: `"${this.group.name}" Nextstrain group`,
+      byline: `The available datasets and narratives in this group are listed below.`,
+      showDatasets: true,
+      showNarratives: true,
+    };
+
     try {
       /* attempt to fetch customisable information from S3 bucket */
       const [logoResponse, overviewResponse] = await Promise.all([
@@ -155,38 +171,32 @@ class GroupSource extends Source {
         ? await asDataUrl(logoResponse)
         : null;
 
-      let title = `"${this.group.name}" Nextstrain group`;
-      let byline = `The available datasets and narratives in this group are listed below.`;
-      let website = null;
-      let showDatasets = true;
-      let showNarratives = true;
-      let overview;
-      if (overviewResponse.status === 200) {
-        const overviewContent = await overviewResponse.text();
-        [title, byline, website, showDatasets, showNarratives, overview] = this.parseOverviewMarkdown(overviewContent);
-        // Default show datasets & narratives if not specified in customization
-        if (showDatasets == null) showDatasets = true;
-        if (showNarratives == null) showNarratives = true;
-      }
+      const overview = overviewResponse.status === 200
+        ? this.parseOverviewMarkdown(await overviewResponse.text())
+        : {};
+
+      const {
+        title = defaults.title,
+        byline = defaults.byline,
+        website,
+        showDatasets = defaults.showDatasets,
+        showNarratives = defaults.showNarratives,
+        content,
+      } = overview;
 
       return {
-        title: title,
-        byline: byline,
-        website: website,
-        showDatasets: showDatasets,
-        showNarratives: showNarratives,
+        title,
+        byline,
+        website,
+        showDatasets,
+        showNarratives,
         avatar: logoSrc,
-        overview: overview
+        overview: content,
       };
-
     } catch (err) {
       /* Appropriate fallback if no customised data is available */
       return {
-        title: `"${this.group.name}" Nextstrain group`,
-        byline: `The available datasets and narratives in this group are listed below.`,
-        website: null,
-        showDatasets: true,
-        showNarratives: true,
+        ...defaults,
         error: `Error in custom group info: ${err.message}`
       };
     }
@@ -271,6 +281,25 @@ async function asDataUrl(response) {
   const type = response.headers.get("content-type");
 
   return `data:${type};base64,${data}`;
+}
+
+/**
+ * Parse a potentially invalid URL.
+ *
+ * Returns a URL object if successful, or null if the given URL is invalid.
+ *
+ * @param {string} url
+ * @returns {URL|null}
+ */
+function parseUrl(url) {
+  try {
+    return new URL(url);
+  } catch (err) {
+    if (err instanceof TypeError && err.code === "ERR_INVALID_URL") {
+      return null;
+    }
+    throw err;
+  }
 }
 
 
