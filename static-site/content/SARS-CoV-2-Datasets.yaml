@@ -513,6 +513,37 @@ datasets:
       - 4.070194
     org:
       name: Nextstrain Team
+  
+  - url: https://nextstrain.org/groups/africa-cdc
+    name: Africa CDC
+    geo: africa
+    level: region
+    coords:
+      - 21.824559
+      - 4.070194
+    org:
+      name: Africa CDC
+      url: https://africacdc.org/
+
+#   # Actually maybe linking each of the regions
+#   # example: https://nextstrain.org/groups/africa-cdc/ncov/central-africa
+#     - url: null
+#       name: Central Africa Region
+#       geo: central-africa
+#       parentGeo: africa
+#       org: null
+# 
+#   - url: https://nextstrain.org/groups/africa-cdc/ncov/central-africa
+#     name: Central Africa Region
+#     geo: central-africa
+#     region: Central Africa
+#     level: region
+#     coords:
+#       - 20.9394
+#       - 6.6111
+#     org:
+#       name: Africa CDC
+#       url: https://africacdc.org/
 
   - url: https://nextstrain.org/community/BryanTegomoh/Nextstrain-Builds@main/Cameroon
     name: Cameroon
