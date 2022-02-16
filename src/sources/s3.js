@@ -54,7 +54,7 @@ class S3Source extends Source {
     return object.Body;
   }
   parseOverviewMarkdown(overviewMarkdown) {
-    const frontMatter = yamlFront.loadFront(overviewMarkdown);
+    const frontMatter = yamlFront.safeLoadFront(overviewMarkdown);
     if (!frontMatter.title) {
       throw new Error("The overview file requires `title` in the frontmatter.");
     }
