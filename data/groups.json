@@ -176,13 +176,11 @@
   },
   {
     "name": "test",
-    "bucket": "nextstrain-group-test",
     "isPublic": true,
     "isDevOnly": true
   },
   {
     "name": "test-private",
-    "bucket": "nextstrain-group-test-private",
     "isPublic": false,
     "isDevOnly": true
   }

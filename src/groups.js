@@ -58,6 +58,9 @@ class Group {
     /**
      * S3 bucket for this Group.
      *
+     * For early access groups which each used their own bucket instead of
+     * occupying a single multi-tentant bucket.
+     *
      * @type {String}
      */
     this.bucket = groupRecord.bucket;

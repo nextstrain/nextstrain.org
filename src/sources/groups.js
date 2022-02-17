@@ -11,6 +11,8 @@ const {Source} = require("./models");
 
 const S3 = new AWS.S3();
 
+const MULTI_TENANT_BUCKET = "nextstrain-groups";
+
 
 class GroupSource extends Source {
   constructor(groupOrName) {
@@ -51,7 +53,13 @@ class GroupSource extends Source {
   }
 
   get bucket() {
-    return this.group.bucket;
+    return this.group.bucket ?? MULTI_TENANT_BUCKET;
+  }
+
+  get prefix() {
+    return this.bucket === MULTI_TENANT_BUCKET
+      ? `${this.group.name}/`
+      : "";
   }
 
   async urlFor(path, method = 'GET', headers = {}) {
@@ -74,36 +82,46 @@ class GroupSource extends Source {
     return S3.getSignedUrl(action[method].name, {
       Expires: expires(),
       Bucket: this.bucket,
-      Key: path,
+      Key: `${this.prefix}${path}`,
       ...action[method].params,
     });
   }
-  async _listObjects() {
+  async _listFiles() {
     return new Promise((resolve, reject) => {
-      let contents = [];
-      S3.listObjectsV2({Bucket: this.bucket}).eachPage((err, data, done) => {
+      let files = [];
+      S3.listObjectsV2({Bucket: this.bucket, Prefix: this.prefix}).eachPage((err, data, done) => {
         if (err) {
           utils.warn(`Could not list S3 objects for group '${this.group.name}'\n${err.message}`);
           return reject(err);
         }
         if (data===null) { // no more data
-          return resolve(contents);
+          return resolve(files);
         }
-        contents = contents.concat(data.Contents);
+
+        /* Remove the prefix from the key, producing a plain "file" name.  The
+         * filter on startsWith is unnecessary in theory given the Prefix param
+         * of listObjectsV2 above, but it guards against something going awry.
+         *   -trs, 16 Feb 2022
+         */
+        files = files.concat(
+          data.Contents
+            .map(object => object.Key)
+            .filter(key => key.startsWith(this.prefix))
+            .map(key => key.slice(this.prefix.length))
+        );
         return done();
       });
     });
   }
   async availableDatasets() {
-    const objects = await this._listObjects();
-    const pathnames = utils.getDatasetsFromListOfFilenames(objects.map((object) => object.Key));
+    const files = await this._listFiles();
+    const pathnames = utils.getDatasetsFromListOfFilenames(files);
     return pathnames;
   }
   async availableNarratives() {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
-    const objects = await this._listObjects();
-    return objects
-      .map((object) => object.Key)
+    const files = await this._listFiles();
+    return files
       .filter((file) => file !== 'group-overview.md')
       .filter((file) => file.endsWith(".md"))
       .map((file) => file
