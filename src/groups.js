@@ -6,7 +6,8 @@ const GROUPS_DATA = require("../data/groups.json");
 const PRODUCTION = process.env.NODE_ENV === "production";
 
 /**
- * Map of Nextstrain Groups from their name to their static config record.
+ * Map of Nextstrain Groups from their (normalized) name to their static config
+ * record.
  *
  * This essentially takes the place of what might be a database table in the
  * future but is perfectly fine as a flat file key-value store for now.
@@ -18,8 +19,15 @@ const GROUP_RECORDS = new Map(
      *   -trs, 24 Jan 2022
      * */
     .filter(groupRecord => PRODUCTION ? !groupRecord.isDevOnly : true)
-    .map(groupRecord => [groupRecord.name, groupRecord])
+    .map(groupRecord => [normalizeGroupName(groupRecord.name), groupRecord])
 );
+
+/* Check names for uniqueness after normalization.
+ */
+{
+  const names = GROUPS_DATA.map(g => normalizeGroupName(g.name));
+  assert(names.length === (new Set(names)).size);
+}
 
 
 /**
@@ -27,7 +35,7 @@ const GROUP_RECORDS = new Map(
  */
 class Group {
   constructor(name) {
-    const groupRecord = GROUP_RECORDS.get(name);
+    const groupRecord = GROUP_RECORDS.get(normalizeGroupName(name));
 
     if (!groupRecord) throw new NotFound(`unknown group: ${name}`);
 
@@ -132,6 +140,23 @@ function validateGroupName(name) {
 
 
 /**
+ * Normalize a group name.
+ *
+ * Note that a normalized name is not necessarily a valid name and vice versa;
+ * they are orthogonal (and intersecting) checks.  In particular, note that
+ * normalization does not address the issue of visually confusing/misleading
+ * characters.
+ *
+ * @param {string} name
+ * @returns {string} Name converted to Unicode Normalization Form NFKC and
+ *   lowercased in en-US.
+ */
+function normalizeGroupName(name) {
+  return name.normalize("NFKC").toLocaleLowerCase("en-US");
+}
+
+
+/**
  * Group objects for all Nextstrain Groups.
  *
  * I expect this to go away once our groups are defined in a database (or other
@@ -150,5 +175,6 @@ module.exports = {
   Group,
   assertValidGroupName,
   validateGroupName,
+  normalizeGroupName,
   ALL_GROUPS,
 };

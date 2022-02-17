@@ -1,4 +1,4 @@
-const {validateGroupName, assertValidGroupName} = require("../src/groups");
+const {validateGroupName, assertValidGroupName, normalizeGroupName} = require("../src/groups");
 
 describe("validate", () => {
   const repeat = (str, n) => Array(n+1).join(str);
@@ -32,5 +32,19 @@ describe("validate", () => {
     } else {
       expectAssert.toThrow(expectedError);
     }
+  });
+});
+
+describe("normalize", () => {
+  const names = [
+    ["FOO", "foo"],
+    ["FOObar", "foobar"],
+    ["foo-BAR", "foo-bar"],
+    ["nextﬂu", "nextflu"],
+  ];
+
+  test.each(names)("%s → %s", (given, expected) => {
+    expect(normalizeGroupName(given))
+      .toEqual(expected);
   });
 });

@@ -226,7 +226,20 @@ app.routeAsync("/fetch/:authority/*")
 /* Groups
  */
 
-app.use("/groups/:groupName", setSource(req => new GroupSource(req.params.groupName)));
+app.use("/groups/:groupName",
+  setSource(req => new GroupSource(req.params.groupName)),
+
+  // Canonicalize the Group name.
+  (req, res, next) => {
+    const restOfUrl = req.url !== "/" ? req.url : "";
+
+    const canonicalName = req.context.source.group.name;
+    const canonicalUrl = `/groups/${esc(canonicalName)}${restOfUrl}`;
+
+    return req.params.groupName !== canonicalName
+      ? res.redirect(canonicalUrl)
+      : next();
+  });
 
 app.routeAsync("/groups/:groupName")
   /* sendGatsbyPage("groups/:groupName/index.html") should work, but it
