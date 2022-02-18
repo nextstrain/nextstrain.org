@@ -264,10 +264,13 @@ app.route(["/users", "/users/:name"])
  */
 /* eslint-disable no-multi-spaces */
 const schemaRoutes = [
-  ["/schemas/auspice/config/v2", "https://github.com/nextstrain/augur/raw/master/augur/data/schema-auspice-config-v2.json"],
-  ["/schemas/dataset/v1/meta",   "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v1-meta.json"],
-  ["/schemas/dataset/v1/tree",   "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v1-tree.json"],
-  ["/schemas/dataset/v2",        "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v2.json"],
+  ["/schemas/augur/frequencies",       "https://github.com/nextstrain/augur/raw/master/augur/data/schema-frequencies.json"],
+  ["/schemas/auspice/config/v2",       "https://github.com/nextstrain/augur/raw/master/augur/data/schema-auspice-config-v2.json"],
+  ["/schemas/dataset/v1/meta",         "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v1-meta.json"],
+  ["/schemas/dataset/v1/tree",         "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v1-tree.json"],
+  ["/schemas/dataset/v2",              "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v2.json"],
+  ["/schemas/dataset/root-sequence",   "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-root-sequence.json"],
+  ["/schemas/dataset/tip-frequencies", "https://github.com/nextstrain/augur/raw/master/augur/data/schema-tip-frequencies.json"],
 ];
 /* eslint-enable no-multi-spaces */
 
