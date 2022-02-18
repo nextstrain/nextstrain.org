@@ -14,6 +14,7 @@ const authn = require("./authn");
 const endpoints = require("./endpoints");
 const {AuthzDenied} = require("./exceptions");
 const {replacer: jsonReplacer} = require("./json");
+const middleware = require("./middleware");
 const redirects = require("./redirects");
 const sources = require("./sources");
 
@@ -59,6 +60,7 @@ if (production) app.enable("trust proxy");
 app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
 app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
+app.use(middleware.rejectParentTraversals);
 
 
 /* Setup a request-scoped context object for passing arbitrary request-local
