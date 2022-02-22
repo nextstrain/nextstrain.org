@@ -44,6 +44,7 @@ datasets:
     geo: north-america
     parentGeo: null
 
+  # bookmark: JC
   - name: Cameroon
     geo: cameroon
     parentGeo: africa
@@ -447,6 +448,226 @@ datasets:
   - name: Gulf Cooperation Council
     geo: gcc
     parentGeo: asia
+
+  - name: Central Africa
+    geo: central-africa
+    parentGeo: africa
+
+  - name: Eastern Africa
+    geo: eastern-africa
+    parentGeo: africa
+
+  - name: Northern Africa
+    geo: northern-africa
+    parentGeo: africa
+
+  - name: Southern Africa
+    geo: southern-africa
+    parentGeo: africa
+    
+  - name: Western Africa
+    geo: western-africa
+    parentGeo: africa
+
+  - name: Burundi
+    geo: burundi
+    parentGeo: central-africa
+
+  - name: Cameroon
+    geo: cameroon
+    parentGeo: central-africa
+
+  - name: Central African Republic
+    geo: central-african-republic
+    parentGeo: central-africa
+
+  - name: Chad
+    geo: chad
+    parentGeo: central-africa
+
+  - name: Republic of the Congo
+    geo: republic-of-the-congo
+    parentGeo: central-africa
+
+  - name: Democratic Republic of the Congo
+    geo: democratic-republic-of-the-congo
+    parentGeo: central-africa
+
+  - name: Equatorial Guinea
+    geo: equatorial-guinea
+    parentGeo: central-africa
+
+  - name: Gabon
+    geo: gabon
+    parentGeo: central-africa
+
+  - name: Comoros
+    geo: comoros
+    parentGeo: eastern-africa
+
+  - name: Djibouti
+    geo: djibouti
+    parentGeo: eastern-africa
+
+  - name: Ethiopia
+    geo: ethiopia
+    parentGeo: eastern-africa
+
+  - name: Kenya
+    geo: kenya
+    parentGeo: eastern-africa
+
+  - name: Madagascar
+    geo: madagascar
+    parentGeo: eastern-africa
+
+  - name: Mauritius
+    geo: mauritius
+    parentGeo: eastern-africa
+
+  - name: Rwanda
+    geo: rwanda
+    parentGeo: eastern-africa
+
+  - name: Seychelles
+    geo: seychelles
+    parentGeo: eastern-africa
+
+  - name: Somalia
+    geo: somalia
+    parentGeo: eastern-africa
+
+  - name: South Sudan
+    geo: south-sudan
+    parentGeo: eastern-africa
+
+  - name: Sudan
+    geo: sudan
+    parentGeo: eastern-africa
+
+  - name: Uganda
+    geo: uganda
+    parentGeo: eastern-africa
+
+  - name: Algeria
+    geo: algeria
+    parentGeo: northern-africa
+
+  - name: Egypt
+    geo: egypt
+    parentGeo: northern-africa
+
+  - name: Libya
+    geo: libya
+    parentGeo: northern-africa
+
+  - name: Morocco
+    geo: morocco
+    parentGeo: northern-africa
+
+  - name: Tunisia
+    geo: tunisia
+    parentGeo: northern-africa
+
+  - name: Angola
+    geo: angola
+    parentGeo: southern-africa
+
+  - name: Botswana
+    geo: botswana
+    parentGeo: southern-africa
+
+  - name: Eswatini
+    geo: eswatini
+    parentGeo: southern-africa
+
+  - name: Lesotho
+    geo: lesotho
+    parentGeo: southern-africa
+
+  - name: Malawi
+    geo: malawi
+    parentGeo: southern-africa
+
+  - name: Mozambique
+    geo: mozambique
+    parentGeo: southern-africa
+
+  - name: Namibia
+    geo: namibia
+    parentGeo: southern-africa
+
+  - name: South Africa
+    geo: south-africa
+    parentGeo: southern-africa
+
+  - name: Zambia
+    geo: zambia
+    parentGeo: southern-africa
+
+  - name: Zimbabwe
+    geo: zimbabwe
+    parentGeo: southern-africa
+
+  - name: Benin
+    geo: benin
+    parentGeo: western-africa
+
+  - name: Burkina Faso
+    geo: burkina-faso
+    parentGeo: western-africa
+
+  - name: Cabo Verde
+    geo: cabo-verde
+    parentGeo: western-africa
+
+  - name: Cote d'Ivoire
+    geo: cote-d'ivoire
+    parentGeo: western-africa
+
+  - name: Gambia
+    geo: gambia
+    parentGeo: western-africa
+
+  - name: Ghana
+    geo: ghana
+    parentGeo: western-africa
+
+  - name: Guinea
+    geo: guinea
+    parentGeo: western-africa
+
+  - name: Guinea-Bissau
+    geo: guinea-bissau
+    parentGeo: western-africa
+
+  - name: Liberia
+    geo: liberia
+    parentGeo: western-africa
+
+  - name: Mali
+    geo: mali
+    parentGeo: western-africa
+
+  - name: Niger
+    geo: niger
+    parentGeo: western-africa
+
+  - name: Nigeria
+    geo: nigeria
+    parentGeo: western-africa
+
+  - name: Senegal
+    geo: senegal
+    parentGeo: western-africa
+
+  - name: Sierra Leone
+    geo: sierra-leone
+    parentGeo: western-africa
+
+  - name: Togo
+    geo: togo
+    parentGeo: western-africa
 
   # Entries below this comment define datasets. They should have a URL pointing to the analysis
   # visualisation as well as a name and coords for rendering on the map. The `geo` value should
