@@ -44,10 +44,9 @@ datasets:
     geo: north-america
     parentGeo: null
 
-  # bookmark: JC
   - name: Cameroon
     geo: cameroon
-    parentGeo: africa
+    parentGeo: central-africa
 
   - name: New Zealand
     geo: new_zealand
@@ -55,11 +54,11 @@ datasets:
 
   - name: Zambia
     geo: zambia
-    parentGeo: africa
+    parentGeo: southern-africa
 
   - name: South Africa
     geo: south-africa
-    parentGeo: africa
+    parentGeo: southern-africa
 
   - name: Canada
     geo: canada
@@ -473,10 +472,6 @@ datasets:
     geo: burundi
     parentGeo: central-africa
 
-  - name: Cameroon
-    geo: cameroon
-    parentGeo: central-africa
-
   - name: Central African Republic
     geo: central-african-republic
     parentGeo: central-africa
@@ -595,14 +590,6 @@ datasets:
 
   - name: Namibia
     geo: namibia
-    parentGeo: southern-africa
-
-  - name: South Africa
-    geo: south-africa
-    parentGeo: southern-africa
-
-  - name: Zambia
-    geo: zambia
     parentGeo: southern-africa
 
   - name: Zimbabwe
@@ -725,6 +712,7 @@ datasets:
       name: neherlab
       url: https://neherlab.org
 
+  # Bookmark: JC
   - url: https://nextstrain.org/ncov/africa?f_region=Africa
     name: Africa
     geo: africa
@@ -734,37 +722,6 @@ datasets:
       - 4.070194
     org:
       name: Nextstrain Team
-  
-  - url: https://nextstrain.org/groups/africa-cdc
-    name: Africa CDC
-    geo: africa
-    level: region
-    coords:
-      - 21.824559
-      - 4.070194
-    org:
-      name: Africa CDC
-      url: https://africacdc.org/
-
-#   # Actually maybe linking each of the regions
-#   # example: https://nextstrain.org/groups/africa-cdc/ncov/central-africa
-#     - url: null
-#       name: Central Africa Region
-#       geo: central-africa
-#       parentGeo: africa
-#       org: null
-# 
-#   - url: https://nextstrain.org/groups/africa-cdc/ncov/central-africa
-#     name: Central Africa Region
-#     geo: central-africa
-#     region: Central Africa
-#     level: region
-#     coords:
-#       - 20.9394
-#       - 6.6111
-#     org:
-#       name: Africa CDC
-#       url: https://africacdc.org/
 
   - url: https://nextstrain.org/community/BryanTegomoh/Nextstrain-Builds@main/Cameroon
     name: Cameroon
@@ -2192,3 +2149,609 @@ datasets:
     org:
       name: Center for Medical Genetics, Keio University School of Medicine
       url: https://cmg.med.keio.ac.jp/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/central-africa?c=clade_membership&f_country=Burundi,Cameroon,Central%20African%20Republic,Democratic%20Republic%20of%20the%20Congo,Equatorial%20Guinea,Gabon,Republic%20of%20the%20Congo,Chad&p=grid&tl=country
+    name: Central Africa
+    geo: central-africa
+    level: region
+    coords:
+      - 17.2236
+      - -4.010
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/eastern-africa?c=clade_membership&f_country=Comoros,Djibouti,Ethiopia,Kenya,Madagascar,Mauritius,Rwanda,Seychelles,Somalia,South%20Sudan,Sudan,Uganda&p=grid&tl=country
+    name: Eastern Africa
+    geo: eastern-africa
+    level: region
+    coords:
+      - 35.993
+      - 9.132
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/northern-africa?c=clade_membership&f_country=Algeria,Egypt,Libya,Morocco,Tunisia&p=grid&tl=country
+    name: Northern Africa
+    geo: northern-africa
+    level: region
+    coords:
+      - 67.139
+      - 0.788
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/southern-africa?c=clade_membership&f_country=Angola,Botswana,Eswatini,Lesotho,Malawi,Mozambique,Namibia,South%20Africa,Zambia,Zimbabwe&p=grid&tl=country
+    name: Southern Africa
+    geo: southern-africa
+    level: region
+    coords:
+      - 22.438
+      - -22.322
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+  
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/western-africa?c=clade_membership&f_country=Benin,Burkina%20Faso,Cabo%20Verde,Cote%20d%27Ivoire,Gambia,Ghana,Guinea,Guinea-Bissau,Liberia,Mali,Niger,Nigeria,Senegal,Sierra%20Leone,Togo&p=grid&tl=country
+    name: Western Africa
+    geo: western-africa
+    level: region
+    coords:
+      - -3.803
+      - 12.243
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/burundi?c=clade_membership&f_country=Burundi&p=grid&tl=country
+    name: Burundi
+    geo: burundi
+    level: country
+    coords:
+      - 29.8870575
+      - -3.3634357
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/cameroon?c=clade_membership&f_country=Cameroon&p=grid&tl=country
+    name: Cameroon
+    geo: cameroon
+    level: country
+    coords:
+      - 13.1535811
+      - 4.6125522
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/central-african-republic?c=clade_membership&f_country=Central%20African%20Republic&p=grid&tl=country
+    name: Central African Republic
+    geo: central-african-republic
+    level: country
+    coords:
+      - 19.9981227
+      - 7.0323598
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/chad?c=clade_membership&f_country=Chad&p=grid&tl=country
+    name: Chad
+    geo: chad
+    level: country
+    coords:
+      - 19.0156172
+      - 15.6134137
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/republic-of-the-congo?c=clade_membership&f_country=Republic%20of%20the%20Congo&p=grid&tl=country
+    name: Republic of the Congo
+    geo: republic-of-the-congo
+    level: country
+    coords:
+      - 15.877811
+      - -0.516362
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/democratic-republic-of-the-congo?c=clade_membership&f_country=Democratic%20Republic%20of%20the%20Congo&p=grid&tl=country
+    name: Democratic Republic of the Congo
+    geo: democratic-republic-of-the-congo
+    level: country
+    coords:
+      - 21.7587
+      - -4.0383
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/equatorial-guinea?c=clade_membership&f_country=Equatorial%20Guinea&p=grid&tl=country
+    name: Equatorial Guinea
+    geo: equatorial-guinea
+    level: country
+    coords:
+      - 10.5170357
+      - 1.613172
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/gabon?c=clade_membership&f_country=Gabon&p=grid&tl=country
+    name: Gabon
+    geo: gabon
+    level: country
+    coords:
+      - 11.6899699
+      - -0.8999695
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/comoros?c=clade_membership&f_country=Comoros&p=grid&tl=country
+    name: Comoros
+    geo: comoros
+    level: country
+    coords:
+      - 43.872219
+      - -11.875001
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/djibouti?c=clade_membership&f_country=Djibouti&p=grid&tl=country
+    name: Djibouti
+    geo: djibouti
+    level: country
+    coords:
+      - 42.757784519943655
+      - 11.85677545
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/ethiopia?c=clade_membership&f_country=Ethiopia&p=grid&tl=country
+    name: Ethiopia
+    geo: ethiopia
+    level: country
+    coords:
+      - 40.4897
+      - 9.1450
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/kenya?c=clade_membership&f_country=Kenya&p=grid&tl=country
+    name: Kenya
+    geo: kenya
+    level: country
+    coords:
+      - 37.9062
+      - 0.0236
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/madagascar?c=clade_membership&f_country=Madagascar&p=grid&tl=country
+    name: Madagascar
+    geo: madagascar
+    level: country
+    coords:
+      - 46.4416422
+      - -18.9249604
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/mauritius?c=clade_membership&f_country=Mauritius&p=grid&tl=country
+    name: Mauritius
+    geo: mauritius
+    level: country
+    coords:
+      - 57.5703566
+      - -20.2759451
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/rwanda?c=clade_membership&f_country=Rwanda&p=grid&tl=country
+    name: Rwanda
+    geo: rwanda
+    level: country
+    coords:
+      - 30.0644358
+      - -1.9646631
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/seychelles?c=clade_membership&f_country=Seychelles&p=grid&tl=country
+    name: Seychelles
+    geo: seychelles
+    level: country
+    coords:
+      - 55.4540146
+      - -4.6574977
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/somalia?c=clade_membership&f_country=Somalia&p=grid&tl=country
+    name: Somalia
+    geo: somalia
+    level: country
+    coords:
+      - 49.083416
+      - 8.3676771
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/south-sudan?c=clade_membership&f_country=South%20Sudan&p=grid&tl=country
+    name: South Sudan
+    geo: south-sudan
+    level: country
+    coords:
+      - 29.6667897
+      - 7.8699431
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/sudan?c=clade_membership&f_country=Sudan&p=grid&tl=country
+    name: Sudan
+    geo: sudan
+    level: country
+    coords:
+      - 29.4917691
+      - 14.5844444
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/uganda?c=clade_membership&f_country=Uganda&p=grid&tl=country
+    name: Uganda
+    geo: uganda
+    level: country
+    coords:
+      - 32.55149
+      - 1.861287
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/algeria?c=clade_membership&f_country=Algeria&p=grid&tl=country
+    name: Algeria
+    geo: algeria
+    level: country
+    coords:
+      - 2.9999825
+      - 28.0000272
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/egypt?c=clade_membership&f_country=Egypt&p=grid&tl=country
+    name: Egypt
+    geo: egypt
+    level: country
+    coords:
+      - 30.8025
+      - 26.8206
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/libya?c=clade_membership&f_country=Libya&p=grid&tl=country
+    name: Libya
+    geo: libya
+    level: country
+    coords:
+      - 17.30331995251014
+      - 26.4215275
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/morocco?c=clade_membership&f_country=Morocco&p=grid&tl=country
+    name: Morocco
+    geo: morocco
+    level: country
+    coords:
+      - -5.480765
+      - 32.549785
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/tunisia?c=clade_membership&f_country=Tunisia&p=grid&tl=country
+    name: Tunisia
+    geo: tunisia
+    level: country
+    coords:
+      - 9.065134
+      - 33.654143
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/angola?c=clade_membership&f_country=Angola&p=grid&tl=country
+    name: Angola
+    geo: angola
+    level: country
+    coords:
+      - 17.5691241
+      - -11.8775768
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/botswana?c=clade_membership&f_country=Botswana&p=grid&tl=country
+    name: Botswana
+    geo: botswana
+    level: country
+    coords:
+      - 24.5928742
+      - -23.1681782
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/eswatini?c=clade_membership&f_country=Eswatini&p=grid&tl=country
+    name: Eswatini
+    geo: eswatini
+    level: country
+    coords:
+      - 31.3991317
+      - -26.5624806
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/lesotho?c=clade_membership&f_country=Lesotho&p=grid&tl=country
+    name: Lesotho
+    geo: lesotho
+    level: country
+    coords:
+      - 28.3350193
+      - -29.6039267
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/malawi?c=clade_membership&f_country=Malawi&p=grid&tl=country
+    name: Malawi
+    geo: malawi
+    level: country
+    coords:
+      - 33.9301963
+      - -13.2687204
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/mozambique?c=clade_membership&f_country=Mozambique&p=grid&tl=country
+    name: Mozambique
+    geo: mozambique
+    level: country
+    coords:
+      - 34.9144977
+      - -19.302233
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/namibia?c=clade_membership&f_country=Namibia&p=grid&tl=country
+    name: Namibia
+    geo: namibia
+    level: country
+    coords:
+      - 17.3231107
+      - -23.2335499
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/south-africa?c=clade_membership&f_country=South%20Africa&p=grid&tl=country
+    name: South Africa
+    geo: south-africa
+    level: country
+    coords:
+      - 24.991639
+      - -28.8166235
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/zambia?c=clade_membership&f_country=Zambia&p=grid&tl=country
+    name: Zambia
+    geo: zambia
+    level: country
+    coords:
+      - 27.5599164
+      - -14.5186239
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/zimbabwe?c=clade_membership&f_country=Zimbabwe&p=grid&tl=country
+    name: Zimbabwe
+    geo: zimbabwe
+    level: country
+    coords:
+      - 29.7468414
+      - -18.4554963
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/benin?c=clade_membership&f_country=Benin&p=grid&tl=country
+    name: Benin
+    geo: benin
+    level: country
+    coords:
+      - 2.327362
+      - 9.961027
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/burkina-faso?c=clade_membership&f_country=Burkina%20Faso&p=grid&tl=country
+    name: Burkina Faso
+    geo: burkina-faso
+    level: country
+    coords:
+      - -1.683734
+      - 12.78998
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/cabo-verde?c=clade_membership&f_country=Cabo%20Verde&p=grid&tl=country
+    name: Cabo Verde
+    geo: cabo-verde
+    level: country
+    coords:
+      - -24.0083947
+      - 16.0000552
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/cote-divoire?c=clade_membership&f_country=Cote%20d%27Ivoire&p=grid&tl=country
+    name: Cote d'Ivoire
+    geo: cote-d'ivoire
+    level: country
+    coords:
+      - -5.5679458
+      - 7.9897371
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/gambia?c=clade_membership&f_country=Gambia&p=grid&tl=country
+    name: Gambia
+    geo: gambia
+    level: country
+    coords:
+      - -15.5
+      - 13.5
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/ghana?c=clade_membership&f_country=Ghana&p=grid&tl=country
+    name: Ghana
+    geo: ghana
+    level: country
+    coords:
+      - -1.089272
+      - 7.811417
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/guinea?c=clade_membership&f_country=Guinea&p=grid&tl=country
+    name: Guinea
+    geo: guinea
+    level: country
+    coords:
+      - -10.7083587
+      - 10.7226226
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/guinea-bissau?c=clade_membership&f_country=Guinea-Bissau&p=grid&tl=country
+    name: Guinea-Bissau
+    geo: guinea-bissau
+    level: country
+    coords:
+      - -14.9000214
+      - 12.100035
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/liberia?c=clade_membership&f_country=Liberia&p=grid&tl=country
+    name: Liberia
+    geo: liberia
+    level: country
+    coords:
+      - -9.3658524
+      - 5.7499721
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/mali?c=clade_membership&f_country=Mali&p=grid&tl=country
+    name: Mali
+    geo: mali
+    level: country
+    coords:
+      - -2.2900239
+      - 16.3700359
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/niger?c=clade_membership&f_country=Niger&p=grid&tl=country
+    name: Niger
+    geo: niger
+    level: country
+    coords:
+      - 10.145544
+      - 18.061703
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/nigeria?c=clade_membership&f_country=Nigeria&p=grid&tl=country
+    name: Nigeria
+    geo: nigeria
+    level: country
+    coords:
+      - 8.0
+      - 10.0
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/senegal?c=clade_membership&f_country=Senegal&p=grid&tl=country
+    name: Senegal
+    geo: senegal
+    level: country
+    coords:
+      - -14.25
+      - 14.5
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/sierra-leone?c=clade_membership&f_country=Sierra%20Leone&p=grid&tl=country
+    name: Sierra Leone
+    geo: sierra-leone
+    level: country
+    coords:
+      - -11.8400269
+      - 8.6400349
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
+
+  - url: https://nextstrain.org/groups/africa-cdc/ncov/togo?c=clade_membership&f_country=Togo&p=grid&tl=country
+    name: Togo
+    geo: togo
+    level: country
+    coords:
+      - 1.069709
+      - 8.88625
+    org:
+      name: Africa CDC PGI
+      url: https://africacdc.org/institutes/ipg/
