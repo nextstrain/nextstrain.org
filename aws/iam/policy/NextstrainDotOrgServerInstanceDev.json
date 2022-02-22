@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "S3Buckets",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": [
+        "arn:aws:s3:::nextstrain-data",
+        "arn:aws:s3:::nextstrain-staging",
+        "arn:aws:s3:::nextstrain-blab",
+        "arn:aws:s3:::nextstrain-blab-private",
+        "arn:aws:s3:::nextstrain-seattleflu",
+        "arn:aws:s3:::nextstrain-nextspain",
+        "arn:aws:s3:::nextstrain-swiss",
+        "arn:aws:s3:::nextstrain-cog-uk",
+        "arn:aws:s3:::nextstrain-ngs-sa",
+        "arn:aws:s3:::nextstrain-ecdc",
+        "arn:aws:s3:::nextstrain-illinois-gagnon-public",
+        "arn:aws:s3:::nextstrain-neherlab",
+        "arn:aws:s3:::nextstrain-spheres",
+        "arn:aws:s3:::nextstrain-niph",
+        "arn:aws:s3:::nextstrain-epicovigal",
+        "arn:aws:s3:::nextstrain-waphl",
+        "arn:aws:s3:::nextstrain-group-test",
+        "arn:aws:s3:::nextstrain-group-test-private"
+      ]
+    },
+    {
+      "Sid": "S3BucketObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": [
+        "arn:aws:s3:::nextstrain-blab/*",
+        "arn:aws:s3:::nextstrain-blab-private/*",
+        "arn:aws:s3:::nextstrain-seattleflu/*",
+        "arn:aws:s3:::nextstrain-nextspain/*",
+        "arn:aws:s3:::nextstrain-swiss/*",
+        "arn:aws:s3:::nextstrain-cog-uk/*",
+        "arn:aws:s3:::nextstrain-ngs-sa/*",
+        "arn:aws:s3:::nextstrain-ecdc/*",
+        "arn:aws:s3:::nextstrain-illinois-gagnon-public/*",
+        "arn:aws:s3:::nextstrain-neherlab/*",
+        "arn:aws:s3:::nextstrain-spheres/*",
+        "arn:aws:s3:::nextstrain-niph/*",
+        "arn:aws:s3:::nextstrain-epicovigal/*",
+        "arn:aws:s3:::nextstrain-waphl/*",
+        "arn:aws:s3:::nextstrain-group-test/*",
+        "arn:aws:s3:::nextstrain-group-test-private/*"
+      ]
+    },
+    {
+      "Sid": "S3BucketObjectsWrite",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::nextstrain-group-test/*",
+        "arn:aws:s3:::nextstrain-group-test-private/*"
+      ]
+    }
+  ]
+}
