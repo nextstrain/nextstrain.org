@@ -130,6 +130,15 @@ function setup(app) {
       user.authzRoles = new Set(user.authzRoles);
     }
 
+    /* Update existing sessions that pre-date the presence of authzRoles.  When
+     * authzRoles is absent, "groups" is the unparsed set of Cognito groups.
+     */
+    if (!("authzRoles" in user)) {
+      const {groups, authzRoles} = parseCognitoGroups(user.groups || []);
+      user.groups = groups;
+      user.authzRoles = authzRoles;
+    }
+
     return done(null, user);
   });
 
@@ -280,11 +289,26 @@ function setup(app) {
 async function userFromIdToken(idToken, client = undefined) {
   const idClaims = await verifyToken(idToken, "id", client);
 
-  const cognitoGroups = idClaims["cognito:groups"] || [];
+  const {groups, authzRoles} = parseCognitoGroups(idClaims["cognito:groups"] || []);
 
   const user = {
     username: idClaims["cognito:username"],
+    groups,
+    authzRoles,
+  };
+  return user;
+}
 
+/**
+ * Parse an array of Cognito groups into a user's Nextstrain groups and their
+ * authzRoles.
+ *
+ * @returns {object} result
+ * @returns {string[]} result.groups - Names of the Nextstrain Groups of which this user is a member.
+ * @returns {Set} result.authzRoles - Authorization roles granted to this user.
+ */
+function parseCognitoGroups(cognitoGroups) {
+  return {
     // Just the Nextstrain Group names, which for now means all Cognito groups
     // (excluding an optional "/role" suffix).
     groups: [...new Set(cognitoGroups.map(g => splitGroupRole(g).group))],
@@ -301,7 +325,6 @@ async function userFromIdToken(idToken, client = undefined) {
      */
     authzRoles: new Set(cognitoGroups.map(g => g.includes("/") ? g : `${g}/viewers`)),
   };
-  return user;
 }
 
 /**
