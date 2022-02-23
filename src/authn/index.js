@@ -111,12 +111,26 @@ function setup(app) {
   // Serialize the entire user profile to the session store to avoid additional
   // requests to Cognito when we need to load back a user profile from their
   // session cookie.
-  passport.serializeUser((profile, done) => {
-    return done(null, JSON.stringify(profile));
+  passport.serializeUser((user, done) => {
+    let serializedUser = {...user}; // eslint-disable-line prefer-const
+
+    // Deflate authzRoles from Set to Array
+    if ("authzRoles" in serializedUser) {
+      serializedUser.authzRoles = [...serializedUser.authzRoles];
+    }
+
+    return done(null, JSON.stringify(serializedUser));
   });
 
-  passport.deserializeUser((profile, done) => {
-    return done(null, JSON.parse(profile));
+  passport.deserializeUser((serializedUser, done) => {
+    let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
+
+    // Inflate authzRoles from Array back into a Set
+    if ("authzRoles" in user) {
+      user.authzRoles = new Set(user.authzRoles);
+    }
+
+    return done(null, user);
   });
 
   // Setup session storage and passport.
@@ -261,15 +275,50 @@ function setup(app) {
  *
  * @param {String} idToken
  * @param {String|String[]} client. Optional. Passed to `verifyToken()`.
- * @returns {Object} User record with e.g. `username` and `groups` keys.
+ * @returns {User} User record with e.g. `username` and `groups` keys.
  */
 async function userFromIdToken(idToken, client = undefined) {
   const idClaims = await verifyToken(idToken, "id", client);
+
+  const cognitoGroups = idClaims["cognito:groups"] || [];
+
   const user = {
     username: idClaims["cognito:username"],
-    groups: idClaims["cognito:groups"],
+
+    // Just the Nextstrain Group names, which for now means all Cognito groups
+    // (excluding an optional "/role" suffix).
+    groups: [...new Set(cognitoGroups.map(g => splitGroupRole(g).group))],
+
+    /* During a transition period while we move users from unsuffixed Cognito
+     * groups to role-suffixed Cognito groups, assume the least privileged
+     * Nextstrain Group role (viewer) for each unsuffixed group membership we
+     * find.  This matches the existing capabilities via nextstrain.org before
+     * the existence of group membership roles.
+     *
+     * XXX TODO: Remove this .map(...) immediately after the transition period
+     * is over.
+     *   -trs, 5 Jan 2022
+     */
+    authzRoles: new Set(cognitoGroups.map(g => g.includes("/") ? g : `${g}/viewers`)),
   };
   return user;
+}
+
+/**
+ * User object.
+ *
+ * @typedef User
+ * @type {object}
+ * @property {string} username
+ * @property {string[]} groups - Names of the Nextstrain Groups of which this user is a member.
+ * @property {Set} authzRoles - Authorization roles granted to this user.
+ */
+
+
+function splitGroupRole(cognitoGroup) {
+  // I wish split("/", 1) worked reasonably.  -trs, 20 Dec 2021
+  const [group, ...rest] = cognitoGroup.split("/");
+  return {group, role: rest.join("/")};
 }
 
 

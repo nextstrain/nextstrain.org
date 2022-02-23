@@ -1,4 +1,5 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
+const authz = require("../authz");
 const {fetch} = require("../fetch");
 const queryString = require("query-string");
 const {NotFound} = require('http-errors');
@@ -136,6 +137,23 @@ class CommunitySource extends Source {
       or (b) a subsequent request to nextstrain.org/charon (why not do it at once?) */
       avatar: `https://github.com/${this.owner}.png?size=200`
     };
+  }
+
+  get authzPolicy() {
+    return [
+      {tag: authz.tags.Visibility.Public, role: "*", allow: [authz.actions.Read]},
+    ];
+  }
+  get authzTags() {
+    return new Set([
+      authz.tags.Type.Source,
+      authz.tags.Visibility.Public,
+    ]);
+  }
+  get authzTagsToPropagate() {
+    return new Set([
+      authz.tags.Visibility.Public,
+    ]);
   }
 }
 

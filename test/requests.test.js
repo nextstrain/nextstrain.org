@@ -284,7 +284,7 @@ function testPathMediaTypes({path, mediaTypes, additionalAcceptableTypes, checkB
 
 function testGatsby404(path) {
   describe(`${path} sends Gatsby 404`, () => {
-    const req = fetch(url(path));
+    const req = fetch(url(path), {headers: {accept: "text/html,*/*;q=0.1"}});
 
     test("status is 404", async () => {
       const res = await req;

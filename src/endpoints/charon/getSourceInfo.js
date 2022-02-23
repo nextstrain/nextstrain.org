@@ -1,8 +1,8 @@
 const queryString = require("query-string");
 const {BadRequest} = require("http-errors");
 
+const authz = require("../../authz");
 const {splitPrefixIntoParts} = require("../../utils/prefix");
-const utils = require("../../utils");
 
 /**
  * Prototype implementation.
@@ -15,9 +15,7 @@ const getSourceInfo = async (req, res) => {
   const {source} = splitPrefixIntoParts(query.prefix);
 
   // Authorization
-  if (!source.visibleToUser(req.user)) {
-    return utils.unauthorized(req);
-  }
+  authz.assertAuthorized(req.user, authz.actions.Read, source);
 
   return res.json(await source.getInfo());
 };

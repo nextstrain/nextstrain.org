@@ -1,5 +1,6 @@
 const queryString = require("query-string");
 
+const authz = require("../../authz");
 const utils = require("../../utils");
 const {canonicalizePrefix, parsePrefix} = require("../../utils/prefix");
 const {NoResourcePathError} = require("../../exceptions");
@@ -135,10 +136,17 @@ const getDataset = async (req, res) => {
 
   const {source, dataset, resolvedPrefix} = datasetInfo;
 
-  // Authorization
-  if (!source.visibleToUser(req.user)) {
-    return utils.unauthorized(req);
-  }
+  /* Authorization
+   *
+   * This is slightly more lenient than the handlers in endpoints/sources.js
+   * because here the authz check on "source" is delayed until after "dataset"
+   * is constructed and possibly resolved (instead of happening immediately
+   * upon source determination), but I don't think there's anything untoward
+   * lurking in the gap.
+   *   -trs, 5 Jan 2022
+   */
+  authz.assertAuthorized(req.user, authz.actions.Read, source);
+  authz.assertAuthorized(req.user, authz.actions.Read, dataset);
 
   /* If we got a partial prefix and resolved it into a full one, redirect to
    * that.  Auspice will notice and update its displayed URL appropriately.

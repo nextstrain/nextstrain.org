@@ -13,6 +13,45 @@ class S3Source extends Source {
   async baseUrl() {
     return `https://${this.bucket}.s3.amazonaws.com`;
   }
+  async urlFor(path, method = 'GET', headers = {}) {
+    switch (method) {
+      case "GET":
+      case "HEAD":
+        const url = new URL(path, await this.baseUrl());
+        return url.toString();
+
+      case "PUT":
+      case "DELETE":
+        return await this.signedUrlFor(path, method, headers);
+
+      default:
+        throw new Error(`Unsupported method: ${method}`);
+    }
+  }
+  async signedUrlFor(path, method = 'GET', headers = {}) {
+    const normalizedHeaders = utils.normalizeHeaders(headers);
+    const action = {
+      GET: { name: "getObject" },
+      HEAD: { name: "headObject" },
+      PUT: {
+        name: "putObject",
+        params: {
+          ContentType: normalizedHeaders["content-type"],
+          ContentEncoding: normalizedHeaders["content-encoding"],
+        },
+      },
+      DELETE: { name: "deleteObject" },
+    };
+
+    if (!action[method]) throw new Error(`Unsupported method: ${method}`);
+
+    return S3.getSignedUrl(action[method].name, {
+      Expires: expires(),
+      Bucket: this.bucket,
+      Key: path,
+      ...action[method].params,
+    });
+  }
   async _listObjects() {
     return new Promise((resolve, reject) => {
       let contents = [];
@@ -136,15 +175,31 @@ class S3Source extends Source {
 }
 
 class PrivateS3Source extends S3Source {
-  static visibleToUser(user) { // eslint-disable-line no-unused-vars
-    throw new Error("visibleToUser() must be implemented explicitly by subclasses (not inherited from PrivateS3Source)");
+  async urlFor(path, method = 'GET', headers = {}) {
+    return await this.signedUrlFor(path, method, headers);
   }
-  async urlFor(path, method = 'GET') {
-    return S3.getSignedUrl(method === "HEAD" ? "headObject" : "getObject", {
-      Bucket: this.bucket,
-      Key: path
-    });
-  }
+}
+
+/**
+ * Seconds until current expiration point.
+ *
+ * A fixed expiration point of 2 hours after the start of the current clock
+ * hour is calculated, and the time remaining until then is returned.  This
+ * will range between 1 and 2 hours.
+ *
+ * This technique allows us to generate stable S3 signed URLs for each clock
+ * hour, thus making them cachable.
+ *
+ * @returns {number} seconds
+ */
+function expires() {
+  const now = Math.ceil(Date.now() / 1000); // seconds since Unix epoch
+  const hours = 3600; // seconds
+
+  const startOfCurrentHour = now - (now % hours);
+  const expiresAt = startOfCurrentHour + 2*hours;
+
+  return expiresAt - now;
 }
 
 module.exports = {

@@ -1,3 +1,4 @@
+const authz = require("./authz");
 const sources = require("./sources");
 const utils = require("./utils");
 
@@ -12,12 +13,15 @@ const PRODUCTION = process.env.NODE_ENV === "production";
  */
 const Groups = (() => {
 
+  const publiclyVisible = source =>
+    authz.authorized(null, authz.actions.Read, source);
+
   const groupSources = new Map( // instances of each group Source
     Array.from((sources))
       .filter(([name, Source]) => Source.isGroup())  // eslint-disable-line no-unused-vars
-      // restrict development server's private groups to "blab-private"
-      .filter(([name, Source]) => PRODUCTION ? true : (Source.visibleToUser() || name==="blab-private"))
       .map(([name, Source]) => [name, new Source()])
+      // restrict development server's private groups to "blab-private"
+      .filter(([name, source]) => PRODUCTION ? true : (publiclyVisible(source) || name==="blab-private"))
   );
 
   const datasetsPerGroup = new Map();
@@ -67,7 +71,7 @@ const Groups = (() => {
     constructor(user) {
       this.visibleGroups = new Set(
         Array.from(groupSources)
-          .filter(([groupName, source]) => source.visibleToUser(user)) // eslint-disable-line no-unused-vars
+          .filter(([, source]) => authz.authorized(user, authz.actions.Read, source))
           .map(([groupName]) => groupName)
       );
     }

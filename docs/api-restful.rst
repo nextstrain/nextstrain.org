@@ -17,30 +17,15 @@ The API's design tries to:
    making it possible to maintain backwards compatibility for existing clients.
 
 The initial functionality is focused on dataset and narrative management
-endpoints to support the `nextstrain remote`_ family of commands.[#]_  In the
-future, we intend to expand the functionality and make this API a foundation
-for serving other software clients and user audiences.
-
-.. [#] Development was motivated by the goal for `Nextstrain CLI`_ to make
-    requests to nextstrain.org using normal user login credentials instead
-    instead of making requests directly to S3 using separate, per-user AWS IAM
-    credentials.  An alternative solution of using temporary AWS credentials
-    provisioned by an AWS Cognito Identity Pool seemed like a clear choice
-    given we're using Cognito User Pools for authentication, but it wasn't
-    feasible to appropriately scope the credentials for each group of users due
-    to limitations of resource tags and IAM policy tag matching.
-
-    Proxying through nextstrain.org also gives us a lot more power to make the
-    API easier for clients to work with (e.g. auto-compressing for them,
-    setting resource metadata, validating schemas to prevent bad uploads, etc)
-    and makes backend changes easier to coordinate since clients won't be
-    directly accessing the storage backend.
+endpoints to support the `nextstrain remote`_ family of commands (see
+motivation_).  In the future, we intend to expand the functionality and make this
+API a foundation for serving other software clients and user audiences.
 
 .. _RESTful: https://restfulapi.net
 .. _content negotiation: https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation
 .. _nextstrain remote: https://docs.nextstrain.org/projects/cli/en/stable/commands/remote/
-.. _Nextstrain CLI: https://docs.nextstrain.org/projects/cli/en/stable/
 
+.. highlight:: none
 
 Synopsis
 ========
@@ -277,3 +262,26 @@ The following narrative endpoints exist::
     {GET, HEAD} /community/narratives/{user}/{repo}/*
 
     {GET, HEAD} /fetch/narratives/*
+
+
+.. _motivation:
+
+Motivation
+==========
+
+Development was motivated by the goal for `Nextstrain CLI`_ to make requests to
+nextstrain.org using normal user login credentials instead instead of making
+requests directly to S3 using separate, per-user AWS IAM credentials.  An
+alternative solution of using temporary AWS credentials provisioned by an AWS
+Cognito Identity Pool seemed like a clear choice given we're using Cognito User
+Pools for authentication, but it wasn't feasible to appropriately scope the
+credentials for each group of users due to limitations of resource tags and IAM
+policy tag matching.
+
+Proxying through nextstrain.org also gives us a lot more power to make the API
+easier for clients to work with (e.g. auto-compressing for them, setting
+resource metadata, validating schemas to prevent bad uploads, etc) and makes
+backend changes easier to coordinate since clients won't be directly accessing
+the storage backend.
+
+.. _Nextstrain CLI: https://docs.nextstrain.org/projects/cli/en/stable/

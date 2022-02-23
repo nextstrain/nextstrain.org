@@ -7,6 +7,13 @@ class NextstrainError extends Error {
   }
 }
 
+
+/* Thrown when a user is not authorized to do something.  Turned into an
+ * appropriate HTTP response by our server-wide error handler.
+ */
+class AuthzDenied extends NextstrainError {}
+
+
 /* Thrown when a valid Source object is asked to create a new Dataset object
  * without a dataset path.
  */
@@ -18,5 +25,6 @@ class NoResourcePathError extends NextstrainError {
 
 
 module.exports = {
-  NoResourcePathError
+  AuthzDenied,
+  NoResourcePathError,
 };

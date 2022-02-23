@@ -1,4 +1,4 @@
-# Data API between clients and nextstrain.org
+# Charon API
 
 The main data communications between clients (such as Auspice) and the nextstrain.org server occur at URLs beginning with `https://nextstrain.org/charon`.
 Currently the only client accessing these is Auspice (more specifically, a nextstrain.org customised version of Auspice).
@@ -14,11 +14,9 @@ Each handler is defined in an file of the same name within `src`.
 
 ### Authorization
 
-Each handler is responsible for checking authorization by calling a `Source` class method like so:
+Each handler is responsible for checking authorization:
 ```js
-if (!source.visibleToUser(req.user)) {
-  return helpers.unauthorized(req, res);
-}
+authz.assertAuthorized(req.user, authz.actions.Read, source);
 ```
 
 ## Tests

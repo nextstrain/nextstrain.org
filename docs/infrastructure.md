@@ -114,8 +114,7 @@ Ephemeral instances are automatically managed by AWS Batch for `nextstrain build
 A [_user pool_](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html) called `nextstrain.org` provides authentication for Nextstrain logins.
 Cognito is integrated with the nextstrain.org server using the OAuth2 support from PassportJS in our [`authn/index.js`](../src/authn/index.js) file.
 
-We currently don't use Cognito's [_identity pools_](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html).
-It may be beneficial to use one in the future so we can get temporary AWS credentials specific to each Nextstrain user with the appropriate authorizations baked in (instead of using a server-wide set of credentials).
+We don't use Cognito's [_identity pools_](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html).
 
 ## DNS
 

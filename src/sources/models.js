@@ -1,4 +1,5 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
+const authzTags = require("../authz/tags");
 const {fetch} = require("../fetch");
 const {NoResourcePathError} = require("../exceptions");
 const utils = require("../utils");
@@ -99,7 +100,7 @@ class Source {
   async baseUrl() {
     throw new Error("async baseUrl() must be implemented by subclasses");
   }
-  async urlFor(path, method = 'GET') { // eslint-disable-line no-unused-vars
+  async urlFor(path, method = 'GET', headers = {}) { // eslint-disable-line no-unused-vars
     const url = new URL(path, await this.baseUrl());
     return url.toString();
   }
@@ -124,23 +125,20 @@ class Source {
   availableNarratives() {
     return [];
   }
-
-  /* Static access control for this entire source, regardless of any
-   * instance-specific parameters.
-   */
-  static visibleToUser(user) { // eslint-disable-line no-unused-vars
-    return true;
-  }
-
-  /* Instance-specific access control delegates to the static method by
-   * default.
-   */
-  visibleToUser(user) {
-    return this.constructor.visibleToUser(user);
-  }
-
   async getInfo() {
     throw new Error("getInfo() must be implemented by subclasses");
+  }
+
+  get authzPolicy() {
+    throw new Error("get authzPolicy() must be implemented by subclasses");
+  }
+  get authzTags() {
+    return new Set([
+      authzTags.Type.Source,
+    ]);
+  }
+  get authzTagsToPropagate() {
+    return new Set();
   }
 }
 
@@ -165,8 +163,17 @@ class Resource {
   async exists() {
     throw new Error("exists() must be implemented by Resource subclasses");
   }
-  subresource(type) { // eslint-disable-line no-unused-vars
-    throw new Error("subresource() must be implemented by Resource subclasses");
+  static get Subresource() {
+    throw new Error("static Subresource property must be set by Resource subclasses");
+  }
+  get Subresource() {
+    return this.constructor.Subresource;
+  }
+  subresource(type) {
+    return new this.Subresource(this, type);
+  }
+  subresources() {
+    return this.Subresource.validTypes.map(type => this.subresource(type));
   }
 }
 
@@ -187,8 +194,8 @@ class Subresource {
   static get validTypes() {
     throw new Error("validTypes() must be implemented by Subresource subclasses");
   }
-  async url(method = 'GET') {
-    return await this.resource.source.urlFor(this.baseName, method);
+  async url(method = 'GET', headers = {}) {
+    return await this.resource.source.urlFor(this.baseName, method, headers);
   }
   get baseName() {
     throw new Error("baseName() must be implemented by Subresource subclasses");
@@ -203,6 +210,10 @@ class Subresource {
 
 
 class Dataset extends Resource {
+  static get Subresource() {
+    return DatasetSubresource;
+  }
+
   async exists() {
     const method = "HEAD";
     const _exists = async (type) =>
@@ -267,8 +278,11 @@ class Dataset extends Resource {
     return false;
   }
 
-  subresource(type) {
-    return new DatasetSubresource(this, type);
+  get authzTags() {
+    return new Set([
+      ...this.source.authzTagsToPropagate,
+      authzTags.Type.Dataset,
+    ]);
   }
 }
 
@@ -292,6 +306,10 @@ class DatasetSubresource extends Subresource {
 
 
 class Narrative extends Resource {
+  static get Subresource() {
+    return NarrativeSubresource;
+  }
+
   async exists() {
     const method = "HEAD";
     const _exists = async () =>
@@ -300,8 +318,11 @@ class Narrative extends Resource {
     return (await _exists()) || false;
   }
 
-  subresource(type) {
-    return new NarrativeSubresource(this, type);
+  get authzTags() {
+    return new Set([
+      ...this.source.authzTagsToPropagate,
+      authzTags.Type.Narrative,
+    ]);
   }
 }
 

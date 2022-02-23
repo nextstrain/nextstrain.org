@@ -5,16 +5,17 @@
  */
 
 const {parse: parseContentType} = require("content-type");
-const {Forbidden, InternalServerError, NotFound, Unauthorized} = require("http-errors");
+const {InternalServerError, NotFound, UnsupportedMediaType} = require("http-errors");
 const negotiateMediaType = require("negotiator/lib/mediaType");
 const stream = require("stream");
 const {promisify} = require("util");
 const zlib = require("zlib");
+const readStream = require("raw-body");
 
-const {contentTypesProvided} = require("../negotiate");
+const authz = require("../authz");
+const {contentTypesProvided, contentTypesConsumed} = require("../negotiate");
 const {fetch, Request} = require("../fetch");
 const sources = require("../sources");
-const utils = require("../utils");
 const {sendAuspiceEntrypoint} = require("./static");
 
 
@@ -44,17 +45,7 @@ const setSource = (sourceName, argsExtractor = (req) => []) => (req, res, next) 
 
   res.vary("Accept");
 
-  if (!source.visibleToUser(req.user)) {
-    if (!req.user) {
-      if (req.accepts("html")) {
-        utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
-        req.session.afterLoginReturnTo = req.originalUrl;
-        return res.redirect("/login");
-      }
-      throw new Unauthorized();
-    }
-    throw new Forbidden();
-  }
+  authz.assertAuthorized(req.user, authz.actions.Read, source);
 
   req.context.source = source;
   return next();
@@ -130,10 +121,15 @@ const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
  * @type {expressMiddlewareAsync}
  */
 const ifDatasetExists = async (req, res, next) => {
+  authz.assertAuthorized(req.user, authz.actions.Read, req.context.dataset);
+
   if (!(await req.context.dataset.exists())) throw new NotFound();
   return next();
 };
 
+
+/* GET
+ */
 
 /* XXX TODO: Support automatically translating v1 (meta and tree) to v2
  * (main) if the latter is requested but only the former is available?
@@ -170,6 +166,69 @@ const getDataset = contentTypesProvided([
 ]);
 
 
+/* PUT
+ */
+const receiveDatasetSubresource = type =>
+  receiveSubresource(req => req.context.dataset.subresource(type));
+
+
+const putDatasetSubresource = type => contentTypesConsumed([
+  [`application/vnd.nextstrain.dataset.${type}+json`, receiveDatasetSubresource(type)],
+]);
+
+
+const putDatasetMain           = putDatasetSubresource("main");
+const putDatasetRootSequence   = putDatasetSubresource("root-sequence");
+const putDatasetTipFrequencies = putDatasetSubresource("tip-frequencies");
+
+
+const putDataset = contentTypesConsumed([
+  ["application/vnd.nextstrain.dataset.main+json", putDatasetMain],
+  ["application/vnd.nextstrain.dataset.root-sequence+json", putDatasetRootSequence],
+  ["application/vnd.nextstrain.dataset.tip-frequencies+json", putDatasetTipFrequencies],
+
+  /* XXX TODO: Support v1 (meta and tree) too?  We could, but maybe ok to say
+   * "just v2" for these new endpoints.
+   *   -trs, 22 Nov 2021
+   */
+]);
+
+
+/* DELETE
+ */
+
+/**
+ * Generate an Express endpoint that deletes a dataset or narrative Resource
+ * determined by the request.
+ *
+ * Internally, the Resource is deleted by deleting all of its Subresources.
+ *
+ * @param {resourceExtractor} resourceExtractor - Function to provide the Resource instance from the request
+ * @returns {expressEndpointAsync}
+ */
+const deleteResource = resourceExtractor => async (req, res) => {
+  const resource = resourceExtractor(req);
+
+  authz.assertAuthorized(req.user, authz.actions.Write, resource);
+
+  const method = "DELETE";
+  const upstreamUrls = await Promise.all(resource.subresources().map(s => s.url(method)));
+  const upstreamResponses = await Promise.all(upstreamUrls.map(url => fetch(url, {method})));
+
+  const goodStatuses = new Set([204, 404]);
+
+  if (!upstreamResponses.every(r => goodStatuses.has(r.status))) {
+    throw new InternalServerError("failed to delete all subresources");
+  }
+
+  return res.status(204).end();
+};
+
+
+const deleteDataset = deleteResource(req => req.context.dataset);
+const deleteNarrative = deleteResource(req => req.context.narrative);
+
+
 /* Narratives
  */
 
@@ -193,11 +252,15 @@ const setNarrative = (pathExtractor) => (req, res, next) => {
  * @type {expressMiddlewareAsync}
  */
 const ifNarrativeExists = async (req, res, next) => {
+  authz.assertAuthorized(req.user, authz.actions.Read, req.context.narrative);
+
   if (!(await req.context.narrative.exists())) throw new NotFound();
   return next();
 };
 
 
+/* GET
+ */
 const sendNarrativeSubresource = type =>
   sendSubresource(req => req.context.narrative.subresource(type));
 
@@ -212,6 +275,22 @@ const getNarrative = contentTypesProvided([
   ["text/html", ifNarrativeExists, sendAuspiceEntrypoint],
   ["text/markdown", getNarrativeMarkdown],
   ["text/vnd.nextstrain.narrative+markdown", getNarrativeMarkdown],
+]);
+
+
+/* PUT
+ */
+const receiveNarrativeSubresource = type =>
+  receiveSubresource(req => req.context.narrative.subresource(type));
+
+
+const putNarrativeMarkdown = contentTypesConsumed([
+  ["text/vnd.nextstrain.narrative+markdown", receiveNarrativeSubresource("md")],
+]);
+
+
+const putNarrative = contentTypesConsumed([
+  ["text/vnd.nextstrain.narrative+markdown", putNarrativeMarkdown],
 ]);
 
 
@@ -247,6 +326,9 @@ function pathParts(path = "") {
 function sendSubresource(subresourceExtractor) {
   return async (req, res) => {
     const subresource = subresourceExtractor(req);
+
+    authz.assertAuthorized(req.user, authz.actions.Read, subresource.resource);
+
     const subresourceUrl = await subresource.url();
 
     /* Proxy the data through us:
@@ -285,6 +367,112 @@ function sendSubresource(subresourceExtractor) {
 
 
 /**
+ * Generate an Express endpoint that receives a dataset or narrative
+ * Subresource determined by the request.
+ *
+ * @param {subresourceExtractor} subresourceExtractor - Function to provide the Subresource instance from the request
+ * @returns {expressEndpointAsync}
+ */
+function receiveSubresource(subresourceExtractor) {
+  return async (req, res) => {
+    const method = "PUT";
+    const subresource = subresourceExtractor(req);
+
+    authz.assertAuthorized(req.user, authz.actions.Write, subresource.resource);
+
+    /* Proxy the data through us:
+     *
+     *    client (browser, CLI, etc) ⟷ us (nextstrain.org) ⟷ upstream source
+     */
+    // eslint-disable-next-line prefer-const
+    let headers = {
+      "Content-Type": subresource.mediaType,
+      ...copyHeaders(req, ["Content-Encoding", "Content-Length"]),
+
+      /* XXX TODO: Consider setting Cache-Control rather than relying on
+       * ambiguous defaults.  Potentially impacts:
+       *
+       *   - Our own fetch() caching, including in sendSubresource() above
+       *   - Our Charon endpoints, if upstream headers are sent to the browser?
+       *   - CloudFront caching (not sure about its default behaviour)
+       *   - Browsers, if fetched directly, such as by redirection
+       *
+       * I think a cautious initial value would be to set "private" or "public"
+       * depending on the Source and then always set "must-revalidate,
+       * proxy-revalidate, max-age=0".  This would allow caches (ours,
+       * browsers, CloudFront?) to store the data but always check upstream
+       * with conditional requests.
+       *   -trs, 7 Dec 2021
+       */
+    };
+
+    // Body of the request as a Node stream
+    let body = req;
+
+    // Compress on the fly to gzip if it's not already gzip compressed.
+    if (!headers["Content-Encoding"]) {
+      delete headers["Content-Length"]; // won't be valid after compression
+      headers["Content-Encoding"] = "gzip";
+      body = body.pipe(zlib.createGzip());
+    }
+
+    if (headers["Content-Encoding"] !== "gzip") {
+      throw new UnsupportedMediaType("unsupported Content-Encoding; only gzip is supported");
+    }
+
+    /* Our upstreams for PUTs are all S3, and S3 requires a Content-Length
+     * header (i.e. doesn't accept streaming PUTs).  If we don't have a
+     * Content-Length from the request (i.e. the request is a streaming PUT or
+     * we're doing on-the-fly compression), then we have to buffer the entire
+     * body into memory so we can calculate length for S3.  When passed a
+     * buffer instead of a stream, fetch() will calculate Content-Length for us
+     * before sending the request.
+     *
+     * An alternative to buffering the whole body is to use S3's multipart
+     * upload API, but the minimum part size is 5MB so some buffering would be
+     * required anyway.  Multipart uploads would add inherent complexity at
+     * runtime and also design time, as we'd have to rework our data model.
+     *
+     * In a review of all the (compressed) core and group datasets (nearly
+     * 11k), over 99% are less than 5MB and none are more than 15MB.  Given
+     * that we'd only be able to use multipart uploads for less than 1% of
+     * datasets and even the largest datasets would fit comfortably in memory,
+     * it doesn't seem worth implementing.
+     *
+     * Allow buffering up to 20MB of data after gzip compression (guaranteed by
+     * Content-Encoding handling above).  Requests that exceed this will get a
+     * 413 error (thrown by readStream()), and if this becomes an issue we can
+     * consider bumping the limit.  Clients also have the option of
+     * pre-compressing the data and including a Content-Length themselves so we
+     * don't have to buffer it, in which case we don't limit request sizes.
+     *   -trs, 21 Jan 2022
+     */
+    if (!headers["Content-Length"]) {
+      body = await readStream(body, { limit: 20_000_000 /* 20MB */ });
+    }
+
+    const subresourceUrl = await subresource.url(method, {
+      "Content-Type": headers["Content-Type"],
+      "Content-Encoding": headers["Content-Encoding"],
+    });
+
+    const upstreamRes = await fetch(subresourceUrl, {method, body, headers});
+
+    switch (upstreamRes.status) {
+      case 200:
+      case 204:
+        break;
+
+      default:
+        throw new InternalServerError(`upstream said: ${upstreamRes.status} ${upstreamRes.statusText}`);
+    }
+
+    return res.status(204).end();
+  };
+}
+
+
+/**
  * Fetch from an upstream server and stream the response body back through as
  * our own response body.
  *
@@ -312,7 +500,7 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
       throw new NotFound();
 
     default:
-      throw new InternalServerError(upstreamRes);
+      throw new InternalServerError(`upstream said: ${upstreamRes.status} ${upstreamRes.statusText}`);
   }
 
   /* Check that the upstream returned something acceptable to us.  This ensures
@@ -469,6 +657,12 @@ function copyHeaders(headerSource, headerNames) {
  */
 
 /**
+ * @callback resourceExtractor
+ * @param {express.request} req
+ * @returns {module:../sources/models.Resource} A Resource instance.
+ */
+
+/**
  * @callback expressMiddleware
  * @param {express.request} req
  * @param {express.response} res
@@ -499,8 +693,12 @@ module.exports = {
   canonicalizeDataset,
   ifDatasetExists,
   getDataset,
+  putDataset,
+  deleteDataset,
 
   setNarrative,
   ifNarrativeExists,
   getNarrative,
+  putNarrative,
+  deleteNarrative,
 };

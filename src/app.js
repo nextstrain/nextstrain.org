@@ -6,12 +6,14 @@ const compression = require('compression');
 const utils = require("./utils");
 const cors = require('cors');
 const {addAsync} = require("@awaitjs/express");
-const {NotFound} = require('http-errors');
+const {Forbidden, NotFound, Unauthorized} = require("http-errors");
 
 const production = process.env.NODE_ENV === "production";
 
 const authn = require("./authn");
 const endpoints = require("./endpoints");
+const {AuthzDenied} = require("./exceptions");
+const {replacer: jsonReplacer} = require("./json");
 const redirects = require("./redirects");
 
 const {
@@ -21,7 +23,11 @@ const {
   setNarrative,
   canonicalizeDataset,
   getDataset,
+  putDataset,
+  deleteDataset,
   getNarrative,
+  putNarrative,
+  deleteNarrative,
 } = endpoints.sources;
 
 const esc = encodeURIComponent;
@@ -32,6 +38,8 @@ const jsonMediaType = type => type.match(/^application\/(.+\+)?json$/);
 /* Express boilerplate.
  */
 const app = addAsync(express());
+
+app.set("json replacer", jsonReplacer);
 
 app.locals.production = production;
 app.locals.gatsbyDevUrl = production ? null : process.env.GATSBY_DEV_URL;
@@ -125,11 +133,15 @@ app.use([coreBuildRoutes, "/narratives/*"], setSource("core"));
 app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
   .getAsync(getDataset)
+  .putAsync(putDataset)
+  .deleteAsync(deleteDataset)
 ;
 
 app.routeAsync("/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+  .putAsync(putNarrative)
+  .deleteAsync(deleteNarrative)
 ;
 
 
@@ -147,11 +159,15 @@ app.routeAsync("/staging/narratives")
 app.routeAsync("/staging/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+  .putAsync(putNarrative)
+  .deleteAsync(deleteNarrative)
 ;
 
 app.routeAsync("/staging/*")
   .all(setDataset(req => req.params[0]), canonicalizeDataset(path => `/staging/${path}`))
   .getAsync(getDataset)
+  .putAsync(putDataset)
+  .deleteAsync(deleteDataset)
 ;
 
 
@@ -226,11 +242,15 @@ app.routeAsync("/groups/:groupName/narratives")
 app.routeAsync("/groups/:groupName/narratives/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+  .putAsync(putNarrative)
+  .deleteAsync(deleteNarrative)
 ;
 
 app.routeAsync("/groups/:groupName/*")
   .all(setDataset(req => req.params[0]))
   .getAsync(getDataset)
+  .putAsync(putDataset)
+  .deleteAsync(deleteDataset)
 ;
 
 
@@ -337,7 +357,49 @@ app.useAsync(async (err, req, res, next) => {
 
   res.vary("Accept");
 
-  if (req.accepts().some(jsonMediaType) && !req.accepts("html")) {
+  /* "Is this request browser-like?"  Checking for explicit inclusion of
+   * "text/html" is an imperfect heuristic, but still useful enough and doesn't
+   * require user-agent matching, which seems more fraught and more opaque.
+   *
+   * Note that we don't check req.accepts("text/html"), because that'll match
+   * wildcard Accept values which are sent by ~every client.
+   *   -trs, 25 Jan 2022
+   */
+  const isBrowserLike = req.accepts().includes("text/html");
+
+  /* Handle our authorization denied errors differently depending on if the
+   * request is authenticated or not and if the client is browser-like or not.
+   *
+   * The intended audience for the redirect is humans following bookmarks,
+   * browser history, or other saved links, which will only ever be GET (and
+   * _maybe_ HEAD).
+   *
+   * An additional redirect condition on navigation (vs. background request)
+   * would also be nice, but I can't find any good heuristic for that.
+   * The following seems ideal:
+   *
+   *    const isNavigation = req.headers['sec-fetch-mode'] === "navigate";
+   *
+   * but it is not supported by Safari (macOS or iOS).
+   *   -trs, 25 Jan 2022
+   */
+  if (err instanceof AuthzDenied) {
+    if (!req.user) {
+      if (["GET", "HEAD"].includes(req.method) && isBrowserLike) {
+        utils.verbose(`Redirecting anonymous user to login page from ${req.originalUrl}`);
+        req.session.afterLoginReturnTo = req.originalUrl;
+        return res.redirect("/login");
+      }
+      err = new Unauthorized(err.message); // eslint-disable-line no-param-reassign
+    }
+    err = new Forbidden(err.message); // eslint-disable-line no-param-reassign
+  }
+
+  /* Browser-like clients get JSON if they explicitly ask for it (regardless of
+   * priority, and including our custom +json types) and all non-browser like
+   * clients get JSON.
+   */
+  if (req.accepts().some(jsonMediaType) || !isBrowserLike) {
     utils.verbose(`Sending ${err} error as JSON`);
     return res.status(err.status || err.statusCode || 500)
       .json({ error: err.message || String(err) })

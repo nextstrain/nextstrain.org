@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const {BadRequest, NotFound} = require("http-errors");
 
+const authz = require("../../authz");
 const utils = require("../../utils");
 const {splitPrefixIntoParts} = require("../../utils/prefix");
 
@@ -27,9 +28,7 @@ const getNarrative = async (req, res) => {
   const {source, prefixParts} = splitPrefixIntoParts(prefix);
 
   // Authorization
-  if (!source.visibleToUser(req.user)) {
-    return utils.unauthorized(req);
-  }
+  authz.assertAuthorized(req.user, authz.actions.Read, source);
 
   // Remove 'en' from nCoV narrative prefixParts
   if (prefixParts[0] === 'ncov') {
@@ -41,6 +40,9 @@ const getNarrative = async (req, res) => {
 
   // Generate the narrative's origin URL for fetching.
   const narrative = source.narrative(prefixParts);
+
+  authz.assertAuthorized(req.user, authz.actions.Read, narrative);
+
   const fetchURL = await narrative.subresource("md").url();
 
   try {

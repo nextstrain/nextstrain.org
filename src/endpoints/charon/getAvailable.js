@@ -1,3 +1,4 @@
+const authz = require("../../authz");
 const utils = require("../../utils");
 const queryString = require("query-string");
 const {splitPrefixIntoParts, joinPartsIntoPrefix} = require("../../utils/prefix");
@@ -16,9 +17,7 @@ const getAvailable = async (req, res) => {
   const {source} = splitPrefixIntoParts(prefix);
 
   // Authorization
-  if (!source.visibleToUser(req.user)) {
-    return utils.unauthorized(req);
-  }
+  authz.assertAuthorized(req.user, authz.actions.Read, source);
 
   const datasets = await source.availableDatasets() || [];
   const narratives = await source.availableNarratives() || [];

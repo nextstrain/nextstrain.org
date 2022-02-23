@@ -109,15 +109,25 @@ const parseNarrativeLanguage = (narrative) => {
   return language;
 };
 
-const unauthorized = (req) => {
-  const user = req.user
-    ? `user ${req.user.username}`
-    : `an anonymous user`;
+/**
+ * Normalize a plain object of HTTP headers.
+ *
+ * Header names are lowercased. Headers with a null, undefined, or empty string
+ * value are omitted in the returned object.
+ *
+ * @params {object} headers
+ * @returns {object}
+ */
+const normalizeHeaders = (headers) => {
+  const withValues =
+    Object.entries(headers)
+      .filter(([, value]) => value != null && value !== "");
 
-  warn(`Denying ${user} access to ${req.originalUrl}`);
-  throw new NotFound();
+  /* Use the WHATWG Headers object to do most of the normalization, including
+   * lowercasing and combining duplicate headers as appropriate.
+   */
+  return Object.fromEntries((new fetch.Headers(withValues)).entries());
 };
-
 
 module.exports = {
   getGitHash,
@@ -129,5 +139,5 @@ module.exports = {
   responseDetails,
   getDatasetsFromListOfFilenames,
   parseNarrativeLanguage,
-  unauthorized,
+  normalizeHeaders,
 };
