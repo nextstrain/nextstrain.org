@@ -76,212 +76,212 @@ datasets:
     geo: usa
     parentGeo: north-america
 
-  - geo: alabama
-    name: Alabama
+  - name: Alabama
+    geo: alabama
     parentGeo: usa
 
-  - geo: alaska
-    name: Alaska
+  - name: Alaska
+    geo: alaska
     parentGeo: usa
 
-  - geo: arizona
-    name: Arizona
+  - name: Arizona
+    geo: arizona
     parentGeo: usa
 
-  - geo: arkansas
-    name: Arkansas
+  - name: Arkansas
+    geo: arkansas
     parentGeo: usa
 
-  - geo: california
-    name: California
+  - name: California
+    geo: california
     parentGeo: usa
 
-  - geo: colorado
-    name: Colorado
+  - name: Colorado
+    geo: colorado
     parentGeo: usa
 
-  - geo: connecticut
-    name: Connecticut
+  - name: Connecticut
+    geo: connecticut
     parentGeo: usa
 
-  - geo: delaware
-    name: Delaware
+  - name: Delaware
+    geo: delaware
     parentGeo: usa
 
-  - geo: florida
-    name: Florida
+  - name: Florida
+    geo: florida
     parentGeo: usa
 
-  - geo: georgia
-    name: Georgia
+  - name: Georgia
+    geo: georgia
     parentGeo: usa
 
-  - geo: hawaii
-    name: Hawaii
+  - name: Hawaii
+    geo: hawaii
     parentGeo: usa
 
-  - geo: idaho
-    name: Idaho
+  - name: Idaho
+    geo: idaho
     parentGeo: usa
 
-  - geo: illinois
-    name: Illinois
+  - name: Illinois
+    geo: illinois
     parentGeo: usa
 
-  - geo: indiana
-    name: Indiana
+  - name: Indiana
+    geo: indiana
     parentGeo: usa
 
-  - geo: iowa
-    name: Iowa
+  - name: Iowa
+    geo: iowa
     parentGeo: usa
 
-  - geo: kansas
-    name: Kansas
+  - name: Kansas
+    geo: kansas
     parentGeo: usa
 
-  - geo: kentucky
-    name: Kentucky
+  - name: Kentucky
+    geo: kentucky
     parentGeo: usa
 
-  - geo: louisiana
-    name: Louisiana
+  - name: Louisiana
+    geo: louisiana
     parentGeo: usa
 
-  - geo: maine
-    name: Maine
+  - name: Maine
+    geo: maine
     parentGeo: usa
 
-  - geo: maryland
-    name: Maryland
+  - name: Maryland
+    geo: maryland
     parentGeo: usa
 
-  - geo: massachusetts
-    name: Massachusetts
+  - name: Massachusetts
+    geo: massachusetts
     parentGeo: usa
 
-  - geo: michigan
-    name: Michigan
+  - name: Michigan
+    geo: michigan
     parentGeo: usa
 
-  - geo: minnesota
-    name: Minnesota
+  - name: Minnesota
+    geo: minnesota
     parentGeo: usa
 
-  - geo: mississippi
-    name: Mississippi
+  - name: Mississippi
+    geo: mississippi
     parentGeo: usa
 
-  - geo: missouri
-    name: Missouri
+  - name: Missouri
+    geo: missouri
     parentGeo: usa
 
-  - geo: montana
-    name: Montana
+  - name: Montana
+    geo: montana
     parentGeo: usa
 
-  - geo: nebraska
-    name: Nebraska
+  - name: Nebraska
+    geo: nebraska
     parentGeo: usa
 
-  - geo: nevada
-    name: Nevada
+  - name: Nevada
+    geo: nevada
     parentGeo: usa
 
-  - geo: new_hampshire
-    name: New Hampshire
+  - name: New Hampshire
+    geo: new_hampshire
     parentGeo: usa
 
-  - geo: new_jersey
-    name: New Jersey
+  - name: New Jersey
+    geo: new_jersey
     parentGeo: usa
 
-  - geo: new_mexico
-    name: New Mexico
+  - name: New Mexico
+    geo: new_mexico
     parentGeo: usa
 
-  - geo: new_york
-    name: New York
+  - name: New York
+    geo: new_york
     parentGeo: usa
 
-  - geo: north_carolina
-    name: North Carolina
+  - name: North Carolina
+    geo: north_carolina
     parentGeo: usa
 
-  - geo: north_dakota
-    name: North Dakota
+  - name: North Dakota
+    geo: north_dakota
     parentGeo: usa
 
-  - geo: ohio
-    name: Ohio
+  - name: Ohio
+    geo: ohio
     parentGeo: usa
 
-  - geo: oklahoma
-    name: Oklahoma
+  - name: Oklahoma
+    geo: oklahoma
     parentGeo: usa
 
-  - geo: oregon
-    name: Oregon
+  - name: Oregon
+    geo: oregon
     parentGeo: usa
 
-  - geo: pennsylvania
-    name: Pennsylvania
+  - name: Pennsylvania
+    geo: pennsylvania
     parentGeo: usa
 
-  - geo: puerto_rico
-    name: Puerto Rico
+  - name: Puerto Rico
+    geo: puerto_rico
     parentGeo: usa
 
-  - geo: rhode_island
-    name: Rhode Island
+  - name: Rhode Island
+    geo: rhode_island
     parentGeo: usa
 
-  - geo: south_carolina
-    name: South Carolina
+  - name: South Carolina
+    geo: south_carolina
     parentGeo: usa
 
-  - geo: south_dakota
-    name: South Dakota
+  - name: South Dakota
+    geo: south_dakota
     parentGeo: usa
 
-  - geo: tennessee
-    name: Tennessee
+  - name: Tennessee
+    geo: tennessee
     parentGeo: usa
 
-  - geo: texas
-    name: Texas
+  - name: Texas
+    geo: texas
     parentGeo: usa
 
-  - geo: utah
-    name: Utah
+  - name: Utah
+    geo: utah
     parentGeo: usa
 
-  - geo: vermont
-    name: Vermont
+  - name: Vermont
+    geo: vermont
     parentGeo: usa
 
-  - geo: virginia
-    name: Virginia
+  - name: Virginia
+    geo: virginia
     parentGeo: usa
 
-  - geo: washington
-    name: Washington
+  - name: Washington
+    geo: washington
     parentGeo: usa
 
-  - geo: washington_dc
-    name: Washington DC
+  - name: Washington DC
+    geo: washington_dc
     parentGeo: usa
 
-  - geo: west_virginia
-    name: West Virginia
+  - name: West Virginia
+    geo: west_virginia
     parentGeo: usa
 
-  - geo: wisconsin
-    name: Wisconsin
+  - name: Wisconsin
+    geo: wisconsin
     parentGeo: usa
 
-  - geo: wyoming
-    name: Wyoming
+  - name: Wyoming
+    geo: wyoming
     parentGeo: usa
 
   - name: Austria
@@ -609,7 +609,7 @@ datasets:
     parentGeo: western-africa
 
   - name: Cote d'Ivoire
-    geo: cote-d'ivoire
+    geo: cote-d-ivoire
     parentGeo: western-africa
 
   - name: Gambia
@@ -712,7 +712,6 @@ datasets:
       name: neherlab
       url: https://neherlab.org
 
-  # Bookmark: JC
   - url: https://nextstrain.org/ncov/africa?f_region=Africa
     name: Africa
     geo: africa
@@ -2626,7 +2625,7 @@ datasets:
 
   - url: https://nextstrain.org/groups/africa-cdc/ncov/cote-divoire?c=clade_membership&f_country=Cote%20d%27Ivoire&p=grid&tl=country
     name: Cote d'Ivoire
-    geo: cote-d'ivoire
+    geo: cote-d-ivoire
     level: country
     coords:
       - -5.5679458
