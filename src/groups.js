@@ -64,6 +64,22 @@ class Group {
      * @type {String}
      */
     this.bucket = groupRecord.bucket;
+
+    /**
+     * Map of generic roles a member of this Group can hold to fully-qualified
+     * authz roles.
+     *
+     * The fully-qualified names are used in authz policies, and a user's authz
+     * roles are stored using membership in AWS Cognito groups of the same
+     * name.
+     *
+     * @type {Map.<string, string>}
+     */
+    this.membershipRoles = new Map([
+      ["viewers", `${this.name}/viewers`],
+      ["editors", `${this.name}/editors`],
+      ["owners", `${this.name}/owners`],
+    ]);
   }
 }
 

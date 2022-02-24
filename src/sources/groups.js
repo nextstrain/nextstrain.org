@@ -24,7 +24,7 @@ class GroupSource extends Source {
   }
 
   get authzPolicy() {
-    const basePolicy = authzPolicy(this.group.name);
+    const basePolicy = authzPolicy(this.group);
 
     const publicPolicy = [
       /* No role restriction on reading anything tagged "public".
@@ -229,12 +229,16 @@ class GroupSource extends Source {
  * future could retrieve a per-group, owner-defined, stored policy which makes
  * use of both system- and user-defined tags and roles.
  *
- * @param {string} groupName - Name of the Nextstrain Group
+ * @param {Group} group
  * @returns {authzPolicy}
  */
-function authzPolicy(groupName) {
+function authzPolicy(group) {
   const {Read, Write} = authz.actions;
   const {Type} = authz.tags;
+
+  const viewers = group.membershipRoles.get("viewers");
+  const editors = group.membershipRoles.get("editors");
+  const owners = group.membershipRoles.get("owners");
 
   return [
     /* eslint-disable no-multi-spaces */
@@ -242,20 +246,20 @@ function authzPolicy(groupName) {
     /* All membership roles in a Nextstrain Group can see information about the
      * group Source instance.
      */
-    {tag: Type.Source, role: `${groupName}/viewers`, allow: [Read]},
-    {tag: Type.Source, role: `${groupName}/editors`, allow: [Read]},
-    {tag: Type.Source, role: `${groupName}/owners`,  allow: [Read]},
+    {tag: Type.Source, role: viewers, allow: [Read]},
+    {tag: Type.Source, role: editors, allow: [Read]},
+    {tag: Type.Source, role: owners,  allow: [Read]},
 
     /* Editors and Owners can create/update/delete datasets and narratives, but
      * Viewers can only see them.
      */
-    {tag: Type.Dataset, role: `${groupName}/viewers`, allow: [Read]},
-    {tag: Type.Dataset, role: `${groupName}/editors`, allow: [Read, Write]},
-    {tag: Type.Dataset, role: `${groupName}/owners`,  allow: [Read, Write]},
+    {tag: Type.Dataset, role: viewers, allow: [Read]},
+    {tag: Type.Dataset, role: editors, allow: [Read, Write]},
+    {tag: Type.Dataset, role: owners,  allow: [Read, Write]},
 
-    {tag: Type.Narrative, role: `${groupName}/viewers`, allow: [Read]},
-    {tag: Type.Narrative, role: `${groupName}/editors`, allow: [Read, Write]},
-    {tag: Type.Narrative, role: `${groupName}/owners`,  allow: [Read, Write]},
+    {tag: Type.Narrative, role: viewers, allow: [Read]},
+    {tag: Type.Narrative, role: editors, allow: [Read, Write]},
+    {tag: Type.Narrative, role: owners,  allow: [Read, Write]},
 
     /* eslint-enable no-multi-spaces */
   ];
