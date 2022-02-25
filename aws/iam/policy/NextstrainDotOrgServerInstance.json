@@ -2,7 +2,7 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "S3Buckets",
+      "Sid": "SingleTenantBucketActions",
       "Effect": "Allow",
       "Action": "s3:ListBucket",
       "Resource": [
@@ -48,7 +48,7 @@
       ]
     },
     {
-      "Sid": "S3BucketObjects",
+      "Sid": "SingleTenantBucketObjectActions",
       "Effect": "Allow",
       "Action": [
         "s3:GetObject",
@@ -92,6 +92,29 @@
         "arn:aws:s3:::nextstrain-group-test-private/*",
         "arn:aws:s3:::nextstrain-valldhebronvirology/*",
         "arn:aws:s3:::nextstrain-valldhebronvirology-private/*"
+      ]
+    },
+    {
+      "Sid": "MultitenantBucketActions",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::nextstrain-groups"
+      ]
+    },
+    {
+      "Sid": "MultitenantBucketObjectActions",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::nextstrain-groups/*"
       ]
     }
   ]
