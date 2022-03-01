@@ -82,7 +82,7 @@ const getDatasetsFromListOfFilenames = (filenames) => {
 
   // All JSON files which aren't a sidecar file with a known suffix are assumed to
   // be v2+ JSONs (aka "unified" JSONs)
-  const sidecarSuffixes = ["meta", "tree", "root-sequence", "seq", "tip-frequencies"];
+  const sidecarSuffixes = ["meta", "tree", "root-sequence", "seq", "tip-frequencies", "measurements"];
   const datasets = jsonFiles
     .filter((filename) => !sidecarSuffixes.some((suffix) => filename.endsWith(`_${suffix}.json`)))
     .map((filename) => filename.replace(/[.]json$/, ""));

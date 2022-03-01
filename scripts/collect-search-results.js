@@ -135,6 +135,7 @@ function filenameLooksLikeDataset(filename) {
   if (filename.endsWith("_sequences.json")) return false;
   if (filename.endsWith("_entropy.json")) return false;
   if (filename.endsWith("_root-sequence.json")) return false;
+  if (filename.endsWith("_measurements.json")) return false;
   return true;
 }
 

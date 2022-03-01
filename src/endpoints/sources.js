@@ -150,6 +150,7 @@ const getDatasetSubresource = type => contentTypesProvided([
 const getDatasetMain           = getDatasetSubresource("main");
 const getDatasetRootSequence   = getDatasetSubresource("root-sequence");
 const getDatasetTipFrequencies = getDatasetSubresource("tip-frequencies");
+const getDatasetMeasurements   = getDatasetSubresource("measurements");
 
 
 const getDataset = contentTypesProvided([
@@ -158,6 +159,7 @@ const getDataset = contentTypesProvided([
   ["application/vnd.nextstrain.dataset.main+json", getDatasetMain],
   ["application/vnd.nextstrain.dataset.root-sequence+json", getDatasetRootSequence],
   ["application/vnd.nextstrain.dataset.tip-frequencies+json", getDatasetTipFrequencies],
+  ["application/vnd.nextstrain.dataset.measurements+json", getDatasetMeasurements],
 
   /* XXX TODO: Support v1 (meta and tree) too?  We could, but maybe ok to say
    * "just v2" for these new endpoints.
@@ -180,12 +182,14 @@ const putDatasetSubresource = type => contentTypesConsumed([
 const putDatasetMain           = putDatasetSubresource("main");
 const putDatasetRootSequence   = putDatasetSubresource("root-sequence");
 const putDatasetTipFrequencies = putDatasetSubresource("tip-frequencies");
+const putDatasetMeasurements   = putDatasetSubresource("measurements");
 
 
 const putDataset = contentTypesConsumed([
   ["application/vnd.nextstrain.dataset.main+json", putDatasetMain],
   ["application/vnd.nextstrain.dataset.root-sequence+json", putDatasetRootSequence],
   ["application/vnd.nextstrain.dataset.tip-frequencies+json", putDatasetTipFrequencies],
+  ["application/vnd.nextstrain.dataset.measurements+json", putDatasetMeasurements],
 
   /* XXX TODO: Support v1 (meta and tree) too?  We could, but maybe ok to say
    * "just v2" for these new endpoints.

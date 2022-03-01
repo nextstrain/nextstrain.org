@@ -129,6 +129,7 @@ function filenameLooksLikeDataset(filename) {
   if (filename.endsWith("_sequences.json")) return false;
   if (filename.endsWith("_entropy.json")) return false;
   if (filename.endsWith("_root-sequence.json")) return false;
+  if (filename.endsWith("_measurements.json")) return false;
   if (filename.includes("manifest")) return false;
   if (filename === ("datasets_staging.json")) return false;
   // The line below is due to the fact that

@@ -126,6 +126,9 @@ different JSON files are used and their content.
 ``application/vnd.nextstrain.dataset.tip-frequencies+json``
     Tip frequencies sidecar JSON content.
 
+``application/vnd.nextstrain.dataset.measurements+json``
+    Measurements sidecar JSON content.
+
 ``application/json``
     Currently an alias for ``application/vnd.nextstrain.dataset.main+json``.
     Intended primarily for curious humans instead of programs and so may change

@@ -287,7 +287,7 @@ class Dataset extends Resource {
 }
 
 class DatasetSubresource extends Subresource {
-  static validTypes = ["main", "root-sequence", "tip-frequencies", "meta", "tree"];
+  static validTypes = ["main", "root-sequence", "tip-frequencies", "measurements", "meta", "tree"];
 
   mediaType = `application/vnd.nextstrain.dataset.${this.type}+json`;
 
