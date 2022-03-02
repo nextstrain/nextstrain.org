@@ -291,6 +291,7 @@ const schemaRoutes = [
   ["/schemas/dataset/v2",              "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v2.json"],
   ["/schemas/dataset/root-sequence",   "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-root-sequence.json"],
   ["/schemas/dataset/tip-frequencies", "https://github.com/nextstrain/augur/raw/master/augur/data/schema-tip-frequencies.json"],
+  ["/schemas/dataset/measurements",    "https://github.com/nextstrain/augur/raw/master/augur/data/schema-measurements.json"],
 ];
 /* eslint-enable no-multi-spaces */
 
