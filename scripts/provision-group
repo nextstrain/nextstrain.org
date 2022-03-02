@@ -49,7 +49,9 @@ function parseArgs() {
       "username" and "email" key.  The optional key "role" may be set to
       "viewers", "editors", or "owners"; the default if not provided is
       "viewers".  The optional key "name" provides the user's name (not
-      username).
+      username).  A special key, "mustExist", may be set to true to avoid
+      accidentally creating (and thus inviting) a user that should already
+      exist.
     `,
   });
 
@@ -82,12 +84,13 @@ async function provision(group, members) {
 
   if (members) {
     await createMembers(
-      members.map(({username, email, name, role = "viewers"}) => ({
+      members.map(({username, email, name, role = "viewers", mustExist = false}) => ({
         group,
         role,
         username,
         email,
         name,
+        mustExist,
       }))
     );
   }
@@ -182,8 +185,20 @@ async function createMembers(members) {
 }
 
 
-async function createMember({group, role: memberRole, username, email, name}) {
-  const userCreation = createCognitoUser({username, email, name});
+async function createMember({group, role: memberRole, username, email, name, mustExist}) {
+  const doesNotExistButMust = error => {
+    switch (error.name) {
+      case "UserNotFoundException":
+        throw new Error(`username ${username} marked "mustExist" but does not`);
+
+      default:
+        throw error;
+    }
+  };
+
+  const userCreation = mustExist
+    ? updateCognitoUser({username, email, name}).catch(doesNotExistButMust)
+    : createCognitoUser({username, email, name});
 
   const userGroups = userCreation.then(status =>
     // save a request if we just created the user
@@ -275,25 +290,44 @@ async function createCognitoUser({username, email, name}) {
   } catch (error) {
     switch (error.name) {
       case "UsernameExistsException":
-        const existingUser = await cognitoUser(username);
-
-        /* Confirm existing username has matching email address so we don't
-         * accidentally mix up users.
-         */
-        if (existingUser.email !== email) {
-          throw new Error(`username ${username} already exists with email ${existingUser.email}, which doesn't match ${email}`);
-        }
-
-        // Update name if necessary
-        if (name && existingUser.name !== name) {
-          return await updateCognitoUserAttributes(username, {name});
-        }
-        return STATUS_EXISTED;
+        return await updateCognitoUser({username, email, name});
 
       default:
         throw error;
     }
   }
+}
+
+
+/**
+ * Update a user in AWS Cognito.
+ *
+ * The user must already exist with the given username and email.  The name
+ * (not username) of the existing user will be updated if needed.
+ *
+ * @param {object} user
+ * @param {string} user.username
+ * @param {string} user.email
+ * @param {string} [user.name]
+ * @returns {STATUS_UPDATED|STATUS_EXISTED}
+ */
+async function updateCognitoUser({username, email, name}) {
+  if (!username || !email) throw new Error("username and email are required");
+
+  const existingUser = await cognitoUser(username);
+
+  /* Confirm existing username has matching email address so we don't
+   * accidentally mix up users.
+   */
+  if (existingUser.email !== email) {
+    throw new Error(`username ${username} already exists with email ${existingUser.email}, which doesn't match ${email}`);
+  }
+
+  // Update name if necessary
+  if (name && existingUser.name !== name) {
+    return await updateCognitoUserAttributes(username, {name});
+  }
+  return STATUS_EXISTED;
 }
 
 
