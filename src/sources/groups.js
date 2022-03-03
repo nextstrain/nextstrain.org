@@ -160,7 +160,7 @@ class GroupSource extends Source {
       website,
       showDatasets,
       showNarratives,
-      content
+      content: content.match(/\S/) ? content : undefined,
     };
   }
   /**
@@ -173,7 +173,7 @@ class GroupSource extends Source {
   async getInfo() {
     const defaults = {
       title: `"${this.group.name}" Nextstrain group`,
-      byline: `The available datasets and narratives in this group are listed below.`,
+      overview: `The available datasets and narratives in this group are listed below.`,
       showDatasets: true,
       showNarratives: true,
     };
@@ -195,11 +195,11 @@ class GroupSource extends Source {
 
       const {
         title = defaults.title,
-        byline = defaults.byline,
+        byline,
         website,
         showDatasets = defaults.showDatasets,
         showNarratives = defaults.showNarratives,
-        content,
+        content = defaults.overview,
       } = overview;
 
       return {
