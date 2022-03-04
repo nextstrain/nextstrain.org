@@ -1,29 +1,24 @@
 const authz = require("../authz");
+const {ALL_GROUPS} = require("../groups");
 const {contentTypesProvided} = require("../negotiate");
-const sources = require("../sources");
+const {GroupSource} = require("../sources");
 const {sendGatsbyPage} = require("./static");
 
 
 /**
  * Returns an array of Nextstrain groups that are visible to a
  * given *user* (or a non-logged in user). The order of groups returned
- * matches the `sources` array in `sources.js`.
- *
- * FIX: Contains a hard-coded assumption that all Nextstrain groups match
- * their corresponding group name exactly.
- * See <https://github.com/nextstrain/nextstrain.org/issues/76> for more
- * context and to track this issue.
+ * matches the order in `data/groups.json`.
  *
  * @param {Object | undefined} user. `undefined` represents a non-logged-in user
  * @returns {Array} Each element is an object with keys `name` -> {str} (group name) and
  *                  `private` -> {bool} (group is private)
  */
-const visibleGroups = (user) => Array.from(sources)
-  .filter(([, Source]) => Source.isGroup())
-  .map(([sourceName, Source]) => [sourceName, new Source()])
+const visibleGroups = (user) => ALL_GROUPS
+  .map(g => [g.name, new GroupSource(g)])
   .filter(([, source]) => authz.authorized(user, authz.actions.Read, source))
-  .map(([sourceName, source]) => ({
-    name: sourceName,
+  .map(([name, source]) => ({
+    name,
     private: !authz.authorized(null, authz.actions.Read, source),
   }));
 

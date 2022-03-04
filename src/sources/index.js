@@ -1,21 +1,15 @@
 /* See ./models.js for an explanation of the design of these classes.
  */
 
-const utils = require("../utils");
 const {CoreSource, CoreStagingSource} = require("./core");
 const {CommunitySource} = require("./community");
 const {UrlDefinedSource} = require("./fetch");
-const {groupSources} = require("./groups");
+const {GroupSource} = require("./groups");
 
-const sources = [
+module.exports = {
   CoreSource,
   CoreStagingSource,
   CommunitySource,
   UrlDefinedSource,
-  ...groupSources,
-];
-
-const sourceMap = new Map(sources.map(s => [s._name, s]));
-utils.verbose("Sources are:", sourceMap);
-
-module.exports = sourceMap;
+  GroupSource,
+};

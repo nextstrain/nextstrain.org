@@ -2,7 +2,6 @@
 const authzTags = require("../authz/tags");
 const {fetch} = require("../fetch");
 const {NoResourcePathError} = require("../exceptions");
-const utils = require("../utils");
 
 /* The model classes here are the base classes for the classes defined in
  * ./core.js, ./community.js, ./groups.js, etc.
@@ -91,21 +90,12 @@ const utils = require("../utils");
  */
 
 class Source {
-  static get _name() {
-    throw new Error("_name() must be implemented by subclasses");
-  }
-  get name() {
-    return this.constructor._name;
-  }
   async baseUrl() {
     throw new Error("async baseUrl() must be implemented by subclasses");
   }
   async urlFor(path, method = 'GET', headers = {}) { // eslint-disable-line no-unused-vars
     const url = new URL(path, await this.baseUrl());
     return url.toString();
-  }
-  static isGroup() { /* is the source a "nextstrain group"? */
-    return false;
   }
   dataset(pathParts) {
     return new Dataset(this, pathParts);
@@ -119,10 +109,10 @@ class Source {
     return [];
   }
 
-  availableDatasets() {
+  async availableDatasets() {
     return [];
   }
-  availableNarratives() {
+  async availableNarratives() {
     return [];
   }
   async getInfo() {
@@ -139,6 +129,12 @@ class Source {
   }
   get authzTagsToPropagate() {
     return new Set();
+  }
+  static toString() {
+    return `[${this.name} class]`;
+  }
+  toString() {
+    return `[${this.constructor.name} object]`;
   }
 }
 
@@ -241,36 +237,6 @@ class Dataset extends Resource {
    * @returns {Dataset}
    */
   resolve() {
-    /* XXX TODO: Reimplement this in terms of methods on the source, not by
-     * breaking encapsulation by using a process-wide global.
-     *   -trs, 26 Oct 2021 (based on a similar comment 5 Sept 2019)
-     */
-    const sourceName = this.source.name;
-    const prefixParts = this.pathParts;
-
-    if (!global.availableDatasets[sourceName]) {
-      utils.verbose("Can't compare against available datasets as there are none!");
-      return this;
-    }
-
-    const doesPathExist = (pathToCheck) =>
-      global.availableDatasets[sourceName]
-        .includes(pathToCheck);
-
-    const prefix = prefixParts.join("/");
-
-    if (doesPathExist(prefix)) {
-      return this;
-    }
-
-    /* if we are here, then the path doesn't match any available datasets exactly */
-    const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
-
-    if (nextDefaultPart) {
-      const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart]);
-      return dataset.resolve();
-    }
-
     return this;
   }
 

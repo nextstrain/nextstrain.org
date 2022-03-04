@@ -2,6 +2,25 @@ const {NotFound} = require("http-errors");
 
 const sources = require("../sources");
 
+
+/* Map old source "names" to their classes and vice versa to avoid dramatically
+ * changing the functions below with the removal of source "names" elsewhere.
+ *   -trs, 9 Feb 2022
+ */
+const sourceNameToClass = new Map([
+  ["core", sources.CoreSource],
+  ["staging", sources.CoreStagingSource],
+  ["community", sources.CommunitySource],
+  ["fetch", sources.UrlDefinedSource],
+  ["groups", sources.GroupSource],
+]);
+
+const sourceClassToName = new Map(
+  Array.from(sourceNameToClass.entries())
+    .map(([name, class_]) => [class_, name])
+);
+
+
 /* All of the logic for mapping a dataset or narratives URL ("prefix") to a
  * source + path is intentionally encapsulated contained here.  This function
  * is essentially a router, and potentially should be refactored as such in the
@@ -28,8 +47,22 @@ const splitPrefixIntoParts = (prefix) => {
       sourceName = prefixParts.shift();
       break;
     case "groups":
-      prefixParts.shift();
       sourceName = prefixParts.shift();
+
+      /* Swap the order of the first two elements if the second is
+       * "narratives".  This turns
+       *
+       *   X/narratives/Y/Z → narratives/X/Y/Z
+       *
+       * where X is the group name.  It's a hack to account for
+       *
+       *   /groups/X/narratives/Y/Z vs. /community/narratives/X/Y/Z
+       *
+       * and the order the code below expects.
+       */
+      if (prefixParts[1] === "narratives") {
+        prefixParts.splice(0, 2, prefixParts[1], prefixParts[0]);
+      }
       break;
     default:
       sourceName = "core";
@@ -42,7 +75,7 @@ const splitPrefixIntoParts = (prefix) => {
     prefixParts.shift();
   }
 
-  const Source = sources.get(sourceName);
+  const Source = sourceNameToClass.get(sourceName);
   if (!Source) throw new NotFound();
 
   let source;
@@ -55,6 +88,11 @@ const splitPrefixIntoParts = (prefix) => {
 
     // UrlDefined source requires a URL authority part
     case "fetch":
+      source = new Source(prefixParts.shift());
+      break;
+
+    // Group source requires a group name
+    case "groups":
       source = new Source(prefixParts.shift());
       break;
 
@@ -75,23 +113,28 @@ const splitPrefixIntoParts = (prefix) => {
 const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) => {
   const leadingParts = [];
 
-  switch (source.name) {
-    case "core":
-      break;
+  const sourceName = sourceClassToName.get(source.constructor);
+
+  switch (sourceName) {
     case "community":
     case "staging":
     case "fetch":
-      leadingParts.push(source.name);
+      leadingParts.push(sourceName);
       break;
-    default:
-      leadingParts.push("groups", source.name);
+
+    case "groups":
+      // groupName appears before "narratives", potentially added below
+      leadingParts.push(sourceName, source.group.name);
+      break;
+
+    // no default
   }
 
   if (isNarrative) {
     leadingParts.push("narratives");
   }
 
-  switch (source.name) {
+  switch (sourceName) {
     // Community source requires an owner and repo name
     case "community":
       leadingParts.push(source.owner, await source.repoNameWithBranch());

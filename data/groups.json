@@ -1,0 +1,187 @@
+[
+  {
+    "name": "blab",
+    "bucket": "nextstrain-blab",
+    "isPublic": true
+  },
+  {
+    "name": "seattleflu",
+    "bucket": "nextstrain-seattleflu",
+    "isPublic": true
+  },
+  {
+    "name": "nextspain",
+    "bucket": "nextstrain-nextspain",
+    "isPublic": true
+  },
+  {
+    "name": "swiss",
+    "bucket": "nextstrain-swiss",
+    "isPublic": true
+  },
+  {
+    "name": "cog-uk",
+    "bucket": "nextstrain-cog-uk",
+    "isPublic": true
+  },
+  {
+    "name": "ngs-sa",
+    "bucket": "nextstrain-ngs-sa",
+    "isPublic": true
+  },
+  {
+    "name": "ecdc",
+    "bucket": "nextstrain-ecdc",
+    "isPublic": true
+  },
+  {
+    "name": "illinois-gagnon-public",
+    "bucket": "nextstrain-illinois-gagnon-public",
+    "isPublic": true
+  },
+  {
+    "name": "neherlab",
+    "bucket": "nextstrain-neherlab",
+    "isPublic": true
+  },
+  {
+    "name": "spheres",
+    "bucket": "nextstrain-spheres",
+    "isPublic": true
+  },
+  {
+    "name": "niph",
+    "bucket": "nextstrain-niph",
+    "isPublic": true
+  },
+  {
+    "name": "epicovigal",
+    "bucket": "nextstrain-epicovigal",
+    "isPublic": true
+  },
+  {
+    "name": "waphl",
+    "bucket": "nextstrain-waphl",
+    "isPublic": true
+  },
+  {
+    "name": "ViennaRNA",
+    "bucket": "nextstrain-viennarna",
+    "isPublic": true
+  },
+  {
+    "name": "SC2ZamPub",
+    "bucket": "nextstrain-sc2zampub",
+    "isPublic": true
+  },
+  {
+    "name": "nebraska-dhhs",
+    "bucket": "nextstrain-nebraska-dhhs",
+    "isPublic": true
+  },
+  {
+    "name": "ncovHK",
+    "bucket": "nextstrain-ncovhk",
+    "isPublic": true
+  },
+  {
+    "name": "africa-cdc",
+    "bucket": "nextstrain-africa-cdc",
+    "isPublic": true
+  },
+  {
+    "name": "grubaughlab-public",
+    "bucket": "nextstrain-grubaughlab-public",
+    "isPublic": true
+  },
+  {
+    "name": "usda-ars-flucrew",
+    "bucket": "nextstrain-usda-ars-flucrew",
+    "isPublic": true
+  },
+  {
+    "name": "valldhebronvirology",
+    "bucket": "nextstrain-valldhebronvirology",
+    "isPublic": true
+  },
+  {
+    "name": "blab-private",
+    "bucket": "nextstrain-blab-private",
+    "isPublic": false
+  },
+  {
+    "name": "nz-covid19-private",
+    "bucket": "nextstrain-nz-covid19-private",
+    "isPublic": false
+  },
+  {
+    "name": "allwales-private",
+    "bucket": "nextstrain-allwales-private",
+    "isPublic": false
+  },
+  {
+    "name": "illinois-gagnon-private",
+    "bucket": "nextstrain-illinois-gagnon-private",
+    "isPublic": false
+  },
+  {
+    "name": "grubaughlab",
+    "bucket": "nextstrain-grubaughlab",
+    "isPublic": false
+  },
+  {
+    "name": "inrb-drc",
+    "bucket": "nextstrain-inrb",
+    "isPublic": false
+  },
+  {
+    "name": "ilri",
+    "bucket": "nextstrain-ilri",
+    "isPublic": false
+  },
+  {
+    "name": "pigie",
+    "bucket": "nextstrain-pigie",
+    "isPublic": false
+  },
+  {
+    "name": "SC2Zam",
+    "bucket": "nextstrain-sc2zam",
+    "isPublic": false
+  },
+  {
+    "name": "wallaulab",
+    "bucket": "nextstrain-wallaulab",
+    "isPublic": false
+  },
+  {
+    "name": "nextflu-private",
+    "bucket": "nextstrain-nextflu-private",
+    "isPublic": false
+  },
+  {
+    "name": "databiomics",
+    "bucket": "nextstrain-databiomics",
+    "isPublic": false
+  },
+  {
+    "name": "offlu-swine-private",
+    "bucket": "nextstrain-offlu-swine-private",
+    "isPublic": false
+  },
+  {
+    "name": "valldhebronvirology-private",
+    "bucket": "nextstrain-valldhebronvirology-private",
+    "isPublic": false
+  },
+  {
+    "name": "test",
+    "isPublic": true,
+    "isDevOnly": true
+  },
+  {
+    "name": "test-private",
+    "isPublic": false,
+    "isDevOnly": true
+  }
+]
