@@ -61,8 +61,8 @@
       "Resource": [
         "arn:aws:s3:::nextstrain-groups"
       ],
-      "Condition" : {
-        "StringEquals" : {
+      "Condition": {
+        "StringEquals": {
           "s3:prefix": [
             "test/",
             "test-private/"
