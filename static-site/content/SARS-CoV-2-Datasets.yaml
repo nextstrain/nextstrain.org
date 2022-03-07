@@ -2176,8 +2176,8 @@ datasets:
     geo: northern-africa
     level: region
     coords:
-      - 67.139
-      - 0.788
+      - 10.1516
+      - 27.2107
     org:
       name: Africa CDC PGI
       url: https://africacdc.org/institutes/ipg/
