@@ -2221,8 +2221,8 @@ datasets:
     geo: cameroon
     level: country
     coords:
-      - 13.1535811
-      - 4.6125522
+      - 9.4712
+      - 4.0358
     org:
       name: Africa CDC PGI
       url: https://africacdc.org/institutes/ipg/
