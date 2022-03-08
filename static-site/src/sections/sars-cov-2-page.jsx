@@ -45,6 +45,7 @@ const contents = [
         <a href="/ncov/north-america?f_region=North%20America"> North America</a>,
         <a href="/ncov/oceania?f_region=Oceania"> Oceania</a>, and
         <a href="/ncov/south-america?f_region=South%20America"> South America</a>
+        ; and a clade sampled dataset for <a href="/ncov/open/reference">reference</a>.
       </span>
     )
   },
