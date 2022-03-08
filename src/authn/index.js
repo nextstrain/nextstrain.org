@@ -57,6 +57,11 @@ const BEARER_COGNITO_CLIENT_IDS = [
 const STRATEGY_OAUTH2 = "oauth2";
 const STRATEGY_BEARER = "bearer";
 
+/* Flag indicating that the user object was updated during deserialization from
+ * an existing session and that it needs to be resaved back to the session.
+ */
+const RESAVE_TO_SESSION = Symbol("RESAVE_TO_SESSION");
+
 function setup(app) {
   passport.use(
     STRATEGY_OAUTH2,
@@ -135,8 +140,10 @@ function setup(app) {
      */
     if (!("authzRoles" in user)) {
       const {groups, authzRoles} = parseCognitoGroups(user.groups || []);
+      utils.verbose(`Upgrading groups and authzRoles of user object for ${user.username}`);
       user.groups = groups;
       user.authzRoles = authzRoles;
+      user[RESAVE_TO_SESSION] = true;
     }
 
     return done(null, user);
@@ -217,6 +224,19 @@ function setup(app) {
   // Restore user from the session, if any.  If no session, then req.user will
   // be null.
   app.use(passport.session());
+
+  // If the user object was modified in deserializeUser during restore from the
+  // session, then persist the modifications back into the session by updating
+  // the user object in the session via req.login().  The session will detect
+  // its been changed and save itself to the store at the end of the request.
+  app.use((req, res, next) => {
+    if (req.user?.[RESAVE_TO_SESSION]) {
+      utils.verbose(`Resaving user object for ${req.user.username} back to the session`);
+      delete req.user[RESAVE_TO_SESSION];
+      return req.login(req.user, next);
+    }
+    return next();
+  });
 
   // Set the app's origin centrally so other handlers can use it
   //
