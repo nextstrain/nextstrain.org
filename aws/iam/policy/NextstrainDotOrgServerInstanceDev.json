@@ -21,9 +21,7 @@
         "arn:aws:s3:::nextstrain-spheres",
         "arn:aws:s3:::nextstrain-niph",
         "arn:aws:s3:::nextstrain-epicovigal",
-        "arn:aws:s3:::nextstrain-waphl",
-        "arn:aws:s3:::nextstrain-group-test",
-        "arn:aws:s3:::nextstrain-group-test-private"
+        "arn:aws:s3:::nextstrain-waphl"
       ]
     },
     {
@@ -47,9 +45,7 @@
         "arn:aws:s3:::nextstrain-spheres/*",
         "arn:aws:s3:::nextstrain-niph/*",
         "arn:aws:s3:::nextstrain-epicovigal/*",
-        "arn:aws:s3:::nextstrain-waphl/*",
-        "arn:aws:s3:::nextstrain-group-test/*",
-        "arn:aws:s3:::nextstrain-group-test-private/*"
+        "arn:aws:s3:::nextstrain-waphl/*"
       ]
     },
     {
