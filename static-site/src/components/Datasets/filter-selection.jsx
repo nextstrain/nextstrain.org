@@ -4,11 +4,14 @@
  */
 import React from "react";
 import styled from 'styled-components';
-import { debounce } from 'lodash';
+import { debounce, isEqual } from 'lodash';
 import ReactTooltip from 'react-tooltip';
 import { FaInfoCircle } from "react-icons/fa";
 import { createFilter } from "react-select";
 import AsyncSelect from "react-select/async";
+import { AutoSizer } from "react-virtualized/dist/es/AutoSizer";
+import { List } from "react-virtualized/dist/es/List";
+import 'react-virtualized/styles.css';
 import * as splashStyles from "../splash/styles";
 import { CenteredContainer } from "./styles";
 
@@ -23,8 +26,43 @@ const StyledTooltip = styled(ReactTooltip)`
   pointer-events: auto !important;
 `;
 
-export const FilterSelect = ({options, applyFilter, title}) => {
+const VirtualizedMenuList = ({ children, maxHeight, focusedOption }) => {
+  /**
+  * If the focused option is outside of the currently displayed options, we
+  * need to create the scrollToIndex so that the List can be forced to scroll
+  * to display the focused option.
+  */
+  let scrollToIndex;
+  if (children instanceof Array) {
+    const focusedOptionIndex = children.findIndex((option) => (
+      isEqual(focusedOption, option.props.data)
+    ));
+    if (focusedOptionIndex >= 0) {
+      scrollToIndex = focusedOptionIndex;
+    }
+  }
 
+  const rowRenderer = ({ index, key, style }) => (
+    <div key={key} style={style}>{children[index]}</div>
+  );
+
+  return (
+    <AutoSizer disableHeight >
+      {({ width }) => (
+        <List
+          height={maxHeight}
+          rowHeight={40}
+          rowRenderer={rowRenderer}
+          rowCount={children.length || 0}
+          width={width}
+          scrollToIndex={scrollToIndex}
+        />
+      )}
+    </AutoSizer>
+  );
+};
+
+export const FilterSelect = ({options, applyFilter, title}) => {
   return (
     <CenteredContainer>
       <splashStyles.H3 left>
@@ -57,7 +95,7 @@ export const FilterSelect = ({options, applyFilter, title}) => {
           isMulti={false}
           getOptionValue={(option) => option.label}
           onChange={(sel) => applyFilter("add", sel.value[0], [sel.value[1]])}
-          components={{ DropdownIndicator: null }}
+          components={{ DropdownIndicator: null, MenuList: VirtualizedMenuList }}
         />
       </span>
     </CenteredContainer>
