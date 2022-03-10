@@ -7,7 +7,8 @@ import styled from 'styled-components';
 import { debounce } from 'lodash';
 import ReactTooltip from 'react-tooltip';
 import { FaInfoCircle } from "react-icons/fa";
-import Select from "react-virtualized-select";
+import { createFilter } from "react-select";
+import AsyncSelect from "react-select/async";
 import * as splashStyles from "../splash/styles";
 import { CenteredContainer } from "./styles";
 
@@ -44,19 +45,19 @@ export const FilterSelect = ({options, applyFilter, title}) => {
         </>
       </splashStyles.H3>
       <span style={{fontSize: "14px"}}>
-        <Select
-          async
+        <AsyncSelect
           name="filterQueryBox"
           placeholder="Type filter query here..."
-          value={undefined}
-          arrowRenderer={null}
-          loadOptions={debounce((input, callback) => callback(null, {options}), DEBOUNCE_TIME)}
-          ignoreAccents={false}
-          clearable={false}
-          searchable
-          multi={false}
-          valueKey="label"
+          value={null}
+          defaultOptions
+          loadOptions={debounce((input, callback) => callback(options), DEBOUNCE_TIME)}
+          filterOption={createFilter({ignoreAccents: false})}
+          isClearable={false}
+          isSearchable
+          isMulti={false}
+          getOptionValue={(option) => option.label}
           onChange={(sel) => applyFilter("add", sel.value[0], [sel.value[1]])}
+          components={{ DropdownIndicator: null }}
         />
       </span>
     </CenteredContainer>
