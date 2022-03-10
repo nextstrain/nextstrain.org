@@ -1,7 +1,5 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import "react-select/dist/react-select.css";
-import "react-virtualized-select/styles.css";
 import { FilterSelect } from "./filter-selection";
 import { ListDatasets } from "./list-datasets";
 import { FilterDisplay } from "./filter-display";

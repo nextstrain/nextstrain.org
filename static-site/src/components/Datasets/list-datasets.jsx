@@ -1,6 +1,4 @@
 import React from "react";
-import "react-select/dist/react-select.css";
-import "react-virtualized-select/styles.css";
 import styled from 'styled-components';
 import {Grid, Col, Row} from 'react-styled-flexboxgrid';
 import { CenteredContainer } from "./styles";
