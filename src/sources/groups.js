@@ -7,7 +7,7 @@ const authz = require("../authz");
 const {fetch} = require("../fetch");
 const {Group} = require("../groups");
 const utils = require("../utils");
-const {Source} = require("./models");
+const {Source, Dataset, Narrative} = require("./models");
 
 const S3 = new AWS.S3();
 
@@ -62,6 +62,13 @@ class GroupSource extends Source {
       : "";
   }
 
+  dataset(pathParts) {
+    return new GroupDataset(this, pathParts);
+  }
+  narrative(pathParts) {
+    return new GroupNarrative(this, pathParts);
+  }
+
   async urlFor(path, method = 'GET', headers = {}) {
     const normalizedHeaders = utils.normalizeHeaders(headers);
     const action = {
@@ -86,10 +93,12 @@ class GroupSource extends Source {
       ...action[method].params,
     });
   }
-  async _listFiles() {
+  async _listFiles(listPrefix = "") {
+    const prefix = this.prefix + listPrefix;
+
     return new Promise((resolve, reject) => {
       let files = [];
-      S3.listObjectsV2({Bucket: this.bucket, Prefix: this.prefix}).eachPage((err, data, done) => {
+      S3.listObjectsV2({Bucket: this.bucket, Prefix: prefix}).eachPage((err, data, done) => {
         if (err) {
           utils.warn(`Could not list S3 objects for group '${this.group.name}'\n${err.message}`);
           return reject(err);
@@ -106,22 +115,27 @@ class GroupSource extends Source {
         files = files.concat(
           data.Contents
             .map(object => object.Key)
-            .filter(key => key.startsWith(this.prefix))
-            .map(key => key.slice(this.prefix.length))
-            .filter(subKey => !subKey.startsWith("datasets/") && !subKey.startsWith("narratives/"))
+            .filter(key => key.startsWith(prefix))
+            .map(key => key.slice(prefix.length))
         );
         return done();
       });
     });
   }
   async availableDatasets() {
-    const files = await this._listFiles();
+    const prefix = this.bucket === MULTI_TENANT_BUCKET
+      ? "datasets/"
+      : "";
+    const files = await this._listFiles(prefix);
     const pathnames = utils.getDatasetsFromListOfFilenames(files);
     return pathnames;
   }
   async availableNarratives() {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
-    const files = await this._listFiles();
+    const prefix = this.bucket === MULTI_TENANT_BUCKET
+      ? "narratives/"
+      : "";
+    const files = await this._listFiles(prefix);
     return files
       .filter((file) => file !== 'group-overview.md')
       .filter((file) => file.endsWith(".md"))
@@ -219,6 +233,20 @@ class GroupSource extends Source {
         error: `Error in custom group info: ${err.message}`
       };
     }
+  }
+}
+
+
+class GroupDataset extends Dataset {
+  get baseName() {
+    return `datasets/${super.baseName}`;
+  }
+}
+
+
+class GroupNarrative extends Narrative {
+  get baseName() {
+    return `narratives/${super.baseName}`;
   }
 }
 

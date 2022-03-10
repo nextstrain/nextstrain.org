@@ -90,6 +90,48 @@ async function migrate({group, dryRun = true}) {
 
 
 async function syncData({dryRun = true, group}) {
+  console.group(`\nSyncing S3 data`);
+
+  // Datasets
+  await s3Sync({
+    dryRun,
+    group,
+    prefix: "datasets/",
+    filters: [
+      "--exclude=*",
+      "--include=*.json",
+    ]
+  });
+
+  // Narratives
+  await s3Sync({
+    dryRun,
+    group,
+    prefix: "narratives/",
+    filters: [
+      "--exclude=*",
+      "--include=*.md",
+      "--exclude=group-overview.md",
+    ]
+  });
+
+  // Control/customization files
+  await s3Sync({
+    dryRun,
+    group,
+    prefix: "",
+    filters: [
+      "--exclude=*",
+      "--include=group-overview.md",
+      "--include=group-logo.png",
+    ]
+  });
+
+  console.groupEnd();
+}
+
+
+async function s3Sync({dryRun = true, group, prefix = "", filters = []}) {
   const argv = [
     "aws", "s3", "sync",
     ...(dryRun
@@ -97,7 +139,8 @@ async function syncData({dryRun = true, group}) {
       : []),
     "--delete",
     `s3://${group.bucket}/`,
-    `s3://nextstrain-groups/${group.name}/`,
+    `s3://nextstrain-groups/${group.name}/${prefix}`,
+    ...filters,
   ];
   console.group(`\nRunning ${argv.join(" ")}`);
   await run(argv);
