@@ -24,7 +24,7 @@
     "@awaitjs/express": "^0.6.3",
     "@aws-sdk/client-cognito-identity-provider": "^3.52.0",
     "argparse": "^1.0.10",
-    "auspice": "2.34.0",
+    "auspice": "github:nextstrain/auspice#ed4bf13ef28ead5887b803a316b1d76d59efa832",
     "aws-sdk": "^2.908.0",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
