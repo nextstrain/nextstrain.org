@@ -2,7 +2,7 @@
 
 ## Domains
 
-**nextstrain.org** and **dev.nextstrain.org** are [hosted on Heroku](#heroku).
+**nextstrain.org**, **next.nextstrain.org**, and **dev.nextstrain.org** are [hosted on Heroku](#heroku).
 
 **data.nextstrain.org** is an AWS CloudFronted S3 bucket, [`nextstrain-data`](#nextstrain-data).
 
@@ -12,8 +12,11 @@
 
 ## Heroku
 
-The production Heroku app is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server), which is part of a [Heroku app pipeline of the same name](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d).
-Deploys of `master` happen automatically after Travis CI tests are successful.
+We use a [Heroku pipeline named `nextstrain-server`](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d) to manage multiple related apps.
+The production app serving **nextstrain.org** is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server).
+The canary app serving **next.nextstrain.org** is [`nextstrain-canary`](https://dashboard.heroku.com/apps/nextstrain-canary).
+Deploys of `master` to the canary app happen automatically after Travis CI tests are successful.
+Deploys to the production app are performed by manually [promoting](https://devcenter.heroku.com/articles/pipelines#promoting) the canary's current release to production.
 
 ### Environment variables
 
