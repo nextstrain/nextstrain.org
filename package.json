@@ -32,6 +32,7 @@
     "compression": "^1.7.3",
     "connect-redis": "^4.0.3",
     "content-type": "^1.0.4",
+    "cookie": "^0.4.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-naked-redirect": "^0.1.2",

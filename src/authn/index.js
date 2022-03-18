@@ -12,9 +12,33 @@ const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disa
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
 const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
 const BearerStrategy = require("./bearer");
+const {copyCookie} = require("../middleware");
 const utils = require("../utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
+
+/* In production, share the cookie across nextstrain.org and all subdomains so
+ * sessions are portable (as long as the session store and secret are also
+ * shared by the deployments).  Otherwise, set a host-only cookie.
+ *
+ * Note that this also means the cookie will be sent to third-party services we
+ * host on subdomains, like docs.nextstrain.org, support.nextstrain.org, and
+ * others.  Although we do "trust" these providers, I still have some
+ * reservations about it as it does increase the surface area for potential
+ * session hijacking via cookie theft.  The big mitigation for me is that this
+ * cookie is already HTTP-only, so JS injections on those providers (which are
+ * much much more likely than server-side injections) can't access the cookie.
+ * The comprehensive, longer term solution (that everyone serious about
+ * security does for essentially this same reason) is to move our internal
+ * services off the user-facing domain (e.g. support.nextstrain-team.org)
+ * and/or accomplish session portability another way (e.g. explicit SSO by
+ * next.nextstrain.org against nextstrain.org as an IdP instead of implicit SSO
+ * via session sharing).
+ *   -trs, 18 March 2022
+ */
+const SESSION_COOKIE_DOMAIN = PRODUCTION
+  ? "nextstrain.org"
+  : undefined;
 
 const SESSION_SECRET = PRODUCTION
   ? process.env.SESSION_SECRET
@@ -195,20 +219,56 @@ function setup(app) {
   };
 
   app.use(
+    /* Changing our session cookie from host-only to domain-wide by adding the
+     * "domain" option required a name change to avoid two identically-named
+     * but distinct cookies causing shadowing and general confusion.  We avoid
+     * disrupting sessions by transparently copying the old cookie, named
+     * "nextstrain.org", to the new cookie, named "nextstrain.org-session", if
+     * the old was sent but the new was not.  Each new response sets the new
+     * cookie, so subsequent requests will then send both cookies and no copy
+     * will happen.  The old cookie will naturally expire after 30 days since
+     * it will no longer be updated with each response.
+     *
+     * XXX TODO: Remove copyCookie() after its been deployed for at least 30
+     * days (SESSION_MAX_AGE), as any outstanding old cookies will have expired
+     * by then.
+     *   -trs, 6 April 2022
+     */
+    copyCookie("nextstrain.org", "nextstrain.org-session"),
+
     session({
-      name: "nextstrain.org",
+      name: "nextstrain.org-session",
       secret: SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
       rolling: true,
       store: sessionStore(),
       cookie: {
+        domain: SESSION_COOKIE_DOMAIN,
         httpOnly: true,
         sameSite: "lax",
         secure: PRODUCTION,
         maxAge: SESSION_MAX_AGE * 1000 // milliseconds
       }
-    })
+    }),
+
+    /* Sessions remember the options of their specific cookies and preserve
+     * them on each response, so upgrade the new cookies of existing sessions
+     * to domain-wide ones.
+     *
+     * XXX TODO: Remove this after its been deployed for at least 30 days
+     * (SESSION_MAX_AGE), as any new sessions start with domain set and any
+     * old sessions either got upgraded or have expired by then.
+     *   -trs, 6 April 2022
+     */
+    (req, res, next) => {
+      if (req.session?.cookie && req.session.cookie.domain !== SESSION_COOKIE_DOMAIN) {
+        utils.verbose(`Updating session cookie domain to ${SESSION_COOKIE_DOMAIN} (was ${req.session.cookie.domain})`);
+        req.session.cookie.domain = SESSION_COOKIE_DOMAIN;
+        return req.session.save(next);
+      }
+      return next();
+    },
   );
 
   app.use(passport.initialize());
