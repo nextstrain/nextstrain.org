@@ -171,16 +171,18 @@ function setup(app) {
       user.authzRoles = new Set(user.authzRoles);
     }
 
-    /* Update existing sessions that pre-date the presence of authzRoles.  When
-     * authzRoles is absent, "groups" is the unparsed set of Cognito groups.
-     */
-    if (!("authzRoles" in user)) {
-      const {groups, authzRoles} = parseCognitoGroups(user.groups || []);
-      utils.verbose(`Upgrading groups and authzRoles of user object for ${user.username}`);
+    const update = (originalCognitoGroups, reason) => {
+      const {groups, authzRoles} = parseCognitoGroups(originalCognitoGroups);
+      utils.verbose(`Updating user object for ${user.username}: ${reason}`);
       user.groups = groups;
       user.authzRoles = authzRoles;
       user[RESAVE_TO_SESSION] = true;
-    }
+    };
+
+    /* Update existing sessions that pre-date the presence of authzRoles.  When
+     * authzRoles is absent, "groups" is the unparsed set of Cognito groups.
+     */
+    if (!("authzRoles" in user)) update(user.groups || [], "missing authzRoles");
 
     return done(null, user);
   });
