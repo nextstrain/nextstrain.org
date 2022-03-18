@@ -9,6 +9,7 @@ const {addAsync} = require("@awaitjs/express");
 const {Forbidden, NotFound, Unauthorized} = require("http-errors");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
+const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
 
 const authn = require("./authn");
 const endpoints = require("./endpoints");
@@ -91,6 +92,26 @@ app.use((req, res, next) => {
  *   GET /logout
  */
 authn.setup(app);
+
+
+/* Canary.
+ */
+app.use((req, res, next) => {
+  if (CANARY_ORIGIN) {
+    const notCanary = req.context.origin !== CANARY_ORIGIN;
+    const wantsCanary = req.user?.flags?.has("canary");
+
+    if (notCanary && wantsCanary && req.context.authnWithSession) {
+      const canaryUrl = new URL(req.originalUrl, CANARY_ORIGIN);
+
+      utils.verbose(`Redirecting ${req.user.username} to canary <${canaryUrl}>`);
+
+      // 307 Temporary Redirect preserves request method, unlike 302 Found.
+      return res.redirect(307, canaryUrl.toString());
+    }
+  }
+  return next();
+});
 
 
 /* Redirects.

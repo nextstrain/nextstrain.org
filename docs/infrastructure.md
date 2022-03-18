@@ -41,6 +41,10 @@ Deploys to the production app are performed by manually [promoting](https://devc
     If not provided, requests to the GitHub API are unauthenticated.
     The token we use in production is associated with the `nextstrain-bot` GitHub user.
 
+  - `CANARY_ORIGIN` is the origin of a canary deployment to redirect to for users who are opted-in to the `canary` flag (the `!flags/canary` Cognito group).
+    Redirection does not happen if this variable is not defined or if the request's origin already matches this variable's value.
+    In production we set this to `https://next.nextstrain.org`.
+
 ### Redis add-on
 
 The [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) add-on is attached to our `nextstrain-server` and `nextstrain-dev` apps.
