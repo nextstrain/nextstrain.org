@@ -122,9 +122,16 @@ function setup(app) {
     new BearerStrategy(
       {
         realm: "nextstrain.org",
+        passReqToCallback: true,
         passIfMissing: true,
       },
-      async (idToken, done) => {
+      async (req, idToken, done) => {
+        /* Mark the request as being token-authenticated, which is strongly
+         * indicative of an API client (as browser clients use cookied-based
+         * sessions after OAuth2).
+         */
+        req.context.authnWithToken = true;
+
         try {
           const user = await userFromIdToken(idToken, BEARER_COGNITO_CLIENT_IDS);
           return done(null, user);
@@ -151,7 +158,12 @@ function setup(app) {
     return done(null, JSON.stringify(serializedUser));
   });
 
-  passport.deserializeUser((serializedUser, done) => {
+  passport.deserializeUser((req, serializedUser, done) => {
+    /* Mark the request as being authenticated with a session, which is
+     * strongly indicative of a browser client (as API clients use tokens).
+     */
+    req.context.authnWithSession = true;
+
     let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
 
     // Inflate authzRoles from Array back into a Set
