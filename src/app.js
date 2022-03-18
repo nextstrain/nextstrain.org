@@ -8,7 +8,7 @@ const cors = require('cors');
 const {addAsync} = require("@awaitjs/express");
 const {Forbidden, NotFound, Unauthorized} = require("http-errors");
 
-const production = process.env.NODE_ENV === "production";
+const PRODUCTION = process.env.NODE_ENV === "production";
 
 const authn = require("./authn");
 const endpoints = require("./endpoints");
@@ -50,12 +50,12 @@ const app = addAsync(express());
 
 app.set("json replacer", jsonReplacer);
 
-app.locals.production = production;
-app.locals.gatsbyDevUrl = production ? null : process.env.GATSBY_DEV_URL;
+app.locals.production = PRODUCTION;
+app.locals.gatsbyDevUrl = PRODUCTION ? null : process.env.GATSBY_DEV_URL;
 
 // In production, trust Heroku as a reverse proxy and Express will use request
 // metadata from the proxy.
-if (production) app.enable("trust proxy");
+if (PRODUCTION) app.enable("trust proxy");
 
 app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
@@ -90,7 +90,7 @@ redirects.setup(app);
 
 /* Charon API used by Auspice.
  */
-if (!production) {
+if (!PRODUCTION) {
   // allow cross-origin from the gatsby dev server
   app.use("/charon", cors({origin: 'http://localhost:8000'}));
 }
