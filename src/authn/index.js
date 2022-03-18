@@ -177,11 +177,12 @@ function setup(app) {
     }
 
     const update = (originalCognitoGroups, reason) => {
-      const {groups, authzRoles, flags} = parseCognitoGroups(originalCognitoGroups);
+      const {groups, authzRoles, flags, cognitoGroups} = parseCognitoGroups(originalCognitoGroups);
       utils.verbose(`Updating user object for ${user.username}: ${reason}`);
       user.groups = groups;
       user.authzRoles = authzRoles;
       user.flags = flags;
+      user.cognitoGroups = cognitoGroups;
       user[RESAVE_TO_SESSION] = true;
     };
 
@@ -203,6 +204,11 @@ function setup(app) {
      * impact internal team members.
      */
     if (!("flags" in user)) update([...user.authzRoles], "missing flags");
+
+    /* Future updates can pass user.cognitoGroups to update().  The updates
+     * above predate that property.
+     *   -trs, 18 March 2022
+     */
 
     return done(null, user);
   });
@@ -391,13 +397,14 @@ function setup(app) {
 async function userFromIdToken(idToken, client = undefined) {
   const idClaims = await verifyToken(idToken, "id", client);
 
-  const {groups, authzRoles, flags} = parseCognitoGroups(idClaims["cognito:groups"] || []);
+  const {groups, authzRoles, flags, cognitoGroups} = parseCognitoGroups(idClaims["cognito:groups"] || []);
 
   const user = {
     username: idClaims["cognito:username"],
     groups,
     authzRoles,
     flags,
+    cognitoGroups,
   };
   return user;
 }
@@ -448,6 +455,12 @@ function parseCognitoGroups(cognitoGroups) {
         .filter(g => g.startsWith("!flags/"))
         .map(g => g.replace(/^!flags\//, ""))
     ),
+
+    /* Preserving the original groups helps us just-in-time upgrade the user
+     * object later (e.g. in deserializeUser) by calling (the updated version
+     * of) this function again with this (original) array.
+     */
+    cognitoGroups,
   };
 }
 
