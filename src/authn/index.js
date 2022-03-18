@@ -36,8 +36,8 @@ const COGNITO_JWKS = createRemoteJWKSet(new URL(`${COGNITO_USER_POOL_URL}/.well-
 const COGNITO_BASE_URL = "https://login.nextstrain.org";
 
 const COGNITO_CLIENT_ID = PRODUCTION
-  ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org
-  : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost and heroku dev instances
+  ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org (and next. and dev.)
+  : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost
 
 /* Registered clients to accept for Bearer tokens.
  *
