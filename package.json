@@ -44,6 +44,7 @@
     "iso-639-1": "^2.1.0",
     "jose": "npm:jose-node-cjs-runtime@^3.11.3",
     "js-yaml": "^4.0.0",
+    "lodash.partition": "^4.6.0",
     "make-fetch-happen": "https://github.com/tsibley/make-fetch-happen/tarball/882cb8bdb9f017268c4f0f2ce41b4df6f7ff9be9",
     "marked": "^0.7.0",
     "mime": "^2.5.2",

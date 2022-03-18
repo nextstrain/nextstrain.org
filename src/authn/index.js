@@ -11,6 +11,7 @@ const OAuth2Strategy = require("passport-oauth2").Strategy;
 const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disable-line import/no-unresolved
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
 const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
+const partition = require("lodash.partition");
 const BearerStrategy = require("./bearer");
 const {copyCookie} = require("../middleware");
 const utils = require("../utils");
@@ -150,9 +151,11 @@ function setup(app) {
   passport.serializeUser((user, done) => {
     let serializedUser = {...user}; // eslint-disable-line prefer-const
 
-    // Deflate authzRoles from Set to Array
-    if ("authzRoles" in serializedUser) {
-      serializedUser.authzRoles = [...serializedUser.authzRoles];
+    // Deflate authzRoles and flags from Set to Array
+    for (const key of ["authzRoles", "flags"]) {
+      if (key in serializedUser) {
+        serializedUser[key] = [...serializedUser[key]];
+      }
     }
 
     return done(null, JSON.stringify(serializedUser));
@@ -166,16 +169,19 @@ function setup(app) {
 
     let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
 
-    // Inflate authzRoles from Array back into a Set
-    if ("authzRoles" in user) {
-      user.authzRoles = new Set(user.authzRoles);
+    // Inflate authzRoles and flags from Array back into a Set
+    for (const key of ["authzRoles", "flags"]) {
+      if (key in user) {
+        user[key] = new Set(user[key]);
+      }
     }
 
     const update = (originalCognitoGroups, reason) => {
-      const {groups, authzRoles} = parseCognitoGroups(originalCognitoGroups);
+      const {groups, authzRoles, flags} = parseCognitoGroups(originalCognitoGroups);
       utils.verbose(`Updating user object for ${user.username}: ${reason}`);
       user.groups = groups;
       user.authzRoles = authzRoles;
+      user.flags = flags;
       user[RESAVE_TO_SESSION] = true;
     };
 
@@ -183,6 +189,20 @@ function setup(app) {
      * authzRoles is absent, "groups" is the unparsed set of Cognito groups.
      */
     if (!("authzRoles" in user)) update(user.groups || [], "missing authzRoles");
+
+    /* Update existing sessions that pre-date the presence of flags.  When
+     * flags is absent, then authzRoles is the unparsed set of Cognito groups.
+     *
+     * In almost all cases, flags will be an empty set.  However, if a user is
+     * added to a flags group (or other internal group) in Cognito *and* then
+     * also establishes a new session in production before this new flags
+     * support (i.e. internal groups support) support is deployed to
+     * production, then that session's user object will be wrong and we'll fix
+     * it here.  Such a wrong user object would have, for example, a "!flags"
+     * Nextstrain Group with role "!flags/canary".  This is likely to only
+     * impact internal team members.
+     */
+    if (!("flags" in user)) update([...user.authzRoles], "missing flags");
 
     return done(null, user);
   });
@@ -371,29 +391,36 @@ function setup(app) {
 async function userFromIdToken(idToken, client = undefined) {
   const idClaims = await verifyToken(idToken, "id", client);
 
-  const {groups, authzRoles} = parseCognitoGroups(idClaims["cognito:groups"] || []);
+  const {groups, authzRoles, flags} = parseCognitoGroups(idClaims["cognito:groups"] || []);
 
   const user = {
     username: idClaims["cognito:username"],
     groups,
     authzRoles,
+    flags,
   };
   return user;
 }
 
 /**
- * Parse an array of Cognito groups into a user's Nextstrain groups and their
- * authzRoles.
+ * Parse an array of Cognito groups into a user's Nextstrain groups, their
+ * authzRoles, and any flags.
  *
  * @returns {object} result
  * @returns {string[]} result.groups - Names of the Nextstrain Groups of which this user is a member.
  * @returns {Set} result.authzRoles - Authorization roles granted to this user.
+ * @returns {Set} result.flags - Flags on this user.
  */
 function parseCognitoGroups(cognitoGroups) {
+  /* Partition Cognito groups into those for "internal" usage and those
+   * associated with roles for Nextstrain Groups (which are also "internal" in
+   * some senses, but naming is hard).
+   */
+  const [internalGroups, nextstrainGroupsRoles] = partition(cognitoGroups, g => g.startsWith("!"));
+
   return {
-    // Just the Nextstrain Group names, which for now means all Cognito groups
-    // (excluding an optional "/role" suffix).
-    groups: [...new Set(cognitoGroups.map(g => splitGroupRole(g).group))],
+    // Just the Nextstrain Group names (i.e. excluding the "/role" suffix)
+    groups: [...new Set(nextstrainGroupsRoles.map(g => splitGroupRole(g).group))],
 
     /* During a transition period while we move users from unsuffixed Cognito
      * groups to role-suffixed Cognito groups, assume the least privileged
@@ -412,7 +439,15 @@ function parseCognitoGroups(cognitoGroups) {
      * decay and naturally expire.
      *   -trs, 4 Mar 2022
      */
-    authzRoles: new Set(cognitoGroups.map(g => g.includes("/") ? g : `${g}/viewers`)),
+    authzRoles: new Set(nextstrainGroupsRoles.map(g => g.includes("/") ? g : `${g}/viewers`)),
+
+    /* User flags
+     */
+    flags: new Set(
+      internalGroups
+        .filter(g => g.startsWith("!flags/"))
+        .map(g => g.replace(/^!flags\//, ""))
+    ),
   };
 }
 
