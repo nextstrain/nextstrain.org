@@ -20,6 +20,10 @@ Deploys to the production app are performed by manually [promoting](https://devc
 
 ### Environment variables
 
+  - `NODE_ENV` is used to condition behaviour between production and non-production environments, following the widely-used convention set by Express.
+    Its value affects not just the explicit conditionals in this repo but also Express and other layers in our dependencies.
+    All our Heroku apps [run under `NODE_ENV=production`](https://devcenter.heroku.com/articles/nodejs-support#runtime-behavior).
+
   - `SESSION_SECRET` must be set to a long, securely generated string.
     It protects the session data stored in browser cookies.
     Changing this will invalidate all existing sessions and forcibly logout people.
