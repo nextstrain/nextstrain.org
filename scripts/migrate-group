@@ -82,10 +82,10 @@ async function migrate({group, dryRun = true}) {
     await syncData({dryRun, group}),
     await updateGroupsDataFile({dryRun, group}),
     `Review local changes, commit, and push.`,
-    `Monitor deploy to https://next.nextstrain.org for success <https://dashboard.heroku.com/apps/nextstrain-canary/activity>`,
-    `Deploy to production <https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d>`,
+    `Monitor for successful deploy to the [canary](https://dashboard.heroku.com/apps/nextstrain-canary/activity)`,
+    `[Deploy canary to production](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d)`,
     await updateServerPolicies({dryRun, oldBucket}),
-    `Delete bucket ${group.bucket} after short retention period (~1 month?)`,
+    `Delete bucket [${group.bucket}](https://s3.console.aws.amazon.com/s3/buckets/${group.bucket}) after short retention period (~1 month?)`,
   ];
 
   return remainingSteps.filter(s => s != null).flat();
@@ -176,7 +176,7 @@ async function syncPoliciesTodo({dryRun = true, policyFiles}) {
       `arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${policyName}`,
       file
     ];
-    return `After deploy completes, run: ${argv.join(" ")}`;
+    return `After deploy completes, run: \`${argv.join(" ")}\``;
   });
 }
 
@@ -242,7 +242,7 @@ async function deleteIAMResources({dryRun = true, group}) {
     const marked = potentialNames.has(username);
     console.log(`- ${username}${marked ? " [suggested for manual deletion]" : ""}`);
     if (marked) {
-      todo.push(`Delete IAM user ${username} <https://console.aws.amazon.com/iam/home#/users/${username}>`);
+      todo.push(`Delete IAM user [${username}](https://console.aws.amazon.com/iam/home#/users/${username})`);
     }
 
     if (!dryRun) await iam.send(new IAM.RemoveUserFromGroupCommand({GroupName: iamGroup.GroupName, UserName: username}));
@@ -259,7 +259,7 @@ async function deleteIAMResources({dryRun = true, group}) {
     const marked = name !== "SeeCloudFrontDistributions";
     console.log(`- ${name}${marked ? " [suggested for manual deletion]" : ""}`);
     if (marked) {
-      todo.push(`Delete IAM policy ${name} <https://console.aws.amazon.com/iam/home#/policies/${arn}>`);
+      todo.push(`Delete IAM policy [${name}](https://console.aws.amazon.com/iam/home#/policies/${arn})`);
     }
 
     if (!dryRun) await iam.send(new IAM.DetachGroupPolicyCommand({GroupName: iamGroup.GroupName, PolicyArn: arn}));
