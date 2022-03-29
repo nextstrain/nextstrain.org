@@ -14,7 +14,6 @@ const {Group} = require("../src/groups");
 const {reportUnhandledRejectionsAtExit} = require("../src/utils/scripts");
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
-if (!AWS_ACCOUNT_ID) throw new Error("AWS_ACCOUNT_ID env var required");
 
 const SCRIPTS = relativePath(".", __dirname);
 const REPO = relativePath(".", `${__dirname}/..`) || ".";
@@ -48,6 +47,8 @@ function parseArgs() {
 
 
 function main({groupName, dryRun = true}) {
+  if (!AWS_ACCOUNT_ID) throw new Error("AWS_ACCOUNT_ID env var required");
+
   // Canonicalizes name for us and ensures a data entry exists.
   const group = new Group(groupName);
 
