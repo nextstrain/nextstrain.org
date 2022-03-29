@@ -235,7 +235,7 @@ async function deleteIAMResources({dryRun = true, group}) {
 
   /* Users
    */
-  console.group("Members:");
+  console.group("Removing members:");
 
   for (const {UserName: username} of iamGroup.Members) {
     const marked = potentialNames.has(username);
@@ -243,6 +243,8 @@ async function deleteIAMResources({dryRun = true, group}) {
     if (marked) {
       todo.push(`Delete IAM user ${username} <https://console.aws.amazon.com/iam/home#/users/${username}>`);
     }
+
+    if (!dryRun) await iam.send(new IAM.RemoveUserFromGroupCommand({GroupName: iamGroup.GroupName, UserName: username}));
   }
   console.groupEnd();
 
