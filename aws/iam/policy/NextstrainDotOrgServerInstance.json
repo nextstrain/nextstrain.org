@@ -8,7 +8,6 @@
       "Resource": [
         "arn:aws:s3:::nextstrain-data",
         "arn:aws:s3:::nextstrain-staging",
-        "arn:aws:s3:::nextstrain-inrb",
         "arn:aws:s3:::nextstrain-seattleflu",
         "arn:aws:s3:::nextstrain-nextspain",
         "arn:aws:s3:::nextstrain-allwales-private",
@@ -50,7 +49,6 @@
         "s3:GetObjectVersion"
       ],
       "Resource": [
-        "arn:aws:s3:::nextstrain-inrb/*",
         "arn:aws:s3:::nextstrain-seattleflu/*",
         "arn:aws:s3:::nextstrain-nextspain/*",
         "arn:aws:s3:::nextstrain-allwales-private/*",

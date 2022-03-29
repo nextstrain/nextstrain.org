@@ -129,7 +129,6 @@
   },
   {
     "name": "inrb-drc",
-    "bucket": "nextstrain-inrb",
     "isPublic": false
   },
   {
