@@ -14,7 +14,6 @@ const {Group} = require("../src/groups");
 const {reportUnhandledRejectionsAtExit} = require("../src/utils/scripts");
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
-if (!AWS_ACCOUNT_ID) throw new Error("AWS_ACCOUNT_ID env var required");
 
 const SCRIPTS = relativePath(".", __dirname);
 const REPO = relativePath(".", `${__dirname}/..`) || ".";
@@ -48,6 +47,8 @@ function parseArgs() {
 
 
 function main({groupName, dryRun = true}) {
+  if (!AWS_ACCOUNT_ID) throw new Error("AWS_ACCOUNT_ID env var required");
+
   // Canonicalizes name for us and ensures a data entry exists.
   const group = new Group(groupName);
 
@@ -234,7 +235,7 @@ async function deleteIAMResources({dryRun = true, group}) {
 
   /* Users
    */
-  console.group("Members:");
+  console.group("Removing members:");
 
   for (const {UserName: username} of iamGroup.Members) {
     const marked = potentialNames.has(username);
@@ -242,19 +243,23 @@ async function deleteIAMResources({dryRun = true, group}) {
     if (marked) {
       todo.push(`Delete IAM user ${username} <https://console.aws.amazon.com/iam/home#/users/${username}>`);
     }
+
+    if (!dryRun) await iam.send(new IAM.RemoveUserFromGroupCommand({GroupName: iamGroup.GroupName, UserName: username}));
   }
   console.groupEnd();
 
   /* Policies
    */
-  const attachedPolicies = (await listIAMAttachedGroupPolicies(iam, iamGroup.GroupName))
-    .filter(({name, arn}) => name !== "SeeCloudFrontDistributions");
+  const attachedPolicies = await listIAMAttachedGroupPolicies(iam, iamGroup.GroupName);
 
   console.group("Detaching policies:");
 
   for (const {name, arn} of attachedPolicies) {
-    console.log(`- ${name} [suggested for manual deletion]`);
-    todo.push(`Delete IAM policy ${name} <https://console.aws.amazon.com/iam/home#/policies/${arn}>`);
+    const marked = name !== "SeeCloudFrontDistributions";
+    console.log(`- ${name}${marked ? " [suggested for manual deletion]" : ""}`);
+    if (marked) {
+      todo.push(`Delete IAM policy ${name} <https://console.aws.amazon.com/iam/home#/policies/${arn}>`);
+    }
 
     if (!dryRun) await iam.send(new IAM.DetachGroupPolicyCommand({GroupName: iamGroup.GroupName, PolicyArn: arn}));
   }
