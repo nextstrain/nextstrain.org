@@ -81,8 +81,9 @@ async function migrate({group, dryRun = true}) {
     await updateBucketPolicies({dryRun, oldBucket}),
     await syncData({dryRun, group}),
     await updateGroupsDataFile({dryRun, group}),
-    `Review local changes, commit, push, and deploy.`,
-    `Monitor deploy for success <https://dashboard.heroku.com/apps/nextstrain-server/activity>.`,
+    `Review local changes, commit, and push.`,
+    `Monitor deploy to https://next.nextstrain.org for success <https://dashboard.heroku.com/apps/nextstrain-canary/activity>`,
+    `Deploy to production <https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d>`,
     await updateServerPolicies({dryRun, oldBucket}),
     `Delete bucket ${group.bucket} after short retention period (~1 month?)`,
   ];
