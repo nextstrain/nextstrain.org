@@ -154,7 +154,6 @@
   },
   {
     "name": "nextflu-private",
-    "bucket": "nextstrain-nextflu-private",
     "isPublic": false
   },
   {
