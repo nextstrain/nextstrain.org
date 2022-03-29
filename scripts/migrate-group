@@ -59,7 +59,7 @@ function main({groupName, dryRun = true}) {
   migrate({group, dryRun})
     .then(finalSteps => {
       console.group("\nMigration ready for the final (manual) steps!");
-      finalSteps.forEach(step => console.log(`- ${step}`));
+      finalSteps.forEach(step => console.log(`- [ ] ${step}`));
       console.groupEnd();
     })
     .catch(error => {
