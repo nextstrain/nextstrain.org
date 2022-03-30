@@ -61,7 +61,7 @@ app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
 app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
 app.use(middleware.rejectParentTraversals);
-
+app.use(middleware.rejectRoutesWithUnderscores);
 
 /* Setup a request-scoped context object for passing arbitrary request-local
  * data between route and param middleware and route handlers.  Akin to
@@ -94,6 +94,7 @@ if (!production) {
   // allow cross-origin from the gatsby dev server
   app.use("/charon", cors({origin: 'http://localhost:8000'}));
 }
+
 
 app.routeAsync("/charon/getAvailable")
   .getAsync(endpoints.charon.getAvailable);
@@ -266,6 +267,7 @@ app.routeAsync("/groups/:groupName/*")
   .getAsync(getDataset)
   .putAsync(putDataset)
   .deleteAsync(deleteDataset)
+
 ;
 
 
