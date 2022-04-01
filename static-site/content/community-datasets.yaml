@@ -1,0 +1,117 @@
+# This file contains a list of known community datasets & narratives.
+# For more information on community datasets please see
+# https://docs.nextstrain.org/en/latest/guides/share/community-builds.html
+# 
+# Please add your dataset / narrative to this list via a PR
+#
+# Note that this YAML file is the first version in our long-term plans
+# to allow display / search of known (shared) datasets & narratives.
+# We plan to improve functionality here in at least 2 ways:
+# 1. Extract metadata from the underlying dataset/narrative file for richer
+#    display and search functionality.
+# 2. Ability to add a single repository here and we'll automatically
+#    list all datasets & narratives there.
+#                                                         james april 2022
+data:
+  - name: Genomic epidemiology of the 2018-21 Ebola epidemic
+    url: /community/inrb-drc/ebola-nord-kivu
+  - name: Real-time genomics to track COVID-19 post-elimination border incursions in Aotearoa New Zealand
+    url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/aotearoa-border-incursions
+  - name: Re-emergence of community transmission in Aotearoa New Zealand - Genomic overview of the Auckland Outbreak
+    url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/2020-10-01
+  - name: Molecular epidemiology of Chikungunya virus
+    url: /community/ViennaRNA/CHIKV
+  - name: Real-time tracking of cassava-infecting geminiviruses in Africa (DNA-A)
+    url: https://nextstrain.org/community/pestdisplace/CMDAFRICA
+  - name: Real-time tracking of Lassa virus evolution in Nigeria (L segment)
+    url: /community/pauloluniyi/lassa/l
+  - name: Real-time tracking of Lassa virus evolution in Nigeria (S segment)
+    url: /community/pauloluniyi/lassa/s
+  - name: Hantaan virus (HTNV) L segment
+    url: https://nextstrain.org/community/modoree/htv/L
+  - name: Hantaan virus (HTNV) M segment
+    url: https://nextstrain.org/community/modoree/htv/M
+  - name: Hantaan virus (HTNV) S segment
+    url: https://nextstrain.org/community/modoree/htv/S
+  - name: Influenza HA
+    url: https://nextstrain.org/community/modoree/ifz/ha
+  - name: Influenza NA
+    url: https://nextstrain.org/community/modoree/ifz/na
+  - name: Severe fever with thrombocytopenia syndrome virus (SFTSV) L segment
+    url: https://nextstrain.org/community/modoree/sftsv/L
+  - name: Severe fever with thrombocytopenia syndrome virus (SFTSV) M segment
+    url: https://nextstrain.org/community/modoree/sftsv/M
+  - name: Severe fever with thrombocytopenia syndrome virus (SFTSV) S segment
+    url: https://nextstrain.org/community/modoree/sftsv/S
+  - name: Real-time tracking of Human Respiratory Syncytial Virus Subtype A evolution using WGS
+    url: https://nextstrain.org/community/JianiC/rsv/A/WGS
+  - name: Real-time tracking of Human Respiratory Syncytial Virus Subtype A evolution using F-gene sequences
+    url: https://nextstrain.org/community/JianiC/rsv/A/F
+  - name: Real-time tracking of Human Respiratory Syncytial Virus Subtype A evolution using G-gene sequences
+    url: https://nextstrain.org/community/JianiC/rsv/A/G
+  - name: Real-time tracking of Human Respiratory Syncytial Virus Subtype B evolution using WGS
+    url: https://nextstrain.org/community/JianiC/rsv/B/WGS
+  - name: Real-time tracking of Human Respiratory Syncytial Virus Subtype B evolution using F-gene sequences
+    url: https://nextstrain.org/community/JianiC/rsv/B/F
+  - name: Real-time tracking of Human Respiratory Syncytial Virus Subtype B evolution using G-gene sequences
+    url: https://nextstrain.org/community/JianiC/rsv/B/G
+  - name: Analysis of worldwide wheat yellow rust samples
+    url: https://nextstrain.org/community/saunderslab/PST
+  - name: SARS-CoV-2 focused on Peru
+    url: https://nextstrain.org/community/quipupe/Nextstrain_Peru
+  - name: SARS-CoV-2 focused on Cameroon
+    url: https://nextstrain.org/community/BryanTegomoh/Nextstrain-Builds@main/Cameroon
+  - name: SARS-CoV-2 focused on Real-time genomics to track COVID-19 post-elimination border incursions in Aotearoa New Zealand
+    url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/aotearoa-border-incursions
+  - name: SARS-CoV-2 focused on Re-emergence of community transmission in Aotearoa New Zealand - Genomic overview of the Auckland Outbreak
+    url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/2020-10-01
+  - name: SARS-CoV-2 focused on South-East Region
+    url: https://nextstrain.org/community/SESchmedes/sarscov2-southeast-usa/southeast
+  - name: SARS-CoV-2 focused on South-Central Region
+    url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/south-central
+  - name: SARS-CoV-2 focused on Arizona
+    url: https://nextstrain.org/community/tgennorth/arizona-covid-19/AZ
+  - name: SARS-CoV-2 focused on Pakistan (NIH-BIGVI-PAKISTAN)
+    url: https://nextstrain.org/community/NIH-BIGVI-PAKISTAN/ncov/Pakistan
+  - name: SARS-CoV-2 focused on Pakistan (AKU-CITRIC)
+    url: https://nextstrain.org/community/AKU-CITRIC-Center-for-Bioinformatics/ncov/Pakistan
+  - name: SARS-CoV-2 focused on Nebraska Last Four EpiWeeks
+    url: https://nextstrain.org/community/BryanTegomoh/NebraskaDHHSNextStrainBuild/Nebraska/Last/Four/EpiWeeks
+  - name: SARS-CoV-2 focused on Nebraska
+    url: https://nextstrain.org/community/josephfauver/ncovNE@main/
+  - name: SARS-CoV-2 focused on Puerto Rico
+    url: https://nextstrain.org/community/arodzh-sudo/ncov-puertorico/Puerto-Rico
+  - name: SARS-CoV-2 focused on California (CZBIOHUB)
+    url: https://nextstrain.org/community/czbiohub/covidtracker/ca
+  - name: SARS-CoV-2 focused on California (Andersen Lab)
+    url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/california
+  - name: SARS-CoV-2 focused on San Diego
+    url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/sandiego
+  - name: SARS-CoV-2 focused on Maine
+    url: https://nextstrain.org/community/tewhey-lab/ncov-ME/latest
+  - name: SARS-CoV-2 focused on Connecticut
+    url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/current
+  - name: SARS-CoV-2 focused on Florida
+    url: https://nextstrain.org/community/SESchmedes/sarscov2-florida/florida
+  - name: SARS-CoV-2 focused on Louisiana
+    url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/louisiana
+  - name: SARS-CoV-2 focused on Texas
+    url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/texas?f_country=USA&p=grid
+  - name: SARS-CoV-2 focused on Austria
+    url: https://nextstrain.org/community/bergthalerlab/NextstrainAustria
+  - name: SARS-CoV-2 focused on Belgium
+    url: https://nextstrain.org/community/GuyBaele/sars-cov-2-belgium?c=clade_membership&f_country=Belgium
+  - name: SARS-CoV-2 focused on Bangladesh
+    url: https://nextstrain.org/community/CHRF-Genomics/ncovBangladesh@main
+  - name: SARS-CoV-2 focused on Sri Lanka
+    url: https://nextstrain.org/community/aicbu/ncov/srilanka
+  - name: SARS-CoV-2 focused on India
+    url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
+  - name: SARS-CoV-2 focused on Thailand
+    url: https://nextstrain.org/community/fai-k/coni/Thailand
+  - name: SARS-CoV-2 focused on the Middle East
+    url: https://nextstrain.org/community/banijolly/Phylovis/COVID-Middle-East
+  - name: SARS-CoV-2 focused on Gulf Cooperation Council
+    url: https://nextstrain.org/community/alghoribi-lab/ncov/gcc
+  - name: SARS-CoV-2 focused on Japan
+    url: https://nextstrain.org/community/kkosaki/ncov/japan

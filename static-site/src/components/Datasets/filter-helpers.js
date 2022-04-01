@@ -113,7 +113,7 @@ function parseFiltersForDataset(dataset, columns) {
   return pairs;
 }
 
-export function getFilteredDatasets(datasets, filters, columns) {
+export function getFilteredDatasets(datasets, filters, columns, rowSort) {
   const activeFiltersPerType = {};
   Object.keys(filters).forEach((filterType) => {
     const pairs = [];
@@ -140,5 +140,9 @@ export function getFilteredDatasets(datasets, filters, columns) {
           activeFilterPairList.some((filterPair) => datasetSelectOptions.has(filterPair))
         );
     });
-  return sortBy(filteredDatasets, [(d) => d.filename.toLowerCase()]); // TODO: this relies on `filename` being present
+
+  // If we don't have a custom sort order, then we sort on filenames.
+  // There is a long-standing TODO here as this relies on the filename property existing.
+  const iteratees = rowSort ? rowSort : [(d) => d.filename.toLowerCase()];
+  return sortBy(filteredDatasets, iteratees);
 }

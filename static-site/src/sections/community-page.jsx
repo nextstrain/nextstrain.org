@@ -8,8 +8,8 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
-import communityCards from "../components/Cards/communityCards";
-import Cards from "../components/Cards";
+import hardcodedData from "../../content/community-datasets.yaml";
+import DatasetSelect from "../components/Datasets/dataset-select";
 
 const title = "Nextstrain Community: Data Sharing via GitHub";
 const abstract = (
@@ -21,13 +21,33 @@ const abstract = (
     <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html"> please see our documentation</a>.
     <br/>
     <br/>
-    For an alternative approach to sharing data through nextstrain.org which is allows larger datasets and/or private data sharing, see
+    The table below contains Datasets and Narratives which have been made publicly available.
+    To add yours to the table below please make a Pull Request to add it
+    <a href="https://github.com/nextstrain/nextstrain.org/blob/master/static-site/content/community-datasets.yaml"> to this file.</a>
+    For further details about the analyses below, please contact the authors.
+    <br/>
+    <br/>
+    P.S. For an alternative approach to sharing data through nextstrain.org which is allows larger datasets and/or private data sharing, see
     <Link to="/groups"> Scalable Sharing with Nextstrain Groups</Link>.
-    <br/>
-    <br/>
-    Here is a sample of community builds available:
   </>
 );
+
+const tableColumns = [
+  {
+    name: "name",
+    value: (entry) => entry.name,
+    url: (entry) => entry.url.replace(/.*nextstrain.org/, '')
+  },
+  {
+    name: "Type",
+    value: (entry) => entry.isNarrative ? 'Narrative' : 'Dataset'
+  }, {
+    name: "GitHub Repo",
+    value: (entry) => `${entry.githubOrg}/${entry.githubRepo}`,
+    url: (entry) => `https://github.com/${entry.githubOrg}/${entry.githubRepo}`
+  }
+];
+const tableData = parseTableData(hardcodedData);
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
@@ -63,11 +83,48 @@ class Index extends React.Component {
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
         <HugeSpacer />
-        <Cards cards={communityCards}/>
         <HugeSpacer />
+        <DatasetSelect
+          title="Search Community Datasets and Narratives "
+          datasets={tableData}
+          columns={tableColumns}
+          rowSort={[]}
+        />
       </GenericPage>
     );
   }
 }
 
 export default Index;
+
+
+function parseTableData(yamlData) {
+  return yamlData.data
+    .map((entry) => {
+      /* does the URL look like a valid community URL structure? We modify this in-place
+      to remove a leading nextstrain.org domain name, as needed */
+      let url = entry.url.replace(/.*nextstrain.org/, '');
+      if (!url.startsWith("/")) url = `/${url}`;
+      const urlFields = url.split("/")
+        .slice(1); // remove first empty entry, as we ensure a leading slash
+      if (
+        urlFields.length < 3 || // minimum community URL is /community/org/repo
+        urlFields[0] !== "community" ||
+        (urlFields[1] === "narratives" && urlFields.length < 4) // narratives URLs need at least 4 parts
+      ) {
+        console.warn(`Removing data entry "${entry.name}" as URL is not valid`);
+        return undefined;
+      }
+      const d = {...entry};
+      d.url = url;
+      d.githubOrg = d.isNarrative ? urlFields[2] : urlFields[1];
+      d.githubRepo = d.isNarrative ? urlFields[3] : urlFields[2];
+      /* is the entry a dataset or a narrative?
+      NOTE that we cannot currently distinguish if a URL /community/org/repo
+      is a "default" dataset or loads the splash page. In hindsight I wish I hadn't
+      implemented "defaults" but that's what I did.             james 2022 */
+      d.isNarrative = urlFields[1]==="narratives";
+      return d;
+    })
+    .filter((entry) => entry!==undefined);
+}
