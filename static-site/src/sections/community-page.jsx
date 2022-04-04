@@ -53,7 +53,18 @@ const tableData = parseTableData(hardcodedData);
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {loaded: false};
+    /**
+     * The <DatasetSelect> component is typically loaded after a delay (while data is fetched).
+     * On this page, the data is hardcoded & thus there is no need for a delay, however this
+     * results in the info-hover box flashing on load and then having incorrect styling when
+     * in use. Using a timeout is not pretty, but as we will eventually move away from Gatsby
+     * I don't want to spend time debugging this (note that you can't reproduce this in
+     * dev mode).                                                          james, april 2022
+     */
+    if (typeof window !== 'undefined') {
+      window.setTimeout(() => this.setState({loaded: true}), 0);
+    }
   }
 
   componentDidMount() {
@@ -84,12 +95,12 @@ class Index extends React.Component {
         </FlexCenter>
         <HugeSpacer />
         <HugeSpacer />
-        <DatasetSelect
+        {this.state.loaded && <DatasetSelect
           title="Search Community Datasets and Narratives "
           datasets={tableData}
           columns={tableColumns}
           rowSort={[]}
-        />
+        />}
       </GenericPage>
     );
   }
