@@ -110,32 +110,29 @@ export default Index;
 
 
 function parseTableData(yamlData) {
+  const communityUrlPattern = new RegExp("^/community(?<narrative>/narratives)?/(?<org>[^/]+)/(?<repo>[^/]+)");
+
   return yamlData.data
     .map((entry) => {
-      /* does the URL look like a valid community URL structure? We modify this in-place
-      to remove a leading nextstrain.org domain name, as needed */
-      let url = entry.url.replace(/.*nextstrain.org/, '');
-      if (!url.startsWith("/")) url = `/${url}`;
-      const urlFields = url.split("/")
-        .slice(1); // remove first empty entry, as we ensure a leading slash
-      if (
-        urlFields.length < 3 || // minimum community URL is /community/org/repo
-        urlFields[0] !== "community" ||
-        (urlFields[1] === "narratives" && urlFields.length < 4) // narratives URLs need at least 4 parts
-      ) {
-        console.warn(`Removing data entry "${entry.name}" as URL is not valid`);
+      const url = new URL(entry.url, "https://nextstrain.org");
+      const urlMatches = url.pathname.match(communityUrlPattern);
+
+      if (!urlMatches) {
+        console.warn(`Removing data entry "${entry.name}" as URL <${entry.url}> is not valid`);
         return undefined;
       }
-      const d = {...entry};
-      d.url = url;
-      d.githubOrg = d.isNarrative ? urlFields[2] : urlFields[1];
-      d.githubRepo = d.isNarrative ? urlFields[3] : urlFields[2];
-      /* is the entry a dataset or a narrative?
-      NOTE that we cannot currently distinguish if a URL /community/org/repo
-      is a "default" dataset or loads the splash page. In hindsight I wish I hadn't
-      implemented "defaults" but that's what I did.             james 2022 */
-      d.isNarrative = urlFields[1]==="narratives";
-      return d;
+
+      return {
+        ...entry,
+        url: url.pathname,
+        /* is the entry a dataset or a narrative?
+        NOTE that we cannot currently distinguish if a URL /community/org/repo
+        is a "default" dataset or loads the splash page. In hindsight I wish I hadn't
+        implemented "defaults" but that's what I did.             james 2022 */
+        isNarrative: !!urlMatches.groups.narrative,
+        githubOrg: urlMatches.groups.org,
+        githubRepo: urlMatches.groups.repo,
+      };
     })
     .filter((entry) => entry!==undefined);
 }
