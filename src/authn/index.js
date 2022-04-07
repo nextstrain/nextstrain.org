@@ -305,6 +305,7 @@ function setup(app) {
       if (req.session?.cookie && req.session.cookie.domain !== SESSION_COOKIE_DOMAIN) {
         utils.verbose(`Updating session cookie domain to ${SESSION_COOKIE_DOMAIN} (was ${req.session.cookie.domain})`);
         req.session.cookie.domain = SESSION_COOKIE_DOMAIN;
+        req.session.touch();
         return req.session.save(next);
       }
       return next();
