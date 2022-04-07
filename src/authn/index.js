@@ -11,10 +11,35 @@ const OAuth2Strategy = require("passport-oauth2").Strategy;
 const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disable-line import/no-unresolved
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
 const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
+const partition = require("lodash.partition");
 const BearerStrategy = require("./bearer");
+const {copyCookie} = require("../middleware");
 const utils = require("../utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
+
+/* In production, share the cookie across nextstrain.org and all subdomains so
+ * sessions are portable (as long as the session store and secret are also
+ * shared by the deployments).  Otherwise, set a host-only cookie.
+ *
+ * Note that this also means the cookie will be sent to third-party services we
+ * host on subdomains, like docs.nextstrain.org, support.nextstrain.org, and
+ * others.  Although we do "trust" these providers, I still have some
+ * reservations about it as it does increase the surface area for potential
+ * session hijacking via cookie theft.  The big mitigation for me is that this
+ * cookie is already HTTP-only, so JS injections on those providers (which are
+ * much much more likely than server-side injections) can't access the cookie.
+ * The comprehensive, longer term solution (that everyone serious about
+ * security does for essentially this same reason) is to move our internal
+ * services off the user-facing domain (e.g. support.nextstrain-team.org)
+ * and/or accomplish session portability another way (e.g. explicit SSO by
+ * next.nextstrain.org against nextstrain.org as an IdP instead of implicit SSO
+ * via session sharing).
+ *   -trs, 18 March 2022
+ */
+const SESSION_COOKIE_DOMAIN = PRODUCTION
+  ? "nextstrain.org"
+  : undefined;
 
 const SESSION_SECRET = PRODUCTION
   ? process.env.SESSION_SECRET
@@ -36,8 +61,8 @@ const COGNITO_JWKS = createRemoteJWKSet(new URL(`${COGNITO_USER_POOL_URL}/.well-
 const COGNITO_BASE_URL = "https://login.nextstrain.org";
 
 const COGNITO_CLIENT_ID = PRODUCTION
-  ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org
-  : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost and heroku dev instances
+  ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org (and next. and dev.)
+  : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost
 
 /* Registered clients to accept for Bearer tokens.
  *
@@ -98,9 +123,16 @@ function setup(app) {
     new BearerStrategy(
       {
         realm: "nextstrain.org",
+        passReqToCallback: true,
         passIfMissing: true,
       },
-      async (idToken, done) => {
+      async (req, idToken, done) => {
+        /* Mark the request as being token-authenticated, which is strongly
+         * indicative of an API client (as browser clients use cookied-based
+         * sessions after OAuth2).
+         */
+        req.context.authnWithToken = true;
+
         try {
           const user = await userFromIdToken(idToken, BEARER_COGNITO_CLIENT_IDS);
           return done(null, user);
@@ -119,32 +151,64 @@ function setup(app) {
   passport.serializeUser((user, done) => {
     let serializedUser = {...user}; // eslint-disable-line prefer-const
 
-    // Deflate authzRoles from Set to Array
-    if ("authzRoles" in serializedUser) {
-      serializedUser.authzRoles = [...serializedUser.authzRoles];
+    // Deflate authzRoles and flags from Set to Array
+    for (const key of ["authzRoles", "flags"]) {
+      if (key in serializedUser) {
+        serializedUser[key] = [...serializedUser[key]];
+      }
     }
 
     return done(null, JSON.stringify(serializedUser));
   });
 
-  passport.deserializeUser((serializedUser, done) => {
+  passport.deserializeUser((req, serializedUser, done) => {
+    /* Mark the request as being authenticated with a session, which is
+     * strongly indicative of a browser client (as API clients use tokens).
+     */
+    req.context.authnWithSession = true;
+
     let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
 
-    // Inflate authzRoles from Array back into a Set
-    if ("authzRoles" in user) {
-      user.authzRoles = new Set(user.authzRoles);
+    // Inflate authzRoles and flags from Array back into a Set
+    for (const key of ["authzRoles", "flags"]) {
+      if (key in user) {
+        user[key] = new Set(user[key]);
+      }
     }
+
+    const update = (originalCognitoGroups, reason) => {
+      const {groups, authzRoles, flags, cognitoGroups} = parseCognitoGroups(originalCognitoGroups);
+      utils.verbose(`Updating user object for ${user.username}: ${reason}`);
+      user.groups = groups;
+      user.authzRoles = authzRoles;
+      user.flags = flags;
+      user.cognitoGroups = cognitoGroups;
+      user[RESAVE_TO_SESSION] = true;
+    };
 
     /* Update existing sessions that pre-date the presence of authzRoles.  When
      * authzRoles is absent, "groups" is the unparsed set of Cognito groups.
      */
-    if (!("authzRoles" in user)) {
-      const {groups, authzRoles} = parseCognitoGroups(user.groups || []);
-      utils.verbose(`Upgrading groups and authzRoles of user object for ${user.username}`);
-      user.groups = groups;
-      user.authzRoles = authzRoles;
-      user[RESAVE_TO_SESSION] = true;
-    }
+    if (!("authzRoles" in user)) update(user.groups || [], "missing authzRoles");
+
+    /* Update existing sessions that pre-date the presence of flags.  When
+     * flags is absent, then authzRoles is the unparsed set of Cognito groups.
+     *
+     * In almost all cases, flags will be an empty set.  However, if a user is
+     * added to a flags group (or other internal group) in Cognito *and* then
+     * also establishes a new session in production before this new flags
+     * support (i.e. internal groups support) support is deployed to
+     * production, then that session's user object will be wrong and we'll fix
+     * it here.  Such a wrong user object would have, for example, a "!flags"
+     * Nextstrain Group with role "!flags/canary".  This is likely to only
+     * impact internal team members.
+     */
+    if (!("flags" in user)) update([...user.authzRoles], "missing flags");
+
+    /* Future updates can pass user.cognitoGroups to update().  The updates
+     * above predate that property.
+     *   -trs, 18 March 2022
+     */
 
     return done(null, user);
   });
@@ -195,20 +259,56 @@ function setup(app) {
   };
 
   app.use(
+    /* Changing our session cookie from host-only to domain-wide by adding the
+     * "domain" option required a name change to avoid two identically-named
+     * but distinct cookies causing shadowing and general confusion.  We avoid
+     * disrupting sessions by transparently copying the old cookie, named
+     * "nextstrain.org", to the new cookie, named "nextstrain.org-session", if
+     * the old was sent but the new was not.  Each new response sets the new
+     * cookie, so subsequent requests will then send both cookies and no copy
+     * will happen.  The old cookie will naturally expire after 30 days since
+     * it will no longer be updated with each response.
+     *
+     * XXX TODO: Remove copyCookie() after its been deployed for at least 30
+     * days (SESSION_MAX_AGE), as any outstanding old cookies will have expired
+     * by then.
+     *   -trs, 6 April 2022
+     */
+    copyCookie("nextstrain.org", "nextstrain.org-session"),
+
     session({
-      name: "nextstrain.org",
+      name: "nextstrain.org-session",
       secret: SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
       rolling: true,
       store: sessionStore(),
       cookie: {
+        domain: SESSION_COOKIE_DOMAIN,
         httpOnly: true,
         sameSite: "lax",
         secure: PRODUCTION,
         maxAge: SESSION_MAX_AGE * 1000 // milliseconds
       }
-    })
+    }),
+
+    /* Sessions remember the options of their specific cookies and preserve
+     * them on each response, so upgrade the new cookies of existing sessions
+     * to domain-wide ones.
+     *
+     * XXX TODO: Remove this after its been deployed for at least 30 days
+     * (SESSION_MAX_AGE), as any new sessions start with domain set and any
+     * old sessions either got upgraded or have expired by then.
+     *   -trs, 6 April 2022
+     */
+    (req, res, next) => {
+      if (req.session?.cookie && req.session.cookie.domain !== SESSION_COOKIE_DOMAIN) {
+        utils.verbose(`Updating session cookie domain to ${SESSION_COOKIE_DOMAIN} (was ${req.session.cookie.domain})`);
+        req.session.cookie.domain = SESSION_COOKIE_DOMAIN;
+        return req.session.save(next);
+      }
+      return next();
+    },
   );
 
   app.use(passport.initialize());
@@ -238,18 +338,6 @@ function setup(app) {
     return next();
   });
 
-  // Set the app's origin centrally so other handlers can use it
-  //
-  // We can trust the HTTP Host header (req.hostname) because we're always
-  // running behind name-based virtual hosting on Heroku.  A forged Host header
-  // will be rejected by Heroku and never make it to us.
-  app.use((req, res, next) => {
-    res.locals.origin = PRODUCTION
-      ? `${req.protocol}://${req.hostname}`
-      : `${req.protocol}://${req.hostname}:${req.app.get("port")}`;
-    next();
-  });
-
   // Routes
   //
   // Authenticate with Cognito IdP on /login and establish a local session
@@ -265,7 +353,7 @@ function setup(app) {
       try {
         const referer = new URL(req.header("Referer"));
 
-        if (res.locals.origin === referer.origin) {
+        if (req.context.origin === referer.origin) {
           req.session.afterLoginReturnTo = referer.pathname;
         }
       } catch (e) {
@@ -291,7 +379,7 @@ function setup(app) {
     req.session.destroy(() => {
       const params = {
         client_id: COGNITO_CLIENT_ID,
-        logout_uri: res.locals.origin
+        logout_uri: req.context.origin
       };
       res.redirect(`${COGNITO_BASE_URL}/logout?${querystring.stringify(params)}`);
     });
@@ -309,29 +397,37 @@ function setup(app) {
 async function userFromIdToken(idToken, client = undefined) {
   const idClaims = await verifyToken(idToken, "id", client);
 
-  const {groups, authzRoles} = parseCognitoGroups(idClaims["cognito:groups"] || []);
+  const {groups, authzRoles, flags, cognitoGroups} = parseCognitoGroups(idClaims["cognito:groups"] || []);
 
   const user = {
     username: idClaims["cognito:username"],
     groups,
     authzRoles,
+    flags,
+    cognitoGroups,
   };
   return user;
 }
 
 /**
- * Parse an array of Cognito groups into a user's Nextstrain groups and their
- * authzRoles.
+ * Parse an array of Cognito groups into a user's Nextstrain groups, their
+ * authzRoles, and any flags.
  *
  * @returns {object} result
  * @returns {string[]} result.groups - Names of the Nextstrain Groups of which this user is a member.
  * @returns {Set} result.authzRoles - Authorization roles granted to this user.
+ * @returns {Set} result.flags - Flags on this user.
  */
 function parseCognitoGroups(cognitoGroups) {
+  /* Partition Cognito groups into those for "internal" usage and those
+   * associated with roles for Nextstrain Groups (which are also "internal" in
+   * some senses, but naming is hard).
+   */
+  const [internalGroups, nextstrainGroupsRoles] = partition(cognitoGroups, g => g.startsWith("!"));
+
   return {
-    // Just the Nextstrain Group names, which for now means all Cognito groups
-    // (excluding an optional "/role" suffix).
-    groups: [...new Set(cognitoGroups.map(g => splitGroupRole(g).group))],
+    // Just the Nextstrain Group names (i.e. excluding the "/role" suffix)
+    groups: [...new Set(nextstrainGroupsRoles.map(g => splitGroupRole(g).group))],
 
     /* During a transition period while we move users from unsuffixed Cognito
      * groups to role-suffixed Cognito groups, assume the least privileged
@@ -350,7 +446,21 @@ function parseCognitoGroups(cognitoGroups) {
      * decay and naturally expire.
      *   -trs, 4 Mar 2022
      */
-    authzRoles: new Set(cognitoGroups.map(g => g.includes("/") ? g : `${g}/viewers`)),
+    authzRoles: new Set(nextstrainGroupsRoles.map(g => g.includes("/") ? g : `${g}/viewers`)),
+
+    /* User flags
+     */
+    flags: new Set(
+      internalGroups
+        .filter(g => g.startsWith("!flags/"))
+        .map(g => g.replace(/^!flags\//, ""))
+    ),
+
+    /* Preserving the original groups helps us just-in-time upgrade the user
+     * object later (e.g. in deserializeUser) by calling (the updated version
+     * of) this function again with this (original) array.
+     */
+    cognitoGroups,
   };
 }
 

@@ -8,7 +8,8 @@ const cors = require('cors');
 const {addAsync} = require("@awaitjs/express");
 const {Forbidden, NotFound, Unauthorized} = require("http-errors");
 
-const production = process.env.NODE_ENV === "production";
+const PRODUCTION = process.env.NODE_ENV === "production";
+const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
 
 const authn = require("./authn");
 const endpoints = require("./endpoints");
@@ -50,12 +51,12 @@ const app = addAsync(express());
 
 app.set("json replacer", jsonReplacer);
 
-app.locals.production = production;
-app.locals.gatsbyDevUrl = production ? null : process.env.GATSBY_DEV_URL;
+app.locals.production = PRODUCTION;
+app.locals.gatsbyDevUrl = PRODUCTION ? null : process.env.GATSBY_DEV_URL;
 
 // In production, trust Heroku as a reverse proxy and Express will use request
 // metadata from the proxy.
-if (production) app.enable("trust proxy");
+if (PRODUCTION) app.enable("trust proxy");
 
 app.use(sslRedirect()); // redirect HTTP to HTTPS
 app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
@@ -69,6 +70,16 @@ app.use(middleware.rejectParentTraversals);
  */
 app.use((req, res, next) => {
   req.context = {};
+
+  // Set the app's origin centrally so other handlers can use it
+  //
+  // We can trust the HTTP Host header (req.hostname) because we're always
+  // running behind name-based virtual hosting on Heroku.  A forged Host header
+  // will be rejected by Heroku and never make it to us.
+  req.context.origin = PRODUCTION
+    ? `${req.protocol}://${req.hostname}`
+    : `${req.protocol}://${req.hostname}:${req.app.get("port")}`;
+
   next();
 });
 
@@ -83,6 +94,26 @@ app.use((req, res, next) => {
 authn.setup(app);
 
 
+/* Canary.
+ */
+app.use((req, res, next) => {
+  if (CANARY_ORIGIN) {
+    const notCanary = req.context.origin !== CANARY_ORIGIN;
+    const wantsCanary = req.user?.flags?.has("canary");
+
+    if (notCanary && wantsCanary && req.context.authnWithSession) {
+      const canaryUrl = new URL(req.originalUrl, CANARY_ORIGIN);
+
+      utils.verbose(`Redirecting ${req.user.username} to canary <${canaryUrl}>`);
+
+      // 307 Temporary Redirect preserves request method, unlike 302 Found.
+      return res.redirect(307, canaryUrl.toString());
+    }
+  }
+  return next();
+});
+
+
 /* Redirects.
  */
 redirects.setup(app);
@@ -90,7 +121,7 @@ redirects.setup(app);
 
 /* Charon API used by Auspice.
  */
-if (!production) {
+if (!PRODUCTION) {
   // allow cross-origin from the gatsby dev server
   app.use("/charon", cors({origin: 'http://localhost:8000'}));
 }

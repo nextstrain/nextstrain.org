@@ -44,6 +44,9 @@ var passport = require('passport-strategy')
  *   - `realm`  authentication realm, defaults to "Users"
  *   - `scope`  list of scope values indicating the required scope of the access
  *              token for accessing the requested resource
+ *   - `passReqToCallback` pass `req` to the `verify` callback with the
+ *                         signature `verify(req, token, done)` (defaults to
+ *                         false)
  *   - `passIfMissing` instead of failing, pass if no `Authorization` header was
  *                     present in the request (defaults to false)
  *

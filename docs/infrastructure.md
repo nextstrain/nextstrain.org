@@ -2,7 +2,7 @@
 
 ## Domains
 
-**nextstrain.org** and **dev.nextstrain.org** are [hosted on Heroku](#heroku).
+**nextstrain.org**, **next.nextstrain.org**, and **dev.nextstrain.org** are [hosted on Heroku](#heroku).
 
 **data.nextstrain.org** is an AWS CloudFronted S3 bucket, [`nextstrain-data`](#nextstrain-data).
 
@@ -12,10 +12,17 @@
 
 ## Heroku
 
-The production Heroku app is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server), which is part of a [Heroku app pipeline of the same name](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d).
-Deploys of `master` happen automatically after Travis CI tests are successful.
+We use a [Heroku pipeline named `nextstrain-server`](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d) to manage multiple related apps.
+The production app serving **nextstrain.org** is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server).
+The canary app serving **next.nextstrain.org** is [`nextstrain-canary`](https://dashboard.heroku.com/apps/nextstrain-canary).
+Deploys of `master` to the canary app happen automatically after Travis CI tests are successful.
+Deploys to the production app are performed by manually [promoting](https://devcenter.heroku.com/articles/pipelines#promoting) the canary's current release to production.
 
 ### Environment variables
+
+  - `NODE_ENV` is used to condition behaviour between production and non-production environments, following the widely-used convention set by Express.
+    Its value affects not just the explicit conditionals in this repo but also Express and other layers in our dependencies.
+    All our Heroku apps [run under `NODE_ENV=production`](https://devcenter.heroku.com/articles/nodejs-support#runtime-behavior).
 
   - `SESSION_SECRET` must be set to a long, securely generated string.
     It protects the session data stored in browser cookies.
@@ -37,6 +44,10 @@ Deploys of `master` happen automatically after Travis CI tests are successful.
     The token should have public access only, i.e. no permission scopes granted (including `public_repo`, which grants write access to public repos).
     If not provided, requests to the GitHub API are unauthenticated.
     The token we use in production is associated with the `nextstrain-bot` GitHub user.
+
+  - `CANARY_ORIGIN` is the origin of a canary deployment to redirect to for users who are opted-in to the `canary` flag (the `!flags/canary` Cognito group).
+    Redirection does not happen if this variable is not defined or if the request's origin already matches this variable's value.
+    In production we set this to `https://next.nextstrain.org`.
 
 ### Redis add-on
 
