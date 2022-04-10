@@ -149,6 +149,13 @@ class Resource {
     if (!this.baseParts.length) {
       throw new NoResourcePathError();
     }
+
+    // Require that pathParts does not include any underscores
+    // If it does, we must reject that path
+    const pathIncludesUnderscroes = pathParts.filter(s => s.includes("_"));
+    if (pathIncludesUnderscroes.length !== 0) {
+      throw new NoResourcePathError();
+    }
   }
   get baseParts() {
     return this.pathParts.slice();

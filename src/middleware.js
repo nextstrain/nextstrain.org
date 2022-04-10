@@ -1,4 +1,4 @@
-const {BadRequest, NotFound} = require("http-errors");
+const {BadRequest} = require("http-errors");
 
 
 /**
@@ -35,15 +35,7 @@ const rejectParentTraversals = (req, res, next) => {
   return next();
 };
 
-const rejectRoutesWithUnderscores = (req, res, next) => {
-  if (req.path.includes("_")) {
-    return (next(new NotFound()));
-  }
-  return next();
-};
-
 
 module.exports = {
-  rejectParentTraversals,
-  rejectRoutesWithUnderscores
+  rejectParentTraversals
 };
