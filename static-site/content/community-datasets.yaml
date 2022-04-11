@@ -7,10 +7,16 @@
 # Note that this YAML file is the first version in our long-term plans
 # to allow display / search of known (shared) datasets & narratives.
 # We plan to improve functionality here in at least 2 ways:
-# 1. Extract metadata from the underlying dataset/narrative file for richer
-#    display and search functionality.
+# 1. Automated way to extract metadata from the underlying dataset/narrative
+#    file for richer display and search functionality.
 # 2. Ability to add a single repository here and we'll automatically
 #    list all datasets & narratives there.
+#
+# Info for internal nextstrain.org use: There is a helper script which will
+# automatically parse the URL of each data point below and extract (some)
+# metadata from the underlying file. It can be run via:
+# `node scripts/parse-community-data.js | pbcopy` and the data pasted into
+# this file. This should be sanity-checked by hand / diff.
 #                                                         james april 2022
 data:
   - url: /community/inrb-drc/ebola-nord-kivu
