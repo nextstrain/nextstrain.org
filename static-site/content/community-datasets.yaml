@@ -20,53 +20,176 @@
 #                                                         james april 2022
 data:
   - url: /community/inrb-drc/ebola-nord-kivu
+    maintainers: E. Kinganda Lusamaki, INRB & C. Pratt
+    date: 13 Oct 2021
+    title: Genomic epidemiology of the 2018-21 Ebola epidemic
   - url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/aotearoa-border-incursions
+    title: Real-time genomics to track COVID-19 post-elimination border incursions in Aotearoa New Zealand
+    maintainers: Jordan Douglas, PhD, Jemma L. Geoghegan, PhD, James Hadfield, PhD, Remco Bouckaert, PhD, Matthew Storey, MSc, Xiaoyun Ren, PhD, Joep de Ligt, PhD, Nigel French, PhD, David Welch, PhD
+    date: August 2021
   - url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/2020-10-01
+    title: Re-emergence of community transmission in Aotearoa New Zealand - Genomic overview of the Auckland Outbreak
+    maintainers: James Hadfield (†), Jordan Douglas (†), Jemma L Geoghegan, Matthew Storey, Xiaoyun Ren, Nikki Freed, Olin Silander, Cinthy L. Jiménez-Silva, Nigel French, Alexei J Drummond, David Welch, Joep de Ligt
   - url: /community/ViennaRNA/CHIKV
+    maintainers: Thomas Spicher, Markus Delitz, Adriano de Bernardi Schneider, Michael T. Wolfinger
+    date: '2021-08-08'
+    title: Molecular epidemiology of Chikungunya virus
   - url: https://nextstrain.org/community/pestdisplace/CMDAFRICA
+    maintainers: PestDisPlace
+    date: 07 Sep 2019
+    title: Real-time tracking of cassava-infecting geminiviruses in Africa (DNA-A)
   - url: /community/pauloluniyi/lassa/l
+    maintainers: Paul Oluniyi, ACEGID Redeemer's University
+    date: 07 Aug 2018
+    title: Real-time tracking of Lassa virus evolution 2015-2018 Outbreak in Nigeria
   - url: /community/pauloluniyi/lassa/s
+    maintainers: Paul Oluniyi, ACEGID, Redeemer's University
+    date: 06 Nov 2019
+    title: Real-time tracking of Lassa virus evolution in Nigeria
   - url: https://nextstrain.org/community/modoree/htv/L
+    maintainers: Jin-Won Song (Korea University)
+    date: '2022-02-20'
+    title: Hantaan virus (HTNV) L segment
   - url: https://nextstrain.org/community/modoree/htv/M
+    maintainers: Jin-Won Song (Korea University)
+    date: '2022-02-20'
+    title: Hantaan virus (HTNV) M segment
   - url: https://nextstrain.org/community/modoree/htv/S
+    maintainers: Jin-Won Song (Korea University)
+    date: '2022-02-20'
+    title: Hantaan virus (HTNV) S segment
   - url: https://nextstrain.org/community/modoree/ifz/ha
+    maintainers: Man-Seong Park (Korea University)
+    date: '2022-03-03'
+    title: INFLUENZA HA
   - url: https://nextstrain.org/community/modoree/ifz/na
+    maintainers: Man-Seong Park (Korea University)
+    date: '2022-03-03'
+    title: INFLUENZA NA
   - url: https://nextstrain.org/community/modoree/sftsv/L
+    maintainers: Nam-Hyuk Cho (Seoul National University)
+    date: '2022-03-03'
+    title: Severe fever with thrombocytopenia syndrome virus (SFTSV) L segment
   - url: https://nextstrain.org/community/modoree/sftsv/M
+    maintainers: Nam-Hyuk Cho (Seoul National University)
+    date: '2022-03-03'
+    title: Severe fever with thrombocytopenia syndrome virus (SFTSV) M segment
   - url: https://nextstrain.org/community/modoree/sftsv/S
+    maintainers: Nam-Hyuk Cho (Seoul National University)
+    date: '2022-03-03'
+    title: Severe fever with thrombocytopenia syndrome virus (SFTSV) S segment
   - url: https://nextstrain.org/community/JianiC/rsv/A/WGS
+    maintainers: Jiani Chen
+    date: 29 Jul 2019
+    title: Real-time tracking of Human Respiratory Syncytial Virus Subtype A evolution using whole-genome sequences
   - url: https://nextstrain.org/community/JianiC/rsv/A/F
+    maintainers: Jiani Chen
+    date: 29 Jul 2019
+    title: Real-time tracking of Human Respiratory Syncytial Virus Subtype A evolution using F-gene sequences
   - url: https://nextstrain.org/community/JianiC/rsv/A/G
+    maintainers: Jiani Chen
+    date: 29 Jul 2019
+    title: Real-time tracking of Human Respiratory Syncytial Virus Subtype A evolution using G-gene sequences
   - url: https://nextstrain.org/community/JianiC/rsv/B/WGS
+    maintainers: Jiani Chen
+    date: 30 Jul 2019
+    title: Real-time tracking of Human Respiratory Syncytial Virus Subtype B evolution using whole-genome sequences
   - url: https://nextstrain.org/community/JianiC/rsv/B/F
+    maintainers: Jiani Chen
+    date: 30 Jul 2019
+    title: Real-time tracking of Human Respiratory Syncytial Virus Subtype B evolution using F-gene sequences
   - url: https://nextstrain.org/community/JianiC/rsv/B/G
+    maintainers: Jiani Chen
+    date: 29 Jul 2019
+    title: Real-time tracking of Human Respiratory Syncytial Virus Subtype B evolution using G-gene sequences
   - url: https://nextstrain.org/community/saunderslab/PST
+    maintainers: Thomas Adams and Diane Saunders
+    date: '2020-06-03'
+    title: Analysis of worldwide wheat yellow rust samples
   - url: https://nextstrain.org/community/quipupe/Nextstrain_Peru
+    maintainers: Laboratorio_de_Genomica_Microbiana_Pedro_Romero_pedro.romero@upch.pe
+    date: '2022-03-02'
+    title: Genomic epidemiology of novel coronavirus - Nextstrain_Peru-focused subsampling
   - url: https://nextstrain.org/community/BryanTegomoh/Nextstrain-Builds@main/Cameroon
-  - url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/aotearoa-border-incursions
-  - url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/2020-10-01
+    maintainers: Bryan Tegomoh (CDCF/NDHHS)
+    date: '2021-07-17'
+    title: 'Cameroon SARS-CoV-2 Genomic Surveillance: Cameroon-focused subsampling'
   - url: https://nextstrain.org/community/SESchmedes/sarscov2-southeast-usa/southeast
+    maintainers: Sarah Schmedes
+    date: '2021-06-10'
+    title: Genomic epidemiology of novel coronavirus - Southeast-focused subsampling
   - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/south-central
+    maintainers: Emma Hodcroft
+    date: '2020-09-02'
+    title: Genomic epidemiology of novel coronavirus - South Central-focused subsampling
   - url: https://nextstrain.org/community/tgennorth/arizona-covid-19/AZ
+    maintainers: TGen North
+    date: '2022-04-05'
+    title: SARS-CoV-2 Phylogeny of Cases in Arizona
   - url: https://nextstrain.org/community/NIH-BIGVI-PAKISTAN/ncov/Pakistan
+    maintainers: NIH Bioinformatics Group of Virology, Pakistan
+    date: '2022-03-23'
+    title: Genomic epidemiology of novel coronavirus - Asia_Pakistan-focused subsampling
   - url: https://nextstrain.org/community/AKU-CITRIC-Center-for-Bioinformatics/ncov/Pakistan
+    maintainers: AKU CITRIC Center for Bioinformatics
+    date: '2022-03-30'
+    title: Genomic Epidemiology of Novel Coronavirus - Pakistan-focused Subsampling (Non-contextual/Non-targeted)
   - url: https://nextstrain.org/community/BryanTegomoh/NebraskaDHHSNextStrainBuild/Nebraska/Last/Four/EpiWeeks
-  - url: https://nextstrain.org/community/josephfauver/ncovNE@main
+    maintainers: Bryan Tegomoh (CDCF/NDHHS)
+    date: '2021-12-27'
+    title: 'Genomic Surveillance of SARS-CoV-2 in Nebraska: Nebraska-focused subsampling, Last 4 EpiWeeks'
   - url: https://nextstrain.org/community/arodzh-sudo/ncov-puertorico/Puerto-Rico
+    maintainers: Arnold Rodriguez-Hilario
+    date: '2022-02-11'
+    title: Phylogenetic Analysis of SARS-CoV-2 in Puerto Rico
   - url: https://nextstrain.org/community/czbiohub/covidtracker/ca
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/california
+    maintainers: the SEARCH Alliance
+    date: '2021-02-18'
+    title: Genomic epidemiology of SARS-CoV-2 - California focused subsampling
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/sandiego
+    maintainers: the SEARCH Alliance
+    date: '2021-04-22'
+    title: Genomic epidemiology of SARS-CoV-2 - San Diego County focused subsampling
   - url: https://nextstrain.org/community/tewhey-lab/ncov-ME/latest
+    maintainers: Tewhey Lab (JAX)
+    date: '2022-03-01'
+    title: Genomic epidemiology of novel coronavirus - Ncov Me_Latest-focused subsampling
   - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/current
   - url: https://nextstrain.org/community/SESchmedes/sarscov2-florida/florida
+    maintainers: Sarah Schmedes
+    date: '2021-06-10'
+    title: Genomic epidemiology of novel coronavirus - Florida-focused subsampling
   - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/louisiana
+    maintainers: Emma Hodcroft
+    date: '2021-02-26'
+    title: Genomic epidemiology of novel coronavirus - Louisiana-focused subsampling
   - url: https://nextstrain.org/community/emmahodcroft/south-usa-sarscov2/texas?f_country=USA&p=grid
-  - url: https://nextstrain.org/community/bergthalerlab/NextstrainAustria
-  - url: https://nextstrain.org/community/GuyBaele/sars-cov-2-belgium?c=clade_membership&f_country=Belgium
+    maintainers: Emma Hodcroft
+    date: '2021-02-12'
+    title: Genomic epidemiology of novel coronavirus - Texas-focused subsampling
   - url: https://nextstrain.org/community/CHRF-Genomics/ncovBangladesh@main
+    maintainers: Child Health Research Foundation
+    date: '2022-04-05'
+    title: SARS-CoV-2 Sequences in Bangladesh
   - url: https://nextstrain.org/community/aicbu/ncov/srilanka
+    maintainers: ' Allergy Immunology and Cell Biology Unit (AICBU) at University of Sri Jayewardenepura'
+    date: '2022-03-24'
+    title: Genomic Epidemiology of Novel Coronavirus in Sri Lanka
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-India
+    maintainers: Vinod Scaria Lab
+    date: '2021-07-06'
+    title: Genomic epidemiology of novel coronavirus in India
   - url: https://nextstrain.org/community/fai-k/coni/Thailand
+    maintainers: COVID-19 Network Investigations (CONI) Alliance
+    date: '2022-03-16'
+    title: Genomic epidemiology of novel coronavirus - Thailand-focused subsampling
   - url: https://nextstrain.org/community/banijolly/Phylovis/COVID-Middle-East
+    maintainers: Vinod Scaria Lab at CSIR Institute of Genomics and Integrative Biology (CSIR-IGIB)
+    date: '2020-09-21'
+    title: Genomic epidemiology of novel coronavirus in Middle East and North Africa
   - url: https://nextstrain.org/community/alghoribi-lab/ncov/gcc
   - url: https://nextstrain.org/community/kkosaki/ncov/japan
+    maintainers: Center for Medical Genetics, Keio University School of Medicine
+    date: '2022-03-23'
+    title: Phylogenetic analysis of SARS-CoV-2 diversity in Japan
