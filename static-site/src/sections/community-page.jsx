@@ -35,20 +35,15 @@ const abstract = (
 const tableColumns = [
   {
     name: "Name",
-    value: (entry) => entry.name.replace(/\//g, ' / '),
+    value: (entry) => entry.urlDisplayName.replace(/\//g, ' / '),
     url: (entry) => entry.url.replace(/.*nextstrain.org/, '')
   },
   {
-    name: "Type",
-    value: (entry) => entry.isNarrative ? 'Narrative' : 'Dataset'
-  }, {
-    name: "GitHub Repo",
-    value: (entry) => `${entry.githubOrg}/${entry.githubRepo}`,
-    url: (entry) => `https://github.com/${entry.githubOrg}/${entry.githubRepo}`
+    name: "Maintainer",
+    value: (entry) => entry.maintainers || 'Unknown'
   }
 ];
 const tableData = parseTableData(hardcodedData);
-console.log("tableData", tableData)
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   constructor(props) {
@@ -122,6 +117,7 @@ function parseTableData(yamlData) {
       }
 
       return {
+        ...entry,
         url: url.pathname,
         /* is the entry a dataset or a narrative?
         NOTE that we cannot currently distinguish if a URL /community/org/repo
@@ -130,8 +126,8 @@ function parseTableData(yamlData) {
         isNarrative: !!urlMatches.groups.narrative,
         githubOrg: urlMatches.groups.org,
         githubRepo: urlMatches.groups.repo,
-        /* name is the URL name, less the /community or /community/narratives parts */
-        name: `${urlMatches.groups.org}/${urlMatches.groups.repo}${urlMatches.groups.pathSuffix || ''}`,
+        /* urlDisplayName is the URL name, less the /community or /community/narratives parts */
+        urlDisplayName: `${urlMatches.groups.org}/${urlMatches.groups.repo}${urlMatches.groups.pathSuffix || ''}`,
       };
     })
     .filter((entry) => entry!==undefined);
