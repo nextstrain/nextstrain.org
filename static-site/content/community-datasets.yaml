@@ -152,7 +152,6 @@ data:
     maintainers: Arnold Rodriguez-Hilario
     date: '2022-02-11'
     title: Phylogenetic Analysis of SARS-CoV-2 in Puerto Rico
-  - url: https://nextstrain.org/community/czbiohub/covidtracker/ca
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/california
     maintainers: the SEARCH Alliance
     date: '2021-02-18'
@@ -165,7 +164,6 @@ data:
     maintainers: Tewhey Lab (JAX)
     date: '2022-03-01'
     title: Genomic epidemiology of novel coronavirus - Ncov Me_Latest-focused subsampling
-  - url: https://nextstrain.org/community/grubaughlab/CT-SARS-CoV-2/current
   - url: https://nextstrain.org/community/SESchmedes/sarscov2-florida/florida
     maintainers: Sarah Schmedes
     date: '2021-06-10'
@@ -198,7 +196,6 @@ data:
     maintainers: Vinod Scaria Lab at CSIR Institute of Genomics and Integrative Biology (CSIR-IGIB)
     date: '2020-09-21'
     title: Genomic epidemiology of novel coronavirus in Middle East and North Africa
-  - url: https://nextstrain.org/community/alghoribi-lab/ncov/gcc
   - url: https://nextstrain.org/community/kkosaki/ncov/japan
     maintainers: Center for Medical Genetics, Keio University School of Medicine
     date: '2022-03-23'
