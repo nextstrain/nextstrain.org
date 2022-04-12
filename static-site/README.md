@@ -68,7 +68,7 @@ npm install
     * "Edit" -> "Scale Image" to 250 x 250px
     * "File" -> "Save Image" & use PNG
 3. Save the file in `./static/splash_images`
-4. Edit `./src/components/Cards/coreCards.js`, `./src/components/Cards/communityCards.js` or `./src/components/Cards/narrativeCards.js` to include the card & title.
+4. Edit `./src/components/Cards/coreCards.js`, `./content/community-datasets.yaml` or `./src/components/Cards/narrativeCards.js` to include the card & title.
 5. Edit `./src/Footer/index.jsx` to provide credit for the photo.
 
 ### External Links in the sidebar

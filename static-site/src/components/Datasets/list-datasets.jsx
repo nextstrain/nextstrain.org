@@ -41,14 +41,36 @@ const LogoContainer = styled.span`
   width: 24px;
 `;
 
-const columnStyles = [
-  [{xs: 8, sm: 6, md: 7}], // column 1 rendered as a single <Col>
-  [{xs: false, sm: 3, md: 3}, {xs: 4, sm: false, style: {textAlign: 'right'}}], // column 2
-  [{xs: false, sm: 3, md: 2}]
-];
+/**
+ * columnStyles returns the properties + custom styles
+ * for a given number of columns. See http://flexboxgrid.com
+ * for details. This function is a patch for our current
+ * implementation and should be revisited when we add support
+ * for richer table views.                james, april 2022
+ */
+const calcColumnStyles = (numCols) => {
+  const useEllipses = {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
+  };
+  const col1 = [{xs: 8, sm: 6, md: 7}];
+  const col2 = numCols > 2 ?
+    [
+      {xs: false, sm: 3, md: 3, style: {...useEllipses}},
+      {xs: 4, sm: false, style: {textAlign: 'right', ...useEllipses}}
+    ] :
+    [
+      {xs: false, sm: 6, md: 5, style: {...useEllipses}},
+      {xs: 4, sm: false, style: {textAlign: 'right', ...useEllipses}}
+    ];
+  const col3 = [{xs: false, sm: 3, md: 2, style: {...useEllipses}}];
+  return [col1, col2, col3];
+};
 
 const HeaderRow = ({columns}) => {
   const names = columns.map((c) => c.name);
+  const columnStyles = calcColumnStyles(names.length);
   return (
     <RowContainer>
       <Row>
@@ -74,6 +96,7 @@ const HeaderRow = ({columns}) => {
 
 const NormalRow = ({columns, dataset}) => {
   const names = columns.map((c) => c.name);
+  const columnStyles = calcColumnStyles(names.length);
   return (
     <RowContainer>
       <Row>

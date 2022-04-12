@@ -3,7 +3,7 @@ import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
 import coreCards from "../Cards/coreCards";
-import communityCards from "../Cards/communityCards";
+import communityDatasets from "../../../content/community-datasets.yaml";
 import narrativeCards from "../Cards/narrativeCards";
 import Title from "./title";
 import * as Styles from "./styles";
@@ -107,7 +107,7 @@ class Splash extends React.Component {
               Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
               accessed via public GitHub repos</a>
             </>)}
-            cards={communityCards.filter((c) => c.frontpage)}
+            cards={communityDatasets.data.filter((c) => c?.card?.frontpage).map((e) => e.card).slice(0, 2)}
             buttonText="Learn more"
             buttonLink="/community"
           />

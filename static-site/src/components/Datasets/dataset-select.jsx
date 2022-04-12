@@ -14,6 +14,7 @@ import { collectAvailableFilteringOptions, computeFilterValues, getFilteredDatas
  * @prop {string | undefined} intendedUri Intended URI. Browser address will be replaced with this.
  * @prop {Array} datasets Available datasets. Array of Objects.
  * @prop {Array} columns Columns to be rendered by the table. See <ListDatasets> for signature.
+ * @prop {Array | undefined} rowSort How the rows should be sorted in the table. See lodash's sortBy for details.
  * @prop {Array | undefined} interface What elements to render? Elements may be strings or functinos. Order is respected.
  *       Available strings: "FilterSelect" "FilterDisplay", "ListDatasets"
  *       Functions will be handed an object with key(s): `datasets` (which may be filtered), and should return a react component for rendering.
@@ -54,7 +55,7 @@ class DatasetSelect extends React.Component {
 
   render() {
     const childrenToRender = this.props.interface || ["FilterSelect", "FilterDisplay", "ListDatasets"];
-    const filteredDatasets = getFilteredDatasets(this.props.datasets, this.state.filters, this.props.columns);
+    const filteredDatasets = getFilteredDatasets(this.props.datasets, this.state.filters, this.props.columns, this.props.rowSort);
     const title = this.props.title || "Filter Datasets"; // we want it it say "filter narratives" if we are passing narratives as the filterable list
     return (
       <>
