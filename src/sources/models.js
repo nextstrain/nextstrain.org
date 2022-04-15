@@ -2,6 +2,8 @@
 const authzTags = require("../authz/tags");
 const {fetch} = require("../fetch");
 const {NoResourcePathError} = require("../exceptions");
+const { NotFound} = require("http-errors");
+
 
 /* The model classes here are the base classes for the classes defined in
  * ./core.js, ./community.js, ./groups.js, etc.
@@ -154,7 +156,7 @@ class Resource {
     // If it does, we must reject that path
     const pathIncludesUnderscroes = pathParts.filter(s => s.includes("_"));
     if (pathIncludesUnderscroes.length !== 0) {
-      throw new NoResourcePathError();
+      throw new NotFound();
     }
   }
   get baseParts() {
