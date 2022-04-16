@@ -48,7 +48,7 @@ describe(`test underscores`, () => {
       test(`TESTING BODY ${path}`, async () => {
         const res = await req;
         const body = await res.text();
-        if (expected != 404) {
+        if (expected !== 404) {
           expect(body).not.toBe(gatsby404);
         }
       });
