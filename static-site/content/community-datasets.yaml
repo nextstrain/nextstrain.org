@@ -56,37 +56,37 @@ data:
     maintainers: Paul Oluniyi, ACEGID, Redeemer's University
     date: 06 Nov 2019
     title: Real-time tracking of Lassa virus evolution in Nigeria
-  - url: https://nextstrain.org/community/modoree/htv/L
+  - url: https://nextstrain.org/community/KU-MV/Hantavirus/L
     maintainers: Jin-Won Song (Korea University)
-    date: '2022-02-20'
-    title: Hantaan virus (HTNV) L segment
-  - url: https://nextstrain.org/community/modoree/htv/M
+    date: '2022-04-23'
+    title: Hantavirus L segment
+  - url: https://nextstrain.org/community/KU-MV/Hantavirus/M
     maintainers: Jin-Won Song (Korea University)
-    date: '2022-02-20'
-    title: Hantaan virus (HTNV) M segment
-  - url: https://nextstrain.org/community/modoree/htv/S
+    date: '2022-04-23'
+    title: Hantavirus M segment
+  - url: https://nextstrain.org/community/KU-MV/Hantavirus/S
     maintainers: Jin-Won Song (Korea University)
-    date: '2022-02-20'
-    title: Hantaan virus (HTNV) S segment
-  - url: https://nextstrain.org/community/modoree/ifz/ha
+    date: '2022-04-23'
+    title: Hantavirus S segment
+  - url: https://nextstrain.org/community/KU-MV/Influenzavirus/HA
     maintainers: Man-Seong Park (Korea University)
-    date: '2022-03-03'
+    date: '2022-04-23'
     title: INFLUENZA HA
-  - url: https://nextstrain.org/community/modoree/ifz/na
+  - url: https://nextstrain.org/community/KU-MV/Influenzavirus/NA
     maintainers: Man-Seong Park (Korea University)
-    date: '2022-03-03'
+    date: '2022-04-23'
     title: INFLUENZA NA
-  - url: https://nextstrain.org/community/modoree/sftsv/L
+  - url: https://nextstrain.org/community/KU-MV/SFTSV/L
     maintainers: Nam-Hyuk Cho (Seoul National University)
-    date: '2022-03-03'
+    date: '2022-04-23'
     title: Severe fever with thrombocytopenia syndrome virus (SFTSV) L segment
-  - url: https://nextstrain.org/community/modoree/sftsv/M
+  - url: https://nextstrain.org/community/KU-MV/SFTSV/M
     maintainers: Nam-Hyuk Cho (Seoul National University)
-    date: '2022-03-03'
+    date: '2022-04-23'
     title: Severe fever with thrombocytopenia syndrome virus (SFTSV) M segment
-  - url: https://nextstrain.org/community/modoree/sftsv/S
+  - url: https://nextstrain.org/community/KU-MV/SFTSV/S
     maintainers: Nam-Hyuk Cho (Seoul National University)
-    date: '2022-03-03'
+    date: '2022-04-23'
     title: Severe fever with thrombocytopenia syndrome virus (SFTSV) S segment
   - url: https://nextstrain.org/community/JianiC/rsv/A/WGS
     maintainers: Jiani Chen
@@ -200,35 +200,3 @@ data:
     maintainers: Center for Medical Genetics, Keio University School of Medicine
     date: '2022-03-23'
     title: Phylogenetic analysis of SARS-CoV-2 diversity in Japan
-  - url: https://nextstrain.org/community/KU-MolecularVirology/Hantavirus/L
-    maintainers: Jin-Won Song (Korea University)
-    date: '2022-04-23'
-    title: Hantavirus L segment
-  - url: https://nextstrain.org/community/KU-MolecularVirology/Hantavirus/M
-    maintainers: Jin-Won Song (Korea University)
-    date: '2022-04-23'
-    title: Hantavirus M segment
-  - url: https://nextstrain.org/community/KU-MolecularVirology/Hantavirus/S
-    maintainers: Jin-Won Song (Korea University)
-    date: '2022-04-23'
-    title: Hantavirus S segment
-  - url: https://nextstrain.org/community/KU-MolecularVirology/Influenzavirus/HA
-    maintainers: Man-Seong Park (Korea University)
-    date: '2022-04-23'
-    title: INFLUENZA HA
-  - url: https://nextstrain.org/community/KU-MolecularVirology/Influenzavirus/NA
-    maintainers: Man-Seong Park (Korea University)
-    date: '2022-04-23'
-    title: INFLUENZA NA
-  - url: https://nextstrain.org/community/KU-MolecularVirology/SFTSV/L
-    maintainers: Nam-Hyuk Cho (Seoul National University)
-    date: '2022-04-23'
-    title: Severe fever with thrombocytopenia syndrome virus (SFTSV) L segment
-  - url: https://nextstrain.org/community/KU-MolecularVirology/SFTSV/M
-    maintainers: Nam-Hyuk Cho (Seoul National University)
-    date: '2022-04-23'
-    title: Severe fever with thrombocytopenia syndrome virus (SFTSV) M segment
-  - url: https://nextstrain.org/community/KU-MolecularVirology/SFTSV/S
-    maintainers: Nam-Hyuk Cho (Seoul National University)
-    date: '2022-04-23'
-    title: Severe fever with thrombocytopenia syndrome virus (SFTSV) S segment
