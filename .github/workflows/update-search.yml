@@ -20,12 +20,10 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 14
+    - uses: nextstrain/.github/actions/setup-nextstrain-cli@master
     - name: update sars-cov-2 search
       run: |
         npm ci
-        python3 -m pip install --upgrade pip setuptools
-        python3 -m pip install nextstrain-cli
-        PATH="$HOME/.local/bin:$PATH"
         ./scripts/collect-search-results.js --pathogen sars-cov-2
         nextstrain remote upload s3://nextstrain-data ./data/search_sars-cov-2.json
       env:
