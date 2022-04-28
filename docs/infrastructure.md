@@ -10,6 +10,8 @@
 
 **login.nextstrain.org** is used by our [AWS Cognito user pool](#cognito).
 
+**clades.nextstrain.org** is used by [Nextclade](https://github.com/nextstrain/nextclade).
+
 ## Heroku
 
 We use a [Heroku pipeline named `nextstrain-server`](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d) to manage multiple related apps.
