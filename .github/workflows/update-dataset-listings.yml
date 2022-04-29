@@ -15,15 +15,18 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: '14'
+    - run: npm ci
     - uses: nextstrain/.github/actions/setup-nextstrain-cli@master
+    # configure AWS necessary for `collect-datasets.js` and `nextstrain remote upload`
+    - uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - run: aws sts get-caller-identity
     - name: update dataset listings # currently just /staging and /influenza use these
       run: |
-        npm ci
         ./scripts/collect-datasets.js --keyword flu
         nextstrain remote upload s3://nextstrain-data data/datasets_influenza.json
         ./scripts/collect-datasets.js --keyword staging
         nextstrain remote upload s3://nextstrain-staging data/datasets_staging.json
-      env:
-        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
