@@ -1,5 +1,5 @@
 ---
-author: "Trevor Bedford, James Hadfield, Emma Hodcoft, John Huddleston, Richard Neher, Thomas Sibley"
+author: "Trevor Bedford, James Hadfield, Emma Hodcroft, John Huddleston, Richard Neher, Thomas Sibley"
 date: "2021-07-08"
 title: "Extension of SARS-CoV-2 data processing to incorporate Open Data through GenBank"
 ---
