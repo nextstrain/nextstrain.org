@@ -23,29 +23,63 @@ const nextstrainLogoPNG = "/favicon.png";
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
-genomic data. The Nextstrain team analyzes these data on a global and continental
-level. More specific analysis are often performed by groups around the world.
-This page lists publicly available SARS-CoV-2 analyses that use Nextstrain from
-groups all over the world. In addition to exploring SARS-CoV-2 evolution
-in finished analyses, you can use our new Nextclade tool to compare your sequences
-to the SARS-CoV-2 reference sequence, assign them to clades, and see where they fall
-on a the SARS-CoV-2 tree.`;
+genomic data. The Nextstrain team analyzes these data on a global and
+continental level. More specific analyses are often performed by groups around
+the world. This page lists a sample of such analyses. In addition to exploring
+SARS-CoV-2 evolution in finished analyses, you can use Nextclade to compare your
+sequences to the SARS-CoV-2 reference sequence, assign them to clades, and see
+where they fall on a the SARS-CoV-2 tree.`;
 
 const contents = [
   {
     type: "external",
-    to: "/ncov/global",
-    title: "Latest global SARS-CoV-2 analysis",
+    to: "/ncov/gisaid/global",
+    title: "Latest global SARS-CoV-2 analysis (GISAID data)",
     subtext: (
       <span>
-        Jump to our globally-subsampled SARS-CoV-2 dataset which is updated daily. We also keep updated regional datasets for
-        <a href="/ncov/africa?f_region=Africa"> Africa</a>,
-        <a href="/ncov/asia?f_region=Asia"> Asia</a>,
-        <a href="/ncov/europe?f_region=Europe"> Europe</a>,
-        <a href="/ncov/north-america?f_region=North%20America"> North America</a>,
-        <a href="/ncov/oceania?f_region=Oceania"> Oceania</a>, and
-        <a href="/ncov/south-america?f_region=South%20America"> South America</a>
-        ; and a clade sampled dataset for <a href="/ncov/open/reference">reference</a>.
+        Jump to our globally-subsampled SARS-CoV-2 dataset which is updated
+        daily using data from GISAID. We also maintain additional analyses to
+        focus subsampling on different geographic regions and different time
+        periods. These include analyses that focus on the previous 6 months for
+        <a href="/ncov/gisaid/africa/6m?f_region=Africa"> Africa</a>,
+        <a href="/ncov/gisaid/asia/6m?f_region=Asia"> Asia</a>,
+        <a href="/ncov/gisaid/europe/6m?f_region=Europe"> Europe</a>,
+        <a href="/ncov/gisaid/north-america/6m?f_region=North%20America"> North America</a>,
+        <a href="/ncov/gisaid/oceania/6m?f_region=Oceania"> Oceania</a> and
+        <a href="/ncov/gisaid/south-america/6m?f_region=South%20America"> South America</a>,
+        as well as analyses that focus on the entire pandemic for
+        <a href="/ncov/gisaid/africa/all-time?f_region=Africa"> Africa</a>,
+        <a href="/ncov/gisaid/asia/all-time?f_region=Asia"> Asia</a>,
+        <a href="/ncov/gisaid/europe/all-time?f_region=Europe"> Europe</a>,
+        <a href="/ncov/gisaid/north-america/all-time?f_region=North%20America"> North America</a>,
+        <a href="/ncov/gisaid/oceania/all-time?f_region=Oceania"> Oceania</a> and
+        <a href="/ncov/gisaid/south-america/all-time?f_region=South%20America"> South America</a>.
+      </span>
+    )
+  },
+  {
+    type: "external",
+    to: "/ncov/open/global",
+    title: "Latest global SARS-CoV-2 analysis (open data)",
+    subtext: (
+      <span>
+        Jump to our globally-subsampled SARS-CoV-2 dataset which is updated
+        daily using open data from GenBank. Additional analyses that focus
+        subsampling on  different geographic regions and different time periods
+        include analyses that focus on the previous 6 months for
+        <a href="/ncov/open/africa/6m?f_region=Africa"> Africa</a>,
+        <a href="/ncov/open/asia/6m?f_region=Asia"> Asia</a>,
+        <a href="/ncov/open/europe/6m?f_region=Europe"> Europe</a>,
+        <a href="/ncov/open/north-america/6m?f_region=North%20America"> North America</a>,
+        <a href="/ncov/open/oceania/6m?f_region=Oceania"> Oceania</a> and
+        <a href="/ncov/open/south-america/6m?f_region=South%20America"> South America</a>,
+        as well as analyses that focus on the entire pandemic for
+        <a href="/ncov/open/africa/all-time?f_region=Africa"> Africa</a>,
+        <a href="/ncov/open/asia/all-time?f_region=Asia"> Asia</a>,
+        <a href="/ncov/open/europe/all-time?f_region=Europe"> Europe</a>,
+        <a href="/ncov/open/north-america/all-time?f_region=North%20America"> North America</a>,
+        <a href="/ncov/open/oceania/all-time?f_region=Oceania"> Oceania</a> and
+        <a href="/ncov/open/south-america/all-time?f_region=South%20America"> South America</a>.
       </span>
     )
   },
@@ -63,19 +97,13 @@ const contents = [
     type: "external",
     to: "https://clades.nextstrain.org",
     title: "Nextclade (sequence analysis webapp)",
-    subtext: "Drag and drop your sequences to assign them to clades and report potential sequence quality issues. You can use the tool to analyze sequences before you upload them to a database."
+    subtext: "Drag and drop your sequences to assign them to clades, report potential sequence quality issues and view samples on a phylogenetic tree"
   },
   {
     type: "external",
     to: "https://covariants.org/",
     title: "CoVariants (mutations and variants of interest)",
-    subtext: "An overview of SARS-CoV-2 mutations that are of interest. The featured mutations are currently mostly associated with spread in Europe; this is simply a reflection that the primary maintainer/author (Emma Hodcroft) works mostly with European data."
-  },
-  {
-    type: "gatsby",
-    to: "/search/sars-cov-2",
-    title: "Search datasets by strain name(s)",
-    subtext: "Search all SARS-CoV-2 nextstrain datasets, including historical ones, for particular strain name(s)",
+    subtext: "An overview of SARS-CoV-2 variants, their prevalence around the world and constituent mutations"
   },
   {
     type: "external",
@@ -87,7 +115,7 @@ const contents = [
   },
   {
     type: "external",
-    to: "https://nextstrain.github.io/ncov/",
+    to: "https://docs.nextstrain.org/projects/ncov/",
     title: "How to run your own phylogenetic analysis of SARS-CoV-2",
     subtext: "A tutorial walking through running your own analysis using Nextstrain tools"
   },
@@ -96,12 +124,6 @@ const contents = [
     to: "https://discussion.nextstrain.org",
     title: "Nextstrain discussion forum",
     subtext: "See here for previously asked questions about Nextstrain or ask your own"
-  },
-  {
-    type: "external",
-    to: "https://github.com/nextstrain/.github/blob/master/CONTRIBUTING.md",
-    title: "Developer contributions",
-    subtext: "We have received a number of generous offers to contribute to the development of Nextstrain - this provides an entry point for how you may be able help"
   }
 ];
 
