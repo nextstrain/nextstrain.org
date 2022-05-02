@@ -2,13 +2,17 @@ name: CI
 on: [push, pull_request]
 jobs:
   test:
+    if: github.repository == 'nextstrain/nextstrain.org'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '14'
       - run: node --version
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
       # configure AWS to run dev server necessary for `npm run test:ci`
       - uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -16,7 +20,4 @@ jobs:
           aws-access-key-id: ${{ secrets.DEV_SERVER_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.DEV_SERVER_AWS_SECRET_ACCESS_KEY }}
       - run: aws sts get-caller-identity
-      - run: npm ci
-      - run: npm run build
-      - run: npm run lint
       - run: npm run test:ci

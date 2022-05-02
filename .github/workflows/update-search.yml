@@ -14,19 +14,23 @@ on:
 
 jobs:
   update-search:
+    if: github.repository == 'nextstrain/nextstrain.org'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
-        node-version: 14
+        node-version: '14'
+    - run: npm ci
     - uses: nextstrain/.github/actions/setup-nextstrain-cli@master
+    # configure AWS necessary for `collect-search-results.js` and `nextstrain remote upload`
+    - uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - run: aws sts get-caller-identity
     - name: update sars-cov-2 search
       run: |
-        npm ci
         ./scripts/collect-search-results.js --pathogen sars-cov-2
         nextstrain remote upload s3://nextstrain-data ./data/search_sars-cov-2.json
-      env:
-        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
