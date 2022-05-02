@@ -21,3 +21,72 @@ jobs:
           aws-secret-access-key: ${{ secrets.DEV_SERVER_AWS_SECRET_ACCESS_KEY }}
       - run: aws sts get-caller-identity
       - run: npm run test:ci
+
+  # XXX TODO: It'd be nice to avoid the rebuild on Heroku and instead deploy
+  # the artifacts (source code + generated files + node_modules/) already built
+  # above.  This would dramatically reduce deploy times and move us closer to
+  # "deploy what you tested", but it may also run into platform compatibility
+  # issues given CI is building on a different platform (arch + OS + sys libs)
+  # than Heroku's dynos and some deps are compiled.  But should try it and see!
+  # Or do our build above inside a Heroku buildpack…
+  #   -trs, 2 May 2022
+  deploy:
+    if: |2
+         github.repository == 'nextstrain/nextstrain.org'
+      && github.event_name == 'push'
+      && github.ref == 'refs/heads/master'
+
+    # Wait for "test" job above to pass.
+    needs: test
+
+    # Only one "deploy" job at a time.
+    concurrency: deploy
+
+    # Name a GitHub environment configuration¹ to auto-create deployment
+    # records in GitHub based on this job's progress/status.  Also grants
+    # access to environment-specific secrets.
+    #
+    # The URL is specific to this deployment, not the environment (i.e. an
+    # environment have deployments at different URLs).
+    #
+    # ¹ https://github.com/nextstrain/nextstrain.org/settings/environments
+    environment:
+      name: heroku
+      url: https://next.nextstrain.org
+
+    # Deploy steps
+    runs-on: ubuntu-latest
+    env:
+      HEROKU_APP: nextstrain-canary
+    steps:
+      - name: Login to Heroku
+        run: echo "machine api.heroku.com login $HEROKU_USER password $HEROKU_TOKEN" >> ~/.netrc
+        env:
+          HEROKU_USER: "${{ secrets.HEROKU_USER }}"
+          HEROKU_TOKEN: "${{ secrets.HEROKU_TOKEN }}"
+
+      - name: Define Heroku build source
+        run: |
+          jq --null-input '{
+            "source_blob": {
+              "url": "https://github.com/\(env.GITHUB_REPOSITORY)/archive/\(env.GITHUB_SHA).tar.gz",
+              "version": env.GITHUB_SHA
+            }
+          }' | tee build-source.json
+
+      - name: Start Heroku build
+        run: |
+          curl https://api.heroku.com/apps/"$HEROKU_APP"/builds \
+            --fail --silent --show-error --location --netrc \
+            --data-binary @build-source.json \
+            --header 'Content-Type: application/json' \
+            --header 'Accept: application/vnd.heroku+json; version=3' \
+              | tee build.json
+
+      - name: Monitor Heroku build
+        run: |
+          curl "$(jq -r .output_stream_url build.json)" \
+            --fail --silent --show-error --location
+
+      - name: Logout of Heroku
+        run: sed -i -e '/^machine api\.heroku\.com/d' ~/.netrc
