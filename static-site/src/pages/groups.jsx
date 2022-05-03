@@ -22,7 +22,7 @@ const abstract = (<>
   <br/>
   <br/>
   For more details about Nextstrain Groups,
-  <a href="https://docs.nextstrain.org/en/latest/guides/share/nextstrain-groups.html"> please see our documentation</a>.
+  <a href="https://docs.nextstrain.org/en/latest/learn/groups/index.html"> please see our documentation</a>.
   For an alternative approach to sharing data through nextstrain.org which leverages GitHub repositories, please see
   <Link to="/community"> Community data sharing</Link>.
   <br/>
