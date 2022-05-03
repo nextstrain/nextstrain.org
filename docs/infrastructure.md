@@ -17,7 +17,7 @@
 We use a [Heroku pipeline named `nextstrain-server`](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d) to manage multiple related apps.
 The production app serving **nextstrain.org** is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server).
 The canary app serving **next.nextstrain.org** is [`nextstrain-canary`](https://dashboard.heroku.com/apps/nextstrain-canary).
-Deploys of `master` to the canary app happen automatically after Travis CI tests are successful.
+Deploys of `master` to the canary app happen automatically after [GitHub Actions CI tests](https://github.com/nextstrain/nextstrain.org/actions/workflows/ci.yml) are successful.
 Deploys to the production app are performed by manually [promoting](https://devcenter.heroku.com/articles/pipelines#promoting) the canary's current release to production.
 
 ### Environment variables
@@ -86,8 +86,9 @@ To recreate an inactivated app, or create one for a PR from a fork, you can use 
 
 ### Rolling back deployments
 
-Normal heroku deployments, which require TravisCI to pass and are subsequently built on Heroku, can take upwards of 10 minutes.
-Heroku allows us to immediately return to a previous version using `heroku rollback --app=nextstrain-server vX`, where X is the version number (available via the heroku dashboard).
+Normal Heroku deployments, which require our GitHub Actions CI tests to pass and are subsequently built on Heroku, can take upwards of 10 minutes.
+Heroku allows us to immediately return to a previous version using rollbacks.
+Rollbacks can be performed via the Heroku dashboard or with `heroku rollback --app=nextstrain-server vX`, where _X_ is the version number (available via `heroku releases --app=nextstrain-server`).
 
 ## AWS
 
@@ -139,7 +140,8 @@ Nameservers for the nextstrain.org zone are hosted by [DNSimple](https://dnsimpl
 
 Core and staging narratives are sourced from the [nextstrain/narratives](https://github.com/nextstrain/narratives) repo (the `master` and `staging` branches, respectively).
 
-## Travis CI
+## CI
 
-CI is run via [TravisCI](https://travis-ci.com/nextstrain/nextstrain.org) using our [.travis.yml](https://github.com/nextstrain/nextstrain.org/blob/master/.travis.yml).
-All commits to the master branch on GitHub, or an open PR, will trigger a CI build.
+CI tests and deployments are run via [GitHub Actions](https://github.com/nextstrain/nextstrain.org/actions) using our [CI workflow](https://github.com/nextstrain/nextstrain.org/blob/master/.github/workflows/ci.yml).
+Any push or PR will trigger CI tests.
+Pushes to the `master` branch will trigger a CI deployment after tests pass.
