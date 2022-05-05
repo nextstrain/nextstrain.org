@@ -11,9 +11,11 @@ const passport = require("passport");
 const OAuth2Strategy = require("passport-oauth2").Strategy;
 const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disable-line import/no-unresolved
 const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
-const {JOSEError, JWTClaimValidationFailed} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
+const {JOSEError, JWTClaimValidationFailed, JWTExpired} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
 const partition = require("lodash.partition");
 const BearerStrategy = require("./bearer");
+const {AuthnRefreshTokenInvalid} = require("../exceptions");
+const {fetch} = require("../fetch");
 const {copyCookie} = require("../middleware");
 const utils = require("../utils");
 
@@ -99,15 +101,20 @@ function setup(app) {
         clientID: COGNITO_CLIENT_ID,
         callbackURL: "/logged-in",
         pkce: true,
-        state: true
+        state: true,
+        passReqToCallback: true,
       },
-      async (accessToken, refreshToken, {id_token: idToken}, profile, done) => {
-        // Verify both tokens for good measure, but pull user information from
-        // the identity token (which is its intended purpose).
+      async (req, accessToken, refreshToken, {id_token: idToken}, profile, done) => {
         try {
-          await verifyToken(accessToken, "access");
+          // Verifies tokens
+          const user = await userFromTokens({idToken, accessToken, refreshToken});
 
-          const user = await userFromIdToken(idToken);
+          // Only store tokens in session _after_ we verify them and have a user.
+          req.session.tokens = {
+            idToken,
+            accessToken,
+            refreshToken,
+          };
 
           // All users are ok, as we control the entire user pool.
           return done(null, user);
@@ -140,6 +147,13 @@ function setup(app) {
     )
   );
 
+  /* XXX TODO: Stop serializing the whole user profile back to the session once
+   * we no longer want to reserve the option of rolling back to older versions
+   * of the codebase which don't store tokens in the session.  For now,
+   * continuing to serialize the entire user profile means that newly
+   * established sessions will continue to work after such a rollback.
+   *  -trs, 16 May 2022
+   */
   // Serialize the entire user profile to the session store to avoid additional
   // requests to Cognito when we need to load back a user profile from their
   // session cookie.
@@ -156,8 +170,65 @@ function setup(app) {
     return done(null, JSON.stringify(serializedUser));
   });
 
-  passport.deserializeUser((serializedUser, done) => {
+  passport.deserializeUser((req, serializedUser, done) => {
+    deserializeUser(req, serializedUser)
+      .then(user => done(null, user))
+      .catch(err => done(err));
+  });
+
+  async function deserializeUser(req, serializedUser) {
     let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
+
+    /* If we have tokens in the session, then we ignore the serialized user
+     * object and instead recreate the user object directly from the tokens.
+     * This lets us avoid issues with user object migrations over time (like we
+     * had to deal with previously) and also lets us periodically refresh user
+     * data from Cognito when we automatically renew tokens.
+     */
+    if (req.session?.tokens) {
+      let {idToken, accessToken, refreshToken} = req.session.tokens;
+
+      try {
+        try {
+          return await userFromTokens({idToken, accessToken, refreshToken});
+        } catch (err) {
+          /* If expired, then try to renew tokens.  This may still fail if the
+           * refreshToken expired or was revoked since being stored in the
+           * session.
+           */
+          if (err instanceof JWTExpired) {
+            ({idToken, accessToken} = await renewTokens(refreshToken));
+
+            const updatedUser = await userFromTokens({idToken, accessToken, refreshToken});
+
+            // Update tokens in session only _after_ we verify them and have a user.
+            req.session.tokens.idToken = idToken;
+            req.session.tokens.accessToken = accessToken;
+
+            // Success after renewal.
+            return updatedUser;
+          }
+          throw err; // recaught immediately below
+        }
+      } catch (err) {
+        /* If tokens are unsuable (invalid, expired, revoked, etc) then remove
+         * them from the session and log the user out by returning a null user
+         * object.  Passport will remove the user from the session.  This may
+         * trigger a redirect to login later in the request processing.
+         */
+        if (err instanceof JOSEError || err instanceof AuthnRefreshTokenInvalid) {
+          delete req.session.tokens;
+          return null;
+        }
+
+        // Internal error of some kind
+        throw err;
+      }
+    }
+
+    /* We have an old session without tokens stored in it, so we must look at
+     * serializedUser and reconstitute the original user object.
+     */
 
     // Inflate authzRoles and flags from Array back into a Set
     for (const key of ["authzRoles", "flags"]) {
@@ -210,8 +281,8 @@ function setup(app) {
     assert(user.flags instanceof Set);
     assert(Array.isArray(user.cognitoGroups));
 
-    return done(null, user);
-  });
+    return user;
+  }
 
   // Setup session storage and passport.
   const sessionStore = () => {
@@ -439,6 +510,36 @@ function authnWithSession(req, res, next) {
 
 
 /**
+ * Creates a user record from the given `idToken` after verifying it and the
+ * associated `accessToken`.
+ *
+ * Use this function instead of {@link userFromIdToken} if you have all three
+ * tokens (e.g. after initial OAuth2 login or session token renewal), as it
+ * correctly verifies all three tokens together.
+ *
+ * @param {String} idToken
+ * @param {String} accessToken
+ * @param {String} refreshToken
+ * @param {String|String[]} client. Optional. Passed to `verifyToken()`.
+ * @returns {User} User record with e.g. `username` and `groups` keys.
+ */
+async function userFromTokens({idToken, accessToken, refreshToken}, client = undefined) {
+  if (!idToken) throw new Error("missing idToken");
+  if (!accessToken) throw new Error("missing accessToken");
+  if (!refreshToken) throw new Error("missing refreshToken");
+
+  /* Verify access token for good measure, but pull user information from the
+   * identity token (which is its intended purpose).  Note that refresh tokens
+   * are opaque blobs not subject to verification.
+   */
+  await verifyToken(accessToken, "access", client);
+
+  // Verifies idToken
+  return await userFromIdToken(idToken, client);
+}
+
+
+/**
  * Creates a user record from the given `idToken` after verifying it.
  *
  * @param {String} idToken
@@ -563,6 +664,73 @@ async function verifyToken(token, use, client = COGNITO_CLIENT_ID) {
 
   return claims;
 }
+
+
+/**
+ * Exchanges `refreshToken` for a new `idToken` and `accessToken`.
+ *
+ * @param {String} refreshToken
+ * @returns {Object} tokens
+ * @returns {String} tokens.idToken
+ * @returns {String} tokens.accessToken
+ * @throws {AuthnRefreshTokenInvalid} If the `refreshToken` is invalid,
+ *   expired, revoked, or was issued to another client.  Existing tokens should
+ *   be discarded if this error occurs as there is ~no way to recover from it
+ *   except by initiating a new login.
+ */
+async function renewTokens(refreshToken) {
+  const response = await fetch(`${COGNITO_BASE_URL}/oauth2/token`, {
+    method: "POST",
+    body: new URLSearchParams([
+      ["grant_type", "refresh_token"],
+      ["client_id", COGNITO_CLIENT_ID],
+      ["refresh_token", refreshToken],
+    ]),
+  });
+
+  const body = await response.text();
+
+  switch (response.status) {
+    case 200:
+      break;
+
+    case 400:
+      /* In the context of grant_type=refresh_token (above), the invalid_grant
+       * error means¹:
+       *
+       *   [the] refresh token is invalid, expired, revoked, does not match the
+       *   redirection URI used in the authorization request, or was issued to
+       *   another client.
+       *
+       * as described by the OAuth 2.0 spec¹, which is referenced by the error
+       * response section for the TOKEN endpoint² in the OpenID Connect Core
+       * 1.0 spec, which is what Cognito implements here.
+       *
+       * All other 400 Bad Request errors are programming/service issues not
+       * related to the refresh token itself, so fallthru to the default
+       * generic error.
+       *
+       * ¹ RFC 6749 § 5.2: https://datatracker.ietf.org/doc/html/rfc6749#section-5.2
+       * ² https://openid.net/specs/openid-connect-core-1_0.html#rfc.section.3.1.3.4
+       */
+      const {error, ...details} = JSON.parse(body);
+      if (error === "invalid_grant") {
+        throw new AuthnRefreshTokenInvalid(details);
+      }
+
+    // eslint-disable-next-line no-fallthrough
+    default:
+      throw new Error(`failed to renew tokens: ${response.status} ${response.statusText}: ${body}`);
+  }
+
+  const {id_token: idToken, access_token: accessToken} = JSON.parse(body);
+
+  return {
+    idToken,
+    accessToken,
+  };
+}
+
 
 function scrubUrl(url) {
   const scrubbedUrl = new URL(url);

@@ -8,6 +8,13 @@ class NextstrainError extends Error {
 }
 
 
+/**
+ * Thrown when a token renewal attempt is made with an invalid refresh token.
+ * See {@link module:./authn.renewTokens}.
+ */
+class AuthnRefreshTokenInvalid extends NextstrainError {}
+
+
 /* Thrown when a user is not authorized to do something.  Turned into an
  * appropriate HTTP response by our server-wide error handler.
  */
@@ -25,6 +32,7 @@ class NoResourcePathError extends NextstrainError {
 
 
 module.exports = {
+  AuthnRefreshTokenInvalid,
   AuthzDenied,
   NoResourcePathError,
 };
