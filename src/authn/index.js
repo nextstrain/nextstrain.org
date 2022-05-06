@@ -14,10 +14,11 @@ const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disa
 const {JOSEError, JWTClaimValidationFailed, JWTExpired} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
 const partition = require("lodash.partition");
 const BearerStrategy = require("./bearer");
-const {AuthnRefreshTokenInvalid} = require("../exceptions");
+const {AuthnRefreshTokenInvalid, AuthnTokenTooOld} = require("../exceptions");
 const {fetch} = require("../fetch");
 const {copyCookie} = require("../middleware");
 const {REDIS} = require("../redis");
+const {userStaleBefore} = require("../user");
 const utils = require("../utils");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
@@ -137,9 +138,13 @@ function setup(app) {
           const user = await userFromIdToken(idToken, BEARER_COGNITO_CLIENT_IDS);
           return done(null, user);
         } catch (e) {
-          return e instanceof JOSEError
-            ? done(null, false, "Error verifying token")
-            : done(e);
+          if (e instanceof JOSEError) {
+            return done(null, false, "Error verifying token");
+          } else if (e instanceof AuthnTokenTooOld) {
+            return done(null, false, "Token too old; renew it and try again");
+          }
+          // Internal error of some kind
+          return done(e);
         }
       }
     )
@@ -195,7 +200,7 @@ function setup(app) {
            * refreshToken expired or was revoked since being stored in the
            * session.
            */
-          if (err instanceof JWTExpired) {
+          if (err instanceof JWTExpired || err instanceof AuthnTokenTooOld) {
             debug(`Renewing tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
             ({idToken, accessToken} = await renewTokens(refreshToken));
 
@@ -645,6 +650,26 @@ async function verifyToken(token, use, client = COGNITO_CLIENT_ID) {
 
   if (claimedUse !== use) {
     throw new JWTClaimValidationFailed(`unexpected "token_use" claim value: ${claimedUse}`, "token_use", "check_failed");
+  }
+
+  /* Verify the token was issued at (iat) a time more recent than our staleness
+   * horizon for the user.
+   */
+  const username = claims[{id: "cognito:username", access: "username"}[claimedUse]];
+
+  if (!username) {
+    throw new JWTClaimValidationFailed("missing username");
+  }
+
+  const staleBefore = await userStaleBefore(username);
+
+  if (staleBefore) {
+    if (typeof claims.iat !== "number") {
+      throw new JWTClaimValidationFailed(`"iat" claim must be a number`, "iat", "invalid");
+    }
+    if (claims.iat < staleBefore) {
+      throw new AuthnTokenTooOld(`"iat" claim less than user's staleBefore: ${claims.iat} < ${staleBefore}`);
+    }
   }
 
   return claims;

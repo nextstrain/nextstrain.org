@@ -1,16 +1,19 @@
 /**
- * Redis is used for storing user sessions (see ./authn/index.js).
+ * Redis is used for storing user sessions (see ./authn/index.js) and user
+ * staleness timestamps (see ./user.js).
  *
  * The production Redis instance is configured for both volatile (expiring) and
  * non-volatile data using the "volatile-ttl" eviction policy.  User sessions
  * are volatile (but often long-lived) and have a rolling expiration identical
- * to the session cookie's.
+ * to the session cookie's.  Staleness timestamps are volatile with a short
+ * TTL.
  *
  * If you're storing more data in Redis, note that keys will default to
  * non-volatile unless an expiration is set.
  *
  * @module redis
  * @see module:authn
+ * @see module:user
  * @see https://redis.io/docs/manual/eviction/
  */
 
