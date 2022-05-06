@@ -2,6 +2,7 @@
 // in the server's charon handlers.
 //
 const assert = require("assert").strict;
+const debug = require("debug")("nextstrain:authn");
 const querystring = require("querystring");
 const session = require("express-session");
 const Redis = require("ioredis");
@@ -186,6 +187,7 @@ function setup(app) {
      * data from Cognito when we automatically renew tokens.
      */
     if (req.session?.tokens) {
+      debug(`Restoring user object for ${user.username} from tokens (session ${req.session.id.substr(0, 7)}…)`);
       let {idToken, accessToken, refreshToken} = req.session.tokens;
 
       try {
@@ -197,6 +199,7 @@ function setup(app) {
            * session.
            */
           if (err instanceof JWTExpired) {
+            debug(`Renewing tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
             ({idToken, accessToken} = await renewTokens(refreshToken));
 
             const updatedUser = await userFromTokens({idToken, accessToken, refreshToken});
@@ -206,6 +209,7 @@ function setup(app) {
             req.session.tokens.accessToken = accessToken;
 
             // Success after renewal.
+            debug(`Renewed tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
             return updatedUser;
           }
           throw err; // recaught immediately below
@@ -217,6 +221,7 @@ function setup(app) {
          * trigger a redirect to login later in the request processing.
          */
         if (err instanceof JOSEError || err instanceof AuthnRefreshTokenInvalid) {
+          debug(`Destroying unusable tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
           delete req.session.tokens;
           return null;
         }
@@ -229,6 +234,7 @@ function setup(app) {
     /* We have an old session without tokens stored in it, so we must look at
      * serializedUser and reconstitute the original user object.
      */
+    debug(`Restoring user object for ${user.username} from serialized user (session ${req.session.id.substr(0, 7)}…)`);
 
     // Inflate authzRoles and flags from Array back into a Set
     for (const key of ["authzRoles", "flags"]) {
@@ -430,6 +436,8 @@ function setup(app) {
   app.route("/logged-in").get(
     passport.authenticate(STRATEGY_OAUTH2, { failureRedirect: "/" }),
     (req, res) => {
+      debug(`New login for ${req.user.username} (session ${req.session.id.substr(0, 7)}…)`);
+
       // We can trust this value from the session because we are the only ones
       // in control of it.
       const afterLoginReturnTo = req.session.afterLoginReturnTo;
