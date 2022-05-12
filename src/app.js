@@ -439,8 +439,9 @@ app.useAsync(async (err, req, res, next) => {
         return res.redirect("/login");
       }
       err = new Unauthorized(err.message); // eslint-disable-line no-param-reassign
+    } else {
+      err = new Forbidden(err.message); // eslint-disable-line no-param-reassign
     }
-    err = new Forbidden(err.message); // eslint-disable-line no-param-reassign
   }
 
   /* Browser-like clients get JSON if they explicitly ask for it (regardless of
