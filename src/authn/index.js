@@ -407,7 +407,10 @@ function authnWithToken(req, res, next) {
  */
 function authnWithSession(req, res, next) {
   const authenticate = passport.authenticate(STRATEGY_SESSION, (err, user) => {
-    if (err) return next(err);
+    if (err) {
+      utils.verbose(`Failed to deserialize user from session (${err}); leaving session intact but ignoring user`);
+      return next();
+    }
     if (user) {
       /* Mark the request as being authenticated with a session, which is
        * strongly indicative of a browser client (as API clients use tokens).
