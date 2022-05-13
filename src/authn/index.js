@@ -361,7 +361,9 @@ function setup(app) {
     (req, res) => {
       // We can trust this value from the session because we are the only ones
       // in control of it.
-      res.redirect(req.session.afterLoginReturnTo || "/");
+      const afterLoginReturnTo = req.session.afterLoginReturnTo;
+      delete req.session.afterLoginReturnTo;
+      res.redirect(afterLoginReturnTo || "/");
     }
   );
 
