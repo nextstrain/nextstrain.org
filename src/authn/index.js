@@ -1,6 +1,7 @@
 // Server handlers for authentication (authn).  Authorization (authz) is done
 // in the server's charon handlers.
 //
+const assert = require("assert").strict;
 const querystring = require("querystring");
 const session = require("express-session");
 const Redis = require("ioredis");
@@ -198,6 +199,16 @@ function setup(app) {
      * above predate that property.
      *   -trs, 18 March 2022
      */
+
+    /* Check the final user object is the right shape.  This would be better
+     * with types and TypeScript, or even a validation library, but asserts are
+     * ok for now in the absence of either of those.
+     */
+    assert(typeof user.username === "string");
+    assert(Array.isArray(user.groups));
+    assert(user.authzRoles instanceof Set);
+    assert(user.flags instanceof Set);
+    assert(Array.isArray(user.cognitoGroups));
 
     return done(null, user);
   });
