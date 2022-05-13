@@ -81,6 +81,7 @@ const BEARER_COGNITO_CLIENT_IDS = [
  */
 const STRATEGY_OAUTH2 = "oauth2";
 const STRATEGY_BEARER = "bearer";
+const STRATEGY_SESSION = "session";
 
 /* Flag indicating that the user object was updated during deserialization from
  * an existing session and that it needs to be resaved back to the session.
@@ -123,16 +124,9 @@ function setup(app) {
     new BearerStrategy(
       {
         realm: "nextstrain.org",
-        passReqToCallback: true,
         passIfMissing: true,
       },
-      async (req, idToken, done) => {
-        /* Mark the request as being token-authenticated, which is strongly
-         * indicative of an API client (as browser clients use cookied-based
-         * sessions after OAuth2).
-         */
-        req.context.authnWithToken = true;
-
+      async (idToken, done) => {
         try {
           const user = await userFromIdToken(idToken, BEARER_COGNITO_CLIENT_IDS);
           return done(null, user);
@@ -161,12 +155,7 @@ function setup(app) {
     return done(null, JSON.stringify(serializedUser));
   });
 
-  passport.deserializeUser((req, serializedUser, done) => {
-    /* Mark the request as being authenticated with a session, which is
-     * strongly indicative of a browser client (as API clients use tokens).
-     */
-    req.context.authnWithSession = true;
-
+  passport.deserializeUser((serializedUser, done) => {
     let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
 
     // Inflate authzRoles and flags from Array back into a Set
@@ -313,18 +302,8 @@ function setup(app) {
   );
 
   app.use(passport.initialize());
-
-  // If an Authorization header is present, then it must container a valid
-  // Bearer token.  No session will be created for Bearer authn.
-  //
-  // If an Authorization header is not present, this authn strategy is
-  // configured (above) to pass to the next request handler (user restoration
-  // from session).
-  app.use(passport.authenticate(STRATEGY_BEARER, { session: false }));
-
-  // Restore user from the session, if any.  If no session, then req.user will
-  // be null.
-  app.use(passport.session());
+  app.use(authnWithToken);
+  app.use(authnWithSession);
 
   // If the user object was modified in deserializeUser during restore from the
   // session, then persist the modifications back into the session by updating
@@ -385,6 +364,61 @@ function setup(app) {
       res.redirect(`${COGNITO_BASE_URL}/logout?${querystring.stringify(params)}`);
     });
   });
+}
+
+
+/**
+ * Authenticate request user with HTTP Bearer authentication.
+ *
+ * If an Authorization header is present, then it must container a valid Bearer
+ * token.  No session will be created for Bearer authn.
+ *
+ * If an Authorization header is not present, this authn strategy is configured
+ * (above) to pass to the next request handler (user restoration from session).
+ *
+ * @type {expressMiddleware}
+ */
+function authnWithToken(req, res, next) {
+  const authenticate = passport.authenticate(STRATEGY_BEARER, (err, user) => {
+    if (err) return next(err);
+    if (user) {
+      /* Mark the request as being token-authenticated, which is strongly
+       * indicative of an API client (as browser clients use cookied-based
+       * sessions after OAuth2).
+       */
+      req.context.authnWithToken = true;
+
+      return req.login(user, { session: false }, next);
+    }
+    return next();
+  });
+  return authenticate(req, res, next);
+}
+
+
+/**
+ * Authenticate request user with session cookie.
+ *
+ * Restores the authenticated user from the session, if any.  If there is no
+ * session user or the session user is invalid in any way, then req.user will
+ * be null.
+ *
+ * @type {expressMiddleware}
+ */
+function authnWithSession(req, res, next) {
+  const authenticate = passport.authenticate(STRATEGY_SESSION, (err, user) => {
+    if (err) return next(err);
+    if (user) {
+      /* Mark the request as being authenticated with a session, which is
+       * strongly indicative of a browser client (as API clients use tokens).
+       */
+      req.context.authnWithSession = true;
+
+      return req.login(user, next);
+    }
+    return next();
+  });
+  return authenticate(req, res, next);
 }
 
 
