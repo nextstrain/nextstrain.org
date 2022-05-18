@@ -84,16 +84,5 @@
   "cacheDirectories": [
     "node_modules",
     "static-site/node_modules"
-  ],
-  "jest": {
-    "testMatch": [
-      "**/*.test.js"
-    ],
-    "globals": {
-      "BASE_URL": "http://localhost:5000"
-    },
-    "setupFilesAfterEnv": [
-      "jest-extended/all"
-    ]
-  }
+  ]
 }
