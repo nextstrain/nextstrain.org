@@ -14,6 +14,7 @@ const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disa
 const {JOSEError, JWTClaimValidationFailed, JWTExpired} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
 const partition = require("lodash.partition");
 const BearerStrategy = require("./bearer");
+const {getTokens, setTokens, deleteTokens} = require("./session");
 const {AuthnRefreshTokenInvalid, AuthnTokenTooOld} = require("../exceptions");
 const {fetch} = require("../fetch");
 const {copyCookie} = require("../middleware");
@@ -109,11 +110,7 @@ function setup(app) {
           const user = await userFromTokens({idToken, accessToken, refreshToken});
 
           // Only store tokens in session _after_ we verify them and have a user.
-          req.session.tokens = {
-            idToken,
-            accessToken,
-            refreshToken,
-          };
+          await setTokens(req.session, {idToken, accessToken, refreshToken});
 
           // All users are ok, as we control the entire user pool.
           return done(null, user);
@@ -188,9 +185,10 @@ function setup(app) {
      * had to deal with previously) and also lets us periodically refresh user
      * data from Cognito when we automatically renew tokens.
      */
-    if (req.session?.tokens) {
+    const tokens = await getTokens(req.session);
+    if (tokens) {
       debug(`Restoring user object for ${user.username} from tokens (session ${req.session.id.substr(0, 7)}…)`);
-      let {idToken, accessToken, refreshToken} = req.session.tokens;
+      let {idToken, accessToken, refreshToken} = tokens;
 
       try {
         try {
@@ -207,8 +205,7 @@ function setup(app) {
             const updatedUser = await userFromTokens({idToken, accessToken, refreshToken});
 
             // Update tokens in session only _after_ we verify them and have a user.
-            req.session.tokens.idToken = idToken;
-            req.session.tokens.accessToken = accessToken;
+            await setTokens(req.session, {idToken, accessToken, refreshToken});
 
             // Success after renewal.
             debug(`Renewed tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
@@ -224,7 +221,7 @@ function setup(app) {
          */
         if (err instanceof JOSEError || err instanceof AuthnRefreshTokenInvalid) {
           debug(`Destroying unusable tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
-          delete req.session.tokens;
+          await deleteTokens(req.session);
           return null;
         }
 
