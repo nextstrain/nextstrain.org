@@ -200,3 +200,7 @@ data:
     maintainers: Center for Medical Genetics, Keio University School of Medicine
     date: '2022-03-23'
     title: Phylogenetic analysis of SARS-CoV-2 diversity in Japan
+  - url: https://nextstrain.org/community/juan-ceron/SARS-CoV-2-Colombia
+    maintainers: Grupo Inmunovirologia, facultad de medicina, Universidad de Antioquia, Medellin, Colombia
+    date: '2022-05-18'
+    title: Genomic epidemiology of SARS-CoV-2 in Colombia
