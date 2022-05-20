@@ -1,3 +1,4 @@
+const Benchmark = require("benchmark");
 const {randomKey} = require("../src/cryptography");
 
 
@@ -95,3 +96,48 @@ test("session id must match", async () => {
     .rejects
     .toThrow("encrypted message context does not match decryption context");
 });
+
+
+test("benchmark", async () => {
+  const {getTokens, setTokens} = require("../src/authn/session");
+
+  const session = {
+    id: "0xABADCAFE",
+  };
+
+  const tokens = {
+    idToken: "foo",
+    accessToken: "bar",
+    refreshToken: "baz",
+  };
+
+  const setBenchmark = await bench(async () => {
+    await setTokens(session, tokens);
+  });
+  expect(setBenchmark.times.period)
+    .toBeLessThan(2 / 1000); // 2ms
+
+  const getBenchmark = await bench(async () => {
+    await getTokens(session);
+  });
+  expect(getBenchmark.times.period)
+    .toBeLessThan(2 / 1000); // 2ms
+});
+
+
+async function bench(fn) {
+  return await new Promise((resolve, reject) => {
+    const benchmark = new Benchmark({
+      defer: true,
+      fn: async (deferred) => {
+        await fn();
+        deferred.resolve();
+      },
+      onComplete: event => resolve(event.target),
+      onError: reject,
+      maxTime: 1, // 1s
+    });
+
+    benchmark.run();
+  });
+}
