@@ -156,6 +156,7 @@ const coreBuildPaths = [
   "/measles",
   "/mers",
   "/mumps",
+  "/monkeypox",
   "/ncov",
   "/nextclade",
   "/tb",
