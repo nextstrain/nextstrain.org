@@ -14,31 +14,33 @@ const SplashImagesCredit = () => (
         {`. `}
         <a href="https://en.wikipedia.org/wiki/Zika_virus#/media/File:197-Zika_Virus-ZikaVirus.tif">Zika drawing</a>
         {` by David Goodwill, `}
-        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC156766/figure/cdg270f4/">Dengue EM</a>
+        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC156766/figure/cdg270f4/">dengue EM</a>
         {` by Zhang `}<i>et al., </i>
         <a href="https://commons.wikimedia.org/wiki/Ebola#/media/File:Ebola_virus_em.png">Ebola EM</a>
         {` by Frederick Murphy / CDC, `}
-        <a href="https://commons.wikimedia.org/wiki/File:Influenza_virus_particle_color.jpg">Seasonal Influenza</a>
+        <a href="https://en.wikipedia.org/wiki/File:Monkeypox.gif">monkeypox EM</a>
+        {` by University of Wisconsin-La Crosse, `}
+        <a href="https://commons.wikimedia.org/wiki/File:Influenza_virus_particle_color.jpg">seasonal influenza</a>
         {`, `}
         <a href="https://commons.wikimedia.org/wiki/File:Lassa_virus.JPG">Lassa</a>
         {` and `}
-        <a href="https://phil.cdc.gov/Details.aspx?pid=10701">West Nile Virus</a>
-        {` images by Cynthia Goldsmith / CDC, `}
-        <a href="https://phil.cdc.gov/details.aspx?pid=15670">Avian Influenza (A/H7N9)</a>
+        <a href="https://phil.cdc.gov/Details.aspx?pid=10701">West Nile virus</a>
+        {` by Cynthia Goldsmith / CDC, `}
+        <a href="https://phil.cdc.gov/details.aspx?pid=15670">avian influenza</a>
         {` by Cynthia Goldsmith and Thomas Rowe / CDC, `}
-        <a href="https://phil.cdc.gov/Details.aspx?pid=1874">Mumps</a>
+        <a href="https://phil.cdc.gov/Details.aspx?pid=1874">mumps</a>
         {` by the CDC, `}
-        <a href="http://www.tau.ac.il/lifesci/departments/biotech/members/rozenblatt/fig3.html">Measles</a>
+        <a href="http://www.tau.ac.il/lifesci/departments/biotech/members/rozenblatt/fig3.html">measles</a>
         {` by Shmuel Rozenblatt, `}
-        <a href="https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1003240#s5">Enterovirus</a>
+        <a href="https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1003240#s5">enterovirus</a>
         {` by Shingler `}<i>et al., </i>
-        <a href="https://pixnio.com/science/microscopy-images/ralstonia-mannitolilytica-bacteria/gram-positive-mycobacterium-tuberculosis-bacteria-2">Tuberculosis</a>
+        <a href="https://pixnio.com/science/microscopy-images/ralstonia-mannitolilytica-bacteria/gram-positive-mycobacterium-tuberculosis-bacteria-2">tuberculosis</a>
         {` by Ray Butle, `}
         <a href="https://www.flickr.com/photos/nihgov/33288028956">RSV</a>
         {` by NIAID / NIH, `}
         {` Cassava Leaf by `}
         <a href="mailto:w.cuellar@cgiar.org">Wilmer Cuellar, </a>
-        <a href="https://commons.wikimedia.org/wiki/File:Stripe_rust_on_wheat.jpg">Wheat yellow rust (Puccinia striiformis)</a>
+        <a href="https://commons.wikimedia.org/wiki/File:Stripe_rust_on_wheat.jpg">Wheat yellow rust</a>
         {` by Yue Jin / USDA, `}
         <a href="https://en.wikipedia.org/wiki/File:Coronaviruses_004_lores.jpg">coronavirus</a>
         {` by Dr. Fred Murphy / CDC.`}
