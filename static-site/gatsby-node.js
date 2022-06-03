@@ -241,6 +241,13 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/sections/staging-page.jsx")
         });
 
+        /* Please amend this commit before release so that the page
+        is at /monkeypox and the datasets are at monkeypox/overview (etc) */
+        createPage({
+          path: "/mpx",
+          component: path.resolve("src/sections/monkeypox.jsx")
+        });
+
         createPage({
           path: "/pathogens",
           component: path.resolve("src/sections/pathogens.jsx")
