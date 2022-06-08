@@ -48,6 +48,19 @@ async function userStaleBefore(username) {
  * @see userStaleBefore
  */
 async function markUserStaleBeforeNow(username) {
+  /* Keying on usernames, instead of say the "sub" (subject) attribute of a
+   * user, makes this API more ergonomic and avoids needing to convert from
+   * username → sub in contexts where we only have username (e.g. a request
+   * from the group owner to modify the membership role of another user in the
+   * group).  One pitfall of usernames is that they can be re-used after
+   * deletion (unlike "sub" values), but that is not a concern for this "stale
+   * before" functionality.
+   *
+   * We can always convert this to use "sub" in the future if we think it's
+   * worth it and are already taking the hit of a Cognito ListUsers API call
+   * for other needs.
+   *   -trs, 8 June 2022
+   */
   const now = Math.ceil(Date.now() / 1000);
   if (REDIS) {
     /* The TTL must be greater than the maximum lifetime of an id/access token
