@@ -24,9 +24,7 @@ const {NoResourcePathError} = require("../exceptions");
  *
  * A concrete example:
  *
- * CoreSource (in ./core.js) represents a Cloudfront distribution
- * (https://data.nextstrain.org) in front of an S3 bucket
- * (s3://nextstrain-data).
+ * CoreSource (in ./core.js) represents an S3 bucket (s3://nextstrain-data).
  *
  *   const coreSource = new CoreSource()
  *
@@ -44,16 +42,16 @@ const {NoResourcePathError} = require("../exceptions");
  * These Subresources can be retrieved at the following URLs, which you obtain
  * using the Subresource.url() method:
  *
- *   https://data.nextstrain.org/flu_seasonal_h3n2_ha_2y.json
- *   https://data.nextstrain.org/flu_seasonal_h3n2_ha_2y_tip-frequencies.json
+ *   https://nextstrain-data.s3.amazonaws.com/flu_seasonal_h3n2_ha_2y.json
+ *   https://nextstrain-data.s3.amazonaws.com/flu_seasonal_h3n2_ha_2y_tip-frequencies.json
  *
  * Typically, the URL for a specific Subresource is composed from details in
  * the Source, Resource, and Subresource instances.  For example:
  *
- *   https://data.nextstrain.org/flu_seasonal_h3n2_ha_2y_tip-frequencies.json
- *   \_________________________/ \_____________________/ \__________________/
- *          from Source               from Dataset              from
- *                                                        DatasetSubresource
+ *   https://nextstrain-data.s3.amazonaws.com/flu_seasonal_h3n2_ha_2y_tip-frequencies.json
+ *   \______________________________________/ \_____________________/ \__________________/
+ *                from Source                      from Dataset              from
+ *                                                                     DatasetSubresource
  *
  * The actual URL construction varies between implementations but is broadly
  * similar.
