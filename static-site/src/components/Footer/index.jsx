@@ -44,6 +44,8 @@ const SplashImagesCredit = () => (
         {` by Yue Jin / USDA, `}
         <a href="https://en.wikipedia.org/wiki/File:Coronaviruses_004_lores.jpg">coronavirus</a>
         {` by Dr. Fred Murphy / CDC.`}
+        <a href="https://en.wikipedia.org/wiki/Yersinia_pestis#/media/File:Yersinia_pestis.jpg">Yersinia pestis</a>
+        {` by Rocky Mountain Laboratories / NIAID / NIH.`}
       </Styles.FooterParagraph>
     </div>
   </div>
