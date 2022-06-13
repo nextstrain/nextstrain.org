@@ -39,10 +39,14 @@ data:
     maintainers: Thomas Spicher, Markus Delitz, Adriano de Bernardi Schneider, Michael T. Wolfinger
     date: '2021-08-08'
     title: Molecular epidemiology of Chikungunya virus
+  - url: community/ktmeaton/yersinia-pestis
+    maintainers: Katherine Eaton et al
+    date: '2022-06-13'
+    title: Yersinia Pestis (multiple datasets)
     card:
-      img: "chikv.png"
-      url: "/community/ViennaRNA/CHIKV"
-      title: "Chikungunya"
+      img: "yersinia.png"
+      url: "/community/ktmeaton/yersinia-pestis/maximum-likelihood/all?m=div"
+      title: "Yersinia pestis"
       frontpage: true
   - url: https://nextstrain.org/community/pestdisplace/CMDAFRICA
     maintainers: PestDisPlace
