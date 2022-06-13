@@ -20,8 +20,9 @@ const {reportUnhandledRejectionsAtExit} = require("../src/utils/scripts");
 
 
 const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
+const REGION = COGNITO_USER_POOL_ID.split("_")[0];
 
-const cognito = new CognitoIdentityProviderClient();
+const cognito = new CognitoIdentityProviderClient({ region: REGION });
 
 const STATUS_CREATED = Symbol("created");
 const STATUS_UPDATED = Symbol("updated");
