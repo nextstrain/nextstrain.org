@@ -7,7 +7,6 @@ If you have any questions, or simply want to say hi, please give us a shout at h
 
 > We have received a number of generous offers to contribute front-end developer effort to nextstrain (and auspice) folowing our work on [SARS-CoV-2](https://nextstrain.org/ncov).
 We would be grateful for code contributions, as well as constructive criticism and advice.
-A list of potential issues is being actively maintained at https://github.com/orgs/nextstrain/projects/5.
 
 
 This repo comprises:
