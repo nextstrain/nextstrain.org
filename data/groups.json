@@ -104,6 +104,10 @@
     "isPublic": true
   },
   {
+    "name": "cameroon-genomics",
+    "isPublic": true
+  },
+  {
     "name": "blab-private",
     "isPublic": false
   },
