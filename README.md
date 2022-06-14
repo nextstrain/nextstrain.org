@@ -3,11 +3,7 @@
 # Nextstrain.org
 
 Nextstrain is an open-source project to harness the scientific and public health potential of pathogen genome data. We provide a continually-updated view of publicly available data alongside powerful analytic and visualization tools for use by the community. Our goal is to aid epidemiological understanding and improve outbreak response.
-If you have any questions, or simply want to say hi, please give us a shout at hello@nextstrain.org or introduce yourself at [discussion.nextstrain.org](https://discussion.nextstrain.org).
-
-> We have received a number of generous offers to contribute front-end developer effort to nextstrain (and auspice) folowing our work on [SARS-CoV-2](https://nextstrain.org/ncov).
-We would be grateful for code contributions, as well as constructive criticism and advice.
-
+If you have any questions, or simply want to say hi, please give us a shout at hello@nextstrain.org or introduce yourself at [discussion.nextstrain.org](https://discussion.nextstrain.org). We welcome contributions to Nextstrain; see our [contributing documentation](https://docs.nextstrain.org/en/latest/guides/contribute/) to learn more.
 
 This repo comprises:
   1. A server (`./server.js`) which serves all the content on [nextstrain.org](https://nextstrain.org), handles authentication and responds to API requests.
