@@ -161,12 +161,6 @@ class CommunityDataset extends Dataset {
     // name in the file basename.
     return [`auspice/${this.source.repoName}`, ...this.pathParts];
   }
-  get isRequestValidWithoutDataset() {
-    if (!this.pathParts.length) {
-      return true;
-    }
-    return false;
-  }
 }
 
 class CommunityNarrative extends Narrative {

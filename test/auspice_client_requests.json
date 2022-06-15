@@ -26,9 +26,9 @@
     "responseIsJson": true
   },
   {
-    "name": "Check getDataset API call for a community source with no default datasets returns 204 (No Content)",
+    "name": "Check getDataset API call for a community source with no default datasets returns 404",
     "url": "/charon/getDataset?prefix=/community/jameshadfield/scratch",
-    "expectStatusCode": 204
+    "expectStatusCode": 404
   },
   {
     "name": "Check that getAvailable API call for a community source with datasets lists them",

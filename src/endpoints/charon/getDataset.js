@@ -1,7 +1,6 @@
 const authz = require("../../authz");
 const utils = require("../../utils");
 const {canonicalizePrefix, parsePrefix} = require("../../utils/prefix");
-const {NoResourcePathError} = require("../../exceptions");
 const auspice = require("auspice");
 const request = require('request');
 const {BadRequest, NotFound, InternalServerError} = require("http-errors");
@@ -107,16 +106,6 @@ const getDataset = async (req, res) => {
   try {
     datasetInfo = await parsePrefix(query.prefix, query);
   } catch (err) {
-    /* Return a 204 No Content when Auspice makes a dataset request to a
-     * valid source root without a dataset path.
-     *
-     * Note that this leaks the existence of private sources, but I think
-     * broader discussions are leaning towards that anyhow.
-     */
-    if (err instanceof NoResourcePathError) {
-      utils.verbose(err.message);
-      return res.status(204).end();
-    }
     throw new BadRequest(`Couldn't parse the prefix '${query.prefix}': ${err}`);
   }
 
@@ -162,10 +151,6 @@ const getDataset = async (req, res) => {
       /* attempt to fetch the meta + tree JSONs, combine, and send */
       return await sendV1Dataset(res, await dataset.subresource("meta").url(), await dataset.subresource("tree").url());
     } catch (errV1) {
-      if (dataset.isRequestValidWithoutDataset) {
-        utils.verbose("Request is valid, but no dataset available. Returning 204.");
-        return res.status(204).send();
-      }
       throw errV2;
     }
   }
