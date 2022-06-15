@@ -1,13 +1,12 @@
 const authz = require("../../authz");
 const {CommunitySource} = require("../../sources");
 const utils = require("../../utils");
-const queryString = require("query-string");
 const {splitPrefixIntoParts, joinPartsIntoPrefix} = require("../../utils/prefix");
 const metaSources = require("../../metaSources");
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
-  const prefix = queryString.parse(req.url.split('?')[1]).prefix || "";
+  const prefix = req.query.prefix || "";
   utils.verbose(`getAvailable prefix: "${prefix}"`);
 
   // `prefix=/groups` is special-cased as it is not backed by a single Source

@@ -1,5 +1,3 @@
-const queryString = require("query-string");
-
 const authz = require("../../authz");
 const utils = require("../../utils");
 const {canonicalizePrefix, parsePrefix} = require("../../utils/prefix");
@@ -101,7 +99,7 @@ const streamMainV2Dataset = async (res, dataset) => {
  * @param {Response} res
  */
 const getDataset = async (req, res) => {
-  const query = queryString.parse(req.url.split('?')[1]);
+  const query = req.query;
 
   if (!query.prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
 

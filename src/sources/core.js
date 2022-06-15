@@ -1,7 +1,6 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 const authz = require("../authz");
 const {fetch} = require("../fetch");
-const queryString = require("query-string");
 const {NotFound} = require('http-errors');
 const utils = require("../utils");
 const {Source, Dataset} = require("./models");
@@ -39,7 +38,7 @@ class CoreSource extends Source {
   }
 
   async availableNarratives() {
-    const qs = queryString.stringify({ref: this.branch});
+    const qs = new URLSearchParams({ref: this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents?${qs}`, {headers: {authorization}});
 
     if (response.status === 404) throw new NotFound();
