@@ -103,15 +103,6 @@ const getDataset = async (req, res) => {
 
   if (!query.prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
 
-  /*
-   * "inrb-drc" was the first of the Nextstrain groups. Groups now live at
-   * `nextstrain.org/groups`, but we want to support old URLs for INRB DRC by
-   * redirecting requests from "/inrb-drc" to "/groups/inrb-drc".
-   */
-  if (query.prefix.startsWith('/inrb-drc')) {
-    return res.redirect("getDataset?prefix=/groups" + query.prefix);
-  }
-
   utils.log(`Getting (nextstrain) datasets for: ${req.url.split('?')[1]}`);
 
   // construct fetch URL

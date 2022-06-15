@@ -16,15 +16,6 @@ const getNarrative = async (req, res) => {
     throw new BadRequest(`Required query parameter 'type' has an unsupported value ('${query.type}').  Supported values are: ${Array.from(validTypes).join(', ')}`);
   }
 
-  /*
-   * "inrb-drc" was the first of the Nextstrain groups. Groups now live at
-   * `nextstrain.org/groups`, but we want to support old URLs for INRB DRC by
-   * redirecting requests from "/inrb-drc" to "/groups/inrb-drc".
-   */
-  if (prefix.startsWith('/inrb-drc')) {
-    return res.redirect("getNarrative?type=md&prefix=/groups" + prefix);
-  }
-
   const {source, prefixParts} = splitPrefixIntoParts(prefix);
 
   // Authorization
