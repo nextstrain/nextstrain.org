@@ -12,11 +12,8 @@ const {BadRequest, NotFound, InternalServerError} = require("http-errors");
  * @param {*} datasetInfo
  * @param {*} query
  */
-const requestCertainFileType = async (res, req, additional, query) => {
+const requestCertainFileType = async (res, req, additional) => {
   const jsonData = await utils.fetchJSON(additional);
-  if (query.type === "tree") {
-    res.json({tree: jsonData});
-  }
   res.json(jsonData);
 };
 
@@ -154,7 +151,7 @@ const getDataset = async (req, res) => {
 
   if (query.type) {
     const url = await dataset.subresource(query.type).url();
-    return requestCertainFileType(res, req, url, query);
+    return requestCertainFileType(res, req, url);
   }
 
   try {
