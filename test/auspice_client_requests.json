@@ -9,7 +9,7 @@
   {
     "name": "Check that the dataset request for /flu redirects to a specific dataset",
     "url": "/charon/getDataset?prefix=/flu",
-    "expectStatusCode": 302,
+    "expectStatusCode": 307,
     "responseIsJson": false,
     "redirectsTo": "/charon/getDataset?prefix=flu%2Fseasonal%2Fh3n2%2Fha%2F2y"
   },

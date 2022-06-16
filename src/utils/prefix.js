@@ -30,6 +30,8 @@ const sourceClassToName = new Map(
  * roundtrip losslessly.
  */
 const splitPrefixIntoParts = (prefix) => {
+  if (!prefix) throw new Error("'prefix' is null or empty");
+
   const prefixParts = prefix
     .replace(/^\//, '')
     .replace(/\/$/, '')
@@ -152,22 +154,6 @@ const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) =
 };
 
 
-/* Parse the prefix (a path-like string specifying a source + dataset path)
- * with resolving of partial prefixes.  Prefixes are case-sensitive.
- */
-const parsePrefix = async (prefix) => {
-  const {source, prefixParts} = splitPrefixIntoParts(prefix);
-
-  const dataset = source.dataset(prefixParts).resolve();
-
-  // If prefixParts was partially-specified (an alias), we want to display the
-  // resolved prefix.
-  const resolvedPrefix = await joinPartsIntoPrefix({source, prefixParts: dataset.pathParts});
-
-  return ({source, dataset, resolvedPrefix});
-};
-
-
 /* Round-trip prefix through split/join to canonicalize it for comparison.
  */
 const canonicalizePrefix = async (prefix) =>
@@ -177,6 +163,5 @@ const canonicalizePrefix = async (prefix) =>
 module.exports = {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
-  parsePrefix,
   canonicalizePrefix,
 };

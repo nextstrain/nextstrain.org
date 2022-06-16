@@ -6,7 +6,7 @@ const metaSources = require("../../metaSources");
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
-  const prefix = req.query.prefix || "";
+  const prefix = req.query.prefix ?? "/";
   utils.verbose(`getAvailable prefix: "${prefix}"`);
 
   // `prefix=/groups` is special-cased as it is not backed by a single Source
