@@ -177,6 +177,15 @@ function setup(app) {
   });
 
   async function deserializeUser(req, serializedUser) {
+    /* Mark the request as being authenticated with a session, which is
+     * strongly indicative of a browser client (as API clients use tokens).
+     *
+     * This deserialization function is called on every request when there's a
+     * session user to deserialize, unlike our .authenticate() callback in
+     * authnWithSession(), so it's the only place we can mark this context.
+     */
+    req.context.authnWithSession = true;
+
     let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
 
     /* If we have tokens in the session, then we ignore the serialized user
@@ -477,19 +486,22 @@ function authnWithToken(req, res, next) {
  * @type {expressMiddleware}
  */
 function authnWithSession(req, res, next) {
-  const authenticate = passport.authenticate(STRATEGY_SESSION, (err, user) => {
+  const authenticate = passport.authenticate(STRATEGY_SESSION, err => {
+    // err is always true in practice; see below.
     if (err) {
       utils.verbose(`Failed to deserialize user from session (${err}); leaving session intact but ignoring user`);
       return next();
     }
-    if (user) {
-      /* Mark the request as being authenticated with a session, which is
-       * strongly indicative of a browser client (as API clients use tokens).
-       */
-      req.context.authnWithSession = true;
 
-      return req.login(user, next);
-    }
+    /* This part is never actually reachable because Passport's
+     * SessionStrategy.authenticate() method only calls .error() (and .pass())
+     * but never .success(), so the callback we're in here is only ever called
+     * when "err" is true, which we handle above.  In the unlikely event this
+     * behaviour ever changes and this code becomes reachable, at least keep
+     * the request processing going, though we'd likely have to start doing
+     * something with the user passed as the second callback arg too.
+     *   -trs, 16 June 2022
+     */
     return next();
   });
   return authenticate(req, res, next);
