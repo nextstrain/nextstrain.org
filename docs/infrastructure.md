@@ -30,6 +30,11 @@ Deploys to the production app are performed by manually [promoting](https://devc
     It protects the session data stored in browser cookies.
     Changing this will invalidate all existing sessions and forcibly logout people.
 
+  - `SESSION_ENCRYPTION_KEYS` must be set to a URL query param string encoding pairs of key names and base64-encoded key material.
+    These keys protect sensitive data in the session (such as authn tokens) when session data is "at rest" (such as in Redis).
+    You may prepend new keys to use for new sessions (i.e. key rotation) but do not drop old keys or old sessions will be unusable and people will be forcibly logged out.
+    Keys must be 256 bits in length.
+
   - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are tied to the `nextstrain.org` AWS IAM user.
     These credentials allow the backend web server limited access to private S3 buckets.
 

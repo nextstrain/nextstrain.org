@@ -533,6 +533,11 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
   if (res.get("Content-Encoding") === "gzip" && !req.acceptsEncodings("gzip")) {
     res.removeHeader("Content-Encoding");
     res.removeHeader("Content-Length");
+
+    // Weaken any strong ETag since we're now modifying response body
+    const etag = res.get("ETag");
+    if (etag && !etag.startsWith("W/")) res.set("ETag", `W/${etag}`);
+
     await pipeline(upstreamRes.body, zlib.createGunzip(), res);
   } else {
     await pipeline(upstreamRes.body, res);

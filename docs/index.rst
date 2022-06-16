@@ -26,6 +26,7 @@ nextstrain.org
     :maxdepth: 2
 
     authz
+    sessions
     routing
     infrastructure
     glossary
