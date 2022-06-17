@@ -15,7 +15,6 @@
   },
   {
     "name": "swiss",
-    "bucket": "nextstrain-swiss",
     "isPublic": true
   },
   {
@@ -40,7 +39,6 @@
   },
   {
     "name": "neherlab",
-    "bucket": "nextstrain-neherlab",
     "isPublic": true
   },
   {
