@@ -48,7 +48,7 @@
     "js-yaml": "^4.0.0",
     "lodash.partition": "^4.6.0",
     "make-fetch-happen": "^10.0.0",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "mime": "^2.5.2",
     "negotiator": "^0.6.2",
     "node-fetch": "^2.6.0",
