@@ -1,4 +1,41 @@
+const {Console} = require("console");
 const process = require("process");
+const {spawn} = require("child_process");
+const {Transform} = require("stream");
+
+
+/**
+ * Set up the global `console` object to prefix all output lines with an
+ * indication of the state of *dryRun*.
+ *
+ * @param {{dryRun: boolean}}
+ */
+function setupConsole({dryRun = true}) {
+  if (!dryRun) return;
+
+  const LinePrefixer = class extends Transform {
+    constructor(prefix) {
+      super();
+      this.prefix = prefix;
+    }
+    _transform(chunk, encoding, callback) {
+      // Prefix the beginning of the string and every internal newline, but not
+      // the last trailing newline.
+      this.push(chunk.toString().replace(/^|(?<=\n)(?!$)/g, this.prefix));
+      callback();
+    }
+  };
+
+  const stdout = new LinePrefixer("DRY RUN | ");
+  const stderr = new LinePrefixer("DRY RUN | ");
+
+  stdout.pipe(process.stdout);
+  stderr.pipe(process.stderr);
+
+  console = new Console({stdout, stderr}); // eslint-disable-line no-global-assign
+  process.stdout = stdout;
+  process.stderr = stderr;
+}
 
 
 /**
@@ -40,6 +77,32 @@ function reportUnhandledRejectionsAtExit() {
 }
 
 
+/**
+ * Run a command with stdout and stderr sent to `console.log()` and
+ * `console.error()`.
+ *
+ * @param {string[]} argv
+ * @returns {{code, signal, argv}}
+ */
+async function run(argv) {
+  return new Promise((resolve, reject) => {
+    const proc = spawn(argv[0], argv.slice(1), {stdio: ["ignore", "pipe", "pipe"]});
+
+    proc.stdout.on("data", data => console.log(data.toString().replace(/\n$/, "")));
+    proc.stderr.on("data", data => console.error(data.toString().replace(/\n$/, "")));
+
+    proc.on("close", (code, signal) => {
+      const result = code !== 0 || signal != null
+        ? reject
+        : resolve;
+      return result({code, signal, argv});
+    });
+  });
+}
+
+
 module.exports = {
+  setupConsole,
   reportUnhandledRejectionsAtExit,
+  run,
 };
