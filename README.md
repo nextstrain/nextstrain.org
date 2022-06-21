@@ -15,21 +15,11 @@ This repository provides the tools you need to [build nextstrain.org locally](#b
 ---
 ## Build nextstrain.org locally
 
-### 1. Install prerequisites
-Install the node dependencies by running
-```
-npm ci
-```
-from this directory (the "nextstrain.org" directory).
-
-> Using `npm ci` instead of `npm install` ensures your dependency tree matches those in `package-lock.json`.
-
-
-### 2. Build the site
-`npm run build` runs `./build.sh` to build both the static site & an auspice client with customisations.
+### 1. Install prerequisites and build the site
+`npm run build` runs `./build.sh` to install dependencies using `npm ci` and build both the static site & an auspice client with customisations.
 The following section details the different ways to serve these pages on a local server after building the site.
 
-### 3. Run server
+### 2. Run server
 
 #### Run server mirroring the deployed (live) website
 `npm run server` will start a local server, by default available at [localhost:5000](http://localhost:5000).
