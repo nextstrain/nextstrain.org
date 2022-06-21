@@ -127,7 +127,17 @@ async function syncData({dryRun = true, group}) {
     ]
   });
 
+  // Discover files to consider for manual review
+  const unsynced = (await s3ListObjects({group})).filter(
+    key => !key.endsWith(".json")
+        && !key.endsWith(".md")
+        && key !== "group-overview.md"
+        && key !== "group-logo.png"
+  );
+
   console.groupEnd();
+
+  return unsynced.map(key => `Investigate unsynced object s3://${group.bucket}/${key}`);
 }
 
 
@@ -145,6 +155,16 @@ async function s3Sync({dryRun = true, group, prefix = "", filters = []}) {
   console.group(`\nRunning ${argv.join(" ")}`);
   await run(argv);
   console.groupEnd();
+}
+
+
+async function s3ListObjects({group}) {
+  const client = new S3.S3Client();
+
+  return await collate(
+    S3.paginateListObjectsV2({client}, {Bucket: group.bucket}),
+    page => page.Contents.map(object => object.Key),
+  );
 }
 
 
