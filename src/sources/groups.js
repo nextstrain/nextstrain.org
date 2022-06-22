@@ -108,6 +108,7 @@ class GroupSource extends Source {
             .map(object => object.Key)
             .filter(key => key.startsWith(this.prefix))
             .map(key => key.slice(this.prefix.length))
+            .filter(subKey => !subKey.startsWith("datasets/") && !subKey.startsWith("narratives/"))
         );
         return done();
       });
