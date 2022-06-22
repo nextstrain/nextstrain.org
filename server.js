@@ -43,7 +43,7 @@ const server = http.createServer(app)
     if (err.code === 'EADDRINUSE') {
       utils.error(`Port ${app.get('port')} is currently in use by another program.
       You must either close that program or specify a different port by setting the shell variable
-      "$PORT". Note that on MacOS / Linux, "lsof -n -i :${app.get('port')} | grep LISTEN" should
+      "$PORT". Note that on MacOS / Linux, "lsof +c0 -n -i :${app.get('port')} | grep LISTEN" should
       identify the process currently using the port.`);
     }
     utils.error(`Uncaught error in app.listen(). Code: ${err.code}`);
