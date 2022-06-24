@@ -93,7 +93,7 @@ The primary client-side risks to sessions are:
 - Confused deputy attacks, clickjacking, etc. (abuse of cookie)
 
 In order to lower the risk of these, the session cookie is marked with several
-attributes that together minimize its visiblity/use:
+attributes that together minimize its visibility/use:
 
 - ``Secure`` to forbid transmission over HTTP and require HTTPS
   (`reference <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#secure>`__)

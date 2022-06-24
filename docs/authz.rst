@@ -108,7 +108,7 @@ Actions
 =======
 
 Actions are defined in the ``authz.actions`` object.  There are two available
-actions: ``Read`` and ``Write``.   In comparsion to the common CRUD model,
+actions: ``Read`` and ``Write``.   In comparison to the common CRUD model,
 ``Write`` encompasses create, update, and delete.
 
 These two actions provide the only distinctions we need right now.  If we need
