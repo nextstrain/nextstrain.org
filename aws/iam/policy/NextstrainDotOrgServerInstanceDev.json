@@ -50,11 +50,11 @@
         "arn:aws:s3:::nextstrain-groups"
       ],
       "Condition": {
-        "StringEquals": {
+        "StringLike": {
           "s3:prefix": [
-            "blab/",
-            "test/",
-            "test-private/"
+            "blab/*",
+            "test/*",
+            "test-private/*"
           ]
         }
       }

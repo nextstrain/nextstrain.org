@@ -2,16 +2,13 @@
 const {ArgumentParser} = require("argparse");
 const IAM = require("@aws-sdk/client-iam");
 const S3 = require("@aws-sdk/client-s3");
-const {spawn} = require("child_process");
-const {Console} = require("console");
 const fs = require("fs");
 const os = require("os");
 const {basename, relative: relativePath, parse: parsePath} = require("path");
 const process = require("process");
-const {Transform} = require("stream");
 
 const {Group} = require("../src/groups");
-const {reportUnhandledRejectionsAtExit} = require("../src/utils/scripts");
+const {reportUnhandledRejectionsAtExit, run, setupConsole} = require("../src/utils/scripts");
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
 
@@ -93,6 +90,58 @@ async function migrate({group, dryRun = true}) {
 
 
 async function syncData({dryRun = true, group}) {
+  console.group(`\nSyncing S3 data`);
+
+  // Datasets
+  await s3Sync({
+    dryRun,
+    group,
+    prefix: "datasets/",
+    filters: [
+      "--exclude=*",
+      "--include=*.json",
+    ]
+  });
+
+  // Narratives
+  await s3Sync({
+    dryRun,
+    group,
+    prefix: "narratives/",
+    filters: [
+      "--exclude=*",
+      "--include=*.md",
+      "--exclude=group-overview.md",
+    ]
+  });
+
+  // Control/customization files
+  await s3Sync({
+    dryRun,
+    group,
+    prefix: "",
+    filters: [
+      "--exclude=*",
+      "--include=group-overview.md",
+      "--include=group-logo.png",
+    ]
+  });
+
+  // Discover files to consider for manual review
+  const unsynced = (await s3ListObjects({group})).filter(
+    key => !key.endsWith(".json")
+        && !key.endsWith(".md")
+        && key !== "group-overview.md"
+        && key !== "group-logo.png"
+  );
+
+  console.groupEnd();
+
+  return unsynced.map(key => `Investigate unsynced object s3://${group.bucket}/${key}`);
+}
+
+
+async function s3Sync({dryRun = true, group, prefix = "", filters = []}) {
   const argv = [
     "aws", "s3", "sync",
     ...(dryRun
@@ -100,11 +149,22 @@ async function syncData({dryRun = true, group}) {
       : []),
     "--delete",
     `s3://${group.bucket}/`,
-    `s3://nextstrain-groups/${group.name}/`,
+    `s3://nextstrain-groups/${group.name}/${prefix}`,
+    ...filters,
   ];
   console.group(`\nRunning ${argv.join(" ")}`);
   await run(argv);
   console.groupEnd();
+}
+
+
+async function s3ListObjects({group}) {
+  const client = new S3.S3Client();
+
+  return await collate(
+    S3.paginateListObjectsV2({client}, {Bucket: group.bucket}),
+    page => page.Contents.map(object => object.Key),
+  );
 }
 
 
@@ -376,64 +436,6 @@ async function diff(...args) {
         throw error;
     }
   }
-}
-
-
-/**
- * Run a command with stdout and stderr sent to `console.log()` and
- * `console.error()`.
- *
- * @param {string[]} argv
- * @returns {{code, signal, argv}}
- */
-async function run(argv) {
-  return new Promise((resolve, reject) => {
-    const proc = spawn(argv[0], argv.slice(1), {stdio: ["ignore", "pipe", "pipe"]});
-
-    proc.stdout.on("data", data => console.log(data.toString().replace(/\n$/, "")));
-    proc.stderr.on("data", data => console.error(data.toString().replace(/\n$/, "")));
-
-    proc.on("close", (code, signal) => {
-      const result = code !== 0 || signal != null
-        ? reject
-        : resolve;
-      return result({code, signal, argv});
-    });
-  });
-}
-
-
-/**
- * Set up the global `console` object to prefix all output lines with an
- * indication of the state of *dryRun*.
- *
- * @param {{dryRun: boolean}}
- */
-function setupConsole({dryRun = true}) {
-  if (!dryRun) return;
-
-  const LinePrefixer = class extends Transform {
-    constructor(prefix) {
-      super();
-      this.prefix = prefix;
-    }
-    _transform(chunk, encoding, callback) {
-      // Prefix the beginning of the string and every internal newline, but not
-      // the last trailing newline.
-      this.push(chunk.toString().replace(/^|(?<=\n)(?!$)/g, this.prefix));
-      callback();
-    }
-  };
-
-  const stdout = new LinePrefixer("DRY RUN | ");
-  const stderr = new LinePrefixer("DRY RUN | ");
-
-  stdout.pipe(process.stdout);
-  stderr.pipe(process.stderr);
-
-  console = new Console({stdout, stderr});
-  process.stdout = stdout;
-  process.stderr = stderr;
 }
 
 
