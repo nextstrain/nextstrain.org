@@ -239,14 +239,18 @@ class GroupSource extends Source {
 
 class GroupDataset extends Dataset {
   get baseName() {
-    return `datasets/${super.baseName}`;
+    return this.source.bucket === MULTI_TENANT_BUCKET
+      ? `datasets/${super.baseName}`
+      : super.baseName;
   }
 }
 
 
 class GroupNarrative extends Narrative {
   get baseName() {
-    return `narratives/${super.baseName}`;
+    return this.source.bucket === MULTI_TENANT_BUCKET
+      ? `narratives/${super.baseName}`
+      : super.baseName;
   }
 }
 
