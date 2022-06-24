@@ -63,7 +63,7 @@ Taken together, these data provide little evidence for substantial antigenic evo
 
 
 The local branching index (LBI), a phylogenetic indicator of clade growth, corroborates the observations made on the basis of clade frequencies.
-Over the last 6 monthes, the 131K clade has highest LBI, while the clade 171K has highest LBI when considering sequences in all of 2016.
+Over the last 6 months, the 131K clade has highest LBI, while the clade 171K has highest LBI when considering sequences in all of 2016.
 Interpretation of the sequence based indices such as number of epitope or non-epitope mutations is difficult due the extensive genetic heterogeneity.
 The clade 131K has accumulated the same number of epitope mutations as 171K but has fewer non-epitope mutations relative to A/Texas/50/2012.
 

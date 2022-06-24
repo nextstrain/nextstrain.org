@@ -163,7 +163,7 @@ It can make the following API requests to a server:
 * `/charon/getAvailable`
 * `/charon/getNarrative`
 * `/charon/getDataset`
-and as long as there is a server and the reponse is appropriate then the auspice client can visualise the data.
+and as long as there is a server and the response is appropriate then the auspice client can visualise the data.
 
 
 The nextstrain.org server (`server.js`) sets up GET request handlers for those three endpoints using code imported from `./src/endpoints/charon/index.js`.
