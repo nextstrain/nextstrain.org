@@ -30,7 +30,32 @@ const app = require("./src/app");
 
 app.set("port", port);
 
-const server = http.createServer(app)
+const server = http
+  .createServer({
+    ServerResponse: class ServerResponse extends http.ServerResponse {
+      /**
+       * Sets res.wroteContinue so later handlers can know if res.writeContinue()
+       * was called already.  The standard parent class tracks this already, but
+       * only in an internal property.
+       */
+      writeContinue() {
+        super.writeContinue();
+        this.wroteContinue = true;
+      }
+    },
+  })
+  .on("request", app)
+  .on("checkContinue", (req, res) => {
+    /* When this event fires, the normal "request" event that calls app is not
+     * fired.
+     *
+     * Endpoints that receive request bodies (PUT, POST, etc) will check the
+     * req.expectsContinue property to see if they should call
+     * res.writeContinue() at an appropriate point.
+     */
+    req.expectsContinue = true;
+    return app(req, res);
+  })
   .on("listening", () => {
     console.log("  -------------------------------------------------------------------------");
     console.log(nextstrainAbout);

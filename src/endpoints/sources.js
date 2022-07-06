@@ -352,6 +352,11 @@ function receiveSubresource(subresourceExtractor) {
 
     authz.assertAuthorized(req.user, authz.actions.Write, subresource.resource);
 
+    /* Notify the client they can continue sending the request body now that
+     * we're past authz.
+     */
+    if (req.expectsContinue) res.writeContinue();
+
     /* Proxy the data through us:
      *
      *    client (browser, CLI, etc) ⟷ us (nextstrain.org) ⟷ upstream source

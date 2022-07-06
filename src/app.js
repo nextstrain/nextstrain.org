@@ -413,14 +413,15 @@ app.useAsync(async (err, req, res, next) => {
   }
 
   /* Read the entire request body (discarding it) if the request might have a
-   * body.  This ensures that the request is finished being sent before we
-   * return a (error) response, which some clients require (such as Heroku's
-   * routing/proxy layer and the Python "requests" package, but notably not
-   * curl).
+   * body and wasn't made with Expect: 100-continue, or if it was and we wrote
+   * a 100 Continue response but then ended up here.  This ensures that the
+   * request is finished being sent before we return a (error) response, which
+   * some clients require (such as Heroku's routing/proxy layer and the Python
+   * "requests" package, but notably not curl).
    */
   const mayHaveBody = !["GET", "HEAD", "DELETE", "OPTIONS"].includes(req.method);
 
-  if (mayHaveBody) {
+  if (mayHaveBody && (!req.expectsContinue || res.wroteContinue)) {
     const reqFinished = streamFinished(req);
     req.unpipe();
     req.resume();
