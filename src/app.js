@@ -7,6 +7,14 @@ const utils = require("./utils");
 const cors = require('cors');
 const {addAsync} = require("@awaitjs/express");
 const {Forbidden, NotFound, Unauthorized} = require("http-errors");
+const stream = require("stream");
+const {promisify} = require("util");
+
+/* XXX TODO: Replace promisify() with require("stream/promises") once we
+ * upgrade to Node 15+.
+ *   -trs, 5 Nov 2021
+ */
+const streamFinished = promisify(stream.finished);
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
@@ -402,6 +410,21 @@ app.useAsync(async (err, req, res, next) => {
   if (res.headersSent) {
     utils.verbose("Headers already sent; using Express' default error handler");
     return next(err);
+  }
+
+  /* Read the entire request body (discarding it) if the request might have a
+   * body.  This ensures that the request is finished being sent before we
+   * return a (error) response, which some clients require (such as Heroku's
+   * routing/proxy layer and the Python "requests" package, but notably not
+   * curl).
+   */
+  const mayHaveBody = !["GET", "HEAD", "DELETE", "OPTIONS"].includes(req.method);
+
+  if (mayHaveBody) {
+    const reqFinished = streamFinished(req);
+    req.unpipe();
+    req.resume();
+    await reqFinished;
   }
 
   res.vary("Accept");
