@@ -1,27 +1,8 @@
-const queryString = require("query-string");
-
-const authz = require("../../authz");
-const utils = require("../../utils");
-const {canonicalizePrefix, parsePrefix} = require("../../utils/prefix");
-const {NoResourcePathError} = require("../../exceptions");
 const auspice = require("auspice");
-const request = require('request');
-const {BadRequest, NotFound, InternalServerError} = require("http-errors");
+const {NotFound, InternalServerError} = require("http-errors");
 
-/**
- *
- * @param {*} res
- * @param {*} datasetInfo
- * @param {*} query
- */
-const requestCertainFileType = async (res, req, additional, query) => {
-  const jsonData = await utils.fetchJSON(additional);
-  if (query.type === "tree") {
-    res.json({tree: jsonData});
-  }
-  res.json(jsonData);
-};
-
+const utils = require("../../utils");
+const {sendDatasetSubresource} = require("../sources");
 
 /**
  * Fetch dataset in v1 format (meta + tree files), converting to v2 format
@@ -52,134 +33,19 @@ const sendV1Dataset = async (res, metaJsonUrl, treeJsonUrl) => {
   return res.send(datasetJson);
 };
 
-/**
- * Attempt to stream the main (v2) auspice dataset. This function (when `await`ed)
- * will finish streaming before returning.
- * @param {Object} res express response object
- * @param {Object} dataset
- * @returns {undefined} Returns undefined if streaming was successful
- * @throws {NotFound} Throws if the dataset didn't exist (or the streaming failed)
- */
-const streamMainV2Dataset = async (res, dataset) => {
-  const main = await dataset.subresource("main").url();
-  try {
-    await new Promise((resolve, reject) => {
-      let statusCode;
-      const req = request
-        .get(main)
-        .on('error', (err) => reject(err))
-        .on("response", (response) => {
-          statusCode = response.statusCode;
-          if (statusCode === 200) {
-            utils.verbose(`Successfully streaming ${main}.`);
-            req.pipe(res);
-          }
-        })
-        .on("end", () => {
-          if (statusCode===200) {
-            return resolve();
-          }
-          return reject(new NotFound());
-        });
-    });
-  } catch (err) {
-    throw err;
-  }
-};
-
-/**
- * Uses custom logic to match a "best guess" dataset from the client's *req* to
- * a dataset stored on nextstrain.org.
- *
- * If the request URL differs from the URL of the matched dataset, then it sends
- * the client a redirect to the new URL.
- *
- * If the URLs match, then it sends the client the requested dataset as a JSON
- * object.
- *
- * @param {Request} req
- * @param {Response} res
- */
 const getDataset = async (req, res) => {
-  const query = queryString.parse(req.url.split('?')[1]);
-
-  if (!query.prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
-
-  /*
-   * "inrb-drc" was the first of the Nextstrain groups. Groups now live at
-   * `nextstrain.org/groups`, but we want to support old URLs for INRB DRC by
-   * redirecting requests from "/inrb-drc" to "/groups/inrb-drc".
-   */
-  if (query.prefix.startsWith('/inrb-drc')) {
-    return res.redirect("getDataset?prefix=/groups" + query.prefix);
-  }
+  const type = req.query.type ?? "main";
 
   utils.log(`Getting (nextstrain) datasets for: ${req.url.split('?')[1]}`);
 
-  // construct fetch URL
-  let datasetInfo;
-  try {
-    datasetInfo = await parsePrefix(query.prefix, query);
-  } catch (err) {
-    /* Return a 204 No Content when Auspice makes a dataset request to a
-     * valid source root without a dataset path.
-     *
-     * Note that this leaks the existence of private sources, but I think
-     * broader discussions are leaning towards that anyhow.
-     */
-    if (err instanceof NoResourcePathError) {
-      utils.verbose(err.message);
-      return res.status(204).end();
-    }
-    throw new BadRequest(`Couldn't parse the prefix '${query.prefix}': ${err}`);
-  }
-
-  const {source, dataset, resolvedPrefix} = datasetInfo;
-
-  /* Authorization
-   *
-   * This is slightly more lenient than the handlers in endpoints/sources.js
-   * because here the authz check on "source" is delayed until after "dataset"
-   * is constructed and possibly resolved (instead of happening immediately
-   * upon source determination), but I don't think there's anything untoward
-   * lurking in the gap.
-   *   -trs, 5 Jan 2022
-   */
-  authz.assertAuthorized(req.user, authz.actions.Read, source);
-  authz.assertAuthorized(req.user, authz.actions.Read, dataset);
-
-  /* If we got a partial prefix and resolved it into a full one, redirect to
-   * that.  Auspice will notice and update its displayed URL appropriately.
-   */
-  if (resolvedPrefix !== await canonicalizePrefix(query.prefix)) {
-    // A absolute base is required but we won't use it, so use something bogus.
-    const resolvedUrl = new URL(req.originalUrl, "http://x");
-    resolvedUrl.searchParams.set("prefix", resolvedPrefix);
-
-    const relativeResolvedUrl = resolvedUrl.pathname + resolvedUrl.search;
-
-    utils.log(`Redirecting client to resolved dataset URL: ${relativeResolvedUrl}`);
-    res.redirect(relativeResolvedUrl);
-    return undefined;
-  }
-
-  if (query.type) {
-    const url = await dataset.subresource(query.type).url();
-    return requestCertainFileType(res, req, url, query);
-  }
-
   try {
     /* attempt to stream the v2 dataset */
-    return await streamMainV2Dataset(res, dataset);
+    return await sendDatasetSubresource(type)(req, res);
   } catch (errV2) {
     try {
       /* attempt to fetch the meta + tree JSONs, combine, and send */
-      return await sendV1Dataset(res, await dataset.subresource("meta").url(), await dataset.subresource("tree").url());
+      return await sendV1Dataset(res, await req.context.dataset.subresource("meta").url(), await req.context.dataset.subresource("tree").url());
     } catch (errV1) {
-      if (dataset.isRequestValidWithoutDataset) {
-        utils.verbose("Request is valid, but no dataset available. Returning 204.");
-        return res.status(204).send();
-      }
       throw errV2;
     }
   }

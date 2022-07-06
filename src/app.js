@@ -130,13 +130,22 @@ app.routeAsync("/charon/getAvailable")
   .getAsync(endpoints.charon.getAvailable);
 
 app.routeAsync("/charon/getDataset")
-  .getAsync(endpoints.charon.getDataset);
+  .getAsync(
+    endpoints.charon.setSourceFromPrefix,
+    endpoints.charon.setDatasetFromPrefix,
+    endpoints.charon.canonicalizeDatasetPrefix,
+    endpoints.charon.getDataset);
 
 app.routeAsync("/charon/getNarrative")
-  .getAsync(endpoints.charon.getNarrative);
+  .getAsync(
+    endpoints.charon.setSourceFromPrefix,
+    endpoints.charon.setNarrativeFromPrefix,
+    endpoints.charon.getNarrative);
 
 app.routeAsync("/charon/getSourceInfo")
-  .getAsync(endpoints.charon.getSourceInfo);
+  .getAsync(
+    endpoints.charon.setSourceFromPrefix,
+    endpoints.charon.getSourceInfo);
 
 app.routeAsync("/charon/*")
   .all((req) => {

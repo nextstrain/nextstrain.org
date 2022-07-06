@@ -1,7 +1,6 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 const authzTags = require("../authz/tags");
 const {fetch} = require("../fetch");
-const {NoResourcePathError} = require("../exceptions");
 
 /* The model classes here are the base classes for the classes defined in
  * ./core.js, ./community.js, ./groups.js, etc.
@@ -145,7 +144,7 @@ class Resource {
     // This inspects baseParts because some of the pathParts (above) may not
     // apply, which each Dataset/Narrative subclass determines for itself.
     if (!this.baseParts.length) {
-      throw new NoResourcePathError();
+      throw new Error(`no Resource path provided (${this.constructor.name}.baseParts is empty)`);
     }
   }
   get baseParts() {
@@ -236,10 +235,6 @@ class Dataset extends Resource {
    */
   resolve() {
     return this;
-  }
-
-  get isRequestValidWithoutDataset() {
-    return false;
   }
 
   get authzTags() {

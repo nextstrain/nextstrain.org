@@ -9,7 +9,7 @@
   {
     "name": "Check that the dataset request for /flu redirects to a specific dataset",
     "url": "/charon/getDataset?prefix=/flu",
-    "expectStatusCode": 302,
+    "expectStatusCode": 307,
     "responseIsJson": false,
     "redirectsTo": "/charon/getDataset?prefix=flu%2Fseasonal%2Fh3n2%2Fha%2F2y"
   },
@@ -26,9 +26,9 @@
     "responseIsJson": true
   },
   {
-    "name": "Check getDataset API call for a community source with no default datasets returns 204 (No Content)",
+    "name": "Check getDataset API call for a community source with no default datasets returns 404",
     "url": "/charon/getDataset?prefix=/community/jameshadfield/scratch",
-    "expectStatusCode": 204
+    "expectStatusCode": 404
   },
   {
     "name": "Check that getAvailable API call for a community source with datasets lists them",

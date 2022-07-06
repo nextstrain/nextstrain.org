@@ -32,19 +32,8 @@ class AuthnTokenTooOld extends NextstrainError {}
 class AuthzDenied extends NextstrainError {}
 
 
-/* Thrown when a valid Source object is asked to create a new Dataset object
- * without a dataset path.
- */
-class NoResourcePathError extends NextstrainError {
-  constructor(msg = "No resource path provided", ...rest) {
-    super(msg, ...rest);
-  }
-}
-
-
 module.exports = {
   AuthnRefreshTokenInvalid,
   AuthnTokenTooOld,
   AuthzDenied,
-  NoResourcePathError,
 };

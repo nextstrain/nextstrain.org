@@ -22,6 +22,12 @@ jobs:
       - run: aws sts get-caller-identity
       - run: npm run test:ci
 
+      - if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs
+          path: test/server.log
+
   # XXX TODO: It'd be nice to avoid the rebuild on Heroku and instead deploy
   # the artifacts (source code + generated files + node_modules/) already built
   # above.  This would dramatically reduce deploy times and move us closer to

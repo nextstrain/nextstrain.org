@@ -34,8 +34,9 @@ async function testResponseIsJson(res) {
 }
 
 function testRedirect(res, expectedRedirectAddress) {
-  if (res.status!==302) {
-    throw Error(`Test asked to check redirect address, but statusCode wasn't 302`);
+  const validStatuses = new Set([301, 302, 303, 307, 308]);
+  if (!validStatuses.has(res.status)) {
+    throw Error(`Test asked to check redirect address, but statusCode wasn't one of: ${[...validStatuses].join(" ")}`);
   }
   expect(res.headers.get("Location")).toEqual(expectedRedirectAddress);
 }

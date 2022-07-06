@@ -1,7 +1,6 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 const authz = require("../authz");
 const {fetch} = require("../fetch");
-const queryString = require("query-string");
 const {NotFound} = require('http-errors');
 const utils = require("../utils");
 const {Source, Dataset, Narrative} = require("./models");
@@ -58,7 +57,7 @@ class CommunitySource extends Source {
   }
 
   async availableDatasets() {
-    const qs = queryString.stringify({ref: await this.branch});
+    const qs = new URLSearchParams({ref: await this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/auspice?${qs}`, {headers: {authorization}});
 
     if (response.status === 404) throw new NotFound();
@@ -80,7 +79,7 @@ class CommunitySource extends Source {
   }
 
   async availableNarratives() {
-    const qs = queryString.stringify({ref: await this.branch});
+    const qs = new URLSearchParams({ref: await this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/narratives?${qs}`, {headers: {authorization}});
 
     if (response.status !== 200 && response.status !== 304) {
@@ -161,12 +160,6 @@ class CommunityDataset extends Dataset {
     // We require datasets are in the auspice/ directory and include the repo
     // name in the file basename.
     return [`auspice/${this.source.repoName}`, ...this.pathParts];
-  }
-  get isRequestValidWithoutDataset() {
-    if (!this.pathParts.length) {
-      return true;
-    }
-    return false;
   }
 }
 
