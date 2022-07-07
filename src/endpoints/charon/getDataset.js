@@ -43,7 +43,7 @@ const getDataset = async (req, res) => {
     return await sendDatasetSubresource(type)(req, res);
   } catch (errV2) {
     utils.warn(`Failed to fetch v2 ${type} JSON: ${errV2}`);
-    if (type === "main") {
+    if (type === "main" && errV2 instanceof NotFound) {
       try {
         /* attempt to fetch the v1 (meta + tree) dataset JSONs, combine, and send */
         return await sendV1Dataset(res, await req.context.dataset.subresource("meta").url(), await req.context.dataset.subresource("tree").url());
