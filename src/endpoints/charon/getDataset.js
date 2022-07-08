@@ -39,15 +39,19 @@ const getDataset = async (req, res) => {
   utils.log(`Getting (nextstrain) datasets for: ${req.url.split('?')[1]}`);
 
   try {
-    /* attempt to stream the v2 dataset */
+    /* attempt to stream the v2 (main) dataset or sidecar */
     return await sendDatasetSubresource(type)(req, res);
   } catch (errV2) {
-    try {
-      /* attempt to fetch the meta + tree JSONs, combine, and send */
-      return await sendV1Dataset(res, await req.context.dataset.subresource("meta").url(), await req.context.dataset.subresource("tree").url());
-    } catch (errV1) {
-      throw errV2;
+    utils.warn(`Failed to fetch v2 ${type} JSON: ${errV2}`);
+    if (type === "main" && errV2 instanceof NotFound) {
+      try {
+        /* attempt to fetch the v1 (meta + tree) dataset JSONs, combine, and send */
+        return await sendV1Dataset(res, await req.context.dataset.subresource("meta").url(), await req.context.dataset.subresource("tree").url());
+      } catch (errV1) {
+        throw errV2;
+      }
     }
+    throw errV2;
   }
 };
 
