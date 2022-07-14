@@ -1,5 +1,5 @@
 /* eslint-disable */
-/* A copy of index.js from @awaitjs/express 0.6.3 as published on NPM by Valeri
+/* Based on index.js from @awaitjs/express 0.6.3 as published on NPM by Valeri
  * Karpov <https://github.com/vkarpov15> and licensed under the Apache 2.0
  * License.  The LICENSE file distributed alongside index.js is included in the
  * comment below vertabim (including unreplaced placeholders).
@@ -306,37 +306,15 @@ function wrapArgs(fns) {
  */
 
 function wrap(fn) {
-  // Error handling middleware
   if (fn.length === 4) {
-    return async function wrappedErrorHandler(error, req, res, next) {
-      next = _once(next);
-      try {
-        await fn(error, req, res, next);
-        res.headersSent ? null : next();
-      } catch(err) {
-        res.headersSent ? null : next(err);
-      }
+    return function wrappedErrorHandler(error, req, res, next) {
+      Promise.resolve(fn(error, req, res, next))
+        .catch(err => next(err));
     };
   }
 
-  return async function wrappedMiddleware(req, res, next) {
-    next = _once(next);
-    try {
-      await fn(req, res, next);
-      res.headersSent ? null : next();
-    } catch(err) {
-      res.headersSent ? null : next(err);
-    }
-  };
-}
-
-function _once(fn) {
-  let called = false;
-  return function() {
-    if (called) {
-      return;
-    }
-    called = true;
-    fn.apply(null, arguments);
+  return function wrappedHandler(req, res, next) {
+    Promise.resolve(fn(req, res, next))
+      .catch(err => next(err));
   };
 }
