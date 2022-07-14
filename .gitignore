@@ -1,14 +1,15 @@
 # environment variables
-environment*
+/environment*
 
 # auspice build
-auspice-client/index.html
-auspice-client/dist/
+/auspice-client/index.html
+/auspice-client/dist/
 
 # misc #
 .DS_Store
-node_modules/
-npm-debug.log
+/node_modules/
+/static-site/node_modules/
+/npm-debug.log
 
 # local sessions
 /sessions/
