@@ -21,7 +21,6 @@
     "dev": "./develop.sh"
   },
   "dependencies": {
-    "@awaitjs/express": "^0.6.3",
     "@aws-crypto/client-node": "^3.1.1",
     "@aws-sdk/client-cognito-identity-provider": "^3.52.0",
     "@aws-sdk/client-iam": "^3.53.0",

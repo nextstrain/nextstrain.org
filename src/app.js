@@ -5,7 +5,7 @@ const express = require("express");
 const compression = require('compression');
 const utils = require("./utils");
 const cors = require('cors');
-const {addAsync} = require("@awaitjs/express");
+const {addAsync} = require("./async");
 const {Forbidden, NotFound, Unauthorized} = require("http-errors");
 
 const PRODUCTION = process.env.NODE_ENV === "production";

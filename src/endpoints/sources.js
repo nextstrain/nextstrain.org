@@ -544,7 +544,16 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
 
     await pipeline(upstreamRes.body, zlib.createGunzip(), res);
   } else {
-    await pipeline(upstreamRes.body, res);
+    try {
+      await pipeline(upstreamRes.body, res);
+    } catch (err) {
+      /* Nothing we can do about the client closing the connection on us before
+       * we were "ready"; see rationale in commit message introducing this
+       * handling.
+       *   -trs, 15 July 2022
+       */
+      if (err?.code !== 'ERR_STREAM_PREMATURE_CLOSE') throw err;
+    }
   }
 
   return res.end();
