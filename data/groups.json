@@ -181,6 +181,10 @@
     "isPublic": false
   },
   {
+    "name": "Lambda-Lab",
+    "isPublic": true
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
