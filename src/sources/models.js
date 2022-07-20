@@ -254,6 +254,14 @@ class DatasetSubresource extends Subresource {
     this.mediaType,
     "application/json; q=0.9",
     "text/plain; q=0.1",
+
+    /* The only type used by media.githubusercontent.com for objects in Git
+     * LFS, important for Community on GitHub datasets.  Anecodotally, this is
+     * also commonly used by (poorly-configured) static web servers for .json
+     * files, which we might encounter with /fetch/… datasets.
+     *   -trs, 20 July 2022
+     */
+    "application/octet-stream; q=0.01",
   ].join(", ")
 
   get baseName() {
