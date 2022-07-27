@@ -19,6 +19,7 @@ extensions = [
     'recommonmark',
     'sphinx_markdown_tables',
     'sphinx.ext.intersphinx',
+    'nextstrain.sphinx.theme',
 ]
 
 intersphinx_mapping = {
