@@ -337,6 +337,14 @@ app.route(["/users", "/users/:name"])
   .get((req, res) => res.redirect("/whoami"));
 
 
+/* CLI convenience endpoints, e.g. downloads of release assets.
+ *
+ * Include "/latest/" path segment to leave room for supporting arbitrary
+ * (non-latest) versions in the future.
+ */
+app.routeAsync("/cli/download/latest/:assetSuffix")
+  .getAsync(endpoints.cli.download);
+
 /* JSON Schemas.
  *
  * Our schemas identity themselves using nextstrain.org URLs so that we can
