@@ -338,12 +338,13 @@ app.route(["/users", "/users/:name"])
 
 
 /* CLI convenience endpoints, e.g. downloads of release assets.
- *
- * Include "/latest/" path segment to leave room for supporting arbitrary
- * (non-latest) versions in the future.
  */
-app.routeAsync("/cli/download/latest/:assetSuffix")
+app.routeAsync("/cli/download/:version/:assetSuffix")
   .getAsync(endpoints.cli.download);
+
+app.route("/cli")
+  .get((req, res) => res.redirect("https://docs.nextstrain.org/projects/cli/"));
+
 
 /* JSON Schemas.
  *
