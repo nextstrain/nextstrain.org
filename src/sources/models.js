@@ -343,6 +343,12 @@ class DatasetSubresource extends Subresource {
       ? `${this.resource.baseName}.json`
       : `${this.resource.baseName}_${this.type}.json`;
   }
+
+  get conventionalFilename() {
+    return this.type === "main"
+      ? `${this.resource.pathParts.join("_")}.json`
+      : `${this.resource.pathParts.join("_")}_${this.type}.json`;
+  }
 }
 
 
@@ -389,6 +395,10 @@ class NarrativeSubresource extends Subresource {
 
   get baseName() {
     return `${this.resource.baseName}.md`;
+  }
+
+  get conventionalFilename() {
+    return `${this.resource.pathParts.join("_")}.md`;
   }
 }
 
