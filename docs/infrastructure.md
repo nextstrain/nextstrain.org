@@ -12,6 +12,12 @@
 
 **clades.nextstrain.org** is used by [Nextclade](https://github.com/nextstrain/nextclade).
 
+**docs.nextstrain.org** is a documentation site with [the Nextstrain Read the Docs project](https://readthedocs.org/projects/nextstrain/) and sub-projects.
+
+**support.nextstrain.org** is an email ticketing system powered by [Zoho Desk](https://www.zoho.com/desk/).
+
+**discussion.nextstrain.org** is a discussion forum powered by [Discourse](https://www.discourse.org/).
+
 ## Heroku
 
 We use a [Heroku pipeline named `nextstrain-server`](https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d) to manage multiple related apps.
