@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import { AuthzDenied } from '../exceptions.js';
+import { Group } from "../groups.js";
 import { Source, Resource } from '../sources/models.js';
 import actions from './actions.js';
 import tags from './tags.js';
@@ -49,6 +50,7 @@ const authorized = (user, action, object) => {
    */
   /* eslint-disable indent, no-multi-spaces, semi-spacing */
   const policy =
+    object instanceof Group    ? object.authzPolicy        :
     object instanceof Source   ? object.authzPolicy        :
     object instanceof Resource ? object.source.authzPolicy :
                                                       null ;

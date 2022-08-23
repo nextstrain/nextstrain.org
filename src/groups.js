@@ -1,4 +1,5 @@
 import { strict as assert } from 'assert';
+import * as authz from "./authz/index.js";
 import { NotFound } from './httpErrors.js';
 
 /* eslint-disable-next-line import/first, import/newline-after-import */
@@ -82,6 +83,35 @@ class Group {
       ["editors", `${this.name}/editors`],
       ["owners", `${this.name}/owners`],
     ]);
+  }
+
+
+  /**
+   * Policy for this Group itself.  Separate from the policy for the group's
+   * Source, which is the container for the group's datasets and narratives.
+   */
+  get authzPolicy() {
+    const {Read, Write} = authz.actions;
+    const {Type} = authz.tags;
+
+    const viewers = this.membershipRoles.get("viewers");
+    const editors = this.membershipRoles.get("editors");
+    const owners = this.membershipRoles.get("owners");
+
+    return [
+      /* All membership roles in a Nextstrain Group can see information about
+       * the group itself (e.g. members, role names, etc.), but only owners can
+       * update it.  Note that the datasets and narratives within the group are
+       * authz'd separately on the GroupSource.
+       */
+      {tag: Type.Group, role: viewers, allow: [Read]},
+      {tag: Type.Group, role: editors, allow: [Read]},
+      {tag: Type.Group, role: owners, allow: [Read, Write]},
+    ];
+  }
+
+  get authzTags() {
+    return new Set([authz.tags.Type.Group]);
   }
 }
 
