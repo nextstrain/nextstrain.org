@@ -1,8 +1,11 @@
+/* eslint-disable no-await-in-loop */
 import { strict as assert } from 'assert';
 import * as authz from "./authz/index.js";
 import { GROUPS_DATA_FILE } from './config.js';
+import * as cognito from "./cognito.js";
 import { NotFound } from './httpErrors.js';
 import { GroupSource } from "./sources/index.js";
+import { markUserStaleBeforeNow } from "./user.js";
 
 import { readFile } from 'fs/promises';
 const GROUPS_DATA = JSON.parse(await readFile(GROUPS_DATA_FILE));
@@ -102,6 +105,90 @@ class Group {
 
   get authzTags() {
     return new Set([authz.tags.Type.Group]);
+  }
+
+
+  /**
+   * List all group members.
+   *
+   * @returns {Array.<{username: String, roles: Set.<String>}>}
+   */
+  async members() {
+    const members = new Map();
+
+    for (const role of this.membershipRoles.keys()) {
+      for await (const {username} of this.membersWithRole(role)) {
+        const member = members.get(username) ?? {
+          username,
+          roles: new Set([]),
+        };
+
+        member.roles.add(role);
+        members.set(username, member);
+      }
+    }
+
+    return [...members.values()];
+  }
+
+  /**
+   * List group members with a given role.
+   *
+   * @param {String} role - e.g. viewers, editors, or owners
+   * @yields {{username: String}}
+   */
+  async* membersWithRole(role) {
+    const cognitoGroup = this.membershipRoles.get(role);
+    if (!cognitoGroup) throw new NotFound(`unknown role: ${role}`);
+
+    for await (const user of cognito.listUsersInGroup(cognitoGroup)) {
+      yield {
+        username: user.Username,
+      };
+    }
+  }
+
+  /**
+   * Grant a role in this group to a user.
+   *
+   * Makes the user a group member if they weren't already.
+   *
+   * Any existing authn tokens the user has will be considered stale after
+   * calling this function so that the tokens are automatically refreshed to
+   * reflect their new role.
+   *
+   * @param {String} role - e.g. viewers, editors, or owners
+   * @param {String} username
+   * @throws {NotFound} on an unknown role
+   */
+  async grantRole(role, username) {
+    const cognitoGroup = this.membershipRoles.get(role);
+    if (!cognitoGroup) throw new NotFound(`unknown role: ${role}`);
+
+    await cognito.addUserToGroup(username, cognitoGroup);
+    await markUserStaleBeforeNow(username);
+  }
+
+  /**
+   * Revoke a role in this group from a user.
+   *
+   * Removes the user from group membership if the removed role was their sole
+   * one.
+   *
+   * Any existing authn tokens the user has will be considered stale after
+   * calling this function so that the tokens are automatically refreshed to
+   * reflect their removed role.
+   *
+   * @param {String} role - e.g. viewers, editors, or owners
+   * @param {String} username
+   * @throws {NotFound} on an unknown role
+   */
+  async revokeRole(role, username) {
+    const cognitoGroup = this.membershipRoles.get(role);
+    if (!cognitoGroup) throw new NotFound(`unknown role: ${role}`);
+
+    await cognito.removeUserFromGroup(username, cognitoGroup);
+    await markUserStaleBeforeNow(username);
   }
 }
 

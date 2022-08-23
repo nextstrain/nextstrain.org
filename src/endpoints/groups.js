@@ -1,7 +1,9 @@
 import * as authz from "../authz/index.js";
+import { NotFound } from "../httpErrors.js";
 import { Group } from "../groups.js";
 import {contentTypesProvided, contentTypesConsumed} from "../negotiate.js";
 import {deleteByUrls, proxyFromUpstream, proxyToUpstream} from "../upstream.js";
+import { slurp } from "../utils/iterators.js";
 import * as options from "./options.js";
 
 
@@ -152,13 +154,94 @@ async function receiveGroupLogo(req, res) {
 }
 
 
+/* Members and roles
+ */
+const listMembers = async (req, res) => {
+  const group = req.context.group;
+
+  authz.assertAuthorized(req.user, authz.actions.Read, group);
+
+  return res.json(await group.members());
+};
+
+
+const listRoles = (req, res) => {
+  const group = req.context.group;
+
+  authz.assertAuthorized(req.user, authz.actions.Read, group);
+
+  const roles = [...group.membershipRoles.keys()];
+  return res.json(roles.map(name => ({name})));
+};
+
+
+const listRoleMembers = async (req, res) => {
+  const group = req.context.group;
+  const {roleName} = req.params;
+
+  authz.assertAuthorized(req.user, authz.actions.Read, group);
+
+  return res.json(await slurp(group.membersWithRole(roleName)));
+};
+
+
+const getRoleMember = async (req, res) => {
+  const group = req.context.group;
+  const {roleName, username} = req.params;
+
+  authz.assertAuthorized(req.user, authz.actions.Read, group);
+
+  for await (const member of group.membersWithRole(roleName)) {
+    if (member.username === username) {
+      return res.status(204).end();
+    }
+  }
+
+  throw new NotFound(`user ${username} does not have role ${roleName} in group ${group.name}`);
+};
+
+
+const putRoleMember = async (req, res) => {
+  const group = req.context.group;
+  const {roleName, username} = req.params;
+
+  authz.assertAuthorized(req.user, authz.actions.Write, group);
+
+  await group.grantRole(roleName, username);
+
+  return res.status(204).end();
+};
+
+
+const deleteRoleMember = async (req, res) => {
+  const group = req.context.group;
+  const {roleName, username} = req.params;
+
+  authz.assertAuthorized(req.user, authz.actions.Write, group);
+
+  await group.revokeRole(roleName, username);
+
+  return res.status(204).end();
+};
+
+
 export {
   setGroup,
   optionsGroup,
+
   getGroupLogo,
   putGroupLogo,
   deleteGroupLogo,
+
   getGroupOverview,
   putGroupOverview,
   deleteGroupOverview,
+
+  listMembers,
+  listRoles,
+  listRoleMembers,
+
+  getRoleMember,
+  putRoleMember,
+  deleteRoleMember,
 };

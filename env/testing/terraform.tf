@@ -46,4 +46,6 @@ module "iam" {
   }
 
   env = "testing"
+
+  COGNITO_USER_POOL_ID = module.cognito.COGNITO_USER_POOL_ID
 }
