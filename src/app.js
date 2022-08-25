@@ -302,6 +302,12 @@ app.routeAsync("/groups/:groupName")
   .getAsync(endpoints.static.sendGatsbyEntrypoint)
 ;
 
+app.use("/groups/:groupName/settings",
+  endpoints.groups.setGroup(req => req.params.groupName));
+
+app.route("/groups/:groupName/settings/*")
+  .all(() => { throw new NotFound(); });
+
 // Avoid matching "narratives" as a dataset name.
 app.routeAsync("/groups/:groupName/narratives")
   .getAsync((req, res) => res.redirect(`/groups/${esc(req.params.groupName)}`));
