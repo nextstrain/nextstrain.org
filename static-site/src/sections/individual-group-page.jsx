@@ -59,9 +59,15 @@ class Index extends React.Component {
     let bannerTitle, bannerContents;
     // Set up a banner if dataset doesn't exist
     if (this.state.nonExistentPath) {
-      bannerTitle = this.state.nonExistentPath.startsWith("narratives/")
-        ? `The narrative "nextstrain.org/groups/${groupName}/${this.state.nonExistentPath}" doesn't exist.`
-        : `The dataset "nextstrain.org/groups/${groupName}/${this.state.nonExistentPath}" doesn't exist.`;
+      if (this.state.nonExistentPath.startsWith("narratives/")) {
+        bannerTitle = `The narrative "nextstrain.org/groups/${groupName}/${this.state.nonExistentPath}" doesn't exist.`;
+      }
+      else if (this.state.nonExistentPath.startsWith("settings/")) {
+        bannerTitle = `The setting "nextstrain.org/groups/${groupName}/${this.state.nonExistentPath}" doesn't exist.`;
+      }
+      else {
+        bannerTitle = `The dataset "nextstrain.org/groups/${groupName}/${this.state.nonExistentPath}" doesn't exist.`;
+      }
       bannerContents = `Here is the page for the "${groupName}" Nextstrain Group.`;
     }
     // Set up a banner or update the existing one if the group doesn't exist
