@@ -1,5 +1,6 @@
 import {jest} from '@jest/globals';
 import fetch from 'node-fetch';
+/* eslint-disable-next-line import/extensions */
 import urlsToTest from './auspice_client_requests.json';
 
 // As some of the APIs we're calling will themselves call  GitHub APIs
