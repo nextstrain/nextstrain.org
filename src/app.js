@@ -400,11 +400,11 @@ app.route("/dist/*")
  * instead of served straight from disk.
  */
 if (app.locals.gatsbyDevUrl) {
-  // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-  const {createProxyMiddleware} = require("http-proxy-middleware");
+  /* eslint-disable-next-line import/no-extraneous-dependencies */
+  const {createProxyMiddleware} = await import("http-proxy-middleware");
 
   // WebSocket endpoint
-  app.get("/socket.io/", createProxyMiddleware(app.locals.gatsbyDevUrl, {ws: true}));
+  app.get("/socket.io/", createProxyMiddleware(app.locals.gatsbyDevUrl, { ws: true }));
 
   /* This is the end of the line in gatsbyDevUrl mode, as the proxy middleware
    * doesn't fallthrough on 404 and even if it did the Gatsby dev server

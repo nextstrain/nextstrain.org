@@ -92,8 +92,8 @@ const sendGatsbyPage = (page) => async (req, res) => {
   if (req.app.locals.gatsbyDevUrl) {
     const pageUrl = (new URL(page, req.app.locals.gatsbyDevUrl)).toString();
 
-    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-    const proxy = require("http-proxy").createProxyServer({
+    /* eslint-disable-next-line import/no-extraneous-dependencies */
+    const proxy = (await import("http-proxy")).createProxyServer({
       target: pageUrl,
       ignorePath: true, // ignore req.path since pageUrl is fully specified
     });
