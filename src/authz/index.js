@@ -119,7 +119,7 @@ const assertAuthorized = (user, action, object) => {
 };
 
 
-export default {
+export {
   authorized,
   assertAuthorized,
   evaluatePolicy,

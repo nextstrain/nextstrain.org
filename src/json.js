@@ -8,6 +8,6 @@ const replacer = (key, value) =>
   value instanceof Map ? Object.fromEntries(value.entries()) :
                                                        value ;
 
-export default {
+export {
   replacer,
 };

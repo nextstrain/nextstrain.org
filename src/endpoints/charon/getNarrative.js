@@ -12,6 +12,6 @@ const getNarrative = async (req, res) => {
   return await sendNarrativeSubresource("md")(req, res);
 };
 
-export default {
-  default: getNarrative
+export {
+  getNarrative,
 };

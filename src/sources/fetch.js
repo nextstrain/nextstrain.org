@@ -1,5 +1,5 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
-import authz from '../authz/index.js';
+import * as authz from '../authz/index.js';
 
 import { Source, Dataset, DatasetSubresource, Narrative, NarrativeSubresource } from './models.js';
 
@@ -104,6 +104,6 @@ class UrlDefinedNarrativeSubresource extends NarrativeSubresource {
   }
 }
 
-export default {
+export {
   UrlDefinedSource,
 };

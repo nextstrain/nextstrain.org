@@ -1,6 +1,6 @@
 import cookie from 'cookie';
 import { BadRequest } from './httpErrors.js';
-import utils from './utils/index.js';
+import * as utils from './utils/index.js';
 
 
 /**
@@ -62,7 +62,7 @@ const copyCookie = (oldName, newName) => (req, res, next) => {
 };
 
 
-export default {
+export {
   rejectParentTraversals,
   copyCookie,
 };

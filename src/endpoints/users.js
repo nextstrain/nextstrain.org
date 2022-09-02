@@ -1,4 +1,4 @@
-import authz from '../authz/index.js';
+import * as authz from '../authz/index.js';
 import { ALL_GROUPS } from '../groups.js';
 import { contentTypesProvided } from '../negotiate.js';
 import { GroupSource } from '../sources/index.js';
@@ -36,6 +36,6 @@ const getWhoami = contentTypesProvided([
 ]);
 
 
-export default {
+export {
   getWhoami,
 };

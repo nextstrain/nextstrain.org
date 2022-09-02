@@ -129,7 +129,7 @@ const normalizeHeaders = (headers) => {
   return Object.fromEntries((new fetch.Headers(withValues)).entries());
 };
 
-export default {
+export {
   getGitHash,
   verbose,
   log,

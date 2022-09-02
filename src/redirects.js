@@ -136,6 +136,6 @@ const setup = (app) => {
 
 };
 
-export default {
+export {
   setup
 };

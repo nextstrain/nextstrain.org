@@ -101,7 +101,7 @@ async function run(argv) {
 }
 
 
-export default {
+export {
   setupConsole,
   reportUnhandledRejectionsAtExit,
   run,

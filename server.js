@@ -1,6 +1,6 @@
 import argparse from 'argparse';
 import http from 'http';
-import utils from './src/utils/index.js';
+import * as utils from './src/utils/index.js';
 
 const version = utils.getGitHash();
 const nextstrainAbout = `

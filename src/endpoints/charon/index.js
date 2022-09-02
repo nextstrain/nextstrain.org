@@ -2,10 +2,10 @@ import { BadRequest, isHttpError } from '../../httpErrors.js';
 import { splitPrefixIntoParts } from '../../utils/prefix.js';
 import { setSource, setDataset, canonicalizeDataset, setNarrative } from '../sources.js';
 import './setAvailableDatasets.js'; // sets globals
-import getAvailable from './getAvailable.js';
-import getDataset from './getDataset.js';
-import getNarrative from './getNarrative.js';
-import getSourceInfo from './getSourceInfo.js';
+import { getAvailable } from './getAvailable.js';
+import { getDataset } from './getDataset.js';
+import { getNarrative } from './getNarrative.js';
+import { getSourceInfo } from './getSourceInfo.js';
 
 const setSourceFromPrefix = setSource(req => {
   const prefix = req.query.prefix;
@@ -47,7 +47,7 @@ const setNarrativeFromPrefix = setNarrative(req => {
   return prefixParts.join("/");
 });
 
-export default {
+export {
   setSourceFromPrefix,
   setDatasetFromPrefix,
   canonicalizeDatasetPrefix,

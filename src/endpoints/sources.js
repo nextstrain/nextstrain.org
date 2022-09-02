@@ -12,7 +12,7 @@ import stream from 'stream';
 import { promisify } from 'util';
 import zlib from 'zlib';
 import readStream from 'raw-body';
-import authz from '../authz/index.js';
+import * as authz from '../authz/index.js';
 import { contentTypesProvided, contentTypesConsumed } from '../negotiate.js';
 import { fetch, Request } from '../fetch.js';
 import { sendAuspiceEntrypoint } from './static.js';
@@ -695,7 +695,7 @@ function copyHeaders(headerSource, headerNames) {
  */
 
 
-export default {
+export {
   setSource,
 
   setDataset,

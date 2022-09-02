@@ -1,13 +1,13 @@
-import charon from './charon/index.js';
-import cli from './cli.js';
-import sources from './sources.js';
-import static_ from './static.js';
-import users from './users.js';
+import * as charon from './charon/index.js';
+import * as cli from './cli.js';
+import * as sources from './sources.js';
+import * as static_ from './static.js';
+import * as users from './users.js';
 
-export default {
+export {
   charon,
   cli,
   sources,
-  static: static_,
+  static_ as static,
   users,
 };

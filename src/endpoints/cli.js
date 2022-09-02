@@ -57,7 +57,7 @@ const installer = (req, res) => {
 };
 
 
-export default {
+export {
   download,
   installer,
 };

@@ -117,7 +117,7 @@ function contentTypesConsumed(providers) {
 }
 
 
-export default {
+export {
   contentTypesProvided,
   contentTypesConsumed,
 };

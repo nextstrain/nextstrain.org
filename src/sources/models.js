@@ -311,7 +311,7 @@ class NarrativeSubresource extends Subresource {
 }
 
 
-export default {
+export {
   Source,
   Resource,
   Subresource,

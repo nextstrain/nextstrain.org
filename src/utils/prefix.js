@@ -1,5 +1,5 @@
 import { NotFound } from '../httpErrors.js';
-import sources from '../sources/index.js';
+import * as sources from '../sources/index.js';
 
 
 /* Map old source "names" to their classes and vice versa to avoid dramatically
@@ -159,7 +159,7 @@ const canonicalizePrefix = async (prefix) =>
   joinPartsIntoPrefix(splitPrefixIntoParts(prefix));
 
 
-export default {
+export {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
   canonicalizePrefix,

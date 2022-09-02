@@ -3,10 +3,10 @@ import AWS from 'aws-sdk';
 
 import { Buffer } from 'buffer';
 import yamlFront from 'yaml-front-matter';
-import authz from '../authz/index.js';
+import * as authz from '../authz/index.js';
 import { fetch } from '../fetch.js';
 import { Group } from '../groups.js';
-import utils from '../utils/index.js';
+import * as utils from '../utils/index.js';
 import { Source, Dataset, Narrative } from './models.js';
 
 const S3 = new AWS.S3();
@@ -358,6 +358,6 @@ function parseUrl(url) {
 }
 
 
-export default {
+export {
   GroupSource,
 };

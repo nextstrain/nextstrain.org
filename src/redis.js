@@ -19,7 +19,7 @@
 
 import Redis from 'ioredis';
 
-import utils from './utils/index.js';
+import * as utils from './utils/index.js';
 
 
 /**
@@ -67,6 +67,6 @@ function scrubUrl(url) {
 }
 
 
-export default {
+export {
   REDIS,
 };

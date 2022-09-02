@@ -24,7 +24,7 @@ import { fetch } from '../fetch.js';
 import { copyCookie } from '../middleware.js';
 import { REDIS } from '../redis.js';
 import { userStaleBefore } from '../user.js';
-import utils from '../utils/index.js';
+import * as utils from '../utils/index.js';
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -755,6 +755,6 @@ async function renewTokens(refreshToken) {
 }
 
 
-export default {
+export {
   setup
 };

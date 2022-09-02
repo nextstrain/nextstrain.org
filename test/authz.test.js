@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
-import authz from '../src/authz/index.js';
+import * as authz from '../src/authz/index.js';
 import { AuthzDenied } from '../src/exceptions.js';
-import json from '../src/json.js';
+import * as json from '../src/json.js';
 import { CoreSource, GroupSource } from '../src/sources/index.js';
 
 const {Read, Write} = authz.actions;

@@ -181,7 +181,7 @@ function randomKey(byteLength = KEY_LENGTH_BITS / 8) {
 }
 
 
-export default {
+export {
   KEY_LENGTH_BITS,
   keyringFromParamString,
   encrypt,

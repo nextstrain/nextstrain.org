@@ -1,5 +1,5 @@
 import __fetch from 'make-fetch-happen';
-import utils from './utils/index.js';
+import * as utils from './utils/index.js';
 
 const FETCH_OPTIONS = Symbol("Request options for make-fetch-happen");
 
@@ -70,7 +70,7 @@ class Request extends __fetch.Request {
   get cache() { return this[FETCH_OPTIONS].cache; }
 }
 
-export default {
+export {
   fetch,
   Request,
 };

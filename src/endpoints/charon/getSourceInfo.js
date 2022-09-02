@@ -6,7 +6,6 @@ const getSourceInfo = async (req, res) => {
 };
 
 
-export default {
+export {
   getSourceInfo,
-  default: getSourceInfo
 };

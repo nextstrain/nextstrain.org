@@ -1,9 +1,9 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
-import authz from '../authz/index.js';
+import * as authz from '../authz/index.js';
 
 import { fetch } from '../fetch.js';
 import { NotFound } from '../httpErrors.js';
-import utils from '../utils/index.js';
+import * as utils from '../utils/index.js';
 import { Source, Dataset } from './models.js';
 
 const authorization = process.env.GITHUB_TOKEN
@@ -128,7 +128,7 @@ class CoreDataset extends Dataset {
   }
 }
 
-export default {
+export {
   CoreSource,
   CoreStagingSource,
 };

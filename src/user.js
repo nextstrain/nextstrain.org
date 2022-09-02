@@ -78,7 +78,7 @@ async function markUserStaleBeforeNow(username) {
 }
 
 
-export default {
+export {
   userStaleBefore,
   markUserStaleBeforeNow,
 };

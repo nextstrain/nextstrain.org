@@ -211,13 +211,15 @@ import assert from 'assert';
 
 import express from 'express';
 
-export default {
+function asyncRouter() {
+  return addAsync(express.Router.apply(express, arguments));
+}
+
+export {
   addAsync,
-  decorateApp: addAsync,
-  decorateRouter: addAsync,
-  Router: function asyncRouter() {
-    return addAsync(express.Router.apply(express, arguments));
-  },
+  addAsync as decorateApp,
+  addAsync as decorateRouter,
+  asyncRouter as Router,
   wrap
 };
 

@@ -1,7 +1,7 @@
-import authz from './authz/index.js';
+import * as authz from './authz/index.js';
 import { ALL_GROUPS } from './groups.js';
 import { GroupSource } from './sources/index.js';
-import utils from './utils/index.js';
+import * as utils from './utils/index.js';
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -88,6 +88,6 @@ const Groups = (() => {
   return MetaGroupSource;
 })();
 
-export default {
+export {
   Groups,
 };

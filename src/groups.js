@@ -189,7 +189,7 @@ const ALL_GROUPS = Array.from(GROUP_RECORDS.keys())
   .map(name => new Group(name));
 
 
-export default {
+export {
   Group,
   assertValidGroupName,
   validateGroupName,

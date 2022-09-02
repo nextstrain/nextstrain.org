@@ -1,6 +1,6 @@
 import auspice from 'auspice';
 import { NotFound, InternalServerError } from '../../httpErrors.js';
-import utils from '../../utils/index.js';
+import * as utils from '../../utils/index.js';
 import { sendDatasetSubresource } from '../sources.js';
 
 /**
@@ -54,7 +54,6 @@ const getDataset = async (req, res) => {
   }
 };
 
-export default {
+export {
   getDataset,
-  default: getDataset
 };

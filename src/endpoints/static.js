@@ -2,7 +2,7 @@ import express from 'express';
 import expressStaticGzip from 'express-static-gzip';
 import { InternalServerError } from '../httpErrors.js';
 import path from 'path';
-import utils from '../utils/index.js';
+import * as utils from '../utils/index.js';
 
 
 /* Path helpers for our handlers below.
@@ -155,7 +155,7 @@ const sendGatsby404 = async (req, res) => {
  */
 
 
-export default {
+export {
   auspiceAssets,
   gatsbyAssets,
 

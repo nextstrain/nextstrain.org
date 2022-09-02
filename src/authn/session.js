@@ -77,7 +77,7 @@ async function deleteTokens(session) {
 }
 
 
-export default {
+export {
   getTokens,
   setTokens,
   deleteTokens,

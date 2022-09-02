@@ -1,8 +1,8 @@
-import authz from '../../authz/index.js';
+import * as authz from '../../authz/index.js';
 import { CommunitySource } from '../../sources/index.js';
-import utils from '../../utils/index.js';
+import * as utils from '../../utils/index.js';
 import { splitPrefixIntoParts, joinPartsIntoPrefix } from '../../utils/prefix.js';
-import metaSources from '../../metaSources.js';
+import * as metaSources from '../../metaSources.js';
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
@@ -53,6 +53,6 @@ async function collectAllAvailableGroups(user) {
   };
 }
 
-export default {
-  default: getAvailable
+export {
+  getAvailable,
 };
