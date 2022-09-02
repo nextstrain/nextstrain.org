@@ -1,8 +1,12 @@
 import express from 'express';
 import expressStaticGzip from 'express-static-gzip';
 import { InternalServerError } from '../httpErrors.js';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import * as utils from '../utils/index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 /* Path helpers for our handlers below.
