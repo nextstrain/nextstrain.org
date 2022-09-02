@@ -1,8 +1,9 @@
+import {jest} from '@jest/globals';
 import Benchmark from 'benchmark';
 import { randomKey } from '../src/cryptography.js';
 
 
-/* Allow each test() to require() modules separately so we can explicitly test
+/* Allow each test() to import() modules separately so we can explicitly test
  * require-time behaviours.
  */
 /* eslint-disable global-require */
@@ -11,21 +12,22 @@ beforeEach(() => {
 });
 
 
-test("SESSION_ENCRYPTION_KEYS required in production", () => {
+test("SESSION_ENCRYPTION_KEYS required in production", async () => {
   process.env.NODE_ENV = "production";
 
-  expect(() => require("../src/authn/session"))
+  await expect(async () => await import("../src/authn/session"))
+    .rejects
     .toThrow("SESSION_ENCRYPTION_KEYS required in production");
 
   process.env.SESSION_ENCRYPTION_KEYS = `a=${randomKey()}`;
 
-  expect(() => require("../src/authn/session"))
+  await expect(async () => await import("../src/authn/session"))
     .toBeDefined();
 });
 
 
 test("roundtrip encrypted tokens", async () => {
-  const {getTokens, setTokens, deleteTokens} = require("../src/authn/session");
+  const {getTokens, setTokens, deleteTokens} = await import("../src/authn/session");
 
   const session = {
     id: "0xABADCAFE",
@@ -74,7 +76,7 @@ test("roundtrip encrypted tokens", async () => {
 
 
 test("session id must match", async () => {
-  const {getTokens, setTokens} = require("../src/authn/session");
+  const {getTokens, setTokens} = await import("../src/authn/session");
 
   const session = {
     id: "0xABADCAFE",
@@ -99,7 +101,7 @@ test("session id must match", async () => {
 
 
 test("benchmark", async () => {
-  const {getTokens, setTokens} = require("../src/authn/session");
+  const {getTokens, setTokens} = await import("../src/authn/session");
 
   const session = {
     id: "0xABADCAFE",

@@ -1,4 +1,4 @@
-
+import {jest} from '@jest/globals';
 import fetch from 'node-fetch';
 
 // As some of the APIs we're calling will themselves call  GitHub APIs

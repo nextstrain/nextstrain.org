@@ -63,7 +63,7 @@ parserOptions:
     modules: true
 env:
   es6: true
+  jest: true
   browser: true
-  "jest/globals": true
 
 # https://gist.github.com/odedw/cf14a55aa154adbc3bf7#file-eslintrc-yaml-L4

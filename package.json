@@ -63,6 +63,7 @@
     "yaml-front-matter": "^4.0.0"
   },
   "devDependencies": {
+    "@jest/globals": "^29.0.2",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-plugin-lodash": "^3.2.11",

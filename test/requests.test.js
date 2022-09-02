@@ -4,6 +4,7 @@
  *   no-multi-spaces: Aligned paths make for easier reading
  */
 
+import {jest} from '@jest/globals';
 import contentType from 'content-type';
 
 import fetch from 'node-fetch';

@@ -1,4 +1,4 @@
-
+import {jest} from '@jest/globals';
 import urlsToTest from './auspice_client_requests.json';
 import fetch from 'node-fetch';
 
