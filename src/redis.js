@@ -17,8 +17,9 @@
  * @see https://redis.io/docs/manual/eviction/
  */
 
-const Redis = require("ioredis");
-const utils = require("./utils");
+import Redis from 'ioredis';
+
+import utils from './utils';
 
 
 /**
@@ -66,6 +67,6 @@ function scrubUrl(url) {
 }
 
 
-module.exports = {
+export default {
   REDIS,
 };

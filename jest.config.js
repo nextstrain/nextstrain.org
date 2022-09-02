@@ -1,5 +1,5 @@
 /* eslint-disable quote-props */
-module.exports = {
+export default {
   /* Run tests in a normal Node environment, not a fake browser (JSDOM)
    * environment.  This is a Node app after all.  But this also fixes an
    * long-known issue where Jest breaks the Node stdlib by providing a Buffer

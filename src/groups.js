@@ -1,7 +1,6 @@
-const assert = require("assert").strict;
-const {NotFound} = require("http-errors");
-
-const GROUPS_DATA = require("../data/groups.json");
+import { strict as assert } from 'assert';
+import { NotFound } from 'http-errors';
+import GROUPS_DATA from '../data/groups.json';
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -190,7 +189,7 @@ const ALL_GROUPS = Array.from(GROUP_RECORDS.keys())
   .map(name => new Group(name));
 
 
-module.exports = {
+export default {
   Group,
   assertValidGroupName,
   validateGroupName,

@@ -1,4 +1,4 @@
-const {keyringFromParamString, encrypt, decrypt, randomKey} = require("../cryptography");
+import { keyringFromParamString, encrypt, decrypt, randomKey } from '../cryptography';
 
 
 const PRODUCTION = process.env.NODE_ENV === "production";
@@ -77,7 +77,7 @@ async function deleteTokens(session) {
 }
 
 
-module.exports = {
+export default {
   getTokens,
   setTokens,
   deleteTokens,

@@ -1,14 +1,15 @@
 /* eslint no-console: off */
-const sslRedirect = require('heroku-ssl-redirect');
-const nakedRedirect = require('express-naked-redirect');
-const express = require("express");
-const compression = require('compression');
-const utils = require("./utils");
-const cors = require('cors');
-const {addAsync} = require("./async");
-const {Forbidden, NotFound, Unauthorized} = require("http-errors");
-const stream = require("stream");
-const {promisify} = require("util");
+import sslRedirect from 'heroku-ssl-redirect';
+
+import nakedRedirect from 'express-naked-redirect';
+import express from 'express';
+import compression from 'compression';
+import utils from './utils';
+import cors from 'cors';
+import { addAsync } from './async';
+import { Forbidden, NotFound, Unauthorized } from 'http-errors';
+import stream from 'stream';
+import { promisify } from 'util';
 
 /* XXX TODO: Replace promisify() with require("stream/promises") once we
  * upgrade to Node 15+.
@@ -19,13 +20,13 @@ const streamFinished = promisify(stream.finished);
 const PRODUCTION = process.env.NODE_ENV === "production";
 const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
 
-const authn = require("./authn");
-const endpoints = require("./endpoints");
-const {AuthzDenied} = require("./exceptions");
-const {replacer: jsonReplacer} = require("./json");
-const middleware = require("./middleware");
-const redirects = require("./redirects");
-const sources = require("./sources");
+import authn from './authn';
+import endpoints from './endpoints';
+import { AuthzDenied } from './exceptions';
+import { replacer as jsonReplacer } from './json';
+import middleware from './middleware';
+import redirects from './redirects';
+import sources from './sources';
 
 const {
   setSource,
@@ -515,4 +516,4 @@ app.useAsync(async (err, req, res, next) => {
 });
 
 
-module.exports = app;
+export default app;

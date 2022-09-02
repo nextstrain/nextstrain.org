@@ -1,9 +1,10 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
-const authz = require("../authz");
-const {fetch} = require("../fetch");
-const {NotFound} = require('http-errors');
-const utils = require("../utils");
-const {Source, Dataset} = require("./models");
+import authz from '../authz';
+
+import { fetch } from '../fetch';
+import { NotFound } from 'http-errors';
+import utils from '../utils';
+import { Source, Dataset } from './models';
 
 const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
@@ -127,7 +128,7 @@ class CoreDataset extends Dataset {
   }
 }
 
-module.exports = {
+export default {
   CoreSource,
   CoreStagingSource,
 };

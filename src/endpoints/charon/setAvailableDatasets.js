@@ -1,5 +1,5 @@
-const fetch = require('node-fetch');
-const utils = require("../../utils");
+import fetch from 'node-fetch';
+import utils from '../../utils';
 
 /* Build the available datasets by querying the manifest JSONs
  * Note that this will require restarting the server to update!

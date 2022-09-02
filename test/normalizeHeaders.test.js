@@ -1,4 +1,4 @@
-const {normalizeHeaders} = require("../src/utils");
+import { normalizeHeaders } from '../src/utils';
 
 /* eslint-disable indent */
 const cases = [

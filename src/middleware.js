@@ -1,6 +1,6 @@
-const cookie = require("cookie");
-const {BadRequest} = require("http-errors");
-const utils = require("./utils");
+import cookie from 'cookie';
+import { BadRequest } from 'http-errors';
+import utils from './utils';
 
 
 /**
@@ -62,7 +62,7 @@ const copyCookie = (oldName, newName) => (req, res, next) => {
 };
 
 
-module.exports = {
+export default {
   rejectParentTraversals,
   copyCookie,
 };

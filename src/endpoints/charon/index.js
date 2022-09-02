@@ -1,13 +1,11 @@
-const {BadRequest, isHttpError} = require("http-errors");
-
-const {splitPrefixIntoParts} = require("../../utils/prefix");
-const {setSource, setDataset, canonicalizeDataset, setNarrative} = require("../sources");
-
-require("./setAvailableDatasets"); // sets globals
-const getAvailable = require("./getAvailable").default;
-const getDataset = require("./getDataset").default;
-const getNarrative = require("./getNarrative").default;
-const getSourceInfo = require("./getSourceInfo").default;
+import { BadRequest, isHttpError } from 'http-errors';
+import { splitPrefixIntoParts } from '../../utils/prefix';
+import { setSource, setDataset, canonicalizeDataset, setNarrative } from '../sources';
+import './setAvailableDatasets'; // sets globals
+import getAvailable from './getAvailable';
+import getDataset from './getDataset';
+import getNarrative from './getNarrative';
+import getSourceInfo from './getSourceInfo';
 
 const setSourceFromPrefix = setSource(req => {
   const prefix = req.query.prefix;
@@ -49,7 +47,7 @@ const setNarrativeFromPrefix = setNarrative(req => {
   return prefixParts.join("/");
 });
 
-module.exports = {
+export default {
   setSourceFromPrefix,
   setDatasetFromPrefix,
   canonicalizeDatasetPrefix,

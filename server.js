@@ -1,7 +1,6 @@
-const argparse = require('argparse');
-const http = require("http");
-
-const utils = require("./src/utils");
+import argparse from 'argparse';
+import http from 'http';
+import utils from './src/utils';
 
 const version = utils.getGitHash();
 const nextstrainAbout = `
@@ -26,7 +25,7 @@ const port = process.env.PORT || 5000;
 /* Import app after setting global.verbose so that calls to utils.verbose()
  * respect our --verbose option as expected.
  */
-const app = require("./src/app");
+import app from './src/app';
 
 app.set("port", port);
 

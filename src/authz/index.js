@@ -1,10 +1,8 @@
-const assert = require("assert").strict;
-
-const {AuthzDenied} = require("../exceptions");
-const {Source, Resource} = require("../sources/models");
-
-const actions = require("./actions");
-const tags = require("./tags");
+import { strict as assert } from 'assert';
+import { AuthzDenied } from '../exceptions';
+import { Source, Resource } from '../sources/models';
+import actions from './actions';
+import tags from './tags';
 
 /**
  * Checks if a user is allowed to take an action on an object.
@@ -121,7 +119,7 @@ const assertAuthorized = (user, action, object) => {
 };
 
 
-module.exports = {
+export default {
   authorized,
   assertAuthorized,
   evaluatePolicy,

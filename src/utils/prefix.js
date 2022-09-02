@@ -1,6 +1,5 @@
-const {NotFound} = require("http-errors");
-
-const sources = require("../sources");
+import { NotFound } from 'http-errors';
+import sources from '../sources';
 
 
 /* Map old source "names" to their classes and vice versa to avoid dramatically
@@ -160,7 +159,7 @@ const canonicalizePrefix = async (prefix) =>
   joinPartsIntoPrefix(splitPrefixIntoParts(prefix));
 
 
-module.exports = {
+export default {
   splitPrefixIntoParts,
   joinPartsIntoPrefix,
   canonicalizePrefix,

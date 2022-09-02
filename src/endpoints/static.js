@@ -1,9 +1,8 @@
-const express = require("express");
-const expressStaticGzip = require("express-static-gzip");
-const {InternalServerError} = require("http-errors");
-const path = require("path");
-
-const utils = require("../utils");
+import express from 'express';
+import expressStaticGzip from 'express-static-gzip';
+import { InternalServerError } from 'http-errors';
+import path from 'path';
+import utils from '../utils';
 
 
 /* Path helpers for our handlers below.
@@ -156,7 +155,7 @@ const sendGatsby404 = async (req, res) => {
  */
 
 
-module.exports = {
+export default {
   auspiceAssets,
   gatsbyAssets,
 

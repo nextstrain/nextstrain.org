@@ -1,4 +1,4 @@
-const {validateGroupName, assertValidGroupName, normalizeGroupName} = require("../src/groups");
+import { validateGroupName, assertValidGroupName, normalizeGroupName } from '../src/groups';
 
 describe("validate", () => {
   const repeat = (str, n) => Array(n+1).join(str);

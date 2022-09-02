@@ -1,10 +1,10 @@
-const charon = require("./charon");
-const cli = require("./cli");
-const sources = require("./sources");
-const static_ = require("./static");
-const users = require("./users");
+import charon from './charon';
+import cli from './cli';
+import sources from './sources';
+import static_ from './static';
+import users from './users';
 
-module.exports = {
+export default {
   charon,
   cli,
   sources,

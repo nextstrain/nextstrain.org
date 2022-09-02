@@ -1,5 +1,5 @@
-const Benchmark = require("benchmark");
-const {randomKey} = require("../src/cryptography");
+import Benchmark from 'benchmark';
+import { randomKey } from '../src/cryptography';
 
 
 /* Allow each test() to require() modules separately so we can explicitly test

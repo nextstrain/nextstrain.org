@@ -1,6 +1,7 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
-const authz = require("../authz");
-const {Source, Dataset, DatasetSubresource, Narrative, NarrativeSubresource} = require("./models");
+import authz from '../authz';
+
+import { Source, Dataset, DatasetSubresource, Narrative, NarrativeSubresource } from './models';
 
 class UrlDefinedSource extends Source {
   constructor(authority) {
@@ -103,6 +104,6 @@ class UrlDefinedNarrativeSubresource extends NarrativeSubresource {
   }
 }
 
-module.exports = {
+export default {
   UrlDefinedSource,
 };

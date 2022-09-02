@@ -16,4 +16,4 @@ const allValues = new Set(Object.values(actions));
 actions.has = action => allValues.has(action);
 
 // Freeze for export so this "can't" be modified by callers.
-module.exports = Object.freeze(actions);
+export default Object.freeze(actions);

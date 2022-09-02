@@ -1,6 +1,7 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
-const authzTags = require("../authz/tags");
-const {fetch} = require("../fetch");
+import authzTags from '../authz/tags';
+
+import { fetch } from '../fetch';
 
 /* The model classes here are the base classes for the classes defined in
  * ./core.js, ./community.js, ./groups.js, etc.
@@ -310,7 +311,7 @@ class NarrativeSubresource extends Subresource {
 }
 
 
-module.exports = {
+export default {
   Source,
   Resource,
   Subresource,

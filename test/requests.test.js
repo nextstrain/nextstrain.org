@@ -4,9 +4,10 @@
  *   no-multi-spaces: Aligned paths make for easier reading
  */
 
-const {parse: parseContentType} = require("content-type");
-const fetch = require("node-fetch");
-const fs = require("fs");
+import { parse as parseContentType } from 'content-type';
+
+import fetch from 'node-fetch';
+import fs from 'fs';
 
 const auspiceEntrypoint = fs.readFileSync("auspice-client/dist/index.html").toString();
 const gatsby404 = fs.readFileSync("static-site/public/404.html").toString();

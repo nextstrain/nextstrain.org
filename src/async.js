@@ -207,10 +207,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-const assert = require('assert');
-const express = require('express');
+import assert from 'assert';
 
-module.exports = {
+import express from 'express';
+
+export default {
   addAsync,
   decorateApp: addAsync,
   decorateRouter: addAsync,

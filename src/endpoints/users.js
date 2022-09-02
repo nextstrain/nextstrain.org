@@ -1,8 +1,8 @@
-const authz = require("../authz");
-const {ALL_GROUPS} = require("../groups");
-const {contentTypesProvided} = require("../negotiate");
-const {GroupSource} = require("../sources");
-const {sendGatsbyPage} = require("./static");
+import authz from '../authz';
+import { ALL_GROUPS } from '../groups';
+import { contentTypesProvided } from '../negotiate';
+import { GroupSource } from '../sources';
+import { sendGatsbyPage } from './static';
 
 
 /**
@@ -36,6 +36,6 @@ const getWhoami = contentTypesProvided([
 ]);
 
 
-module.exports = {
+export default {
   getWhoami,
 };

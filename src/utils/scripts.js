@@ -1,7 +1,7 @@
-const {Console} = require("console");
-const process = require("process");
-const {spawn} = require("child_process");
-const {Transform} = require("stream");
+import { Console } from 'console';
+import process from 'process';
+import { spawn } from 'child_process';
+import { Transform } from 'stream';
 
 
 /**
@@ -101,7 +101,7 @@ async function run(argv) {
 }
 
 
-module.exports = {
+export default {
   setupConsole,
   reportUnhandledRejectionsAtExit,
   run,

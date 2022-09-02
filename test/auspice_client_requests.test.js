@@ -1,6 +1,6 @@
 
-const urlsToTest = require("./auspice_client_requests.json");
-const fetch = require('node-fetch');
+import urlsToTest from './auspice_client_requests.json';
+import fetch from 'node-fetch';
 
 // As some of the APIs we're calling will themselves call  GitHub APIs
 // we set a lenient timeout

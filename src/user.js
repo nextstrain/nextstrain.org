@@ -4,7 +4,7 @@
  * @module user
  */
 
-const {REDIS} = require("./redis");
+import { REDIS } from './redis';
 
 
 /**
@@ -78,7 +78,7 @@ async function markUserStaleBeforeNow(username) {
 }
 
 
-module.exports = {
+export default {
   userStaleBefore,
   markUserStaleBeforeNow,
 };

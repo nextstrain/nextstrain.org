@@ -1,5 +1,5 @@
-const {NotAcceptable, UnsupportedMediaType} = require("http-errors");
-const mime = require("mime");
+import { NotAcceptable, UnsupportedMediaType } from 'http-errors';
+import mime from 'mime';
 
 
 /**
@@ -117,7 +117,7 @@ function contentTypesConsumed(providers) {
 }
 
 
-module.exports = {
+export default {
   contentTypesProvided,
   contentTypesConsumed,
 };
