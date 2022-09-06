@@ -1,6 +1,8 @@
 import { strict as assert } from 'assert';
 import { NotFound } from './httpErrors.js';
-import GROUPS_DATA from '../data/groups.json';
+
+import { readFile } from 'fs/promises';
+const GROUPS_DATA = JSON.parse(await readFile(new URL('../data/groups.json', import.meta.url)));
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
