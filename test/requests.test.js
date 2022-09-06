@@ -4,7 +4,7 @@
  *   no-multi-spaces: Aligned paths make for easier reading
  */
 
-import { parse as parseContentType } from 'content-type';
+import contentType from 'content-type';
 
 import fetch from 'node-fetch';
 import fs from 'fs';
@@ -274,7 +274,7 @@ function testPathMediaTypes({path, mediaTypes, additionalAcceptableTypes, checkB
       test(`content-type is one of ${acceptableMediaTypes.join(", ")}`, async () => {
         const res = await req;
 
-        expect(parseContentType(res.headers.get("Content-Type")).type)
+        expect(contentType.parse(res.headers.get("Content-Type")).type)
           .toBeOneOf(acceptableMediaTypes);
       });
 
