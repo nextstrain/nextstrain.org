@@ -1,5 +1,5 @@
 import { BadRequest, InternalServerError, NotFound } from 'http-errors';
-import { fetch } from '../fetch';
+import { fetch } from '../fetch.js';
 
 
 const authorization = process.env.GITHUB_TOKEN

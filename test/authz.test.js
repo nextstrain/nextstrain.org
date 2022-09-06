@@ -1,8 +1,8 @@
 import yaml from 'js-yaml';
-import authz from '../src/authz';
-import { AuthzDenied } from '../src/exceptions';
-import json from '../src/json';
-import { CoreSource, GroupSource } from '../src/sources';
+import authz from '../src/authz/index.js';
+import { AuthzDenied } from '../src/exceptions.js';
+import json from '../src/json.js';
+import { CoreSource, GroupSource } from '../src/sources/index.js';
 
 const {Read, Write} = authz.actions;
 const {Type, Visibility} = authz.tags;

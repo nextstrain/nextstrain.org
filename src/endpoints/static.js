@@ -2,7 +2,7 @@ import express from 'express';
 import expressStaticGzip from 'express-static-gzip';
 import { InternalServerError } from 'http-errors';
 import path from 'path';
-import utils from '../utils';
+import utils from '../utils/index.js';
 
 
 /* Path helpers for our handlers below.

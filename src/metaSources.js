@@ -1,7 +1,7 @@
-import authz from './authz';
-import { ALL_GROUPS } from './groups';
-import { GroupSource } from './sources';
-import utils from './utils';
+import authz from './authz/index.js';
+import { ALL_GROUPS } from './groups.js';
+import { GroupSource } from './sources/index.js';
+import utils from './utils/index.js';
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 

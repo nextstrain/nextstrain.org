@@ -1,7 +1,7 @@
 import auspice from 'auspice';
 import { NotFound, InternalServerError } from 'http-errors';
-import utils from '../../utils';
-import { sendDatasetSubresource } from '../sources';
+import utils from '../../utils/index.js';
+import { sendDatasetSubresource } from '../sources.js';
 
 /**
  * Fetch dataset in v1 format (meta + tree files), converting to v2 format

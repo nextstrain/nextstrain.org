@@ -19,7 +19,7 @@
 
 import Redis from 'ioredis';
 
-import utils from './utils';
+import utils from './utils/index.js';
 
 
 /**

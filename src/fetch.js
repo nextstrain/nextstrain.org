@@ -1,5 +1,5 @@
 import __fetch from 'make-fetch-happen';
-import utils from './utils';
+import utils from './utils/index.js';
 
 const FETCH_OPTIONS = Symbol("Request options for make-fetch-happen");
 

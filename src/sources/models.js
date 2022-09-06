@@ -1,7 +1,7 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
-import authzTags from '../authz/tags';
+import authzTags from '../authz/tags.js';
 
-import { fetch } from '../fetch';
+import { fetch } from '../fetch.js';
 
 /* The model classes here are the base classes for the classes defined in
  * ./core.js, ./community.js, ./groups.js, etc.

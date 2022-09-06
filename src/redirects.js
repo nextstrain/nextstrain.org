@@ -1,6 +1,6 @@
 import url from 'url';
-import { splitPrefixIntoParts } from './utils/prefix';
-import { parseNarrativeLanguage } from './utils';
+import { splitPrefixIntoParts } from './utils/prefix.js';
+import { parseNarrativeLanguage } from './utils/index.js';
 
 const setup = (app) => {
 

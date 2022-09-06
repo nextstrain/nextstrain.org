@@ -1,4 +1,4 @@
-import { normalizeHeaders } from '../src/utils';
+import { normalizeHeaders } from '../src/utils/index.js';
 
 /* eslint-disable indent */
 const cases = [

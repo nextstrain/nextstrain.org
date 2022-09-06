@@ -1,5 +1,5 @@
 import { NotFound } from 'http-errors';
-import sources from '../sources';
+import sources from '../sources/index.js';
 
 
 /* Map old source "names" to their classes and vice versa to avoid dramatically

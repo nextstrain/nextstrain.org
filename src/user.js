@@ -4,7 +4,7 @@
  * @module user
  */
 
-import { REDIS } from './redis';
+import { REDIS } from './redis.js';
 
 
 /**

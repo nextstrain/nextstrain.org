@@ -1,8 +1,8 @@
-import charon from './charon';
-import cli from './cli';
-import sources from './sources';
-import static_ from './static';
-import users from './users';
+import charon from './charon/index.js';
+import cli from './cli.js';
+import sources from './sources.js';
+import static_ from './static.js';
+import users from './users.js';
 
 export default {
   charon,

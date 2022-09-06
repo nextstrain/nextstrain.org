@@ -1,8 +1,8 @@
-import authz from '../authz';
-import { ALL_GROUPS } from '../groups';
-import { contentTypesProvided } from '../negotiate';
-import { GroupSource } from '../sources';
-import { sendGatsbyPage } from './static';
+import authz from '../authz/index.js';
+import { ALL_GROUPS } from '../groups.js';
+import { contentTypesProvided } from '../negotiate.js';
+import { GroupSource } from '../sources/index.js';
+import { sendGatsbyPage } from './static.js';
 
 
 /**

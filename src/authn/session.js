@@ -1,4 +1,4 @@
-import { keyringFromParamString, encrypt, decrypt, randomKey } from '../cryptography';
+import { keyringFromParamString, encrypt, decrypt, randomKey } from '../cryptography.js';
 
 
 const PRODUCTION = process.env.NODE_ENV === "production";

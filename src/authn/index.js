@@ -17,14 +17,14 @@ import { jwtVerify } from 'jose/jwt/verify';                   // eslint-disable
 import { createRemoteJWKSet } from 'jose/jwks/remote';         // eslint-disable-line import/no-unresolved
 import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/errors';   // eslint-disable-line import/no-unresolved
 import partition from 'lodash.partition';
-import BearerStrategy from './bearer';
-import { getTokens, setTokens, deleteTokens } from './session';
-import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions';
-import { fetch } from '../fetch';
-import { copyCookie } from '../middleware';
-import { REDIS } from '../redis';
-import { userStaleBefore } from '../user';
-import utils from '../utils';
+import BearerStrategy from './bearer.js';
+import { getTokens, setTokens, deleteTokens } from './session.js';
+import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
+import { fetch } from '../fetch.js';
+import { copyCookie } from '../middleware.js';
+import { REDIS } from '../redis.js';
+import { userStaleBefore } from '../user.js';
+import utils from '../utils/index.js';
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 

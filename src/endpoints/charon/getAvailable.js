@@ -1,8 +1,8 @@
-import authz from '../../authz';
-import { CommunitySource } from '../../sources';
-import utils from '../../utils';
-import { splitPrefixIntoParts, joinPartsIntoPrefix } from '../../utils/prefix';
-import metaSources from '../../metaSources';
+import authz from '../../authz/index.js';
+import { CommunitySource } from '../../sources/index.js';
+import utils from '../../utils/index.js';
+import { splitPrefixIntoParts, joinPartsIntoPrefix } from '../../utils/prefix.js';
+import metaSources from '../../metaSources.js';
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {

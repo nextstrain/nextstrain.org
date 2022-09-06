@@ -1,5 +1,5 @@
 import Benchmark from 'benchmark';
-import { randomKey } from '../src/cryptography';
+import { randomKey } from '../src/cryptography.js';
 
 
 /* Allow each test() to require() modules separately so we can explicitly test

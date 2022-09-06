@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import utils from '../../utils';
+import utils from '../../utils/index.js';
 
 /* Build the available datasets by querying the manifest JSONs
  * Note that this will require restarting the server to update!

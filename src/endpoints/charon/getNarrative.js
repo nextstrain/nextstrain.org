@@ -1,5 +1,5 @@
 import { BadRequest } from 'http-errors';
-import { sendNarrativeSubresource } from '../sources';
+import { sendNarrativeSubresource } from '../sources.js';
 
 const getNarrative = async (req, res) => {
   const query = req.query;

@@ -1,4 +1,4 @@
-import { validateGroupName, assertValidGroupName, normalizeGroupName } from '../src/groups';
+import { validateGroupName, assertValidGroupName, normalizeGroupName } from '../src/groups.js';
 
 describe("validate", () => {
   const repeat = (str, n) => Array(n+1).join(str);

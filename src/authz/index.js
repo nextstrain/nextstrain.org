@@ -1,8 +1,8 @@
 import { strict as assert } from 'assert';
-import { AuthzDenied } from '../exceptions';
-import { Source, Resource } from '../sources/models';
-import actions from './actions';
-import tags from './tags';
+import { AuthzDenied } from '../exceptions.js';
+import { Source, Resource } from '../sources/models.js';
+import actions from './actions.js';
+import tags from './tags.js';
 
 /**
  * Checks if a user is allowed to take an action on an object.
