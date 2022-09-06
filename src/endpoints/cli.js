@@ -1,4 +1,4 @@
-import { BadRequest, InternalServerError, NotFound } from 'http-errors';
+import { BadRequest, InternalServerError, NotFound } from '../httpErrors.js';
 import { fetch } from '../fetch.js';
 
 

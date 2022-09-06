@@ -1,5 +1,5 @@
 import auspice from 'auspice';
-import { NotFound, InternalServerError } from 'http-errors';
+import { NotFound, InternalServerError } from '../../httpErrors.js';
 import utils from '../../utils/index.js';
 import { sendDatasetSubresource } from '../sources.js';
 

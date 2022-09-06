@@ -2,7 +2,7 @@
 import authz from '../authz/index.js';
 
 import { fetch } from '../fetch.js';
-import { NotFound } from 'http-errors';
+import { NotFound } from '../httpErrors.js';
 import utils from '../utils/index.js';
 import { Source, Dataset, Narrative } from './models.js';
 

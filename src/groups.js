@@ -1,5 +1,5 @@
 import { strict as assert } from 'assert';
-import { NotFound } from 'http-errors';
+import { NotFound } from './httpErrors.js';
 import GROUPS_DATA from '../data/groups.json';
 
 const PRODUCTION = process.env.NODE_ENV === "production";

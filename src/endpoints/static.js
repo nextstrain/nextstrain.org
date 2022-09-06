@@ -1,6 +1,6 @@
 import express from 'express';
 import expressStaticGzip from 'express-static-gzip';
-import { InternalServerError } from 'http-errors';
+import { InternalServerError } from '../httpErrors.js';
 import path from 'path';
 import utils from '../utils/index.js';
 

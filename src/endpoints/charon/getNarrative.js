@@ -1,4 +1,4 @@
-import { BadRequest } from 'http-errors';
+import { BadRequest } from '../../httpErrors.js';
 import { sendNarrativeSubresource } from '../sources.js';
 
 const getNarrative = async (req, res) => {

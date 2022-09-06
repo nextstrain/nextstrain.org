@@ -1,4 +1,4 @@
-import { BadRequest, isHttpError } from 'http-errors';
+import { BadRequest, isHttpError } from '../../httpErrors.js';
 import { splitPrefixIntoParts } from '../../utils/prefix.js';
 import { setSource, setDataset, canonicalizeDataset, setNarrative } from '../sources.js';
 import './setAvailableDatasets.js'; // sets globals

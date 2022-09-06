@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { BadRequest } from 'http-errors';
+import { BadRequest } from './httpErrors.js';
 import utils from './utils/index.js';
 
 

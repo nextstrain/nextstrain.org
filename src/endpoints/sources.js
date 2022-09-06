@@ -6,7 +6,7 @@
 
 import { parse as parseContentType } from 'content-type';
 
-import { InternalServerError, NotFound, UnsupportedMediaType } from 'http-errors';
+import { InternalServerError, NotFound, UnsupportedMediaType } from '../httpErrors.js';
 import negotiateMediaType from 'negotiator/lib/mediaType.js';
 import stream from 'stream';
 import { promisify } from 'util';

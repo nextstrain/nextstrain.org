@@ -1,4 +1,4 @@
-import { NotFound } from 'http-errors';
+import { NotFound } from '../httpErrors.js';
 import sources from '../sources/index.js';
 
 

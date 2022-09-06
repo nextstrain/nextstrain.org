@@ -7,7 +7,7 @@ import compression from 'compression';
 import utils from './utils/index.js';
 import cors from 'cors';
 import { addAsync } from './async.js';
-import { Forbidden, NotFound, Unauthorized } from 'http-errors';
+import { Forbidden, NotFound, Unauthorized } from './httpErrors.js';
 import stream from 'stream';
 import { promisify } from 'util';
 

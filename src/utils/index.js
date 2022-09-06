@@ -1,7 +1,7 @@
 import fs from 'fs';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
-import { NotFound } from 'http-errors';
+import { NotFound } from '../httpErrors.js';
 
 
 const getGitHash = () => {
