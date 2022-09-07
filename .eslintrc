@@ -1,7 +1,7 @@
 ---
 extends: "airbnb"
 plugins: ["react-hooks", "jest"]
-parser: "babel-eslint"
+parser: "@babel/eslint-parser"
 globals:
   BASE_URL: true
 ignorePatterns: ["static-site/", "auspice-client/"]
@@ -63,6 +63,7 @@ parserOptions:
   sourceType: module
   ecmaFeatures:
     modules: true
+  requireConfigFile: false
 env:
   jest: true
   browser: true
