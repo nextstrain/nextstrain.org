@@ -1,6 +1,7 @@
 // Server handlers for authentication (authn).  Authorization (authz) is done
 // in the server's charon handlers.
 //
+/* eslint-disable import/first */
 import { strict as assert } from 'assert';
 
 import debugFactory from 'debug';

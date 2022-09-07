@@ -25,6 +25,7 @@ const port = process.env.PORT || 5000;
 /* Import app after setting global.verbose so that calls to utils.verbose()
  * respect our --verbose option as expected.
  */
+/* eslint-disable import/first */
 import app from './src/app.js';
 
 app.set("port", port);
