@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import { NotFound } from './httpErrors.js';
 
-/* eslint-disable-next-line import/first */
+/* eslint-disable-next-line import/first, import/newline-after-import */
 import { readFile } from 'fs/promises';
 const GROUPS_DATA = JSON.parse(await readFile(new URL('../data/groups.json', import.meta.url)));
 
