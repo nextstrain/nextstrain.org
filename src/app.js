@@ -4,10 +4,7 @@ import sslRedirect from 'heroku-ssl-redirect';
 import nakedRedirect from 'express-naked-redirect';
 import express from 'express';
 import compression from 'compression';
-import * as utils from './utils/index.js';
 import cors from 'cors';
-import { addAsync } from './async.js';
-import { Forbidden, NotFound, Unauthorized } from './httpErrors.js';
 import stream from 'stream';
 import { promisify } from 'util';
 
@@ -20,6 +17,9 @@ const streamFinished = promisify(stream.finished);
 const PRODUCTION = process.env.NODE_ENV === "production";
 const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
 
+import * as utils from './utils/index.js';
+import { addAsync } from './async.js';
+import { Forbidden, NotFound, Unauthorized } from './httpErrors.js';
 import * as authn from './authn/index.js';
 import * as endpoints from './endpoints/index.js';
 import { AuthzDenied } from './exceptions.js';

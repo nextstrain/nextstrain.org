@@ -6,12 +6,12 @@
 
 import { parse as parseContentType } from 'content-type';
 
-import { InternalServerError, NotFound, UnsupportedMediaType } from '../httpErrors.js';
 import negotiateMediaType from 'negotiator/lib/mediaType.js';
 import stream from 'stream';
 import { promisify } from 'util';
 import zlib from 'zlib';
 import readStream from 'raw-body';
+import { InternalServerError, NotFound, UnsupportedMediaType } from '../httpErrors.js';
 import * as authz from '../authz/index.js';
 import { contentTypesProvided, contentTypesConsumed } from '../negotiate.js';
 import { fetch, Request } from '../fetch.js';

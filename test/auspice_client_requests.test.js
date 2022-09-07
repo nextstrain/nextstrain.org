@@ -1,6 +1,6 @@
 import {jest} from '@jest/globals';
-import urlsToTest from './auspice_client_requests.json';
 import fetch from 'node-fetch';
+import urlsToTest from './auspice_client_requests.json';
 
 // As some of the APIs we're calling will themselves call  GitHub APIs
 // we set a lenient timeout

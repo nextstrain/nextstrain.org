@@ -1,5 +1,5 @@
-import { NotAcceptable, UnsupportedMediaType } from './httpErrors.js';
 import mime from 'mime';
+import { NotAcceptable, UnsupportedMediaType } from './httpErrors.js';
 
 
 /**
