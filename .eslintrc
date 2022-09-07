@@ -61,6 +61,8 @@ rules:
 parserOptions:
   sourceType: module
   requireConfigFile: false
+  babelOptions:
+    plugins: ["@babel/plugin-proposal-class-properties"]
 env:
   jest: true
   browser: true
