@@ -64,7 +64,6 @@ parserOptions:
   ecmaFeatures:
     modules: true
 env:
-  es6: true
   jest: true
   browser: true
 
