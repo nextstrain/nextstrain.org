@@ -59,10 +59,7 @@ rules:
   no-use-before-define: ["error", { "functions": false }]
   no-return-await: off
 parserOptions:
-  ecmaVersion: 6
   sourceType: module
-  ecmaFeatures:
-    modules: true
   requireConfigFile: false
 env:
   jest: true
