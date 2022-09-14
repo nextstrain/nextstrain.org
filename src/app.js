@@ -342,6 +342,9 @@ app.route(["/users", "/users/:name"])
 app.routeAsync("/cli/download/:version/:assetSuffix")
   .getAsync(endpoints.cli.download);
 
+app.routeAsync("/cli/installer/:os")
+  .getAsync(endpoints.cli.installer);
+
 app.route("/cli")
   .get((req, res) => res.redirect("https://docs.nextstrain.org/projects/cli/"));
 

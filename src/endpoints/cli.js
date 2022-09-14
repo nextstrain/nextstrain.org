@@ -41,6 +41,23 @@ const download = async (req, res) => {
 };
 
 
+const installer = (req, res) => {
+  const os = req.params.os;
+  switch (os) {
+    case "linux":
+    case "mac":
+      return res.redirect("https://github.com/nextstrain/cli/raw/HEAD/bin/standalone-installer-unix");
+
+    case "windows":
+      return res.redirect("https://github.com/nextstrain/cli/raw/HEAD/bin/standalone-installer-windows");
+
+    default:
+      throw new NotFound(`No installer for OS: ${os}`);
+  }
+};
+
+
 module.exports = {
   download,
+  installer,
 };
