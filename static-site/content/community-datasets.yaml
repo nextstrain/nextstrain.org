@@ -208,3 +208,7 @@ data:
     maintainers: Grupo Inmunovirologia, facultad de medicina, Universidad de Antioquia, Medellin, Colombia
     date: '2022-05-18'
     title: Genomic epidemiology of SARS-CoV-2 in Colombia
+  - url : https://nextstrain.org/community/KelianP/RYMV-WA
+    maintainers: Kelian Perez, Stephane Guindon (LIRMM, CNRS)
+    date: '2022-09-13'
+    title: Epidemic history of RYMV in West Africa (Using BEAST and DiscretizeMCC methodology)
