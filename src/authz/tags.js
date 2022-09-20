@@ -24,4 +24,4 @@ const tags = {
 };
 
 // Freeze for export so this "can't" be modified by callers.
-module.exports = Object.freeze(tags);
+export default Object.freeze(tags);

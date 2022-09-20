@@ -1,5 +1,5 @@
-const {BadRequest, InternalServerError, NotFound} = require("http-errors");
-const {fetch} = require("../fetch");
+import { BadRequest, InternalServerError, NotFound } from '../httpErrors.js';
+import { fetch } from '../fetch.js';
 
 
 const authorization = process.env.GITHUB_TOKEN
@@ -57,7 +57,7 @@ const installer = (req, res) => {
 };
 
 
-module.exports = {
+export {
   download,
   installer,
 };

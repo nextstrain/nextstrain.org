@@ -32,7 +32,7 @@ class AuthnTokenTooOld extends NextstrainError {}
 class AuthzDenied extends NextstrainError {}
 
 
-module.exports = {
+export {
   AuthnRefreshTokenInvalid,
   AuthnTokenTooOld,
   AuthzDenied,

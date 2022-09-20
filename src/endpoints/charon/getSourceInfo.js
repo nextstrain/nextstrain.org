@@ -6,7 +6,6 @@ const getSourceInfo = async (req, res) => {
 };
 
 
-module.exports = {
+export {
   getSourceInfo,
-  default: getSourceInfo
 };

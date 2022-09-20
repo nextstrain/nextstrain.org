@@ -1,6 +1,6 @@
-const url = require('url');
-const { splitPrefixIntoParts } = require("./utils/prefix");
-const { parseNarrativeLanguage } = require("./utils");
+import url from 'url';
+import { splitPrefixIntoParts } from './utils/prefix.js';
+import { parseNarrativeLanguage } from './utils/index.js';
 
 const setup = (app) => {
 
@@ -136,6 +136,6 @@ const setup = (app) => {
 
 };
 
-module.exports = {
+export {
   setup
 };

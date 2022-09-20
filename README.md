@@ -202,7 +202,7 @@ instead.
 
 To run a single test or small number of test files, run a local server and invoke Jest directly, for example:
 
-    npx jest --run-tests-by-path test/routing.test.js
+    NODE_OPTIONS='--experimental-vm-modules' npx jest --run-tests-by-path test/routing.test.js
 
 ---
 

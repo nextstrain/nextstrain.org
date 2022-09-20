@@ -1,9 +1,12 @@
-const express = require("express");
-const expressStaticGzip = require("express-static-gzip");
-const {InternalServerError} = require("http-errors");
-const path = require("path");
+import express from 'express';
+import expressStaticGzip from 'express-static-gzip';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { InternalServerError } from '../httpErrors.js';
+import * as utils from '../utils/index.js';
 
-const utils = require("../utils");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 /* Path helpers for our handlers below.
@@ -93,8 +96,8 @@ const sendGatsbyPage = (page) => async (req, res) => {
   if (req.app.locals.gatsbyDevUrl) {
     const pageUrl = (new URL(page, req.app.locals.gatsbyDevUrl)).toString();
 
-    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-    const proxy = require("http-proxy").createProxyServer({
+    /* eslint-disable-next-line import/no-extraneous-dependencies */
+    const proxy = (await import("http-proxy")).createProxyServer({
       target: pageUrl,
       ignorePath: true, // ignore req.path since pageUrl is fully specified
     });
@@ -156,7 +159,7 @@ const sendGatsby404 = async (req, res) => {
  */
 
 
-module.exports = {
+export {
   auspiceAssets,
   gatsbyAssets,
 

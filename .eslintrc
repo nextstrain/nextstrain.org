@@ -1,9 +1,10 @@
 ---
 extends: "airbnb"
 plugins: ["react-hooks", "jest"]
-parser: "babel-eslint"
+parser: "@babel/eslint-parser"
 globals:
   BASE_URL: true
+ignorePatterns: ["static-site/", "auspice-client/"]
 rules:
   camelcase: off # require camel case names
   prefer-template: off
@@ -42,6 +43,7 @@ rules:
   react/prop-types: off # possibly reinstate
   react/sort-comp: off # possibly reinstate
   jsx-a11y/no-static-element-interactions: off
+  import/extensions: ["error", { "js": "ignorePackages", }] # because we are using the `explicit` resolution algorithm for ES module specifiers https://nodejs.org/docs/latest-v14.x/api/cli.html#cli_experimental_specifier_resolution_mode
   import/prefer-default-export: off
   no-multi-spaces: ["error", { ignoreEOLComments: true }]
   no-labels: off
@@ -57,13 +59,12 @@ rules:
   no-use-before-define: ["error", { "functions": false }]
   no-return-await: off
 parserOptions:
-  ecmaVersion: 6
   sourceType: module
-  ecmaFeatures:
-    modules: true
+  requireConfigFile: false
+  babelOptions:
+    plugins: ["@babel/plugin-proposal-class-properties"]
 env:
-  es6: true
+  jest: true
   browser: true
-  "jest/globals": true
 
 # https://gist.github.com/odedw/cf14a55aa154adbc3bf7#file-eslintrc-yaml-L4

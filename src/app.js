@@ -1,14 +1,12 @@
 /* eslint no-console: off */
-const sslRedirect = require('heroku-ssl-redirect');
-const nakedRedirect = require('express-naked-redirect');
-const express = require("express");
-const compression = require('compression');
-const utils = require("./utils");
-const cors = require('cors');
-const {addAsync} = require("./async");
-const {Forbidden, NotFound, Unauthorized} = require("http-errors");
-const stream = require("stream");
-const {promisify} = require("util");
+import sslRedirect from 'heroku-ssl-redirect';
+
+import nakedRedirect from 'express-naked-redirect';
+import express from 'express';
+import compression from 'compression';
+import cors from 'cors';
+import stream from 'stream';
+import { promisify } from 'util';
 
 /* XXX TODO: Replace promisify() with require("stream/promises") once we
  * upgrade to Node 15+.
@@ -19,13 +17,17 @@ const streamFinished = promisify(stream.finished);
 const PRODUCTION = process.env.NODE_ENV === "production";
 const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
 
-const authn = require("./authn");
-const endpoints = require("./endpoints");
-const {AuthzDenied} = require("./exceptions");
-const {replacer: jsonReplacer} = require("./json");
-const middleware = require("./middleware");
-const redirects = require("./redirects");
-const sources = require("./sources");
+/* eslint-disable import/first */
+import * as utils from './utils/index.js';
+import { addAsync } from './async.js';
+import { Forbidden, NotFound, Unauthorized } from './httpErrors.js';
+import * as authn from './authn/index.js';
+import * as endpoints from './endpoints/index.js';
+import { AuthzDenied } from './exceptions.js';
+import { replacer as jsonReplacer } from './json.js';
+import * as middleware from './middleware.js';
+import * as redirects from './redirects.js';
+import * as sources from './sources/index.js';
 
 const {
   setSource,
@@ -399,11 +401,11 @@ app.route("/dist/*")
  * instead of served straight from disk.
  */
 if (app.locals.gatsbyDevUrl) {
-  // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-  const {createProxyMiddleware} = require("http-proxy-middleware");
+  /* eslint-disable-next-line import/no-extraneous-dependencies */
+  const {createProxyMiddleware} = await import("http-proxy-middleware");
 
   // WebSocket endpoint
-  app.get("/socket.io/", createProxyMiddleware(app.locals.gatsbyDevUrl, {ws: true}));
+  app.get("/socket.io/", createProxyMiddleware(app.locals.gatsbyDevUrl, { ws: true }));
 
   /* This is the end of the line in gatsbyDevUrl mode, as the proxy middleware
    * doesn't fallthrough on 404 and even if it did the Gatsby dev server
@@ -515,4 +517,4 @@ app.useAsync(async (err, req, res, next) => {
 });
 
 
-module.exports = app;
+export default app;

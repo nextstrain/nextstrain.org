@@ -1,7 +1,6 @@
-const argparse = require('argparse');
-const http = require("http");
-
-const utils = require("./src/utils");
+import argparse from 'argparse';
+import http from 'http';
+import * as utils from './src/utils/index.js';
 
 const version = utils.getGitHash();
 const nextstrainAbout = `
@@ -26,7 +25,8 @@ const port = process.env.PORT || 5000;
 /* Import app after setting global.verbose so that calls to utils.verbose()
  * respect our --verbose option as expected.
  */
-const app = require("./src/app");
+/* eslint-disable import/first */
+import app from './src/app.js';
 
 app.set("port", port);
 

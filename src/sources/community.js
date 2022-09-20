@@ -1,9 +1,10 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
-const authz = require("../authz");
-const {fetch} = require("../fetch");
-const {NotFound} = require('http-errors');
-const utils = require("../utils");
-const {Source, Dataset, Narrative} = require("./models");
+import * as authz from '../authz/index.js';
+
+import { fetch } from '../fetch.js';
+import { NotFound } from '../httpErrors.js';
+import * as utils from '../utils/index.js';
+import { Source, Dataset, Narrative } from './models.js';
 
 const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
@@ -171,6 +172,6 @@ class CommunityNarrative extends Narrative {
   }
 }
 
-module.exports = {
+export {
   CommunitySource,
 };

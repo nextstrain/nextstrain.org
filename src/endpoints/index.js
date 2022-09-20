@@ -1,13 +1,13 @@
-const charon = require("./charon");
-const cli = require("./cli");
-const sources = require("./sources");
-const static_ = require("./static");
-const users = require("./users");
+import * as charon from './charon/index.js';
+import * as cli from './cli.js';
+import * as sources from './sources.js';
+import * as static_ from './static.js';
+import * as users from './users.js';
 
-module.exports = {
+export {
   charon,
   cli,
   sources,
-  static: static_,
+  static_ as static,
   users,
 };

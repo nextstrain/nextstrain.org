@@ -1,7 +1,9 @@
-const assert = require("assert").strict;
-const {NotFound} = require("http-errors");
+import { strict as assert } from 'assert';
+import { NotFound } from './httpErrors.js';
 
-const GROUPS_DATA = require("../data/groups.json");
+/* eslint-disable-next-line import/first, import/newline-after-import */
+import { readFile } from 'fs/promises';
+const GROUPS_DATA = JSON.parse(await readFile(new URL('../data/groups.json', import.meta.url)));
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -190,7 +192,7 @@ const ALL_GROUPS = Array.from(GROUP_RECORDS.keys())
   .map(name => new Group(name));
 
 
-module.exports = {
+export {
   Group,
   assertValidGroupName,
   validateGroupName,

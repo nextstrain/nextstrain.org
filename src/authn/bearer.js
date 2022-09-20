@@ -12,8 +12,9 @@
 /**
  * Module dependencies.
  */
-var passport = require('passport-strategy')
-  , util = require('util');
+import passport from 'passport-strategy';
+
+import util from 'util';
 
 
 /**
@@ -161,4 +162,4 @@ Strategy.prototype._challenge = function(code, desc, uri) {
 /**
  * Expose `Strategy`.
  */
-module.exports = Strategy;
+export default Strategy;

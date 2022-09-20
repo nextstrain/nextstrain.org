@@ -1,26 +1,31 @@
 // Server handlers for authentication (authn).  Authorization (authz) is done
 // in the server's charon handlers.
 //
-const assert = require("assert").strict;
-const debug = require("debug")("nextstrain:authn");
-const querystring = require("querystring");
-const session = require("express-session");
-const RedisStore = require("connect-redis")(session);
-const FileStore = require("session-file-store")(session);
-const passport = require("passport");
-const OAuth2Strategy = require("passport-oauth2").Strategy;
-const {jwtVerify} = require('jose/jwt/verify');                   // eslint-disable-line import/no-unresolved
-const {createRemoteJWKSet} = require('jose/jwks/remote');         // eslint-disable-line import/no-unresolved
-const {JOSEError, JWTClaimValidationFailed, JWTExpired} = require('jose/util/errors');   // eslint-disable-line import/no-unresolved
-const partition = require("lodash.partition");
-const BearerStrategy = require("./bearer");
-const {getTokens, setTokens, deleteTokens} = require("./session");
-const {AuthnRefreshTokenInvalid, AuthnTokenTooOld} = require("../exceptions");
-const {fetch} = require("../fetch");
-const {copyCookie} = require("../middleware");
-const {REDIS} = require("../redis");
-const {userStaleBefore} = require("../user");
-const utils = require("../utils");
+/* eslint-disable import/first, import/newline-after-import */
+import { strict as assert } from 'assert';
+
+import debugFactory from 'debug';
+const debug = debugFactory("nextstrain:authn");
+import querystring from 'querystring';
+import session from 'express-session';
+import RedisStoreFactory from 'connect-redis';
+const RedisStore = RedisStoreFactory(session);
+import FileStoreFactory from 'session-file-store';
+const FileStore = FileStoreFactory(session);
+import passport from 'passport';
+import { Strategy as OAuth2Strategy } from 'passport-oauth2';
+import { jwtVerify } from 'jose/jwt/verify';                   // eslint-disable-line import/no-unresolved
+import { createRemoteJWKSet } from 'jose/jwks/remote';         // eslint-disable-line import/no-unresolved
+import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/errors';   // eslint-disable-line import/no-unresolved
+import partition from 'lodash.partition';
+import BearerStrategy from './bearer.js';
+import { getTokens, setTokens, deleteTokens } from './session.js';
+import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
+import { fetch } from '../fetch.js';
+import { copyCookie } from '../middleware.js';
+import { REDIS } from '../redis.js';
+import { userStaleBefore } from '../user.js';
+import * as utils from '../utils/index.js';
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -751,6 +756,6 @@ async function renewTokens(refreshToken) {
 }
 
 
-module.exports = {
+export {
   setup
 };

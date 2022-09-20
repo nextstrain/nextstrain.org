@@ -1,8 +1,7 @@
-const auspice = require("auspice");
-const {NotFound, InternalServerError} = require("http-errors");
-
-const utils = require("../../utils");
-const {sendDatasetSubresource} = require("../sources");
+import auspice from 'auspice';
+import { NotFound, InternalServerError } from '../../httpErrors.js';
+import * as utils from '../../utils/index.js';
+import { sendDatasetSubresource } from '../sources.js';
 
 /**
  * Fetch dataset in v1 format (meta + tree files), converting to v2 format
@@ -55,7 +54,6 @@ const getDataset = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getDataset,
-  default: getDataset
 };

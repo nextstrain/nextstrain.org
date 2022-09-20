@@ -1,12 +1,13 @@
 /* See ./models.js for an explanation of the design of these classes.
  */
 
-const {CoreSource, CoreStagingSource} = require("./core");
-const {CommunitySource} = require("./community");
-const {UrlDefinedSource} = require("./fetch");
-const {GroupSource} = require("./groups");
+import { CoreSource, CoreStagingSource } from './core.js';
 
-module.exports = {
+import { CommunitySource } from './community.js';
+import { UrlDefinedSource } from './fetch.js';
+import { GroupSource } from './groups.js';
+
+export {
   CoreSource,
   CoreStagingSource,
   CommunitySource,

@@ -1,5 +1,5 @@
-const __fetch = require("make-fetch-happen");
-const utils = require("./utils");
+import __fetch from 'make-fetch-happen';
+import * as utils from './utils/index.js';
 
 const FETCH_OPTIONS = Symbol("Request options for make-fetch-happen");
 
@@ -70,7 +70,7 @@ class Request extends __fetch.Request {
   get cache() { return this[FETCH_OPTIONS].cache; }
 }
 
-module.exports = {
+export {
   fetch,
   Request,
 };

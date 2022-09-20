@@ -1,6 +1,5 @@
-const {BadRequest} = require("http-errors");
-
-const {sendNarrativeSubresource} = require("../sources");
+import { BadRequest } from '../../httpErrors.js';
+import { sendNarrativeSubresource } from '../sources.js';
 
 const getNarrative = async (req, res) => {
   const query = req.query;
@@ -13,6 +12,6 @@ const getNarrative = async (req, res) => {
   return await sendNarrativeSubresource("md")(req, res);
 };
 
-module.exports = {
-  default: getNarrative
+export {
+  getNarrative,
 };

@@ -1,7 +1,7 @@
-const fs = require('fs');
-const chalk = require('chalk');
-const fetch = require('node-fetch');
-const {NotFound} = require('http-errors');
+import fs from 'fs';
+import chalk from 'chalk';
+import fetch from 'node-fetch';
+import { NotFound } from '../httpErrors.js';
 
 
 const getGitHash = () => {
@@ -129,7 +129,7 @@ const normalizeHeaders = (headers) => {
   return Object.fromEntries((new fetch.Headers(withValues)).entries());
 };
 
-module.exports = {
+export {
   getGitHash,
   verbose,
   log,

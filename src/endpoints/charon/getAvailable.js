@@ -1,8 +1,8 @@
-const authz = require("../../authz");
-const {CommunitySource} = require("../../sources");
-const utils = require("../../utils");
-const {splitPrefixIntoParts, joinPartsIntoPrefix} = require("../../utils/prefix");
-const metaSources = require("../../metaSources");
+import * as authz from '../../authz/index.js';
+import { CommunitySource } from '../../sources/index.js';
+import * as utils from '../../utils/index.js';
+import { splitPrefixIntoParts, joinPartsIntoPrefix } from '../../utils/prefix.js';
+import * as metaSources from '../../metaSources.js';
 
 /* handler for /charon/getAvailable requests */
 const getAvailable = async (req, res) => {
@@ -19,8 +19,8 @@ const getAvailable = async (req, res) => {
   // Authorization
   authz.assertAuthorized(req.user, authz.actions.Read, source);
 
-  const datasets = await source.availableDatasets() || [];
-  const narratives = await source.availableNarratives() || [];
+  const datasets = (await source.availableDatasets()) || [];
+  const narratives = (await source.availableNarratives()) || [];
 
   if (!datasets.length) {
     utils.verbose(`No datasets available for ${source}`);
@@ -53,6 +53,6 @@ async function collectAllAvailableGroups(user) {
   };
 }
 
-module.exports = {
-  default: getAvailable
+export {
+  getAvailable,
 };

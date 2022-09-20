@@ -1,13 +1,13 @@
 /* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
-const AWS = require("aws-sdk");
-const {Buffer} = require("buffer");
-const yamlFront = require("yaml-front-matter");
+import AWS from 'aws-sdk';
 
-const authz = require("../authz");
-const {fetch} = require("../fetch");
-const {Group} = require("../groups");
-const utils = require("../utils");
-const {Source, Dataset, Narrative} = require("./models");
+import { Buffer } from 'buffer';
+import yamlFront from 'yaml-front-matter';
+import * as authz from '../authz/index.js';
+import { fetch } from '../fetch.js';
+import { Group } from '../groups.js';
+import * as utils from '../utils/index.js';
+import { Source, Dataset, Narrative } from './models.js';
 
 const S3 = new AWS.S3();
 
@@ -358,6 +358,6 @@ function parseUrl(url) {
 }
 
 
-module.exports = {
+export {
   GroupSource,
 };

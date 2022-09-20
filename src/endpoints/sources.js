@@ -4,18 +4,18 @@
  *   no-multi-spaces: Alignment makes for easier reading
  */
 
-const {parse: parseContentType} = require("content-type");
-const {InternalServerError, NotFound, UnsupportedMediaType} = require("http-errors");
-const negotiateMediaType = require("negotiator/lib/mediaType");
-const stream = require("stream");
-const {promisify} = require("util");
-const zlib = require("zlib");
-const readStream = require("raw-body");
+import { parse as parseContentType } from 'content-type';
 
-const authz = require("../authz");
-const {contentTypesProvided, contentTypesConsumed} = require("../negotiate");
-const {fetch, Request} = require("../fetch");
-const {sendAuspiceEntrypoint} = require("./static");
+import negotiateMediaType from 'negotiator/lib/mediaType.js';
+import stream from 'stream';
+import { promisify } from 'util';
+import zlib from 'zlib';
+import readStream from 'raw-body';
+import { InternalServerError, NotFound, UnsupportedMediaType } from '../httpErrors.js';
+import * as authz from '../authz/index.js';
+import { contentTypesProvided, contentTypesConsumed } from '../negotiate.js';
+import { fetch, Request } from '../fetch.js';
+import { sendAuspiceEntrypoint } from './static.js';
 
 
 /* XXX TODO: Replace promisify() with require("stream/promises") once we
@@ -652,13 +652,13 @@ function copyHeaders(headerSource, headerNames) {
  *   the current {@link Source}
  * @returns {String} Fully-specified path to redirect to
  *//**
- * @callback pathBuilder
- *
- * @param {express.request} req
- * @param {String} path - Canonical path for the dataset within the context of
- *   the current {@link Source}
- * @returns {String} Fully-specified path to redirect to
- */
+* @callback pathBuilder
+*
+* @param {express.request} req
+* @param {String} path - Canonical path for the dataset within the context of
+*   the current {@link Source}
+* @returns {String} Fully-specified path to redirect to
+*/
 
 /**
  * @callback subresourceExtractor
@@ -695,7 +695,7 @@ function copyHeaders(headerSource, headerNames) {
  */
 
 
-module.exports = {
+export {
   setSource,
 
   setDataset,

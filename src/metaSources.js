@@ -1,7 +1,7 @@
-const authz = require("./authz");
-const {ALL_GROUPS} = require("./groups");
-const {GroupSource} = require("./sources");
-const utils = require("./utils");
+import * as authz from './authz/index.js';
+import { ALL_GROUPS } from './groups.js';
+import { GroupSource } from './sources/index.js';
+import * as utils from './utils/index.js';
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -88,6 +88,6 @@ const Groups = (() => {
   return MetaGroupSource;
 })();
 
-module.exports = {
+export {
   Groups,
 };

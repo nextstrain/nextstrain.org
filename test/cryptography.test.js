@@ -1,4 +1,4 @@
-const {keyringFromParamString, encrypt, decrypt, randomKey} = require("../src/cryptography");
+import { keyringFromParamString, encrypt, decrypt, randomKey } from '../src/cryptography.js';
 
 
 /* See comments in jest.config.js.  If this test fails, then something's amiss

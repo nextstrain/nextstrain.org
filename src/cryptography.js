@@ -56,9 +56,10 @@
  * @module cryptography
  */
 
-const assert = require("assert").strict;
-const awsCrypto = require("@aws-crypto/client-node");
-const {randomBytes} = require("crypto");
+import { strict as assert } from 'assert';
+
+import awsCrypto from '@aws-crypto/client-node';
+import { randomBytes } from 'crypto';
 
 
 /* These must be changed with care.  Blithely changing them could make existing
@@ -180,7 +181,7 @@ function randomKey(byteLength = KEY_LENGTH_BITS / 8) {
 }
 
 
-module.exports = {
+export {
   KEY_LENGTH_BITS,
   keyringFromParamString,
   encrypt,
