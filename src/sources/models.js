@@ -263,7 +263,7 @@ class DatasetSubresource extends Subresource {
      *   -trs, 20 July 2022
      */
     "application/octet-stream; q=0.01",
-  ].join(", ")
+  ].join(", ");
 
   get baseName() {
     return this.type === "main"
@@ -303,7 +303,7 @@ class NarrativeSubresource extends Subresource {
     this.mediaType,
     "text/markdown; q=0.9",
     "text/*; q=0.1",
-  ].join(", ")
+  ].join(", ");
 
   get baseName() {
     return `${this.resource.baseName}.md`;
