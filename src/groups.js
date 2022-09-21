@@ -1,6 +1,7 @@
 import { strict as assert } from 'assert';
 import * as authz from "./authz/index.js";
 import { NotFound } from './httpErrors.js';
+import { GroupSource } from "./sources/index.js";
 
 /* eslint-disable-next-line import/first, import/newline-after-import */
 import { readFile } from 'fs/promises';
@@ -85,6 +86,12 @@ class Group {
     ]);
   }
 
+  /**
+   * Source for this Group.
+   */
+  get source() {
+    return new GroupSource(this);
+  }
 
   /**
    * Policy for this Group itself.  Separate from the policy for the group's
