@@ -1,4 +1,5 @@
-#!/usr/bin/env nodeimport argparse from 'argparse';
+#!/usr/bin/env node
+import argparse from 'argparse';
 import AWS from 'aws-sdk';
 import fetch from 'node-fetch';
 import fs from 'fs';
