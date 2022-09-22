@@ -184,7 +184,7 @@ async function updatePolicyFiles({dryRun = true, policyFiles, oldBucket}) {
 
   console.group(`\nRemoving ${oldBucketArn} resources from local policy files`);
 
-  let updatedFiles = [];
+  const updatedFiles = [];
 
   for (const policyFile of policyFiles) {
     console.group(`\n${policyFile}`);
