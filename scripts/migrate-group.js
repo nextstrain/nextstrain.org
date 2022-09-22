@@ -339,7 +339,7 @@ async function findIAMGroup(client, potentialNames) {
   const groups = await listIAMGroups(client);
   const candidateGroups = groups.filter(g => potentialNames.has(g));
 
-  if (candidateGroups.length < 1) return;
+  if (candidateGroups.length < 1) return null;
   if (candidateGroups.length > 1) throw new Error(`found more than one candidate IAM group: ${candidateGroups.join(" ")}`);
 
   return await getIAMGroup(client, candidateGroups[0]);
