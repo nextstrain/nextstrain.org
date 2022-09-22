@@ -6,8 +6,8 @@ import fs from 'fs';
 import os from 'os';
 import { basename, relative as relativePath, parse as parsePath } from 'path';
 import process from 'process';
-import { Group } from '../src/groups';
-import { reportUnhandledRejectionsAtExit, run, setupConsole } from '../src/utils/scripts';
+import { Group } from '../src/groups.js';
+import { reportUnhandledRejectionsAtExit, run, setupConsole } from '../src/utils/scripts.js';
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
 
