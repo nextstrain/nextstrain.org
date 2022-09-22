@@ -418,6 +418,7 @@ async function updateGroupsDataFile({dryRun = true, group}) {
  *
  * @returns {Promise<boolean>} true if differences were reported; false if not.
  */
+/* eslint-disable-next-line consistent-return */
 async function diff(...args) {
   try {
     await run(["git", "diff", ...args]);
