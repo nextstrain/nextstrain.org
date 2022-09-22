@@ -6,10 +6,11 @@
  * 1. node scripts/parse-community-data.js | pbcopy
  * 2. paste results into ./static-site/content/community-datasets.yaml
  */
-const fs = require('fs');
-const yaml = require('js-yaml');
-const loadFront = require('yaml-front-matter').loadFront;
-const fetch = require("node-fetch");
+import fs from 'fs';
+
+import yaml from 'js-yaml';
+import { loadFront } from 'yaml-front-matter';
+import fetch from 'node-fetch';
 
 main();
 

@@ -1,9 +1,8 @@
-#!/usr/bin/env node
-const argparse = require('argparse');
-const AWS = require("aws-sdk");
-const fs = require('fs');
-const path = require('path');
-const pLimit = require('p-limit');
+#!/usr/bin/env nodeimport argparse from 'argparse';
+import AWS from 'aws-sdk';
+import fs from 'fs';
+import path from 'path';
+import pLimit from 'p-limit';
 
 const limit = pLimit(5); // limit concurrent promises as this was causing memory (?) issues on Heroku
 

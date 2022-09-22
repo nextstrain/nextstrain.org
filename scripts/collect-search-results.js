@@ -1,10 +1,8 @@
-#!/usr/bin/env node
-
-const argparse = require('argparse');
-const AWS = require("aws-sdk");
-const fetch = require("node-fetch");
-const fs = require('fs');
-const pLimit = require('p-limit');
+#!/usr/bin/env nodeimport argparse from 'argparse';
+import AWS from 'aws-sdk';
+import fetch from 'node-fetch';
+import fs from 'fs';
+import pLimit from 'p-limit';
 
 const bucket = "nextstrain-data";
 

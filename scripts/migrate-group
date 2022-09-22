@@ -1,14 +1,12 @@
-#!/usr/bin/env node
-const {ArgumentParser} = require("argparse");
-const IAM = require("@aws-sdk/client-iam");
-const S3 = require("@aws-sdk/client-s3");
-const fs = require("fs");
-const os = require("os");
-const {basename, relative: relativePath, parse: parsePath} = require("path");
-const process = require("process");
-
-const {Group} = require("../src/groups");
-const {reportUnhandledRejectionsAtExit, run, setupConsole} = require("../src/utils/scripts");
+#!/usr/bin/env nodeimport { ArgumentParser } from 'argparse';
+import IAM from '@aws-sdk/client-iam';
+import S3 from '@aws-sdk/client-s3';
+import fs from 'fs';
+import os from 'os';
+import { basename, relative as relativePath, parse as parsePath } from 'path';
+import process from 'process';
+import { Group } from '../src/groups';
+import { reportUnhandledRejectionsAtExit, run, setupConsole } from '../src/utils/scripts';
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
 

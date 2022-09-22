@@ -1,7 +1,7 @@
-#!/usr/bin/env node
-/* eslint-disable no-await-in-loop */
-const {ArgumentParser} = require("argparse");
-const {
+#!/usr/bin/env node/* eslint-disable no-await-in-loop */
+import { ArgumentParser } from 'argparse';
+
+import {
   CognitoIdentityProviderClient,
   AdminAddUserToGroupCommand,
   AdminCreateUserCommand,
@@ -10,13 +10,13 @@ const {
   AdminUpdateUserAttributesCommand,
   CreateGroupCommand,
   paginateAdminListGroupsForUser,
-} = require("@aws-sdk/client-cognito-identity-provider"); // eslint-disable-line import/no-extraneous-dependencies
-const fs = require("fs");
-const yaml = require("js-yaml");
-const process = require("process");
+} from '@aws-sdk/client-cognito-identity-provider'; // eslint-disable-line import/no-extraneous-dependencies
 
-const {Group} = require("../src/groups");
-const {reportUnhandledRejectionsAtExit} = require("../src/utils/scripts");
+import fs from 'fs';
+import yaml from 'js-yaml';
+import process from 'process';
+import { Group } from '../src/groups';
+import { reportUnhandledRejectionsAtExit } from '../src/utils/scripts';
 
 
 const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";

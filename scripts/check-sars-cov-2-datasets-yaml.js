@@ -1,10 +1,9 @@
-#!/usr/bin/env node
+#!/usr/bin/env node/* eslint-disable no-prototype-builtins */
 
-/* eslint-disable no-prototype-builtins */
+import fs from 'fs';
 
-const fs = require('fs');
-const yaml = require('js-yaml');
-const argparse = require('argparse');
+import yaml from 'js-yaml';
+import argparse from 'argparse';
 
 const parser = new argparse.ArgumentParser({
   addHelp: true,
