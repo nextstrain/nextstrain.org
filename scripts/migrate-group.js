@@ -420,7 +420,7 @@ async function updateGroupsDataFile({dryRun = true, group}) {
 /**
  * Run `git diff` with the given arguments.
  *
- * @returns {boolean} true if differences were reported; false if not.
+ * @returns {Promise<boolean>} true if differences were reported; false if not.
  */
 async function diff(...args) {
   try {

@@ -82,7 +82,7 @@ function reportUnhandledRejectionsAtExit() {
  * `console.error()`.
  *
  * @param {string[]} argv
- * @returns {{code, signal, argv}}
+ * @returns {Promise<{code, signal, argv}>}
  */
 async function run(argv) {
   return new Promise((resolve, reject) => {
