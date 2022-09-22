@@ -5,6 +5,7 @@ on:
     # once every hour
     # * is a special character in YAML so you have to quote this string
     - cron:  '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   update-dataset-listings:
