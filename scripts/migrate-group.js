@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-await-in-loop */
 import { ArgumentParser } from 'argparse';
 import IAM from '@aws-sdk/client-iam';
 import S3 from '@aws-sdk/client-s3';
