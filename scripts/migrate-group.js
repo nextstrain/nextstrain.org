@@ -5,10 +5,14 @@ import IAM from '@aws-sdk/client-iam';
 import S3 from '@aws-sdk/client-s3';
 import fs from 'fs';
 import os from 'os';
-import { basename, relative as relativePath, parse as parsePath } from 'path';
+import { basename, dirname, relative as relativePath, parse as parsePath } from 'path';
 import process from 'process';
+import { fileURLToPath } from 'url';
 import { Group } from '../src/groups.js';
 import { reportUnhandledRejectionsAtExit, run, setupConsole } from '../src/utils/scripts.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
 
