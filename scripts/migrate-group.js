@@ -351,11 +351,6 @@ async function listIAMGroups(client) {
 }
 
 
-async function listIAMGroupsForUser(client, UserName) {
-  return await collateGroupNames(IAM.paginateListGroupsForUser({client}, {UserName}));
-}
-
-
 async function listIAMAttachedGroupPolicies(client, GroupName) {
   return await collate(
     IAM.paginateListAttachedGroupPolicies({client}, {GroupName}),
