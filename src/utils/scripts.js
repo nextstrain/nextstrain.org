@@ -33,8 +33,6 @@ function setupConsole({dryRun = true}) {
   stderr.pipe(process.stderr);
 
   console = new Console({stdout, stderr}); // eslint-disable-line no-global-assign
-  process.stdout = stdout;
-  process.stderr = stderr;
 }
 
 
@@ -82,7 +80,7 @@ function reportUnhandledRejectionsAtExit() {
  * `console.error()`.
  *
  * @param {string[]} argv
- * @returns {{code, signal, argv}}
+ * @returns {Promise<{code, signal, argv}>}
  */
 async function run(argv) {
   return new Promise((resolve, reject) => {

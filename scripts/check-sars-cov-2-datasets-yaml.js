@@ -2,9 +2,10 @@
 
 /* eslint-disable no-prototype-builtins */
 
-const fs = require('fs');
-const yaml = require('js-yaml');
-const argparse = require('argparse');
+import fs from 'fs';
+
+import yaml from 'js-yaml';
+import argparse from 'argparse';
 
 const parser = new argparse.ArgumentParser({
   addHelp: true,
@@ -28,7 +29,7 @@ function getYaml() {
   let SARSCoV2Datasets;
   const datasetsFilename = "./static-site/content/SARS-CoV-2-Datasets.yaml";
   try {
-    SARSCoV2Datasets = yaml.safeLoad(fs.readFileSync(datasetsFilename, 'utf8'));
+    SARSCoV2Datasets = yaml.load(fs.readFileSync(datasetsFilename, 'utf8'));
   } catch (e) {
     console.log(`There was an error reading ${datasetsFilename}. Please ensure it exists and it is valid YAML.`);
     console.log(e);
