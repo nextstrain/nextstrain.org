@@ -9,7 +9,7 @@
 import fs from 'fs';
 
 import yaml from 'js-yaml';
-import { loadFront } from 'yaml-front-matter';
+import yamlFrontMatter from 'yaml-front-matter';
 import fetch from 'node-fetch';
 
 main();
@@ -36,7 +36,7 @@ async function main() {
 
 function extractNarrativeInfo(contents) {
   try {
-    const frontmatter = loadFront(contents);
+    const frontmatter = yamlFrontMatter.loadFront(contents);
     const maintainers = frontmatter?.authors?.join(", ");
     const date = frontmatter?.date;
     const title = frontmatter?.title;
