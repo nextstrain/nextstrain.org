@@ -14,7 +14,6 @@
   "scripts": {
     "build": "./build.sh",
     "lint": "eslint --ext .js,.jsx .",
-    "set-up": "npm run build",
     "server": "node server.js",
     "start": "npm run server",
     "//test": "echo 'NODE_OPTIONS is required until this issue is resolved: https://github.com/facebook/jest/issues/9430 '",
