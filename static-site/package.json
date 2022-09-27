@@ -11,8 +11,8 @@
   "license": "MIT",
   "main": "n/a",
   "engines": {
-    "node": "^14",
-    "npm": "^6.14"
+    "node": "^18",
+    "npm": "^8.6.0"
   },
   "scripts": {
     "develop": "gatsby develop",
