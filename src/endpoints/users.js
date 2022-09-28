@@ -1,7 +1,6 @@
 import * as authz from '../authz/index.js';
 import { ALL_GROUPS } from '../groups.js';
 import { contentTypesProvided } from '../negotiate.js';
-import { GroupSource } from '../sources/index.js';
 import { sendGatsbyPage } from './static.js';
 
 
@@ -15,7 +14,7 @@ import { sendGatsbyPage } from './static.js';
  *                  `private` -> {bool} (group is private)
  */
 const visibleGroups = (user) => ALL_GROUPS
-  .map(g => [g.name, new GroupSource(g)])
+  .map(g => [g.name, g.source])
   .filter(([, source]) => authz.authorized(user, authz.actions.Read, source))
   .map(([name, source]) => ({
     name,

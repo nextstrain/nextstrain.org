@@ -43,6 +43,15 @@ const {
 } = endpoints.sources;
 
 const {
+  getGroupLogo,
+  putGroupLogo,
+  deleteGroupLogo,
+  getGroupOverview,
+  putGroupOverview,
+  deleteGroupOverview,
+} = endpoints.groups;
+
+const {
   CoreSource,
   CoreStagingSource,
   CommunitySource,
@@ -301,6 +310,24 @@ app.routeAsync("/groups/:groupName")
    */
   .getAsync(endpoints.static.sendGatsbyEntrypoint)
 ;
+
+app.use("/groups/:groupName/settings",
+  endpoints.groups.setGroup(req => req.params.groupName));
+
+app.routeAsync("/groups/:groupName/settings/logo")
+  .getAsync(getGroupLogo)
+  .putAsync(putGroupLogo)
+  .deleteAsync(deleteGroupLogo)
+;
+
+app.routeAsync("/groups/:groupName/settings/overview")
+  .getAsync(getGroupOverview)
+  .putAsync(putGroupOverview)
+  .deleteAsync(deleteGroupOverview)
+;
+
+app.route("/groups/:groupName/settings/*")
+  .all(() => { throw new NotFound(); });
 
 // Avoid matching "narratives" as a dataset name.
 app.routeAsync("/groups/:groupName/narratives")

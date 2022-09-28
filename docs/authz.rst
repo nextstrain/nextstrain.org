@@ -26,7 +26,7 @@ Policies
 
 There is no single policy for all of nextstrain.org but different policies for
 different parts of the site.  Currently, policies are defined for and attached
-to each :term:`Source`.
+to each :term:`Source` and :term:`Group`.
 
 The design of the system allows for policies to be easily stacked or combined
 (e.g. concatenate all the rules), so if necessary we could introduce a global
@@ -126,8 +126,7 @@ The main enforcement function used to guard access-controlled code is::
     
 It throws an ``AuthzDenied`` exception if the *user* is **not** allowed to
 perform the *action* on the *object* as determined by the policy covering the
-object (i.e.  from the object's ``Source`` currently).  Otherwise, it returns
-nothing.
+object (e.g. from the object's ``Source``).  Otherwise, it returns nothing.
 
 It is the responsibility of the enforcement function to determine the policy in
 force for the given object.

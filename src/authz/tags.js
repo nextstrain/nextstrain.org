@@ -14,6 +14,7 @@
  */
 const tags = {
   Type: {
+    Group: Symbol("type:group"),
     Source: Symbol("type:source"),
     Dataset: Symbol("type:dataset"),
     Narrative: Symbol("type:narrative"),

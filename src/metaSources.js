@@ -1,6 +1,5 @@
 import * as authz from './authz/index.js';
 import { ALL_GROUPS } from './groups.js';
-import { GroupSource } from './sources/index.js';
 import * as utils from './utils/index.js';
 
 const PRODUCTION = process.env.NODE_ENV === "production";
@@ -19,7 +18,7 @@ const Groups = (() => {
 
   const groupSources = new Map( // instances of each group Source
     ALL_GROUPS
-      .map(g => [g.name, new GroupSource(g)])
+      .map(g => [g.name, g.source])
       // restrict development server's private groups to "blab-private"
       .filter(([name, source]) => PRODUCTION ? true : (publiclyVisible(source) || name==="blab-private"))
   );
