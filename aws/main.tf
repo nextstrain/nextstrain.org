@@ -11,3 +11,7 @@ terraform {
 module "cognito" {
   source = "./cognito"
 }
+
+module "iam" {
+  source = "./iam"
+}
