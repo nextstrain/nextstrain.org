@@ -7,3 +7,7 @@ terraform {
     }
   }
 }
+
+module "cognito" {
+  source = "./cognito"
+}
