@@ -27,3 +27,10 @@
 
 # docs build
 /docs/build/
+
+# Terraform working dir settings
+/.terraform/
+
+# Terraform local state files.  These shouldn't exist with our remote state
+# store, but in case they do, make sure they aren't committed.
+/terraform.tfstate*
