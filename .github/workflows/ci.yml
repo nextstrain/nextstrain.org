@@ -33,6 +33,17 @@ jobs:
           name: logs
           path: test/server.log
 
+  build-auspice-client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: node --version
+      - run: npm ci
+      - run: node_modules/.bin/auspice build --verbose --extend auspice-client/customisations/config.json
+
   # XXX TODO: It'd be nice to avoid the rebuild on Heroku and instead deploy
   # the artifacts (source code + generated files + node_modules/) already built
   # above.  This would dramatically reduce deploy times and move us closer to
@@ -47,8 +58,8 @@ jobs:
       && github.event_name == 'push'
       && github.ref == 'refs/heads/master'
 
-    # Wait for "test" job above to pass.
-    needs: test
+    # Wait for other jobs above to pass.
+    needs: [test, build-auspice-client]
 
     # Only one "deploy" job at a time.
     concurrency: deploy
