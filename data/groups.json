@@ -197,6 +197,10 @@
     "isPublic": false
   },
   {
+    "name": "uvri-vhf-lab-private",
+    "isPublic": false
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
