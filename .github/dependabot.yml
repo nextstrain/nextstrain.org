@@ -1,7 +1,11 @@
+# Dependabot configuration file
+# Reference: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
+    # If you want to run this manually, go to https://github.com/nextstrain/nextstrain.org/network/updates
+    # and click "Last checked …" then "Check for updates".
     schedule:
       interval: "daily"
     allow:
