@@ -2,6 +2,7 @@
 import authzTags from '../authz/tags.js';
 
 import { fetch } from '../fetch.js';
+import { BadRequest } from '../httpErrors.js';
 
 /* The model classes here are the base classes for the classes defined in
  * ./core.js, ./community.js, ./groups.js, etc.
@@ -146,6 +147,28 @@ class Resource {
     // apply, which each Dataset/Narrative subclass determines for itself.
     if (!this.baseParts.length) {
       throw new Error(`no Resource path provided (${this.constructor.name}.baseParts is empty)`);
+    }
+  }
+  set pathParts(pathParts) {
+    this.assertValidPathParts(pathParts);
+    this._pathParts = pathParts;
+  }
+  get pathParts() {
+    return this._pathParts;
+  }
+  assertValidPathParts(pathParts) {
+    /* Require that no pathParts contain underscores (_), as internally we
+     * convert slashes (/) to underscores (_) for storage.  Allowing
+     * underscores would break the assumptions of much of the codebase and
+     * might open us up to "confused deputy" problems around dataset and
+     * narrative access, etc.  We inspect pathParts (i.e. instead of baseParts)
+     * since it's the user-controlled input and baseParts may include
+     * underscores (_) for some sources.
+     *
+     * See also <https://github.com/nextstrain/nextstrain.org/issues/432>.
+     */
+    if (pathParts.some(part => part.includes("_"))) {
+      throw new BadRequest(`Resource (e.g. dataset and narrative) paths may not include underscores (_); use slashes (/) instead`);
     }
   }
   get baseParts() {
