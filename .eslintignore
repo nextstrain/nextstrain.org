@@ -1,3 +1,4 @@
 /static-site/public/
 node_modules/
 /auspice-client/dist/
+/docs/
