@@ -1,0 +1,28 @@
+name: terraform lint
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+      - '**.tf.json'
+      - '**.tfvars.json'
+
+  # Manually triggered using GitHub's UI
+  workflow_dispatch:
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: scripts/terraform-fmt -check
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: terraform init -backend=false
+      - run: terraform validate

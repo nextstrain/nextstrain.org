@@ -1,0 +1,9 @@
+#!/bin/bash
+# Formats all .tf and .tfvars files in source control.
+#
+# The -recursive option to `terraform fmt` was pretty slow for me (perhaps
+# because it scans all of node_modules/?), so make it faster by giving it an
+# explicit list of files.
+#
+set -euo pipefail
+git ls-files -z :/**.tf :/**.tfvars | xargs -0 terraform fmt "$@"

@@ -29,4 +29,5 @@ nextstrain.org
     sessions
     routing
     infrastructure
+    terraform
     glossary

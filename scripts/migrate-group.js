@@ -16,7 +16,6 @@ const __dirname = dirname(__filename);
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
 
-const SCRIPTS = relativePath(".", __dirname);
 const REPO = relativePath(".", `${__dirname}/..`) || ".";
 
 
@@ -229,19 +228,14 @@ async function updatePolicyFiles({dryRun = true, policyFiles, oldBucket}) {
 
 
 async function syncPoliciesTodo({dryRun = true, policyFiles}) {
-  return policyFiles.map(file => {
-    const policyName = parsePath(file).name;
-
-    const argv = [
-      `${SCRIPTS}/sync-iam-policy`,
-      ...(dryRun
-        ? ["--dry-run"]
-        : []),
-      `arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${policyName}`,
-      file
-    ];
-    return `After deploy completes, run: \`${argv.join(" ")}\``;
-  });
+  const policyNames = policyFiles.map(file => parsePath(file).name);
+  const argv = [
+    "terraform",
+    ...(dryRun
+      ? ["plan"]
+      : ["apply"]),
+  ];
+  return `After deploy completes, update the IAM policies (${policyNames.join(", ")}) by running: \`${argv.join(" ")}\``;
 }
 
 
