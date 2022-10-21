@@ -1,0 +1,59 @@
+name: remind to promote
+
+on:
+  # Run every hour (a little before the top of the hour), but note that
+  # scripts/remind-to-promote may choose not to check at certain times.
+  schedule:
+    - cron: '48 * * * *'
+
+  # Manually triggered using GitHub's UI
+  workflow_dispatch:
+
+jobs:
+  remind-to-promote:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm ci
+
+        # This cache entry could get evicted if we don't access it for 7 days
+        # or if total cache size for this repo exceeds 10 GB¹, but that seems
+        # unlikely to happen and worse case we see duplicate messages in Slack
+        # until we resolve it.
+        #   -trs, 21 Oct 2022
+        #
+        # ¹ https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#usage-limits-and-eviction-policy
+      - uses: actions/cache@v3
+        with:
+          key: remind-to-promote-state-hash
+          path: remind-to-promote-state-hash
+
+      - name: Check if a promotion reminder is appropriate
+        run: ./scripts/remind-to-promote --check | tee remind-to-promote-state
+        env:
+          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
+
+      - id: state-check
+        name: Compare new state to cached state
+        run: |
+          if [[ ! -s remind-to-promote-state ]] || sha256sum --check remind-to-promote-state-hash; then
+            echo should-send=no | tee "$GITHUB_OUTPUT"
+          else
+            echo should-send=yes | tee "$GITHUB_OUTPUT"
+          fi
+
+      - name: Send reminder
+        if: steps.state-check.outputs.should-send == 'yes'
+        run: ./scripts/remind-to-promote --send < remind-to-promote-state
+        env:
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          SLACK_CHANNEL: C01LCTT7JNN #nextstrain-dev
+
+      - name: Updated cached state with new state
+        run: sha256sum remind-to-promote-state | tee remind-to-promote-state-hash
