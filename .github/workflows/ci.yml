@@ -99,5 +99,6 @@ jobs:
           curl "$(jq -r .output_stream_url build.json)" \
             --fail --silent --show-error --location
 
-      - name: Logout of Heroku
+      - if: always()
+        name: Logout of Heroku
         run: sed -i -e '/^machine api\.heroku\.com/d' ~/.netrc
