@@ -5,6 +5,14 @@ import fetch from "node-fetch";
 import process from "process";
 import readStream from "raw-body";
 
+const workingDays = new Set([1, 2, 3, 4, 5]);
+const workingHours = new Set([9, 10, 11, 12, 13, 14, 15, 16, 17]);
+const workingTimezones = [
+  "America/Los_Angeles",
+  "Europe/Zurich",
+  "Pacific/Auckland",
+];
+
 const pipeline = "38f67fc7-d93c-40c6-a182-501da2f89d9d";
 const staging = "nextstrain-canary";
 const production = "nextstrain-server";
@@ -28,11 +36,11 @@ function parseArgs() {
   });
 
   argparser.addArgument("--grace-period", {
-    help: `Grace period (in days) during which not to remind after a release to ${staging}`,
+    help: `Grace period (in work days) during which not to remind after a release to ${staging}`,
     metavar: "<days>",
     dest: "gracePeriod",
     type: "int",
-    defaultValue: 7,
+    defaultValue: 3,
   });
 
   const args = argparser.parseArgs();
@@ -64,10 +72,13 @@ async function check({gracePeriod}) {
 
   // Don't run when no one's around.  We'll keep being invoked every hour and
   // will eventually start passing this check again.
-  if (!isThereAnybodyOutThere(now)) {
+  const tzWithFolksAround = isThereAnybodyOutThere(now);
+  if (!tzWithFolksAround) {
     console.warn(`No one's around; skipping check.`);
     return;
   }
+
+  console.warn(`working timezone: ${tzWithFolksAround}`);
 
   // Fetch latest releases of all apps in the pipeline
   const pipelineReleases = await heroku(`/pipelines/${pipeline}/latest-releases`);
@@ -97,14 +108,17 @@ async function check({gracePeriod}) {
       .normalize()
       .toHuman({unitDisplay: "short"});
 
-  const daysSinceStagingReleased = stagingReleasedAgo.as("days");
+  const workDaysSinceStagingReleased = workDaysBetween(
+    stagingReleasedAt.setZone(tzWithFolksAround),
+    now.setZone(tzWithFolksAround)
+  );
 
   console.warn(`${staging} slug: ${stagingSlugId} (${stagingReleasedAgoHumanized} ago)`);
   console.warn(`${production} slug: ${productionSlugId}`);
 
   // Is it ok to stew a bit longer?
-  if (daysSinceStagingReleased <= gracePeriod) {
-    console.warn(`Still in the grace period (${gracePeriod}d); skipping output.`);
+  if (workDaysSinceStagingReleased <= gracePeriod) {
+    console.warn(`Still in the grace period (${workDaysSinceStagingReleased} ≤ ${gracePeriod} work days); skipping output.`);
     return;
   }
 
@@ -175,26 +189,35 @@ Changes are lingering on <https://next.nextstrain.org|next.nextstrain.org>.
 
 function isThereAnybodyOutThere(now) {
   // If we're not running under automation (e.g. CI), then assume we're being
-  // manually invoked by someone and always want to run.
-  if (!process.env.CI) return true;
+  // manually invoked by someone and always want to run.  Return their local
+  // zone.
+  if (!process.env.CI) return now.zoneName;
 
-  const timezones = [
-    "America/Los_Angeles",
-    "Europe/Zurich",
-    "Pacific/Auckland",
-  ];
-
-  const workingDays = new Set([1, 2, 3, 4, 5]);
-  const workingHours = new Set([9, 10, 11, 12, 13, 14, 15, 16, 17]);
-
-  for (const tz of timezones) {
+  for (const tz of workingTimezones) {
     const local = now.setZone(tz);
 
     if (workingDays.has(local.weekday) && workingHours.has(local.hour)) {
-      return true;
+      return tz;
     }
   }
-  return false;
+  return null;
+}
+
+
+function workDaysBetween(a, b) {
+  if (a > b) throw new Error(`assert(a ≤ b) in workDaysBetween(a, b) failed: ${a} > ${b}`);
+
+  let days = 0;
+  let t = a.plus({ days: 1 });
+
+  while (t < b) {
+    if (workingDays.has(t.weekday)) {
+      days += 1;
+    }
+    t = t.plus({ days: 1 });
+  }
+
+  return days;
 }
 
 
