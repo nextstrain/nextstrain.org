@@ -27,7 +27,7 @@
     "@aws-sdk/client-iam": "^3.53.0",
     "@aws-sdk/client-s3": "^3.53.1",
     "argparse": "^1.0.10",
-    "auspice": "2.39.0",
+    "auspice": "2.40.0",
     "aws-sdk": "^2.908.0",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
