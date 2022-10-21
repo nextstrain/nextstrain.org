@@ -163,5 +163,45 @@
     "name": "Unknown charon address should 404",
     "url": "/charon/unknown",
     "expectStatusCode": 404
+  },
+  {
+    "name": "Underscores aren't permitted for core datasets",
+    "url": "/charon/getDataset?prefix=/flu/seasonal/h3n2_ha_2y",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Underscores aren't permitted for staging datasets",
+    "url": "/charon/getDataset?prefix=/staging/flu/seasonal/h3n2_ha_2y",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Underscores aren't permitted for community datasets (but in repo is ok)",
+    "url": "/charon/getDataset?prefix=/community/nextstrain/enterovirus_d68/genome_2022-02-18",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Underscores aren't permitted for group datasets",
+    "url": "/charon/getDataset?prefix=/groups/blab/ncov_19B",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Underscores aren't permitted for core narratives",
+    "url": "/charon/getNarrative?prefix=/narratives/ncov_sit-rep/2020-08-14",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Underscores aren't permitted for staging narratives",
+    "url": "/charon/getNarrative?prefix=/staging/narratives/test_fixture/intro-to-narratives",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Underscores aren't permitted for community narratives (but in repo is ok)",
+    "url": "/charon/getNarrative?prefix=/community/narratives/nextstrain/community-test/nested_intro-to-narratives",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "Underscores aren't permitted for group narratives",
+    "url": "/charon/getNarrative?prefix=/groups/blab/narratives/test_fixture",
+    "expectStatusCode": 400
   }
 ]

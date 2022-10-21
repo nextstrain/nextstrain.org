@@ -46,6 +46,11 @@ class UrlDefinedSource extends Source {
 }
 
 class UrlDefinedDataset extends Dataset {
+  // eslint-disable-next-line no-unused-vars
+  assertValidPathParts(pathParts) {
+    // Override check for underscores (_), as we want to allow arbitrary
+    // external URLs.
+  }
   get baseName() {
     return this.baseParts.join("/");
   }
@@ -80,6 +85,11 @@ class UrlDefinedDatasetSubresource extends DatasetSubresource {
 }
 
 class UrlDefinedNarrative extends Narrative {
+  // eslint-disable-next-line no-unused-vars
+  assertValidPathParts(pathParts) {
+    // Override check for underscores (_), as we want to allow arbitrary
+    // external URLs.
+  }
   get baseName() {
     return this.baseParts.join("/");
   }

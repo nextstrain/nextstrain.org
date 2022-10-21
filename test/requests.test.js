@@ -44,6 +44,9 @@ describe("datasets", () => {
       { case: "canonicalized", path: "/flu/seasonal" },
       { case: "top-level",     path: "/zika", tipFrequencies: false },
     ]);
+    describe("bogus", () => {
+      testBadRequest("/flu/seasonal/h3n2_ha_2y");
+    });
   });
 
   describe("staging", () => {
@@ -52,6 +55,9 @@ describe("datasets", () => {
       { case: "canonicalized", path: "/staging/flu/seasonal" },
       { case: "top-level",     path: "/staging/zika", tipFrequencies: false },
     ]);
+    describe("bogus", () => {
+      testBadRequest("/staging/flu/seasonal/h3n2_ha_2y");
+    });
   });
 
   describe("community", () => {
@@ -63,6 +69,15 @@ describe("datasets", () => {
     describe("bogus", () => {
       testGatsby404("/community/nextstrain/community-test@does-not-exist");
       testGatsby404("/community/nextstrain/does-not-exist");
+      testBadRequest("/community/nextstrain/community-test/zika_tutorial");
+
+      // Community repos may have underscores in their repo name, but not
+      // dataset name.
+      testBadRequest("/community/nextstrain/enterovirus_d68/genome_2022-02-18");
+      testPath({
+        case: "repo name with underscore",
+        path: "/community/nextstrain/enterovirus_d68/genome/2022-02-18"
+      });
     });
   });
 
@@ -74,10 +89,13 @@ describe("datasets", () => {
     describe("bogus", () => {
       testGatsby404("/groups/blab/does-not-exist");
       testGatsby404("/groups/does-not-exist");
+      testBadRequest("/groups/blab/ncov_19B");
     });
   });
 
   describe("fetch", () => {
+    // Note that the tests below also cover /fetch/… allowing underscores in
+    // dataset paths (unlike other sources which don't allow them).
     testPaths([
       { case: "with extension",
         path: "/fetch/github.com/nextstrain/community-test/raw/master/auspice/community-test_zika_tutorial.json",
@@ -167,6 +185,9 @@ describe("narratives", () => {
       { case: "top-level", path: "/narratives/intro-to-narratives" },
       { case: "nested",    path: "/narratives/ncov/sit-rep/2020-08-14" },
     ]);
+    describe("bogus", () => {
+      testBadRequest("/narratives/ncov_sit-rep/2020-08-14");
+    });
   });
 
   describe("staging", () => {
@@ -174,6 +195,9 @@ describe("narratives", () => {
       { case: "top-level", path: "/staging/narratives/intro-to-narratives" },
       { case: "nested",    path: "/staging/narratives/test/fixture/intro-to-narratives" },
     ]);
+    describe("bogus", () => {
+      testBadRequest("/staging/narratives/test_fixture/intro-to-narratives");
+    });
   });
 
   describe("community", () => {
@@ -182,8 +206,9 @@ describe("narratives", () => {
       { case: "top-level",  path: "/community/narratives/nextstrain/community-test@top-level" },
       { case: "alt branch", path: "/community/narratives/nextstrain/community-test@alt/alternate-branch" },
     ]);
-    describe("bad branch", () => {
+    describe("bogus", () => {
       testGatsby404("/community/narratives/nextstrain/community-test@does-not-exist");
+      testBadRequest("/community/narratives/nextstrain/community-test/nested_intro-to-narratives");
     });
   });
 
@@ -193,10 +218,13 @@ describe("narratives", () => {
     ]);
     describe("bogus", () => {
       testGatsby404("/groups/blab/narratives/does-not-exist");
+      testBadRequest("/groups/blab/narratives/test_fixture");
     });
   });
 
   describe("fetch", () => {
+    // Note that the tests below also cover /fetch/… allowing underscores in
+    // narrative paths (unlike other sources which don't allow them).
     testPaths([
       { case: "with extension",
         path: "/fetch/narratives/github.com/nextstrain/community-test/raw/master/narratives/community-test_intro-to-narratives.md",
@@ -296,6 +324,24 @@ function testGatsby404(path) {
     test("body looks like 404 page", async () => {
       const res = await req;
       expect(await res.text()).toBe(gatsby404);
+    });
+  });
+}
+
+function testBadRequest(path) {
+  describe(`${path} sends 400 Bad Request`, () => {
+    const req = fetch(url(path), {headers: {accept: "application/json,*/*;q=0.1"}});
+
+    test("status is 400", async () => {
+      const res = await req;
+      expect(res.status).toBe(400);
+    });
+
+    test("body includes error message", async () => {
+      const res = await req;
+      const body = await res.json();
+      expect(body).toHaveProperty("error");
+      expect(body.error).toMatch(/paths may not include underscores/);
     });
   });
 }
