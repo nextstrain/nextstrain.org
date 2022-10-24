@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable no-await-in-loop */
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 import { ArgumentParser } from 'argparse';
 
 import {
@@ -11,7 +12,7 @@ import {
   AdminUpdateUserAttributesCommand,
   CreateGroupCommand,
   paginateAdminListGroupsForUser,
-} from '@aws-sdk/client-cognito-identity-provider'; // eslint-disable-line import/no-extraneous-dependencies
+} from '@aws-sdk/client-cognito-identity-provider';
 
 import fs from 'fs';
 import yaml from 'js-yaml';

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 import {ArgumentParser} from "argparse";
 import {DateTime} from "luxon";
 import fetch from "node-fetch";
