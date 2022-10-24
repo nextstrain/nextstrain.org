@@ -201,6 +201,14 @@
     "isPublic": false
   },
   {
+    "name": "WHO-euro-flu",
+    "isPublic": true
+  },
+  {
+    "name": "WHO-euro-flu-private",
+    "isPublic": false
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
