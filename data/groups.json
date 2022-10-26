@@ -209,6 +209,10 @@
     "isPublic": false
   },
   {
+    "name": "IIBTlab",
+    "isPublic": true
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
