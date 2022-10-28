@@ -32,7 +32,7 @@ async function main({args}) {
       outputFilename = `search_sars-cov-2.json`;
       ({datasets, strainMap, dateUpdated} = await collectFromBucket({
         BUCKET: `nextstrain-data`,
-        fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace('_', '/')}`,
+        fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace(/_/g, '/')}`,
         inclusionTest: (fn) => {
           return (fn.startsWith("ncov_") && !fn.endsWith("_gisaid.json") && !fn.endsWith("_zh.json"));
         }
@@ -44,7 +44,7 @@ async function main({args}) {
       outputFilename = `search_seasonal-flu.json`;
       ({datasets, strainMap, dateUpdated} = await collectFromBucket({
         BUCKET: `nextstrain-data`,
-        fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace('_', '/')}`,
+        fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace(/_/g, '/')}`,
         inclusionTest: (filename) => filename.startsWith("flu_seasonal_")
       }));
       break;
