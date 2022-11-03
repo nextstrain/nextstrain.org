@@ -22,17 +22,31 @@ jobs:
           node-version: '14'
       - run: npm ci
 
-        # This cache entry could get evicted if we don't access it for 7 days
-        # or if total cache size for this repo exceeds 10 GB¹, but that seems
-        # unlikely to happen and worse case we see duplicate messages in Slack
-        # until we resolve it.
-        #   -trs, 21 Oct 2022
+        # Use the GitHub Actions cache to store the minimal persistent state we
+        # need (a hash of the state data).  Cache entries aren't durable—they
+        # can disappear by eviction or manual deletion or transient failure—but
+        # the worse that happens is we see duplicate messages in Slack until we
+        # re-cache.
         #
-        # ¹ https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#usage-limits-and-eviction-policy
+        # Since cache entries are immutable once stored but we need to make
+        # updates, we use a unique cache key per workflow run and thus always
+        # store each run's state hash at the end of the run.  We restore from
+        # the cache entry of the lastest previous workflow run since the
+        # current run's unique key won't exist in the cache yet.  This is a
+        # documented workaround to cache immutability.¹  It will grow the cache
+        # size both in number of entries and storage use over time, but that
+        # seems fine.  Entries which haven't been accessed in 7 days will be
+        # evicted, and if we hit the 10 GB¹ total size limit for the repo, the
+        # oldest entries will be evicted first.²
+        #   -trs, 3 Nov 2022
+        #
+        # ¹ https://github.com/actions/cache/blob/main/workarounds.md#update-a-cache
+        # ² https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#usage-limits-and-eviction-policy
       - uses: actions/cache@v3
         with:
-          key: remind-to-promote-state-hash
           path: remind-to-promote-state-hash
+          key: remind-to-promote-state-hash-${{ github.run_id }}
+          restore-keys: remind-to-promote-state-hash
 
       - name: Check if a promotion reminder is appropriate
         run: ./scripts/remind-to-promote --check | tee remind-to-promote-state
