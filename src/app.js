@@ -418,6 +418,11 @@ app.route("/schemas/*")
 app.route("/dist/*")
   .all(endpoints.static.auspiceAssets, (req, res, next) => next(new NotFound()));
 
+/* Auspice has a special /edit/narratives route -
+ * It is not backed by a dataset, and only exists for GET requests
+ */
+app.routeAsync("/edit/narratives")
+  .getAsync(endpoints.static.sendAuspiceEntrypoint);
 
 /* Gatsby static HTML pages and other assets.
  *
