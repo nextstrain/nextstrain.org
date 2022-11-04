@@ -21,6 +21,8 @@ class Index extends React.Component {
 
   // parse getAvailable listing into one that dataset-select component accepts
   createDatasetListing = (list, userName) => {
+    if (!list) return [];
+
     // Note that the `request` always includes @branch, irregardless of URL.
     return list.map((d) => {
       return {
