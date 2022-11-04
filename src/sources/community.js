@@ -24,7 +24,11 @@ class CommunitySource extends Source {
 
     if (!this.repoName) throw new Error(`Cannot construct a ${this.constructor.name} without a repoName after splitting on /@/`);
 
-    this.defaultBranch = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`, {headers: {authorization}})
+    const repoInfo = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`, {headers: {authorization}});
+    this.repoExists = repoInfo
+      .then((res) => res.ok)
+      .catch(() => false);
+    this.defaultBranch = repoInfo
       .then((res) => res.json())
       .then((data) => data.default_branch ?? "master")
       .catch(() => {
@@ -136,6 +140,9 @@ class CommunitySource extends Source {
   async getInfo() {
     /* could attempt to fetch a certain file from the repository if we want to implement
     this functionality in the future */
+    if (!await this.repoExists) {
+      throw new NotFound(`${this.owner}/${this.repoName} doesn't exist (or is private)`);
+    }
     const branch = await this.branch;
     return {
       title: `${this.owner}'s "${this.repoName}" community builds`,
