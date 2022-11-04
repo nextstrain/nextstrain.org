@@ -26,7 +26,7 @@ class CommunitySource extends Source {
 
     this.defaultBranch = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`, {headers: {authorization}})
       .then((res) => res.json())
-      .then((data) => data.default_branch)
+      .then((data) => data.default_branch ?? "master")
       .catch(() => {
         console.log(`Error interpreting the default branch of ${this.constructor.name} for ${this.owner}/${this.repoName}`);
         return "master";
