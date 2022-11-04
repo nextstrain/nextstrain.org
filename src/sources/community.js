@@ -67,7 +67,14 @@ class CommunitySource extends Source {
       return [];
     }
 
-    const filenames = (await response.json())
+    const files = await response.json();
+
+    if (!Array.isArray(files)) {
+      // "auspice" might be a file, in which case we get an object back.
+      return [];
+    }
+
+    const filenames = files
       .filter((file) => file.type === "file")
       // remove anything which doesn't start with the repo name, which is required of community datasets
       .filter((file) => file.name.startsWith(this.repoName))
@@ -92,6 +99,12 @@ class CommunitySource extends Source {
     }
 
     const files = await response.json();
+
+    if (!Array.isArray(files)) {
+      // "narratives" might be a file, in which case we get an object back.
+      return [];
+    }
+
     return files
       .filter((file) => file.type === "file")
       .filter((file) => file.name !== "README.md")
