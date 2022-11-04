@@ -61,9 +61,11 @@ class CommunitySource extends Source {
     const qs = new URLSearchParams({ref: await this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents/auspice?${qs}`, {headers: {authorization}});
 
-    if (response.status === 404) throw new NotFound();
-    else if (response.status !== 200 && response.status !== 304) {
-      utils.warn(`Error fetching available datasets from GitHub for ${this}`, await utils.responseDetails(response));
+    if (response.status !== 200 && response.status !== 304) {
+      if (response.status !== 404) {
+        // not found doesn't warrant an error print, it means there are no datasets for this repo
+        utils.warn(`Error fetching available datasets from GitHub for ${this}`, await utils.responseDetails(response));
+      }
       return [];
     }
 
