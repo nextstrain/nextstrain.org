@@ -88,7 +88,6 @@
   },
   {
     "name": "usda-ars-flucrew",
-    "bucket": "nextstrain-usda-ars-flucrew",
     "isPublic": true
   },
   {
@@ -159,7 +158,6 @@
   },
   {
     "name": "offlu-swine-private",
-    "bucket": "nextstrain-offlu-swine-private",
     "isPublic": false
   },
   {
