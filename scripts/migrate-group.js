@@ -166,7 +166,7 @@ async function s3ListObjects({group}) {
 
   return await collate(
     S3.paginateListObjectsV2({client}, {Bucket: group.bucket}),
-    page => page.Contents.map(object => object.Key),
+    page => (page.Contents ?? []).map(object => object.Key),
   );
 }
 
