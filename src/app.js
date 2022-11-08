@@ -526,7 +526,14 @@ app.useAsync(async (err, req, res, next) => {
   if (req.accepts().some(jsonMediaType) || !isBrowserLike) {
     utils.verbose(`Sending ${err} error as JSON`);
     return res.status(err.status || err.statusCode || 500)
-      .json({ error: err.message || String(err) })
+      .json({
+        error: err.message || String(err),
+        ...(
+          !PRODUCTION
+            ? {stack: err.stack}
+            : {}
+        ),
+      })
       .end();
   }
 

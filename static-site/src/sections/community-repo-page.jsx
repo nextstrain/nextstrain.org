@@ -21,6 +21,8 @@ class Index extends React.Component {
 
   // parse getAvailable listing into one that dataset-select component accepts
   createDatasetListing = (list, userName) => {
+    if (!list) return [];
+
     // Note that the `request` always includes @branch, irregardless of URL.
     return list.map((d) => {
       return {
@@ -60,20 +62,24 @@ class Index extends React.Component {
       bannerTitle = location.pathname.startsWith("/community/narratives/")
         ? `The narrative "nextstrain.org/community/narratives/${userName}/${repoName}/${this.state.nonExistentPath}" doesn't exist.`
         : `The dataset "nextstrain.org/community/${userName}/${repoName}/${this.state.nonExistentPath}" doesn't exist.`;
-      bannerContents = `Here is the page for the "${repoName}" repository.`;
+      bannerContents = `Here is the page for the "${userName}/${repoName}" repository.`;
     }
     // Set up a banner or update the existing one if the repo doesn't exist
     if (this.state.repoNotFound) {
-      const notFound = `The Nextstrain Commnity page for GitHub user "${userName}" and repository "${repoName}" doesn't exist yet, or there was an error getting data for that repo.`;
-      const linkToCommunityPage = <p>For a list of featured Nextstrain Community datasets, check out the <a href="/community">Community page</a>.</p>;
+      const notFound = (<>
+        The GitHub repository <a href={`https://github.com/${userName}/${repoName}`}>{userName}/{repoName}</a> doesn't exist (or is private), or there was an error getting data for that repository.
+      </>);
+      const description = (<>
+        <p>If you're setting up your own Community on GitHub repository, see <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">our documentation</a>.</p>
+        <p>For a list of featured Nextstrain Community datasets, check out the <a href="/community">Community page</a>.</p>
+      </>);
       if (!bannerTitle) {
         bannerTitle = notFound;
-        bannerContents = linkToCommunityPage;
+        bannerContents = description;
       } else {
         bannerContents = (<>
-          {notFound}
-          <br/>
-          {linkToCommunityPage}
+          <p>{notFound}</p>
+          {description}
         </>);
       }
     }

@@ -36,8 +36,14 @@
     "expectStatusCode": 200
   },
   {
-    "name": "Check that getAvailable API call for a non-existent community source 404s",
-    "url": "/charon/getAvailable?prefix=/community/jameshadfield/doesntexist",
+    "name": "Check that getAvailable API call for a community source with only narratives works",
+    "url": "/charon/getAvailable?prefix=/community/nextstrain/community-test@narratives-only",
+    "expectStatusCode": 200,
+    "responseIsJson": true
+  },
+  {
+    "name": "Check that getSourceInfo API call for a non-existent community source 404s",
+    "url": "/charon/getSourceInfo?prefix=/community/jameshadfield/doesntexist",
     "expectStatusCode": 404
   },
   {
