@@ -26,6 +26,7 @@ export default class MainLayout extends React.Component {
         <Helmet>
           <title>{`${config.siteTitle}`}</title>
           <meta name="description" content={config.siteDescription} />
+          <link rel="me" href="https://mstdn.science/@nextstrain" />
         </Helmet>
         <ThemeProvider theme={theme}>
           <GlobalStyles>
