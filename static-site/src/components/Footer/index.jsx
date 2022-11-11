@@ -78,7 +78,8 @@ class Footer extends React.Component {
                 <TeamMember name={"Ivan Aksamentov"} image={"ivan-aksamentov.jpg"} link={"https://neherlab.org/ivan-aksamentov.html"}/>,
                 <TeamMember name={"Jover Lee"} image={"jover-lee.jpg"} link={"http://bedford.io/team/jover-lee/"}/>,
                 <TeamMember name={"Cassia Wagner"} image={"cassia-wagner.jpg"} link={"https://bedford.io/team/cassia-wagner/"}/>,
-                <TeamMember name={"Miguel Parades"} image={"miguel-parades.jpg"} link={"https://bedford.io/team/miguel-parades/"}/>
+                <TeamMember name={"Miguel Parades"} image={"miguel-parades.jpg"} link={"https://bedford.io/team/miguel-parades/"}/>,
+                <TeamMember name={"Jennifer Chang"} image={"jennifer-chang.jpg"} link={"https://bedford.io/team/jennifer-chang/"}/>
               </div>
               {(typeof window !== 'undefined' && window.location.pathname!=="/alumni") && (
                 <span>
