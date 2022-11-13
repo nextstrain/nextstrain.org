@@ -48,7 +48,7 @@ export const Line = styled.div`
   border-bottom: 1px solid #CCC;
 `;
 
-export const TeamMember = ({name, image, link}) => (
+export const TeamMember = ({name, image, link, comma=false}) => (
   <span style={{whiteSpace: "nowrap"}}>
     <a href={link} style={{fontWeight: 300, color: "#333", marginLeft: "2px", marginRight: "2px"}}>
       <img
@@ -59,6 +59,7 @@ export const TeamMember = ({name, image, link}) => (
       />
       {name}
     </a>
+    {comma && ","}
   </span>
 );
 

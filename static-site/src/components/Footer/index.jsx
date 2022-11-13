@@ -5,6 +5,7 @@ import { Link } from "gatsby";
 import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer, TeamMember, Line } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
+import { teamMembers } from "../../pages/team";
 
 const SplashImagesCredit = () => (
   <div className="row">
@@ -65,29 +66,21 @@ class Footer extends React.Component {
               {"Hadfield "}<i>{"et al., "}</i>
               <a href="https://doi.org/10.1093/bioinformatics/bty407" target="_blank" rel="noreferrer noopener">Nextstrain: real-time tracking of pathogen evolution</a>
               <i>, Bioinformatics</i> (2018)
-              <div style={{margin: "10px 0px"}}/>
-              The core Nextstrain team is
-              <div style={{margin: "0px 0px"}}/>
-              <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
-                <TeamMember name={"Trevor Bedford"} image={"trevor-bedford.jpg"} link={"http://bedford.io/team/trevor-bedford/"}/>,
-                <TeamMember name={"Richard Neher"} image={"richard-neher.jpg"} link={"https://neherlab.org/richard-neher.html"}/>,
-                <TeamMember name={"James Hadfield"} image={"james-hadfield.jpg"} link={"http://bedford.io/team/james-hadfield/"}/>,
-                <TeamMember name={"Emma Hodcroft"} image={"emma-hodcroft.jpg"} link={"http://emmahodcroft.com/"}/>,
-                <TeamMember name={"Thomas Sibley"} image={"thomas-sibley.jpg"} link={"https://bedford.io/team/thomas-sibley/"}/>,
-                <TeamMember name={"John Huddleston"} image={"john-huddleston.jpg"} link={"http://bedford.io/team/john-huddleston/"}/>,
-                <TeamMember name={"Ivan Aksamentov"} image={"ivan-aksamentov.jpg"} link={"https://neherlab.org/ivan-aksamentov.html"}/>,
-                <TeamMember name={"Jover Lee"} image={"jover-lee.jpg"} link={"http://bedford.io/team/jover-lee/"}/>,
-                <TeamMember name={"Cassia Wagner"} image={"cassia-wagner.jpg"} link={"https://bedford.io/team/cassia-wagner/"}/>,
-                <TeamMember name={"Miguel Parades"} image={"miguel-parades.jpg"} link={"https://bedford.io/team/miguel-parades/"}/>,
-                <TeamMember name={"Jennifer Chang"} image={"jennifer-chang.jpg"} link={"https://bedford.io/team/jennifer-chang/"}/>
-              </div>
-              {(typeof window !== 'undefined' && window.location.pathname!=="/alumni") && (
-                <span>
+              {(typeof window !== 'undefined' && window.location.pathname.replace(/\//g, "")!=="team") && (
+                <>
+                  <div style={{margin: "10px 0px"}}/>
+                  The core Nextstrain team is
+                  <div style={{margin: "0px 0px"}}/>
+                  <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
+                    {teamMembers.map((p, i) => 
+                      <TeamMember key={p.name} name={p.name} image={p.image} link={p.link} comma={i+1!==teamMembers.length}/>
+                    )}
+                  </div>
                   {"Please see our "}
-                  <Link to="/alumni">alumni page</Link>
+                  <Link to="/team">team page</Link>
                   {" for previous members of the team"}
-                </span>
-              )}
+                </>
+                )}
             </Styles.IconParagraph>
           </div>
           <div className="col-md-1"/>
