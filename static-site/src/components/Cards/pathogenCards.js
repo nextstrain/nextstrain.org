@@ -35,14 +35,19 @@ const pathogenCards = [
     title: "Mumps"
   },
   {
-    img: "tb.jpg",
-    url: "/tb/global",
-    title: "Tuberculosis"
-  },
-  {
     img: "ncov.png",
     url: "/sars-cov-2",
     title: "SARS-CoV-2"
+  },
+  {
+    img: "rsv1.png",
+    url: "/rsv",
+    title: "RSV"
+  },
+  {
+    img: "tb.jpg",
+    url: "/tb/global",
+    title: "Tuberculosis"
   },
   {
     img: "wnv.jpg",
