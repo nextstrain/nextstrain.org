@@ -10,7 +10,6 @@
         "arn:aws:s3:::nextstrain-staging",
         "arn:aws:s3:::nextstrain-seattleflu",
         "arn:aws:s3:::nextstrain-nextspain",
-        "arn:aws:s3:::nextstrain-allwales-private",
         "arn:aws:s3:::nextstrain-nz-covid19-private",
         "arn:aws:s3:::nextstrain-grubaughlab",
         "arn:aws:s3:::nextstrain-grubaughlab-public",
@@ -44,7 +43,6 @@
       "Resource": [
         "arn:aws:s3:::nextstrain-seattleflu/*",
         "arn:aws:s3:::nextstrain-nextspain/*",
-        "arn:aws:s3:::nextstrain-allwales-private/*",
         "arn:aws:s3:::nextstrain-nz-covid19-private/*",
         "arn:aws:s3:::nextstrain-grubaughlab/*",
         "arn:aws:s3:::nextstrain-grubaughlab-public/*",
