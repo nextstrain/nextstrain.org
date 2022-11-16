@@ -61,7 +61,6 @@
   },
   {
     "name": "SC2ZamPub",
-    "bucket": "nextstrain-sc2zampub",
     "isPublic": true
   },
   {
@@ -136,7 +135,6 @@
   },
   {
     "name": "SC2Zam",
-    "bucket": "nextstrain-sc2zam",
     "isPublic": false
   },
   {
