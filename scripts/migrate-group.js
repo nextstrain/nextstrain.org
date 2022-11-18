@@ -103,6 +103,7 @@ async function syncData({dryRun = true, group}) {
     filters: [
       "--exclude=*",
       "--include=*.json",
+      "--exclude=*/*",
     ]
   });
 
@@ -114,6 +115,7 @@ async function syncData({dryRun = true, group}) {
     filters: [
       "--exclude=*",
       "--include=*.md",
+      "--exclude=*/*",
       "--exclude=group-overview.md",
     ]
   });
@@ -132,8 +134,8 @@ async function syncData({dryRun = true, group}) {
 
   // Discover files to consider for manual review
   const unsynced = (await s3ListObjects({group})).filter(
-    key => !key.endsWith(".json")
-        && !key.endsWith(".md")
+    key => !(key.endsWith(".json") && !key.includes("/"))
+        && !(key.endsWith(".md") && !key.includes("/"))
         && key !== "group-overview.md"
         && key !== "group-logo.png"
   );
