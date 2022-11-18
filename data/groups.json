@@ -43,7 +43,6 @@
   },
   {
     "name": "niph",
-    "bucket": "nextstrain-niph",
     "isPublic": true
   },
   {
