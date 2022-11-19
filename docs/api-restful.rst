@@ -57,16 +57,32 @@ Synopsis
         --header 'Content-Type: text/vnd.nextstrain.narrative+markdown'         \
         --upload-file ncov_sit-rep_2021-01-25.md
 
+    # Download a group overview…
+    curl https://nextstrain.org/groups/blab/settings/overview                   \
+        --header 'Authorization: Bearer eyJraWQiOiJyM3…'                        \
+        --header 'Accept: text/markdown'                                        \
+        --compressed                                                            \
+            > overview.md
+
+    # …and re-upload it after making changes.
+    curl https://nextstrain.org/groups/blab/settings/overview                   \
+        --header 'Authorization: Bearer eyJraWQiOiJyM3…'                        \
+        --header 'Content-Type: text/markdown'                                  \
+        --upload-file overview.md
 
 Authentication
 ==============
 
-Authentication is required for all resource-modifying requests (PUT, DELETE)
-and for read-only requests (GET, HEAD) to private resources (e.g. private
-`Nextstrain Groups`_).  Authentication is not required to download public
-datasets or narratives.  Requests which are not allowed will receive a `401
-Unauthorized`_ response if the request wasn't authenticated and a `403
-Forbidden`_ response if it was.
+Authentication is required for:
+
+1. All resource-modifying requests (PUT, DELETE).
+2. Read-only requests (GET, HEAD) to private resources (e.g. private `Nextstrain
+   Groups`_).
+3. All requests to group settings endpoints.
+
+Authentication is not required to download public datasets or narratives.
+Requests which are not allowed will receive a `401 Unauthorized`_ response if
+the request wasn't authenticated and a `403 Forbidden`_ response if it was.
 
 Requests are authenticated by one of two methods:
 
@@ -266,6 +282,11 @@ The following narrative endpoints exist::
 
     {GET, HEAD} /fetch/narratives/*
 
+The following group settings endpoints exist::
+
+    {GET, HEAD, PUT, DELETE} /groups/{name}/settings/logo
+
+    {GET, HEAD, PUT, DELETE} /groups/{name}/settings/overview
 
 .. _motivation:
 
