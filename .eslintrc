@@ -58,6 +58,22 @@ rules:
   react/no-danger: off # gatsby uses this a lot
   no-use-before-define: ["error", { "functions": false }]
   no-return-await: off
+  # <<< These were enabled when upgrading eslint-config-airbnb 16→19. Disabling for now.
+  function-call-argument-newline: off
+  function-paren-newline: off
+  implicit-arrow-linebreak: off
+  import/no-cycle: off
+  import/order: off
+  lines-between-class-members: off
+  max-classes-per-file: off
+  no-else-return: off
+  no-multiple-empty-lines: off
+  object-curly-newline: off
+  operator-linebreak: off
+  prefer-destructuring: off
+  prefer-regex-literals: off
+  semi-style: off
+  # >>>
 parserOptions:
   sourceType: module
   requireConfigFile: false
