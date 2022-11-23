@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react"; // eslint-disable-line
 import styled from 'styled-components'; // eslint-disable-line
-import MarkdownDisplay from "auspice/src/components/markdownDisplay";
-import NavBar from "./navbar";
+import MarkdownDisplay from "auspice/src/components/markdownDisplay/index.js";
+import NavBar from "./navbar.js";
 
 
 /**
