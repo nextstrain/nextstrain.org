@@ -199,6 +199,10 @@
     "isPublic": true
   },
   {
+    "name": "offlu-private",
+    "isPublic": false
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
