@@ -78,7 +78,6 @@
   },
   {
     "name": "grubaughlab-public",
-    "bucket": "nextstrain-grubaughlab-public",
     "isPublic": true
   },
   {
