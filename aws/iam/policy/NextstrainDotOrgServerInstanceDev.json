@@ -13,8 +13,7 @@
         "arn:aws:s3:::nextstrain-ngs-sa",
         "arn:aws:s3:::nextstrain-ecdc",
         "arn:aws:s3:::nextstrain-illinois-gagnon-public",
-        "arn:aws:s3:::nextstrain-spheres",
-        "arn:aws:s3:::nextstrain-epicovigal"
+        "arn:aws:s3:::nextstrain-spheres"
       ]
     },
     {
@@ -30,8 +29,7 @@
         "arn:aws:s3:::nextstrain-ngs-sa/*",
         "arn:aws:s3:::nextstrain-ecdc/*",
         "arn:aws:s3:::nextstrain-illinois-gagnon-public/*",
-        "arn:aws:s3:::nextstrain-spheres/*",
-        "arn:aws:s3:::nextstrain-epicovigal/*"
+        "arn:aws:s3:::nextstrain-spheres/*"
       ]
     },
     {
