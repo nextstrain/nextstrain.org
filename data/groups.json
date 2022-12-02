@@ -197,6 +197,14 @@
     "isPublic": false
   },
   {
+    "name": "chulab",
+    "isPublic": true
+  },
+  {
+    "name": "chulab-private",
+    "isPublic": false
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
