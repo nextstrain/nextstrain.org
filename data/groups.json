@@ -177,10 +177,6 @@
     "isPublic": false
   },
   {
-    "name": "uvri-vhf-lab-private",
-    "isPublic": false
-  },
-  {
     "name": "WHO-euro-flu",
     "isPublic": true
   },
@@ -203,6 +199,14 @@
   {
     "name": "chulab-private",
     "isPublic": false
+  },
+  {
+    "name": "ebov-sub-2022-private",
+    "isPublic": false
+  },
+  {
+    "name": "ebov-sub-2022-public",
+    "isPublic": true
   },
   {
     "name": "test",
