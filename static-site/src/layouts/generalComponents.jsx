@@ -48,21 +48,6 @@ export const Line = styled.div`
   border-bottom: 1px solid #CCC;
 `;
 
-export const TeamMember = ({name, image, link, outerStyles={}, comma=false}) => (
-  <span style={{whiteSpace: "nowrap", ...outerStyles}}>
-    <a href={link} style={{fontWeight: 300, color: "#333", marginLeft: "2px", marginRight: "2px"}}>
-      <img
-        alt={name}
-        width="32"
-        style={{marginLeft: "5px", marginRight: "4px", borderRadius: "50%", verticalAlign: "middle"}}
-        src={require("../../static/team/"+image)}
-      />
-      {name}
-    </a>
-    {comma && ","}
-  </span>
-);
-
 export const CenteredContainer = (props) => (
   <div className="row">
     <div className="col-md-2" />
