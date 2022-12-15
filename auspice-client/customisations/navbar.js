@@ -2,7 +2,7 @@
 import React from "react"; // eslint-disable-line
 import LanguageSelector from "./languageSelector.js";
 
-import logoPNG from "./nextstrain-logo-small.png";
+const logoPNG = require("./nextstrain-logo-small.png");
 
 /* This code is straight from the auspice repo.
  * There are theme props available if one used styled components here
