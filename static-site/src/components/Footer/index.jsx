@@ -1,9 +1,11 @@
 /* eslint-disable react/prefer-stateless-function */
 
 import React from "react";
+import { Link } from "gatsby";
 import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer, TeamMember, Line } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
+import { founders, teamMembers } from "../../pages/team";
 
 const SplashImagesCredit = () => (
   <div className="row">
@@ -52,8 +54,8 @@ const SplashImagesCredit = () => (
 );
 
 class Footer extends React.Component {
-
   render() {
+    const avatars = [...founders, ...teamMembers];
     return (
       <div>
         <Line style={{margin: "30px 0px 10px 0px"}}/>
@@ -65,32 +67,21 @@ class Footer extends React.Component {
               {"Hadfield "}<i>{"et al., "}</i>
               <a href="https://doi.org/10.1093/bioinformatics/bty407" target="_blank" rel="noreferrer noopener">Nextstrain: real-time tracking of pathogen evolution</a>
               <i>, Bioinformatics</i> (2018)
-              <div style={{margin: "10px 0px"}}/>
-              Nextstrain is built by
-              <div style={{margin: "0px 0px"}}/>
-              <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
-                <TeamMember name={"Trevor Bedford"} image={"trevor-bedford.jpg"} link={"http://bedford.io/team/trevor-bedford/"}/>,
-                <TeamMember name={"Richard Neher"} image={"richard-neher.jpg"} link={"https://neherlab.org/richard-neher.html"}/>,
-                <TeamMember name={"James Hadfield"} image={"james-hadfield.jpg"} link={"http://bedford.io/team/james-hadfield/"}/>,
-                <TeamMember name={"Emma Hodcroft"} image={"emma-hodcroft.jpg"} link={"http://emmahodcroft.com/"}/>,
-                <TeamMember name={"Thomas Sibley"} image={"thomas-sibley.jpg"} link={"https://bedford.io/team/thomas-sibley/"}/>,
-                <TeamMember name={"John Huddleston"} image={"john-huddleston.jpg"} link={"http://bedford.io/team/john-huddleston/"}/>,
-                <TeamMember name={"Ivan Aksamentov"} image={"ivan-aksamentov.jpg"} link={"https://neherlab.org/ivan-aksamentov.html"}/>,
-                <TeamMember name={"Jover Lee"} image={"jover-lee.jpg"} link={"http://bedford.io/team/jover-lee/"}/>,
-                <TeamMember name={"Kairsten Fay"} image={"kairsten-fay.jpg"} link={"http://bedford.io/team/kairsten-fay/"}/>,
-                <TeamMember name={"Moira Zuber"} image={"moira-zuber.jpg"}/>,
-                <TeamMember name={"Eli Harkins"} image={"eli-harkins.jpg"} link={"https://bedford.io/team/eli-harkins/"}/>,
-                <TeamMember name={"Misja Ilcisin"} image={"misja-ilcisin.jpg"} link={"http://bedford.io/team/misja-ilcisin/"}/>,
-                <TeamMember name={"Cassia Wagner"} image={"cassia-wagner.jpg"} link={"https://bedford.io/team/cassia-wagner/"}/>,
-                <TeamMember name={"Louise Moncla"} image={"louise-moncla.jpg"} link={"http://bedford.io/team/louise-moncla/"}/>,
-                <TeamMember name={"Allison Black"} image={"allison-black.jpg"} link={"http://bedford.io/team/allison-black/"}/>,
-                <TeamMember name={"Sidney Bell"} image={"sidney-bell.jpg"} link={"http://bedford.io/team/sidney-bell/"}/>,
-                <TeamMember name={"Miguel Parades"} image={"miguel-parades.jpg"} link={"https://bedford.io/team/miguel-parades/"}/>,
-                <TeamMember name={"Colin Megill"} image={"colin-megill.jpg"} link={"http://www.colinmegill.com/"}/>,
-                <TeamMember name={"Barney Potter"} image={"barney-potter.jpg"} link={"http://bedford.io/team/barney-potter/"}/>,
-                <TeamMember name={"Pavel Sagulenko"} image={"pavel-sagulenko.jpg"} link={"https://neherlab.org/pavel-sagulenko.html"}/>,
-                <TeamMember name={"Charlton Callender"} image={"charlton-callender.jpg"} link={"http://bedford.io/team/charlton-callender/"}/>
-              </div>
+              {(typeof window !== 'undefined' && window.location.pathname.replace(/\//g, "")!=="team") && (
+                <>
+                  <div style={{margin: "10px 0px"}}/>
+                  The core Nextstrain team is
+                  <div style={{margin: "0px 0px"}}/>
+                  <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
+                    {avatars.map((p, i) => 
+                      <TeamMember key={p.name} name={p.name} image={p.image} link={p.link} comma={i+1!==avatars.length}/>
+                    )}
+                  </div>
+                  {"Please see the "}
+                  <Link to="/team">team page</Link>
+                  {" for more details."}
+                </>
+                )}
             </Styles.IconParagraph>
           </div>
           <div className="col-md-1"/>
