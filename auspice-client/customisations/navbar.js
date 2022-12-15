@@ -1,8 +1,8 @@
 /* eslint-disable no-multi-spaces */
 import React from "react"; // eslint-disable-line
-import LanguageSelector from "./languageSelector";
+import LanguageSelector from "./languageSelector.js";
 
-const logoPNG = require("./nextstrain-logo-small.png");
+import logoPNG from "./nextstrain-logo-small.png";
 
 /* This code is straight from the auspice repo.
  * There are theme props available if one used styled components here

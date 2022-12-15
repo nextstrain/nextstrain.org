@@ -15,7 +15,22 @@ This repository provides the tools you need to [build nextstrain.org locally](#b
 ---
 ## Build nextstrain.org locally
 
-### 1. Install prerequisites
+### 1. Set up an environment with the correct version of Node.js/NPM
+
+Check [package.json](./package.json) for the supported versions, e.g.
+
+```json
+"engines": {
+  "node": "^16",
+  "npm": "^7 || ^8"
+}
+```
+
+While other versions may build this project successfully, we recommend using the supported versions to align with the Heroku environments.
+
+If you are using another version for other projects, you can switch between different versions using tools such as `nvm` or `conda`.
+
+### 2. Install prerequisites
 Install the node dependencies by running
 ```
 npm ci
@@ -25,11 +40,11 @@ from this directory (the "nextstrain.org" directory).
 > Using `npm ci` instead of `npm install` ensures your dependency tree matches those in `package-lock.json`.
 
 
-### 2. Build the site
+### 3. Build the site
 `npm run build` runs `./build.sh` to build both the static site & an auspice client with customisations.
 The following section details the different ways to serve these pages on a local server after building the site.
 
-### 3. Run server
+### 4. Run server
 
 #### Run server mirroring the deployed (live) website
 `npm run server` will start a local server, by default available at [localhost:5000](http://localhost:5000).
