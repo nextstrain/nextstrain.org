@@ -10,9 +10,12 @@ import { CenteredFocusParagraph } from "../components/splash/styles";
  * (only in the grid, not in the footer).
  */
 
-export const teamMembers = [
+export const founders = [
   {name: "Trevor Bedford", image: "trevor-bedford.jpg", link: "https://bedford.io/team/trevor-bedford/"},
-  {name: "Richard Neher", image: "richard-neher.jpg", link: "https://neherlab.org/richard-neher.html"},
+  {name: "Richard Neher", image: "richard-neher.jpg", link: "https://neherlab.org/richard-neher.html"}
+];
+
+export const teamMembers = [
   {name: "James Hadfield", image: "james-hadfield.jpg", link: "https://bedford.io/team/james-hadfield/"},
   {name: "Emma Hodcroft", image: "emma-hodcroft.jpg", link: "https://emmahodcroft.com/"},
   {name: "Thomas Sibley", image: "thomas-sibley.jpg", link: "https://bedford.io/team/thomas-sibley/"},
@@ -40,9 +43,11 @@ const alumni = [
   {name: "Charlton Callender", image: "charlton-callender.jpg", link: "https://bedford.io/team/charlton-callender/"},
 ]
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+const PeopleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: ${(props) => props.justifyContent};
   font-size: 16px;
   font-weight: 300;
   padding: 20px 5%;
@@ -66,27 +71,40 @@ const H1 = styled.div`
   margin-bottom: 20px;
 `;
 
+const People = ({people, justifyContent="center"}) => (
+  <PeopleContainer justifyContent={justifyContent}>
+    {people.map((p, i) => 
+      <TeamMember key={p.name} name={p.name} image={p.image} link={p.link} outerStyles={{padding: "5px 10px"}}/>
+    )}
+  </PeopleContainer>
+);
+
 const TeamPage = () => {
   console.log("<TeamPage>");
   return (
     <div>
       <H1>Nextstrain core team</H1>
+
+      <FlexCenter>
+        <CenteredFocusParagraph>
+          {"Nextstrain was co-founded by:"}
+        </CenteredFocusParagraph>
+      </FlexCenter>
+
+      <People people={founders}/>
+
       <FlexCenter>
         <CenteredFocusParagraph>
           {"The core team currently working on Nextstrain are:"}
         </CenteredFocusParagraph>
       </FlexCenter>
 
-      <Grid>
-        {teamMembers.map((p, i) => 
-          <TeamMember key={p.name} name={p.name} image={p.image} link={p.link}/>
-        )}
-      </Grid>
+      <People people={teamMembers} />
 
       <H1>Nextstrain Alumni</H1>
       <FlexCenter>
         <CenteredFocusParagraph>
-          {"Our previous core Nextstrain team members, some of whom are still working on projects involving Nextstrain and/or maintaining specific analyses."}
+          {`Our previous core Nextstrain team members, some of whom are still working on projects involving Nextstrain and/or maintaining specific analyses. `}
           {"Beyond the core team there have been many code contributions from the wider scientific and programming community; please see "}
           <a href="https://github.com/nextstrain">our GitHub organization</a>
           {" to see the history of (code) contributions."}
@@ -95,11 +113,7 @@ const TeamPage = () => {
 
       <BigSpacer/>
 
-      <Grid>
-        {alumni.map((p, i) => 
-          <TeamMember key={p.name} name={p.name} image={p.image} link={p.link}/>
-        )}
-      </Grid>
+      <People people={alumni} />
     </div>
   );
 };

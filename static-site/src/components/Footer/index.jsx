@@ -5,7 +5,7 @@ import { Link } from "gatsby";
 import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer, TeamMember, Line } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
-import { teamMembers } from "../../pages/team";
+import { founders, teamMembers } from "../../pages/team";
 
 const SplashImagesCredit = () => (
   <div className="row">
@@ -55,6 +55,7 @@ const SplashImagesCredit = () => (
 
 class Footer extends React.Component {
   render() {
+    const avatars = [...founders, ...teamMembers];
     return (
       <div>
         <Line style={{margin: "30px 0px 10px 0px"}}/>
@@ -72,13 +73,13 @@ class Footer extends React.Component {
                   The core Nextstrain team is
                   <div style={{margin: "0px 0px"}}/>
                   <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
-                    {teamMembers.map((p, i) => 
-                      <TeamMember key={p.name} name={p.name} image={p.image} link={p.link} comma={i+1!==teamMembers.length}/>
+                    {avatars.map((p, i) => 
+                      <TeamMember key={p.name} name={p.name} image={p.image} link={p.link} comma={i+1!==avatars.length}/>
                     )}
                   </div>
-                  {"Please see our "}
+                  {"Please see the "}
                   <Link to="/team">team page</Link>
-                  {" for previous members of the team"}
+                  {" for more details."}
                 </>
                 )}
             </Styles.IconParagraph>
