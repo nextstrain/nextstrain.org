@@ -14,17 +14,20 @@ export const teamMembers = {
     {
       name: "James Hadfield",
       image: "james-hadfield.jpg",
-      link: "https://bedford.io/team/james-hadfield/"
+      link: "https://bedford.io/team/james-hadfield/",
+      blurb: "Something too short"
     },
     {
       name: "Emma Hodcroft",
       image: "emma-hodcroft.jpg",
-      link: "https://emmahodcroft.com/"
+      link: "https://emmahodcroft.com/",
+      blurb: "Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long!"
     },
     {
       name: "Thomas Sibley",
       image: "thomas-sibley.jpg",
-      link: "https://bedford.io/team/thomas-sibley/"
+      link: "https://bedford.io/team/thomas-sibley/",
+      blurb: "medium length blurb, medium length blurb, medium length blurb, medium length blurb, medium length blurb"
     },
     {
       name: "John Huddleston",
