@@ -15,19 +15,17 @@ export const teamMembers = {
       name: "James Hadfield",
       image: "james-hadfield.jpg",
       link: "https://bedford.io/team/james-hadfield/",
-      blurb: "Something too short"
+      blurb: "James joined the team in 2017 after his PhD and works on all aspects of Nextstrain with a particular focus on interactive visualisation."
     },
     {
       name: "Emma Hodcroft",
       image: "emma-hodcroft.jpg",
       link: "https://emmahodcroft.com/",
-      blurb: "Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long! Something really long!"
     },
     {
       name: "Thomas Sibley",
       image: "thomas-sibley.jpg",
       link: "https://bedford.io/team/thomas-sibley/",
-      blurb: "medium length blurb, medium length blurb, medium length blurb, medium length blurb, medium length blurb"
     },
     {
       name: "John Huddleston",
