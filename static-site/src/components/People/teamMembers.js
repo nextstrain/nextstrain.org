@@ -30,7 +30,8 @@ export const teamMembers = {
     {
       name: "John Huddleston",
       image: "john-huddleston.jpg",
-      link: "https://bedford.io/team/john-huddleston/"
+      link: "https://bedford.io/team/john-huddleston/",
+      blurb: "John works on Nextstrain's bioinformatics tools like Augur and pathogen workflows like seasonal influenza and SARS-CoV-2."
     },
     {
       name: "Ivan Aksamentov",
