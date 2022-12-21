@@ -20,10 +20,13 @@ main() {
             build-static;;
         auspice)
             build-auspice;;
+        forecasts)
+            build-forecasts;;
         all)
             echo "Running the nextstrain.org build script"
             build-static
             build-auspice
+            build-forecasts
             echo "Build complete. Next step: \"npm run server\"";;
         *)
             echo "Unknown build step \"$step\"" >&2
@@ -44,6 +47,17 @@ build-auspice() {
     cd auspice-client
     ../node_modules/.bin/auspice build --verbose --extend ./customisations/config.json
     cd ..
+}
+
+build-forecasts() {
+    git clone https://github.com/nextstrain/forecasts-ncov.git
+    cd forecasts-ncov
+    git fetch
+    git checkout viz
+    cd viz
+    npm ci
+    npm run build
+    cd ../..
 }
 
 main "$@"
