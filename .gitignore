@@ -35,5 +35,3 @@
 # store, but in case they do, make sure they aren't committed.
 /terraform.tfstate*
 
-# forecasts-ncov is a directory (git repo) introduced at build time
-forecasts-ncov/

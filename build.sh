@@ -50,14 +50,11 @@ build-auspice() {
 }
 
 build-forecasts() {
-    git clone https://github.com/nextstrain/forecasts-ncov.git
-    cd forecasts-ncov
-    git fetch
-    git checkout viz
-    cd viz
-    npm ci
-    npm run build
-    cd ../..
+  # the `forecasts-ncov` is vendored into the nextstrain.org using `git subtree`
+  cd forecasts-ncov/viz
+  npm ci
+  npm run build
+  cd ../..
 }
 
 main "$@"
