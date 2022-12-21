@@ -66,7 +66,7 @@ const UpDown = styled.div`
 
 const Blurb = styled.div`
   font-size: 14px;
-  text-align: justify;
+  text-align: left;
 `
 
 const Comma = ({}) => (
