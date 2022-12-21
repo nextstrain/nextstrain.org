@@ -47,7 +47,8 @@ export const teamMembers = {
     {
       name: "Jennifer Chang",
       image: "jennifer-chang.jpg",
-      link: "https://bedford.io/team/jennifer-chang/"
+      link: "https://bedford.io/team/jennifer-chang/",
+      blurb: "Jennifer joined the team in 2021 and specializes in Terra and Nextflow workflows and contributes to various pathogen workflows as needed."
     },
     {
       name: "Victor Lin",
