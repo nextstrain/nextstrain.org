@@ -26,6 +26,7 @@ export const teamMembers = {
       name: "Thomas Sibley",
       image: "thomas-sibley.jpg",
       link: "https://bedford.io/team/thomas-sibley/",
+      blurb: "Thomas works on all aspects of Nextstrain with a particular focus on reducing barriers to usage via better infrastructure (e.g. nextstrain.org, Groups), tooling (e.g. CLI, runtimes), and documentation.",
     },
     {
       name: "John Huddleston",
