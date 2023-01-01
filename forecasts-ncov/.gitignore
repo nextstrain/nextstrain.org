@@ -1,0 +1,41 @@
+# Files created by the pipeline, which we want to keep out of git
+data/*
+logs/
+results/
+benchmarks/
+
+# Errors from tests
+*.err
+
+# From Snakemake
+.snakemake/
+
+# Sensitive environment variables
+environment*
+
+# For Python #
+##############
+*.pyc
+.tox/
+.cache/
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+*~

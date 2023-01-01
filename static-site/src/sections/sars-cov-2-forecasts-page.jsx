@@ -34,10 +34,14 @@ const abstract = (
 
 const introContents = [
   {
-    type: "external",
+    type: "gatsby",
     to: "/sars-cov-2",
-    title: "Nextstrain SARS-CoV-2 resources",
-    subtext: "Jump to our main SARS-CoV-2 resources page."
+    title: "The main Nextstrain SARS-CoV-2 page",
+  },
+  {
+    type: "external",
+    to: "/sars-cov-2/forecasts/interactive",
+    title: "Interactive visualisations of these forecasts",
   },
 ];
 
@@ -117,6 +121,10 @@ const collapsibleContents = [
   }
 ];
 
+const ResourcesTitle = styled(FlexCenter)`
+  font-size: 20px;
+  font-weight: 500;
+`
 
 function Index(props) {
   return (
@@ -129,8 +137,11 @@ function Index(props) {
           {abstract}
         </splashStyles.CenteredFocusParagraph>
       </FlexCenter>
-      <MediumSpacer />
+      <HugeSpacer />
 
+      <ResourcesTitle>
+        Other useful resources:
+      </ResourcesTitle>
       <PathogenPageIntroduction data={introContents} />
       <HugeSpacer />
 

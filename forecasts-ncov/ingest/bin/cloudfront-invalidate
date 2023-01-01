@@ -1,0 +1,42 @@
+#!/bin/bash
+# Originally from @tsibley's gist: https://gist.github.com/tsibley/a66262d341dedbea39b02f27e2837ea8
+set -euo pipefail
+
+main() {
+    local domain="$1"
+    shift
+    local paths=("$@")
+    local distribution invalidation
+
+    echo "-> Finding CloudFront distribution"
+    distribution=$(
+        aws cloudfront list-distributions \
+            --query "DistributionList.Items[?contains(Aliases.Items, \`$domain\`)] | [0].Id" \
+            --output text
+    )
+
+    if [[ -z $distribution || $distribution == None ]]; then
+        exec >&2
+        echo "Unable to find CloudFront distribution id for $domain"
+        echo
+        echo "Are your AWS CLI credentials for the right account?"
+        exit 1
+    fi
+
+    echo "-> Creating CloudFront invalidation for distribution $distribution"
+    invalidation=$(
+        aws cloudfront create-invalidation \
+            --distribution-id "$distribution" \
+            --paths "${paths[@]}" \
+            --query Invalidation.Id \
+            --output text
+    )
+
+    echo "-> Waiting for CloudFront invalidation $invalidation to complete"
+    echo "   Ctrl-C to stop waiting."
+    aws cloudfront wait invalidation-completed \
+        --distribution-id "$distribution" \
+        --id "$invalidation"
+}
+
+main "$@"

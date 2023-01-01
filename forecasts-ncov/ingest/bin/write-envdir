@@ -1,0 +1,19 @@
+#!/bin/bash
+# usage: write-envdir <envdir> [[var1 [var2 [var3 […]]]]
+#
+# Writes the current value for each environment variable name given into the
+# directory <envdir>, one file per variable.  Creates <envdir> if it doesn't
+# already exist.
+#
+set -eou pipefail
+
+dir="${1:?no envdir path}"
+shift
+
+mkdir -pv "$dir"
+cd "$dir"
+
+for name in "$@"; do
+    echo "${!name}" > "$name"
+    echo "Wrote $dir/$name"
+done
