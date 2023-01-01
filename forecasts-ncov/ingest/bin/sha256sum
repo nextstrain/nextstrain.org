@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+"""
+Portable sha256sum utility.
+"""
+from hashlib import sha256
+from sys import stdin
+
+chunk_size = 5 * 1024**2 # 5 MiB
+
+h = sha256()
+
+for chunk in iter(lambda: stdin.buffer.read(chunk_size), b""):
+    h.update(chunk)
+
+print(h.hexdigest())
