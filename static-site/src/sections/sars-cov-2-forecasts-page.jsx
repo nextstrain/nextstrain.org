@@ -17,13 +17,20 @@ import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-i
 
 // Hard-coded content
 const title = "Nextstrain SARS-CoV-2 Forecasts";
-const abstract = `XXX TODO: Forecasts abstract placeholder - Lorem ipsum dolor
-sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-deserunt mollit anim id est laborum.`;
+const abstract = (
+  <>
+    <>This page visualises the evolution and dynamics of SARS-CoV-2 evolution and dynamics using two models:</>
+    <ul>
+      <li>Multinomial Logistic Regression (MLR) estimates variant frequencies and growth advantages for variants against some baseline using sequence count data</li>
+      <li>The variant renewal model estimates variant frequencies, variant-specific incidence, and growth advantages using a combination of case and sequence count data.</li>
+    </ul>
+    <br/>
+    <>Each model uses sequence counts via GISAID and case counts from various sources, collated in our <a href="https://github.com/nextstrain/forecasts-ncov/tree/main/ingest">forecasts-ncov GitHub repo</a>.</>
+    <>{` For more information on the models please see the `}<a href="https://www.github.com/blab/evofr">evofr GitHub repo</a> or the preprint <a href="https://bedford.io/papers/figgins-rt-from-frequency-dynamics/">"SARS-CoV-2 variant dynamics across US states show consistent differences in effective reproduction numbers"</a>.</>
+    <br/>
+    <>Currently we use <a href='https://nextstrain.org/blog/2022-04-29-SARS-CoV-2-clade-naming-2022'>Nextstrain clades</a> to partition the sequences into variants.</>
+  </>
+)
 
 const introContents = [
   {
@@ -36,16 +43,11 @@ const introContents = [
 
 const collapsibleContents = [
   {
-    title: "Variant Rt",
+    title: "Estimated effective reproduction number over time",
     text: (
       <span>
-        XXX TODO: Detailed explanation of variant Rt placeholder - Lorem ipsum dolor
-        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
+        This is an estimate of the average number of secondary infections expected to be caused by an individual infected with a given variant as estimated by the variant renewal model.
+        In general, we expect the variant to be growing if this number is greater than 1.
       </span>
     ),
     images: {
@@ -73,16 +75,10 @@ const collapsibleContents = [
 
   },
   {
-    title: "Estimated Variant Frequencies",
+    title: "Estimated Variant Frequencies over time",
     text: (
       <span>
-        XXX TODO: Detailed explanation of estimated variant frequencies placeholder - Lorem ipsum dolor
-        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
+        These estimates are derived from sequence count data using a multinomial logistic regression model.
       </span>
     ),
     images: {
@@ -109,16 +105,11 @@ const collapsibleContents = [
     }
   },
   {
-    title: "Estimated Variant Cases",
+    title: "Estimated Cases over time",
     text: (
       <span>
-        XXX TODO: Detailed explanation of estimated variant cases placeholder - Lorem ipsum dolor
-        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
+        As estimated by the variant renewal model.
+        These estimates are smoothed to deal with daily reporting noise and weekend effects present in case data.
       </span>
     ),
     images: {
@@ -145,16 +136,12 @@ const collapsibleContents = [
     }
   },
   {
-    title: "Relative Growth Advantage",
+    title: "Growth Advantage",
     text: (
       <span>
-        XXX TODO: Detailed explanation of relative growth advantage placeholder - Lorem ipsum dolor
-        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
+        These plots show the estimated growth advantage for given variants relative to baseline.
+        This is an estimate of how many more secondary infections this variant causes on average compared the baseline variant as estimated but the multinomial logistic regression model.
+        Vertical bars show the 95% HPD.
       </span>
     ),
     images: {
