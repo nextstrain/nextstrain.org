@@ -50,26 +50,13 @@ const collapsibleContents = [
         In general, we expect the variant to be growing if this number is greater than 1.
       </span>
     ),
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/legend.png",
     images: {
       gisaid: {
         global: {
-          src: "https://raw.githubusercontent.com/blab/rt-from-frequency-dynamics/master/results/omicron-countries-split/figures/omicron-countries-split_variant-rt.png",
+          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/rtPanel.png",
           alt: "Global variant Rt plots from GISAID data"
         },
-        usa: {
-          src: "https://raw.githubusercontent.com/blab/rt-from-frequency-dynamics/master/results/omicron-us-split/figures/omicron-us-split_variant-rt.png",
-          alt: "USA variant Rt plots from GISAID data"
-        }
-      },
-      open: {
-        global: {
-          src: "https://via.placeholder.com/900/7FB3D5/fff.png?text=Variant+Rt+Global+placeholder",
-          alt: "Global variant Rt plots from open data"
-        },
-        usa: {
-          src: "https://via.placeholder.com/900/BB8FCE/000.png?text=Variant+Rt+USA+placeholder",
-          alt: "USA variant Rt plots from open data"
-        }
       }
     }
 
@@ -81,26 +68,13 @@ const collapsibleContents = [
         These estimates are derived from sequence count data using a multinomial logistic regression model.
       </span>
     ),
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/legend.png",
     images: {
       gisaid: {
         global: {
-          src: "https://raw.githubusercontent.com/blab/rt-from-frequency-dynamics/master/results/omicron-countries-split/figures/omicron-countries-split_variant-estimated-frequency.png",
+          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/frequenciesPanel.png",
           alt: "Global estimated variant frequency plots from GISAID data"
         },
-        usa: {
-          src: "https://raw.githubusercontent.com/blab/rt-from-frequency-dynamics/master/results/omicron-us-split/figures/omicron-us-split_variant-estimated-frequency.png",
-          alt: "USA estimated variant frequency plots from GISAID data"
-        }
-      },
-      open: {
-        global: {
-          src: "https://via.placeholder.com/900/7FB3D5/fff.png?text=Variant+Rt+Global+placeholder",
-          alt: "Global estimated variant frequency plots from open data"
-        },
-        usa: {
-          src: "https://via.placeholder.com/900/BB8FCE/000.png?text=Variant+Rt+USA+placeholder",
-          alt: "USA estimated variant frequency plots from open data"
-        }
       }
     }
   },
@@ -112,26 +86,13 @@ const collapsibleContents = [
         These estimates are smoothed to deal with daily reporting noise and weekend effects present in case data.
       </span>
     ),
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/legend.png",
     images: {
       gisaid: {
         global: {
-          src: "https://raw.githubusercontent.com/blab/rt-from-frequency-dynamics/master/results/omicron-countries-split/figures/omicron-countries-split_variant-estimated-log-cases.png",
+          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/smoothedIncidencePanel.png",
           alt: "Global estimated variant case plots from GISAID data"
         },
-        usa: {
-          src: "https://raw.githubusercontent.com/blab/rt-from-frequency-dynamics/master/results/omicron-us-split/figures/omicron-us-split_variant-estimated-log-cases.png",
-          alt: "USA estimated variant case plots from GISAID data"
-        }
-      },
-      open: {
-        global: {
-          src: "https://via.placeholder.com/900/7FB3D5/fff.png?text=Variant+Rt+Global+placeholder",
-          alt: "Global estimated variant case plots from open data"
-        },
-        usa: {
-          src: "https://via.placeholder.com/900/BB8FCE/000.png?text=Variant+Rt+USA+placeholder",
-          alt: "USA estimated variant case plots from open data"
-        }
       }
     }
   },
@@ -144,26 +105,13 @@ const collapsibleContents = [
         Vertical bars show the 95% HPD.
       </span>
     ),
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/legend.png",
     images: {
       gisaid: {
         global: {
-          src: "https://via.placeholder.com/900/7FB3D5/fff.png?text=Global+relative+growth+advantage+placeholder",
+          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/growthAdvantagePanel.png",
           alt: "Global relative growth advantage plots from GISAID data"
         },
-        usa: {
-          src: "https://via.placeholder.com/900/BB8FCE/000.png?text=USA+relative+growth+advantage+placeholder",
-          alt: "USA relative growth advantage plots from GISAID data"
-        }
-      },
-      open: {
-        global: {
-          src: "https://via.placeholder.com/900/7FB3D5/fff.png?text=Variant+Rt+Global+placeholder",
-          alt: "Global relative growth advantage plots from open data"
-        },
-        usa: {
-          src: "https://via.placeholder.com/900/BB8FCE/000.png?text=Variant+Rt+USA+placeholder",
-          alt: "USA relative growth advantage plots from open data"
-        }
       }
     }
   }
@@ -216,7 +164,7 @@ const ToggleButton = styled.button`
 
 function CollapsibleContent(props) {
   /* eslint no-shadow: "off" */
-  const {title, text, images} = props.content;
+  const {title, text, images, legend} = props.content;
   const dataProvenanceOptions = Object.keys(images).sort();
 
   /**
@@ -292,6 +240,7 @@ function CollapsibleContent(props) {
             </FlexCenter>
           </div>
         </FlexGrid>
+        <img alt="legend" src={legend} />
         <FullWidthImage
           src={images[imageOptions.dataProvenance][imageOptions.geoResolution]?.src}
           alt={images[imageOptions.dataProvenance][imageOptions.geoResolution]?.alt}
