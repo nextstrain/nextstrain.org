@@ -1,0 +1,48 @@
+name: Static Model Viz
+
+on:
+  repository_dispatch:
+    types:
+      - static-model-viz
+  workflow_dispatch:
+    inputs:
+      trial_name:
+        description: 'Short name for a trial run. WARNING: without this we will overwrite files in s3://nextstrain-data/files/workflows/forecasts-ncov'
+        required: false
+
+jobs:
+  generate_and_upload_static_viz:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: nextstrain/.github/actions/setup-nextstrain-cli@master
+    - uses: actions/setup-node@v3
+      with:
+        node_version: 18
+
+    - name: Install viz dependencies
+      run: npm ci --prefix viz/
+
+    - name: Build viz app
+      run: npm run build --prefix viz/
+
+    - name: Generate static model figures
+      run: node viz/scripts/static-images.js --output-dir figures
+
+    - name: Upload static model figures
+      run: |
+        S3_DST=s3://nextstrain-data/files/workflows/forecasts-ncov/gisaid
+
+        if [[ "$TRIAL_NAME" ]]; then
+          S3_DST+=/trial/"$TRIAL_NAME"
+        fi
+
+        nextstrain remote upload \
+          "$S3_DST"/nextstrain_clades/global/ \
+          figures/*.png
+      env:
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        TRIAL_NAME: ${{ github.event.inputs.trial_name }}
+

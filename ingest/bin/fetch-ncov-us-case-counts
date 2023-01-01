@@ -1,0 +1,33 @@
+#!/bin/bash
+set -euo pipefail
+
+bin="$(dirname "$0")"
+base="$(realpath --relative-to . "$bin/..")"
+
+# Fetch total count of records from Socrata OpenData API for CDC dataset 9mfq-cb36
+# to set as the fetch limit in the API call below
+total_count=$(
+    curl 'https://data.cdc.gov/resource/9mfq-cb36.json?$select=count(*)' \
+        --fail --silent --show-error \
+        --header 'User-Agent: https://github.com/nextstrain/counts (hello@nextstrain.org)' |
+        jq --raw-output .[].count
+)
+
+# Fetch CSV from Socrata Open Data API for CDC dataset 9mfq-cb36
+# Only includes the submission_date, state, and new_cases columns
+# Only keeps rows that have more than 0 cases
+curl 'https://data.cdc.gov/resource/9mfq-cb36.csv?$select=state,submission_date,new_case&$where=new_case>0&$limit='+$total_count \
+    --fail --silent --show-error \
+    --header 'User-Agent: https://github.com/nextstrain/counts (hello@nextstrain.org)' |
+    # Replace state abbreviations with full name
+    csvtk replace -f state -p '([A-Z]{2,3})' -k $base/source-data/us-states.tsv -r '{kv}' --keep-key |
+    # Sum case counts grouped by date and state - added to sum separate case counts for NYC and NY state
+    csvtk summary --decimal-width 0 -f new_case:sum -g state,submission_date |
+    # Rename columns
+    csvtk rename -f state,submission_date,new_case:sum -n location,date,cases |
+    # Remove time stamp from date column
+    csvtk replace -f date -p '([\d]{4}-[\d]{2}-[\d]{2})(.+)' -r '$1' |
+    # Sort by location then date
+    csvtk sort -k location,date |
+    # Convert to TSV
+    csvtk csv2tab

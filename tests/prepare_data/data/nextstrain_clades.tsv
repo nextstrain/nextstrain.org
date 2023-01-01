@@ -1,0 +1,176 @@
+location	clade	date	sequences
+Argentina	21I (Delta)	2022-01-03	1
+Argentina	21I (Delta)	2022-01-07	1
+Argentina	21J (Delta)	2022-01-01	1
+Argentina	21J (Delta)	2022-01-02	2
+Argentina	21J (Delta)	2022-01-03	8
+Argentina	21J (Delta)	2022-01-04	7
+Argentina	21J (Delta)	2022-01-05	3
+Argentina	21J (Delta)	2022-01-06	5
+Argentina	21J (Delta)	2022-01-07	6
+Argentina	21J (Delta)	2022-01-08	1
+Argentina	21J (Delta)	2022-01-10	4
+Argentina	21K (Omicron)	2022-01-01	11
+Argentina	21K (Omicron)	2022-01-02	22
+Argentina	21K (Omicron)	2022-01-03	38
+Argentina	21K (Omicron)	2022-01-04	60
+Argentina	21K (Omicron)	2022-01-05	50
+Argentina	21K (Omicron)	2022-01-06	43
+Argentina	21K (Omicron)	2022-01-07	40
+Argentina	21K (Omicron)	2022-01-08	35
+Argentina	21K (Omicron)	2022-01-09	13
+Argentina	21K (Omicron)	2022-01-10	68
+Japan	21I (Delta)	2022-01-01	1
+Japan	21I (Delta)	2022-01-02	1
+Japan	21I (Delta)	2022-01-03	4
+Japan	21I (Delta)	2022-01-04	1
+Japan	21I (Delta)	2022-01-05	1
+Japan	21I (Delta)	2022-01-06	1
+Japan	21I (Delta)	2022-01-07	1
+Japan	21I (Delta)	2022-01-09	1
+Japan	21J (Delta)	2022-01-01	41
+Japan	21J (Delta)	2022-01-02	55
+Japan	21J (Delta)	2022-01-03	72
+Japan	21J (Delta)	2022-01-04	135
+Japan	21J (Delta)	2022-01-05	145
+Japan	21J (Delta)	2022-01-06	147
+Japan	21J (Delta)	2022-01-07	168
+Japan	21J (Delta)	2022-01-08	121
+Japan	21J (Delta)	2022-01-09	52
+Japan	21J (Delta)	2022-01-10	44
+Japan	21K (Omicron)	2022-01-01	218
+Japan	21K (Omicron)	2022-01-02	326
+Japan	21K (Omicron)	2022-01-03	486
+Japan	21K (Omicron)	2022-01-04	816
+Japan	21K (Omicron)	2022-01-05	976
+Japan	21K (Omicron)	2022-01-06	1317
+Japan	21K (Omicron)	2022-01-07	1511
+Japan	21K (Omicron)	2022-01-08	1210
+Japan	21K (Omicron)	2022-01-09	741
+Japan	21K (Omicron)	2022-01-10	764
+Japan	21L (Omicron)	2022-01-01	1
+Japan	21L (Omicron)	2022-01-02	6
+Japan	21L (Omicron)	2022-01-03	9
+Japan	21L (Omicron)	2022-01-04	5
+Japan	21L (Omicron)	2022-01-05	20
+Japan	21L (Omicron)	2022-01-06	12
+Japan	21L (Omicron)	2022-01-07	19
+Japan	21L (Omicron)	2022-01-08	30
+Japan	21L (Omicron)	2022-01-09	12
+Japan	21L (Omicron)	2022-01-10	22
+USA	19A	2022-01-02	8
+USA	19A	2022-01-03	9
+USA	19A	2022-01-04	21
+USA	19A	2022-01-05	11
+USA	19A	2022-01-06	11
+USA	19A	2022-01-07	8
+USA	19A	2022-01-08	8
+USA	19A	2022-01-09	15
+USA	19A	2022-01-10	16
+USA	20A	2022-01-01	1
+USA	20A	2022-01-02	1
+USA	20A	2022-01-06	1
+USA	20A	2022-01-09	1
+USA	20B	2022-01-01	1
+USA	20B	2022-01-02	2
+USA	20B	2022-01-03	1
+USA	20B	2022-01-04	3
+USA	20B	2022-01-06	1
+USA	20B	2022-01-08	1
+USA	20B	2022-01-09	2
+USA	20B	2022-01-10	4
+USA	20C	2022-01-07	1
+USA	21A (Delta)	2022-01-01	2
+USA	21A (Delta)	2022-01-02	1
+USA	21A (Delta)	2022-01-03	5
+USA	21A (Delta)	2022-01-04	1
+USA	21A (Delta)	2022-01-05	2
+USA	21A (Delta)	2022-01-06	3
+USA	21A (Delta)	2022-01-07	1
+USA	21A (Delta)	2022-01-08	2
+USA	21A (Delta)	2022-01-10	1
+USA	21I (Delta)	2022-01-01	11
+USA	21I (Delta)	2022-01-02	15
+USA	21I (Delta)	2022-01-03	12
+USA	21I (Delta)	2022-01-04	21
+USA	21I (Delta)	2022-01-05	14
+USA	21I (Delta)	2022-01-06	10
+USA	21I (Delta)	2022-01-07	6
+USA	21I (Delta)	2022-01-08	7
+USA	21I (Delta)	2022-01-09	8
+USA	21I (Delta)	2022-01-10	9
+USA	21J (Delta)	2022-01-01	360
+USA	21J (Delta)	2022-01-02	582
+USA	21J (Delta)	2022-01-03	1104
+USA	21J (Delta)	2022-01-04	918
+USA	21J (Delta)	2022-01-05	603
+USA	21J (Delta)	2022-01-06	529
+USA	21J (Delta)	2022-01-07	422
+USA	21J (Delta)	2022-01-08	232
+USA	21J (Delta)	2022-01-09	241
+USA	21J (Delta)	2022-01-10	442
+USA	21K (Omicron)	2022-01-01	3729
+USA	21K (Omicron)	2022-01-02	8890
+USA	21K (Omicron)	2022-01-03	19181
+USA	21K (Omicron)	2022-01-04	21544
+USA	21K (Omicron)	2022-01-05	15379
+USA	21K (Omicron)	2022-01-06	13448
+USA	21K (Omicron)	2022-01-07	12633
+USA	21K (Omicron)	2022-01-08	8416
+USA	21K (Omicron)	2022-01-09	7319
+USA	21K (Omicron)	2022-01-10	16688
+USA	21L (Omicron)	2022-01-01	3
+USA	21L (Omicron)	2022-01-02	4
+USA	21L (Omicron)	2022-01-03	12
+USA	21L (Omicron)	2022-01-04	10
+USA	21L (Omicron)	2022-01-05	17
+USA	21L (Omicron)	2022-01-06	15
+USA	21L (Omicron)	2022-01-07	35
+USA	21L (Omicron)	2022-01-08	25
+USA	21L (Omicron)	2022-01-09	21
+USA	21L (Omicron)	2022-01-10	27
+USA	21M (Omicron)	2022-01-02	1
+USA	recombinant	2022-01-02	1
+USA	recombinant	2022-01-10	1
+United Kingdom	19A	2022-01-03	4
+United Kingdom	20I (Alpha, V1)	2022-01-08	1
+United Kingdom	20I (Alpha, V1)	2022-01-09	1
+United Kingdom	21I (Delta)	2022-01-01	2
+United Kingdom	21I (Delta)	2022-01-03	2
+United Kingdom	21I (Delta)	2022-01-04	2
+United Kingdom	21I (Delta)	2022-01-09	1
+United Kingdom	21I (Delta)	2022-01-10	1
+United Kingdom	21J (Delta)	2022-01-01	192
+United Kingdom	21J (Delta)	2022-01-02	282
+United Kingdom	21J (Delta)	2022-01-03	321
+United Kingdom	21J (Delta)	2022-01-04	326
+United Kingdom	21J (Delta)	2022-01-05	247
+United Kingdom	21J (Delta)	2022-01-06	244
+United Kingdom	21J (Delta)	2022-01-07	198
+United Kingdom	21J (Delta)	2022-01-08	112
+United Kingdom	21J (Delta)	2022-01-09	98
+United Kingdom	21J (Delta)	2022-01-10	147
+United Kingdom	21K (Omicron)	2022-01-01	5926
+United Kingdom	21K (Omicron)	2022-01-02	8959
+United Kingdom	21K (Omicron)	2022-01-03	12382
+United Kingdom	21K (Omicron)	2022-01-04	14653
+United Kingdom	21K (Omicron)	2022-01-05	11946
+United Kingdom	21K (Omicron)	2022-01-06	12273
+United Kingdom	21K (Omicron)	2022-01-07	8029
+United Kingdom	21K (Omicron)	2022-01-08	7049
+United Kingdom	21K (Omicron)	2022-01-09	6323
+United Kingdom	21K (Omicron)	2022-01-10	10652
+United Kingdom	21L (Omicron)	2022-01-01	17
+United Kingdom	21L (Omicron)	2022-01-02	10
+United Kingdom	21L (Omicron)	2022-01-03	29
+United Kingdom	21L (Omicron)	2022-01-04	54
+United Kingdom	21L (Omicron)	2022-01-05	30
+United Kingdom	21L (Omicron)	2022-01-06	36
+United Kingdom	21L (Omicron)	2022-01-07	48
+United Kingdom	21L (Omicron)	2022-01-08	59
+United Kingdom	21L (Omicron)	2022-01-09	66
+United Kingdom	21L (Omicron)	2022-01-10	103
+United Kingdom	21M (Omicron)	2022-01-02	1
+United Kingdom	21M (Omicron)	2022-01-04	1
+United Kingdom	21M (Omicron)	2022-01-07	1
+United Kingdom	recombinant	2022-01-07	1
