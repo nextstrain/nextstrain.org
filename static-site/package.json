@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.6",
-    "gatsby": "^2.32.13",
+    "gatsby": "^5.3.3",
     "gatsby-plugin-catch-links": "^2.1.24",
     "gatsby-plugin-feed": "^2.3.26",
     "gatsby-plugin-google-analytics": "^2.1.32",
@@ -54,7 +54,7 @@
     "gatsby-source-filesystem": "^2.1.46",
     "gatsby-transformer-remark": "^2.6.48",
     "lodash": "^4.17.15",
-    "lodash-webpack-plugin": "^0.11.4",
+    "lodash-webpack-plugin": "^0.11.6",
     "mapbox-gl": "1.13.0",
     "marked": "^2.0.7",
     "prismjs": "^1.18.0",
