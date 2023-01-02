@@ -3,7 +3,8 @@ export const teamMembers = {
     {
       name: "Trevor Bedford",
       image: "trevor-bedford.jpg",
-      link: "https://bedford.io/team/trevor-bedford/"
+      link: "https://bedford.io/team/trevor-bedford/",
+      blurb: "Trevor and Richard coded first version of Nextflu in early 2015. Subsequently, Trevor has helped to guide development of software to endemic and emerging pathogens with a focus on UX and scientific impact."
     },
     {
     name: "Richard Neher",
@@ -76,7 +77,7 @@ export const teamMembers = {
       name: "Charlton Callender",
       image: "charlton-callender.jpg",
       link: "https://bedford.io/team/charlton-callender/"
-    },    
+    },
     {
       name: "Kairsten Fay",
       image: "kairsten-fay.jpg",
