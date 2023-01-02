@@ -54,7 +54,7 @@ const Sideways = styled.div`
 `
 
 const AvatarContainer = styled(Sideways)`
-  max-width: 40%;
+  width: 360px;
 `
 
 const UpDown = styled.div`
