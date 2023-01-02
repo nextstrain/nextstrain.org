@@ -12,6 +12,17 @@ export const teamMembers = {
   ],
   'core': [
     {
+      name: "Ivan Aksamentov",
+      image: "ivan-aksamentov.jpg",
+      link: "https://neherlab.org/ivan-aksamentov.html"
+    },
+    {
+      name: "Jennifer Chang",
+      image: "jennifer-chang.jpg",
+      link: "https://bedford.io/team/jennifer-chang/",
+      blurb: "Jennifer joined the team in 2021 and specializes in Terra and Nextflow workflows and contributes to various pathogen workflows as needed."
+    },
+    {
       name: "James Hadfield",
       image: "james-hadfield.jpg",
       link: "https://bedford.io/team/james-hadfield/",
@@ -23,32 +34,15 @@ export const teamMembers = {
       link: "https://emmahodcroft.com/",
     },
     {
-      name: "Thomas Sibley",
-      image: "thomas-sibley.jpg",
-      link: "https://bedford.io/team/thomas-sibley/",
-      blurb: "Thomas works on all aspects of Nextstrain with a particular focus on reducing barriers to usage via better infrastructure (e.g. nextstrain.org, Groups), tooling (e.g. CLI, runtimes), and documentation.",
-    },
-    {
       name: "John Huddleston",
       image: "john-huddleston.jpg",
       link: "https://bedford.io/team/john-huddleston/",
       blurb: "John works on Nextstrain's bioinformatics tools like Augur and pathogen workflows like seasonal influenza and SARS-CoV-2."
     },
     {
-      name: "Ivan Aksamentov",
-      image: "ivan-aksamentov.jpg",
-      link: "https://neherlab.org/ivan-aksamentov.html"
-    },
-    {
       name: "Jover Lee",
       image: "jover-lee.jpg",
       link: "https://bedford.io/team/jover-lee/"
-    },
-    {
-      name: "Jennifer Chang",
-      image: "jennifer-chang.jpg",
-      link: "https://bedford.io/team/jennifer-chang/",
-      blurb: "Jennifer joined the team in 2021 and specializes in Terra and Nextflow workflows and contributes to various pathogen workflows as needed."
     },
     {
       name: "Victor Lin",
@@ -60,26 +54,33 @@ export const teamMembers = {
       image: "cornelius-roemer.jpg",
       link: "https://neherlab.org/cornelius-roemer.html"
     },
+    {
+      name: "Thomas Sibley",
+      image: "thomas-sibley.jpg",
+      link: "https://bedford.io/team/thomas-sibley/",
+      blurb: "Thomas works on all aspects of Nextstrain with a particular focus on reducing barriers to usage via better infrastructure (e.g. nextstrain.org, Groups), tooling (e.g. CLI, runtimes), and documentation.",
+    }
   ],
   'alumni': [
     {
-      name: "Cassia Wagner",
-      image: "cassia-wagner.jpg",
-      link: "https://bedford.io/team/cassia-wagner/"
+      name: "Sidney Bell",
+      image: "sidney-bell.jpg",
+      link: "https://bedford.io/team/sidney-bell/"
     },
     {
-      name: "Miguel Parades",
-      image: "miguel-parades.jpg",
-      link: "https://bedford.io/team/miguel-parades/"
+      name: "Allison Black",
+      image: "allison-black.jpg",
+      link: "https://bedford.io/team/allison-black/"
     },
+    {
+      name: "Charlton Callender",
+      image: "charlton-callender.jpg",
+      link: "https://bedford.io/team/charlton-callender/"
+    },    
     {
       name: "Kairsten Fay",
       image: "kairsten-fay.jpg",
       link: "https://bedford.io/team/kairsten-fay/"
-    },
-    {
-      name: "Moira Zuber",
-      image: "moira-zuber.jpg"
     },
     {
       name: "Eli Harkins",
@@ -92,24 +93,19 @@ export const teamMembers = {
       link: "https://bedford.io/team/misja-ilcisin/"
     },
     {
+      name: "Colin Megill",
+      image: "colin-megill.jpg",
+      link: "https://www.colinmegill.com/"
+    },
+    {
       name: "Louise Moncla",
       image: "louise-moncla.jpg",
       link: "https://bedford.io/team/louise-moncla/"
     },
     {
-      name: "Allison Black",
-      image: "allison-black.jpg",
-      link: "https://bedford.io/team/allison-black/"
-    },
-    {
-      name: "Sidney Bell",
-      image: "sidney-bell.jpg",
-      link: "https://bedford.io/team/sidney-bell/"
-    },
-    {
-      name: "Colin Megill",
-      image: "colin-megill.jpg",
-      link: "https://www.colinmegill.com/"
+      name: "Miguel Parades",
+      image: "miguel-parades.jpg",
+      link: "https://bedford.io/team/miguel-parades/"
     },
     {
       name: "Barney Potter",
@@ -122,9 +118,13 @@ export const teamMembers = {
       link: "https://neherlab.org/pavel-sagulenko.html"
     },
     {
-      name: "Charlton Callender",
-      image: "charlton-callender.jpg",
-      link: "https://bedford.io/team/charlton-callender/"
+      name: "Cassia Wagner",
+      image: "cassia-wagner.jpg",
+      link: "https://bedford.io/team/cassia-wagner/"
     },
+    {
+      name: "Moira Zuber",
+      image: "moira-zuber.jpg"
+    }
   ]
 };
