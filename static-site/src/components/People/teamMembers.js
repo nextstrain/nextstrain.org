@@ -126,7 +126,8 @@ export const teamMembers = {
     },
     {
       name: "Moira Zuber",
-      image: "moira-zuber.jpg"
+      image: "moira-zuber.jpg",
+      blurb: "Moira was key in running the regular SARS-CoV-2 builds during the early-mid pandemic, and implementing key data-cleaning scripts to standardize incoming sequences."
     }
   ]
 };
