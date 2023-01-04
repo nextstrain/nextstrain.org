@@ -33,6 +33,7 @@ export const teamMembers = {
       name: "Emma Hodcroft",
       image: "emma-hodcroft.jpg",
       link: "https://emmahodcroft.com/",
+      blurb: "Emma joined Nextstrain in 2017 and has worked on the pipeline and visualization, including extending Nextstrain to use VCF files, but now mostly focuses on Enteroviruses and SARS-CoV-2."
     },
     {
       name: "John Huddleston",
