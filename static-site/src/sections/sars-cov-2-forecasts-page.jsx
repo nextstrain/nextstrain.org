@@ -54,11 +54,11 @@ const collapsibleContents = [
         In general, we expect the variant to be growing if this number is greater than 1.
       </span>
     ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/legend.png",
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       gisaid: {
         global: {
-          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/rtPanel.png",
+          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/rtPanel.png",
           alt: "Global variant Rt plots from GISAID data"
         },
       }
@@ -72,11 +72,11 @@ const collapsibleContents = [
         These estimates are derived from sequence count data using a multinomial logistic regression model.
       </span>
     ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/legend.png",
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       gisaid: {
         global: {
-          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/frequenciesPanel.png",
+          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/frequenciesPanel.png",
           alt: "Global estimated variant frequency plots from GISAID data"
         },
       }
@@ -90,11 +90,11 @@ const collapsibleContents = [
         These estimates are smoothed to deal with daily reporting noise and weekend effects present in case data.
       </span>
     ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/legend.png",
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       gisaid: {
         global: {
-          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/smoothedIncidencePanel.png",
+          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/smoothedIncidencePanel.png",
           alt: "Global estimated variant case plots from GISAID data"
         },
       }
@@ -109,11 +109,11 @@ const collapsibleContents = [
         Vertical bars show the 95% HPD.
       </span>
     ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/legend.png",
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       gisaid: {
         global: {
-          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/trial/config-latest-results/nextstrain_clades/global/renewal/growthAdvantagePanel.png",
+          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/growthAdvantagePanel.png",
           alt: "Global relative growth advantage plots from GISAID data"
         },
       }
