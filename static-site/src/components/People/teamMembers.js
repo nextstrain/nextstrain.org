@@ -9,7 +9,9 @@ export const teamMembers = {
     {
     name: "Richard Neher",
     image: "richard-neher.jpg",
-    link: "https://neherlab.org/richard-neher.html"}
+    link: "https://neherlab.org/richard-neher.html",
+    blurb: "Richard and Trevor coded first version of Nextflu in early 2015. Richard has focussed on the methods and algorithms in Nextstrain's analyses and more recently on Nextclade."
+    }
   ],
   'core': [
     {
