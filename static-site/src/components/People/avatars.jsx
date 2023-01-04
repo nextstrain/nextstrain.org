@@ -79,17 +79,15 @@ const Avatar = ({name, image, link, blurb, teamPage, comma=false}) => {
   const summary = teamPage && blurb;
   return (
     <AvatarContainer>
-      <a href={link}>
-        <Sideways>
-          <img alt={name} src={require("../../../static/team/"+image)}/>
-          <UpDown>
-            <span>{name}</span>
-            {summary && (
-              <Blurb>{blurb}</Blurb>
-            )}
-          </UpDown>
-        </Sideways>
-      </a>
+      <Sideways>
+        <a href={link}><img alt={name} src={require("../../../static/team/"+image)}/></a>
+        <UpDown>
+          <a href={link}><span>{name}</span></a>
+          {summary && (
+            <Blurb>{blurb}</Blurb>
+          )}
+        </UpDown>
+      </Sideways>
       {comma && <Comma/>}
     </AvatarContainer>
   );
