@@ -52,7 +52,8 @@ export const teamMembers = {
     {
       name: "Victor Lin",
       image: "victor-lin.png",
-      link: "https://bedford.io/team/victor-lin/"
+      link: "https://bedford.io/team/victor-lin/",
+      blurb: "Victor joined the team in 2021 and works on all aspects of Nextstrain with a particular focus on tooling (e.g. Augur, runtimes) and documentation."
     },
     {
       name: "Cornelius Roemer",
