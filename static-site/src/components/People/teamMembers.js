@@ -46,7 +46,8 @@ export const teamMembers = {
     {
       name: "Jover Lee",
       image: "jover-lee.jpg",
-      link: "https://bedford.io/team/jover-lee/"
+      link: "https://bedford.io/team/jover-lee/",
+      blurb: "Jover works on all aspects of Nextstrain with a particular focus on data pipelines and visualizations."
     },
     {
       name: "Victor Lin",
