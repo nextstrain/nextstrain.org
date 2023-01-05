@@ -158,6 +158,7 @@ function CollapsibleContent(props) {
       triggerWhenOpen={<CollapseTitle name={title} isExpanded />}
       trigger={<CollapseTitle name={title} />}
       triggerStyle={{cursor: "pointer", textDecoration: "none"}}
+      open={true}
     >
       <div style={{ padding: "10px" }} >
         <splashStyles.FocusParagraph>
