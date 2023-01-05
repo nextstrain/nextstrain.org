@@ -59,7 +59,7 @@ const collapsibleContents = [
     title: "Growth Advantage",
     text: (
       <span>
-        These plots show the estimated growth advantage for given variants relative to baseline.
+        These plots show the estimated growth advantage for given variants relative to BA.2.
         This is an estimate of how many more secondary infections this variant causes on average compared the baseline variant as estimated but the multinomial logistic regression model.
         Vertical bars show the 95% HPD.
       </span>
