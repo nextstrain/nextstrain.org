@@ -45,23 +45,6 @@ const introContents = [
 
 const collapsibleContents = [
   {
-    title: "Estimated effective reproduction number over time",
-    text: (
-      <span>
-        This is an estimate of the average number of secondary infections expected to be caused by an individual infected with a given variant as estimated by the variant renewal model.
-        In general, we expect the variant to be growing if this number is greater than 1.
-      </span>
-    ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
-    images: {
-      nextstrainClades: {
-        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/rtPanel.png",
-        alt: "Global variant Rt plots from GISAID data"
-      }
-    }
-
-  },
-  {
     title: "Estimated Variant Frequencies over time",
     text: (
       <span>
@@ -73,6 +56,23 @@ const collapsibleContents = [
       nextstrainClades: {
         src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/frequenciesPanel.png",
         alt: "Global estimated variant frequency plots from GISAID data"
+      }
+    }
+  },
+  {
+    title: "Growth Advantage",
+    text: (
+      <span>
+        These plots show the estimated growth advantage for given variants relative to baseline.
+        This is an estimate of how many more secondary infections this variant causes on average compared the baseline variant as estimated but the multinomial logistic regression model.
+        Vertical bars show the 95% HPD.
+      </span>
+    ),
+    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
+    images: {
+      nextstrainClades: {
+        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/growthAdvantagePanel.png",
+        alt: "Global relative growth advantage plots from GISAID data"
       }
     }
   },
@@ -93,21 +93,21 @@ const collapsibleContents = [
     }
   },
   {
-    title: "Growth Advantage",
+    title: "Estimated effective reproduction number over time",
     text: (
       <span>
-        These plots show the estimated growth advantage for given variants relative to baseline.
-        This is an estimate of how many more secondary infections this variant causes on average compared the baseline variant as estimated but the multinomial logistic regression model.
-        Vertical bars show the 95% HPD.
+        This is an estimate of the average number of secondary infections expected to be caused by an individual infected with a given variant as estimated by the variant renewal model.
+        In general, we expect the variant to be growing if this number is greater than 1.
       </span>
     ),
     legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       nextstrainClades: {
-        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/growthAdvantagePanel.png",
-        alt: "Global relative growth advantage plots from GISAID data"
+        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/rtPanel.png",
+        alt: "Global variant Rt plots from GISAID data"
       }
     }
+
   }
 ];
 
