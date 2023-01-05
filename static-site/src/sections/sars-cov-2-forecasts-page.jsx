@@ -1,13 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Collapsible from "react-collapsible";
 import styled from "styled-components";
-import { isEqual } from "lodash";
 import {
   SmallSpacer,
   MediumSpacer,
   FlexCenter,
-  FlexGrid,
-  HugeSpacer,
+  HugeSpacer
 } from "../layouts/generalComponents";
 import GenericPage from "../layouts/generic-page";
 import CollapseTitle from "../components/Misc/collapse-title";
@@ -56,11 +54,9 @@ const collapsibleContents = [
     ),
     legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
-      gisaid: {
-        global: {
-          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/rtPanel.png",
-          alt: "Global variant Rt plots from GISAID data"
-        },
+      nextstrainClades: {
+        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/rtPanel.png",
+        alt: "Global variant Rt plots from GISAID data"
       }
     }
 
@@ -74,11 +70,9 @@ const collapsibleContents = [
     ),
     legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
-      gisaid: {
-        global: {
-          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/frequenciesPanel.png",
-          alt: "Global estimated variant frequency plots from GISAID data"
-        },
+      nextstrainClades: {
+        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/frequenciesPanel.png",
+        alt: "Global estimated variant frequency plots from GISAID data"
       }
     }
   },
@@ -92,11 +86,9 @@ const collapsibleContents = [
     ),
     legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
-      gisaid: {
-        global: {
-          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/smoothedIncidencePanel.png",
-          alt: "Global estimated variant case plots from GISAID data"
-        },
+      nextstrainClades: {
+        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/smoothedIncidencePanel.png",
+        alt: "Global estimated variant case plots from GISAID data"
       }
     }
   },
@@ -111,11 +103,9 @@ const collapsibleContents = [
     ),
     legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
-      gisaid: {
-        global: {
-          src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/growthAdvantagePanel.png",
-          alt: "Global relative growth advantage plots from GISAID data"
-        },
+      nextstrainClades: {
+        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/growthAdvantagePanel.png",
+        alt: "Global relative growth advantage plots from GISAID data"
       }
     }
   }
@@ -127,6 +117,8 @@ const ResourcesTitle = styled(FlexCenter)`
 `
 
 function Index(props) {
+  const [ cladeType, setCladeType ] = useState("nextstrainClades");
+
   return (
     <GenericPage location={props.location}>
       <splashStyles.H1>{title}</splashStyles.H1>
@@ -145,7 +137,7 @@ function Index(props) {
       <PathogenPageIntroduction data={introContents} />
       <HugeSpacer />
 
-      {collapsibleContents.map((c) => <CollapsibleContent key={c.title} content={c} />)}
+      {collapsibleContents.map((c) => <CollapsibleContent key={c.title} content={c} cladeType={cladeType} />)}
     </GenericPage>
   );
 }
@@ -156,59 +148,10 @@ const FullWidthImage = styled.img`
   min-width: 900px;
 `;
 
-const ToggleButton = styled.button`
-  border-width: 1px;
-  border-style: solid;
-  border-color: ${(props) => props.selected ? props.theme.brandColor : props.theme.darkGrey};
-  border-radius: 5px;
-  background-color: inherit;
-  margin: 5px 5px 10px 5px;
-  cursor: pointer;
-  padding: 2px;
-  color: ${(props) => props.selected ? props.theme.brandColor : props.theme.darkGrey};
-  font-weight: 400;
-  font-size: 16px;
-  text-transform: uppercase;
-  vertical-align: top;
-  outline: 0;
-`;
-
 function CollapsibleContent(props) {
   /* eslint no-shadow: "off" */
   const {title, text, images, legend} = props.content;
-  const dataProvenanceOptions = Object.keys(images).sort();
 
-  /**
-   * Setting geoResolutionOptions as a ref because this can change depending on
-   * the dataProvenance, but we don't want it to cause a re-render since the
-   * actual selected option will cause the re-render
-   */
-  const geoResolutionOptions = useRef(Object.keys(images[dataProvenanceOptions[0]]).sort());
-  const [imageOptions, setImageOptions] = useState({
-    dataProvenance: dataProvenanceOptions[0],
-    geoResolution: geoResolutionOptions.current[0]
-  });
-
-  function handleDataProvenanceChange(newDataProvenance) {
-    const newGeoResolutionOptions = Object.keys(images[newDataProvenance]).sort();
-    // Set the new geo-resolution options if it's different than the current ones
-    if (!isEqual(geoResolutionOptions.current, newGeoResolutionOptions)) {
-      geoResolutionOptions.current = newGeoResolutionOptions;
-      // If the new geo-resolutions does not include the current selected geo-resolution,
-      // then set the geo-resolution to the first option
-      if (!newGeoResolutionOptions.includes(imageOptions.geoResolution)) {
-        return setImageOptions({
-          dataProvenance: newDataProvenance,
-          geoResolution: newGeoResolutionOptions[0]
-        });
-      }
-    }
-    return setImageOptions({...imageOptions, dataProvenance: newDataProvenance});
-  }
-
-  function handleGeoResolutionChange(newGeoResolution) {
-    setImageOptions({...imageOptions, geoResolution: newGeoResolution});
-  }
 
   return (
     <Collapsible
@@ -221,40 +164,10 @@ function CollapsibleContent(props) {
           {text}
         </splashStyles.FocusParagraph>
         <MediumSpacer />
-        <FlexGrid>
-          <div style={{ flex: "0 50%" }}>
-            <splashStyles.H3>Data Provenance:</splashStyles.H3>
-            <FlexCenter>
-              {dataProvenanceOptions.map((option) => (
-                <ToggleButton
-                  key={option}
-                  selected={imageOptions.dataProvenance===option}
-                  onClick={() => handleDataProvenanceChange(option)}
-                >
-                  {option}
-                </ToggleButton>
-              ))}
-            </FlexCenter>
-          </div>
-          <div style={{ flex: "0 50%" }}>
-            <splashStyles.H3>Geo-Resolution:</splashStyles.H3>
-            <FlexCenter>
-              {geoResolutionOptions.current.map((option) => (
-                <ToggleButton
-                  key={option}
-                  selected={imageOptions.geoResolution===option}
-                  onClick={() => handleGeoResolutionChange(option)}
-                >
-                  {option}
-                </ToggleButton>
-              ))}
-            </FlexCenter>
-          </div>
-        </FlexGrid>
         <img alt="legend" src={legend} />
         <FullWidthImage
-          src={images[imageOptions.dataProvenance][imageOptions.geoResolution]?.src}
-          alt={images[imageOptions.dataProvenance][imageOptions.geoResolution]?.alt}
+          src={images[props.cladeType]?.src}
+          alt={images[props.cladeType]?.alt}
         />
       </div>
     </Collapsible>
