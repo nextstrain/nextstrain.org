@@ -7,6 +7,7 @@ export const {
   InternalServerError,
   NotAcceptable,
   NotFound,
+  ServiceUnavailable,
   Unauthorized,
   UnsupportedMediaType,
   isHttpError,
