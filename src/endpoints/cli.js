@@ -17,17 +17,7 @@ const download = async (req, res) => {
     : `https://api.github.com/repos/nextstrain/cli/releases/tags/${encodeURIComponent(version)}`;
 
   const response = await fetch(endpoint, {headers: {authorization}});
-
-  switch (response.status) {
-    case 200:
-      break;
-
-    case 404:
-      throw new NotFound();
-
-    default:
-      throw new InternalServerError(`upstream said: ${response.status} ${response.statusText}`);
-  }
+  assertStatusOk(response);
 
   const release = await response.json();
   const assetName = `nextstrain-cli-${release.tag_name}-${assetSuffix}`;
@@ -38,6 +28,20 @@ const download = async (req, res) => {
   }
 
   return res.redirect(asset.browser_download_url);
+};
+
+
+const assertStatusOk = (response) => {
+  switch (response.status) {
+    case 200:
+      break;
+
+    case 404:
+      throw new NotFound();
+
+    default:
+      throw new InternalServerError(`upstream said: ${response.status} ${response.statusText}`);
+  }
 };
 
 
