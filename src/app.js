@@ -372,6 +372,9 @@ app.route(["/users", "/users/:name"])
 app.routeAsync("/cli/download/:version/:assetSuffix")
   .getAsync(endpoints.cli.download);
 
+app.routeAsync("/cli/download/ci-build/:runId/:assetSuffix")
+  .getAsync(endpoints.cli.downloadCIBuild);
+
 app.routeAsync("/cli/installer/:os")
   .getAsync(endpoints.cli.installer);
 
