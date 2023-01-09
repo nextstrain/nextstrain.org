@@ -53,8 +53,8 @@ Deploys to the production app are performed by manually [promoting](https://devc
 
   - `PAPERTRAIL_API_TOKEN` is used for logging through [papertrail](https://elements.heroku.com/addons/papertrail).
 
-  - `GITHUB_TOKEN` is used to make authenticated requests to the GitHub API so that we get increased rate limits.
-    The token should have public access only, i.e. no permission scopes granted (including `public_repo`, which grants write access to public repos).
+  - `GITHUB_TOKEN` is used to make authenticated requests to the GitHub API so that we get increased rate limits and can download workflow artifacts.
+    The token should be a [fine-grained personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token) with public access only, i.e. no specific respositories or permissions granted.
     If not provided, requests to the GitHub API are unauthenticated.
     The token we use in production is associated with the `nextstrain-bot` GitHub user.
 
