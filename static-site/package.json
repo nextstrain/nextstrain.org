@@ -56,7 +56,7 @@
     "lodash": "^4.17.15",
     "lodash-webpack-plugin": "^0.11.4",
     "mapbox-gl": "1.13.0",
-    "marked": "^2.0.7",
+    "marked": "^4.0.10",
     "prismjs": "^1.18.0",
     "prop-types": "^15.6.0",
     "react": "^16.12.0",
