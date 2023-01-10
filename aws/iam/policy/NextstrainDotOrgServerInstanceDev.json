@@ -9,7 +9,6 @@
         "arn:aws:s3:::nextstrain-data",
         "arn:aws:s3:::nextstrain-staging",
         "arn:aws:s3:::nextstrain-seattleflu",
-        "arn:aws:s3:::nextstrain-nextspain",
         "arn:aws:s3:::nextstrain-ngs-sa",
         "arn:aws:s3:::nextstrain-ecdc",
         "arn:aws:s3:::nextstrain-illinois-gagnon-public",
@@ -25,7 +24,6 @@
       ],
       "Resource": [
         "arn:aws:s3:::nextstrain-seattleflu/*",
-        "arn:aws:s3:::nextstrain-nextspain/*",
         "arn:aws:s3:::nextstrain-ngs-sa/*",
         "arn:aws:s3:::nextstrain-ecdc/*",
         "arn:aws:s3:::nextstrain-illinois-gagnon-public/*",
