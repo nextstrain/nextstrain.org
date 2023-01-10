@@ -35,6 +35,49 @@ const download = async (req, res) => {
 };
 
 
+const downloadPRBuild = async (req, res) => {
+  const prId = Number(req.params.prId);
+  if (!prId || !Number.isFinite(prId)) throw new BadRequest("PR id is not a number");
+
+  /* Lookup head ref (branch name) and repository full name (e.g.
+   * nextstrain/cli) for this PR, so we can identify all workflow runs
+   * associated with it.  Not all PR-associated workflow runs contain entries
+   * in the run's "pull_request" array.
+   */
+  const prResponse = await fetch(`https://api.github.com/repos/nextstrain/cli/pulls/${encodeURIComponent(prId)}`, {headers: {authorization}});
+  assertStatusOk(prResponse);
+
+  const pr = await prResponse.json();
+  const prRef = pr.head.ref;
+  const prRepo = pr.head.repo.full_name;
+
+  // Last 100 successful CI runs matching the PR's head branch name.  This may
+  // apply to multiple PR ids, so we limit by PR head repo too after the fetch.
+  const params = new URLSearchParams({
+    event: "pull_request",
+    branch: prRef,
+    status: "success",
+    page_size: 100,
+  });
+  const runsResponse = await fetch(`https://api.github.com/repos/nextstrain/cli/actions/workflows/ci.yaml/runs?${params}`, {headers: {authorization}});
+  assertStatusOk(runsResponse);
+
+  // Find latest run for our desired PR
+  const runs = (await runsResponse.json()).workflow_runs;
+  const prRuns = runs.filter(run => run.head_branch === prRef && run.head_repository.full_name === prRepo);
+  const runId = prRuns[0]?.id;
+
+  if (!runId) {
+    throw new NotFound(`No CI run for PR ${prId} found in last ${params.get("page_size")} successful CI runs for PRs`);
+  }
+
+  // Set the CI run id for downloadCIBuild()
+  req.params.runId = runId;
+
+  return await downloadCIBuild(req, res);
+};
+
+
 const downloadCIBuild = async (req, res) => {
   if (!authorization) {
     throw new ServiceUnavailable("Server does not have authorization to download CI builds.");
@@ -116,6 +159,7 @@ const installer = (req, res) => {
 
 export {
   download,
+  downloadPRBuild,
   downloadCIBuild,
   installer,
 };
