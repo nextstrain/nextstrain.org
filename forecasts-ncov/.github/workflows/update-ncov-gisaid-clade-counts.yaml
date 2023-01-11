@@ -35,7 +35,7 @@ jobs:
         activate-environment: counts
 
     - name: setup
-      run: mamba install "pandas>=1.0.0" "tsv-utils"
+      run: mamba install "pandas>=1.0.0" "tsv-utils" --freeze-installed
 
     - name: download metadata
       run: ./ingest/bin/download-from-s3 s3://nextstrain-ncov-private/metadata.tsv.gz metadata.tsv

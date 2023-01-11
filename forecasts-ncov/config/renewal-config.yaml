@@ -21,6 +21,7 @@ model:
   prior_seq_dispersion: 100.0 # Ignored if using Multinomial
   k: 12 # Number of spline knots to use
   order: 4 # Order of spline to use
+  pivot: "21L (Omicron)"
   generation_time: # Specify mean and standard deviation for generation time
     Delta:
       name: "Delta"
@@ -79,7 +80,8 @@ model:
       family: "LogNormal"
 
 inference:
-  method: "FullRank"
-  iters: 20000 # Number of iterations for SVI
-  lr: 1e-2 # Learning rate for the model
-  num_samples: 1500
+  method: "NUTS"
+  iters: 50000 # Number of iterations for SVI
+  lr: 4e-4 # Learning rate for the model
+  num_warmup: 200
+  num_samples: 200

@@ -42,6 +42,10 @@ node scripts/data-server.js
 
 > Note that we cannot currently use the zstd encodings. There is a library to decompress this in the browser (https://github.com/bokuweb/zstd-wasm) but it requires webpack modifications. For the time being, I've chosen to use gzip encodings. 
 
+### Linting
+
+If your code editor does not pick this up automatically you may run `npm run lint`.
+
 ### Regenerating the png images in `figures`
 
 `node scripts/static-images.js`
