@@ -166,10 +166,12 @@ function CollapsibleContent(props) {
         </splashStyles.FocusParagraph>
         <MediumSpacer />
         <img alt="legend" src={legend} />
-        <FullWidthImage
-          src={images[props.cladeType]?.src}
-          alt={images[props.cladeType]?.alt}
-        />
+        <div style={{ overflowX: "auto" }} >
+          <FullWidthImage
+            src={images[props.cladeType]?.src}
+            alt={images[props.cladeType]?.alt}
+          />
+        </div>
       </div>
     </Collapsible>
   );
