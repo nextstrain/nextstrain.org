@@ -137,7 +137,6 @@ app.use((req, res, next) => {
  */
 redirects.setup(app);
 
-
 /* Charon API used by Auspice.
  */
 if (!PRODUCTION) {
@@ -454,6 +453,18 @@ if (app.locals.gatsbyDevUrl) {
 } else {
   app.use(endpoints.static.gatsbyAssets);
 }
+
+
+/**
+ * The forecasts-viz app is standalone until such time as we remove gatsby,
+ * then it should be part of the app which replaces the static-site.
+ */
+app.routeAsync("/sars-cov-2/forecasts/interactive")
+.getAsync(endpoints.static.sendForecastsVizPage("index.html"));
+
+/* the forecasts-viz app is built to request assets under 'forecasting-viz-assets' */
+app.route("/forecasting-viz-assets/*")
+.all(endpoints.static.forecastsVizAssets, (req, res, next) => next(new NotFound()));
 
 
 /* Everything else gets 404ed.

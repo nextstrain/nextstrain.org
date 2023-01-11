@@ -1,0 +1,103 @@
+name: Open SARS-CoV-2 clade counts
+
+on:
+  repository_dispatch:
+    types:
+      - clade-counts
+      - open/clade-counts
+      - genbank/clade-counts
+  workflow_dispatch:
+    inputs:
+      slack_channel:
+        description: 'Slack channel to push update alerts. Default channel is nextstrain-counts-updates.'
+        required: false
+      trial_name:
+        description: 'Short name for a trial run. WARNING: without this we will overwrite files in s3://nextstrain-data/files/workflows/forecasts-ncov/open'
+        required: false
+
+jobs:
+  open_clade_counts:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+      SLACK_CHANNELS: ${{ github.event.inputs.slack_channel || 'nextstrain-counts-updates' }}
+    defaults:
+      run:
+        # Login shell is required to include changes by conda init bash.
+        shell: bash -l -eo pipefail {0}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: conda-incubator/setup-miniconda@v2
+      with:
+        python-version: 3.9
+        mamba-version: "*"
+        channels: conda-forge,bioconda
+        channel-priority: true
+        activate-environment: counts
+
+    - name: setup
+      run: mamba install "pandas>=1.0.0" "tsv-utils" --freeze-installed
+
+    - name: download metadata
+      run: ./ingest/bin/download-from-s3 s3://nextstrain-data/files/ncov/open/metadata.tsv.gz metadata.tsv
+      env:
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: subset metadata columns
+      run: |
+        tsv-select -H \
+          -f strain,date,country,division,QC_overall_status,Nextstrain_clade \
+          metadata.tsv > metadata_pruned.tsv
+
+        mv metadata_pruned.tsv metadata.tsv
+
+    - name: summarize global clade counts
+      run: |
+        ./ingest/bin/summarize-clade-sequence-counts \
+          --metadata metadata.tsv \
+          --clade-column Nextstrain_clade \
+          --filter-columns QC_overall_status \
+          --filter-query "QC_overall_status != 'bad'" \
+          --output global_clade_counts.tsv
+
+    - name: summarize us clade counts
+      run: |
+        ./ingest/bin/summarize-clade-sequence-counts \
+          --metadata metadata.tsv \
+          --location-column division \
+          --clade-column Nextstrain_clade \
+          --filter-columns QC_overall_status country \
+          --filter-query "QC_overall_status != 'bad' & country == 'USA'" \
+          --output us_clade_counts.tsv
+
+    - name: upload clade counts
+      run: |
+        S3_DST=s3://nextstrain-data/files/workflows/forecasts-ncov/open
+        CLOUDFRONT_DOMAIN=data.nextstrain.org
+
+        if [[ "$TRIAL_NAME" ]]; then
+          S3_DST+=/trial/"$TRIAL_NAME"
+        fi
+
+        ./ingest/bin/upload-to-s3 global_clade_counts.tsv "$S3_DST"/nextstrain_clades/global.tsv.gz $CLOUDFRONT_DOMAIN
+        ./ingest/bin/upload-to-s3 us_clade_counts.tsv "$S3_DST"/nextstrain_clades/usa.tsv.gz $CLOUDFRONT_DOMAIN
+      env:
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        TRIAL_NAME: ${{ github.event.inputs.trial_name }}
+
+    - name: notify_pipeline_failed
+      if: ${{ failure() }}
+      run: ./ingest/bin/notify-on-job-fail
+
+  trigger_model_runs:
+    needs: [open_clade_counts]
+    if: ${{ !github.event.inputs.trial_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh workflow run run-models.yaml --repo nextstrain/forecasts-ncov -f data_provenance=open
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_NEXTSTRAIN_BOT_WORKFLOW_DISPATCH }}

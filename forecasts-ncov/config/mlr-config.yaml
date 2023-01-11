@@ -1,0 +1,23 @@
+data:
+  name: "Test" # Model name
+  case_path: "../data/sgtf-king-county/sgtf-king-county_location-case-counts.tsv" # Relative to run script
+  seq_path: "../data/sgtf-king-county/sgtf-king-county_location-variant-sequence-counts.tsv"
+
+settings:
+  fit: true # Fit the model?
+  save: true # Save model state?
+  load: false # Load old model?
+  export_json: true  # Export model results as json
+  export_path: "../estimates/sgtf-king-county" # Where to put estimates
+  ps: [0.5, 0.8, 0.95] # HPDI intervals to be exported
+
+model:
+  generation_time: 4.8
+  pivot: "21L (Omicron)"
+
+inference:
+  method: "NUTS"
+  iters: 50000 # Number of iterations for SVI
+  lr: 4e-4 # Learning rate for the model
+  num_warmup: 200
+  num_samples: 200

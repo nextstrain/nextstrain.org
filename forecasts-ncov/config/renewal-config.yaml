@@ -1,0 +1,87 @@
+data:
+  name: "Test" # Model name
+  case_path: "..location-case-counts.tsv" # Relative to run script
+  seq_path: "..location-variant-sequence-counts.tsv"
+
+settings:
+  fit: true # Fit the model?
+  save: true # Save model state?
+  load: false # Load old model?
+  export_json: true  # Export model results as json
+  export_path: "../estimates/sgtf-king-county" # Where to put estimates
+  ps: [0.5, 0.8, 0.95] # HPDI intervals to be exported
+
+model:
+  seed_L: 3
+  forecast_L: 7
+  R_likelihood: "GARW" # Options: GARW, Free, Fixed
+  C_likelihood: "ZINegBinom" # Options: NegBinom, Poisson, ZINegBinom, ZIPoisson
+  S_likelihood: "DirMultinomial" # Options: DirMultinomial and Multinomial
+  prior_case_dispersion: 0.01 # Ignored if using Poisson
+  prior_seq_dispersion: 100.0 # Ignored if using Multinomial
+  k: 12 # Number of spline knots to use
+  order: 4 # Order of spline to use
+  pivot: "21L (Omicron)"
+  generation_time: # Specify mean and standard deviation for generation time
+    Delta:
+      name: "Delta"
+      mean: 4.4
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    O21L:
+      name: "21L (Omicron)"
+      mean: 3.1
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    O21K:
+      name: "21K (Omicron)"
+      mean: 3.1
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    O22A:
+      name: "22A (Omicron)"
+      mean: 3.1
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    O22B:
+      name: "22B (Omicron)"
+      mean: 3.1
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    O22C:
+      name: "22C (Omicron)"
+      mean: 3.1
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    O22D:
+      name: "22D (Omicron)"
+      mean: 3.1
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    O22E:
+      name: "22E (Omicron)"
+      mean: 3.1
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    O22F:
+      name: "22F (Omicron)"
+      mean: 3.1
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+    other:
+      name: "other"
+      mean: 4.4
+      sd: 1.2
+      family: "Gamma" # Options: Gamma and LogNormal
+  delays: # Specify the delays between infection and sampling
+    incub:
+      mean: 2.1
+      sd: 1.2
+      family: "LogNormal"
+
+inference:
+  method: "NUTS"
+  iters: 50000 # Number of iterations for SVI
+  lr: 4e-4 # Learning rate for the model
+  num_warmup: 200
+  num_samples: 200
