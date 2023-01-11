@@ -18,7 +18,7 @@ jobs:
     - uses: nextstrain/.github/actions/setup-nextstrain-cli@master
     - uses: actions/setup-node@v3
       with:
-        node_version: 18
+        node-version: 18
 
     - name: Install viz dependencies
       run: npm ci --prefix viz/

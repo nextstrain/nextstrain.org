@@ -20,6 +20,7 @@
     "start": "react-scripts start",
     "build": "scripts/build.sh",
     "test": "react-scripts test",
+    "lint": "eslint src",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

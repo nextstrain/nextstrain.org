@@ -1,0 +1,15 @@
+/* 
+  Lato fonts downloaded from https://www.latofonts.com/,
+  which also includes the mapping of CSS weights to font names.
+  Only a subset of the available weights imported here to reduce bundle size
+*/
+@font-face {
+  font-family: 'lato';
+  font-weight: 300;
+  src: local('lato'), url(./fonts/LatoLatin-Light.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'lato';
+  font-weight: 500;
+  src: local('lato'), url(./fonts/LatoLatin-Medium.woff2) format('woff2');
+}

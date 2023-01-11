@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   margin-top: 25vw;
+  font-size: 20px;
 `;
 
 const ErrorMessage = styled.div`

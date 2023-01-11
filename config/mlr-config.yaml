@@ -13,9 +13,11 @@ settings:
 
 model:
   generation_time: 4.8
+  pivot: "21L (Omicron)"
 
 inference:
-  method: "FullRank"
-  iters: 20000 # Number of iterations for SVI
-  lr: 1e-2 # Learning rate for the model
-  num_samples: 1500
+  method: "NUTS"
+  iters: 50000 # Number of iterations for SVI
+  lr: 4e-4 # Learning rate for the model
+  num_warmup: 200
+  num_samples: 200

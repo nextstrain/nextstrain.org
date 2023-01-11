@@ -19,8 +19,8 @@ def parse_with_default(cf, var, dflt):
 def parse_RLik(cf_m):
     # Don't like defaults being here...
     name = "GARW"
-    gp = 0.5
-    gdp = 10
+    gp = 1e-2
+    gdp = 1e-3
 
     # Check for fields of interest
     if "R_likelihood" in cf_m:
@@ -111,13 +111,32 @@ def parse_delays(cf_m):
     return delays
 
 
+class NUTS_from_MAP:
+    def __init__(self, num_warmup, num_samples, iters, lr):
+        self.num_warmup = num_warmup
+        self.num_samples = num_samples
+        self.iters = iters
+        self.lr = lr
+
+    def fit(self, model, data, name=None):
+        init_strat, _ = ef.init_to_MAP(model, data, iters=30_000, lr=self.lr)
+        inference_method = ef.InferNUTS(
+            num_warmup=self.num_warmup,
+            num_samples=self.num_samples,
+            init_strategy=init_strat
+        )
+        return inference_method.fit(model, data, name=name)
+
+
 def parse_inference_method(method_name, lr, iters, num_warmup, num_samples):
     if method_name == "FullRank":
         method = ef.InferFullRank(lr=lr, iters=iters, num_samples=num_samples)
     elif method_name == "MAP":
         method = ef.InferMAP(lr=lr, iters=iters)
     elif method_name == "NUTS":
-        method = ef.InferNUTS(num_warmup=num_warmup, num_samples=num_samples)
+        method = NUTS_from_MAP(
+            num_warmup=num_warmup, num_samples=num_samples, iters=iters, lr=lr
+        )
     else:  # Default is full rank
         method = ef.InferFullRank(lr=lr, iters=iters, num_samples=num_samples)
     return method
@@ -225,7 +244,7 @@ def check_generation_times(rs, model):
     return None
 
 
-def fit_models(rc, rs, locations, model, inference_method, path, save):
+def fit_models(rc, rs, locations, model, inference_method, path, save, pivot=None):
     multi_posterior = ef.MultiPosterior()
 
     check_generation_times(rs, model)
@@ -241,7 +260,11 @@ def fit_models(rc, rs, locations, model, inference_method, path, save):
             continue
 
         # Define data object
-        data = ef.CaseFrequencyData(raw_cases=raw_cases, raw_seq=raw_seq)
+        data = ef.CaseFrequencyData(
+            raw_cases=raw_cases,
+            raw_seq=raw_seq,
+            pivot=pivot
+        )
 
         # Fit model
         posterior = inference_method.fit(model, data, name=location)
@@ -354,6 +377,7 @@ if __name__ == "__main__":
             inference_method,
             export_path,
             save,
+            pivot=config.config["model"]["pivot"]
         )
     elif load:
         print("Loading results")

@@ -39,7 +39,6 @@ const generalXAxis = (x, sizes, textFn) => {
       .attr("transform", "rotate(45)")
       .style("text-anchor", "start")
       .style("font-size", "12px")
-      .style("font-family", "Lato, courier")
       .style("fill", "#aaa");
 }
 
@@ -50,7 +49,6 @@ const simpleYAxis = (y, sizes, textFun = (d) => d) => (g) => g
   .selectAll("text")
     .text(textFun)
     .style("font-size", "12px")
-    .style("font-family", "Lato, courier")
     .style("fill", "#aaa");
 
 const svgSetup = (dom, sizes) => {
@@ -71,7 +69,6 @@ const title = (svg, sizes, text) => {
     .style("text-anchor", "start")
     .style("dominant-baseline", "hanging")
     .style("font-size", "16px")
-    .style("font-family", "Lato, courier")
     .style("fill", "#444");
 }
 
@@ -88,14 +85,15 @@ const frequencyPlot = (dom, sizes, location, modelData) => {
   const y = d3.scaleLinear()
     .domain([0, 1])
     .range([sizes.height-sizes.margin.bottom, sizes.margin.top]); // y=0 is @ top. Range is [bottom_y, top_y] which maps 0 to the bottom and 1 to the top (of the graph)
-  
+
   svg.append("g")
-    .call(simpleYAxis(y, sizes));
+    .call(simpleYAxis(y, sizes, d3.format(".0%")));
 
   // Add dots - one group per variant
   /* note map.forEach() returns a tuple of (value, key, map) -- perhaps not the order you expect! */
   modelData.get('points').get(location).forEach((variantPoint, variant) => {
-    const temporalPoints = variantPoint.get('temporal');
+    const temporalPoints = variantPoint.get('temporal')
+      .filter((point) => !!point.get('date'));
     svg.append('g')
       .selectAll("dot")
       .data(temporalPoints)
@@ -128,7 +126,7 @@ const rtPlot = (dom, sizes, location, modelData) => {
     // .domain(modelData.get('domains').get('rt'))
     .domain([0, 3])
     .range([sizes.height-sizes.margin.bottom, sizes.margin.top]); // y=0 is @ top. Range is [bottom_y, top_y] which maps 0 to the bottom and 1 to the top (of the graph)
-  
+
   svg.append("g")
     .call(simpleYAxis(y, sizes));
 
@@ -150,16 +148,15 @@ const rtPlot = (dom, sizes, location, modelData) => {
       .attr("stroke-width", 1.5)
       .attr("stroke-opacity", 0.8)
       .attr("d", line(temporalPoints));
-    const finalPt = finalNonValidPoint(temporalPoints, 'r_t');
+    const finalPt = finalValidPoint(temporalPoints, 'r_t');
     if (!finalPt) return;
     g.append("text")
-      .text(`${finalPt.get('r_t')}`)
+      .text(`${parseFloat(finalPt.get('r_t')).toPrecision(2)}`)
       .attr("x", x(finalPt.get('date')))
       .attr("y", y(finalPt.get('r_t')))
       .style("text-anchor", "start")
       .style("alignment-baseline", "baseline")
-      .style("font-size", "10px")
-      .style("font-family", "Lato, courier")
+      .style("font-size", "12px")
       .style("fill", color)
   });
 
@@ -185,7 +182,7 @@ const stackedIncidence = (dom, sizes, location, modelData) => {
   svg.append("g")
       .call(generalXAxis(x, sizes, dateFormatter));
 
-  /* maximum value by looking at final variant (i.e. on top of the stack) */  
+  /* maximum value by looking at final variant (i.e. on top of the stack) */
   const variants = modelData.get('variants');
   const dataPerVariant = modelData.get('points').get(location)
   const maxI = d3.max(
@@ -196,7 +193,7 @@ const stackedIncidence = (dom, sizes, location, modelData) => {
   const y = d3.scaleLinear()
     .domain([0, maxI])
     .range([sizes.height-sizes.margin.bottom, sizes.margin.top]); // y=0 is @ top. Range is [bottom_y, top_y] which maps 0 to the bottom and 1 to the top (of the graph)
-  
+
   svg.append("g")
     .call(simpleYAxis(y, sizes, d3.format("~s")));
 
@@ -224,8 +221,9 @@ const stackedIncidence = (dom, sizes, location, modelData) => {
 const categoryPointEstimate = (dom, sizes, location, modelData, dataKey) => {
   const svg = svgSetup(dom, sizes);
 
+  // Removes the pivot category that does not need to be plotted.
   const x = d3.scalePoint()
-    .domain(['', ...modelData.get('variants')])
+    .domain(['', ...modelData.get('variants').filter(v => v !== modelData.get('pivot'))])
     .range([sizes.margin.left, sizes.width-sizes.margin.right]);
 
   svg.append("g")
@@ -244,7 +242,7 @@ const categoryPointEstimate = (dom, sizes, location, modelData, dataKey) => {
     // ])
     .domain(modelData.get('domains').get('ga'))
     .range([sizes.height-sizes.margin.bottom, sizes.margin.top]); // y=0 is @ top. Range is [bottom_y, top_y] which maps 0 to the bottom and 1 to the top (of the graph)
-  
+
   svg.append("g")
     .call(simpleYAxis(y, sizes));
 
@@ -271,7 +269,6 @@ const categoryPointEstimate = (dom, sizes, location, modelData, dataKey) => {
 
   title(svg, sizes, location)
 }
-
 
 export const SmallMultiple = ({location, graph, sizes, modelData}) => {
 
@@ -307,7 +304,7 @@ export const SmallMultiple = ({location, graph, sizes, modelData}) => {
   )
 }
 
-function finalNonValidPoint(points, key) {
+function finalValidPoint(points, key) {
   for (let i=points.length-1; i>0; i--) {
     if (!isNaN(points[i].get(key))) return points[i];
   }

@@ -22,13 +22,32 @@ def parse_generation_time(cf_m):
     return tau
 
 
+class NUTS_from_MAP:
+    def __init__(self, num_warmup, num_samples, iters, lr):
+        self.num_warmup = num_warmup
+        self.num_samples = num_samples
+        self.iters = iters
+        self.lr = lr
+
+    def fit(self, model, data, name=None):
+        init_strat, _ = ef.init_to_MAP(model, data, iters=30_000, lr=self.lr)
+        inference_method = ef.InferNUTS(
+            num_warmup=self.num_warmup,
+            num_samples=self.num_samples,
+            init_strategy=init_strat
+        )
+        return inference_method.fit(model, data, name=name)
+
+
 def parse_inference_method(method_name, lr, iters, num_warmup, num_samples):
     if method_name == "FullRank":
         method = ef.InferFullRank(lr=lr, iters=iters, num_samples=num_samples)
     elif method_name == "MAP":
         method = ef.InferMAP(lr=lr, iters=iters)
     elif method_name == "NUTS":
-        method = ef.InferNUTS(num_warmup=num_warmup, num_samples=num_samples)
+        method = NUTS_from_MAP(
+            num_warmup=num_warmup, num_samples=num_samples, iters=iters, lr=lr
+        )
     else:  # Default is full rank
         method = ef.InferFullRank(lr=lr, iters=iters, num_samples=num_samples)
     return method
@@ -102,7 +121,7 @@ class MLRConfig:
         return fit, save, load, export_json, export_path
 
 
-def fit_models(rs, locations, model, inference_method, path, save):
+def fit_models(rs, locations, model, inference_method, path, save, pivot=None):
     multi_posterior = ef.MultiPosterior()
 
     for location in locations:
@@ -114,7 +133,7 @@ def fit_models(rs, locations, model, inference_method, path, save):
             print(f"Location {location} not in data")
             continue
 
-        data = ef.VariantFrequencies(raw_seq=raw_seq)
+        data = ef.VariantFrequencies(raw_seq=raw_seq, pivot=pivot)
 
         # Fit model
         posterior = inference_method.fit(model, data, name=location)
@@ -237,6 +256,7 @@ if __name__ == "__main__":
             inference_method,
             export_path,
             save,
+            pivot=config.config["model"]["pivot"]
         )
     elif load:
         print("Loading results")
