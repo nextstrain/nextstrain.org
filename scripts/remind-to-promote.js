@@ -142,7 +142,7 @@ async function check({gracePeriod}) {
       staging: {
         slug: stagingSlug.id,
         commit: stagingSlug.commit,
-        releasedAgo: stagingReleasedAgo.toISO(),
+        releasedAt: stagingRelease.created_at,
       },
       production: {
         slug: productionSlug.id,
