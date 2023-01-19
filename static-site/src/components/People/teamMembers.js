@@ -17,7 +17,8 @@ export const teamMembers = {
     {
       name: "Ivan Aksamentov",
       image: "ivan-aksamentov.jpg",
-      link: "https://neherlab.org/ivan-aksamentov.html"
+      link: "https://neherlab.org/ivan-aksamentov.html",
+      blurb: "Ivan joined the team in 2020 and focuses on Nextclade and some of the algorithms in Nextstrain's underlying tools."
     },
     {
       name: "Jennifer Chang",
