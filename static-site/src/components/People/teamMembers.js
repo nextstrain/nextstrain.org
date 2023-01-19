@@ -60,6 +60,7 @@ export const teamMembers = {
       name: "Cornelius Roemer",
       image: "cornelius-roemer.jpg",
       link: "https://neherlab.org/cornelius-roemer.html"
+      blurb: "Cornelius joined the team in 2021 and focuses on Nextclade and SARS-CoV-2."
     },
     {
       name: "Thomas Sibley",
