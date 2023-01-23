@@ -226,11 +226,6 @@ exports.createPages = ({graphql, actions}) => {
           matchPath: "/sars-cov-2/*",
           component: path.resolve("src/sections/sars-cov-2-page.jsx")
         });
-        // Create page for SARS-CoV-2 forecasts
-        createPage({
-          path: "/sars-cov-2/forecasts",
-          component: path.resolve("src/sections/sars-cov-2-forecasts-page.jsx")
-        });
         // Serve the above page for certain /ncov/* urls, i.e.
         // - `/ncov`
         // - any `/ncov/*` where the * dataset does not exist.

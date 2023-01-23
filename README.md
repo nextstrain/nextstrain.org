@@ -194,13 +194,6 @@ In this case, they're overwriting them with the handlers used by the nextstrain.
 See the [auspice API documentation](https://nextstrain.github.io/auspice/server/api) for more info.
 
 
-#### (Temporary) forecasts viz app (inside main app)
-
-* Vendored into forecasts-ncov via `git subtree add --prefix forecasts-ncov https://github.com/nextstrain/forecasts-ncov.git main --squash` on 2023-01-01. Forecasts-ncov@main was at commit 65538e8.
-* To pull in changes there are two options:
-  * (preferred option) merge in changes and squash them into a single commit. To do this we need the latest commit of the [forecasts-ncov](https://github.com/nextstrain/forecasts-ncov) repo, then run `git subtree merge --prefix forecasts-ncov <COMMIT> --squash`
-  * (alternative approach) the following will work but pulling cannot squash the commits together. `git subtree pull --prefix forecasts-ncov https://github.com/nextstrain/forecasts-ncov.git main`
-
 ---
 
 ## Deployments
