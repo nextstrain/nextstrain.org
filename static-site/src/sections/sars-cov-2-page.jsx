@@ -95,12 +95,6 @@ const contents = [
   },
   {
     type: "external",
-    to: "/sars-cov-2/forecasts",
-    title: "Nextstrain SARS-CoV-2 Forecasts",
-    subtext: "See the latest Nextstrain SARS-CoV-2 forecasting results."
-  },
-  {
-    type: "external",
     to: "https://clades.nextstrain.org",
     title: "Nextclade (sequence analysis webapp)",
     subtext: "Drag and drop your sequences to assign them to clades, report potential sequence quality issues and view samples on a phylogenetic tree"

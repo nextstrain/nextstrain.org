@@ -20,9 +20,6 @@ const auspiceAssetPath = (...subpath) =>
 const gatsbyAssetPath = (...subpath) =>
   assetPath("static-site", "public", ...subpath);
 
-const forecastsNcovAssetPath = (...subpath) =>
-  assetPath("forecasts-ncov", "viz", "build", ...subpath);
-
 
 /* Handlers for static assets.
  */
@@ -30,7 +27,6 @@ const auspiceAssets = expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'});
 
 const gatsbyAssets = express.static(gatsbyAssetPath());
 
-const forecastsVizAssets = express.static(forecastsNcovAssetPath());
 
 /**
  * Send the file at the given `filePath` as the response.
@@ -81,11 +77,6 @@ const sendAuspiceEntrypoint = async (req, res) => {
   );
 };
 
-
-const sendForecastsVizPage = (page) => async (req, res) => {
-  utils.verbose(`Sending forecasts-ncov page ${page} for ${req.originalUrl}`);
-  return await sendFile(res, forecastsNcovAssetPath(page));
-};
 
 /**
  * Generate Express handler that sends the specified Gatsby page.
@@ -177,7 +168,4 @@ export {
   sendGatsbyPage,
   sendGatsbyEntrypoint,
   sendGatsby404,
-
-  sendForecastsVizPage,
-  forecastsVizAssets,
 };
