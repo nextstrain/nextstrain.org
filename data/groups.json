@@ -206,6 +206,10 @@
     "isPublic": true
   },
   {
+    "name": "who-cc-atl",
+    "isPublic": false
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
