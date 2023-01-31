@@ -210,6 +210,10 @@
     "isPublic": false
   },
   {
+    "name": "ViGenDA",
+    "isPublic": false
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
