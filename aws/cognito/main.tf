@@ -139,6 +139,10 @@ resource "aws_cognito_user_pool_domain" "login_dot_nextstrain_dot_org" {
   certificate_arn = "arn:aws:acm:us-east-1:827581582529:certificate/36dc886d-d25a-4324-95c8-090a6162a528"
 }
 
+resource "aws_cognito_user_pool_domain" "cognito" {
+  user_pool_id = aws_cognito_user_pool.nextstrain_dot_org.id
+  domain       = "nextstrain" # i.e. nextstrain.auth.us-east-1.amazoncognito.com
+}
 
 resource "aws_cognito_user_pool_ui_customization" "default" {
   # Customizations are only valid if the pool has at least one active domain
