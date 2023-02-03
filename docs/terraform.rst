@@ -195,6 +195,19 @@ Terraform thinks no changes need to be made.  It goes somewhat like this:
     resources we want to keep around and not destroy (since they're still
     referenced by the production state).
 
+Since the ``default`` workspace state still doesn't contain the imported
+resource, ``terraform plan`` will now report changes are needed because of the
+new configuration.  This is as it should be since the ``default`` workspace
+state should correspond to what's on the tip of the default Git branch to avoid
+affecting other configuration changes in the meantime.
+
+After merging the branch with the configuration change, re-import the existing
+resource's state into the ``default`` workspace, e.g.::
+
+    $ terraform import aws_s3_bucket.example example-bucket-name
+
+Now ``terraform plan`` should report nothing to be done.
+
 
 Security
 ========
