@@ -158,6 +158,12 @@ Terraform thinks no changes need to be made.  It goes somewhat like this:
 
         $ terraform import aws_s3_bucket.example example-bucket-name
 
+    Paths to resources inside of modules use syntax like:
+
+    .. code-block:: none
+
+        module.aws.module.iam.aws_iam_policy.NextstrainDotOrgServerInstance
+
  4. Iteratively fill out the stub resource in the configuration with the help
     of inspecting the state::
 
