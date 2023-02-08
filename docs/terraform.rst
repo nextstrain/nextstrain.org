@@ -104,8 +104,9 @@ Deploying changes
 
 .. note::
     We currently do not automatically deploy changes.  Please manually
-    coordinate application deploys (i.e. deploys to `next.nextstrain.org
-    <https://next.nextstrain.org>`__ via merges to ``master``) with Terraform
+    coordinate application deploys—that is, deploys to `next.nextstrain.org
+    <https://next.nextstrain.org>`__ via merges to ``master`` and subsequent
+    promotion to `nextstrain.org <https://nextstrain.org>`__—with Terraform
     changes.
 
 First make a plan and save it to a file::
