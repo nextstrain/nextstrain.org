@@ -122,12 +122,12 @@ const setAvailableDatasetsFromManifest = async () => {
   utils.verbose("Fetching manifests for core & staging");
 
   const servers = {
-    core: "data",
-    staging: "staging"
+    core: "nextstrain-data",
+    staging: "nextstrain-staging"
   };
 
   const promises = Object.keys(servers).map((server) => {
-    return fetch(`http://${servers[server]}.nextstrain.org/manifest_guest.json`)
+    return fetch(`https://${servers[server]}.s3.amazonaws.com/manifest_guest.json`)
       .then((result) => {
         return result.json();
       })
