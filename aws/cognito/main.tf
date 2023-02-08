@@ -13,7 +13,11 @@ resource "aws_cognito_user_pool" "nextstrain_dot_org" {
     prevent_destroy = true
   }
 
-  name = "nextstrain.org"
+  name = (
+    var.env == "production"
+    ? "nextstrain.org"
+    : "nextstrain.org-${var.env}"
+  )
 
   # Alternate attributes that can be used for sign in.  While "username" is
   # immutable, "preferred_username" can be changed by the user.
@@ -28,6 +32,7 @@ resource "aws_cognito_user_pool" "nextstrain_dot_org" {
 
     # Invitations sent to the user upon creation by an admin.
     invite_message_template {
+      # XXX FIXME: disambiguate envs
       email_subject = "nextstrain.org account"
       email_message = <<-EOT
           <p>Hello!
@@ -41,6 +46,7 @@ resource "aws_cognito_user_pool" "nextstrain_dot_org" {
           <p>—the Nextstrain team
       EOT
 
+      # XXX FIXME: disambiguate envs
       sms_message = "Your Nextstrain.org username is {username} and temporary password is {####}."
     }
   }
@@ -50,6 +56,7 @@ resource "aws_cognito_user_pool" "nextstrain_dot_org" {
     default_email_option = "CONFIRM_WITH_LINK"
 
     # Used for CONFIRM_WITH_LINK verification via email.
+    # XXX FIXME: disambiguate envs
     email_subject_by_link = "Nextstrain.org email verification"
     email_message_by_link = <<-EOT
         <p>Hello!
@@ -84,12 +91,17 @@ resource "aws_cognito_user_pool" "nextstrain_dot_org" {
     }
   }
 
-  # Send email via our authenticated AWS SES identity for higher rate limits,
-  # customized From, DKIM signing, etc.
+  # In production, send email via our authenticated AWS SES identity for higher
+  # rate limits, customized From, DKIM signing, etc.
+  #
+  # In other environments, send email with Cognito's built-in provider¹, which
+  # will come from <no-reply@verificationemail.com> (yes, really).
+  #
+  # ¹ https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-email.html#user-pool-email-default
   email_configuration {
-    email_sending_account = "DEVELOPER"
-    from_email_address    = "Nextstrain <hello@nextstrain.org>"
-    source_arn            = "arn:aws:ses:us-east-1:827581582529:identity/hello@nextstrain.org"
+    email_sending_account = var.env == "production" ? "DEVELOPER" : "COGNITO_DEFAULT"
+    from_email_address    = var.env == "production" ? "Nextstrain <hello@nextstrain.org>" : null
+    source_arn            = var.env == "production" ? "arn:aws:ses:us-east-1:827581582529:identity/hello@nextstrain.org" : null
   }
 
   # "email" is a built in standard attribute, but this reflects that we made it
@@ -127,7 +139,14 @@ resource "aws_cognito_user_pool" "nextstrain_dot_org" {
 }
 
 
-resource "aws_cognito_user_pool_domain" "login_dot_nextstrain_dot_org" {
+resource "aws_cognito_user_pool_domain" "custom" {
+  # The "count" meta-argument¹, designed for repeated resources, is apparently
+  # the standard suggested way of making a resource conditional.  Ok then.
+  #   -trs, 6 Feb 2023
+  #
+  # ¹ https://developer.hashicorp.com/terraform/language/meta-arguments/count
+  count = var.env == "production" ? 1 : 0
+
   lifecycle {
     prevent_destroy = true
   }
@@ -139,19 +158,33 @@ resource "aws_cognito_user_pool_domain" "login_dot_nextstrain_dot_org" {
   certificate_arn = "arn:aws:acm:us-east-1:827581582529:certificate/36dc886d-d25a-4324-95c8-090a6162a528"
 }
 
+moved {
+  from = aws_cognito_user_pool_domain.login_dot_nextstrain_dot_org
+  to   = aws_cognito_user_pool_domain.custom[0]
+}
+
+
 resource "aws_cognito_user_pool_domain" "cognito" {
   user_pool_id = aws_cognito_user_pool.nextstrain_dot_org.id
-  domain       = "nextstrain" # i.e. nextstrain.auth.us-east-1.amazoncognito.com
+
+  # Expands to, e.g., nextstrain.auth.us-east-1.amazoncognito.com
+  domain = (
+    var.env == "production"
+    ? "nextstrain"
+    : "nextstrain-${var.env}"
+  )
 }
+
 
 resource "aws_cognito_user_pool_ui_customization" "default" {
   # Customizations are only valid if the pool has at least one active domain
-  # associated with it.  So refer to our domain resource's user_pool_id attribute
+  # associated with it.  So refer to a domain resource's user_pool_id attribute
   # (as opposed to the pool's own id attribute) to ensure Terraform gets
   # dependency ordering correct.
-  user_pool_id = aws_cognito_user_pool_domain.login_dot_nextstrain_dot_org.user_pool_id
+  user_pool_id = aws_cognito_user_pool_domain.cognito.user_pool_id
   client_id    = "ALL"
 
+  # XXX FIXME: disambiguate envs
   css        = file("${path.module}/login.nextstrain.org.css")
   image_file = filebase64("${path.module}/login.nextstrain.org.png")
 }
