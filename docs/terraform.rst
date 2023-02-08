@@ -15,11 +15,31 @@ AWS resources like Cognito user pools.
     Please step cautiously and be careful when using them!
 
 
+Configurations
+==============
+
+All ``terraform`` commands below expect to be run from within a directory
+containing a Terraform configuration (i.e. a set of one or more ``*.tf`` or
+``*.tf.json`` files).
+
+We have the following configurations:
+
+  - :file:`env/production`
+
+To choose which configuration you're working with, you can either:
+
+  1. ``cd`` into the configuration directory before running any ``terraform``
+     command, or
+
+  2. run all ``terraform`` commands with the ``-chdir=<dir>`` option, e.g.
+     ``terraform -chdir=env/production plan``.
+
+
 Setup
 =====
 
-`Install Terraform <https://www.terraform.io/downloads>`__ and then, from the
-root of this repository, run::
+`Install Terraform <https://www.terraform.io/downloads>`__ and then, from a
+configuration directory (e.g. :file:`env/production`), run::
 
     $ terraform init
 
@@ -34,7 +54,9 @@ Our Terraform configuration consists of a file structure like:
 
 .. code-block:: none
 
-    terraform.tf
+    env/
+        production/
+            terraform.tf
     aws/
         main.tf
         cognito/
@@ -45,9 +67,10 @@ Our Terraform configuration consists of a file structure like:
             main.tf
             …
 
-:file:`terraform.tf` is the single file that makes up the root module of the
-configuration.  This file imports a local module we define in :file:`aws/`, which in
-turns imports another local module per service (e.g. :file:`aws/cognito/`).
+:file:`env/production/terraform.tf` is the single file that makes up the root
+module of the production configuration.  This file imports a local module we
+define in :file:`aws/`, which in turns imports another local module per service
+(e.g. :file:`aws/cognito/`).
 
 Modules are any directory containing one or more Terraform configuration files
 (``.tf`` or ``.tf.json``), along with other optional files.  Filenames (e.g.

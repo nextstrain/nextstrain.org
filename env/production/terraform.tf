@@ -27,7 +27,7 @@ provider "aws" {
 }
 
 module "aws" {
-  source = "./aws"
+  source = "../../aws"
   providers = {
     aws = aws
   }
