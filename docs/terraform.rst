@@ -68,9 +68,8 @@ Our Terraform configuration consists of a file structure like:
             …
 
 :file:`env/production/terraform.tf` is the single file that makes up the root
-module of the production configuration.  This file imports a local module we
-define in :file:`aws/`, which in turns imports another local module per service
-(e.g. :file:`aws/cognito/`).
+module of the production configuration.  This file imports local modules we
+define in :file:`aws/cognito/` and :file:`aws/iam/`.
 
 Modules are any directory containing one or more Terraform configuration files
 (``.tf`` or ``.tf.json``), along with other optional files.  Filenames (e.g.
@@ -185,7 +184,7 @@ Terraform thinks no changes need to be made.  It goes somewhat like this:
 
     .. code-block:: none
 
-        module.aws.module.iam.aws_iam_policy.NextstrainDotOrgServerInstance
+        module.iam.aws_iam_policy.NextstrainDotOrgServerInstance
 
  4. Iteratively fill out the stub resource in the configuration with the help
     of inspecting the state::

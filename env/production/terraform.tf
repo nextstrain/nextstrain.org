@@ -26,9 +26,26 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "aws" {
-  source = "../../aws"
+module "cognito" {
+  source = "../../aws/cognito"
   providers = {
     aws = aws
   }
+}
+
+moved {
+  from = module.aws.module.cognito
+  to   = module.cognito
+}
+
+module "iam" {
+  source = "../../aws/iam"
+  providers = {
+    aws = aws
+  }
+}
+
+moved {
+  from = module.aws.module.iam
+  to   = module.iam
 }
