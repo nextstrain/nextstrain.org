@@ -58,7 +58,8 @@ const SESSION_SECRET = PRODUCTION
 
 const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30d in seconds
 
-const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
+const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
+if (!COGNITO_USER_POOL_ID) throw new Error("COGNITO_USER_POOL_ID required");
 
 const COGNITO_REGION = COGNITO_USER_POOL_ID.split("_")[0];
 
@@ -66,11 +67,11 @@ const COGNITO_USER_POOL_URL = `https://cognito-idp.${COGNITO_REGION}.amazonaws.c
 
 const COGNITO_JWKS = createRemoteJWKSet(new URL(`${COGNITO_USER_POOL_URL}/.well-known/jwks.json`));
 
-const COGNITO_BASE_URL = "https://login.nextstrain.org";
+const COGNITO_BASE_URL = process.env.COGNITO_BASE_URL;
+if (!COGNITO_BASE_URL) throw new Error("COGNITO_BASE_URL required");
 
-const COGNITO_CLIENT_ID = PRODUCTION
-  ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org (and next. and dev.)
-  : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost
+const COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID;
+if (!COGNITO_CLIENT_ID) throw new Error("COGNITO_CLIENT_ID required");
 
 /* Registered clients to accept for Bearer tokens.
  *
@@ -78,8 +79,11 @@ const COGNITO_CLIENT_ID = PRODUCTION
  * server start and might want to if we start having third-party clients, but
  * avoid a start-time dep for now.
  */
+const COGNITO_CLI_CLIENT_ID = process.env.COGNITO_CLI_CLIENT_ID;
+if (!COGNITO_CLI_CLIENT_ID) throw new Error("COGNITO_CLI_CLIENT_ID required");
+
 const BEARER_COGNITO_CLIENT_IDS = [
-  "2vmc93kj4fiul8uv40uqge93m5",   // Nextstrain CLI
+  COGNITO_CLI_CLIENT_ID,  // Nextstrain CLI
 ];
 
 /* Arbitrary ids for the various strategies for Passport.  Makes explicit the

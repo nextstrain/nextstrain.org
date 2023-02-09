@@ -62,6 +62,18 @@ Deploys to the production app are performed by manually [promoting](https://devc
     Redirection does not happen if this variable is not defined or if the request's origin already matches this variable's value.
     In production we set this to `https://next.nextstrain.org`.
 
+Several required variables can be taken from the appropriate `terraform output`:
+
+  - `COGNITO_USER_POOL_ID` must be set to the id of the Cognito user pool to use for authentication.
+
+  - `COGNITO_BASE_URL` must be set to the URL of the Cognito user pool's hosted UI.
+    In production, this is `https://login.nextstrain.org`.
+    In development and testing, this would be something like `https://nextstrain-testing.auth.us-east-1.amazoncognito.com`.
+
+  - `COGNITO_CLIENT_ID` must be set to the OAuth2 client id for the nextstrain.org client registered with the Cognito user pool.
+
+  - `COGNITO_CLI_CLIENT_ID` must be set to the OAuth2 client id for the Nextstrain CLI client registered with the Cognito user pool.
+
 ### Redis add-on
 
 The [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) add-on is attached to our `nextstrain-server` and `nextstrain-dev` apps.

@@ -238,6 +238,28 @@ resource's state into the ``default`` workspace, e.g.::
 Now ``terraform plan`` should report nothing to be done.
 
 
+Outputs
+=======
+
+Each configuration provides outputs of key-value pairs corresponding to
+environment variables required by the nextstrain.org server::
+
+    $ terraform output
+    COGNITO_BASE_URL=https://login.nextstrain.org
+    COGNITO_CLIENT_ID=rki99ml8g2jb9sm1qcq9oi5n
+    COGNITO_CLI_CLIENT_ID=2vmc93kj4fiul8uv40uqge93m5
+    COGNITO_USER_POOL_ID=us-east-1_Cg5rcTged
+
+Outputs are stored and tracked in the remote state and may be updated when
+applying configuration changes.  Terraform will note in its plan if an output
+changes.
+
+Outputs do not automatically become defined as environment variables.  The
+required environment variables must be explicitly defined for the server
+process via standard mechanisms (e.g. Heroku's config vars, your local shell,
+etc.).
+
+
 Security
 ========
 
