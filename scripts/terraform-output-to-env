@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""
+usage: terraform-output-to-env [-chdir=<dir>]
+       terraform-output-to-env [-chdir=<dir>] <envdir>
+       terraform-output-to-env --help
+
+Convert `terraform output` to either shell variable exports suitable for
+source-ing or files in an <envdir>.
+
+For example, to export outputs into your current shell environment:
+
+    $ source <(terraform-output-to-env)
+
+    $ echo "$COGNITO_USER_POOL_ID"
+    us-east-1_Cg5rcTged
+
+    $ python3 -c 'import os; print(os.environ["COGNITO_USER_POOL_ID"])'
+    us-east-1_Cg5rcTged
+
+To write outputs to an envdir and then provide them to another program:
+
+    $ terraform-output-to-env envd
+    wrote envd/COGNITO_USER_POOL_ID
+    …
+
+    $ envdir envd python3 -c 'import os; print(os.environ["COGNITO_USER_POOL_ID"])'
+    us-east-1_Cg5rcTged
+"""
+import json
+import subprocess
+from pathlib import Path
+from shlex import quote as shquote
+from sys import argv, exit, stderr
+
+help = __doc__.strip()
+usage = help.split("\n\n", 1)[0]
+
+# Parse arguments, supporting a Terraform-style -chdir=…
+args = argv[1:]
+chdir = None
+envdir = None
+
+if any(arg in {"-h", "--help", "--h", "--he", "--hel"} for arg in args):
+    print(help, file = stderr)
+    exit(0)
+
+for arg in args:
+    if arg.startswith("-chdir="):
+        chdir = arg.split("=", 1)[1]
+
+    elif not envdir:
+        envdir = Path(arg)
+
+    else:
+        print(f"unknown argument: {arg}\n\n{usage}", file = stderr)
+        exit(1)
+
+
+# Capture outputs
+terraform_output = subprocess.run(
+    ["terraform", "output", "-json"],
+    cwd = chdir,
+    check = True,
+    stdout = subprocess.PIPE)
+
+outputs = json.loads(terraform_output.stdout)
+
+
+if envdir:
+    envdir.mkdir(parents = True, exist_ok = True)
+
+    for name, output in outputs.items():
+        envdir_file = envdir / name
+
+        if output["type"] == "string":
+            value = output["value"]
+        else:
+            value = json.dumps(output["value"], allow_nan = False)
+
+        if not value.endswith("\n"):
+            value += "\n"
+
+        envdir_file.write_text(value)
+        print(f"wrote {envdir_file}", file = stderr)
+else:
+    for name, output in outputs.items():
+        if output["type"] == "string":
+            value = output["value"]
+        else:
+            value = json.dumps(output["value"], allow_nan = False)
+
+        print(f"export {shquote(name)}={shquote(value)}")
