@@ -17,12 +17,10 @@ import {
 import fs from 'fs';
 import yaml from 'js-yaml';
 import process from 'process';
+import { COGNITO_USER_POOL_ID } from '../src/config.js';
 import { Group } from '../src/groups.js';
 import { reportUnhandledRejectionsAtExit } from '../src/utils/scripts.js';
 
-
-const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
-if (!COGNITO_USER_POOL_ID) throw new Error("COGNITO_USER_POOL_ID required");
 
 const REGION = COGNITO_USER_POOL_ID.split("_")[0];
 

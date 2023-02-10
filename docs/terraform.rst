@@ -242,7 +242,7 @@ Outputs
 =======
 
 Each configuration provides outputs of key-value pairs corresponding to
-environment variables required by the nextstrain.org server::
+environment (or config) variables required by the nextstrain.org server::
 
     $ terraform output
     COGNITO_BASE_URL=https://login.nextstrain.org
@@ -251,13 +251,18 @@ environment variables required by the nextstrain.org server::
     COGNITO_USER_POOL_ID=us-east-1_Cg5rcTged
 
 Outputs are stored and tracked in the remote state and may be updated when
-applying configuration changes.  Terraform will note in its plan if an output
-changes.
+applying configuration changes.  We cache non-sensitive outputs in JSON config
+files, which are loaded by the server to obtain appropriate default values.
+Terraform will note in its plan if an output changes.  It if does, make sure to
+update the cached JSON config file::
 
-Outputs do not automatically become defined as environment variables.  The
-required environment variables must be explicitly defined for the server
-process via standard mechanisms (e.g. Heroku's config vars, your local shell,
-etc.).
+    $ ../../scripts/terraform-output-to-config > config.json
+
+Outputs do not automatically become defined as environment (or config)
+variables.  The values must be explicitly provided to the server process via
+standard environment variable mechanisms (e.g. Heroku's config vars, your local
+shell, envdir, etc.) or a JSON config file (e.g.
+:file:`env/production/config.json`).
 
 
 Security

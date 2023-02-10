@@ -26,7 +26,7 @@ The canary app serving **next.nextstrain.org** is [`nextstrain-canary`](https://
 Deploys of `master` to the canary app happen automatically after [GitHub Actions CI tests](https://github.com/nextstrain/nextstrain.org/actions/workflows/ci.yml) are successful.
 Deploys to the production app are performed by manually [promoting](https://devcenter.heroku.com/articles/pipelines#promoting) the canary's current release to production.
 
-### Environment variables
+### Environment (or config) variables
 
   - `NODE_ENV` is used to condition behaviour between production and non-production environments, following the widely-used convention set by Express.
     Its value affects not just the explicit conditionals in this repo but also Express and other layers in our dependencies.
@@ -62,7 +62,10 @@ Deploys to the production app are performed by manually [promoting](https://devc
     Redirection does not happen if this variable is not defined or if the request's origin already matches this variable's value.
     In production we set this to `https://next.nextstrain.org`.
 
-Several required variables can be taken from the appropriate `terraform output`:
+  - `CONFIG_FILE` is the path to a JSON file defining the defaults for the required variables below.
+    If not provided, the checked-in files `env/production/config.json` and `env/testing/config.json` are used (depending on the value of `NODE_ENV`).
+
+Several variables are required but obtain defaults from a config file (e.g. `env/production/config.json`):
 
   - `COGNITO_USER_POOL_ID` must be set to the id of the Cognito user pool to use for authentication.
 
@@ -73,6 +76,8 @@ Several required variables can be taken from the appropriate `terraform output`:
   - `COGNITO_CLIENT_ID` must be set to the OAuth2 client id for the nextstrain.org client registered with the Cognito user pool.
 
   - `COGNITO_CLI_CLIENT_ID` must be set to the OAuth2 client id for the Nextstrain CLI client registered with the Cognito user pool.
+
+Variables in the environment override defaults from the config file.
 
 ### Redis add-on
 

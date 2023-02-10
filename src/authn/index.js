@@ -20,6 +20,7 @@ import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/error
 import partition from 'lodash.partition';
 import BearerStrategy from './bearer.js';
 import { getTokens, setTokens, deleteTokens } from './session.js';
+import { COGNITO_USER_POOL_ID, COGNITO_BASE_URL, COGNITO_CLIENT_ID, COGNITO_CLI_CLIENT_ID } from '../config.js';
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
 import { copyCookie } from '../middleware.js';
@@ -58,20 +59,11 @@ const SESSION_SECRET = PRODUCTION
 
 const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30d in seconds
 
-const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
-if (!COGNITO_USER_POOL_ID) throw new Error("COGNITO_USER_POOL_ID required");
-
 const COGNITO_REGION = COGNITO_USER_POOL_ID.split("_")[0];
 
 const COGNITO_USER_POOL_URL = `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}`;
 
 const COGNITO_JWKS = createRemoteJWKSet(new URL(`${COGNITO_USER_POOL_URL}/.well-known/jwks.json`));
-
-const COGNITO_BASE_URL = process.env.COGNITO_BASE_URL;
-if (!COGNITO_BASE_URL) throw new Error("COGNITO_BASE_URL required");
-
-const COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID;
-if (!COGNITO_CLIENT_ID) throw new Error("COGNITO_CLIENT_ID required");
 
 /* Registered clients to accept for Bearer tokens.
  *
@@ -79,9 +71,6 @@ if (!COGNITO_CLIENT_ID) throw new Error("COGNITO_CLIENT_ID required");
  * server start and might want to if we start having third-party clients, but
  * avoid a start-time dep for now.
  */
-const COGNITO_CLI_CLIENT_ID = process.env.COGNITO_CLI_CLIENT_ID;
-if (!COGNITO_CLI_CLIENT_ID) throw new Error("COGNITO_CLI_CLIENT_ID required");
-
 const BEARER_COGNITO_CLIENT_IDS = [
   COGNITO_CLI_CLIENT_ID,  // Nextstrain CLI
 ];
