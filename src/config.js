@@ -28,7 +28,7 @@ const __basedir = path.join(__dirname, "..");
  *
  * @type {boolean}
  */
-const PRODUCTION = process.env.NODE_ENV === "production";
+export const PRODUCTION = process.env.NODE_ENV === "production";
 
 
 /**

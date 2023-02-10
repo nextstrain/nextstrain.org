@@ -20,15 +20,13 @@ import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/error
 import partition from 'lodash.partition';
 import BearerStrategy from './bearer.js';
 import { getTokens, setTokens, deleteTokens } from './session.js';
-import { COGNITO_USER_POOL_ID, COGNITO_BASE_URL, COGNITO_CLIENT_ID, COGNITO_CLI_CLIENT_ID } from '../config.js';
+import { PRODUCTION, COGNITO_USER_POOL_ID, COGNITO_BASE_URL, COGNITO_CLIENT_ID, COGNITO_CLI_CLIENT_ID } from '../config.js';
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
 import { copyCookie } from '../middleware.js';
 import { REDIS } from '../redis.js';
 import { userStaleBefore } from '../user.js';
 import * as utils from '../utils/index.js';
-
-const PRODUCTION = process.env.NODE_ENV === "production";
 
 /* In production, share the cookie across nextstrain.org and all subdomains so
  * sessions are portable (as long as the session store and secret are also
