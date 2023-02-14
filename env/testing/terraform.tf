@@ -10,11 +10,11 @@ terraform {
   backend "s3" {
     region = "us-east-1"
 
-    # Default workspace uses s3://nextstrain-terraform/testing/nextstrain.org/tfstate
+    # Default workspace uses s3://nextstrain-terraform/nextstrain.org/testing/tfstate
     bucket = "nextstrain-terraform"
-    key    = "testing/nextstrain.org/tfstate"
+    key    = "nextstrain.org/testing/tfstate"
 
-    # Non-default workspaces use s3://nextstrain-terraform/workspace/${name}/testing/nextstrain.org/tfstate
+    # Non-default workspaces use s3://nextstrain-terraform/workspace/${name}/nextstrain.org/testing/tfstate
     workspace_key_prefix = "workspace"
 
     # Table has a LockID (string) partition/primary key
