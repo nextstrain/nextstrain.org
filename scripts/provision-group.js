@@ -17,11 +17,11 @@ import {
 import fs from 'fs';
 import yaml from 'js-yaml';
 import process from 'process';
+import { COGNITO_USER_POOL_ID } from '../src/config.js';
 import { Group } from '../src/groups.js';
 import { reportUnhandledRejectionsAtExit } from '../src/utils/scripts.js';
 
 
-const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
 const REGION = COGNITO_USER_POOL_ID.split("_")[0];
 
 const cognito = new CognitoIdentityProviderClient({ region: REGION });

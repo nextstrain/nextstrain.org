@@ -1,0 +1,12 @@
+#!/bin/bash
+# Convert `terraform output -json` to simpler key-value pairs, filtering out
+# sensitive values, thus making it suitable for a simple application config
+# file.
+set -euo pipefail
+
+terraform "$@" output -json | jq '
+    with_entries(
+          select(.value.sensitive | not)
+        | .value |= .value
+    )
+'

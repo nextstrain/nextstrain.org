@@ -1,0 +1,6 @@
+{
+  "COGNITO_BASE_URL": "https://nextstrain-testing.auth.us-east-1.amazoncognito.com",
+  "COGNITO_CLIENT_ID": "6qiojrhr8tibt0f6hphnm1osp1",
+  "COGNITO_CLI_CLIENT_ID": "9opa27o74f4jsq8g4a34e1mqr",
+  "COGNITO_USER_POOL_ID": "us-east-1_zqpCrjM7I"
+}

@@ -10,11 +10,11 @@ terraform {
   backend "s3" {
     region = "us-east-1"
 
-    # Default workspace uses s3://nextstrain-terraform/nextstrain.org/tfstate
+    # Default workspace uses s3://nextstrain-terraform/nextstrain.org/testing/tfstate
     bucket = "nextstrain-terraform"
-    key    = "nextstrain.org/tfstate"
+    key    = "nextstrain.org/testing/tfstate"
 
-    # Non-default workspaces use s3://nextstrain-terraform/workspace/${name}/nextstrain.org/tfstate
+    # Non-default workspaces use s3://nextstrain-terraform/workspace/${name}/nextstrain.org/testing/tfstate
     workspace_key_prefix = "workspace"
 
     # Table has a LockID (string) partition/primary key
@@ -26,9 +26,18 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "aws" {
-  source = "./aws"
+module "cognito" {
+  source = "../../aws/cognito"
   providers = {
     aws = aws
   }
+
+  env = "testing"
+  origins = [
+    "http://localhost:5000",
+    "https://localhost:5000",
+  ]
 }
+
+# Skip iam as it only applies to production (for now at least).
+#   -trs, 6 Feb 2023

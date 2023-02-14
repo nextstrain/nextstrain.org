@@ -1,8 +1,7 @@
 import * as authz from './authz/index.js';
+import { PRODUCTION } from './config.js';
 import { ALL_GROUPS } from './groups.js';
 import * as utils from './utils/index.js';
-
-const PRODUCTION = process.env.NODE_ENV === "production";
 
 /**
  * A meta-source representing all known groups.

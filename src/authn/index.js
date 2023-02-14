@@ -20,14 +20,13 @@ import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/error
 import partition from 'lodash.partition';
 import BearerStrategy from './bearer.js';
 import { getTokens, setTokens, deleteTokens } from './session.js';
+import { PRODUCTION, COGNITO_USER_POOL_ID, COGNITO_BASE_URL, COGNITO_CLIENT_ID, COGNITO_CLI_CLIENT_ID } from '../config.js';
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
 import { copyCookie } from '../middleware.js';
 import { REDIS } from '../redis.js';
 import { userStaleBefore } from '../user.js';
 import * as utils from '../utils/index.js';
-
-const PRODUCTION = process.env.NODE_ENV === "production";
 
 /* In production, share the cookie across nextstrain.org and all subdomains so
  * sessions are portable (as long as the session store and secret are also
@@ -58,19 +57,11 @@ const SESSION_SECRET = PRODUCTION
 
 const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30d in seconds
 
-const COGNITO_USER_POOL_ID = "us-east-1_Cg5rcTged";
-
 const COGNITO_REGION = COGNITO_USER_POOL_ID.split("_")[0];
 
 const COGNITO_USER_POOL_URL = `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}`;
 
 const COGNITO_JWKS = createRemoteJWKSet(new URL(`${COGNITO_USER_POOL_URL}/.well-known/jwks.json`));
-
-const COGNITO_BASE_URL = "https://login.nextstrain.org";
-
-const COGNITO_CLIENT_ID = PRODUCTION
-  ? "rki99ml8g2jb9sm1qcq9oi5n"    // prod client limited to nextstrain.org (and next. and dev.)
-  : "6q7cmj0ukti9d9kdkqi2dfvh7o"; // dev client limited to localhost
 
 /* Registered clients to accept for Bearer tokens.
  *
@@ -79,7 +70,7 @@ const COGNITO_CLIENT_ID = PRODUCTION
  * avoid a start-time dep for now.
  */
 const BEARER_COGNITO_CLIENT_IDS = [
-  "2vmc93kj4fiul8uv40uqge93m5",   // Nextstrain CLI
+  COGNITO_CLI_CLIENT_ID,  // Nextstrain CLI
 ];
 
 /* Arbitrary ids for the various strategies for Passport.  Makes explicit the

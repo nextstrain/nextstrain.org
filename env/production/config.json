@@ -1,0 +1,6 @@
+{
+  "COGNITO_BASE_URL": "https://login.nextstrain.org",
+  "COGNITO_CLIENT_ID": "rki99ml8g2jb9sm1qcq9oi5n",
+  "COGNITO_CLI_CLIENT_ID": "2vmc93kj4fiul8uv40uqge93m5",
+  "COGNITO_USER_POOL_ID": "us-east-1_Cg5rcTged"
+}

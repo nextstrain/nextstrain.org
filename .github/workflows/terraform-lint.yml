@@ -21,8 +21,18 @@ jobs:
       - run: scripts/terraform-fmt -check
 
   validate:
+    name: validate ${{matrix.env}}
+    strategy:
+      matrix:
+        env:
+          - env/production
+          - env/testing
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - run: terraform init -backend=false
+        working-directory: ${{matrix.env}}
+
       - run: terraform validate
+        working-directory: ${{matrix.env}}

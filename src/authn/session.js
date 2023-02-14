@@ -1,7 +1,6 @@
+import { PRODUCTION } from '../config.js';
 import { keyringFromParamString, encrypt, decrypt, randomKey } from '../cryptography.js';
 
-
-const PRODUCTION = process.env.NODE_ENV === "production";
 
 const SESSION_ENCRYPTION_KEYS = process.env.SESSION_ENCRYPTION_KEYS;
 

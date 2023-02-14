@@ -1,13 +1,12 @@
 import { strict as assert } from 'assert';
 import * as authz from "./authz/index.js";
+import { PRODUCTION } from './config.js';
 import { NotFound } from './httpErrors.js';
 import { GroupSource } from "./sources/index.js";
 
 /* eslint-disable-next-line import/first, import/newline-after-import */
 import { readFile } from 'fs/promises';
 const GROUPS_DATA = JSON.parse(await readFile(new URL('../data/groups.json', import.meta.url)));
-
-const PRODUCTION = process.env.NODE_ENV === "production";
 
 /**
  * Map of Nextstrain Groups from their (normalized) name to their static config

@@ -14,10 +14,10 @@ import { promisify } from 'util';
  */
 const streamFinished = promisify(stream.finished);
 
-const PRODUCTION = process.env.NODE_ENV === "production";
 const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
 
 /* eslint-disable import/first */
+import { PRODUCTION } from './config.js';
 import * as utils from './utils/index.js';
 import { addAsync } from './async.js';
 import { Forbidden, NotFound, Unauthorized } from './httpErrors.js';

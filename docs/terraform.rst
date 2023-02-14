@@ -15,11 +15,31 @@ AWS resources like Cognito user pools.
     Please step cautiously and be careful when using them!
 
 
+Configurations
+==============
+
+All ``terraform`` commands below expect to be run from within a directory
+containing a Terraform configuration (i.e. a set of one or more ``*.tf`` or
+``*.tf.json`` files).
+
+We have the following configurations:
+
+  - :file:`env/production`
+
+To choose which configuration you're working with, you can either:
+
+  1. ``cd`` into the configuration directory before running any ``terraform``
+     command, or
+
+  2. run all ``terraform`` commands with the ``-chdir=<dir>`` option, e.g.
+     ``terraform -chdir=env/production plan``.
+
+
 Setup
 =====
 
-`Install Terraform <https://www.terraform.io/downloads>`__ and then, from the
-root of this repository, run::
+`Install Terraform <https://www.terraform.io/downloads>`__ and then, from a
+configuration directory (e.g. :file:`env/production`), run::
 
     $ terraform init
 
@@ -34,7 +54,9 @@ Our Terraform configuration consists of a file structure like:
 
 .. code-block:: none
 
-    terraform.tf
+    env/
+        production/
+            terraform.tf
     aws/
         main.tf
         cognito/
@@ -45,9 +67,9 @@ Our Terraform configuration consists of a file structure like:
             main.tf
             …
 
-:file:`terraform.tf` is the single file that makes up the root module of the
-configuration.  This file imports a local module we define in :file:`aws/`, which in
-turns imports another local module per service (e.g. :file:`aws/cognito/`).
+:file:`env/production/terraform.tf` is the single file that makes up the root
+module of the production configuration.  This file imports local modules we
+define in :file:`aws/cognito/` and :file:`aws/iam/`.
 
 Modules are any directory containing one or more Terraform configuration files
 (``.tf`` or ``.tf.json``), along with other optional files.  Filenames (e.g.
@@ -82,8 +104,9 @@ Deploying changes
 
 .. note::
     We currently do not automatically deploy changes.  Please manually
-    coordinate application deploys (i.e. deploys to `next.nextstrain.org
-    <https://next.nextstrain.org>`__ via merges to ``master``) with Terraform
+    coordinate application deploys—that is, deploys to `next.nextstrain.org
+    <https://next.nextstrain.org>`__ via merges to ``master`` and subsequent
+    promotion to `nextstrain.org <https://nextstrain.org>`__—with Terraform
     changes.
 
 First make a plan and save it to a file::
@@ -158,6 +181,12 @@ Terraform thinks no changes need to be made.  It goes somewhat like this:
 
         $ terraform import aws_s3_bucket.example example-bucket-name
 
+    Paths to resources inside of modules use syntax like:
+
+    .. code-block:: none
+
+        module.iam.aws_iam_policy.NextstrainDotOrgServerInstance
+
  4. Iteratively fill out the stub resource in the configuration with the help
     of inspecting the state::
 
@@ -194,6 +223,46 @@ Terraform thinks no changes need to be made.  It goes somewhat like this:
     Using ``-force`` is necessary because the workspace state still contains
     resources we want to keep around and not destroy (since they're still
     referenced by the production state).
+
+Since the ``default`` workspace state still doesn't contain the imported
+resource, ``terraform plan`` will now report changes are needed because of the
+new configuration.  This is as it should be since the ``default`` workspace
+state should correspond to what's on the tip of the default Git branch to avoid
+affecting other configuration changes in the meantime.
+
+After merging the branch with the configuration change, re-import the existing
+resource's state into the ``default`` workspace, e.g.::
+
+    $ terraform import aws_s3_bucket.example example-bucket-name
+
+Now ``terraform plan`` should report nothing to be done.
+
+
+Outputs
+=======
+
+Each configuration provides outputs of key-value pairs corresponding to
+environment (or config) variables required by the nextstrain.org server::
+
+    $ terraform output
+    COGNITO_BASE_URL=https://login.nextstrain.org
+    COGNITO_CLIENT_ID=rki99ml8g2jb9sm1qcq9oi5n
+    COGNITO_CLI_CLIENT_ID=2vmc93kj4fiul8uv40uqge93m5
+    COGNITO_USER_POOL_ID=us-east-1_Cg5rcTged
+
+Outputs are stored and tracked in the remote state and may be updated when
+applying configuration changes.  We cache non-sensitive outputs in JSON config
+files, which are loaded by the server to obtain appropriate default values.
+Terraform will note in its plan if an output changes.  It if does, make sure to
+update the cached JSON config file::
+
+    $ ../../scripts/terraform-output-to-config > config.json
+
+Outputs do not automatically become defined as environment (or config)
+variables.  The values must be explicitly provided to the server process via
+standard environment variable mechanisms (e.g. Heroku's config vars, your local
+shell, envdir, etc.) or a JSON config file (e.g.
+:file:`env/production/config.json`).
 
 
 Security
