@@ -47,9 +47,6 @@ const BodyWrapper = styled(CommonWrapper)`
   & > div {
     padding: 10px 15px;
   }
-  & img > div {
-    font-size: 50px;
-  }
 `
 
 const Sideways = styled.div`
