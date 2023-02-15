@@ -39,5 +39,11 @@ module "cognito" {
   ]
 }
 
-# Skip iam as it only applies to production (for now at least).
-#   -trs, 6 Feb 2023
+module "iam" {
+  source = "../../aws/iam"
+  providers = {
+    aws = aws
+  }
+
+  env = "testing"
+}

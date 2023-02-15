@@ -8,25 +8,59 @@ terraform {
   }
 }
 
-resource "aws_iam_policy" "NextstrainDotOrgServerInstance" {
+locals {
+  server_policy_name = (
+    var.env == "production"
+    ? "NextstrainDotOrgServerInstance"
+    : "NextstrainDotOrgServerInstance-${var.env}"
+  )
+
+  # The "dev" policy is used for all non-production environments, i.e. the
+  # "testing" environment.
+  #
+  # It allows reduced, read-only access to a subset of non-public production
+  # resources for which there aren't non-production counterparts (e.g.
+  # s3://nextstrain-data).  The naming is historical.
+  server_policy_file_name = (
+    var.env == "production"
+    ? "NextstrainDotOrgServerInstance"
+    : "NextstrainDotOrgServerInstanceDev"
+  )
+
+  server_policy_description = (
+    var.env == "production"
+    ? null
+    : "Mirrors the policy of NextstrainDotOrgServerInstance, however limited to public groups + the blab private group. For Heroku review app and development of the server, as it prevents inadvertent access to private datasets."
+  )
+}
+
+resource "aws_iam_policy" "server" {
   lifecycle {
     prevent_destroy = true
   }
 
-  name   = "NextstrainDotOrgServerInstance"
-  policy = file("${path.module}/policy/NextstrainDotOrgServerInstance.json")
+  name        = local.server_policy_name
+  description = local.server_policy_description
+
+  policy = file("${path.module}/policy/${local.server_policy_file_name}.json")
 }
 
-resource "aws_iam_policy" "NextstrainDotOrgServerInstanceDev" {
-  lifecycle {
-    prevent_destroy = true
-  }
-
-  name   = "NextstrainDotOrgServerInstanceDev"
-  policy = file("${path.module}/policy/NextstrainDotOrgServerInstanceDev.json")
-
-  description = "Mirrors the policy of NextstrainDotOrgServerInstance, however limited to public groups + the blab private group. For Heroku review app and development of the server, as it prevents inadvertent access to private datasets."
+moved {
+  from = aws_iam_policy.NextstrainDotOrgServerInstance
+  to   = aws_iam_policy.server
 }
 
-# XXX TODO: IAM user nextstrain.org with attached policy (and associated access keys?)
-# XXX TODO: IAM user nextstrain.org.dev with attached policy (and associated access keys?)
+resource "aws_iam_user" "server" {
+  name = (
+    var.env == "production"
+    ? "nextstrain.org"
+    : "nextstrain.org-${var.env}"
+  )
+}
+
+resource "aws_iam_user_policy_attachment" "server" {
+  user       = aws_iam_user.server.name
+  policy_arn = aws_iam_policy.server.arn
+}
+
+# XXX TODO: Access keys for IAM user?

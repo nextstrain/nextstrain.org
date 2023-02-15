@@ -185,7 +185,7 @@ Terraform thinks no changes need to be made.  It goes somewhat like this:
 
     .. code-block:: none
 
-        module.iam.aws_iam_policy.NextstrainDotOrgServerInstance
+        module.iam.aws_iam_policy.server
 
  4. Iteratively fill out the stub resource in the configuration with the help
     of inspecting the state::

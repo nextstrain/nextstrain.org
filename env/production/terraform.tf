@@ -50,6 +50,8 @@ module "iam" {
   providers = {
     aws = aws
   }
+
+  env = "production"
 }
 
 moved {
