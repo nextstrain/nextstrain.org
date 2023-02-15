@@ -4,7 +4,7 @@ date: "2021-07-08"
 title: "Extension of SARS-CoV-2 data processing to incorporate Open Data through GenBank"
 ---
 
-**Trevor Bedford**, **James Hadfield**, **Emma Hodcoft**, **John Huddleston**, **Richard Neher**, **Thomas Sibley**
+**Trevor Bedford**, **James Hadfield**, **Emma Hodcroft**, **John Huddleston**, **Richard Neher**, **Thomas Sibley**
 
 Progress towards large-scale real-time genomic surveillance of SARS-CoV-2 has been remarkable with over 2 million viral genomes shared to [GISAID](https://www.gisaid.org/) from all over the world since Jan 2020. This has allowed detailed tracking of the [emergence and spread of variants of concern](https://www.who.int/en/activities/tracking-SARS-CoV-2-variants/) and is an essential pandemic response activity. In an unprecedented collective effort, these data were shared by hundreds of laboratories from all over the world, often within days or weeks of sample collection, and curated by GISAID. Such early sharing of unpublished data requires certain guarantees that submitters get credit for their contributions and a chance to publish on their data. Sequences submitted to the GISAID EpiCoV database are shared under [Terms of Use](https://www.gisaid.org/registration/terms-of-use/) that restrict resharing of sequence data or metadata.
 
