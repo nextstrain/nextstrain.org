@@ -45,7 +45,6 @@ const Sideways = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  align-items: center;
 `
 
 const AvatarContainer = styled(Sideways)`
@@ -56,7 +55,7 @@ const UpDown = styled.div`
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
-  justify-content: center;
+  justify-content: top;
 `
 
 const Name = styled.span`
@@ -78,7 +77,7 @@ const Avatar = ({name, image, link, blurb, teamPage, comma=false}) => {
   if (teamPage) {
     return (
       <AvatarContainer>
-        <Sideways>
+        <Sideways style={{alignItems: blurb ? "top" : "center"}}>
           <a href={link}><img alt={name} src={require("../../../static/team/"+image)}/></a>
           <UpDown>
             <a href={link}><Name>{name}</Name></a>
