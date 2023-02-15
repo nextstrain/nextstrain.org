@@ -3,9 +3,6 @@ import styled from "styled-components";
 import { teamMembers } from "./teamMembers";
 
 const CommonWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   & img {
     margin-left: 5px;
     border-radius: 50%;
@@ -18,6 +15,9 @@ const CommonWrapper = styled.div`
 `
 
 const FooterWrapper = styled(CommonWrapper)`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   & img {
     margin-right: 8px;
     width: 32px;
@@ -26,6 +26,17 @@ const FooterWrapper = styled(CommonWrapper)`
 `
 
 const BodyWrapper = styled(CommonWrapper)`
+  display: grid;
+  justify-content: center;
+  grid-template-columns: minmax(min-content, 500px);
+
+  /* Bootstrap's .container applies 25px left and right margins.  Account for
+   * that when computing the minimum width to support two 333px columns.
+   */
+  @media (min-width: ${333*2 + 25*2}px) {
+    grid-template-columns: repeat(auto-fit, 333px);
+  }
+
   padding: 20px 0px;
   font-size: 18px;
   & img {
@@ -45,10 +56,6 @@ const Sideways = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
-`
-
-const AvatarContainer = styled(Sideways)`
-  width: 360px;
 `
 
 const UpDown = styled.div`
@@ -76,7 +83,7 @@ const Comma = ({}) => (
 const Avatar = ({name, image, link, blurb, teamPage, comma=false}) => {
   if (teamPage) {
     return (
-      <AvatarContainer>
+      <>
         <Sideways style={{alignItems: blurb ? "top" : "center"}}>
           <a href={link}><img alt={name} src={require("../../../static/team/"+image)}/></a>
           <UpDown>
@@ -87,7 +94,7 @@ const Avatar = ({name, image, link, blurb, teamPage, comma=false}) => {
           </UpDown>
         </Sideways>
         {comma && <Comma/>}
-      </AvatarContainer>
+      </>
     );
   }
   return (
