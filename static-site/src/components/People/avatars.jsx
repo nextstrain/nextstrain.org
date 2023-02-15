@@ -6,9 +6,6 @@ const CommonWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  & span {
-    white-space: nowrap;
-  }
   & img {
     margin-left: 5px;
     border-radius: 50%;
@@ -22,7 +19,7 @@ const CommonWrapper = styled.div`
 
 const FooterWrapper = styled(CommonWrapper)`
   & img {
-    margin-right: 4px;
+    margin-right: 8px;
     width: 32px;
     height: 32px;
   }
@@ -30,9 +27,7 @@ const FooterWrapper = styled(CommonWrapper)`
 
 const BodyWrapper = styled(CommonWrapper)`
   padding: 20px 0px;
-  & span {
-    font-size: 18px;
-  }
+  font-size: 18px;
   & img {
     margin-right: 20px;
     width: 60px;
@@ -64,6 +59,10 @@ const UpDown = styled.div`
   justify-content: center;
 `
 
+const Name = styled.span`
+  white-space: nowrap;
+`;
+
 const Blurb = styled.div`
   font-size: 14px;
   text-align: left;
@@ -76,20 +75,30 @@ const Comma = ({}) => (
 )
 
 const Avatar = ({name, image, link, blurb, teamPage, comma=false}) => {
-  const summary = teamPage && blurb;
+  if (teamPage) {
+    return (
+      <AvatarContainer>
+        <Sideways>
+          <a href={link}><img alt={name} src={require("../../../static/team/"+image)}/></a>
+          <UpDown>
+            <a href={link}><Name>{name}</Name></a>
+            {blurb && (
+              <Blurb>{blurb}</Blurb>
+            )}
+          </UpDown>
+        </Sideways>
+        {comma && <Comma/>}
+      </AvatarContainer>
+    );
+  }
   return (
-    <AvatarContainer>
-      <Sideways>
-        <a href={link}><img alt={name} src={require("../../../static/team/"+image)}/></a>
-        <UpDown>
-          <a href={link}><span>{name}</span></a>
-          {summary && (
-            <Blurb>{blurb}</Blurb>
-          )}
-        </UpDown>
-      </Sideways>
+    <>
+      <a href={link}>
+        <img alt={name} src={require("../../../static/team/"+image)}/>
+        <Name>{name}</Name>
+      </a>
       {comma && <Comma/>}
-    </AvatarContainer>
+    </>
   );
 };
 
