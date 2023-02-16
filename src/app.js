@@ -113,6 +113,13 @@ app.use((req, res, next) => {
 authn.setup(app);
 
 
+/* CORS.
+ *
+ * After authn so it doesn't apply to those routes.
+ */
+app.use(middleware.allowPublicReadOnlyCors);
+
+
 /* Canary.
  */
 app.use((req, res, next) => {
