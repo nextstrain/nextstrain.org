@@ -27,7 +27,6 @@
   },
   {
     "name": "illinois-gagnon-public",
-    "bucket": "nextstrain-illinois-gagnon-public",
     "isPublic": true
   },
   {
@@ -106,7 +105,6 @@
   },
   {
     "name": "illinois-gagnon-private",
-    "bucket": "nextstrain-illinois-gagnon-private",
     "isPublic": false
   },
   {
