@@ -146,10 +146,10 @@ const installer = (req, res) => {
   switch (os) {
     case "linux":
     case "mac":
-      return res.redirect("https://github.com/nextstrain/cli/raw/HEAD/bin/standalone-installer-unix");
+      return res.redirect("https://raw.githubusercontent.com/nextstrain/cli/HEAD/bin/standalone-installer-unix");
 
     case "windows":
-      return res.redirect("https://github.com/nextstrain/cli/raw/HEAD/bin/standalone-installer-windows");
+      return res.redirect("https://raw.githubusercontent.com/nextstrain/cli/HEAD/bin/standalone-installer-windows");
 
     default:
       throw new NotFound(`No installer for OS: ${os}`);

@@ -42,7 +42,7 @@ class CommunitySource extends Source {
 
   get repo() { return `${this.owner}/${this.repoName}`; }
   async baseUrl() {
-    return `https://github.com/${this.repo}/raw/${await this.branch}/`;
+    return `https://raw.githubusercontent.com/${this.repo}/${await this.branch}/`;
   }
 
   async repoNameWithBranch() {

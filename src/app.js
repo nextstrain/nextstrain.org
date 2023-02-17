@@ -113,6 +113,13 @@ app.use((req, res, next) => {
 authn.setup(app);
 
 
+/* CORS.
+ *
+ * After authn so it doesn't apply to those routes.
+ */
+app.use(middleware.allowPublicReadOnlyCors);
+
+
 /* Canary.
  */
 app.use((req, res, next) => {
@@ -397,14 +404,14 @@ app.route("/cli")
  */
 /* eslint-disable no-multi-spaces */
 const schemaRoutes = [
-  ["/schemas/augur/frequencies",       "https://github.com/nextstrain/augur/raw/master/augur/data/schema-frequencies.json"],
-  ["/schemas/auspice/config/v2",       "https://github.com/nextstrain/augur/raw/master/augur/data/schema-auspice-config-v2.json"],
-  ["/schemas/dataset/v1/meta",         "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v1-meta.json"],
-  ["/schemas/dataset/v1/tree",         "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v1-tree.json"],
-  ["/schemas/dataset/v2",              "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-v2.json"],
-  ["/schemas/dataset/root-sequence",   "https://github.com/nextstrain/augur/raw/master/augur/data/schema-export-root-sequence.json"],
-  ["/schemas/dataset/tip-frequencies", "https://github.com/nextstrain/augur/raw/master/augur/data/schema-tip-frequencies.json"],
-  ["/schemas/dataset/measurements",    "https://github.com/nextstrain/augur/raw/master/augur/data/schema-measurements.json"],
+  ["/schemas/augur/frequencies",       "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-frequencies.json"],
+  ["/schemas/auspice/config/v2",       "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-auspice-config-v2.json"],
+  ["/schemas/dataset/v1/meta",         "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-export-v1-meta.json"],
+  ["/schemas/dataset/v1/tree",         "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-export-v1-tree.json"],
+  ["/schemas/dataset/v2",              "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-export-v2.json"],
+  ["/schemas/dataset/root-sequence",   "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-export-root-sequence.json"],
+  ["/schemas/dataset/tip-frequencies", "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-tip-frequencies.json"],
+  ["/schemas/dataset/measurements",    "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-measurements.json"],
 ];
 /* eslint-enable no-multi-spaces */
 
