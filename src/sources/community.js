@@ -42,7 +42,14 @@ class CommunitySource extends Source {
 
   get repo() { return `${this.owner}/${this.repoName}`; }
   async baseUrl() {
-    return `https://raw.githubusercontent.com/${this.repo}/${await this.branch}/`;
+    /* It's important to go thru github.com and let it redirect us to the final
+     * location, e.g. usually on raw.githubcontent.com.  We can't directly
+     * access the final location even though it seems constructable because
+     * some community repos use Git LFS to store their files and LFS blobs are
+     * hosted on a different final domain, media.githubusercontent.com.
+     *   -trs, 17 Feb 2023
+     */
+    return `https://github.com/${this.repo}/raw/${await this.branch}/`;
   }
 
   async repoNameWithBranch() {
