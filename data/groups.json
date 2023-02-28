@@ -216,6 +216,10 @@
     "isPublic": true
   },
   {
+    "name": "UMN-Tick-Team",
+    "isPublic": true
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
