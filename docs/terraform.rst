@@ -25,6 +25,7 @@ containing a Terraform configuration (i.e. a set of one or more ``*.tf`` or
 We have the following configurations:
 
   - :file:`env/production`
+  - :file:`env/testing`
 
 To choose which configuration you're working with, you can either:
 
@@ -50,13 +51,17 @@ local settings, and other data needed by the ``terraform`` command.
 Authoring changes
 =================
 
-Our Terraform configuration consists of a file structure like:
+Our Terraform configurations consists of a file structure like:
 
 .. code-block:: none
 
     env/
         production/
             terraform.tf
+            …
+        testing/
+            terraform.tf
+            …
     aws/
         main.tf
         cognito/
