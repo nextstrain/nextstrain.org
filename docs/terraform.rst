@@ -33,14 +33,14 @@ To choose which configuration you're working with, you can either:
      command, or
 
   2. run all ``terraform`` commands with the ``-chdir=<dir>`` option, e.g.
-     ``terraform -chdir=env/production plan``.
+     ``terraform -chdir=env/testing plan``.
 
 
 Setup
 =====
 
 `Install Terraform <https://www.terraform.io/downloads>`__ and then, from a
-configuration directory (e.g. :file:`env/production`), run::
+configuration directory (e.g. :file:`env/testing`), run::
 
     $ terraform init
 
@@ -72,8 +72,8 @@ Our Terraform configurations consists of a file structure like:
             main.tf
             …
 
-:file:`env/production/terraform.tf` is the single file that makes up the root
-module of the production configuration.  This file imports local modules we
+:file:`env/testing/terraform.tf` is the single file that makes up the root
+module of the testing configuration.  This file imports local modules we
 define in :file:`aws/cognito/` and :file:`aws/iam/`.
 
 Modules are any directory containing one or more Terraform configuration files
@@ -267,7 +267,7 @@ Outputs do not automatically become defined as environment (or config)
 variables.  The values must be explicitly provided to the server process via
 standard environment variable mechanisms (e.g. Heroku's config vars, your local
 shell, envdir, etc.) or a JSON config file (e.g.
-:file:`env/production/config.json`).
+:file:`env/testing/config.json`).
 
 
 Security
