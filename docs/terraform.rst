@@ -58,19 +58,25 @@ Our Terraform configurations consists of a file structure like:
     env/
         production/
             terraform.tf
+            outputs.tf → ../outputs.tf
             …
         testing/
             terraform.tf
+            outputs.tf → ../outputs.tf
             …
+        outputs.tf
     aws/
-        main.tf
         cognito/
             main.tf
             clients.tf
+            variable-env.tf → ../variable-env.tf
             …
         iam/
             main.tf
+            variable-env.tf → ../variable-env.tf
             …
+        variable-env.tf
+        variable-origins.tf
 
 :file:`env/testing/terraform.tf` is the single file that makes up the root
 module of the testing configuration.  This file imports local modules we
@@ -80,6 +86,12 @@ Modules are any directory containing one or more Terraform configuration files
 (``.tf`` or ``.tf.json``), along with other optional files.  Filenames (e.g.
 :file:`main.tf`) are by convention only and all Terraform files will
 essentially be concatenated together and evaluated as one large blob.
+
+Some snippets of Terraform definitions are shared across modules using symlinks
+from the module or configuration directory to a file in a parent directory,
+e.g. :file:`aws/cognito/variable-env.tf` is a symlink to
+:file:`aws/variable-env.tf` and :file:`env/testing/outputs.tf` is a symlink to
+:file:`env/outputs.tf`.
 
 Any edits to the Terraform configuration will be picked up automatically when
 you next run ``terraform``.
