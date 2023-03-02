@@ -55,17 +55,17 @@ module.exports = {
         ]
       }
     },
-    // {
-    //   resolve: "gatsby-plugin-google-analytics",
-    //   options: {
-    //     trackingId: config.googleAnalyticsID
-    //   }
-    // },
     {
       resolve: "gatsby-plugin-nprogress",
       options: {
         color: config.progressBarColor
       }
+    },
+    {
+      resolve: "gatsby-plugin-plausible",
+      options: {
+        domain: "nextstrain.org",
+      },
     },
     "gatsby-plugin-sharp",
     // "gatsby-plugin-catch-links" // See https://github.com/nextstrain/nextstrain.org/issues/34
