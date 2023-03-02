@@ -25,6 +25,7 @@ containing a Terraform configuration (i.e. a set of one or more ``*.tf`` or
 We have the following configurations:
 
   - :file:`env/production`
+  - :file:`env/testing`
 
 To choose which configuration you're working with, you can either:
 
@@ -32,14 +33,14 @@ To choose which configuration you're working with, you can either:
      command, or
 
   2. run all ``terraform`` commands with the ``-chdir=<dir>`` option, e.g.
-     ``terraform -chdir=env/production plan``.
+     ``terraform -chdir=env/testing plan``.
 
 
 Setup
 =====
 
 `Install Terraform <https://www.terraform.io/downloads>`__ and then, from a
-configuration directory (e.g. :file:`env/production`), run::
+configuration directory (e.g. :file:`env/testing`), run::
 
     $ terraform init
 
@@ -50,31 +51,47 @@ local settings, and other data needed by the ``terraform`` command.
 Authoring changes
 =================
 
-Our Terraform configuration consists of a file structure like:
+Our Terraform configurations consists of a file structure like:
 
 .. code-block:: none
 
     env/
         production/
             terraform.tf
+            outputs.tf → ../outputs.tf
+            …
+        testing/
+            terraform.tf
+            outputs.tf → ../outputs.tf
+            …
+        outputs.tf
     aws/
-        main.tf
         cognito/
             main.tf
             clients.tf
+            variable-env.tf → ../variable-env.tf
             …
         iam/
             main.tf
+            variable-env.tf → ../variable-env.tf
             …
+        variable-env.tf
+        variable-origins.tf
 
-:file:`env/production/terraform.tf` is the single file that makes up the root
-module of the production configuration.  This file imports local modules we
+:file:`env/testing/terraform.tf` is the single file that makes up the root
+module of the testing configuration.  This file imports local modules we
 define in :file:`aws/cognito/` and :file:`aws/iam/`.
 
 Modules are any directory containing one or more Terraform configuration files
 (``.tf`` or ``.tf.json``), along with other optional files.  Filenames (e.g.
 :file:`main.tf`) are by convention only and all Terraform files will
 essentially be concatenated together and evaluated as one large blob.
+
+Some snippets of Terraform definitions are shared across modules using symlinks
+from the module or configuration directory to a file in a parent directory,
+e.g. :file:`aws/cognito/variable-env.tf` is a symlink to
+:file:`aws/variable-env.tf` and :file:`env/testing/outputs.tf` is a symlink to
+:file:`env/outputs.tf`.
 
 Any edits to the Terraform configuration will be picked up automatically when
 you next run ``terraform``.
@@ -262,7 +279,7 @@ Outputs do not automatically become defined as environment (or config)
 variables.  The values must be explicitly provided to the server process via
 standard environment variable mechanisms (e.g. Heroku's config vars, your local
 shell, envdir, etc.) or a JSON config file (e.g.
-:file:`env/production/config.json`).
+:file:`env/testing/config.json`).
 
 
 Security
