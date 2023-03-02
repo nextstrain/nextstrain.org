@@ -11,5 +11,5 @@
   "navbarComponent": "navbar.js",
   "splashComponent": "splash.js",
   "browserTitle": "Nextstrain",
-  "googleAnalyticsKey": "UA-92687617-1"
+  "plausibleDataDomain": "nextstrain.org"
 }
