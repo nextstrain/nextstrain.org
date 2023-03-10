@@ -109,7 +109,6 @@
   },
   {
     "name": "pigie",
-    "bucket": "nextstrain-pigie",
     "isPublic": false
   },
   {
