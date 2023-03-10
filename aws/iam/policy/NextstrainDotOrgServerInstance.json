@@ -14,7 +14,6 @@
         "arn:aws:s3:::nextstrain-nebraska-dhhs",
         "arn:aws:s3:::nextstrain-pigie",
         "arn:aws:s3:::nextstrain-ncovhk",
-        "arn:aws:s3:::nextstrain-databiomics",
         "arn:aws:s3:::nextstrain-africa-cdc",
         "arn:aws:s3:::nextstrain-valldhebronvirology",
         "arn:aws:s3:::nextstrain-valldhebronvirology-private"
@@ -34,7 +33,6 @@
         "arn:aws:s3:::nextstrain-nebraska-dhhs/*",
         "arn:aws:s3:::nextstrain-pigie/*",
         "arn:aws:s3:::nextstrain-ncovhk/*",
-        "arn:aws:s3:::nextstrain-databiomics/*",
         "arn:aws:s3:::nextstrain-africa-cdc/*",
         "arn:aws:s3:::nextstrain-valldhebronvirology/*",
         "arn:aws:s3:::nextstrain-valldhebronvirology-private/*"

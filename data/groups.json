@@ -129,7 +129,6 @@
   },
   {
     "name": "databiomics",
-    "bucket": "nextstrain-databiomics",
     "isPublic": false
   },
   {
