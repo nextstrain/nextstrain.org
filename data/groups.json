@@ -21,11 +21,6 @@
     "isPublic": true
   },
   {
-    "name": "ecdc",
-    "bucket": "nextstrain-ecdc",
-    "isPublic": true
-  },
-  {
     "name": "illinois-gagnon-public",
     "isPublic": true
   },
