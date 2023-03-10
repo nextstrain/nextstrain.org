@@ -10,9 +10,7 @@
         "arn:aws:s3:::nextstrain-staging",
         "arn:aws:s3:::nextstrain-nz-covid19-private",
         "arn:aws:s3:::nextstrain-nebraska-dhhs",
-        "arn:aws:s3:::nextstrain-africa-cdc",
-        "arn:aws:s3:::nextstrain-valldhebronvirology",
-        "arn:aws:s3:::nextstrain-valldhebronvirology-private"
+        "arn:aws:s3:::nextstrain-africa-cdc"
       ]
     },
     {
@@ -25,9 +23,7 @@
       "Resource": [
         "arn:aws:s3:::nextstrain-nz-covid19-private/*",
         "arn:aws:s3:::nextstrain-nebraska-dhhs/*",
-        "arn:aws:s3:::nextstrain-africa-cdc/*",
-        "arn:aws:s3:::nextstrain-valldhebronvirology/*",
-        "arn:aws:s3:::nextstrain-valldhebronvirology-private/*"
+        "arn:aws:s3:::nextstrain-africa-cdc/*"
       ]
     },
     {

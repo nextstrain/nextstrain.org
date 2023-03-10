@@ -75,7 +75,6 @@
   },
   {
     "name": "valldhebronvirology",
-    "bucket": "nextstrain-valldhebronvirology",
     "isPublic": true
   },
   {
@@ -133,7 +132,6 @@
   },
   {
     "name": "valldhebronvirology-private",
-    "bucket": "nextstrain-valldhebronvirology-private",
     "isPublic": false
   },
   {
