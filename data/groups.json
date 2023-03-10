@@ -107,7 +107,6 @@
   },
   {
     "name": "ilri",
-    "bucket": "nextstrain-ilri",
     "isPublic": false
   },
   {

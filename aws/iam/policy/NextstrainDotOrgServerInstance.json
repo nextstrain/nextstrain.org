@@ -10,7 +10,6 @@
         "arn:aws:s3:::nextstrain-staging",
         "arn:aws:s3:::nextstrain-nz-covid19-private",
         "arn:aws:s3:::nextstrain-ngs-sa",
-        "arn:aws:s3:::nextstrain-ilri",
         "arn:aws:s3:::nextstrain-nebraska-dhhs",
         "arn:aws:s3:::nextstrain-pigie",
         "arn:aws:s3:::nextstrain-ncovhk",
@@ -29,7 +28,6 @@
       "Resource": [
         "arn:aws:s3:::nextstrain-nz-covid19-private/*",
         "arn:aws:s3:::nextstrain-ngs-sa/*",
-        "arn:aws:s3:::nextstrain-ilri/*",
         "arn:aws:s3:::nextstrain-nebraska-dhhs/*",
         "arn:aws:s3:::nextstrain-pigie/*",
         "arn:aws:s3:::nextstrain-ncovhk/*",
