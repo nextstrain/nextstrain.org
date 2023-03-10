@@ -17,12 +17,6 @@
   },
   {
     "name": "ngs-sa",
-    "bucket": "nextstrain-ngs-sa",
-    "isPublic": true
-  },
-  {
-    "name": "ecdc",
-    "bucket": "nextstrain-ecdc",
     "isPublic": true
   },
   {
@@ -64,7 +58,6 @@
   },
   {
     "name": "ncovHK",
-    "bucket": "nextstrain-ncovhk",
     "isPublic": true
   },
   {
@@ -82,7 +75,6 @@
   },
   {
     "name": "valldhebronvirology",
-    "bucket": "nextstrain-valldhebronvirology",
     "isPublic": true
   },
   {
@@ -112,12 +104,10 @@
   },
   {
     "name": "ilri",
-    "bucket": "nextstrain-ilri",
     "isPublic": false
   },
   {
     "name": "pigie",
-    "bucket": "nextstrain-pigie",
     "isPublic": false
   },
   {
@@ -134,7 +124,6 @@
   },
   {
     "name": "databiomics",
-    "bucket": "nextstrain-databiomics",
     "isPublic": false
   },
   {
@@ -143,7 +132,6 @@
   },
   {
     "name": "valldhebronvirology-private",
-    "bucket": "nextstrain-valldhebronvirology-private",
     "isPublic": false
   },
   {
