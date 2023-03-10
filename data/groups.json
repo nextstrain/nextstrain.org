@@ -59,7 +59,6 @@
   },
   {
     "name": "ncovHK",
-    "bucket": "nextstrain-ncovhk",
     "isPublic": true
   },
   {
