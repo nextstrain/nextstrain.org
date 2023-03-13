@@ -1,18 +1,18 @@
 import { h } from 'preact';
 import { Route, Router } from 'preact-router';
 
-import Header from './header';
+import NavBar from './header';
 
 // Code-splitting is automated for `routes` directory
-import Home from '../routes/home';
+import Splash from '../routes/splash';
 import Profile from '../routes/profile';
 
 const App = () => (
 	<div id="app">
-		<Header />
+		<NavBar />
 		<main>
 			<Router>
-				<Route path="/" component={Home} />
+				<Route path="/" component={Splash} />
 				<Route path="/profile/" component={Profile} user="me" />
 				<Route path="/profile/:user" component={Profile} />
 			</Router>
