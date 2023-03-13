@@ -18,7 +18,7 @@ const auspiceAssetPath = (...subpath) =>
   assetPath("auspice-client", ...subpath);
 
 const gatsbyAssetPath = (...subpath) =>
-  assetPath("static-site", "public", ...subpath);
+  assetPath("preact", "build", ...subpath);
 
 
 /* Handlers for static assets.

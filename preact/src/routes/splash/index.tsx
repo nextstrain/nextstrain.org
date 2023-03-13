@@ -1,4 +1,5 @@
 import Preact, {h, Component} from "preact";
+import { Link } from 'preact-router/match';
 
 
 // const Section = ({title, abstract, cards, buttonText, buttonLink}) => (
@@ -182,6 +183,16 @@ class Splash extends Component {
             Read the documentation
           </button>
         </div>
+
+        <div className="bigSpacer"/>
+
+        <Link activeClassName="active" href="/forecasts" className="noUnderline">
+          <div className="flexCenter">
+            <button href="https://docs.nextstrain.org/en/latest/index.html">
+              Test Forecasts Page
+            </button>
+          </div>
+        </Link>
 
         {/* <Footer splashImagesCredit/> */}
 

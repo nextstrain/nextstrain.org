@@ -32,10 +32,10 @@ main() {
 }
 
 build-static() {
-    echo "Building the static site (./static-site/public/)"
-    cd static-site
+    echo "Building the preact static site (./preact/build/)"
+    cd preact
     npm ci
-    npm run build # build using gatsby. Can take a few minutes.
+    npm run build
     cd ..
 }
 

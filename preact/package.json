@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact build",
+    "build": "preact build",
     "serve": "sirv build --cors --single",
-    "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact watch",
+    "dev": "preact watch",
     "lint": "eslint src",
     "test": "jest"
   },
@@ -24,7 +24,8 @@
     "preact": "^10.10.0",
     "preact-render-to-string": "^5.2.1",
     "preact-router": "^3.2.1",
-    "react-scrollable-anchor": "^0.6.1"
+    "react-scrollable-anchor": "^0.6.1",
+    "nextstrain-forecasts-viz": "file:./nextstrain-forecasts-viz-0.1.0.tgz"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.12",
