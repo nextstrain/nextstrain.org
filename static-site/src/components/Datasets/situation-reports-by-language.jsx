@@ -5,6 +5,7 @@ import {FaFile} from "react-icons/fa";
 import { FlexCenter } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import CollapseTitle from "../Misc/collapse-title";
+import { DataFetchErrorParagraph } from "../splash/errorMessages";
 
 const charonGetAvailableAddress = "/charon/getAvailable";
 
@@ -71,10 +72,7 @@ export class SituationReportsByLanguage extends React.Component {
   render() {
     return (
       <>
-        { this.state.hasError && <splashStyles.CenteredFocusParagraph>
-                          Something went wrong getting situation reports.
-                          Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                          if this continues to happen.</splashStyles.CenteredFocusParagraph>}
+        { this.state.hasError && <DataFetchErrorParagraph />}
 
         {/* Sit Reps */
           !this.state.hasError &&

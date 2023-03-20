@@ -5,6 +5,7 @@ import {FaFile, FaExclamation} from "react-icons/fa";
 import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
+import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
 
 /**
  * See https://github.com/JedWatson/react-select/issues/3128 for ways to speed up <Select>
@@ -101,9 +102,9 @@ class SequencesToDatasets extends React.Component {
           <div className="col-md-10">
             {this.state.errorFetchingData && (
               <LargeRedSection>
-                      Something went wrong fetching the data!
-                      Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                      if this continues to happen.
+                <FlexCenter>
+                  <DataFetchErrorParagraph />
+                </FlexCenter>
               </LargeRedSection>
             )}
             <HugeSpacer/>
