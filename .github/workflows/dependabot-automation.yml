@@ -1,0 +1,27 @@
+name: Dependabot automation
+
+on: pull_request
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  merge-auspice-bump:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - id: metadata
+        uses: dependabot/fetch-metadata@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Run if Auspice is an updated dependency and there are no major version bumps
+      # to allow for manual testing before merging.
+      - if: |
+          contains(fromJSON(steps.metadata.outputs.updated-dependencies-json).*.dependencyName, 'auspice')
+          && steps.metadata.outputs.update-type != 'version-update:semver-major'
+        # Dependabot should ensure CI passes before merging.
+        run: gh pr comment "${{ github.event.pull_request.html_url }}" --body "@dependabot merge"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_NEXTSTRAIN_BOT_REPO }}
