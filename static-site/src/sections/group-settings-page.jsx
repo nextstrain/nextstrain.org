@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import * as splashStyles from "../components/splash/styles";
 import { ErrorBanner } from "../components/splash/errorMessages";
 import GenericPage from "../layouts/generic-page";
-import { FlexGridRight, HugeSpacer, MediumSpacer } from "../layouts/generalComponents";
+import { FlexGrid, FlexGridRight, HugeSpacer, MediumSpacer } from "../layouts/generalComponents";
+import EditLogoForm from "../components/Groups/edit-logo-form";
 
 const UNAUTHORIZED_MESSAGE = `
   You must have the owners role within a group to edit group settings.
@@ -11,6 +12,7 @@ const UNAUTHORIZED_MESSAGE = `
 
 const EditGroupSettingsPage = ({ location, groupName }) => {
   const [ userAuthorized, setUserAuthorized ] = useState(true);
+  const [ errorMessage, setErrorMessage ] = useState();
 
   useEffect(() => {
     const checkUserAuthz = async () => {
@@ -23,6 +25,17 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
     return () => cleanUp = true;
   }, [groupName]);
 
+  const createErrorMessage = (details) => {
+    setErrorMessage({
+      title: "An error occurred when trying to fetch or update group settings. Please try again.",
+      contents: details ? `Error details: ${details}` : null
+    });
+  };
+
+  const clearErrorMessage = () => {
+    if (errorMessage) setErrorMessage(null);
+  };
+
   return (
     <GenericPage location={location}>
       <FlexGridRight>
@@ -32,13 +45,20 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
       </FlexGridRight>
       <MediumSpacer/>
 
+      {errorMessage && <ErrorBanner title={errorMessage.title} contents={errorMessage.contents} />}
+
       <splashStyles.H2>
         Editing "{groupName}" Group Settings
       </splashStyles.H2>
       <HugeSpacer/>
 
       {userAuthorized
-        ? <p>Placeholder for editing forms.</p>
+        ? <FlexGrid>
+            <EditLogoForm
+              groupName={groupName}
+              createErrorMessage={createErrorMessage}
+              clearErrorMessage={clearErrorMessage}/>
+          </FlexGrid>
         : <ErrorBanner title={UNAUTHORIZED_MESSAGE}/>}
     </GenericPage>
   )
