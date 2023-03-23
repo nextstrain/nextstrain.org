@@ -8,7 +8,6 @@
       "Resource": [
         "arn:aws:s3:::nextstrain-data",
         "arn:aws:s3:::nextstrain-staging",
-        "arn:aws:s3:::nextstrain-nz-covid19-private",
         "arn:aws:s3:::nextstrain-nebraska-dhhs",
         "arn:aws:s3:::nextstrain-africa-cdc"
       ]
@@ -21,7 +20,6 @@
         "s3:GetObjectVersion"
       ],
       "Resource": [
-        "arn:aws:s3:::nextstrain-nz-covid19-private/*",
         "arn:aws:s3:::nextstrain-nebraska-dhhs/*",
         "arn:aws:s3:::nextstrain-africa-cdc/*"
       ]

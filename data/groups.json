@@ -87,7 +87,6 @@
   },
   {
     "name": "nz-covid19-private",
-    "bucket": "nextstrain-nz-covid19-private",
     "isPublic": false
   },
   {
