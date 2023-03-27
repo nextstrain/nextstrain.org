@@ -14,6 +14,7 @@ import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-i
 
 
 // Hard-coded content
+const disclaimer = "DISCLAIMER: This page is an alpha release of model results";
 const title = "Nextstrain SARS-CoV-2 Forecasts";
 const abstract = (
   <>
@@ -112,7 +113,7 @@ function Index(props) {
   const [ cladeType, setCladeType ] = useState("nextstrainClades");
 
   return (
-    <GenericPage location={props.location}>
+    <GenericPage location={props.location} banner={DisclaimerBanner()}>
       <splashStyles.H1>{title}</splashStyles.H1>
       <SmallSpacer />
 
@@ -129,6 +130,16 @@ function Index(props) {
       {collapsibleContents.map((c) => <CollapsibleContent key={c.title} content={c} cladeType={cladeType} />)}
     </GenericPage>
   );
+}
+
+const DisclaimerBanner = () => {
+  return (
+    <splashStyles.FixedBanner backgroundColor="#ffedcc">
+      <splashStyles.StrongerText>
+        {disclaimer}
+      </splashStyles.StrongerText>
+    </splashStyles.FixedBanner>
+  )
 }
 
 const FullWidthImage = styled.img`
