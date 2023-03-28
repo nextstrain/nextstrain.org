@@ -40,6 +40,29 @@ const introContents = [
   },
 ];
 
+
+const nextstrainCladesSrcBase = "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global";
+const generatePictureSrcs = (srcBase, figureName) => {
+  // media min-widths taken from the cut-offs for the .container class in static-site/src/styles/bootstrap.css
+  return {
+    srcSets: [
+      {
+        media: "(min-width: 1550px)",
+        srcSet: `${srcBase}/${figureName}_xlarge.png`
+      },
+      {
+        media: "(min-width: 1200px)",
+        srcSet: `${srcBase}/${figureName}_large.png`
+      },
+      {
+        media: "(min-width: 992px)",
+        srcSet: `${srcBase}/${figureName}_medium.png`
+      }
+    ],
+    imgSrc: `${srcBase}/${figureName}_small.png`
+  }
+};
+
 const collapsibleContents = [
   {
     title: "Estimated Variant Frequencies over time",
@@ -48,11 +71,10 @@ const collapsibleContents = [
         These estimates are derived from sequence count data using a multinomial logistic regression model.
       </span>
     ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       nextstrainClades: {
-        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/frequenciesPanel.png",
-        alt: "Global estimated variant frequency plots from GISAID data"
+        alt: "Global estimated variant frequency plots from GISAID data",
+        ...generatePictureSrcs(nextstrainCladesSrcBase, "frequenciesPanel")
       }
     }
   },
@@ -65,11 +87,10 @@ const collapsibleContents = [
         Vertical bars show the 95% HPD.
       </span>
     ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       nextstrainClades: {
-        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/growthAdvantagePanel.png",
-        alt: "Global relative growth advantage plots from GISAID data"
+        alt: "Global relative growth advantage plots from GISAID data",
+        ...generatePictureSrcs(nextstrainCladesSrcBase, "growthAdvantagePanel")
       }
     }
   },
@@ -81,11 +102,10 @@ const collapsibleContents = [
         These estimates are smoothed to deal with daily reporting noise and weekend effects present in case data.
       </span>
     ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       nextstrainClades: {
-        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/smoothedIncidencePanel.png",
-        alt: "Global estimated variant case plots from GISAID data"
+        alt: "Global estimated variant case plots from GISAID data",
+        ...generatePictureSrcs(nextstrainCladesSrcBase, "smoothedIncidencePanel")
       }
     }
   },
@@ -97,11 +117,10 @@ const collapsibleContents = [
         In general, we expect the variant to be growing if this number is greater than 1.
       </span>
     ),
-    legend: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/legend.png",
     images: {
       nextstrainClades: {
-        src: "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global/rtPanel.png",
-        alt: "Global variant Rt plots from GISAID data"
+        alt: "Global variant Rt plots from GISAID data",
+        ...generatePictureSrcs(nextstrainCladesSrcBase, "rtPanel")
       }
     }
 
@@ -142,16 +161,19 @@ const DisclaimerBanner = () => {
   )
 }
 
-const FullWidthImage = styled.img`
+const FullWidthPicture = styled.picture`
   width: 100%;
   height: auto;
-  min-width: 900px;
+  display: block;
+  text-align: center;
+  > img {
+    max-width: 100%;
+  }
 `;
 
 function CollapsibleContent(props) {
   /* eslint no-shadow: "off" */
-  const {title, text, images, legend} = props.content;
-
+  const {title, text, images} = props.content;
 
   return (
     <Collapsible
@@ -165,11 +187,17 @@ function CollapsibleContent(props) {
           {text}
         </splashStyles.FocusParagraph>
         <MediumSpacer />
-        <img alt="legend" src={legend} />
-        <FullWidthImage
-          src={images[props.cladeType]?.src}
-          alt={images[props.cladeType]?.alt}
-        />
+        <FullWidthPicture>
+          {images[props.cladeType]?.srcSets
+            ? images[props.cladeType].srcSets
+                .map((source) => <source key={source.srcset} media={source.media} srcSet={source.srcSet}/>)
+            : null
+          }
+          <img
+            src={images[props.cladeType]?.imgSrc}
+            alt={images[props.cladeType]?.alt} />
+        </FullWidthPicture>
+
       </div>
     </Collapsible>
   );

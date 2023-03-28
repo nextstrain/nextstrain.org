@@ -18,6 +18,11 @@
     width: 1150px;
   }
 }
+@media (min-width: 1550px) {
+  .container {
+    width: 1500px;
+  }
+}
 .container-fluid {
   margin-right: auto;
   margin-left: auto;
