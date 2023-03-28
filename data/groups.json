@@ -206,6 +206,14 @@
     "isPublic": true
   },
   {
+    "name": "dms-phenotype",
+    "isPublic": true
+  },
+  {
+    "name": "dms-phenotype-private",
+    "isPublic": false
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
