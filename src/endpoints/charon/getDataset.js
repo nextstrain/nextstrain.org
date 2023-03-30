@@ -1,6 +1,6 @@
-import auspice from 'auspice';
 import { NotFound, InternalServerError } from '../../httpErrors.js';
 import * as utils from '../../utils/index.js';
+import * as datasetConverters from '../../utils/datasetConverters.js';
 import { sendDatasetSubresource } from '../sources.js';
 
 /**
@@ -23,7 +23,7 @@ const sendV1Dataset = async (res, metaJsonUrl, treeJsonUrl) => {
     throw new NotFound();
   }
   try {
-    datasetJson = auspice.convertFromV1({tree: data[1], meta: data[0]});
+    datasetJson = datasetConverters.convertFromV1({tree: data[1], meta: data[0]});
   } catch (err) {
     utils.warn("Failed to convert v1 dataset JSONs to v2");
     throw new InternalServerError();
