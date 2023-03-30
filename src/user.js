@@ -4,6 +4,8 @@
  * @module user
  */
 
+import * as authz from './authz/index.js';
+import { ALL_GROUPS } from './groups.js';
 import { REDIS } from './redis.js';
 
 
@@ -78,7 +80,26 @@ async function markUserStaleBeforeNow(username) {
 }
 
 
+/**
+ * Returns an array of Nextstrain groups that are visible to a
+ * given *user* (or a non-logged in user). The order of groups returned
+ * matches the order in the `groups.json` data file.
+ *
+ * @param {Object | undefined} user. `undefined` represents a non-logged-in user
+ * @returns {Array} Each element is an object with keys `name` -> {str} (group name) and
+ *                  `private` -> {bool} (group is private)
+ */
+const visibleGroups = (user) => ALL_GROUPS
+  .map(g => [g.name, g.source])
+  .filter(([, source]) => authz.authorized(user, authz.actions.Read, source))
+  .map(([name, source]) => ({
+    name,
+    private: !authz.authorized(null, authz.actions.Read, source),
+  }));
+
+
 export {
   userStaleBefore,
   markUserStaleBeforeNow,
+  visibleGroups,
 };
