@@ -22,8 +22,8 @@ main() {
             build-auspice;;
         all)
             echo "Running the nextstrain.org build script"
-            build-static
             build-auspice
+            build-static    # Depends on Auspice being built
             echo "Build complete. Next step: \"npm run server\"";;
         *)
             echo "Unknown build step \"$step\"" >&2
@@ -42,7 +42,8 @@ build-static() {
 build-auspice() {
     echo "Building a customised version of auspice"
     cd auspice-client
-    ../node_modules/.bin/auspice build --verbose --extend ./customisations/config.json
+    npm ci
+    ./node_modules/.bin/auspice build --verbose --extend ./customisations/config.json
     cd ..
 }
 

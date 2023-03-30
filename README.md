@@ -125,20 +125,26 @@ npx auspice develop --verbose --extend ./customisations/config.json --handlers .
 ```
 
 > If you're not familiar with [`npx`](https://www.npmjs.com/package/npx), it's a command to easily run programs installed by `npm`.
-> Running `npx auspice` above is equivalent to `../node_modules/.bin/auspice`.
+> Running `npx auspice` above is equivalent to `node_modules/.bin/auspice`.
 
 
 ### Using a different version of Auspice
 Sometimes it is useful to change the version of Auspice that is used.
 Perhaps you're upgrading the version nextstrain.org uses or you want to test changes in a local copy of Auspice against nextstrain.org.
 
-If you're upgrading the version of Auspice used, install the new version with `npm install auspice@...`.
-Replace `...` with the [semantic version specifier](https://docs.npmjs.com/about-semantic-versioning) you want.
-This will change `package.json` and `package-lock.json` to reflect the new version you installed.
-When preparing to commit your Auspice version change, you'll want to include those changed files too.
-Run `npx auspice --version` to check that (a) it's installed correctly and (b) which version you have.
+If you're upgrading the version of Auspice used, install the new version with:
 
-Then build and run the server as above with either:
+```bash
+cd auspice-client
+npm install auspice@...
+```
+
+Replace `...` with the [semantic version specifier](https://docs.npmjs.com/about-semantic-versioning) you want.
+This will change `package.json` and `package-lock.json` (in `auspice-client/`) to reflect the new version you installed.
+When preparing to commit your Auspice version change, you'll want to include those changed files too.
+Run `npx auspice --version` (in `auspice-client/`) to check that (a) it's installed correctly and (b) which version you have.
+
+Then build and run the server from the repository root as above with either:
 
 ```bash
 ./build.sh auspice
