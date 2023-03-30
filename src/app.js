@@ -43,6 +43,7 @@ const {
 } = endpoints.sources;
 
 const {
+  optionsGroupSettings,
   getGroupLogo,
   putGroupLogo,
   deleteGroupLogo,
@@ -326,12 +327,14 @@ app.routeAsync("/groups/:groupName/settings/logo")
   .getAsync(getGroupLogo)
   .putAsync(putGroupLogo)
   .deleteAsync(deleteGroupLogo)
+  .optionsAsync(optionsGroupSettings)
 ;
 
 app.routeAsync("/groups/:groupName/settings/overview")
   .getAsync(getGroupOverview)
   .putAsync(putGroupOverview)
   .deleteAsync(deleteGroupOverview)
+  .optionsAsync(optionsGroupSettings)
 ;
 
 app.route("/groups/:groupName/settings/*")
