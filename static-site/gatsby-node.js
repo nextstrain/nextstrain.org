@@ -200,6 +200,12 @@ exports.createPages = ({graphql, actions}) => {
           component: path.resolve("src/sections/individual-group-page.jsx")
         });
 
+        createPage({
+          path: "/groups/:groupName/settings",
+          matchPath: "/groups/:groupName/settings/*",
+          component: path.resolve("src/sections/group-settings-page.jsx")
+        });
+
         // Community splash page
         createPage({
           path: "/community",

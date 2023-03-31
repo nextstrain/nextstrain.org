@@ -323,6 +323,9 @@ app.routeAsync("/groups/:groupName")
 app.use("/groups/:groupName/settings",
   endpoints.groups.setGroup(req => req.params.groupName));
 
+app.routeAsync("/groups/:groupName/settings")
+  .getAsync(endpoints.static.sendGatsbyEntrypoint);
+
 app.routeAsync("/groups/:groupName/settings/logo")
   .getAsync(getGroupLogo)
   .putAsync(putGroupLogo)
