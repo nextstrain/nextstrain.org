@@ -294,7 +294,7 @@ Motivation
 ==========
 
 Development was motivated by the goal for `Nextstrain CLI`_ to make requests to
-nextstrain.org using normal user login credentials instead instead of making
+nextstrain.org using normal user login credentials instead of making
 requests directly to S3 using separate, per-user AWS IAM credentials.  An
 alternative solution of using temporary AWS credentials provisioned by an AWS
 Cognito Identity Pool seemed like a clear choice given we're using Cognito User

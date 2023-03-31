@@ -7,10 +7,8 @@ If you have any questions, or simply want to say hi, please give us a shout at h
 
 This repo comprises:
   1. A server (`./server.js`) which serves all the content on [nextstrain.org](https://nextstrain.org), handles authentication and responds to API requests.
-  1. The [splash & documentation pages](#Splash--documentation-pages), which are built using Gatsby & located in the `./static-site` directory.
+  1. The [splash & documentation pages](#splash-page-and-other-misc-pages), which are built using Gatsby & located in the `./static-site` directory.
   1. Code to build a customised version of the [Auspice](#Auspice) client, which is located in the `./auspice-client` directory.
-
-This repository provides the tools you need to [build nextstrain.org locally](#build-nextstrainorg-locally) and [deploy nextstrain.org](#deploy-nextstrainorg).
 
 ---
 ## Build nextstrain.org locally
