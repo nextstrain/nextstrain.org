@@ -1,0 +1,9 @@
+{
+  "verbose": true,
+  "watch": [
+    "data/",
+    "server.js",
+    "src/"
+  ],
+  "ext": "js"
+}
