@@ -3,43 +3,42 @@ import Collapsible from "react-collapsible";
 import styled from "styled-components";
 import {
   SmallSpacer,
-  MediumSpacer,
-  FlexCenter,
+  CenteredContainer,
   HugeSpacer
 } from "../layouts/generalComponents";
 import GenericPage from "../layouts/generic-page";
 import CollapseTitle from "../components/Misc/collapse-title";
 import * as splashStyles from "../components/splash/styles";
-import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 
+const gisaidLogo = require("../../static/logos/gisaid.png");
 
 // Hard-coded content
 const disclaimer = "DISCLAIMER: This page is an alpha release of model results";
 const title = "Nextstrain SARS-CoV-2 Forecasts";
 const abstract = (
   <>
-    <>This page visualises the evolution and dynamics of SARS-CoV-2 evolution and dynamics using two models:</>
-    <ul>
-      <li>Multinomial Logistic Regression (MLR) estimates variant frequencies and growth advantages for variants against some baseline using sequence count data</li>
-      <li>The variant renewal model estimates variant frequencies, variant-specific incidence, and growth advantages using a combination of case and sequence count data.</li>
-    </ul>
+    <>Here we chart the change in frequency of SARS-CoV-2 variants over time. We use this change in
+    frequency to estimate the relative growth advantage or evolutionary fitness of different
+    variants. We apply a Multinomial Logistic Regression (MLR) model to estimate frequencies and
+    growth advantages using daily sequence counts. We apply this model independently across
+    different countries and partition SARS-CoV-2 variants by <a
+    href="https://nextstrain.org/blog/2022-04-29-SARS-CoV-2-clade-naming-2022">Nextstrain
+    clades</a>.</>
+    <p/>
+    <>Further details on data preparation and analysis can be found in the <a
+    href="https://github.com/nextstrain/forecasts-ncov/">forecasts-ncov GitHub repo</a>, while
+    further details on the MLR model implementation can be found in the <a
+    href="https://www.github.com/blab/evofr">evofr GitHub repo</a>. Enabled by data from <a
+    href="https://gisaid.org/"><img alt="GISAID" src={gisaidLogo} width={70}/></a>.</>
     <br/>
-    <>Each model uses sequence counts via GISAID and case counts from various sources, collated in our <a href="https://github.com/nextstrain/forecasts-ncov/tree/main/ingest">forecasts-ncov GitHub repo</a>.</>
-    <>{` For more information on the models please see the `}<a href="https://www.github.com/blab/evofr">evofr GitHub repo</a> or the preprint <a href="https://bedford.io/papers/figgins-rt-from-frequency-dynamics/">"SARS-CoV-2 variant dynamics across US states show consistent differences in effective reproduction numbers"</a>.</>
-    <br/>
-    <>Currently we use <a href='https://nextstrain.org/blog/2022-04-29-SARS-CoV-2-clade-naming-2022'>Nextstrain clades</a> to partition the sequences into variants.</>
   </>
 )
-
-const introContents = [
-  {
-    type: "external",
-    to: "/sars-cov-2",
-    title: "Nextstrain SARS-CoV-2 resources",
-    subtext: "Jump to our main SARS-CoV-2 resources page."
-  },
-];
-
+const acknowledgement = (
+  <>
+    We gratefully acknowledge the authors, originating and submitting laboratories of the genetic
+    sequences and metadata made available through GISAID on which this research is based.
+  </>
+)
 
 const nextstrainCladesSrcBase = "https://nextstrain-data.s3.amazonaws.com/files/workflows/forecasts-ncov/gisaid/nextstrain_clades/global";
 const generatePictureSrcs = (srcBase, figureName) => {
@@ -65,10 +64,11 @@ const generatePictureSrcs = (srcBase, figureName) => {
 
 const collapsibleContents = [
   {
-    title: "Estimated Variant Frequencies over time",
+    title: "Estimated variant frequencies over time",
     text: (
       <span>
-        These estimates are derived from sequence count data using a multinomial logistic regression model.
+        Each line represents the frequency of a particular variant through time. Only major variants
+        are partitioned and are labeled according to Pango lineage.
       </span>
     ),
     images: {
@@ -82,8 +82,8 @@ const collapsibleContents = [
     title: "Growth Advantage",
     text: (
       <span>
-        These plots show the estimated growth advantage for given variants relative to BA.2.
-        This is an estimate of how many more secondary infections this variant causes on average compared the baseline variant as estimated but the multinomial logistic regression model.
+        These plots show the estimated growth advantage for given variants relative to BA.2. This
+        describes how many more secondary infections a variant causes on average relative to BA.2.
         Vertical bars show the 95% HPD.
       </span>
     ),
@@ -136,17 +136,20 @@ function Index(props) {
       <splashStyles.H1>{title}</splashStyles.H1>
       <SmallSpacer />
 
-      <FlexCenter>
-        <splashStyles.CenteredFocusParagraph>
+      <CenteredContainer>
+        <splashStyles.FocusParagraph>
           {abstract}
-        </splashStyles.CenteredFocusParagraph>
-      </FlexCenter>
-      <MediumSpacer />
-
-      <PathogenPageIntroduction data={introContents} />
+        </splashStyles.FocusParagraph>
+      </CenteredContainer>
       <HugeSpacer />
 
       {collapsibleContents.map((c) => <CollapsibleContent key={c.title} content={c} cladeType={cladeType} />)}
+
+      <CenteredContainer>
+        <splashStyles.FocusParagraph>
+          {acknowledgement}
+        </splashStyles.FocusParagraph>
+      </CenteredContainer>
     </GenericPage>
   );
 }
@@ -183,10 +186,10 @@ function CollapsibleContent(props) {
       open={true}
     >
       <div style={{ padding: "10px" }} >
-        <splashStyles.FocusParagraph>
+        <splashStyles.WideParagraph style={{ marginTop: "0px" }} >
           {text}
-        </splashStyles.FocusParagraph>
-        <MediumSpacer />
+        </splashStyles.WideParagraph>
+        <HugeSpacer />
         <FullWidthPicture>
           {images[props.cladeType]?.srcSets
             ? images[props.cladeType].srcSets

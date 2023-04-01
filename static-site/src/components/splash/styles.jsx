@@ -197,7 +197,7 @@ export const FixedBanner = styled.div`
   height: 10%;
   background-color: ${(props) => props.backgroundColor};
   font-size: 18px;
-  padding: 5% 5%;
-  margin: 25px 0px;
+  padding: 25px 0px 25px 0px;
+  margin: 25px 0px 25px 0px;
   text-align: center;
 `;
