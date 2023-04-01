@@ -4,6 +4,7 @@ import { ErrorBanner } from "../components/splash/errorMessages";
 import GenericPage from "../layouts/generic-page";
 import { FlexGrid, FlexGridRight, HugeSpacer, MediumSpacer } from "../layouts/generalComponents";
 import EditLogoForm from "../components/Groups/edit-logo-form";
+import EditOverviewForm from "../components/Groups/edit-overview-form";
 
 const UNAUTHORIZED_MESSAGE = `
   You must have the owners role within a group to edit group settings.
@@ -53,8 +54,12 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
       <HugeSpacer/>
 
       {userAuthorized
-        ? <FlexGrid>
+        ? <FlexGrid style={{ minHeight: "500px" }}>
             <EditLogoForm
+              groupName={groupName}
+              createErrorMessage={createErrorMessage}
+              clearErrorMessage={clearErrorMessage}/>
+            <EditOverviewForm
               groupName={groupName}
               createErrorMessage={createErrorMessage}
               clearErrorMessage={clearErrorMessage}/>

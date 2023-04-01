@@ -35,3 +35,11 @@ export const InputButton = styled.button`
 export const AvatarWithoutMargins = styled(AvatarImg)`
   margin: 0;
 `;
+
+export const TextArea = styled.textarea`
+width: 100%;
+height: 100%;
+font-size: 14px;
+font-family: ${(props) => props.theme.generalFont};
+color: ${(props) => props.theme.darkGrey};
+`;
