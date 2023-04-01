@@ -23,7 +23,7 @@ const abstract = (
     growth advantages using daily sequence counts. We apply this model independently across
     different countries and partition SARS-CoV-2 variants by <a
     href="https://nextstrain.org/blog/2022-04-29-SARS-CoV-2-clade-naming-2022">Nextstrain
-    clades</a>.</>
+    clades</a>. Each clade is assumed to have a fixed growth advantage relative to BA.2.</>
     <p/>
     <>Further details on data preparation and analysis can be found in the <a
     href="https://github.com/nextstrain/forecasts-ncov/">forecasts-ncov GitHub repo</a>, while
@@ -31,6 +31,14 @@ const abstract = (
     href="https://www.github.com/blab/evofr">evofr GitHub repo</a>. Enabled by data from <a
     href="https://gisaid.org/"><img alt="GISAID" src={gisaidLogo} width={70}/></a>.</>
     <br/>
+    <p/>
+    <>
+    These analyses are the work of <a
+    href="https://bedford.io/team/marlin-figgins/">Marlin Figgins</a>, <a
+    href="https://bedford.io/team/jover-lee/">Jover Lee</a>, <a
+    href="https://bedford.io/team/james-hadfield/">James Hadfield</a> and <a
+    href="https://bedford.io/team/trevor-bedford/">Trevor Bedford</a>.
+    </>
   </>
 )
 const acknowledgement = (
@@ -93,37 +101,6 @@ const collapsibleContents = [
         ...generatePictureSrcs(nextstrainCladesSrcBase, "growthAdvantagePanel")
       }
     }
-  },
-  {
-    title: "Estimated Cases over time",
-    text: (
-      <span>
-        As estimated by the variant renewal model.
-        These estimates are smoothed to deal with daily reporting noise and weekend effects present in case data.
-      </span>
-    ),
-    images: {
-      nextstrainClades: {
-        alt: "Global estimated variant case plots from GISAID data",
-        ...generatePictureSrcs(nextstrainCladesSrcBase, "smoothedIncidencePanel")
-      }
-    }
-  },
-  {
-    title: "Estimated effective reproduction number over time",
-    text: (
-      <span>
-        This is an estimate of the average number of secondary infections expected to be caused by an individual infected with a given variant as estimated by the variant renewal model.
-        In general, we expect the variant to be growing if this number is greater than 1.
-      </span>
-    ),
-    images: {
-      nextstrainClades: {
-        alt: "Global variant Rt plots from GISAID data",
-        ...generatePictureSrcs(nextstrainCladesSrcBase, "rtPanel")
-      }
-    }
-
   }
 ];
 
