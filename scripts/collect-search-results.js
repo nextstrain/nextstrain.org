@@ -66,18 +66,9 @@ async function main({args}) {
 // -------------------------------------------------------------------------------- //
 
 async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
-  const S3 = new AWS.S3();
   console.log(`Collecting datasets from ${BUCKET} to link sample names -> datasets...`);
-  let s3Objects;
-  try {
-    s3Objects = await S3.listObjectsV2({Bucket: BUCKET}).promise();
-  } catch (err) {
-    console.log("Error listing objects via the S3 API -- were credentials correctly set?");
-    console.log(err.message);
-    process.exit(0); // exit zero so the build script doesn't fail causing the site to not be deployed.
-  }
-  if (s3Objects.isTruncated) console.log("WARNING: S3 listing is truncated. Results will be incomplete.");
-  s3Objects = s3Objects.Contents
+  const allS3Objects = await listAllObjects({BUCKET});
+  let s3Objects = allS3Objects
     .filter((s3obj) => filenameLooksLikeDataset(s3obj.Key))
     .filter((s3obj) => inclusionTest(s3obj.Key)) // eslint-disable-line semi
     // .filter((_, i) => i<2);
@@ -106,6 +97,32 @@ async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
   return {datasets, strainMap, dateUpdated};
 }
 
+async function listAllObjects({BUCKET}) {
+  const S3 = new AWS.S3();
+  const s3ListObjectParams = {
+    Bucket: BUCKET,
+    ContinuationToken: null
+  };
+  const s3Objects = [];
+
+  try {
+    let isTruncated = true;
+    while (isTruncated) {
+      // eslint-disable-next-line no-await-in-loop
+      const s3Response = await S3.listObjectsV2(s3ListObjectParams).promise();
+      s3Objects.push(...s3Response.Contents);
+
+      s3ListObjectParams.ContinuationToken = s3Response.NextContinuationToken;
+      isTruncated = s3Response.IsTruncated;
+    }
+  } catch (err) {
+    console.log("Error listing objects via the S3 API -- were credentials correctly set?");
+    console.log(err.message);
+    process.exit(0); // exit zero so the build script doesn't fail causing the site to not be deployed.
+  }
+
+  return s3Objects;
+}
 
 function collectStrainNamesFromDataset(name, json) {
   const strains = [];
