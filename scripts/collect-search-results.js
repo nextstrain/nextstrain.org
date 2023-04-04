@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import argparse from 'argparse';
-import AWS from 'aws-sdk';
 import fetch from 'node-fetch';
 import fs from 'fs';
 import pLimit from 'p-limit';
+import S3 from '@aws-sdk/client-s3';
 
 const bucket = "nextstrain-data";
 
@@ -98,22 +98,12 @@ async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
 }
 
 async function listAllObjects({BUCKET}) {
-  const S3 = new AWS.S3();
-  const s3ListObjectParams = {
-    Bucket: BUCKET,
-    ContinuationToken: null
-  };
+  const client = new S3.S3Client();
   const s3Objects = [];
 
   try {
-    let isTruncated = true;
-    while (isTruncated) {
-      // eslint-disable-next-line no-await-in-loop
-      const s3Response = await S3.listObjectsV2(s3ListObjectParams).promise();
-      s3Objects.push(...s3Response.Contents);
-
-      s3ListObjectParams.ContinuationToken = s3Response.NextContinuationToken;
-      isTruncated = s3Response.IsTruncated;
+    for await (const page of S3.paginateListObjectsV2({client}, {Bucket: BUCKET})) {
+      s3Objects.push(...page.Contents);
     }
   } catch (err) {
     console.log("Error listing objects via the S3 API -- were credentials correctly set?");
