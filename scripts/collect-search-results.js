@@ -34,7 +34,11 @@ async function main({args}) {
         BUCKET: `nextstrain-data`,
         fileToUrl: (filename) => `https://nextstrain.org/${filename.replace('.json', '').replace(/_/g, '/')}`,
         inclusionTest: (fn) => {
-          return (fn.startsWith("ncov_") && !fn.endsWith("_gisaid.json") && !fn.endsWith("_zh.json"));
+          return (fn.startsWith("ncov_")
+            && !fn.endsWith("_gisaid.json")
+            && !fn.endsWith("_zh.json")
+            // Exclude all dated JSONs to avoid OOM error
+            && !fn.match(/_[0-9]{4}-[0-9]{2}-[0-9]{2}\.json$/));
         }
       }));
       exclusions = await processSarsCov2ExclusionFile();
@@ -70,8 +74,7 @@ async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
   const allS3Objects = await listAllObjects({BUCKET});
   let s3Objects = allS3Objects
     .filter((s3obj) => filenameLooksLikeDataset(s3obj.Key))
-    .filter((s3obj) => inclusionTest(s3obj.Key)) // eslint-disable-line semi
-    // .filter((_, i) => i<2);
+    .filter((s3obj) => inclusionTest(s3obj.Key));
   const limit = pLimit(5); // limit concurrent promises as this was causing memory (?) issues on Heroku
   s3Objects = await Promise.all(s3Objects.map(async (s3obj) => limit(async () => {
     const dataset = await fetch(`https://${BUCKET}.s3.amazonaws.com/${s3obj.Key}`).then((res) => res.json());
