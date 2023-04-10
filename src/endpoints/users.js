@@ -7,7 +7,7 @@ import { sendGatsbyPage } from './static.js';
 /**
  * Returns an array of Nextstrain groups that are visible to a
  * given *user* (or a non-logged in user). The order of groups returned
- * matches the order in `data/groups.json`.
+ * matches the order in the `groups.json` data file.
  *
  * @param {Object | undefined} user. `undefined` represents a non-logged-in user
  * @returns {Array} Each element is an object with keys `name` -> {str} (group name) and

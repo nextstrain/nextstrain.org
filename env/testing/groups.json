@@ -1,0 +1,14 @@
+[
+  {
+    "name": "blab",
+    "isPublic": true
+  },
+  {
+    "name": "test",
+    "isPublic": true
+  },
+  {
+    "name": "test-private",
+    "isPublic": false
+  }
+]

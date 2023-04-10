@@ -106,3 +106,16 @@ export const COGNITO_CLIENT_ID = fromEnvOrConfig("COGNITO_CLIENT_ID");
  * @type {string}
  */
 export const COGNITO_CLI_CLIENT_ID = fromEnvOrConfig("COGNITO_CLI_CLIENT_ID");
+
+
+/**
+ * Path to a JSON file containing Groups data.
+ *
+ * Defaults to env/production/groups.json if {@link PRODUCTION} or
+ * env/testing/groups.json otherwise.
+ *
+ * @type {string}
+ */
+export const GROUPS_DATA_FILE =
+     process.env.GROUPS_DATA_FILE
+  ?? path.join(__basedir, "env", (PRODUCTION ? "production" : "testing"), "groups.json");

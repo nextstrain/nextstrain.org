@@ -1,12 +1,12 @@
 import { strict as assert } from 'assert';
 import * as authz from "./authz/index.js";
-import { PRODUCTION } from './config.js';
+import { GROUPS_DATA_FILE } from './config.js';
 import { NotFound } from './httpErrors.js';
 import { GroupSource } from "./sources/index.js";
 
 /* eslint-disable-next-line import/first, import/newline-after-import */
 import { readFile } from 'fs/promises';
-const GROUPS_DATA = JSON.parse(await readFile(new URL('../data/groups.json', import.meta.url)));
+const GROUPS_DATA = JSON.parse(await readFile(GROUPS_DATA_FILE));
 
 /**
  * Map of Nextstrain Groups from their (normalized) name to their static config
@@ -17,11 +17,6 @@ const GROUPS_DATA = JSON.parse(await readFile(new URL('../data/groups.json', imp
  */
 const GROUP_RECORDS = new Map(
   GROUPS_DATA
-    /* Groups for dev/testing.  Might be nice to expose these in production too,
-     * but we'd need additional changes first to support "unlisted" Groups.
-     *   -trs, 24 Jan 2022
-     * */
-    .filter(groupRecord => PRODUCTION ? !groupRecord.isDevOnly : true)
     .map(groupRecord => [normalizeGroupName(groupRecord.name), groupRecord])
 );
 
