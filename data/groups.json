@@ -214,6 +214,10 @@
     "isPublic": false
   },
   {
+    "name": "MPOX-CDC",
+    "isPublic": false
+  },
+  {
     "name": "test",
     "isPublic": true,
     "isDevOnly": true
