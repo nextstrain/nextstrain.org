@@ -35,7 +35,7 @@ build-static() {
     echo "Building the static site (./static-site/public/)"
     cd static-site
     npm ci
-    npm run build # build using gatsby. Can take a few minutes.
+    NODE_OPTIONS=--openssl-legacy-provider npm run build # build using gatsby. Can take a few minutes.
     cd ..
 }
 
