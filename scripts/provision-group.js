@@ -37,7 +37,7 @@ function parseArgs() {
   const argparser = new ArgumentParser({
     description: `
       Provision AWS Cognito resources for a Nextstrain Group and its members.
-      The group must already be defined in data/groups.json.
+      The group must already be defined in the groups.json data file.
     `,
   });
 

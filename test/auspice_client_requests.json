@@ -66,7 +66,7 @@
   },
   {
     "name": "Check getSourceInfo API for a (private) nextstrain groups splash page",
-    "url": "/charon/getSourceInfo?prefix=/groups/blab-private/",
+    "url": "/charon/getSourceInfo?prefix=/groups/test-private/",
     "expectStatusCode": 401
   },
   {
@@ -144,7 +144,7 @@
   },
   {
     "name": "Attempt to access a private Nextstrain Group when not logged in",
-    "url": "/charon/getAvailable?prefix=/groups/blab-private",
+    "url": "/charon/getAvailable?prefix=/groups/test-private",
     "expectStatusCode": 401
   },
   {

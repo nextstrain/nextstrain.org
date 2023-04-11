@@ -8,6 +8,7 @@ import os from 'os';
 import { basename, dirname, relative as relativePath, parse as parsePath } from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
+import { GROUPS_DATA_FILE } from '../src/config.js';
 import { Group } from '../src/groups.js';
 import { reportUnhandledRejectionsAtExit, run, setupConsole } from '../src/utils/scripts.js';
 
@@ -25,7 +26,7 @@ function parseArgs() {
     description: `
       Migrate a Nextstrain Group from an old single-tenant bucket to the new
       multi-tenant bucket.  The group must already be defined in
-      data/groups.json.
+      the groups.json data file.
     `,
   });
 
@@ -392,7 +393,7 @@ async function getIAMGroup(client, GroupName) {
 
 
 async function updateGroupsDataFile({dryRun = true, group}) {
-  const dataFile = `${REPO}/data/groups.json`;
+  const dataFile = relativePath(REPO, GROUPS_DATA_FILE);
 
   console.group(`\nRemoving group's "bucket" key from ${dataFile}`);
 
