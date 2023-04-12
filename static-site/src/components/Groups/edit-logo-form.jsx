@@ -95,7 +95,7 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
     <CenteredForm>
       {logo.current
         ? <>
-            <splashStyles.H4>Current Logo:</splashStyles.H4>
+            <splashStyles.H4>Current logo</splashStyles.H4>
             <AvatarWithoutMargins alt="group-logo" src={logo.current}/>
             <InputButton
               disabled={deletionInProgress || uploadInProgress}
@@ -106,7 +106,7 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
               }
             </InputButton>
           </>
-        : <splashStyles.H4>No Current Logo</splashStyles.H4>
+        : <splashStyles.H4>No current logo</splashStyles.H4>
       }
 
       {/* Hide the file input to allow for custom text in button */}
@@ -118,7 +118,7 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
       {logo.new
         ? <>
             <MediumSpacer/>
-            <splashStyles.H4>Logo Preview:</splashStyles.H4>
+            <splashStyles.H4>New logo preview</splashStyles.H4>
             <AvatarWithoutMargins alt="group-logo-preview" src={URL.createObjectURL(logo.new)}/>
             <InputButton
               disabled={deletionInProgress || uploadInProgress}

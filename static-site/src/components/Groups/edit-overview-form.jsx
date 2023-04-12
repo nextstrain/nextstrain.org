@@ -10,7 +10,7 @@ showDatasets:
 showNarratives:
 ---
 
-Add description of your group here.
+<!-- Replace this line with a description of your group. -->
 `;
 
 const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
@@ -85,7 +85,7 @@ const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) 
   return (
     <CenteredForm style={{ flexGrow: 3 }} onSubmit={uploadOverview}>
       <label htmlFor="edit-group-overview">
-        <splashStyles.H4>Edit Overview:</splashStyles.H4>
+        <splashStyles.H4>Overview</splashStyles.H4>
       </label>
       <TextArea
         id="edit-group-overview"

@@ -4,7 +4,7 @@ import { AvatarImg } from "../splash/sourceInfoHeading";
 export const CenteredForm = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
   margin: 10px;
@@ -40,6 +40,6 @@ export const TextArea = styled.textarea`
 width: 100%;
 height: 100%;
 font-size: 14px;
-font-family: ${(props) => props.theme.generalFont};
+font-family: monospace;
 color: ${(props) => props.theme.darkGrey};
 `;
