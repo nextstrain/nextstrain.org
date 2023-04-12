@@ -14,7 +14,7 @@ const gisaidLogo = require("../../static/logos/gisaid.png");
 
 // Hard-coded content
 const disclaimer = "DISCLAIMER: This page is an alpha release of model results";
-const title = "Nextstrain SARS-CoV-2 Dynamics";
+const title = "Nextstrain SARS-CoV-2 Forecasts";
 const abstract = (
   <>
     <>Here we chart the change in frequency of SARS-CoV-2 variants over time. We use this change in

@@ -95,9 +95,9 @@ const contents = [
   },
   {
     type: "external",
-    to: "/sars-cov-2/dynamics",
-    title: "Nextstrain SARS-CoV-2 Dynamics",
-    subtext: "See the latest Nextstrain SARS-CoV-2 dynamics results."
+    to: "/sars-cov-2/forecasts",
+    title: "Nextstrain SARS-CoV-2 Forecasts",
+    subtext: "See the latest Nextstrain SARS-CoV-2 forecasting results."
   },
   {
     type: "external",
