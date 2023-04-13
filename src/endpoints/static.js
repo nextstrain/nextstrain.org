@@ -14,6 +14,9 @@ const __dirname = dirname(__filename);
 const assetPath = (...subpath) =>
   path.join(__dirname, "..", "..", ...subpath);
 
+const serverAssetPath = (...subpath) =>
+  assetPath("assets", ...subpath);
+
 const auspiceAssetPath = (...subpath) =>
   assetPath("auspice-client", ...subpath);
 
@@ -23,6 +26,8 @@ const gatsbyAssetPath = (...subpath) =>
 
 /* Handlers for static assets.
  */
+const serverAssets = expressStaticGzip(serverAssetPath(), {index: false});
+
 const auspiceAssets = expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'});
 
 const gatsbyAssets = express.static(gatsbyAssetPath());
@@ -160,6 +165,7 @@ const sendGatsby404 = async (req, res) => {
 
 
 export {
+  serverAssets,
   auspiceAssets,
   gatsbyAssets,
 

@@ -12,10 +12,10 @@ import {theme} from '../layouts/theme';
  */
 
 // Import global stylesheets
-import '../styles/prism.css';
-import "../styles/browserCompatability.css";
-import "../styles/bootstrap.css";
-import "../styles/globals.css";
+import "../../../assets/css/prism.css";
+import "../../../assets/css/browserCompatibility.css";
+import "../../../assets/css/bootstrap.css";
+import "../../../assets/css/globals.css";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class MainLayout extends React.Component {

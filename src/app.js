@@ -424,6 +424,11 @@ app.route("/schemas/*")
   .all((req, res, next) => next(new NotFound()));
 
 
+/* Static assets (CSS, JS, etc.)
+ */
+app.use("/assets", endpoints.static.serverAssets, (req, res, next) => next(new NotFound()));
+
+
 /* Auspice HTML pages and assets.
  *
  * Auspice hardcodes URL paths that start with /dist/… in its Webpack config,

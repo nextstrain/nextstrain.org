@@ -1,0 +1,11 @@
+main {
+  padding: 130px 0px 80px 0px;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: calc(1.4 * var(--theme-niceLineHeight));
+}
