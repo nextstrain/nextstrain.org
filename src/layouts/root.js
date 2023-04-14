@@ -1,5 +1,6 @@
 import { html } from 'htm/react';
 
+import { Nav } from '../components/nav.js';
 import { themeCssVars } from '../css.js';
 
 
@@ -8,7 +9,7 @@ import { themeCssVars } from '../css.js';
  * props (e.g. for use in <head>).  Layouts can be nested as necessary for
  * different sections of the site.
  */
-export const RootLayout = ({title, children}) => {
+export const RootLayout = ({title, currentUser, children}) => {
   /* XXX TODO: There's a lot more we want here, obviously.  Global page
    * elements, styles, etc.
    *   -trs, 6 April 2023
@@ -37,11 +38,10 @@ export const RootLayout = ({title, children}) => {
         <style dangerouslySetInnerHTML=${{__html: themeCssVars}} />
         <link rel="stylesheet" href="/assets/css/globals.css" />
         <link rel="stylesheet" href="/assets/css/layout.css" />
+        <link rel="stylesheet" href="/assets/css/nav.css" />
       </head>
       <body>
-        <nav>
-          <!-- XXX FIXME: navbar goes here -->
-        </nav>
+        <${Nav} currentUser=${currentUser} />
         <main class="container">
           ${children}
         </main>

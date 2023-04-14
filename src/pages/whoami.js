@@ -18,7 +18,7 @@ export const Whoami = ({currentUser}) => {
   const privateGroups = visibleGroups(currentUser).filter(g => g.private);
 
   return html`
-    <${RootLayout} title=${`Logged in as ${currentUser.username}`}>
+    <${RootLayout} title=${`Logged in as ${currentUser.username}`} currentUser=${currentUser}>
       <p>
         You’re logged in as <strong>${currentUser.username}</strong>.
         (<a href="/logout">logout</a>)
