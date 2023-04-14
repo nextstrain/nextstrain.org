@@ -12,13 +12,13 @@ const UNAUTHORIZED_MESSAGE = `
 `;
 
 const EditGroupSettingsPage = ({ location, groupName }) => {
-  const [ userAuthorized, setUserAuthorized ] = useState(true);
+  const [ userAuthorized, setUserAuthorized ] = useState(null);
   const [ errorMessage, setErrorMessage ] = useState();
 
   useEffect(() => {
     const checkUserAuthz = async () => {
-      if (! await canUserEditGroupSettings(groupName) && !cleanUp){
-        setUserAuthorized(false);
+      if (!cleanUp) {
+        setUserAuthorized(await canUserEditGroupSettings(groupName));
       }
     }
     let cleanUp = false;
@@ -53,18 +53,20 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
       </splashStyles.H2>
       <HugeSpacer/>
 
-      {userAuthorized
-        ? <FlexGrid style={{ minHeight: "500px" }}>
-            <EditLogoForm
-              groupName={groupName}
-              createErrorMessage={createErrorMessage}
-              clearErrorMessage={clearErrorMessage}/>
-            <EditOverviewForm
-              groupName={groupName}
-              createErrorMessage={createErrorMessage}
-              clearErrorMessage={clearErrorMessage}/>
-          </FlexGrid>
-        : <ErrorBanner title={UNAUTHORIZED_MESSAGE}/>}
+      {userAuthorized === null
+        ? <splashStyles.H4>Checking user role in group</splashStyles.H4>
+        : userAuthorized
+          ? <FlexGrid style={{ minHeight: "500px" }}>
+              <EditLogoForm
+                groupName={groupName}
+                createErrorMessage={createErrorMessage}
+                clearErrorMessage={clearErrorMessage}/>
+              <EditOverviewForm
+                groupName={groupName}
+                createErrorMessage={createErrorMessage}
+                clearErrorMessage={clearErrorMessage}/>
+            </FlexGrid>
+          : <ErrorBanner title={UNAUTHORIZED_MESSAGE}/>}
     </GenericPage>
   )
 };
