@@ -86,6 +86,10 @@ const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) 
     <CenteredForm style={{ flexGrow: 3 }} onSubmit={uploadOverview}>
       <label htmlFor="edit-group-overview">
         <splashStyles.H4>Overview</splashStyles.H4>
+        <splashStyles.CenteredFocusParagraph style={{ margin: 5 }}>
+          See <a href="https://docs.nextstrain.org/en/latest/guides/share/groups/customize.html" target="_blank" rel="noopener noreferrer">Group customization docs </a>
+          for details on how to format your overview.
+        </splashStyles.CenteredFocusParagraph>
       </label>
       <TextArea
         id="edit-group-overview"
