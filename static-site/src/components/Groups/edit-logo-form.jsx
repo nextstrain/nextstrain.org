@@ -1,15 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MediumSpacer } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
-import { AvatarWithoutMargins, CenteredForm, InputButton } from "./styles";
+import { AvatarWithoutMargins, CenteredForm, InputButton, InputLabel} from "./styles";
 
 
 const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
   const [ logo, setLogo ] = useState({ current: null, new: null });
   const [ deletionInProgress, setDeletionInProgress ] = useState(false);
   const [ uploadInProgress, setUploadInProgress ] = useState(false);
-  // Ref to allow us to create click event for hidden file input
-  const fileInput = useRef(null);
 
   useEffect(() => {
     const setCurrentLogo = async () => {
@@ -79,12 +77,6 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
     setUploadInProgress(false);
   }
 
-  const handleUploadButton = (e) => {
-    e.preventDefault();
-    clearErrorMessage();
-    fileInput.current.click();
-  }
-
   const previewImage = (e) => {
     e.preventDefault();
     clearErrorMessage();
@@ -109,11 +101,10 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
         : <splashStyles.H4>No current logo</splashStyles.H4>
       }
 
-      {/* Hide the file input to allow for custom text in button */}
-      <InputButton onClick={handleUploadButton}>
+      <InputLabel>
         Choose new logo
-      </InputButton>
-      <input type="file" ref={fileInput} style={{ display: "none" }} accept="image/png" onChange={previewImage}/>
+        <input type="file" style={{ display: "none" }} accept="image/png" onChange={previewImage}/>
+      </InputLabel>
 
       {logo.new
         ? <>

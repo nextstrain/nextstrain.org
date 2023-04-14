@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { AvatarImg } from "../splash/sourceInfoHeading";
 
 export const CenteredForm = styled.form`
@@ -10,7 +10,7 @@ export const CenteredForm = styled.form`
   margin: 10px;
 `;
 
-export const InputButton = styled.button`
+const sharedInputStyle = css`
   border: 1px solid #CCC;
   background-color: inherit;
   border-radius: 3px;
@@ -23,9 +23,24 @@ export const InputButton = styled.button`
   text-transform: uppercase;
   vertical-align: middle;
   margin: 5px;
+`;
+
+const sharedInputHoverStyle = css`
+  color: black;
+  border: 1px solid black;
+`;
+
+export const InputLabel = styled.label`
+  ${sharedInputStyle}
+  &:hover {
+    ${sharedInputHoverStyle}
+  }
+`;
+
+export const InputButton = styled.button`
+  ${sharedInputStyle}
   &:hover:enabled {
-    color: black;
-    border: 1px solid black;
+    ${sharedInputHoverStyle}
   }
   &:disabled {
     border: none;
