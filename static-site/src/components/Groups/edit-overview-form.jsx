@@ -62,9 +62,12 @@ const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) 
         body: overview
       });
 
-      response.ok
-        ? setUploadComplete(true)
-        : createErrorMessage(response);
+      if (response.ok) {
+        setUploadComplete(true)
+        setOverview(await getOverview());
+      } else {
+        createErrorMessage(response);
+      }
     } catch (err) {
       console.error(err.message);
       createErrorMessage();
