@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fs from 'fs';
 import * as utils from '../../utils/index.js';
 
 /* Build the available datasets by querying the manifest JSONs
@@ -118,41 +118,20 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
  *
  * SIDE EFFECT: sets global.availableDatasets
  */
-const setAvailableDatasetsFromManifest = async () => {
-  utils.verbose("Fetching manifests for core & staging");
-
-  const servers = {
-    core: "nextstrain-data",
-    staging: "nextstrain-staging"
-  };
-
-  const promises = Object.keys(servers).map((server) => {
-    return fetch(`https://${servers[server]}.s3.amazonaws.com/manifest_guest.json`)
-      .then((result) => {
-        return result.json();
-      })
-      .then((data) => {
-        const {datasets, secondTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
-        utils.verbose(`Successfully got manifest for "${server}"`);
-
-        global.availableDatasets[server] = datasets;
-        global.availableDatasets.secondTreeOptions[server] = secondTreeOptions;
-        global.availableDatasets.defaults[server] = defaults;
-      })
-      .catch((e) => {
-        console.error(e);
-        utils.warn(`Failed to getch manifest for "${server}"`);
-      });
-  });
-
-  Promise.all(promises)
-    .then(() => {
-      utils.log(`Got manifests for ${Object.keys(global.availableDatasets).join(", ")}`);
-    })
-    .catch((e) => {
+const setAvailableDatasetsFromManifest = () => {
+  for (const server of ['core', 'staging']) {
+    try {
+      const data = JSON.parse(fs.readFileSync(`./data/manifest_${server}.json`));
+      const {datasets, secondTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
+      global.availableDatasets[server] = datasets;
+      global.availableDatasets.secondTreeOptions[server] = secondTreeOptions;
+      global.availableDatasets.defaults[server] = defaults;
+      utils.verbose(`Successfully loaded manifest for ${server} datasets/narratives from ./data/manifest_${server}.json`);
+    } catch (e) {
       console.error(e);
-    });
-
+      utils.warn(`Failed to parse manifest for "${server}". Please check the contents of ./data/manifest_${server}.json`);
+    }
+  }
 };
 
 setAvailableDatasetsFromManifest();

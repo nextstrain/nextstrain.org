@@ -1,0 +1,396 @@
+{
+    "user": "guest",
+    "pathogen": {
+      "dengue": {
+        "serotype": {
+          "denv1": "",
+          "denv2": "",
+          "denv3": "",
+          "denv4": "",
+          "all": "",
+          "default": "denv1"
+        }
+      },
+      "ebola": "",
+      "enterovirus": {
+        "lineage": {
+          "d68": {
+            "segment": {
+              "genome": "",
+              "vp1": "",
+              "default": "genome"
+            }
+          },
+          "default": "d68"
+        }
+      },
+      "flu": {
+        "category": {
+          "avian": {
+            "subtype": {
+              "h5n1": {
+                "segment": {
+                  "ha": "",
+                  "mp": "",
+                  "na": "",
+                  "ns": "",
+                  "np": "",
+                  "pa": "",
+                  "pb1": "",
+                  "pb2": "",
+                  "default": "ha"
+                }
+              },
+              "h5nx": {
+                "segment": {
+                  "ha": "",
+                  "mp": "",
+                  "na": "",
+                  "ns": "",
+                  "np": "",
+                  "pa": "",
+                  "pb1": "",
+                  "pb2": "",
+                  "default": "ha"
+                }
+              },
+              "h7n9": {
+                "segment": {
+                  "ha": "",
+                  "mp": "",
+                  "na": "",
+                  "ns": "",
+                  "np": "",
+                  "pa": "",
+                  "pb1": "",
+                  "pb2": "",
+                  "default": "ha"
+                }
+              },
+              "h9n2": {
+                "segment": {
+                  "ha": "",
+                  "mp": "",
+                  "na": "",
+                  "ns": "",
+                  "np": "",
+                  "pa": "",
+                  "pb1": "",
+                  "pb2": "",
+                  "default": "ha"
+                }
+              },
+              "default": "h5n1"
+            }
+          },
+          "seasonal": {
+            "lineage": {
+              "h3n2": {
+                "segment": {
+                  "ha": {
+                    "resolution": {
+                      "6m": "",
+                      "2y": "",
+                      "3y": "",
+                      "6y": "",
+                      "12y": "",
+                      "default": "2y"
+                    }
+                  },
+                  "na": {
+                    "resolution": {
+                      "6m": "",
+                      "2y": "",
+                      "3y": "",
+                      "6y": "",
+                      "12y": "",
+                      "default": "2y"
+                    }
+                  },
+                  "default": "ha"
+                }
+              },
+              "h1n1pdm": {
+                "segment": {
+                  "ha": {
+                    "resolution": {
+                      "6m": "",
+                      "2y": "",
+                      "3y": "",
+                      "6y": "",
+                      "12y": "",
+                      "pandemic": "",
+                      "default": "2y"
+                    }
+                  },
+                  "na": {
+                    "resolution": {
+                      "6m": "",
+                      "2y": "",
+                      "3y": "",
+                      "6y": "",
+                      "12y": "",
+                      "pandemic": "",
+                      "default": "2y"
+                    }
+                  },
+                  "default": "ha"
+                }
+              },
+              "vic": {
+                "segment": {
+                  "ha": {
+                    "resolution": {
+                      "6m": "",
+                      "2y": "",
+                      "3y": "",
+                      "6y": "",
+                      "12y": "",
+                      "default": "2y"
+                    }
+                  },
+                  "na": {
+                    "resolution": {
+                      "6m": "",
+                      "2y": "",
+                      "3y": "",
+                      "6y": "",
+                      "12y": "",
+                      "default": "2y"
+                    }
+                  },
+                  "default": "ha"
+                }
+              },
+              "yam": {
+                "segment": {
+                  "ha": {
+                    "resolution": {
+                      "6m": "",
+                      "2y": "",
+                      "3y": "",
+                      "6y": "",
+                      "12y": "",
+                      "default": "2y"
+                    }
+                  },
+                  "na": {
+                    "resolution": {
+                      "6m": "",
+                      "2y": "",
+                      "3y": "",
+                      "6y": "",
+                      "12y": "",
+                      "default": "2y"
+                    }
+                  },
+                  "default": "ha"
+                }
+              },
+              "default": "h3n2"
+            }
+          },
+          "default": "seasonal"
+        }
+      },
+      "measles": "",
+      "monkeypox": {
+        "resolution": {
+          "hmpxv1": "",
+          "mpxv": "",
+          "default": "hmpxv1"
+        }
+      },
+      "mumps": {
+        "resolution": {
+          "na": "",
+          "global": "",
+          "default": "na"
+        }
+      },
+      "ncov": {
+        "data_source": {
+          "gisaid": {
+            "region": {
+              "global": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "africa": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "asia": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "europe": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "north-america": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "oceania": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "south-america": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "reference": "",
+              "default": "global"
+            }
+          },
+          "open": {
+            "region": {
+              "global": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "africa": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "asia": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "europe": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "north-america": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "oceania": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "south-america": {
+                "resolution": {
+                  "1m": "",
+                  "2m": "",
+                  "6m": "",
+                  "all-time": "",
+                  "default": "6m"
+                }
+              },
+              "reference": "",
+              "default": "global"
+            }
+          },
+          "default": "gisaid"
+        }
+      },
+      "nextclade": {
+        "dataset": {
+          "sars-cov-2": "",
+          "default": "sars-cov-2"
+        }
+      },
+      "rsv": {
+        "type": {
+          "a": {
+            "region":{
+              "genome":"",
+              "G":"",
+              "F":"",
+              "default":"genome"
+            }
+          },
+          "b": {
+            "region":{
+              "genome":"",
+              "G":"",
+              "F":"",
+              "default":"genome"
+            }
+          },
+          "default": "a"
+        }
+      },
+      "tb": {
+        "resolution": {
+          "global": "",
+          "default": "global"
+        }
+      },
+      "WNV": {
+        "resolution": {
+          "NA": "",
+          "default": "NA"
+        }
+      },
+      "zika": "",
+      "default": "zika"
+    }
+  }
