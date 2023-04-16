@@ -22,13 +22,12 @@ const nextstrainLogoPNG = "/favicon.png";
 
 
 const title = "Nextstrain SARS-CoV-2 resources";
-const abstract = `Around the world, people are sequencing and sharing SARS-CoV-2
-genomic data. The Nextstrain team analyzes these data on a global and
-continental level. More specific analyses are often performed by groups around
-the world. This page lists a sample of such analyses. In addition to exploring
-SARS-CoV-2 evolution in finished analyses, you can use Nextclade to compare your
-sequences to the SARS-CoV-2 reference sequence, assign them to clades, and see
-where they fall on a the SARS-CoV-2 tree.`;
+const abstract = `Labs from all over the world are sequencing SARS-CoV-2 and sharing genomic data.
+The Nextstrain team analyzes these data on a global and continental level. More specific analyses
+are often performed by public health and academic groups from around the world. This page lists a
+sample of such analyses. In addition to exploring SARS-CoV-2 evolution in finished analyses, you can
+use Nextclade to compare your sequences to the SARS-CoV-2 reference genome, assign them to clades,
+and see where they fall on a SARS-CoV-2 phylogeny.`;
 
 const contents = [
   {
@@ -84,16 +83,6 @@ const contents = [
     )
   },
   {
-    type: "anchor",
-    to: "datasets",
-    title: "Scroll down to all available datasets"
-  },
-  {
-    type: "anchor",
-    to: "sit-reps",
-    title: "Scroll down to all available interactive situation reports",
-  },
-  {
     type: "external",
     to: "https://clades.nextstrain.org",
     title: "Nextclade (sequence analysis webapp)",
@@ -107,11 +96,9 @@ const contents = [
   },
   {
     type: "external",
-    to: "/groups/blab/sars-like-cov",
-    title: "Phylogeny of SARS-like betacoronaviruses",
-    subtext: (<span>
-      We also have a more general phylogeny of <a href="/groups/blab/beta-cov"> betacoronaviruses</a>.
-    </span>)
+    to: "/sars-cov-2/forecasts",
+    title: "SARS-CoV-2 variant growth rates and frequency forecasts",
+    subtext: "Historical changes in frequency of SARS-CoV-2 variants are used to estimate variant growth rates and forecast changes in frequency"
   },
   {
     type: "external",
@@ -120,10 +107,14 @@ const contents = [
     subtext: "A tutorial walking through running your own analysis using Nextstrain tools"
   },
   {
-    type: "external",
-    to: "https://discussion.nextstrain.org",
-    title: "Nextstrain discussion forum",
-    subtext: "See here for previously asked questions about Nextstrain or ask your own"
+    type: "anchor",
+    to: "datasets",
+    title: "Scroll down to all available datasets"
+  },
+  {
+    type: "anchor",
+    to: "sit-reps",
+    title: "Scroll down to all available interactive situation reports",
   }
 ];
 
