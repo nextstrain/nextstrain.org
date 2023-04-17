@@ -64,10 +64,11 @@ const esc = encodeURIComponent;
 const jsonMediaType = type => type.match(/^application\/(.+\+)?json$/);
 
 
-/* Express boilerplate.
+/* Express app setup.
  */
 const app = addAsync(express());
 
+app.set("port", process.env.PORT);
 app.set("json replacer", jsonReplacer);
 
 app.locals.production = PRODUCTION;
