@@ -1,5 +1,6 @@
 import argparse from 'argparse';
 import http from 'http';
+import { PRODUCTION } from './src/config.js';
 import * as utils from './src/utils/index.js';
 
 const version = utils.getGitHash();
@@ -20,7 +21,7 @@ parser.addArgument('--verbose', {action: "storeTrue", help: "verbose server logg
 const args = parser.parseArgs();
 global.verbose = args.verbose;
 
-process.env.HOST ||= "0.0.0.0";
+process.env.HOST ||= PRODUCTION ? "0.0.0.0" : "localhost";
 process.env.PORT ||= "5000";
 
 /* Import app after:
@@ -63,7 +64,7 @@ const server = http
     console.log("  -------------------------------------------------------------------------");
     console.log(nextstrainAbout);
     console.log(`  Server listening on http://${process.env.HOST}:${process.env.PORT}`);
-    console.log(`  Server running in ${app.locals.production ? 'production' : 'development'} mode`);
+    console.log(`  Server running in ${PRODUCTION ? 'production' : 'development'} mode`);
     console.log("\n  -------------------------------------------------------------------------\n\n");
   })
   .on("error", (err) => {
