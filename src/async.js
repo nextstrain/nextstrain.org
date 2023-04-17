@@ -228,6 +228,14 @@ function addAsync(app) {
     return addAsync(this.route.apply(this, arguments));
   };
 
+  app.allAsync = function() {
+    const fn = arguments[arguments.length - 1];
+    assert.ok(typeof fn === 'function',
+      'Last argument to `allAsync()` must be a function');
+    const args = wrapArgs(arguments);
+    return app.all.apply(app, args);
+  };
+
   app.useAsync = function() {
     const fn = arguments[arguments.length - 1];
     assert.ok(typeof fn === 'function',
