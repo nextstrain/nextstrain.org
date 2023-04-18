@@ -33,7 +33,7 @@ const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) 
   const getOverview = async () => {
     clearErrorMessage();
     try {
-      const response = await fetch(`/groups/${groupName}/settings/overview`);
+      const response = await fetch(`/groups/${encodeURIComponent(groupName)}/settings/overview`);
       if (response.status === 404) return OVERVIEW_TEMPLATE;
       if (response.ok) {
         const currentOverview = await response.text();
@@ -54,7 +54,7 @@ const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) 
     setUploadInProgress(true);
 
     try {
-      const response = await fetch(`/groups/${groupName}/settings/overview`, {
+      const response = await fetch(`/groups/${encodeURIComponent(groupName)}/settings/overview`, {
         method: "PUT",
         headers: {
           "Content-Type": "text/markdown"

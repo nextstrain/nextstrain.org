@@ -36,8 +36,8 @@ class Index extends React.Component {
     const groupName = this.props["groupName"];
     try {
       const [sourceInfo, availableData] = await Promise.all([
-        fetchAndParseJSON(`/charon/getSourceInfo?prefix=/groups/${groupName}/`),
-        fetchAndParseJSON(`/charon/getAvailable?prefix=/groups/${groupName}/`)
+        fetchAndParseJSON(`/charon/getSourceInfo?prefix=/groups/${encodeURIComponent(groupName)}/`),
+        fetchAndParseJSON(`/charon/getAvailable?prefix=/groups/${encodeURIComponent(groupName)}/`)
       ]);
 
       this.setState({

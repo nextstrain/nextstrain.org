@@ -40,7 +40,7 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
   return (
     <GenericPage location={location}>
       <FlexGridRight>
-        <splashStyles.Button to={`/groups/${groupName}`}>
+        <splashStyles.Button to={`/groups/${encodeURIComponent(groupName)}`}>
           Return to "{groupName}" Page
         </splashStyles.Button>
       </FlexGridRight>
@@ -73,7 +73,7 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
 
 export const canUserEditGroupSettings = async (groupName) => {
   try {
-    const groupOverviewOptions = await fetch(`/groups/${groupName}/settings/overview`, { method: "OPTIONS" });
+    const groupOverviewOptions = await fetch(`/groups/${encodeURIComponent(groupName)}/settings/overview`, { method: "OPTIONS" });
     const allowedMethods = new Set(groupOverviewOptions.headers.get("Allow")?.split(/\s*,\s*/));
     const editMethods = ["PUT", "DELETE"];
     return editMethods.every((method) => allowedMethods.has(method));
