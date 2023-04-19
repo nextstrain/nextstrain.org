@@ -115,22 +115,27 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
  * Collect available datasets by fetching the manifest JSON
  * and parsing it.
  * In the future this may be done by crawling the S3 bucket
- *
- * SIDE EFFECT: sets global.availableDatasets
+ * We use the "core" manifest for both core (nextstrain-data)
+ * and staging (nextstrain-staging) sources.
+ * SIDE EFFECT: modifies global.availableDatasets
  */
 const setAvailableDatasetsFromManifest = () => {
-  for (const server of ['core', 'staging']) {
-    try {
-      const data = JSON.parse(fs.readFileSync(`./data/manifest_${server}.json`));
-      const {datasets, secondTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
-      global.availableDatasets[server] = datasets;
-      global.availableDatasets.secondTreeOptions[server] = secondTreeOptions;
-      global.availableDatasets.defaults[server] = defaults;
-      utils.verbose(`Successfully loaded manifest for ${server} datasets/narratives from ./data/manifest_${server}.json`);
-    } catch (e) {
-      console.error(e);
-      utils.warn(`Failed to parse manifest for "${server}". Please check the contents of ./data/manifest_${server}.json`);
-    }
+  try {
+    const data = JSON.parse(fs.readFileSync(`./data/manifest_core.json`));
+    const {datasets, secondTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
+    global.availableDatasets.core = datasets;
+    global.availableDatasets.secondTreeOptions.core = secondTreeOptions;
+    global.availableDatasets.defaults.core = defaults;
+    /* duplicate these (by reference) in places the staging source will use. We could modify the staging source
+    itself but this is easier, and when we move past using a manifest file then presumably the core
+    and staging sources will diverge again. */
+    global.availableDatasets.staging = datasets;
+    global.availableDatasets.secondTreeOptions.staging = secondTreeOptions;
+    global.availableDatasets.defaults.staging = defaults;
+    utils.verbose(`Successfully loaded ./data/manifest_core.json which we'll use for both core & staging sources.`);
+  } catch (e) {
+    console.error(e);
+    utils.warn(`Failed to parse ./data/manifest_core.json - please check its contents (e.g. this could be a JSON formatting error).`);
   }
 };
 
