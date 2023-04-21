@@ -6,6 +6,7 @@
 
 import * as authz from './authz/index.js';
 import { ALL_GROUPS } from './groups.js';
+import { getRequestContext } from './requestContext.js';
 import { REDIS } from './redis.js';
 
 
@@ -77,6 +78,14 @@ export async function markUserStaleBeforeNow(username) {
   }
   userStaleBeforeTransientStore.set(username, now);
   return true;
+}
+
+
+/**
+ * XXX FIXME
+ */
+export function getCurrentUser() {
+  return getRequestContext().user;
 }
 
 

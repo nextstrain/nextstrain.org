@@ -1,6 +1,7 @@
 import argparse from 'argparse';
 import http from 'http';
 import { PRODUCTION } from './src/config.js';
+import { bindRequestContext } from './src/requestContext.js';
 import * as utils from './src/utils/index.js';
 
 const version = utils.getGitHash();
@@ -48,7 +49,7 @@ const server = http
       }
     },
   })
-  .on("request", app)
+  .on("request", (req, res) => bindRequestContext({}, app)(req, res))
   .on("checkContinue", (req, res) => {
     /* When this event fires, the normal "request" event that calls app is not
      * fired.
@@ -58,7 +59,7 @@ const server = http
      * res.writeContinue() at an appropriate point.
      */
     req.expectsContinue = true;
-    return app(req, res);
+    return bindRequestContext({}, app)(req, res);
   })
   .on("listening", () => {
     console.log("  -------------------------------------------------------------------------");
