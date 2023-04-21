@@ -1,0 +1,70 @@
+@use "./styles/theme.scss";
+
+/* Based on styled components in static-site/src/components/nav-bar/index.jsx */
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 960px;
+  height: 50px;
+  margin-top: auto;
+  margin-right: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  overflow: hidden;
+  left: 0px;
+  z-index: 1001;
+  transition: left .3s ease-out;
+}
+
+nav .logo {
+  display: block;
+  padding-left: 8px;
+  padding-right: 2px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  cursor: pointer;
+}
+
+nav .wordmark {
+  padding: 0px;
+  cursor: pointer;
+}
+nav.minified .wordmark {
+  display: none;
+}
+
+nav .wordmark > span {
+  font-size: 20px;
+  font-weight: 400;
+}
+nav .wordmark > span:nth-child( 1) { color: theme.$titleColor0 }
+nav .wordmark > span:nth-child( 2) { color: theme.$titleColor1 }
+nav .wordmark > span:nth-child( 3) { color: theme.$titleColor2 }
+nav .wordmark > span:nth-child( 4) { color: theme.$titleColor3 }
+nav .wordmark > span:nth-child( 5) { color: theme.$titleColor4 }
+nav .wordmark > span:nth-child( 6) { color: theme.$titleColor5 }
+nav .wordmark > span:nth-child( 7) { color: theme.$titleColor6 }
+nav .wordmark > span:nth-child( 8) { color: theme.$titleColor7 }
+nav .wordmark > span:nth-child( 9) { color: theme.$titleColor8 }
+nav .wordmark > span:nth-child(10) { color: theme.$titleColor9 }
+
+nav a {
+  padding: 20px 12px;
+  text-decoration: none !important;
+  font-size: 16px !important;
+  font-weight: 400;
+  color: theme.$darkGrey !important;
+  cursor: pointer;
+}
+nav.minified a {
+  padding-right: 6px;
+  padding-left: 6px;
+  font-size: 12px;
+  color: black !important;
+}
+
+nav a:not(.wordmark, .current-user) {
+  text-transform: uppercase;
+}

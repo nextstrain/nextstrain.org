@@ -1,0 +1,10 @@
+@use "sass:meta";
+@forward "./theme.scss";
+@use "./theme.scss";
+
+// Make variables available to JavaScript too
+:export {
+  @each $name, $value in meta.module-variables("theme") {
+    #{unquote($name)}: $value;
+  }
+}

@@ -1,0 +1,68 @@
+@use "./styles/theme.scss";
+
+
+// Originally from static-site/src/styles/
+@use "./styles/prism.css";
+@use "./styles/browserCompatibility.css";
+@use "./styles/bootstrap.css";
+@use "./styles/globals.css";
+
+
+// Layout
+main {
+  padding: 130px 0px 80px 0px;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: calc(1.4 * theme.$niceLineHeight);
+}
+
+
+/* Originally GlobalStyles in static-site/src/components/layout.jsx.  This
+ * applies them actually globally, which may turn out to be too broad.  If so,
+ * we can rescope them, e.g. instead of "a" as "main a".
+ *   -trs, 13 April 2023
+ */
+a {
+  text-decoration: none;
+  background-color: transparent;
+  color: theme.$blue;
+  font-weight: 500;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+a:hover,
+a:focus {
+  color: #5097BA;
+  text-decoration: underline;
+}
+a:focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+h1 {font-size: 3.5rem; font-weight: 500;}
+h2 {font-size: 2.5rem; font-weight: 500;}
+h3 {font-size: 2rem; font-weight: 500;}
+h4 {font-size: 1.8rem; font-weight: 500;}
+h5 {font-size: 1.6rem; font-weight: 500;}
+h6 {font-size: 1.6rem; font-weight: 300;}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol, dl {
+    margin: 20px 0px 0px 0px;
+}
+
+table {
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid black;
+    padding: 5px;
+}
+/* end of GlobalStyles */

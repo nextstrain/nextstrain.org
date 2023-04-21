@@ -37,13 +37,16 @@ rules:
   react/forbid-prop-types: off
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
   react/jsx-first-prop-new-line: off
+  react/jsx-indent: off
+  react/jsx-one-expression-per-line: off
+  react/jsx-wrap-multilines: ["error", {"condition": "ignore"}]
   react/no-did-mount-set-state: off
   react/require-default-props: off
   react/no-did-update-set-state: off
   react/prop-types: off # possibly reinstate
   react/sort-comp: off # possibly reinstate
   jsx-a11y/no-static-element-interactions: off
-  import/extensions: ["error", { "js": "ignorePackages", }] # because we are using the `explicit` resolution algorithm for ES module specifiers https://nodejs.org/docs/latest-v14.x/api/cli.html#cli_experimental_specifier_resolution_mode
+  import/extensions: ["error", "always", { "js": "ignorePackages", }] # because we are using the `explicit` resolution algorithm for ES module specifiers https://nodejs.org/docs/latest-v14.x/api/cli.html#cli_experimental_specifier_resolution_mode
   import/prefer-default-export: off
   no-multi-spaces: ["error", { ignoreEOLComments: true }]
   no-labels: off
@@ -52,7 +55,7 @@ rules:
   no-unneeded-ternary: ["error", { "defaultAssignment": true }]
   quote-props: ["error", "as-needed"]
   prefer-const: ["error", {"destructuring": "all"}]
-  indent: ["error", 2, {"MemberExpression": "off", "SwitchCase": 1}]
+  indent: ["error", 2, {"MemberExpression": "off", "SwitchCase": 1, "ignoredNodes": ["ConditionalExpression", "ConditionalExpression *"]}]
   react-hooks/rules-of-hooks: "error"
   react-hooks/exhaustive-deps: "warn"
   react/no-danger: off # gatsby uses this a lot
