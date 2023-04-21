@@ -23,7 +23,7 @@ const abstract = (
     growth advantages using daily sequence counts. We apply this model independently across
     different countries and partition SARS-CoV-2 variants by <a
     href="https://nextstrain.org/blog/2022-04-29-SARS-CoV-2-clade-naming-2022">Nextstrain
-    clades</a>. Each clade is assumed to have a fixed growth advantage relative to BA.2.</>
+    clades</a>. Each clade is assumed to have a fixed growth advantage relative to clade 22B (lineage BA.5).</>
     <p/>
     <>Further details on data preparation and analysis can be found in the <a
     href="https://github.com/nextstrain/forecasts-ncov/">forecasts-ncov GitHub repo</a>, while
@@ -75,8 +75,8 @@ const collapsibleContents = [
     title: "Estimated variant frequencies over time",
     text: (
       <span>
-        Each line represents the frequency of a particular variant through time. Only major variants
-        are partitioned and are labeled according to Pango lineage.
+        Each line represents the estimated frequency of a particular clade through time.
+        Equivalent Pango lineage is given in parenthesis, eg clade 22B (lineage BA.5).
       </span>
     ),
     images: {
@@ -90,8 +90,8 @@ const collapsibleContents = [
     title: "Growth Advantage",
     text: (
       <span>
-        These plots show the estimated growth advantage for given variants relative to BA.2. This
-        describes how many more secondary infections a variant causes on average relative to BA.2.
+        These plots show the estimated growth advantage for given variants relative to clade 22B (lineage BA.5). This
+        describes how many more secondary infections a variant causes on average relative to clade 22B.
         Vertical bars show the 95% HPD.
       </span>
     ),
