@@ -117,7 +117,7 @@ blockquote {
 .token.selector,
 .token.char,
 .token.builtin,
-.token.inserted` {
+.token.inserted {
   color: var(--char);
 }
 
