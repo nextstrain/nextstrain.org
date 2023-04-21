@@ -440,6 +440,17 @@ app.route("/dist/*")
 app.routeAsync("/edit/narratives")
   .getAsync(endpoints.static.sendAuspiceEntrypoint);
 
+
+/* Next.js embedded server.
+ */
+const nextAppRoutes = [
+  "/_next/*", // internal assets
+];
+
+app.routeAsync(nextAppRoutes)
+  .allAsync(endpoints.nextApp.handleRequest);
+
+
 /* Gatsby static HTML pages and other assets.
  *
  * Any URLs matching Gatsby's static files will be handled here, e.g.

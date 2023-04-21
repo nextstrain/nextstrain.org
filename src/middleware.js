@@ -112,3 +112,17 @@ export {
   rejectParentTraversals,
   copyCookie,
 };
+
+
+/**
+ * Next.js middleware function.
+ *
+ * The file "middleware.js" has special meaning to Next.js¹, and if the file
+ * exists it must export a default function.  We define a no-op here so we can
+ * continue to use this file for our existing Express-compatible middleware.
+ *
+ * ¹ <https://nextjs.org/docs/advanced-features/middleware>
+ */
+export default function nextAppMiddleware() {
+  // no-op
+}

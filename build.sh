@@ -16,12 +16,15 @@ main() {
     local step="${1:-all}"
 
     case "$step" in
+        server)
+            build-server;;
         static)
             build-static;;
         auspice)
             build-auspice;;
         all)
             echo "Running the nextstrain.org build script"
+            build-server
             build-auspice
             build-static    # Depends on Auspice being built
             echo "Build complete. Next step: \"npm run server\"";;
@@ -29,6 +32,11 @@ main() {
             echo "Unknown build step \"$step\"" >&2
             exit 1;;
     esac
+}
+
+build-server() {
+    echo "Building the server's embedded Next.js project (./src/app, etc.)"
+    ./node_modules/.bin/next build
 }
 
 build-static() {
