@@ -61,7 +61,7 @@ This works by running the main nextstrain server on port 5000, running the Gatsb
 
 An alternative approach is to build the site (as above) and then start the server:
 ```sh
-NODE_ENV="dev" npm run server
+NODE_ENV=development npm run server
 ```
 
 ### Environment variables
