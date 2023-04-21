@@ -27,7 +27,7 @@ const userStaleBeforeTransientStore = new Map();
  * @returns {Number|null} timestamp
  * @see markUserStaleBeforeNow
  */
-async function userStaleBefore(username) {
+export async function userStaleBefore(username) {
   const timestamp = REDIS
     ? parseInt(await REDIS.get(`userStaleBefore:${username}`), 10)
     : userStaleBeforeTransientStore.get(username);
@@ -49,7 +49,7 @@ async function userStaleBefore(username) {
  * @returns {Boolean} True if set succeeded; false if not.
  * @see userStaleBefore
  */
-async function markUserStaleBeforeNow(username) {
+export async function markUserStaleBeforeNow(username) {
   /* Keying on usernames, instead of say the "sub" (subject) attribute of a
    * user, makes this API more ergonomic and avoids needing to convert from
    * username → sub in contexts where we only have username (e.g. a request
@@ -89,17 +89,10 @@ async function markUserStaleBeforeNow(username) {
  * @returns {Array} Each element is an object with keys `name` -> {str} (group name) and
  *                  `private` -> {bool} (group is private)
  */
-const visibleGroups = (user) => ALL_GROUPS
+export const visibleGroups = (user) => ALL_GROUPS
   .map(g => [g.name, g.source])
   .filter(([, source]) => authz.authorized(user, authz.actions.Read, source))
   .map(([name, source]) => ({
     name,
     private: !authz.authorized(null, authz.actions.Read, source),
   }));
-
-
-export {
-  userStaleBefore,
-  markUserStaleBeforeNow,
-  visibleGroups,
-};
