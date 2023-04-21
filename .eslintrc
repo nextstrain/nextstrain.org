@@ -1,5 +1,5 @@
 ---
-extends: "airbnb"
+extends: ["airbnb", "next"]
 plugins: ["react-hooks", "jest"]
 parser: "@babel/eslint-parser"
 globals:
