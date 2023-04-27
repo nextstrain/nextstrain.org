@@ -452,6 +452,7 @@ const nextAppRoutes = [
   "/_next/*", // internal assets
   "/parent",   // TMP - just an example page
   "/parent/*", // handle all children pages
+  "/forecasts/ncov", // example of the forecasting viz library
 ];
 
 app.routeAsync(nextAppRoutes)
