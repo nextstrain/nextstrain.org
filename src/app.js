@@ -28,6 +28,7 @@ import { replacer as jsonReplacer } from './json.js';
 import * as middleware from './middleware.js';
 import * as redirects from './redirects.js';
 import * as sources from './sources/index.js';
+import { uri } from './templateLiterals.js';
 
 const {
   setSource,
@@ -59,8 +60,6 @@ const {
   UrlDefinedSource,
   GroupSource,
 } = sources;
-
-const esc = encodeURIComponent;
 
 const jsonMediaType = type => type.match(/^application\/(.+\+)?json$/);
 
@@ -306,7 +305,7 @@ app.use("/groups/:groupName",
     const restOfUrl = req.url !== "/" ? req.url : "";
 
     const canonicalName = req.context.source.group.name;
-    const canonicalUrl = `/groups/${esc(canonicalName)}${restOfUrl}`;
+    const canonicalUrl = uri`/groups/${canonicalName}` + restOfUrl;
 
     return req.params.groupName !== canonicalName
       ? res.redirect(canonicalUrl)
@@ -345,7 +344,7 @@ app.route("/groups/:groupName/settings/*")
 
 // Avoid matching "narratives" as a dataset name.
 app.routeAsync("/groups/:groupName/narratives")
-  .getAsync((req, res) => res.redirect(`/groups/${esc(req.params.groupName)}`));
+  .getAsync((req, res) => res.redirect(uri`/groups/${req.params.groupName}`));
 
 app.routeAsync("/groups/:groupName/narratives/*")
   .all(setNarrative(req => req.params[0]))

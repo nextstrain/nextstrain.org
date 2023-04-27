@@ -4,6 +4,7 @@ import mime from 'mime';
 import { pipeline } from 'stream/promises';
 import { BadRequest, InternalServerError, NotFound, ServiceUnavailable } from '../httpErrors.js';
 import { fetch } from '../fetch.js';
+import { uri } from '../templateLiterals.js';
 
 
 const authorization = process.env.GITHUB_TOKEN
@@ -18,7 +19,7 @@ const download = async (req, res) => {
 
   const endpoint = version === "latest"
     ? "https://api.github.com/repos/nextstrain/cli/releases/latest"
-    : `https://api.github.com/repos/nextstrain/cli/releases/tags/${encodeURIComponent(version)}`;
+    : uri`https://api.github.com/repos/nextstrain/cli/releases/tags/${version}`;
 
   const response = await fetch(endpoint, {headers: {authorization}});
   assertStatusOk(response);
@@ -44,7 +45,7 @@ const downloadPRBuild = async (req, res) => {
    * associated with it.  Not all PR-associated workflow runs contain entries
    * in the run's "pull_request" array.
    */
-  const prResponse = await fetch(`https://api.github.com/repos/nextstrain/cli/pulls/${encodeURIComponent(prId)}`, {headers: {authorization}});
+  const prResponse = await fetch(uri`https://api.github.com/repos/nextstrain/cli/pulls/${prId}`, {headers: {authorization}});
   assertStatusOk(prResponse);
 
   const pr = await prResponse.json();
@@ -87,7 +88,7 @@ const downloadCIBuild = async (req, res) => {
   const assetSuffix = req.params.assetSuffix;
   if (!runId || !assetSuffix) throw new BadRequest();
 
-  const endpoint = `https://api.github.com/repos/nextstrain/cli/actions/runs/${encodeURIComponent(runId)}/artifacts`;
+  const endpoint = uri`https://api.github.com/repos/nextstrain/cli/actions/runs/${runId}/artifacts`;
 
   const apiResponse = await fetch(endpoint, {headers: {authorization}});
   assertStatusOk(apiResponse);
