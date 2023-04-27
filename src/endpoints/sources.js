@@ -17,8 +17,6 @@ import { deleteByUrls, proxyFromUpstream, proxyToUpstream } from "../upstream.js
 const setSource = (sourceExtractor) => (req, res, next) => {
   const source = sourceExtractor(req);
 
-  res.vary("Accept");
-
   authz.assertAuthorized(req.user, authz.actions.Read, source);
 
   req.context.source = source;
