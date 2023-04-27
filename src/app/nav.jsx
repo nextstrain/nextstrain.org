@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "../../static-site/static/logos/nextstrain-logo-small.png";
+import logo from "./nextstrain-logo-small.png";
 
 import { getCurrentUser } from "../user.js";
 
