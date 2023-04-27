@@ -29,13 +29,15 @@ const OverviewContainer = styled.div`
   }
 `;
 
+export const AvatarImg = styled.img`
+  width: 140px;
+  margin-right: 20px;
+  object-fit: contain;
+`;
+
 function Title({avatarSrc, children}) {
   if (!children) return null;
-  const AvatarImg = styled.img`
-    width: 140px;
-    margin-right: 20px;
-    object-fit: contain;
-  `;
+
   const TitleDiv = styled.div`
     font-weight: 500;
     font-size: 26px;

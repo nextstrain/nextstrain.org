@@ -1,12 +1,13 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
-import { HugeSpacer } from "../layouts/generalComponents";
+import { HugeSpacer, FlexGridRight } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import SourceInfoHeading from "../components/splash/sourceInfoHeading";
 import { ErrorBanner } from "../components/splash/errorMessages";
+import { canUserEditGroupSettings } from "./group-settings-page";
 
 class Index extends React.Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class Index extends React.Component {
     const nonExistentPath = this.props["*"];
     this.state = {
       groupNotFound: false,
-      nonExistentPath
+      nonExistentPath,
+      editGroupSettingsAllowed: false
     };
   }
 
@@ -34,12 +36,14 @@ class Index extends React.Component {
     const groupName = this.props["groupName"];
     try {
       const [sourceInfo, availableData] = await Promise.all([
-        fetchAndParseJSON(`/charon/getSourceInfo?prefix=/groups/${groupName}/`),
-        fetchAndParseJSON(`/charon/getAvailable?prefix=/groups/${groupName}/`)
+        fetchAndParseJSON(`/charon/getSourceInfo?prefix=/groups/${encodeURIComponent(groupName)}/`),
+        fetchAndParseJSON(`/charon/getAvailable?prefix=/groups/${encodeURIComponent(groupName)}/`)
       ]);
+
       this.setState({
         sourceInfo,
         groupName,
+        editGroupSettingsAllowed: await canUserEditGroupSettings(groupName),
         datasets: this.createDatasetListing(availableData.datasets, groupName),
         narratives: this.createDatasetListing(availableData.narratives, groupName),
       });
@@ -94,6 +98,13 @@ class Index extends React.Component {
     }
     return (
       <GenericPage location={location} banner={banner}>
+        {this.state.editGroupSettingsAllowed && (
+          <FlexGridRight>
+            <splashStyles.Button to={`/groups/${this.state.groupName}/settings`}>
+              Edit Group Settings
+            </splashStyles.Button>
+          </FlexGridRight>
+        )}
         <SourceInfoHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (

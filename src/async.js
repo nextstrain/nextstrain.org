@@ -284,6 +284,14 @@ function addAsync(app) {
     return app.head.apply(app, args);
   };
 
+  app.optionsAsync = function() {
+    const fn = arguments[arguments.length - 1];
+    assert.ok(typeof fn === 'function',
+      'Last argument to `optionsAsync()` must be a function');
+    const args = wrapArgs(arguments);
+    return app.options.apply(app, args);
+  };
+
   return app;
 }
 

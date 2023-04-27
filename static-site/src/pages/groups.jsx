@@ -8,6 +8,7 @@ import DatasetSelect from "../components/Datasets/dataset-select";
 import { GroupCards } from "../components/splash/userGroups";
 import GenericPage from "../layouts/generic-page";
 import { UserContext } from "../layouts/userDataWrapper";
+import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
 
 const title = "Scalable Sharing with Nextstrain Groups";
 const abstract = (<>
@@ -140,10 +141,7 @@ class GroupsPage extends React.Component {
             columns={datasetColumns({isNarrative: true})}
           />
         )}
-        { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
-                          Something went wrong getting data.
-                          Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                          if this continues to happen.</splashStyles.CenteredFocusParagraph>}
+        { this.state.errorFetchingData && <DataFetchErrorParagraph />}
 
       </>
     );

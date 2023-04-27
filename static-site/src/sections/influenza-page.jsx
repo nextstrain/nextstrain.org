@@ -11,7 +11,7 @@ import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-i
 import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
-import { ErrorBanner } from "../components/splash/errorMessages";
+import { DataFetchErrorParagraph, ErrorBanner } from "../components/splash/errorMessages";
 import Cards from "../components/Cards/index";
 import fluCards from "../components/Cards/fluCards";
 
@@ -133,10 +133,7 @@ class Index extends React.Component {
                 columns={tableColumns}
               />
             )}
-            { this.state.errorFetchingData && <splashStyles.CenteredFocusParagraph>
-                        Something went wrong getting data.
-                        Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                        if this continues to happen.</splashStyles.CenteredFocusParagraph>}
+            { this.state.errorFetchingData && <DataFetchErrorParagraph /> }
           </div>
         </ScrollableAnchor>
       </GenericPage>

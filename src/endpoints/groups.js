@@ -17,6 +17,18 @@ const setGroup = (nameExtractor) => (req, res, next) => {
 /* Group customizations
  */
 
+const optionsGroupSettings = (req, res) => {
+  authz.assertAuthorized(req.user, authz.actions.Read, req.context.group);
+
+  const allowedMethods = ["OPTIONS", "GET", "HEAD"];
+
+  if (authz.authorized(req.user, authz.actions.Write, req.context.group)) {
+    allowedMethods.push("PUT", "DELETE");
+  }
+
+  res.set("Allow", allowedMethods);
+  return res.status(204).end();
+};
 
 /* Group logo
  */
@@ -151,6 +163,7 @@ async function receiveGroupLogo(req, res) {
 
 export {
   setGroup,
+  optionsGroupSettings,
   getGroupLogo,
   putGroupLogo,
   deleteGroupLogo,

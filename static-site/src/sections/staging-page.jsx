@@ -8,7 +8,7 @@ import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
-import { ErrorBanner } from "../components/splash/errorMessages";
+import { DataFetchErrorParagraph, ErrorBanner } from "../components/splash/errorMessages";
 
 const nextstrainLogoPNG = "/favicon.png";
 
@@ -101,13 +101,7 @@ class Index extends React.Component {
             columns={tableColumns}
           />
         )}
-        {this.state.errorFetchingData && (
-          <splashStyles.CenteredFocusParagraph>
-            Something went wrong getting data.
-            Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-            if this continues to happen.
-          </splashStyles.CenteredFocusParagraph>
-        )}
+        {this.state.errorFetchingData && <DataFetchErrorParagraph />}
       </GenericPage>
     );
   }

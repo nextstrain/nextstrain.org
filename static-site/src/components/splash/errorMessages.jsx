@@ -16,3 +16,10 @@ export const ErrorBanner = ({title, contents}) => (
     <p>{contents}</p>
   </splashStyles.FixedBanner>
 );
+
+export const DataFetchErrorParagraph = () => (
+  <splashStyles.CenteredFocusParagraph>
+    Something went wrong getting data.
+    Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a> if this continues to happen.
+  </splashStyles.CenteredFocusParagraph>
+);

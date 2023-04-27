@@ -12,6 +12,7 @@ import GenericPage from "../layouts/generic-page";
 import Cards from "../components/Cards/index";
 import pathogenCards from "../components/Cards/pathogenCards";
 import { AnchorLink } from "../components/Datasets/pathogen-page-introduction";
+import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
 
 const nextstrainLogoPNG = "/favicon.png";
 
@@ -93,13 +94,7 @@ class Index extends React.Component {
                 columns={tableColumns}
               />
             )}
-            {this.state.errorFetchingData && (
-              <splashStyles.CenteredFocusParagraph>
-                Something went wrong getting data.
-                Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org </a>
-                if this continues to happen.
-              </splashStyles.CenteredFocusParagraph>
-            )}
+            {this.state.errorFetchingData && <DataFetchErrorParagraph />}
           </div>
         </ScrollableAnchor>
       </GenericPage>
