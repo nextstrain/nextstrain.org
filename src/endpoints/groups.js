@@ -2,6 +2,7 @@ import * as authz from "../authz/index.js";
 import { Group } from "../groups.js";
 import {contentTypesProvided, contentTypesConsumed} from "../negotiate.js";
 import {deleteByUrls, proxyFromUpstream, proxyToUpstream} from "../upstream.js";
+import * as options from "./options.js";
 
 
 const setGroup = (nameExtractor) => (req, res, next) => {
@@ -16,6 +17,8 @@ const setGroup = (nameExtractor) => (req, res, next) => {
 
 /* Group customizations
  */
+
+const optionsGroup = options.forAuthzObject(req => req.context.group);
 
 
 /* Group logo
@@ -151,6 +154,7 @@ async function receiveGroupLogo(req, res) {
 
 export {
   setGroup,
+  optionsGroup,
   getGroupLogo,
   putGroupLogo,
   deleteGroupLogo,

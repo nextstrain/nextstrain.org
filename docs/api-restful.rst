@@ -76,8 +76,8 @@ Authentication
 Authentication is required for:
 
 1. All resource-modifying requests (PUT, DELETE).
-2. Read-only requests (GET, HEAD) to private resources (e.g. private `Nextstrain
-   Groups`_).
+2. Read-only requests (GET, HEAD, OPTIONS) to private resources (e.g. private
+   `Nextstrain Groups`_).
 3. All requests to group settings endpoints.
 
 Authentication is not required to download public datasets or narratives.
@@ -232,6 +232,11 @@ DELETE
     Removes all representations of the resource identified by the request URL.
     Responds with status 204 if successful.
 
+OPTIONS
+    Lists the methods, via the ``Allow`` header, that the authenticated user
+    (if any) is authorized to use on the resource identified by the request
+    URL.  Responds with status 204 is successful.
+
 
 Conditional requests
 ====================
@@ -248,45 +253,45 @@ Endpoints
 
 The following dataset endpoints exist::
 
-    {GET, HEAD, PUT, DELETE} /dengue/*
-    {GET, HEAD, PUT, DELETE} /ebola/*
-    {GET, HEAD, PUT, DELETE} /enterovirus/*
-    {GET, HEAD, PUT, DELETE} /flu/*
-    {GET, HEAD, PUT, DELETE} /lassa/*
-    {GET, HEAD, PUT, DELETE} /measles/*
-    {GET, HEAD, PUT, DELETE} /mers/*
-    {GET, HEAD, PUT, DELETE} /mumps/*
-    {GET, HEAD, PUT, DELETE} /ncov/*
-    {GET, HEAD, PUT, DELETE} /tb/*
-    {GET, HEAD, PUT, DELETE} /WNV/*
-    {GET, HEAD, PUT, DELETE} /yellow-fever/*
-    {GET, HEAD, PUT, DELETE} /zika/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /dengue/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /ebola/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /enterovirus/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /flu/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /lassa/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /measles/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /mers/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /mumps/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /ncov/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /tb/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /WNV/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /yellow-fever/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /zika/*
 
-    {GET, HEAD, PUT, DELETE} /staging/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /staging/*
 
-    {GET, HEAD, PUT, DELETE} /groups/{name}/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/*
 
-    {GET, HEAD} /community/{user}/{repo}/*
+    {GET, HEAD, OPTIONS} /community/{user}/{repo}/*
 
-    {GET, HEAD} /fetch/*
+    {GET, HEAD, OPTIONS} /fetch/*
 
 The following narrative endpoints exist::
 
-    {GET, HEAD, PUT, DELETE} /narratives/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /narratives/*
 
-    {GET, HEAD, PUT, DELETE} /staging/narratives/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /staging/narratives/*
 
-    {GET, HEAD, PUT, DELETE} /groups/{name}/narratives/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/narratives/*
 
-    {GET, HEAD} /community/narratives/{user}/{repo}/*
+    {GET, HEAD, OPTIONS} /community/narratives/{user}/{repo}/*
 
-    {GET, HEAD} /fetch/narratives/*
+    {GET, HEAD, OPTIONS} /fetch/narratives/*
 
 The following group settings endpoints exist::
 
-    {GET, HEAD, PUT, DELETE} /groups/{name}/settings/logo
+    {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/settings/logo
 
-    {GET, HEAD, PUT, DELETE} /groups/{name}/settings/overview
+    {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/settings/overview
 
 .. _motivation:
 
