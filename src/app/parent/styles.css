@@ -1,0 +1,5 @@
+/* An example of page-scoped styles */
+button {
+  min-width: 50px;
+  margin: 10px;
+}

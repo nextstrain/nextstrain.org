@@ -442,9 +442,16 @@ app.routeAsync("/edit/narratives")
 
 
 /* Next.js embedded server.
+ * It's nice to see all the routes here to easily grasp what's being handled where.
+ * Similar to coreBuildPaths for auspice -- as both Auspice & Next.js will handle any
+ * route you give them. Of course it's not this simple as some routes are defined elsewhere
+ * e.g. GET /whoami (defined earlier) depends on the content-type & a html content type
+ * will be handled by nextApp but that's not immediately clear from scanning this page.
  */
 const nextAppRoutes = [
   "/_next/*", // internal assets
+  "/parent",   // TMP - just an example page
+  "/parent/*", // handle all children pages
 ];
 
 app.routeAsync(nextAppRoutes)
