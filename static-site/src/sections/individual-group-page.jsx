@@ -1,5 +1,6 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import { uri } from "../../../src/templateLiterals.js";
 import { HugeSpacer, FlexGridRight } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
@@ -36,8 +37,8 @@ class Index extends React.Component {
     const groupName = this.props["groupName"];
     try {
       const [sourceInfo, availableData] = await Promise.all([
-        fetchAndParseJSON(`/charon/getSourceInfo?prefix=/groups/${encodeURIComponent(groupName)}/`),
-        fetchAndParseJSON(`/charon/getAvailable?prefix=/groups/${encodeURIComponent(groupName)}/`)
+        fetchAndParseJSON(uri`/charon/getSourceInfo?prefix=/groups/${groupName}/`),
+        fetchAndParseJSON(uri`/charon/getAvailable?prefix=/groups/${groupName}/`)
       ]);
 
       this.setState({

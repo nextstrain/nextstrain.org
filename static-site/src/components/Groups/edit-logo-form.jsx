@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { uri } from "../../../../src/templateLiterals.js";
 import { MediumSpacer } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import { AvatarWithoutMargins, CenteredForm, InputButton, InputLabel} from "./styles";
@@ -24,7 +25,7 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
   const getGroupLogo = async () => {
     clearErrorMessage();
     try {
-      const response = await fetch(`/groups/${encodeURIComponent(groupName)}/settings/logo`);
+      const response = await fetch(uri`/groups/${groupName}/settings/logo`);
       if (response.status === 404) return null;
       if (response.ok) return URL.createObjectURL(await response.blob());
       createErrorMessage(response.statusText);
@@ -41,7 +42,7 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
     setDeletionInProgress(true);
 
     try {
-      const response = await fetch(`/groups/${encodeURIComponent(groupName)}/settings/logo`, {method: "DELETE"});
+      const response = await fetch(uri`/groups/${groupName}/settings/logo`, {method: "DELETE"});
       response.ok
         ? setLogo({ ...logo, current: null })
         : createErrorMessage(response.statusText);
@@ -59,7 +60,7 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
     setUploadInProgress(true);
 
     try {
-      const response = await fetch(`/groups/${encodeURIComponent(groupName)}/settings/logo`, {
+      const response = await fetch(uri`/groups/${groupName}/settings/logo`, {
         method: "PUT",
         headers: {
           "Content-Type": "image/png"
