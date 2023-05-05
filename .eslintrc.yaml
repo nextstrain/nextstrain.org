@@ -17,7 +17,6 @@ ignorePatterns:
   - static-site/
 
 rules:
-  no-fallthrough: off
   no-global-assign: off
   no-prototype-builtins: off
   no-unused-vars: off

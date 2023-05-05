@@ -733,6 +733,7 @@ async function renewTokens(refreshToken) {
       }
     }
 
+    // eslint-disable-next-line no-fallthrough
     default:
       throw new Error(`failed to renew tokens: ${response.status} ${response.statusText}: ${body}`);
   }
