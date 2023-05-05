@@ -17,7 +17,6 @@ ignorePatterns:
   - static-site/
 
 rules:
-  no-case-declarations: off
   no-fallthrough: off
   no-global-assign: off
   no-prototype-builtins: off

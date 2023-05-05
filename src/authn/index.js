@@ -708,7 +708,7 @@ async function renewTokens(refreshToken) {
     case 200:
       break;
 
-    case 400:
+    case 400: {
       /* In the context of grant_type=refresh_token (above), the invalid_grant
        * error means¹:
        *
@@ -731,6 +731,7 @@ async function renewTokens(refreshToken) {
       if (error === "invalid_grant") {
         throw new AuthnRefreshTokenInvalid(details);
       }
+    }
 
     default:
       throw new Error(`failed to renew tokens: ${response.status} ${response.statusText}: ${body}`);
