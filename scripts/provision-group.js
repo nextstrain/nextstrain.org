@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-await-in-loop */
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 import { ArgumentParser } from 'argparse';
 
 import {

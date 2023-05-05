@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 import * as authz from '../authz/index.js';
 
 import { fetch } from '../fetch.js';
@@ -16,7 +15,7 @@ class CoreSource extends Source {
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "master"; }
 
-  async urlFor(path, method = 'GET', headers = {}) { // eslint-disable-line no-unused-vars
+  async urlFor(path, method = 'GET', headers = {}) {
     const baseUrl = path.endsWith(".md")
       ? `https://raw.githubusercontent.com/${this.repo}/${await this.branch}/`
       : await this.baseUrl();

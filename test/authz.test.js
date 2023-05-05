@@ -22,7 +22,6 @@ const testPrivateNarrative = testPrivateSource.narrative(["example"]);
 
 // Check that main authz functions + built-in policies work as expected.
 describe("authz.authorized() and .assertAuthorized()", () => {
-  /* eslint-disable no-multi-spaces */
   const cases = [
     // Core
     [[null, Read,  coreSource],     true],
@@ -104,7 +103,6 @@ describe("authz.authorized() and .assertAuthorized()", () => {
     [[mockUser(["test-private/owners"]),  Write, testPrivateDataset],    true],
     [[mockUser(["test-private/owners"]),  Write, testPrivateNarrative],  true],
   ];
-  /* eslint-enable no-multi-spaces */
 
   /* Jest's test.each() makes it really hard to get reasonable test names, so
    * build one ourselves first.

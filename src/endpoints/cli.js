@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import jszip from 'jszip';
 import mime from 'mime';
 import { pipeline } from 'stream/promises';

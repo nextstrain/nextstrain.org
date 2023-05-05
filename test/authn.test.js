@@ -6,7 +6,6 @@ import { randomKey } from '../src/cryptography.js';
 /* Allow each test() to import() modules separately so we can explicitly test
  * require-time behaviours.
  */
-/* eslint-disable global-require */
 beforeEach(() => {
   jest.resetModules();
 });

@@ -4,7 +4,6 @@ import { GROUPS_DATA_FILE } from './config.js';
 import { NotFound } from './httpErrors.js';
 import { GroupSource } from "./sources/index.js";
 
-/* eslint-disable-next-line import/first, import/newline-after-import */
 import { readFile } from 'fs/promises';
 const GROUPS_DATA = JSON.parse(await readFile(GROUPS_DATA_FILE));
 
@@ -168,7 +167,7 @@ function validateGroupName(name) {
     return {ok: false, msg: "disallowed characters (must contain only ASCII upper- and lowercase letters (A-Z), digits (0-9), and hyphens (-))"};
   }
 
-  if (name.length <  3) return {ok: false, msg: "too short (must be at least 3 characters)"};     // eslint-disable-line no-multi-spaces
+  if (name.length <  3) return {ok: false, msg: "too short (must be at least 3 characters)"};
   if (name.length > 50) return {ok: false, msg: "too long (must be no more than 50 characters)"};
 
   /* XXX TODO: This validation is sufficient to prevent us from accidentally

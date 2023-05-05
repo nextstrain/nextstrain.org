@@ -1,4 +1,3 @@
-/* eslint-disable quote-props */
 export default {
   /* Run tests in a normal Node environment, not a fake browser (JSDOM)
    * environment.  This is a Node app after all.  But this also fixes an

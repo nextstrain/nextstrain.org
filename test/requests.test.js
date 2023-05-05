@@ -1,9 +1,3 @@
-/* eslint-disable no-multi-spaces */
-
-/* Rationale:
- *   no-multi-spaces: Aligned paths make for easier reading
- */
-
 import {jest} from '@jest/globals';
 import contentType from 'content-type';
 

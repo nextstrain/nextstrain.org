@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 import * as authz from '../authz/index.js';
 
 import { fetch } from '../fetch.js';

@@ -6,7 +6,6 @@
  * syntax; adding this comment).
  *   -trs, 30 March 2023
  */
-/* eslint-disable no-param-reassign */
 import * as utils from './index.js';
 
 /** In auspice v1, the `prettyString` function was used extensively to transform values
@@ -178,7 +177,7 @@ const setAuthorInfoOnTree = (v2, meta) => {
  * The feature information was an object with properties `start`, `end` and `strand`
  */
 const convertToGffFormat = (annotations) => {
-  for (const name in annotations) { // eslint-disable-line
+  for (const name in annotations) {
     // Convert from 0-based BED format to 1-based GFF format for start position
     annotations[name].start += 1;
     // half-open 0-based BED end position is the same as 1-based closed ended GFF position.

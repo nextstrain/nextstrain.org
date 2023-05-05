@@ -22,7 +22,7 @@ import { NotAcceptable, UnsupportedMediaType } from './httpErrors.js';
  * @returns {Function} An async routing function which will perform the dispatch.
  */
 function contentTypesProvided(providers) {
-  const types = providers.map(([type, ...handlers]) => type); // eslint-disable-line no-unused-vars
+  const types = providers.map(([type, ...handlers]) => type);
   const handlersByType = Object.fromEntries(providers.map(([type, ...handlers]) => [type, handlers]));
 
   return async function dispatchByContentType(req, res, next) {
@@ -77,7 +77,8 @@ function Links(links) {
   return links.map(({url, rel, type}) => {
     let link = `<${url}>`;
 
-    if (rel)  link += `; rel=${quoted(rel)}`;     // eslint-disable-line no-multi-spaces
+    if (rel)  link += `; rel=${quoted(rel)}`;
+
     if (type) link += `; type=${quoted(type)}`;
 
     return link;
@@ -96,7 +97,7 @@ function Links(links) {
  * @returns {Function} An async routing function which will perform the dispatch.
  */
 function contentTypesConsumed(providers) {
-  const types = providers.map(([type, handler]) => type); // eslint-disable-line no-unused-vars
+  const types = providers.map(([type, handler]) => type);
   const handlers = Object.fromEntries(providers);
 
   return async function dispatchByContentType(req, res, next) {
@@ -108,7 +109,7 @@ function contentTypesConsumed(providers) {
 
     for (const contentType of types) {
       if (req.is(contentType)) {
-        return await handlers[contentType](req, res, next); // eslint-disable-line no-await-in-loop
+        return await handlers[contentType](req, res, next);
       }
     }
 

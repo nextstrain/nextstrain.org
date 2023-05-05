@@ -1,4 +1,3 @@
-/* eslint no-console: off */
 import sslRedirect from 'heroku-ssl-redirect';
 
 import nakedRedirect from 'express-naked-redirect';
@@ -16,7 +15,6 @@ const streamFinished = promisify(stream.finished);
 
 const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
 
-/* eslint-disable import/first */
 import { PRODUCTION } from './config.js';
 import * as utils from './utils/index.js';
 import { addAsync } from './async.js';
@@ -207,7 +205,7 @@ const coreBuildRoutes = coreBuildPaths.map(path => [
   `${path}:*`, // Tangletrees at top-level, e.g. /a:/a/b
 ]);
 
-app.use([coreBuildRoutes, "/narratives/*"], setSource(req => new CoreSource())); // eslint-disable-line no-unused-vars
+app.use([coreBuildRoutes, "/narratives/*"], setSource(req => new CoreSource()));
 
 app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
@@ -226,7 +224,7 @@ app.routeAsync("/narratives/*")
 
 /* Staging datasets and narratives
  */
-app.use("/staging", setSource(req => new CoreStagingSource())); // eslint-disable-line no-unused-vars
+app.use("/staging", setSource(req => new CoreStagingSource()));
 
 app.routeAsync("/staging")
   .getAsync(endpoints.static.sendGatsbyPage("staging/index.html"))
@@ -407,7 +405,6 @@ app.route("/cli")
  * the schemas to browsers/humans while still returning the JSON representation
  * to programmatic clients, though we're not this fancy yet.
  */
-/* eslint-disable no-multi-spaces */
 const schemaRoutes = [
   ["/schemas/augur/frequencies",       "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-frequencies.json"],
   ["/schemas/auspice/config/v2",       "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-auspice-config-v2.json"],
@@ -418,7 +415,6 @@ const schemaRoutes = [
   ["/schemas/dataset/tip-frequencies", "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-tip-frequencies.json"],
   ["/schemas/dataset/measurements",    "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-measurements.json"],
 ];
-/* eslint-enable no-multi-spaces */
 
 for (const [schemaRoute, url] of schemaRoutes) {
   app.route(schemaRoute)
@@ -452,7 +448,6 @@ app.routeAsync("/edit/narratives")
  * instead of served straight from disk.
  */
 if (app.locals.gatsbyDevUrl) {
-  /* eslint-disable-next-line import/no-extraneous-dependencies */
   const {createProxyMiddleware} = await import("http-proxy-middleware");
 
   // WebSocket endpoint
@@ -537,9 +532,9 @@ app.useAsync(async (err, req, res, next) => {
         req.session.afterLoginReturnTo = req.originalUrl;
         return res.redirect("/login");
       }
-      err = new Unauthorized(err.message); // eslint-disable-line no-param-reassign
+      err = new Unauthorized(err.message);
     } else {
-      err = new Forbidden(err.message); // eslint-disable-line no-param-reassign
+      err = new Forbidden(err.message);
     }
   }
 

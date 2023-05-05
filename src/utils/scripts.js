@@ -32,7 +32,7 @@ function setupConsole({dryRun = true}) {
   stdout.pipe(process.stdout);
   stderr.pipe(process.stderr);
 
-  console = new Console({stdout, stderr}); // eslint-disable-line no-global-assign
+  console = new Console({stdout, stderr});
 }
 
 

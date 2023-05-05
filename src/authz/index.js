@@ -48,7 +48,6 @@ const authorized = (user, action, object) => {
    * approximately never.
    *    -trs, 4 Jan 2022
    */
-  /* eslint-disable indent, no-multi-spaces, semi-spacing */
   const policy =
     object instanceof Group    ? object.authzPolicy        :
     object instanceof Source   ? object.authzPolicy        :
@@ -58,7 +57,7 @@ const authorized = (user, action, object) => {
   const objectTags = object.authzTags;
   const userRoles = user ? user.authzRoles : new Set();
 
-  return evaluatePolicy(policy, userRoles, action, objectTags); // eslint-disable-line no-use-before-define
+  return evaluatePolicy(policy, userRoles, action, objectTags);
 };
 
 
@@ -88,8 +87,6 @@ const evaluatePolicy = (policy, userRoles, action, objectTags) => {
        tag && role
     && (tag  === "*" || objectTags.has(tag))
     && (role === "*" || userRoles.has(role));
-
-  /* eslint-enable indent, no-multi-spaces, semi-spacing */
 
   /* If we need/want to support "deny" policy rules in the future, this is the
    * place to do it.

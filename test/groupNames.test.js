@@ -3,7 +3,6 @@ import { validateGroupName, assertValidGroupName, normalizeGroupName } from '../
 describe("validate", () => {
   const repeat = (str, n) => Array(n+1).join(str);
 
-  /* eslint-disable no-multi-spaces */
   const names = [
     ["foo-bar", {ok: true}],
     ["foo/bar", {ok: false, msg: expect.stringMatching(/disallowed char/)}],
@@ -19,7 +18,6 @@ describe("validate", () => {
     [repeat("x", 50), {ok: true}],
     [repeat("x", 51), {ok: false, msg: expect.stringMatching(/too long/)}],
   ];
-  /* eslint-enable no-multi-spaces */
 
   test.each(names)("%s → %s", (name, expected) => {
     expect(validateGroupName(name))

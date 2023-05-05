@@ -1,7 +1,6 @@
 // Server handlers for authentication (authn).  Authorization (authz) is done
 // in the server's charon handlers.
 //
-/* eslint-disable import/first, import/newline-after-import */
 import { strict as assert } from 'assert';
 
 import debugFactory from 'debug';
@@ -14,9 +13,9 @@ import FileStoreFactory from 'session-file-store';
 const FileStore = FileStoreFactory(session);
 import passport from 'passport';
 import { Strategy as OAuth2Strategy } from 'passport-oauth2';
-import { jwtVerify } from 'jose/jwt/verify';                   // eslint-disable-line import/no-unresolved
-import { createRemoteJWKSet } from 'jose/jwks/remote';         // eslint-disable-line import/no-unresolved
-import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/errors';   // eslint-disable-line import/no-unresolved
+import { jwtVerify } from 'jose/jwt/verify';
+import { createRemoteJWKSet } from 'jose/jwks/remote';
+import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/errors';
 import partition from 'lodash.partition';
 import BearerStrategy from './bearer.js';
 import { getTokens, setTokens, deleteTokens } from './session.js';
@@ -154,7 +153,7 @@ function setup(app) {
   // requests to Cognito when we need to load back a user profile from their
   // session cookie.
   passport.serializeUser((user, done) => {
-    let serializedUser = {...user}; // eslint-disable-line prefer-const
+    let serializedUser = {...user};
 
     // Deflate authzRoles and flags from Set to Array
     for (const key of ["authzRoles", "flags"]) {
@@ -182,7 +181,7 @@ function setup(app) {
      */
     req.context.authnWithSession = true;
 
-    let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
+    let user = JSON.parse(serializedUser);
 
     /* If we have tokens in the session, then we ignore the serialized user
      * object and instead recreate the user object directly from the tokens.
@@ -733,7 +732,6 @@ async function renewTokens(refreshToken) {
         throw new AuthnRefreshTokenInvalid(details);
       }
 
-    // eslint-disable-next-line no-fallthrough
     default:
       throw new Error(`failed to renew tokens: ${response.status} ${response.statusText}: ${body}`);
   }

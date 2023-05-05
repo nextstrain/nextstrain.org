@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-
-/* eslint-disable no-prototype-builtins */
-
 import fs from 'fs';
 
 import yaml from 'js-yaml';

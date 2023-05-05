@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 import * as authz from '../authz/index.js';
 
 import { Source, Dataset, DatasetSubresource, Narrative, NarrativeSubresource } from './models.js';
@@ -46,7 +45,6 @@ class UrlDefinedSource extends Source {
 }
 
 class UrlDefinedDataset extends Dataset {
-  // eslint-disable-next-line no-unused-vars
   assertValidPathParts(pathParts) {
     // Override check for underscores (_), as we want to allow arbitrary
     // external URLs.
@@ -85,7 +83,6 @@ class UrlDefinedDatasetSubresource extends DatasetSubresource {
 }
 
 class UrlDefinedNarrative extends Narrative {
-  // eslint-disable-next-line no-unused-vars
   assertValidPathParts(pathParts) {
     // Override check for underscores (_), as we want to allow arbitrary
     // external URLs.

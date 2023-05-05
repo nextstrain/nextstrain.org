@@ -96,7 +96,6 @@ const sendGatsbyPage = (page) => async (req, res) => {
   if (req.app.locals.gatsbyDevUrl) {
     const pageUrl = (new URL(page, req.app.locals.gatsbyDevUrl)).toString();
 
-    /* eslint-disable-next-line import/no-extraneous-dependencies */
     const proxy = (await import("http-proxy")).default.createProxyServer({
       target: pageUrl,
       ignorePath: true, // ignore req.path since pageUrl is fully specified
@@ -105,7 +104,6 @@ const sendGatsbyPage = (page) => async (req, res) => {
     utils.verbose(`Sending Gatsby page ${pageUrl} for ${req.originalUrl}`);
 
     return new Promise((resolve, reject) => {
-      // eslint-disable-next-line no-shadow
       proxy.on("end", (req, res) => {
         res.end();
         resolve();

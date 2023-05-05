@@ -1,9 +1,3 @@
-/* eslint-disable no-multi-spaces */
-
-/* Rationale:
- *   no-multi-spaces: Alignment makes for easier reading
- */
-
 import { NotFound } from '../httpErrors.js';
 
 import * as authz from '../authz/index.js';
@@ -20,7 +14,6 @@ import { deleteByUrls, proxyFromUpstream, proxyToUpstream } from "../upstream.js
  *   instance from the request
  * @returns {expressMiddleware}
  */
-// eslint-disable-next-line no-unused-vars
 const setSource = (sourceExtractor) => (req, res, next) => {
   const source = sourceExtractor(req);
 

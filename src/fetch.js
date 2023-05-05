@@ -14,7 +14,7 @@ const fetch = async (url, options) => {
    * interface instead of looking for properties like "method" and "cache" on
    * both "options" and "url" (if a Request).
    */
-  const request = new Request(url, options); // eslint-disable-line no-use-before-define
+  const request = new Request(url, options);
 
   utils.verbose(`[fetch] ${request.method} ${request.url} (cache: ${request.cache})`);
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-await-in-loop */
 import { ArgumentParser } from 'argparse';
 import IAM from '@aws-sdk/client-iam';
 import S3 from '@aws-sdk/client-s3';
@@ -419,7 +418,6 @@ async function updateGroupsDataFile({dryRun = true, group}) {
  *
  * @returns {Promise<boolean>} true if differences were reported; false if not.
  */
-/* eslint-disable-next-line consistent-return */
 async function diff(...args) {
   try {
     await run(["git", "diff", ...args]);

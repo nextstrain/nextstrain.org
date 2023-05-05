@@ -1,9 +1,3 @@
-/* eslint-disable no-multi-spaces */
-
-/* Rationale:
- *   no-multi-spaces: Alignment makes for easier reading
- */
-
 import { parse as parseContentType } from 'content-type';
 import negotiateMediaType from 'negotiator/lib/mediaType.js';
 import stream from 'stream';
@@ -92,7 +86,6 @@ async function proxyFromUpstream(req, res, url, accept) {
 async function proxyToUpstream(req, res, upstreamUrlExtractor, contentType) {
   const method = "PUT";
 
-  // eslint-disable-next-line prefer-const
   let headers = {
     "Content-Type": contentType,
     ...copyHeaders(req, ["Content-Encoding", "Content-Length"]),
@@ -341,7 +334,7 @@ function copyHeaders(headerSource, headerNames) {
   return Object.fromEntries(
     headerNames
       .map(name => [name, headerSource.get(name)])
-      .filter(([name, value]) => value != null && value !== "") // eslint-disable-line no-unused-vars
+      .filter(([name, value]) => value != null && value !== "")
   );
 }
 
