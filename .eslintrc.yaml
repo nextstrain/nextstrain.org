@@ -1,27 +1,34 @@
 ---
 extends:
   - eslint:recommended
+
 plugins:
   - jest
+
 parser: "@babel/eslint-parser"
+
 globals:
   BASE_URL: true
+
 ignorePatterns:
   - auspice-client/
   - docs/
   - node_modules/
   - static-site/
+
 rules:
   no-case-declarations: off
   no-fallthrough: off
   no-global-assign: off
   no-prototype-builtins: off
   no-unused-vars: off
+
 parserOptions:
   sourceType: module
   requireConfigFile: false
   babelOptions:
     plugins: ["@babel/plugin-proposal-class-properties"]
+
 env:
   browser: true
   es6: true
