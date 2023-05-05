@@ -6,7 +6,7 @@ paste in here, rename class -> className, and remove the data-lang="en"
 bit from the first <blockquote> element
 */
 
-export const tweets = () => ( // eslint-disable-line
+export const tweets = () => (
   <div className="twitterRow">
     <div className="twitterColumn">
       <TweetEmbed id="841750279972352005" />

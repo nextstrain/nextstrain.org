@@ -17,7 +17,6 @@ import "../styles/browserCompatability.css";
 import "../styles/bootstrap.css";
 import "../styles/globals.css";
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class MainLayout extends React.Component {
   render() {
     const { children } = this.props;

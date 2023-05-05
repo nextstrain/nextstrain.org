@@ -102,7 +102,6 @@ class NavBar extends React.Component {
   getLogoType() {
     const title = "Nextstrain";
     const rainbowTitle = title.split("").map((letter, i) =>
-      // eslint-disable-next-line react/no-array-index-key
       <NavLogoCharacter key={i} colorIndex={i}>{letter}</NavLogoCharacter>
     );
     return (

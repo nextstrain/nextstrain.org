@@ -19,7 +19,6 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
     let cleanUp = false;
     setCurrentLogo();
     return () => cleanUp = true;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getGroupLogo = async () => {

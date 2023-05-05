@@ -152,7 +152,6 @@ const FullWidthPicture = styled.picture`
 `;
 
 function CollapsibleContent(props) {
-  /* eslint no-shadow: "off" */
   const {title, text, images} = props.content;
 
   return (

@@ -198,7 +198,6 @@ const MobileToggleIcon = styled.div`
   cursor: pointer;
 `;
 
-/* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query genericTemplate($slug: String!) {
     allSlugs: allMarkdownRemark {

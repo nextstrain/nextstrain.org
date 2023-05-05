@@ -44,7 +44,6 @@ const tableColumns = [
   }
 ];
 const tableData = parseTableData(hardcodedData);
-// eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   constructor(props) {
     super(props);

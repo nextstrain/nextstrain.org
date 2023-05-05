@@ -1,4 +1,3 @@
-/* eslint global-require:"off" */
 import React from "react";
 import styled from "styled-components";
 import * as Styles from "./splash/styles";
