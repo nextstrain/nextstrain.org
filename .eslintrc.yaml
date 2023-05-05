@@ -25,7 +25,7 @@ rules:
   # Code style rules
   no-unneeded-ternary: ["error", { "defaultAssignment": true }]
   operator-linebreak: ["error", "before", { "overrides": { "?": "ignore", ":": "ignore", "=": "after" } }]
-  # quote-props: ["error", "as-needed"]
+  quote-props: ["error", "as-needed"]
 
 parserOptions:
   sourceType: module
