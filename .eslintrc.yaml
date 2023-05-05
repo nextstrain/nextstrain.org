@@ -4,7 +4,11 @@ plugins: ["react-hooks", "jest"]
 parser: "@babel/eslint-parser"
 globals:
   BASE_URL: true
-ignorePatterns: ["static-site/", "auspice-client/"]
+ignorePatterns:
+  - auspice-client/
+  - docs/
+  - node_modules/
+  - static-site/
 rules:
   camelcase: off # require camel case names
   prefer-template: off
