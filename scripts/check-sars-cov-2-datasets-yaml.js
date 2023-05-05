@@ -44,7 +44,7 @@ function blockDefinesBuild(block) {
 }
 
 function ensureGeoParentsDefined(blocks) {
-  const geosWithGeoParents = blocks.filter((block) => block.hasOwnProperty("parentGeo")).map((block) => block.geo);
+  const geosWithGeoParents = blocks.filter((block) => Object.prototype.hasOwnProperty.call(block, "parentGeo")).map((block) => block.geo);
   blocks.filter((block) => blockDefinesBuild(block)).forEach((block) => {
     if (!geosWithGeoParents.includes(block.geo)) {
       console.log(`Build for ${block.name} with geo "${block.geo}" doesn't have a corresponding block linking to a "parentGeo"`);
