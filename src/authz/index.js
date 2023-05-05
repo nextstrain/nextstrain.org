@@ -16,7 +16,7 @@ import tags from './tags.js';
  * @param {object} object - Object being acted upon.
  * @returns {boolean}
  */
-const authorized = (user, action, object) => {
+function authorized(user, action, object) {
   // user may be null
   assert(!user || user.authzRoles != null, "user.authzRoles is not null if user is not null");
   assert(actions.has(action), "action is known");
@@ -58,7 +58,7 @@ const authorized = (user, action, object) => {
   const userRoles = user ? user.authzRoles : new Set();
 
   return evaluatePolicy(policy, userRoles, action, objectTags);
-};
+}
 
 
 /**
@@ -72,7 +72,7 @@ const authorized = (user, action, object) => {
  * @param {Set} objectTags - Tags of object being acted upon.
  * @returns {boolean}
  */
-const evaluatePolicy = (policy, userRoles, action, objectTags) => {
+function evaluatePolicy(policy, userRoles, action, objectTags) {
   assert(Array.isArray(policy));
   assert(policy.every(({tag, role, allow}) => tag && role && allow));
   assert(objectTags instanceof Set);
@@ -99,7 +99,7 @@ const evaluatePolicy = (policy, userRoles, action, objectTags) => {
   );
 
   return allowed.has(action);
-};
+}
 
 
 /**
@@ -111,11 +111,11 @@ const evaluatePolicy = (policy, userRoles, action, objectTags) => {
  * @param {object} object - Object being acted upon.
  * @throws {AuthzDenied}
  */
-const assertAuthorized = (user, action, object) => {
+function assertAuthorized(user, action, object) {
   if (!authorized(user, action, object)) {
     throw new AuthzDenied();
   }
-};
+}
 
 
 export {
