@@ -17,7 +17,10 @@ ignorePatterns:
   - static-site/
 
 rules:
+  # Code quality rules
   no-unused-vars: error
+
+  # Code style rules
 
 parserOptions:
   sourceType: module
