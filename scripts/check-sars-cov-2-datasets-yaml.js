@@ -59,8 +59,10 @@ function ensureBlocksAreValid(blocks) {
     }
     if (block.coords) {
       if (
-        !Array.isArray(block.coords) || block.coords.length!==2 ||
-        !(block.coords[0] >= -180 && block.coords[0] <= 180) || !(block.coords[1] >= -90 && block.coords[1] <= 90)
+        !Array.isArray(block.coords)
+        || block.coords.length!==2
+        || !(block.coords[0] >= -180 && block.coords[0] <= 180)
+        || !(block.coords[1] >= -90  && block.coords[1] <= 90)
       ) {
         console.log(`Invalid coords for dataset name "${block.name}"`);
       }
