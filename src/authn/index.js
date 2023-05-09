@@ -153,7 +153,7 @@ function setup(app) {
   // requests to Cognito when we need to load back a user profile from their
   // session cookie.
   passport.serializeUser((user, done) => {
-    let serializedUser = {...user};
+    let serializedUser = {...user}; // eslint-disable-line prefer-const
 
     // Deflate authzRoles and flags from Set to Array
     for (const key of ["authzRoles", "flags"]) {
@@ -181,7 +181,7 @@ function setup(app) {
      */
     req.context.authnWithSession = true;
 
-    let user = JSON.parse(serializedUser);
+    let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
 
     /* If we have tokens in the session, then we ignore the serialized user
      * object and instead recreate the user object directly from the tokens.

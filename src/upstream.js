@@ -86,6 +86,7 @@ async function proxyFromUpstream(req, res, url, accept) {
 async function proxyToUpstream(req, res, upstreamUrlExtractor, contentType) {
   const method = "PUT";
 
+  // eslint-disable-next-line prefer-const
   let headers = {
     "Content-Type": contentType,
     ...copyHeaders(req, ["Content-Encoding", "Content-Length"]),

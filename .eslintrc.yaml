@@ -20,7 +20,7 @@ rules:
   # Code quality rules
   no-unused-vars: error
   no-use-before-define: ["error", { "functions": false, "classes": false }]
-  # prefer-const: ["error", {"destructuring": "all"}]
+  prefer-const: ["error", {"destructuring": "all"}]
 
   # Code style rules
   # arrow-parens: ["error", "always"]
