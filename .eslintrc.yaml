@@ -23,7 +23,6 @@ rules:
   prefer-const: ["error", {"destructuring": "all"}]
 
   # Code style rules
-  # arrow-parens: ["error", "always"]
   no-unneeded-ternary: ["error", { "defaultAssignment": true }]
   # operator-linebreak: ["error", "after", { "overrides": { "?": "ignore", ":": "ignore" } }]
   # quote-props: ["error", "as-needed"]
