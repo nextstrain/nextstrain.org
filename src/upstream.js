@@ -334,7 +334,7 @@ function copyHeaders(headerSource, headerNames) {
   return Object.fromEntries(
     headerNames
       .map(name => [name, headerSource.get(name)])
-      .filter(([name, value]) => value != null && value !== "")
+      .filter(([name, value]) => value != null && value !== "") // eslint-disable-line no-unused-vars
   );
 }
 

@@ -22,7 +22,7 @@ import { NotAcceptable, UnsupportedMediaType } from './httpErrors.js';
  * @returns {Function} An async routing function which will perform the dispatch.
  */
 function contentTypesProvided(providers) {
-  const types = providers.map(([type, ...handlers]) => type);
+  const types = providers.map(([type, ...handlers]) => type); // eslint-disable-line no-unused-vars
   const handlersByType = Object.fromEntries(providers.map(([type, ...handlers]) => [type, handlers]));
 
   return async function dispatchByContentType(req, res, next) {
@@ -97,7 +97,7 @@ function Links(links) {
  * @returns {Function} An async routing function which will perform the dispatch.
  */
 function contentTypesConsumed(providers) {
-  const types = providers.map(([type, handler]) => type);
+  const types = providers.map(([type, handler]) => type); // eslint-disable-line no-unused-vars
   const handlers = Object.fromEntries(providers);
 
   return async function dispatchByContentType(req, res, next) {

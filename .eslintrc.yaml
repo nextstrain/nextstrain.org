@@ -17,7 +17,7 @@ ignorePatterns:
   - static-site/
 
 rules:
-  no-unused-vars: off
+  no-unused-vars: error
 
 parserOptions:
   sourceType: module

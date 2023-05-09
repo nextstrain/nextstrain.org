@@ -91,6 +91,8 @@ class Source {
   async baseUrl() {
     throw new Error("async baseUrl() must be implemented by subclasses");
   }
+
+  // eslint-disable-next-line no-unused-vars
   async urlFor(path, method = 'GET', headers = {}) {
     const url = new URL(path, await this.baseUrl());
     return url.toString();
@@ -102,6 +104,7 @@ class Source {
     return new Narrative(this, pathParts);
   }
 
+  // eslint-disable-next-line no-unused-vars
   secondTreeOptions(path) {
     return [];
   }

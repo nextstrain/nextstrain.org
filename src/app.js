@@ -205,7 +205,7 @@ const coreBuildRoutes = coreBuildPaths.map(path => [
   `${path}:*`, // Tangletrees at top-level, e.g. /a:/a/b
 ]);
 
-app.use([coreBuildRoutes, "/narratives/*"], setSource(req => new CoreSource()));
+app.use([coreBuildRoutes, "/narratives/*"], setSource(req => new CoreSource())); // eslint-disable-line no-unused-vars
 
 app.routeAsync(coreBuildRoutes)
   .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
@@ -224,7 +224,7 @@ app.routeAsync("/narratives/*")
 
 /* Staging datasets and narratives
  */
-app.use("/staging", setSource(req => new CoreStagingSource()));
+app.use("/staging", setSource(req => new CoreStagingSource())); // eslint-disable-line no-unused-vars
 
 app.routeAsync("/staging")
   .getAsync(endpoints.static.sendGatsbyPage("staging/index.html"))

@@ -47,7 +47,7 @@ async function main({args}) {
       s3datasetObjects = await collectFromBucket({
         BUCKET: `nextstrain-staging`,
         fileToUrl: (filename) => `https://nextstrain.org/staging/${filename.replace('.json', '').replace(/_/g, '/')}`,
-        inclusionTest: (filename) => true
+        inclusionTest: (filename) => true // eslint-disable-line no-unused-vars
       });
       datasetMetadata = getDatasetMetadata(s3datasetObjects);
       break;
