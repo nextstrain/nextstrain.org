@@ -49,10 +49,10 @@ export const parseMarkdown = (mdString) => {
     allowedAttributes: {"*": allowedAttributes},
     nonTextTags: ['style', 'script', 'textarea', 'option'],
     transformTags: {
-      'a': function(tagName, attribs) { // eslint-disable-line
+      'a': function(tagName, attribs) {
         try {
           const url = new URL(attribs.href); // URL is not supported on Internet Explorer
-          if (url.hostname !== location.hostname) { // eslint-disable-line
+          if (url.hostname !== location.hostname) {
             attribs.target = '_blank';
             attribs.rel = 'noreferrer nofollow';
           }

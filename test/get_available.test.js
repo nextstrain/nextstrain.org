@@ -30,7 +30,7 @@ describe("getAvailable community URLs correctly interpret the GitHub branch", ()
     }
   ];
   for (const testCase of data) {
-    it(testCase.name, async () => { // eslint-disable-line no-loop-func
+    it(testCase.name, async () => {
       const url = `${BASE_URL}${testCase.url}`;
       const res = await fetch(url, {redirect: 'manual'});
       expect(res.status).toEqual(200);

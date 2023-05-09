@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 import AWS from 'aws-sdk';
 
 import { Buffer } from 'buffer';
@@ -274,8 +273,6 @@ function authzPolicy(group) {
   const owners = group.membershipRoles.get("owners");
 
   return [
-    /* eslint-disable no-multi-spaces */
-
     /* All membership roles in a Nextstrain Group can see information about the
      * group Source instance.
      */
@@ -293,8 +290,6 @@ function authzPolicy(group) {
     {tag: Type.Narrative, role: viewers, allow: [Read]},
     {tag: Type.Narrative, role: editors, allow: [Read, Write]},
     {tag: Type.Narrative, role: owners,  allow: [Read, Write]},
-
-    /* eslint-enable no-multi-spaces */
   ];
 }
 

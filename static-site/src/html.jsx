@@ -1,9 +1,5 @@
-/* eslint import/no-unresolved:"off" */
-/* eslint import/extensions:"off" */
-/* eslint global-require:"off" */
 import React from "react";
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class HTML extends React.Component {
   render() {
     return (

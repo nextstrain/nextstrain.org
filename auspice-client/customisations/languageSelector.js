@@ -1,4 +1,4 @@
-import React from "react"; // eslint-disable-line
+import React from "react";
 import ISO6391 from "iso-639-1/build/index.js";
 
 /* This and some of the following functions are reused

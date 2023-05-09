@@ -1,9 +1,3 @@
-/* eslint-disable no-multi-spaces */
-
-/* Rationale:
- *   no-multi-spaces: Alignment makes for easier reading
- */
-
 import { parse as parseContentType } from 'content-type';
 import negotiateMediaType from 'negotiator/lib/mediaType.js';
 import stream from 'stream';

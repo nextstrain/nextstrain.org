@@ -20,7 +20,7 @@ async function main() {
     process.stderr.write(`Progress: ${idx+1}/${catalog.data.length}. URL: ...${entry.url.slice(-25)}\n`);
     let isNarrative, contents;
     try {
-      [isNarrative, contents] = await fetchData(entry.url); // eslint-disable-line
+      [isNarrative, contents] = await fetchData(entry.url);
     } catch (e) {
       process.stderr.write("\tWARNING! Error fetching data\n");
       continue;

@@ -47,7 +47,7 @@ async function main({args}) {
       s3datasetObjects = await collectFromBucket({
         BUCKET: `nextstrain-staging`,
         fileToUrl: (filename) => `https://nextstrain.org/staging/${filename.replace('.json', '').replace(/_/g, '/')}`,
-        inclusionTest: (filename) => true // eslint-disable-line
+        inclusionTest: (filename) => true // eslint-disable-line no-unused-vars
       });
       datasetMetadata = getDatasetMetadata(s3datasetObjects);
       break;
@@ -91,7 +91,7 @@ async function collectFromBucket({BUCKET, fileToUrl, inclusionTest}) {
   if (s3Objects.isTruncated) console.log("WARNING: S3 listing is truncated. Results will be incomplete.");
   s3Objects = s3Objects.Contents
     .filter((s3obj) => filenameLooksLikeDataset(s3obj.Key))
-    .filter((s3obj) => inclusionTest(s3obj.Key)) // eslint-disable-line semi
+    .filter((s3obj) => inclusionTest(s3obj.Key))
     // .filter((_, i) => i<2);
   const dataObjects = await Promise.all(s3Objects.map(async (s3obj) => limit(async () => {
     // surface these properties for getDatasetMetadata

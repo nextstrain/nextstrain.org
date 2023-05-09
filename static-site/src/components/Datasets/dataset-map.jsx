@@ -233,7 +233,7 @@ class DatasetMap extends React.Component {
       <Flex>
         <MapContainer>
           <Map
-            style="https://api.mapbox.com/styles/v1/trvrb/ciu03v244002o2in5hlm3q6w2?access_token=pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2tqcnM5bXIxMWV1eTJzazN2YXVrODVnaiJ9.7iPttR9a_W7zuYlUCfrz6A" // eslint-disable-line
+            style="https://api.mapbox.com/styles/v1/trvrb/ciu03v244002o2in5hlm3q6w2?access_token=pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2tqcnM5bXIxMWV1eTJzazN2YXVrODVnaiJ9.7iPttR9a_W7zuYlUCfrz6A"
             containerStyle={{height: "100%", width: "100%"}}
             zoom={[mapDefaults.zoomOverall]}
             maxBounds={mapDefaults.maxBounds}

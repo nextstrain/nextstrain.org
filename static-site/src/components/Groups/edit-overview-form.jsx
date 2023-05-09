@@ -28,7 +28,6 @@ const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) 
     let cleanUp = false;
     setCurrentOverview();
     return () => cleanUp = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getOverview = async () => {

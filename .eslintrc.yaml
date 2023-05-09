@@ -1,0 +1,40 @@
+---
+extends:
+  - eslint:recommended
+
+plugins:
+  - jest
+
+parser: "@babel/eslint-parser"
+
+globals:
+  BASE_URL: true
+
+ignorePatterns:
+  - auspice-client/
+  - docs/
+  - node_modules/
+  - static-site/
+
+rules:
+  # Code quality rules
+  no-unused-vars: error
+  no-use-before-define: ["error", { "functions": false, "classes": false }]
+  prefer-const: ["error", {"destructuring": "all"}]
+
+  # Code style rules
+  no-unneeded-ternary: ["error", { "defaultAssignment": true }]
+  operator-linebreak: ["error", "before", { "overrides": { "?": "ignore", ":": "ignore", "=": "after" } }]
+  quote-props: ["error", "as-needed"]
+
+parserOptions:
+  sourceType: module
+  requireConfigFile: false
+  babelOptions:
+    plugins: ["@babel/plugin-proposal-class-properties"]
+
+env:
+  browser: true
+  es6: true
+  jest: true
+  node: true

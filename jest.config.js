@@ -1,4 +1,3 @@
-/* eslint-disable quote-props */
 export default {
   /* Run tests in a normal Node environment, not a fake browser (JSDOM)
    * environment.  This is a Node app after all.  But this also fixes an
@@ -35,14 +34,14 @@ export default {
    * led me astray for a bit.
    *   -trs, 20 May 2022
    */
-  "testEnvironment": "node",
-  "testMatch": [
+  testEnvironment: "node",
+  testMatch: [
     "**/*.test.js"
   ],
-  "globals": {
-    "BASE_URL": "http://localhost:5000"
+  globals: {
+    BASE_URL: "http://localhost:5000"
   },
-  "setupFilesAfterEnv": [
+  setupFilesAfterEnv: [
     "jest-extended/all"
   ]
 };

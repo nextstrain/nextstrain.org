@@ -8,7 +8,6 @@ import Splash from "../components/splash";
 import UserDataWrapper from "../layouts/userDataWrapper";
 import MainLayout from "../components/layout";
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   render() {
     // Workaround so index page doesn't flash when pages are redirecting
@@ -35,8 +34,6 @@ class Index extends React.Component {
 
 export default Index;
 
-
-/* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query IndexQuery {
     allMarkdownRemark(

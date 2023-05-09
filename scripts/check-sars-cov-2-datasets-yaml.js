@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-
-/* eslint-disable no-prototype-builtins */
-
 import fs from 'fs';
 
 import yaml from 'js-yaml';
@@ -47,7 +44,7 @@ function blockDefinesBuild(block) {
 }
 
 function ensureGeoParentsDefined(blocks) {
-  const geosWithGeoParents = blocks.filter((block) => block.hasOwnProperty("parentGeo")).map((block) => block.geo);
+  const geosWithGeoParents = blocks.filter((block) => Object.prototype.hasOwnProperty.call(block, "parentGeo")).map((block) => block.geo);
   blocks.filter((block) => blockDefinesBuild(block)).forEach((block) => {
     if (!geosWithGeoParents.includes(block.geo)) {
       console.log(`Build for ${block.name} with geo "${block.geo}" doesn't have a corresponding block linking to a "parentGeo"`);
@@ -62,8 +59,10 @@ function ensureBlocksAreValid(blocks) {
     }
     if (block.coords) {
       if (
-        !Array.isArray(block.coords) || block.coords.length!==2 ||
-        !(block.coords[0] >= -180 && block.coords[0] <= 180) || !(block.coords[1] >= -90 && block.coords[1] <= 90)
+        !Array.isArray(block.coords)
+        || block.coords.length!==2
+        || !(block.coords[0] >= -180 && block.coords[0] <= 180)
+        || !(block.coords[1] >= -90  && block.coords[1] <= 90)
       ) {
         console.log(`Invalid coords for dataset name "${block.name}"`);
       }

@@ -57,7 +57,7 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
   const skipLevelNameKeys = (obj) => {
     const keys = Object.keys(obj);
     if (keys.length === 1) {
-      obj = obj[keys[0]]; // eslint-disable-line
+      obj = obj[keys[0]];
     }
     return obj;
   };

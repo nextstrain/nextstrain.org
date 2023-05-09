@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import jszip from 'jszip';
 import mime from 'mime';
 import { pipeline } from 'stream/promises';
@@ -12,7 +11,7 @@ const authorization = process.env.GITHUB_TOKEN
   : "";
 
 
-const download = async (req, res) => {
+async function download(req, res) {
   const version = req.params.version;
   const assetSuffix = req.params.assetSuffix;
   if (!version || !assetSuffix) throw new BadRequest();
@@ -33,10 +32,10 @@ const download = async (req, res) => {
   }
 
   return res.redirect(asset.browser_download_url);
-};
+}
 
 
-const downloadPRBuild = async (req, res) => {
+async function downloadPRBuild(req, res) {
   const prId = Number(req.params.prId);
   if (!prId || !Number.isFinite(prId)) throw new BadRequest("PR id is not a number");
 
@@ -76,10 +75,10 @@ const downloadPRBuild = async (req, res) => {
   req.params.runId = runId;
 
   return await downloadCIBuild(req, res);
-};
+}
 
 
-const downloadCIBuild = async (req, res) => {
+async function downloadCIBuild(req, res) {
   if (!authorization) {
     throw new ServiceUnavailable("Server does not have authorization to download CI builds.");
   }
@@ -125,10 +124,10 @@ const downloadCIBuild = async (req, res) => {
 
   await pipeline(asset.nodeStream(), res);
   return res.end();
-};
+}
 
 
-const assertStatusOk = (response) => {
+function assertStatusOk(response) {
   switch (response.status) {
     case 200:
       break;
@@ -139,10 +138,10 @@ const assertStatusOk = (response) => {
     default:
       throw new InternalServerError(`upstream said: ${response.status} ${response.statusText}`);
   }
-};
+}
 
 
-const installer = (req, res) => {
+function installer (req, res) {
   const os = req.params.os;
   switch (os) {
     case "linux":
@@ -155,7 +154,7 @@ const installer = (req, res) => {
     default:
       throw new NotFound(`No installer for OS: ${os}`);
   }
-};
+}
 
 
 export {

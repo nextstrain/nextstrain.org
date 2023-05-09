@@ -1,5 +1,4 @@
-/* eslint-disable no-multi-spaces */
-import React from "react"; // eslint-disable-line
+import React from "react";
 import LanguageSelector from "./languageSelector.js";
 
 import logoPNG from "./nextstrain-logo-small.png";

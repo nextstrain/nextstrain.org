@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: ["error", {"functions": false, "classes": false}] */
 import authzTags from '../authz/tags.js';
 
 import { fetch } from '../fetch.js';
@@ -92,7 +91,9 @@ class Source {
   async baseUrl() {
     throw new Error("async baseUrl() must be implemented by subclasses");
   }
-  async urlFor(path, method = 'GET', headers = {}) { // eslint-disable-line no-unused-vars
+
+  // eslint-disable-next-line no-unused-vars
+  async urlFor(path, method = 'GET', headers = {}) {
     const url = new URL(path, await this.baseUrl());
     return url.toString();
   }

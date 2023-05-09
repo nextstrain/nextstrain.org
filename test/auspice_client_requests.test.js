@@ -1,6 +1,5 @@
 import {jest} from '@jest/globals';
 import fetch from 'node-fetch';
-/* eslint-disable-next-line import/extensions */
 import urlsToTest from './auspice_client_requests.json';
 
 // As some of the APIs we're calling will themselves call  GitHub APIs
@@ -9,7 +8,6 @@ jest.setTimeout(15000);
 
 describe("smoke testing URLs described in auspice_client_requests.json", () => {
   for (const testCase of urlsToTest) {
-    // eslint-disable-next-line no-loop-func
     it(testCase.name, async () => {
       const url = `${BASE_URL}${testCase.url}`;
       const res = await fetch(url, {redirect: 'manual'});

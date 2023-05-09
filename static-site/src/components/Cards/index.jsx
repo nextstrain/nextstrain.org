@@ -1,12 +1,9 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
 import React from "react";
 import * as Styles from "./styles";
 import { H1 } from "../splash/styles";
 import { MediumSpacer } from "../../layouts/generalComponents";
 import Padlock from "./padlock";
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Cards extends React.Component {
   cards(bootstrapColumnSize) {
     return this.props.cards.map((d) => (

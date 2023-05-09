@@ -12,7 +12,6 @@ const Ul = styled.ul`
   list-style: none;
 `;
 
-// eslint-disable-next-line react/prefer-stateless-function
 class ListSearchPages extends React.Component {
   render() {
     return (

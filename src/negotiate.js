@@ -77,7 +77,8 @@ function Links(links) {
   return links.map(({url, rel, type}) => {
     let link = `<${url}>`;
 
-    if (rel)  link += `; rel=${quoted(rel)}`;     // eslint-disable-line no-multi-spaces
+    if (rel)  link += `; rel=${quoted(rel)}`;
+
     if (type) link += `; type=${quoted(type)}`;
 
     return link;
@@ -108,7 +109,7 @@ function contentTypesConsumed(providers) {
 
     for (const contentType of types) {
       if (req.is(contentType)) {
-        return await handlers[contentType](req, res, next); // eslint-disable-line no-await-in-loop
+        return await handlers[contentType](req, res, next);
       }
     }
 

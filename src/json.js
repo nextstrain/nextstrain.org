@@ -1,5 +1,3 @@
-/* eslint-disable indent, no-multi-spaces, semi-spacing */
-
 /**
  * Convert Set and Map objects for {@link JSON.stringify}.
  */

@@ -1,5 +1,3 @@
-/* eslint-disable react/prefer-stateless-function */
-
 import React from "react";
 import { Link } from "gatsby";
 import * as Styles from "../splash/styles";

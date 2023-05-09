@@ -1,6 +1,5 @@
 import { normalizeHeaders } from '../src/utils/index.js';
 
-/* eslint-disable indent */
 const cases = [
   [{"Content-Type": "foo", "CONTENT-ENCODING": "bar"},
    {"content-type": "foo", "content-encoding": "bar"}],
@@ -20,7 +19,6 @@ const cases = [
   [{},
    {}],
 ];
-/* eslint-enable indent */
 
 test.each(cases)("%o → %o", (given, expected) => {
   expect(normalizeHeaders(given)).toStrictEqual(expected);
