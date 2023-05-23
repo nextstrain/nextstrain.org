@@ -7,19 +7,7 @@
       "Action": "s3:ListBucket",
       "Resource": [
         "arn:aws:s3:::nextstrain-data",
-        "arn:aws:s3:::nextstrain-staging",
-        "arn:aws:s3:::nextstrain-africa-cdc"
-      ]
-    },
-    {
-      "Sid": "SingleTenantBucketObjectActions",
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:GetObjectVersion"
-      ],
-      "Resource": [
-        "arn:aws:s3:::nextstrain-africa-cdc/*"
+        "arn:aws:s3:::nextstrain-staging"
       ]
     },
     {

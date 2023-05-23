@@ -61,7 +61,6 @@
   },
   {
     "name": "africa-cdc",
-    "bucket": "nextstrain-africa-cdc",
     "isPublic": true
   },
   {
