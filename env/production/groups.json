@@ -53,7 +53,6 @@
   },
   {
     "name": "nebraska-dhhs",
-    "bucket": "nextstrain-nebraska-dhhs",
     "isPublic": true
   },
   {
