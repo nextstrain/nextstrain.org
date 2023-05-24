@@ -42,7 +42,7 @@ export const RootLayout = ({title, currentUser, children}) => {
       </head>
       <body>
         <${Nav} currentUser=${currentUser} />
-        <main class="container">
+        <main className="container">
           ${children}
         </main>
       </body>

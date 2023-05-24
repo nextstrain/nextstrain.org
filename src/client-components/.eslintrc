@@ -1,0 +1,25 @@
+---
+# We don't use React / JSX syntax _apart from_ for client-side code
+# So it makes sense to restrict the linting rules to that code
+
+extends:
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+
+plugins:
+  - react
+  - react-hooks
+
+parser: "@babel/eslint-parser"
+
+parserOptions:
+  babelOptions:
+    presets:
+      - "@babel/preset-react"
+
+rules:
+  react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
+  react/jsx-one-expression-per-line: [0]
+  # Code quality rules
+  no-console: [1, { "allow": ["warn", "error"] }]
+

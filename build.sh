@@ -20,6 +20,8 @@ main() {
             build-static;;
         auspice)
             build-auspice;;
+        client-components)
+            build-client-components;;
         all)
             echo "Running the nextstrain.org build script"
             build-auspice
@@ -37,6 +39,13 @@ build-static() {
     npm ci
     npm run build # build using gatsby. Can take a few minutes.
     cd ..
+}
+
+build-client-components() {
+    echo "Building the client-side components (./src/client-components)"
+    for CLIENT_SIDE_JS in $( ls src/client-components/*.js ); do
+      npx rollup -c rollup.config.js --input ${CLIENT_SIDE_JS};
+    done
 }
 
 build-auspice() {

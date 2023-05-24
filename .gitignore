@@ -5,6 +5,9 @@
 /auspice-client/index.html
 /auspice-client/dist/
 
+# Compiled client-side code
+/assets/bundles/
+
 # misc #
 .DS_Store
 /node_modules/

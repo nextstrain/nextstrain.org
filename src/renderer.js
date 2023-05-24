@@ -41,17 +41,28 @@ export const sendPage = (Page) => async (req, res) => {
         return resolve();
       },
 
+      /**
+       * Load client components as ESM. These have been already bundled
+       * and are available in /assets/bundles/*.js. Currently we bundle all
+       * dependencies together, but since our current implementation uses
+       * React each time we should pull that out of the bundle and load it
+       * separately (either as UMD from a CDN, or an ESM we produce).
+       *
+       * Currently this only allows a single client component -- probably fine for now
+       * but there are ways to use multiple components, each taking control over
+       * a separate DOM element.
+       */
+      bootstrapModules: typeof Page.clientComponent === "string" ?
+        [`/assets/bundles/${Page.clientComponent}`] :
+        []
+
       // XXX FIXME: Error handling with onShellError() and onError()
 
-      /* XXX TODO: We can support client-side components as islands by
-       * arranging for a client-side module (via bootstrapModules) to call
-       * hydrateRoot() on each client-side component's root element.  If we
-       * need to pass any server-side bookkeeping during render to the client,
+      /* If we need to pass any server-side bookkeeping during render to the client,
        * we can communicate that (e.g. as JSON) via "bootstrapScriptContent".
        * I don't think we'll need to, though.
        *   -trs, 10 April 2023
        */
-      // bootstrapModules: ["/static/js/….js"],
       // bootstrapScriptContent: `window.… = ${JSON.stringify(…)}`,
     });
   });

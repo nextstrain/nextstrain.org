@@ -28,6 +28,8 @@ import { replacer as jsonReplacer } from './json.js';
 import * as middleware from './middleware.js';
 import * as redirects from './redirects.js';
 import * as sources from './sources/index.js';
+import { Testing, SarsCov2Forecasts } from './pages/index.js';
+import { sendPage } from './renderer.js';
 
 const {
   setSource,
@@ -179,6 +181,18 @@ app.routeAsync("/charon/*")
     throw new NotFound();
   });
 
+/**
+ * Example of pages rendered server-side (via `sendPage`) but which
+ * include client side code.
+ */
+const pages = [
+  [["/testing", "testing/*"], Testing],
+  ["/sars-cov-2/forecasts/", SarsCov2Forecasts], // shadows a route previously handled by Gatsby
+];
+pages.forEach(([route, page]) => {
+  app.routeAsync(route)
+    .get(sendPage(page));
+});
 
 /* Core datasets and narratives
  */
