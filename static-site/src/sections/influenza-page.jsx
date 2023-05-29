@@ -6,7 +6,6 @@ import {
   FlexCenter,
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
-import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
 import Cards from "../components/Cards/index";
@@ -18,15 +17,6 @@ We track the evolution of seasonal influenza viruses (A/H3N2, A/H1N1pdm, B/Victo
 and use these analyses to inform recommendations for the World Health Organization’s influenza vaccine composition meetings.
 We also maintain datasets for a subset of avian influenza viruses that have caused recurrent outbreaks in humans
 and domestic birds, including novel reassortant H5 viruses.`;
-
-const contents = [
-  {
-    type: "gatsby",
-    to: "/search/seasonal-flu",
-    title: "Search seasonal flu datasets by strain name(s)",
-    subtext: "Search all seasonal influenza nextstrain datasets, including historical ones, for particular strain name(s)",
-  }
-];
 
 class Index extends React.Component {
   constructor(props) {
@@ -61,9 +51,6 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
-        <MediumSpacer />
-
-        <PathogenPageIntroduction data={contents} />
 
         <MediumSpacer/>
         <Cards squashed cards={fluCards}/>

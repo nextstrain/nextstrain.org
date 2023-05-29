@@ -76,6 +76,16 @@ class SequencesToDatasets extends React.Component {
         <SmallSpacer />
         <FlexCenter>
           <splashStyles.CenteredFocusParagraph>
+
+            <strong style={{color: 'red', paddingBottom: '20px'}}>
+              This functionality is no longer being maintained, but we hope to revisit this in the future. 
+              {` Please `}
+              <a href={"mailto:hello@nextstrain.org"} style={{color: "inherit", textDecoration: "underline"}}>
+                get in touch
+              </a>
+              {` if you were relying on this functionality and we'll see if we can help.`}
+            </strong>
+            <p/>
                   If you know the name(s) of sequences, you can search here to find out which datasets, if any,
                   the samples appear in. If you select multiple samples, then only datasets where they all appear
                   will be shown. Additionally, if we have deliberately excluded a sample from the analysis we will attempt
