@@ -118,7 +118,7 @@ class Footer extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <Styles.FooterParagraph>
-              © 2015–2022 Trevor Bedford and Richard Neher
+              © 2015–2023 Trevor Bedford and Richard Neher
             </Styles.FooterParagraph>
           </div>
         </div>

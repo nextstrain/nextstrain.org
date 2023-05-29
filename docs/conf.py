@@ -5,7 +5,7 @@ See <https://www.sphinx-doc.org/en/master/usage/configuration.html>.
 """
 
 project = 'nextstrain.org'
-copyright = '2022, Trevor Bedford and Richard Neher'
+copyright = '2023, Trevor Bedford and Richard Neher'
 author = 'The Nextstrain Team'
 
 primary_domain = 'js'
