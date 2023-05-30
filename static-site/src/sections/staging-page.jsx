@@ -5,66 +5,27 @@ import {
   FlexCenter,
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
-import DatasetSelect from "../components/Datasets/dataset-select";
-import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
-import { DataFetchErrorParagraph, ErrorBanner } from "../components/splash/errorMessages";
-
-const nextstrainLogoPNG = "/favicon.png";
+import { ErrorBanner } from "../components/splash/errorMessages";
 
 const title = "Staging Data";
 const abstract = (
   <>
-    This page details Nextstrain-managed datasets and narratives available on our staging server.
-    <strong> These datasets should be considered unreleased and/or out of date; they should not be used to draw scientific conclusions</strong>.
-    Note that this listing is refreshed about once per hour.
-    Narratives are not (yet) listed on this page;
-    &quot;Staging narratives&quot; can be found <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/nextstrain/narratives/tree/staging" >on GitHub</a>.
+    Staging datasets & narratives are intended primarily for internal (Nextstrain team) usage.
+    They should be considered unreleased and/or out of date; they should not be used to draw scientific conclusions.
+    <p/>
+    The listing of these resources is currently not available.
   </>
 );
-
-const tableColumns = [
-  {
-    name: "Name",
-    value: (dataset) => dataset.filename.replace(/_/g, ' / ').replace('.json', ''),
-    url: (dataset) => dataset.url
-  },
-  {
-    name: "Contributor",
-    value: () => "Nextstrain",
-    valueMobile: () => "",
-    url: () => "https://nextstrain.org",
-    logo: () => (<img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/>)
-  },
-  {
-    name: "Uploaded Date",
-    value: (dataset) => dataset.date_uploaded
-  }
-];
-
 
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: undefined,
-      errorFetchingData: false,
-    };
+    this.state = {};
   }
 
   async componentDidMount() {
-    let data;
-    let errorFetchingData = false;
-    try {
-      data = await fetchAndParseJSON("https://staging.nextstrain.org/datasets_staging.json");
-    } catch (err) {
-      console.error("Error fetching / parsing data.", err.message);
-      errorFetchingData = true;
-    }
     this.setState({
-      data,
-      errorFetchingData,
-      // For some reason if this is set in the constructor it breaks the banner.
       nonExistentPath: this.props["*"]
     });
   }
@@ -94,14 +55,6 @@ class Index extends React.Component {
         </FlexCenter>
         <HugeSpacer /> <HugeSpacer />
 
-        {this.state.data && (
-          <DatasetSelect
-            title="Filter Data "
-            datasets={this.state.data}
-            columns={tableColumns}
-          />
-        )}
-        {this.state.errorFetchingData && <DataFetchErrorParagraph />}
       </GenericPage>
     );
   }
