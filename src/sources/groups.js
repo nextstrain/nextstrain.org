@@ -10,7 +10,9 @@ import { Source, Dataset, Narrative } from './models.js';
 
 const S3 = new AWS.S3();
 
-const MULTI_TENANT_BUCKET = "nextstrain-groups";
+const BUCKET = "nextstrain-groups";
+const DATASET_PREFIX = "datasets/";
+const NARRATIVE_PREFIX = "narratives/";
 
 
 class GroupSource extends Source {
@@ -51,14 +53,8 @@ class GroupSource extends Source {
     );
   }
 
-  get bucket() {
-    return this.group.bucket ?? MULTI_TENANT_BUCKET;
-  }
-
   get prefix() {
-    return this.bucket === MULTI_TENANT_BUCKET
-      ? `${this.group.name}/`
-      : "";
+    return `${this.group.name}/`;
   }
 
   dataset(pathParts) {
@@ -87,7 +83,7 @@ class GroupSource extends Source {
 
     return S3.getSignedUrl(action[method].name, {
       Expires: expires(),
-      Bucket: this.bucket,
+      Bucket: BUCKET,
       Key: `${this.prefix}${path}`,
       ...action[method].params,
     });
@@ -97,7 +93,7 @@ class GroupSource extends Source {
 
     return new Promise((resolve, reject) => {
       let files = [];
-      S3.listObjectsV2({Bucket: this.bucket, Prefix: prefix}).eachPage((err, data, done) => {
+      S3.listObjectsV2({Bucket: BUCKET, Prefix: prefix}).eachPage((err, data, done) => {
         if (err) {
           utils.warn(`Could not list S3 objects for group '${this.group.name}'\n${err.message}`);
           return reject(err);
@@ -122,19 +118,13 @@ class GroupSource extends Source {
     });
   }
   async availableDatasets() {
-    const prefix = this.bucket === MULTI_TENANT_BUCKET
-      ? "datasets/"
-      : "";
-    const files = await this._listFiles(prefix);
+    const files = await this._listFiles(DATASET_PREFIX);
     const pathnames = utils.getDatasetsFromListOfFilenames(files);
     return pathnames;
   }
   async availableNarratives() {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
-    const prefix = this.bucket === MULTI_TENANT_BUCKET
-      ? "narratives/"
-      : "";
-    const files = await this._listFiles(prefix);
+    const files = await this._listFiles(NARRATIVE_PREFIX);
     return files
       .filter((file) => file !== 'group-overview.md')
       .filter((file) => file.endsWith(".md"))
@@ -238,18 +228,14 @@ class GroupSource extends Source {
 
 class GroupDataset extends Dataset {
   get baseName() {
-    return this.source.bucket === MULTI_TENANT_BUCKET
-      ? `datasets/${super.baseName}`
-      : super.baseName;
+    return `${DATASET_PREFIX}${super.baseName}`;
   }
 }
 
 
 class GroupNarrative extends Narrative {
   get baseName() {
-    return this.source.bucket === MULTI_TENANT_BUCKET
-      ? `narratives/${super.baseName}`
-      : super.baseName;
+    return `${NARRATIVE_PREFIX}${super.baseName}`;
   }
 }
 

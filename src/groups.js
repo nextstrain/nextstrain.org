@@ -53,16 +53,6 @@ class Group {
     this.isPublic = groupRecord.isPublic === true;
 
     /**
-     * S3 bucket for this Group.
-     *
-     * For early access groups which each used their own bucket instead of
-     * occupying a single multi-tentant bucket.
-     *
-     * @type {String}
-     */
-    this.bucket = groupRecord.bucket;
-
-    /**
      * Map of generic roles a member of this Group can hold to fully-qualified
      * authz roles.
      *
