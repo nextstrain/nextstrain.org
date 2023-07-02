@@ -109,12 +109,21 @@ class Source {
     return [];
   }
 
+  // DEPRECATED availableDatasets is used by /charon/getAvailable and will be replaced once we move to a new API
   async availableDatasets() {
     return [];
   }
+  // DEPRECATED availableNarratives is used by /charon/getAvailable and will be replaced once we move to a new API
   async availableNarratives() {
     return [];
   }
+  async collectResources() {
+    throw new Error("collectResources() must be implemented by subclasses");
+  }
+  get allResources() {
+    return this._allResources || new Map();
+  }
+
   async getInfo() {
     throw new Error("getInfo() must be implemented by subclasses");
   }

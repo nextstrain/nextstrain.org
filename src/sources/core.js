@@ -3,7 +3,9 @@ import * as authz from '../authz/index.js';
 import { fetch } from '../fetch.js';
 import { NotFound } from '../httpErrors.js';
 import * as utils from '../utils/index.js';
+import { parseInventory, coreBucketKeyMunger } from "../utils/inventories.js";
 import { Source, Dataset } from './models.js';
+import { CollectedResources } from "./collectedResources.js";
 
 const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
@@ -29,15 +31,34 @@ class CoreSource extends Source {
     return new CoreDataset(this, pathParts);
   }
 
-  // The computation of these globals should move here.
+  // The computation of these globals should move here. 
   secondTreeOptions(path) {
     return (global.availableDatasets.secondTreeOptions[this.name] || {})[path] || [];
   }
 
+  async collectResources() {
+    if (!this._allResources) this._allResources = new Map();
+    const s3objects = await parseInventory();
+    const datasets = new Map();
+    s3objects.forEach((object) => {
+      const [name, resourceType] = CoreCollectedResources.objectName(object);
+      if (!name) return;
+      if (resourceType!=='dataset') return;
+      datasets.has(name) ? datasets.get(name).push(object) : datasets.set(name, [object]);
+    })
+    this._allResources.set(
+      'dataset',
+      Array.from(datasets).map(([, objects]) => new CoreCollectedResources(this, objects))
+    );
+    // TODO XXX narratives + files (etc)
+  }
+
+  // DEPRECATED availableDatasets is used by /charon/getAvailable and will be replaced once we move to a new API
   async availableDatasets() {
     return global.availableDatasets[this.name] || [];
   }
 
+  // DEPRECATED availableNarratives is used by /charon/getAvailable and will be replaced once we move to a new API
   async availableNarratives() {
     const qs = new URLSearchParams({ref: this.branch});
     const response = await fetch(`https://api.github.com/repos/${this.repo}/contents?${qs}`, {headers: {authorization}});
@@ -125,6 +146,36 @@ class CoreDataset extends Dataset {
     }
 
     return this;
+  }
+}
+
+class CoreCollectedResources extends CollectedResources {
+
+  static objectName(object) {
+    return coreBucketKeyMunger(object);
+  }
+
+  lastUpdated(version=this._versions[0]) {
+    return version.LastModifiedDate;
+  }
+  
+  filter() {
+    /**
+     * We can perform authorization here by either calling 
+     * authz.authorized(user, authz.actions.Read, object),
+     * if we extend authorized() to consider this class as a valid object.
+     * See note above for more details.
+     */
+    // TODO XXX - filter objects. See comment in CollectedSources.resources()
+    return true;
+  }
+
+  nextstrainUrl(version=this._versions[0]) {
+    if (this._resourceType!=='dataset') return false;
+    // if the version is not the latest (in S3 terminology), then we don't yet have the
+    // ability to access it via Auspice. Or perhaps we do via /fetch? TODO
+    if (version.IsLatest!=="true") return false;
+    return version.Key.replace('.json', '').replace(/_/g, '/')
   }
 }
 
