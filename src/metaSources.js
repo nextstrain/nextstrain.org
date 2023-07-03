@@ -60,7 +60,7 @@ const Groups = (() => {
     updateKnownDatasetsAndNarratives,
     1000 * 60 * 60 * 6 // 6 hours
   );
-  updateKnownDatasetsAndNarratives(); // initial collection on server start
+  // updateKnownDatasetsAndNarratives(); // initial collection on server start
 
   class MetaGroupSource {
     constructor(user) {
