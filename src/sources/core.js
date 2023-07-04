@@ -159,15 +159,24 @@ class CoreCollectedResources extends CollectedResources {
     return version.LastModifiedDate;
   }
   
-  filter() {
+  filter(options) {
     /**
      * We can perform authorization here by either calling 
      * authz.authorized(user, authz.actions.Read, object),
-     * if we extend authorized() to consider this class as a valid object.
      * See note above for more details.
      */
-    // TODO XXX - filter objects. See comment in CollectedSources.resources()
+    
+    if (options.prefixParts.length) {
+      const pp = this.prefixParts;
+      if (!options.prefixParts.every((p, i) => pp[i]===p)) {
+        return false;
+      }
+    }
     return true;
+  }
+
+  get prefixParts() {
+    return this.name.split("/");
   }
 
   nextstrainUrl(version=this._versions[0]) {

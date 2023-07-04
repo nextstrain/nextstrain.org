@@ -36,31 +36,27 @@ const CollectedSources = (() => {
       console.log("CollectedSources() user has access to:", Array.from(this._sources).map((x) => x[0]).join(", "));
     }
 
-    /** TODO XXX - resources() should perform filtering on the available resources.
-     * The precise syntax of the filtering is API-dependent, but the concepts that could be
-     * applied here are:
-     * filter by source - somewhat analogous to `setSourceFromPrefix`
-     * filter by terms - somewhat analogous to pathParts, e.g. "influenza" AND "6m"
-     * filter by versions - boolean?
-     * filter by timeRange - ???
-     * filter by type - {dataset | file | narrative}
-     */
-    resources() {
+    resources(filterOptions) {
       const resourcesByType = new Map();
       this._sources.forEach((source) => {
+
+        if (filterOptions.source
+          && (!(source instanceof filterOptions.source.constructor) || !(filterOptions.source instanceof source.constructor))
+        ) return;
+
         source.allResources.forEach((resources, resourceType) => {
-          // console.log("CHECK", resourceType, resources.length)
-          // Filter all resources by requested resource type (TODO, see above)
-          if (resourceType!='dataset') return;
+          // Filter all resources by requested resource type
+          if (filterOptions.resourceType!=='all') {
+            if (resourceType !== filterOptions.resourceType) return;
+          }
           // add this source's filtered resources to the result
           if (!resourcesByType.has(resourceType)) resourcesByType.set(resourceType, []);
           resourcesByType.set(
             resourceType,
-            resourcesByType.get(resourceType).concat(resources.filter((resource) => resource.filter()))
+            resourcesByType.get(resourceType).concat(resources.filter((resource) => resource.filter(filterOptions)))
           )
         })
       })
-      // console.log("resourcesByType", resourcesByType)
       return resourcesByType;
     }
   }

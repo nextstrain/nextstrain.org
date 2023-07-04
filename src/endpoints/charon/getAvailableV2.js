@@ -1,4 +1,6 @@
 import { CollectedSources } from '../../sources/index.js';
+import { splitPrefixIntoParts } from '../../utils/prefix.js';
+import { BadRequest } from '../../httpErrors.js';
 
 /**
  * Handler for /charon/getAvailable/V2 requests
@@ -26,23 +28,24 @@ import { CollectedSources } from '../../sources/index.js';
  */
 const getAvailableV2 = async (req, res) => {
 
+  const filterOptions = parseFilterOptions(req);
   const availableResources = (new CollectedSources(req.user))
-    .resources() // TODO -- parameterise with filters
-
-  // console.log("availableResources", availableResources)
+    .resources(filterOptions)
 
   const available = Object.fromEntries(
     Array.from(availableResources)
       .map(([resourceType, resources]) =>
         [resourceType, resources.map((resource) => {
-          return {
+          const data = {
             name: resource.name,
             url: resource.nextstrainUrl(),
             lastUpdated: resource.lastUpdated(),
-            versions: resource.versions.map((v) =>
-              [resource.lastUpdated(v), resource.nextstrainUrl(v)]
-            )
           }
+          if (filterOptions.showVersions) {
+            data.versions = resource.versions.map((v) =>
+              [resource.lastUpdated(v), resource.nextstrainUrl(v)])
+          }
+          return data;
         })])
   )
 
@@ -53,4 +56,42 @@ const getAvailableV2 = async (req, res) => {
 export {
   getAvailableV2,
 };
+
+
+const ALLOWED_TYPES = ['all', 'dataset', 'narrative', 'file'];
+
+function parseFilterOptions(req) {
+  /** Currently we only consider a few filtering options, see the comment in `CollectedSources()`
+   * for more details on the eventual aims here.
+   * The current (WIP!) design encodes prefix as a query param, but if we decide that most requests
+   * will only specify this option (e.g. sensible defaults are chosen / inferred for other options)
+   * then it's perhaps more natural to encode this in the API path itself
+   */
+  const {source, prefixParts, isNarrative} = req.query?.prefix?.toString() ?
+    splitPrefixIntoParts(req.query.prefix) :
+    {source: false, prefixParts: [], isNarrative: undefined};
+
+  /* A single empty string is valid, but isn't desirable for filtering purposes */
+  if (prefixParts.length===1 && prefixParts[0]==='') prefixParts.pop();
+
+  const showVersions = req.query?.versions!==undefined; // test for presence of query parameter
+
+  let resourceType = req.query?.type || 'all';
+  if (!ALLOWED_TYPES.includes(resourceType)) {
+    throw new BadRequest("Specified resource type is not allowed");
+  }
+  if (resourceType==='all' && isNarrative) {
+    resourceType='narrative';
+  }
+  if (isNarrative && resourceType!=='narrative') {
+    throw new BadRequest("Contradiction in requested resource types between prefix + specified type")
+  }
+
+  return {
+    source,
+    showVersions,
+    prefixParts,
+    resourceType
+  }
+}
 

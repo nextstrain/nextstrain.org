@@ -46,6 +46,12 @@ class CollectedResources {
 
   get versions() {return this._versions;}
 
+  get prefixParts() {
+    /* potentially a generalised getter could be implemented here rather than via subclasses.
+    The Resource class implements similar methods (see docstring above). */
+    throw new Error("get prefixParts() must be implemented by a subclass")
+  }
+
   static objectName(object) { // eslint-disable-line no-unused-vars
     throw new Error("static objectName(object) must be implemented by a subclass")
   }

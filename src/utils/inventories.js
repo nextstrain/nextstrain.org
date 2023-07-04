@@ -94,6 +94,7 @@ const coreBucketKeyMunger = (object) => {
   to be ncov_gisaid_21L_africa_1m so that they are grouped together. Currently all datestamps
   occur at the end of the name but we may need to relax this in the future */
   name = name.replace(DATESTAMP_REGEX, '')
+  name = name.replace(/_/g, "/")
   return [name, 'dataset'];
 }
 
