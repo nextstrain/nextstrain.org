@@ -50,7 +50,7 @@ const getAvailableV2 = async (req, res) => {
   )
 
   const WARNING = "This API is currently for internal use only. The request and response schemas will change."
-  res.json({WARNING, available});
+  res.json({WARNING, ...available});
 }
 
 export {

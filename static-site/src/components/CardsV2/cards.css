@@ -1,0 +1,46 @@
+
+
+.cardsV2 {
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1.5;
+  /* class has a single child element (#cardsContainer) which we want center aligned in the horizontal direction */
+  display: flex; 
+  flex-direction: row;
+  justify-content: center;
+}
+
+.cardsV2 #cardsContainer {
+  padding-top: 50px;
+  max-width: 100%;
+  min-width: 100%;
+}
+/* media query breakpoints taken from the CSS for our original <Cards> (splash tiles) */
+@media (min-width: 768px) {
+  .cardsV2 #cardsContainer {
+    max-width: 700px;
+    min-width: 700px;
+  }
+}
+@media (min-width: 1200px) {
+  .cardsV2 #cardsContainer {
+    max-width: 900px;
+    min-width: 900px;
+  }
+}
+
+
+
+.cardsV2 .radioSort {
+  padding-top: 30px;
+  font-size: 1.8rem;
+}
+.cardsV2 .radioSort input {
+  margin-left: 20px;
+  margin-right: 5px;
+}
+
+.cardsV2 .filter {
+  /* max-width: 60%; */
+  padding-top: 20px;
+}

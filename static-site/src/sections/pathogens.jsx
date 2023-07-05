@@ -10,6 +10,7 @@ import DatasetSelect from "../components/Datasets/dataset-select";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
 import Cards from "../components/Cards/index";
+import CardsV2 from "../components/CardsV2/index";
 import pathogenCards from "../components/Cards/pathogenCards";
 import { AnchorLink } from "../components/Datasets/pathogen-page-introduction";
 import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
@@ -18,7 +19,7 @@ const nextstrainLogoPNG = "/favicon.png";
 
 const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (
-  <>
+  <>  
     These data represent analyses and situation-reports produced by the core Nextstrain team.
     We aim to provide a continually-updated view of publicly available data to show pathogen evolution and epidemic spread.
     The pipeline used to generate each dataset is available on <a href="https://github.com/nextstrain/">our GitHub page</a> or by loading a dataset and
@@ -71,6 +72,7 @@ class Index extends React.Component {
   }
 
   render() {
+    console.log('<Pathogens>')
     return (
       <GenericPage location={this.props.location}>
         <splashStyles.H1>{title}</splashStyles.H1>
@@ -81,6 +83,10 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
+
+        <HugeSpacer />
+        <CardsV2 apiQuery={'prefix=/&versions&type=dataset'} dataType='dataset'/>
+        <HugeSpacer />
 
         <HugeSpacer />
         <Cards squashed cards={pathogenCards}/>
