@@ -2,6 +2,7 @@ import { NotFound } from '../httpErrors.js';
 
 import * as authz from '../authz/index.js';
 import { contentTypesProvided, contentTypesConsumed } from '../negotiate.js';
+import * as options from './options.js';
 import { sendAuspiceEntrypoint } from './static.js';
 import { deleteByUrls, proxyFromUpstream, proxyToUpstream } from "../upstream.js";
 
@@ -16,8 +17,6 @@ import { deleteByUrls, proxyFromUpstream, proxyToUpstream } from "../upstream.js
  */
 const setSource = (sourceExtractor) => (req, res, next) => {
   const source = sourceExtractor(req);
-
-  res.vary("Accept");
 
   authz.assertAuthorized(req.user, authz.actions.Read, source);
 
@@ -177,6 +176,12 @@ const deleteResource = resourceExtractor => async (req, res) => {
 
 const deleteDataset = deleteResource(req => req.context.dataset);
 const deleteNarrative = deleteResource(req => req.context.narrative);
+
+
+/* OPTIONS
+ */
+const optionsDataset = options.forAuthzObject(req => req.context.dataset);
+const optionsNarrative = options.forAuthzObject(req => req.context.narrative);
 
 
 /* Narratives
@@ -397,12 +402,14 @@ export {
   getDataset,
   putDataset,
   deleteDataset,
+  optionsDataset,
 
   setNarrative,
   ifNarrativeExists,
   getNarrative,
   putNarrative,
   deleteNarrative,
+  optionsNarrative,
 
   sendDatasetSubresource,
   sendNarrativeSubresource,

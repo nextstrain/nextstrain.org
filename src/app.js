@@ -36,13 +36,15 @@ const {
   getDataset,
   putDataset,
   deleteDataset,
+  optionsDataset,
   getNarrative,
   putNarrative,
   deleteNarrative,
+  optionsNarrative,
 } = endpoints.sources;
 
 const {
-  optionsGroupSettings,
+  optionsGroup,
   getGroupLogo,
   putGroupLogo,
   deleteGroupLogo,
@@ -212,6 +214,7 @@ app.routeAsync(coreBuildRoutes)
   .getAsync(getDataset)
   .putAsync(putDataset)
   .deleteAsync(deleteDataset)
+  .optionsAsync(optionsDataset)
 ;
 
 app.routeAsync("/narratives/*")
@@ -219,6 +222,7 @@ app.routeAsync("/narratives/*")
   .getAsync(getNarrative)
   .putAsync(putNarrative)
   .deleteAsync(deleteNarrative)
+  .optionsAsync(optionsNarrative)
 ;
 
 
@@ -238,6 +242,7 @@ app.routeAsync("/staging/narratives/*")
   .getAsync(getNarrative)
   .putAsync(putNarrative)
   .deleteAsync(deleteNarrative)
+  .optionsAsync(optionsNarrative)
 ;
 
 app.routeAsync("/staging/*")
@@ -245,6 +250,7 @@ app.routeAsync("/staging/*")
   .getAsync(getDataset)
   .putAsync(putDataset)
   .deleteAsync(deleteDataset)
+  .optionsAsync(optionsDataset)
 ;
 
 
@@ -268,11 +274,13 @@ app.use(["/community/narratives/:user/:repo", "/community/:user/:repo"],
 app.routeAsync(["/community/narratives/:user/:repo", "/community/narratives/:user/:repo/*"])
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+  .optionsAsync(optionsNarrative)
 ;
 
 app.routeAsync(["/community/:user/:repo", "/community/:user/:repo/*"])
   .all(setDataset(req => req.params[0]))
   .getAsync(getDataset)
+  .optionsAsync(optionsDataset)
 ;
 
 
@@ -284,11 +292,13 @@ app.use(["/fetch/narratives/:authority", "/fetch/:authority"],
 app.routeAsync("/fetch/narratives/:authority/*")
   .all(setNarrative(req => req.params[0]))
   .getAsync(getNarrative)
+  .optionsAsync(optionsNarrative)
 ;
 
 app.routeAsync("/fetch/:authority/*")
   .all(setDataset(req => req.params[0]))
   .getAsync(getDataset)
+  .optionsAsync(optionsDataset)
 ;
 
 
@@ -327,14 +337,14 @@ app.routeAsync("/groups/:groupName/settings/logo")
   .getAsync(getGroupLogo)
   .putAsync(putGroupLogo)
   .deleteAsync(deleteGroupLogo)
-  .optionsAsync(optionsGroupSettings)
+  .optionsAsync(optionsGroup)
 ;
 
 app.routeAsync("/groups/:groupName/settings/overview")
   .getAsync(getGroupOverview)
   .putAsync(putGroupOverview)
   .deleteAsync(deleteGroupOverview)
-  .optionsAsync(optionsGroupSettings)
+  .optionsAsync(optionsGroup)
 ;
 
 app.route("/groups/:groupName/settings/*")
@@ -349,6 +359,7 @@ app.routeAsync("/groups/:groupName/narratives/*")
   .getAsync(getNarrative)
   .putAsync(putNarrative)
   .deleteAsync(deleteNarrative)
+  .optionsAsync(optionsNarrative)
 ;
 
 app.routeAsync("/groups/:groupName/*")
@@ -356,6 +367,7 @@ app.routeAsync("/groups/:groupName/*")
   .getAsync(getDataset)
   .putAsync(putDataset)
   .deleteAsync(deleteDataset)
+  .optionsAsync(optionsDataset)
 ;
 
 

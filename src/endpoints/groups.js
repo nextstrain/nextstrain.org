@@ -2,6 +2,7 @@ import * as authz from "../authz/index.js";
 import { Group } from "../groups.js";
 import {contentTypesProvided, contentTypesConsumed} from "../negotiate.js";
 import {deleteByUrls, proxyFromUpstream, proxyToUpstream} from "../upstream.js";
+import * as options from "./options.js";
 
 
 const setGroup = (nameExtractor) => (req, res, next) => {
@@ -17,18 +18,8 @@ const setGroup = (nameExtractor) => (req, res, next) => {
 /* Group customizations
  */
 
-const optionsGroupSettings = (req, res) => {
-  authz.assertAuthorized(req.user, authz.actions.Read, req.context.group);
+const optionsGroup = options.forAuthzObject(req => req.context.group);
 
-  const allowedMethods = ["OPTIONS", "GET", "HEAD"];
-
-  if (authz.authorized(req.user, authz.actions.Write, req.context.group)) {
-    allowedMethods.push("PUT", "DELETE");
-  }
-
-  res.set("Allow", allowedMethods);
-  return res.status(204).end();
-};
 
 /* Group logo
  */
@@ -163,7 +154,7 @@ async function receiveGroupLogo(req, res) {
 
 export {
   setGroup,
-  optionsGroupSettings,
+  optionsGroup,
   getGroupLogo,
   putGroupLogo,
   deleteGroupLogo,
