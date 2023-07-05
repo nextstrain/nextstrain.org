@@ -61,13 +61,13 @@ class Index extends React.Component {
   }
 
   async componentDidMount() {
-    try {
-      const data = await getDatasetsAndNarratives("/charon/getAvailable");
-      this.setState({data});
-    } catch (err) {
-      console.error("Error fetching / parsing data.", err.message);
-      this.setState({errorFetchingData: true});
-    }
+    // try {
+    //   const data = await getDatasetsAndNarratives("/charon/getAvailable");
+    //   this.setState({data});
+    // } catch (err) {
+    //   console.error("Error fetching / parsing data.", err.message);
+    //   this.setState({errorFetchingData: true});
+    // }
   }
 
   render() {
