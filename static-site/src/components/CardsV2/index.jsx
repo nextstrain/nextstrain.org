@@ -8,7 +8,7 @@ import "./cards.css";
 import { Card } from "./card-component.jsx";
 import { useSortAndFilter, useFilterOptions, cardHierarchy } from './helpers';
 import CreatableSelect from 'react-select/creatable';
-
+import {Spinner} from './spinner';
 
 function CardsV2({apiQuery, dataType}) {
   console.log("<CardsV2>")
@@ -27,9 +27,10 @@ function CardsV2({apiQuery, dataType}) {
         <Filter options={availableFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
         <div style={{paddingTop: '50px'}}>
-          {orderedData?.map((c) => {
-            return (<Card data={c} key={c.name} outer/>)
-          })}
+          { orderedData?.length ?
+            orderedData.map((c) => (<Card data={c} key={c.name} outer/>)) :
+            <Spinner/>
+          }
         </div>
         <Tooltip id="iconTooltip" />
       </div>
