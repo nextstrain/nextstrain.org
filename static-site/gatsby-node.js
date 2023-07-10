@@ -255,6 +255,10 @@ exports.createPages = ({graphql, actions}) => {
           path: "/pathogens",
           component: path.resolve("src/sections/pathogens.jsx")
         });
+        createPage({
+          path: "/pathogens/inputs",
+          component: path.resolve("src/sections/remote-inputs.jsx")
+        });
 
         /* NOTE: we are using "influenza" URLs for dev purposes only. This will be switched to "flu"
         when this functionality is released & publicized. For unknown reasons, if the component is named

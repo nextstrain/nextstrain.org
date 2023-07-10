@@ -75,15 +75,36 @@ const DATESTAMP_REGEX = /_\d{4}-\d{2}-\d{2}$/;
  */
 const coreBucketKeyMunger = (object) => {
   const key = object.Key;
+  let name;
   /* now-deleted keys are not currently displayed, but we could consider grouping
   them with current keys if applicable */
   if (object.deleted) return [false];
-  /* keys with a directory-like structure + non-JSON keys are not considered,
-  but they will be when we start listing available intermediate files */
-  if (key.includes("/")) return [false];
+  /* keys with a directory-like structure may be 'files', but we perform a bunch of ad-hoc filtering
+  as we have a huge number of potential files in the core bucket and we don't want to expose them all! */
+  if (key.includes("/")) {
+    if (key.startsWith('files/')) {
+      if (
+        key.includes('/archive/')
+        || key.includes('/test/')
+        || key.includes('/branch/')
+        || key.includes('/trial/')
+        || key.includes('/test-data/')
+        || key.startsWith('jen_test/')
+        || key.match(/\/\d{4}-\d{2}-\d{2}_results.json/) // forecasts-ncov
+        || key.endsWith('.png')                          // forecasts-ncov
+      ) {
+        return [false];
+      }
+      name = key.replace(/^files\//, '')  // don't want the files/ prefix in the displayed name
+        .replace(/^workflows\//, '')      // (similarly for workflows/)
+      return [name, 'file']
+    }
+    return [false];
+  }
+
   if (!key.endsWith('.json')) return [false];
   /* Attempts to exclude sidecar files, manifests, search results etc */
-  let name = key.replace(/\.json$/, '');
+  name = key.replace(/\.json$/, '');
   for (const suffix of SIDECARS) {
     if (name.endsWith(suffix)) return [false];
   }

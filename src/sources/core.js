@@ -39,18 +39,25 @@ class CoreSource extends Source {
   async collectResources() {
     if (!this._allResources) this._allResources = new Map();
     const s3objects = await parseInventory();
-    const datasets = new Map();
+    const datasets = new Map(), files = new Map();
     s3objects.forEach((object) => {
       const [name, resourceType] = CoreCollectedResources.objectName(object);
       if (!name) return;
-      if (resourceType!=='dataset') return;
-      datasets.has(name) ? datasets.get(name).push(object) : datasets.set(name, [object]);
+      if (resourceType === 'dataset') {
+        datasets.has(name) ? datasets.get(name).push(object) : datasets.set(name, [object]);
+      } else if (resourceType === 'file') {
+        files.has(name) ? files.get(name).push(object) : files.set(name, [object]);
+      }
     })
     this._allResources.set(
       'dataset',
       Array.from(datasets).map(([, objects]) => new CoreCollectedResources(this, objects))
     );
-    // TODO XXX narratives + files (etc)
+    this._allResources.set(
+      'file',
+      Array.from(files).map(([, objects]) => new CoreCollectedResources(this, objects))
+    );
+    // TODO XXX narratives
   }
 
   // DEPRECATED availableDatasets is used by /charon/getAvailable and will be replaced once we move to a new API
@@ -180,11 +187,17 @@ class CoreCollectedResources extends CollectedResources {
   }
 
   nextstrainUrl(version=this._versions[0]) {
-    if (this._resourceType!=='dataset') return false;
-    // if the version is not the latest (in S3 terminology), then we don't yet have the
-    // ability to access it via Auspice. Or perhaps we do via /fetch? TODO
-    if (version.IsLatest!=="true") return false;
-    return version.Key.replace('.json', '').replace(/_/g, '/')
+    if (this._resourceType === 'file') {
+      if (version.IsLatest!=="true") return false;
+      return `https://nextstrain-data.s3.amazonaws.com/${version.Key}`
+    }
+    if (this._resourceType === 'dataset') {
+      if (version.IsLatest!=="true") return false;
+      // if the version is not the latest (in S3 terminology), then we don't yet have the
+      // ability to access it via Auspice. Or perhaps we do via /fetch? TODO
+      return version.Key.replace('.json', '').replace(/_/g, '/')
+    }
+    return false;
   }
 }
 

@@ -36,7 +36,7 @@ export const Card = ({data, outer=false}) => {
         color: '#4F4B50',
       }}>
         {outer && Logo(data.name)}
-        <Name name={data.name} isDataset={!!data.url}/>
+        <Name name={data.name} url={data.url}/>
         <SparkLine versions={data.versions || []} onClick={()=>{setDetails(details==='versions'?'':'versions')}}/>
       </div>
 
@@ -170,10 +170,9 @@ function Versions({card}) {
 /**
  * <Name> is the element for a collection's title. It may or may not be a link.
  */
-function Name({name, isDataset}) {
+function Name({name, url}) {
   const prettyName = name.replace(/\//g, " / ")
-
-  if (!isDataset) return (
+  if (!url) return (
     <div
       data-tooltip-id="iconTooltip" data-tooltip-place="top"
       data-tooltip-content={"Not an actual dataset - sort of an internal node in the naming hierarchy"}
@@ -181,8 +180,12 @@ function Name({name, isDataset}) {
       {prettyName}
     </div>
   );
+  /* The structure of URLs in the API response is a WIP */
+  const href = url.startsWith('http') ?
+    url :
+    `https://nextstrain.org/${url}`;
   return (
-    <a href={`https://nextstrain.org/${name}`} target="_blank" rel="noreferrer"
+    <a href={href} target="_blank" rel="noreferrer"
       data-tooltip-id="iconTooltip" data-tooltip-place="top"
       data-tooltip-content={"Click to view the (current) dataset"}
       style={{ fontSize: '1.8rem', fontWeight: '300'}}
