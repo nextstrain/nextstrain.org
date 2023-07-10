@@ -22,9 +22,7 @@ const abstract = (
     growth advantages using daily sequence counts. We apply this model independently across
     different countries and partition SARS-CoV-2 variants by <a
     href="https://nextstrain.org/blog/2022-04-29-SARS-CoV-2-clade-naming-2022">Nextstrain
-    clades</a> and separately by <a href="https://cov-lineages.org/">Pango lineages</a>. Each clade
-    is assumed to have a fixed growth advantage relative to clade 22B, while each lineage is relative
-    to lineage BA.5.</>
+    clades</a> and separately by <a href="https://cov-lineages.org/">Pango lineages</a>.</>
     <p/>
     <>Further details on data preparation and analysis can be found in the <a
     href="https://github.com/nextstrain/forecasts-ncov/">forecasts-ncov GitHub repo</a>, while
