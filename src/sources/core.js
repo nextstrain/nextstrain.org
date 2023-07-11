@@ -16,6 +16,10 @@ class CoreSource extends Source {
   async baseUrl() { return "https://nextstrain-data.s3.amazonaws.com/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "master"; }
+  get inventoryLocation() { return {
+    bucket: 'nextstrain-inventories',
+    prefix: 'nextstrain-data/config-v1/',
+  }}
 
   // eslint-disable-next-line no-unused-vars
   async urlFor(path, method = 'GET', headers = {}) {
@@ -38,7 +42,12 @@ class CoreSource extends Source {
 
   async collectResources() {
     if (!this._allResources) this._allResources = new Map();
-    const s3objects = await parseInventory();
+    const s3objects = await parseInventory({...this.inventoryLocation, name: this.name});
+    if (!s3objects.length) {
+      // potentially due to a (transient) failure to parse the inventory -- so we want
+      // to keep any previously set resources
+      return;
+    }
     const datasets = new Map(), files = new Map();
     s3objects.forEach((object) => {
       const [name, resourceType] = CoreCollectedResources.objectName(object);
