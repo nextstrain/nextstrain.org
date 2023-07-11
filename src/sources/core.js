@@ -48,9 +48,15 @@ class CoreSource extends Source {
       // to keep any previously set resources
       return;
     }
+    /* Comment (to drop before merge)
+    This conditional could be replaced by overwriting `collectResources` in CoreStagingSource.
+    That would require most of the logic in this function to be pulled out into a utility function,
+    which may not be a bad idea */
+    const CollectedResources = this.name==='core' ?
+      CoreCollectedResources : CoreStagingCollectedResources;
     const datasets = new Map(), files = new Map();
     s3objects.forEach((object) => {
-      const [name, resourceType] = CoreCollectedResources.objectName(object);
+      const [name, resourceType] = CollectedResources.objectName(object);
       if (!name) return;
       if (resourceType === 'dataset') {
         datasets.has(name) ? datasets.get(name).push(object) : datasets.set(name, [object]);
@@ -60,11 +66,11 @@ class CoreSource extends Source {
     })
     this._allResources.set(
       'dataset',
-      Array.from(datasets).map(([, objects]) => new CoreCollectedResources(this, objects))
+      Array.from(datasets).map(([, objects]) => new CollectedResources(this, objects))
     );
     this._allResources.set(
       'file',
-      Array.from(files).map(([, objects]) => new CoreCollectedResources(this, objects))
+      Array.from(files).map(([, objects]) => new CollectedResources(this, objects))
     );
     // TODO XXX narratives
   }
@@ -127,6 +133,10 @@ class CoreStagingSource extends CoreSource {
   async baseUrl() { return "https://nextstrain-staging.s3.amazonaws.com/"; }
   get repo() { return "nextstrain/narratives"; }
   get branch() { return "staging"; }
+  get inventoryLocation() { return {
+    bucket: 'nextstrain-inventories',
+    prefix: 'nextstrain-staging/config-v1/',
+  }}
 }
 
 class CoreDataset extends Dataset {
@@ -196,6 +206,8 @@ class CoreCollectedResources extends CollectedResources {
   }
 
   nextstrainUrl(version=this._versions[0]) {
+    // Note: we could potentially write this method in such a way that it works
+    // for core + staging (e.g. the bucket HTTPS address via `await this._source.baseUrl`)
     if (this._resourceType === 'file') {
       if (version.IsLatest!=="true") return false;
       return `https://nextstrain-data.s3.amazonaws.com/${version.Key}`
@@ -205,6 +217,31 @@ class CoreCollectedResources extends CollectedResources {
       // if the version is not the latest (in S3 terminology), then we don't yet have the
       // ability to access it via Auspice. Or perhaps we do via /fetch? TODO
       return version.Key.replace('.json', '').replace(/_/g, '/')
+    }
+    return false;
+  }
+}
+
+class CoreStagingCollectedResources extends CoreCollectedResources {
+  // overrides
+  static objectName(object) {
+    let [name, resourceType] = coreBucketKeyMunger(object);
+    if (name) name = `staging/${name}`;
+    return [name, resourceType];
+  }
+  get prefixParts() {
+    // prefix parts do not include source information ("staging" in this case)
+    return this.name.split("/").slice(1,)
+  }
+  nextstrainUrl(version=this._versions[0]) {
+    if (this._resourceType === 'file') {
+      if (version.IsLatest!=="true") return false;
+      return `https://nextstrain-staging.s3.amazonaws.com/${version.Key}`
+    }
+    if (this._resourceType === 'dataset') {
+      if (version.IsLatest!=="true") return false;
+      const urlFromKey = version.Key.replace('.json', '').replace(/_/g, '/');
+      return `staging/${urlFromKey}`;
     }
     return false;
   }

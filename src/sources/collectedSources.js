@@ -1,5 +1,5 @@
 import * as authz from '../authz/index.js';
-import { CoreSource } from './core.js';
+import { CoreSource, CoreStagingSource } from './core.js';
 
 /**
  * CollectedSources is a class which has access to all known resources
@@ -15,11 +15,16 @@ import { CoreSource } from './core.js';
 const CollectedSources = (() => {
 
   const sources = new Map([
-    ['core', new CoreSource()] // move to Symbol('core')?
-    // TODO -- add core, all groups, fetch, community...
+    ['core', new CoreSource()], // move to Symbol('core'), or initialise the source and use source.name?
+    ['staging', new CoreStagingSource()],
+    // TODO -- groups, fetch, community...
   ])
 
-  sources.get('core').collectResources()
+  /* at server start we want to collect the resources, as requests for this data will be
+  empty until they are first collected. We may wish to make these collection steps sequential
+  if they result in poor server performance. Similarly, we may wish to stagger the periodic
+  updates */
+  sources.forEach((source) => source.collectResources())
 
   // TODO XXX - collectResources() should be periodically run to update the sources.
   // the cadence of this updating somewhat depends on how we are collecting resources

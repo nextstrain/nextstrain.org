@@ -106,6 +106,8 @@ const parseInventory = async ({bucket, prefix, name}) => {
   }).map((item) => {
     item.LastModifiedDate = item.LastModifiedDate.split("T")[0]
     item.deleted = deletedKeys.has(item.Key);
+    // a bucket without versioning enabled will not have the `IsLatest` key
+    if (!Object.hasOwn(item, 'IsLatest')) item.IsLatest = "true";
     return item;
   })
   return objects;
