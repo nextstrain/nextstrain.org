@@ -4,6 +4,7 @@
   font-size: 1.6rem;
   font-weight: 300;
   line-height: 1.5;
+  min-width: 100%;
   /* class has a single child element (#cardsContainer) which we want center aligned in the horizontal direction */
   display: flex; 
   flex-direction: row;

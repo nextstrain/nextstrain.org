@@ -24,13 +24,14 @@ const abstract = (
     We aim to provide a continually-updated view of publicly available data to show pathogen evolution and epidemic spread.
     The pipeline used to generate each dataset is available on <a href="https://github.com/nextstrain/">our GitHub page</a> or by loading a dataset and
     clicking the &ldquo;built with&rdquo; link at the top of the page.
-    While we strive to keep datasets updated, there may be some staleness; the date when the dataset was updated can be found in the footer of each visualisation.
-    In particular, data with a datestamp in the table below <small>(YYYY-MM-DD)</small> reflects an analysis at a point in time.
+    We strive to keep datasets updated at a regular cadence, and the cards below indicate the frequency of updates to each dataset over the past 2 years. 
     <br/><br/>
     To learn more about nextstrain please see <a href="https://docs.nextstrain.org/en/latest/index.html">our documentation</a> or ask a question
     on the <a href="https://discussion.nextstrain.org/">discussion forum</a>.
     <br/><br/>
-    <AnchorLink to={"search"} title={"Click here to scroll down to all Nextstrain-maintained pathogen analyses"} />.
+    <AnchorLink to={"search"} title={"Click here to scroll down to the Nextstrain-authored narratives"} />.
+    <br/><br/>
+    Quick links:
   </>
 );
 
@@ -62,13 +63,13 @@ class Index extends React.Component {
   }
 
   async componentDidMount() {
-    // try {
-    //   const data = await getDatasetsAndNarratives("/charon/getAvailable");
-    //   this.setState({data});
-    // } catch (err) {
-    //   console.error("Error fetching / parsing data.", err.message);
-    //   this.setState({errorFetchingData: true});
-    // }
+    try {
+      const data = await getNarratives("/charon/getAvailable");
+      this.setState({data});
+    } catch (err) {
+      console.error("Error fetching / parsing data.", err.message);
+      this.setState({errorFetchingData: true});
+    }
   }
 
   render() {
@@ -83,19 +84,18 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
-
-        <HugeSpacer />
-        <CardsV2 apiQuery={'prefix=/&versions&type=dataset'} dataType='dataset'/>
-        <HugeSpacer />
-
-        <HugeSpacer />
         <Cards squashed cards={pathogenCards}/>
-        <HugeSpacer />
 
+        <CardsV2 apiQuery={'prefix=/&versions&type=dataset'} dataType='dataset'/>
+
+        {/*  ----- NARRATIVE TABLE ------- */}
+        <HugeSpacer />
+        <HugeSpacer />
         <ScrollableAnchor id={"search"}>
           <div>
             {this.state.data && (
               <DatasetSelect
+                title="Nextstrain-authored narratives "
                 datasets={this.state.data}
                 columns={tableColumns}
               />
@@ -108,20 +108,10 @@ class Index extends React.Component {
   }
 }
 
-export async function getDatasetsAndNarratives(url) {
+export async function getNarratives(url) {
   const available = await fetchAndParseJSON(url);
   const formatName = (x) => x.replace(/^\//, '').replace(/\/$/, '').replace(/\//g, " / ");
   const data = [];
-  if (available.datasets) {
-    available.datasets.forEach((d) => {
-      data.push({
-        url: d.request,
-        filename: d.request,
-        name: formatName(d.request),
-        type: "Dataset"
-      });
-    });
-  }
   if (available.narratives) {
     available.narratives.forEach((d) => {
       data.push({
