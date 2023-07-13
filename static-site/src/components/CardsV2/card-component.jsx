@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { MdCached, MdOutlineShare, MdCoronavirus } from "react-icons/md";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
-import { SparkLine } from "./sparkLine.jsx";
+import { SparkLine } from "./sparkline.jsx";
 // import { useGraph } from "../graph.ts";
 
 /**
