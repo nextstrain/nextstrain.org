@@ -30,6 +30,16 @@ const CollectedSources = (() => {
   // the cadence of this updating somewhat depends on how we are collecting resources
   // (e.g. if the manifest updates daily, then we should re-collect daily). This could
   // be implemented here or, perhaps better, within the collectResources() method itself.
+  // The following is a MVP to re-collect every 24 hours
+  setInterval(
+    async () => {
+      for (const [,source] of sources) {
+        // collect resources (fetch, parse, store) sequentially
+        await source.collectResources();
+      }
+    },
+    1000 * 60 * 60 * 24 // 24 hours in ms
+  )
 
   class _CollectedSources {
     constructor(user) {
