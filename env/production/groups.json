@@ -214,5 +214,9 @@
   {
     "name": "MPOX-CDC",
     "isPublic": false
+  },
+  {
+    "name": "moncla-lab",
+    "isPublic": true
   }
 ]
