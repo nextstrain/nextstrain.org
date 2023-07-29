@@ -1,6 +1,9 @@
 {
-  "COGNITO_BASE_URL": "https://nextstrain-testing.auth.us-east-1.amazoncognito.com",
-  "COGNITO_CLIENT_ID": "6qiojrhr8tibt0f6hphnm1osp1",
-  "COGNITO_CLI_CLIENT_ID": "9opa27o74f4jsq8g4a34e1mqr",
-  "COGNITO_USER_POOL_ID": "us-east-1_zqpCrjM7I"
+  "OIDC_IDP_URL": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_zqpCrjM7I",
+  "OAUTH2_CLIENT_ID": "6qiojrhr8tibt0f6hphnm1osp1",
+  "OAUTH2_CLI_CLIENT_ID": "9opa27o74f4jsq8g4a34e1mqr",
+  "OAUTH2_LOGOUT_URL": "https://nextstrain-testing.auth.us-east-1.amazoncognito.com/logout",
+  "COGNITO_USER_POOL_ID": "us-east-1_zqpCrjM7I",
+  "OIDC_USERNAME_CLAIM": "cognito:username",
+  "OIDC_GROUPS_CLAIM": "cognito:groups"
 }
