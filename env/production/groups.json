@@ -218,5 +218,9 @@
   {
     "name": "moncla-lab",
     "isPublic": true
+  },
+  {
+    "name": "arkansas-tuberculosis-private",
+    "isPublic": false
   }
 ]
