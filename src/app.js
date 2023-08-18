@@ -418,6 +418,7 @@ app.route("/cli")
  * to programmatic clients, though we're not this fancy yet.
  */
 const schemaRoutes = [
+  ["/schemas/augur/annotations",       "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-annotations.json"],
   ["/schemas/augur/frequencies",       "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-frequencies.json"],
   ["/schemas/auspice/config/v2",       "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-auspice-config-v2.json"],
   ["/schemas/dataset/v1/meta",         "https://raw.githubusercontent.com/nextstrain/augur/master/augur/data/schema-export-v1-meta.json"],
