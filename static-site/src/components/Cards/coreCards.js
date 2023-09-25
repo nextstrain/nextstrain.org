@@ -1,8 +1,8 @@
 const coreCards = [
   {
     img: "monkeypox.png",
-    url: "/monkeypox",
-    title: "Monkeypox"
+    url: "/mpox",
+    title: "Mpox"
   },
   {
     img: "seasonalinfluenza.png",

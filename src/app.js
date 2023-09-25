@@ -192,6 +192,7 @@ const coreBuildPaths = [
   "/mers",
   "/mumps",
   "/monkeypox",
+  "/mpox", // Prior to Sept 2023 we used /monkeypox/
   "/ncov",
   "/nextclade",
   "/rsv",

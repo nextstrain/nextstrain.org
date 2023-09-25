@@ -201,6 +201,14 @@
           "default": "hmpxv1"
         }
       },
+      "mpox": {
+        "resolution": {
+          "all-clades": "",
+          "clade-IIb": "",
+          "lineage-B.1": "",
+          "default": "clade-IIb"
+        }
+      },
       "mumps": {
         "resolution": {
           "na": "",
