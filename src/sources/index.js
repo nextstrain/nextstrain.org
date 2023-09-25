@@ -7,10 +7,13 @@ import { CommunitySource } from './community.js';
 import { UrlDefinedSource } from './fetch.js';
 import { GroupSource } from './groups.js';
 
+import { CollectedSources } from "./collectedSources.js";
+
 export {
   CoreSource,
   CoreStagingSource,
   CommunitySource,
   UrlDefinedSource,
   GroupSource,
+  CollectedSources,
 };

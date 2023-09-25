@@ -155,6 +155,9 @@ if (!PRODUCTION) {
 app.routeAsync("/charon/getAvailable")
   .getAsync(endpoints.charon.getAvailable);
 
+app.routeAsync("/charon/getAvailable/v2")
+  .getAsync(endpoints.charon.getAvailableV2);
+
 app.routeAsync("/charon/getDataset")
   .getAsync(
     endpoints.charon.setSourceFromPrefix,

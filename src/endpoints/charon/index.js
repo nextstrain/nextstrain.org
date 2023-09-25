@@ -3,6 +3,7 @@ import { splitPrefixIntoParts } from '../../utils/prefix.js';
 import { setSource, setDataset, canonicalizeDataset, setNarrative } from '../sources.js';
 import './setAvailableDatasets.js'; // sets globals
 import { getAvailable } from './getAvailable.js';
+import { getAvailableV2 } from "./getAvailableV2.js";
 import { getDataset } from './getDataset.js';
 import { getNarrative } from './getNarrative.js';
 import { getSourceInfo } from './getSourceInfo.js';
@@ -54,6 +55,7 @@ export {
   setNarrativeFromPrefix,
 
   getAvailable,
+  getAvailableV2,
   getDataset,
   getNarrative,
   getSourceInfo

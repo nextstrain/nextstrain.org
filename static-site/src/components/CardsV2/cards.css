@@ -1,0 +1,62 @@
+
+
+.cardsV2 {
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1.5;
+  min-width: 100%;
+  /* class has a single child element (#cardsContainer) which we want center aligned in the horizontal direction */
+  display: flex; 
+  flex-direction: row;
+  justify-content: center;
+}
+
+.cardsV2 #cardsContainer {
+  padding-top: 50px;
+  max-width: 100%;
+  min-width: 100%;
+}
+/* media query breakpoints taken from the CSS for our original <Cards> (splash tiles) */
+@media (min-width: 768px) {
+  .cardsV2 #cardsContainer {
+    max-width: 700px;
+    min-width: 700px;
+  }
+}
+@media (min-width: 1200px) {
+  .cardsV2 #cardsContainer {
+    max-width: 900px;
+    min-width: 900px;
+  }
+}
+
+
+
+.cardsV2 .radioSort {
+  padding-top: 30px;
+  font-size: 1.8rem;
+}
+.cardsV2 .radioSort input {
+  margin-left: 20px;
+  margin-right: 5px;
+}
+
+.cardsV2 .filter {
+  /* max-width: 60%; */
+  padding-top: 20px;
+}
+
+/* Spinner CSS originally from
+https://github.com/nextstrain/auspice/blob/a0e9080dcd61249f24f6c822dfcf6478e4e07ac2/src/css/static.css */
+.cardsV2 .spinner {
+  width: 80px;
+  height: 80px;
+  margin: 0px 0px 0px -40px;
+  -webkit-animation:spin 1.5s linear infinite;
+  -moz-animation:spin 1.5s linear infinite;
+  animation:spin 1.5s linear infinite;
+  align-items: center;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
