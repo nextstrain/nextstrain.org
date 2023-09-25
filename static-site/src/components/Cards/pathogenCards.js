@@ -25,7 +25,7 @@ const pathogenCards = [
     title: "Measles"
   },
   {
-    img: "monkeypox.png",
+    img: "mpox.png",
     url: "/mpox",
     title: "Mpox"
   },

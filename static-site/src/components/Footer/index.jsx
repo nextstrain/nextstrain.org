@@ -18,7 +18,7 @@ const SplashImagesCredit = () => (
         {` by Zhang `}<i>et al., </i>
         <a href="https://commons.wikimedia.org/wiki/Ebola#/media/File:Ebola_virus_em.png">Ebola EM</a>
         {` by Frederick Murphy / CDC, `}
-        <a href="https://en.wikipedia.org/wiki/File:Monkeypox.gif">monkeypox EM</a>
+        <a href="https://en.wikipedia.org/wiki/File:Monkeypox.gif">mpox EM</a>
         {` by University of Wisconsin-La Crosse, `}
         <a href="https://commons.wikimedia.org/wiki/File:Influenza_virus_particle_color.jpg">seasonal influenza</a>
         {`, `}
