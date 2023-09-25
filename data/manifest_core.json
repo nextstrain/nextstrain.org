@@ -194,11 +194,12 @@
         }
       },
       "measles": "",
-      "monkeypox": {
+      "mpox": {
         "resolution": {
-          "hmpxv1": "",
-          "mpxv": "",
-          "default": "hmpxv1"
+          "all-clades": "",
+          "clade-IIb": "",
+          "lineage-B.1": "",
+          "default": "clade-IIb"
         }
       },
       "mumps": {
