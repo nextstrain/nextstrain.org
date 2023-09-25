@@ -194,13 +194,6 @@
         }
       },
       "measles": "",
-      "monkeypox": {
-        "resolution": {
-          "hmpxv1": "",
-          "mpxv": "",
-          "default": "hmpxv1"
-        }
-      },
       "mpox": {
         "resolution": {
           "all-clades": "",

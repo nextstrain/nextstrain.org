@@ -39,6 +39,15 @@ const setup = (app) => {
       })
     ));
 
+  /**
+   * We shifted from using 'monkeypox' to 'mpox', as per WHO naming
+   * recommendations. Note that monkeypox YYYY-MM-DD URLs remain,
+   * e.g. /monkeypox/hmpxv1/2022-09-04
+   */
+  app.route('/monkeypox/mpxv').get((req, res) => res.redirect('/mpox/all-clades'));
+  app.route('/monkeypox/hmpxv1').get((req, res) => res.redirect('/mpox/clade-IIb'));
+  app.route('/monkeypox/hmpxv1/big').get((req, res) => res.redirect('/mpox/lineage-B.1'));
+
   /*
    * Redirect to translations of narratives if the client has
    * set language preference and the translation is available

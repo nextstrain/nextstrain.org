@@ -191,8 +191,8 @@ const coreBuildPaths = [
   "/measles",
   "/mers",
   "/mumps",
-  "/monkeypox",
-  "/mpox", // Prior to Sept 2023 we used /monkeypox/
+  "/monkeypox", // Not actively updated, but YYYY-MM-DD URLs remain & don't redirect
+  "/mpox",      // monkeypox URLs will redirect to /mpox (except for datestamped URLs)
   "/ncov",
   "/nextclade",
   "/rsv",
