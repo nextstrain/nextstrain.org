@@ -60,7 +60,7 @@ npm install
 * [See this page in the docs](https://nextstrain.org/docs/contributing/documentation)
 
 ### Adding new cards / tiles for the splash page
-1. Find an image with appropriate rights for us to use.
+1. Find an image with appropriate rights for us to use. Generally, anything on Wikimedia Commons is fair game with proper attribution. Please consult the licensing section of individual files to be sure.
 2. Edit the picture in [LunaPic](https://www110.lunapic.com/editor/)
     * upload picture
     * Style the picture via the "art" menu. Choose "grey" for core cards, "floating" for community cards or "sadness" for narrative cards. Adjust slider as you see fit.
@@ -69,7 +69,7 @@ npm install
     * "File" -> "Save Image" & use PNG
 3. Save the file in `./static/splash_images`
 4. Edit `./src/components/Cards/coreCards.js`, `./content/community-datasets.yaml` or `./src/components/Cards/narrativeCards.js` to include the card & title.
-5. Edit `./src/Footer/index.jsx` to provide credit for the photo.
+5. Edit `./src/components/Footer/index.jsx` to provide credit for the photo.
 
 ### External Links in the sidebar
 
