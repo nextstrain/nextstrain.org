@@ -156,6 +156,10 @@
     "isPublic": false
   },
   {
+    "name": "KU-song-public",
+    "isPublic": true
+  },
+  {
     "name": "WHO-euro-flu",
     "isPublic": true
   },
