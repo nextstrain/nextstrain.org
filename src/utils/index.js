@@ -1,21 +1,7 @@
-import fs from 'fs';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
 import { NotFound } from '../httpErrors.js';
 
-
-const getGitHash = () => {
-  /* https://stackoverflow.com/questions/34518389/get-hash-of-most-recent-git-commit-in-node */
-  try {
-    const rev = fs.readFileSync('.git/HEAD').toString();
-    if (rev.indexOf(':') === -1) {
-      return rev;
-    }
-    return fs.readFileSync('.git/').toString() + rev.substring(5).replace(/\n/, '');
-  } catch (err) {
-    return "unknown";
-  }
-};
 
 const verbose = (msg, ...rest) => {
   if (global.verbose) {
@@ -130,7 +116,6 @@ const normalizeHeaders = (headers) => {
 };
 
 export {
-  getGitHash,
   verbose,
   log,
   warn,
