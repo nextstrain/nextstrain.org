@@ -415,3 +415,14 @@ export const GROUPS_DATA_FILE = fromEnvOrConfig("GROUPS_DATA_FILE", undefined, {
  * @default nextstrain-groups
  */
 export const GROUPS_BUCKET = fromEnvOrConfig("GROUPS_BUCKET", "nextstrain-groups");
+
+
+/**
+ * Allow a local JSON file to be used as the resource collection index. If the
+ * file is gzipped it should end in `.gz`. If this is set then we will not
+ * attempt to fetch the remote (S3) index.
+ * 
+ * If this is set to false then resource collection is skipped.
+ */
+export const RESOURCE_INDEX = fromEnvOrConfig("RESOURCE_INDEX", null);
+

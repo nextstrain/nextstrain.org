@@ -15,7 +15,7 @@ const streamFinished = promisify(stream.finished);
 
 const CANARY_ORIGIN = process.env.CANARY_ORIGIN;
 
-import { PRODUCTION } from './config.js';
+import { PRODUCTION, RESOURCE_INDEX } from './config.js';
 import * as utils from './utils/index.js';
 import { addAsync } from './async.js';
 import { Forbidden, NotFound, Unauthorized } from './httpErrors.js';
@@ -27,6 +27,7 @@ import * as middleware from './middleware.js';
 import * as redirects from './redirects.js';
 import * as sources from './sources/index.js';
 import { uri } from './templateLiterals.js';
+import { updateResourceVersions } from './resourceIndex.js';
 
 const {
   setSource,
@@ -598,5 +599,14 @@ app.useAsync(async (err, req, res, next) => {
   return next(err);
 });
 
+/**
+ * Update the resources we know about. If the underlying data (a JSON file on
+ * S3) hasn't changed then this only involves a HEAD request so we run it on an
+ * hourly interval.
+ */
+if (RESOURCE_INDEX!==false) {
+  updateResourceVersions();
+  setInterval(updateResourceVersions, 60*60*1000)
+}
 
 export default app;
