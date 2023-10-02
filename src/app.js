@@ -1,6 +1,8 @@
 import * as redirects from './redirects.js';
 import * as routing from "./routing/index.js";
 import { setupApp } from "./routing/setup.js";
+import { RESOURCE_INDEX } from './config.js';
+import { updateResourceVersions } from './resourceIndex.js';
 
 const {
   auspice,
@@ -182,5 +184,14 @@ await staticSite.setup(app);
  */
 errors.setup(app);
 
+/**
+ * Update the resources we know about. If the index is located on S3 then we
+ * check the eTag to know whether to update, and thus most calls to
+ * `updateResourceVersions` simply involve a HEAD request.
+ */
+if (RESOURCE_INDEX) {
+  updateResourceVersions();
+  setInterval(updateResourceVersions, 60*60*1000)
+}
 
 export default app;
