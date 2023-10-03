@@ -6,6 +6,7 @@ import { getAvailable } from './getAvailable.js';
 import { getDataset } from './getDataset.js';
 import { getNarrative } from './getNarrative.js';
 import { getSourceInfo } from './getSourceInfo.js';
+import { CoreSource } from '../../sources/core.js';
 
 const setSourceFromPrefix = setSource(req => {
   const prefix = req.query.prefix;
@@ -23,7 +24,11 @@ const setSourceFromPrefix = setSource(req => {
   return req.context.splitPrefixIntoParts.source;
 });
 
-const setDatasetFromPrefix = setDataset(req => req.context.splitPrefixIntoParts.prefixParts.join("/"));
+const setDatasetFromPrefix = (req, res, next) => {
+  const pathExtractor = req => req.context.splitPrefixIntoParts.prefixParts.join("/");
+  const extractVersion = req.context.source instanceof CoreSource;
+  return setDataset(pathExtractor, extractVersion)(req, res, next);
+}
 
 const canonicalizeDatasetPrefix = canonicalizeDataset((req, resolvedPrefix) => {
   // A absolute base is required but we won't use it, so use something bogus.

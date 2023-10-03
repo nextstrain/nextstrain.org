@@ -207,12 +207,13 @@ const coreBuildRoutes = coreBuildPaths.map(path => [
   path,
   `${path}/*`,
   `${path}:*`, // Tangletrees at top-level, e.g. /a:/a/b
+  `${path}@*`, // version (date) descriptors for a top-level core build
 ]);
 
 app.use([coreBuildRoutes, "/narratives/*"], setSource(req => new CoreSource())); // eslint-disable-line no-unused-vars
 
 app.routeAsync(coreBuildRoutes)
-  .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
+  .all(setDataset(req => req.path, true), canonicalizeDataset(path => `/${path}`))
   .getAsync(getDataset)
   .putAsync(putDataset)
   .deleteAsync(deleteDataset)

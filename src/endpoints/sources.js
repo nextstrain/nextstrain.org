@@ -5,7 +5,7 @@ import { contentTypesProvided, contentTypesConsumed } from '../negotiate.js';
 import * as options from './options.js';
 import { sendAuspiceEntrypoint } from './static.js';
 import { deleteByUrls, proxyFromUpstream, proxyToUpstream } from "../upstream.js";
-
+import { LATEST } from "../resourceIndex.js";
 
 /**
  * Generate Express middleware that extracts a {@link Source} instance from the
@@ -33,10 +33,11 @@ const setSource = (sourceExtractor) => (req, res, next) => {
  * stashes it in the request context.
  *
  * @param {pathExtractor} pathExtractor - Function to extract a dataset path from the request
+ * @param {Boolean} extractVersion - (Attempt to) extract a version descriptor from the extracted path
  * @returns {expressMiddleware}
  */
-const setDataset = (pathExtractor) => (req, res, next) => {
-  req.context.dataset = req.context.source.dataset(pathParts(pathExtractor(req)));
+const setDataset = (pathExtractor, extractVersion=false) => (req, res, next) => {
+  req.context.dataset = req.context.source.dataset(...pathParts(pathExtractor(req), extractVersion));
   next();
 };
 
@@ -195,7 +196,7 @@ const optionsNarrative = options.forAuthzObject(req => req.context.narrative);
  * @returns {expressMiddleware}
  */
 const setNarrative = (pathExtractor) => (req, res, next) => {
-  req.context.narrative = req.context.source.narrative(pathParts(pathExtractor(req)));
+  req.context.narrative = req.context.source.narrative(pathParts(pathExtractor(req))[0]);
   next();
 };
 
@@ -250,24 +251,43 @@ const putNarrative = contentTypesConsumed([
 
 
 /**
- * Split a dataset or narrative `path` into an array of parts.
+ * Split a dataset or narrative `path` into an array of parts and a version
+ * descriptor.
  *
  * If `path` is a tangletree path (i.e. refers to two datasets), returns only
  * the parts for the first dataset.
  *
+ * By default the returned version descriptor is LATEST. If `extractVersion` is
+ * true, we attempt to extract a version descriptor from the provided path,
+ * falling back to LATEST if one is not present.
+ *
  * @param {String} path
- * @returns {String[]}
+ * @param {Boolean} extractVersion
+ * @returns {[String[], String]}
  */
-function pathParts(path = "") {
-  const normalizedPath = path
-    .split(":")[0]          // Use only the first dataset in a tangletree (dual dataset) path.
-    .replace(/^\/+/, "")    // Ignore leading slashes
-    .replace(/\/+$/, "")    //   …and trailing slashes.
-  ;
+function pathParts(path = "", extractVersion = false) {
+  // Use only the first dataset in a tangletree (dual dataset) path.
+  let normalizedPath = path.split(":")[0]          
 
-  if (!normalizedPath) return [];
+  /* The part of the path starting with "@" is the version descriptor - this
+  will later be translated to the appropriate S3 version ID / GitHub SHA, but we
+  use human readable descriptors in the URL path. Note that the version
+  descriptor is greedy and may itself include '@' characters. */
+  let versionDescriptor, rest;
+  if (extractVersion) {
+    [normalizedPath, ...rest] = normalizedPath.split("@");
+    versionDescriptor = rest.join("@");
+  }
+  versionDescriptor ||= LATEST;
 
-  return normalizedPath.split("/");
+  // Ignore leading & trailing slashes (after version descriptor removal)
+  normalizedPath = normalizedPath
+    .replace(/\/+$/, "")
+    .replace(/^\/+/, "");
+
+  const nameParts = normalizedPath ? normalizedPath.split("/") : [];
+
+  return [nameParts, versionDescriptor]
 }
 
 

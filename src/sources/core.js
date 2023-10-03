@@ -4,6 +4,7 @@ import { fetch } from '../fetch.js';
 import { NotFound } from '../httpErrors.js';
 import * as utils from '../utils/index.js';
 import { Source, Dataset } from './models.js';
+import { ResourceVersions, LATEST } from "../resourceIndex.js";
 
 const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
@@ -25,8 +26,8 @@ class CoreSource extends Source {
     return url.toString();
   }
 
-  dataset(pathParts) {
-    return new CoreDataset(this, pathParts);
+  dataset(pathParts, versionDescriptor) {
+    return new CoreDataset(this, pathParts, versionDescriptor);
   }
 
   // The computation of these globals should move here.
@@ -120,12 +121,28 @@ class CoreDataset extends Dataset {
     const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
 
     if (nextDefaultPart) {
-      const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart]);
+      const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart], this.versionDescriptor);
       return dataset.resolve();
     }
 
     return this;
   }
+
+  /**
+   * Parse a human-readable versionDescriptor (currently only in YYYY-MM-DD format)
+   * and return the closest available versionID (YYYY-MM-DD string) and the associated
+   * versionUrls (an object linking available file types to their access URLs)
+   * @param {string} versionDescriptor 
+   * @returns [versionId, versionUrls]
+   */
+  versionInfo() {
+    if (this.versionDescriptor===LATEST) return [LATEST, undefined];
+    const versions = new ResourceVersions(this.source.name, 'dataset', this.pathParts.join("/"));
+    const versionDate = versions.versionIdFromDescriptor(this.versionDescriptor);
+    if (!versionDate || versionDate===LATEST) return [LATEST, undefined];
+    return [versionDate, versions.subresourceUrls(versionDate)];
+  }
+
 }
 
 export {

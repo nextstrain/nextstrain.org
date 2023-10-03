@@ -1,7 +1,8 @@
 import authzTags from '../authz/tags.js';
 
 import { fetch } from '../fetch.js';
-import { BadRequest } from '../httpErrors.js';
+import { NotFound, BadRequest, InternalServerError } from '../httpErrors.js';
+import { LATEST } from '../resourceIndex.js';
 
 /* The model classes here are the base classes for the classes defined in
  * ./core.js, ./community.js, ./groups.js, etc.
@@ -97,7 +98,8 @@ class Source {
     const url = new URL(path, await this.baseUrl());
     return url.toString();
   }
-  dataset(pathParts) {
+  // eslint-disable-next-line no-unused-vars
+  dataset(pathParts, versionDescriptor) {
     return new Dataset(this, pathParts);
   }
   narrative(pathParts) {
@@ -139,9 +141,11 @@ class Source {
 }
 
 class Resource {
-  constructor(source, pathParts) {
+  constructor(source, pathParts, versionDescriptor=LATEST) {
     this.source = source;
     this.pathParts = pathParts;
+    this.versionDescriptor = versionDescriptor;
+    [this.versionId, this.versionUrls] = this.versionInfo();
 
     // Require baseParts, otherwise we have no actual dataset/narrative path.
     // This inspects baseParts because some of the pathParts (above) may not
@@ -172,17 +176,32 @@ class Resource {
       throw new BadRequest(`Resource (e.g. dataset and narrative) paths may not include underscores (_); use slashes (/) instead`);
     }
     /* Forbid '@' characters in pathParts as these will be used to identify the
-     * version descriptor.
+     * version descriptor. Currently the version descriptor is only used for
+     * dataset resources of the core source.
      */
     if (pathParts.some(part => part.includes("@"))) {
-        throw new BadRequest('This resource does not (yet) allow version descriptors and therefore must not contain "@"');
-      }
+      throw new BadRequest(
+        (this.source.name==='core' && this instanceof Dataset) ?
+          'Core dataset paths can only include "@" if it is used to identify a YYYY-MM-DD version' :
+          'This resource does not (yet) allow version descriptors and therefore must not contain "@"'
+      );
+    }
   }
   get baseParts() {
     return this.pathParts.slice();
   }
   get baseName() {
     return this.baseParts.join("_");
+  }
+  versionInfo() {
+    /**
+     * Interrogates the resource index to find the appropriate version of the
+     * resource and associated subresource URLs by comparing to
+     * this.versionDescriptor. This method should be overridden by subclasses
+     * when they are used to handle URLs which extract version descriptors.
+     * @returns [versionId, versionUrls]
+     */
+    return [LATEST, undefined];
   }
   async exists() {
     throw new Error("exists() must be implemented by Resource subclasses");
@@ -219,6 +238,25 @@ class Subresource {
     throw new Error("validTypes() must be implemented by Subresource subclasses");
   }
   async url(method = 'GET', headers = {}) {
+    /**
+     * Check if the resource has versionUrls, and if it does then we use that
+     * URL rather than constructing a URL from the basename. If we have
+     * versionUrls but not for this (subresource) type then we know this
+     * subresource doesn't exist for this version of the resource.
+     *
+     * Note that the URL is not signed, and changes will be required to support
+     * this as needed.
+     */
+    if (this.resource.versionUrls) {
+      if (!['HEAD', 'GET'].includes(method)) {
+        throw new InternalServerError(`We can only create GET/HEAD URLs for a versioned resource`);
+      }
+      if (this.resource.versionUrls[this.type]) {
+        return this.resource.versionUrls[this.type];
+      }
+      throw new NotFound(`This version of the resource does not have a subresource for ${this.type}`);
+    }
+
     return await this.resource.source.urlFor(this.baseName, method, headers);
   }
   get baseName() {
@@ -240,9 +278,18 @@ class Dataset extends Resource {
 
   async exists() {
     const method = "HEAD";
-    const _exists = async (type) =>
-      (await fetch(await this.subresource(type).url(method), {method, cache: "no-store"})).status === 200;
-
+    const _exists = async (type) => {
+      let url;
+      try {
+        url = await this.subresource(type).url(method);
+      } catch (err) {
+        if (err instanceof NotFound) {
+          return false;
+        }
+        throw err;
+      }
+      return (await fetch(url, {method, cache: "no-store"})).status === 200;
+    }
     const all = async (...promises) =>
       (await Promise.all(promises)).every(x => x);
 
@@ -310,9 +357,18 @@ class Narrative extends Resource {
 
   async exists() {
     const method = "HEAD";
-    const _exists = async () =>
-      (await fetch(await this.subresource("md").url(method), {method, cache: "no-store"})).status === 200;
-
+    const _exists = async () => {
+      let url;
+      try {
+        url = await this.subresource("md").url(method);
+      } catch (err) {
+        if (err instanceof NotFound) {
+          return false;
+        }
+        throw err;
+      }
+      return (await fetch(url, {method, cache: "no-store"})).status === 200;
+    }
     return (await _exists()) || false;
   }
 
