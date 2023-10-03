@@ -44,6 +44,7 @@ const coreBuildRoutes = coreBuildPaths.map(path => [
   path,
   `${path}/*`,
   `${path}:*`, // Tangletrees at top-level, e.g. /a:/a/b
+  `${path}@*`, // version (date) descriptors for a top-level build
 ]);
 
 

@@ -1,7 +1,7 @@
 import authzTags from '../authz/tags.js';
 
 import { fetch } from '../fetch.js';
-import { BadRequest } from '../httpErrors.js';
+import { NotFound, BadRequest, InternalServerError } from '../httpErrors.js';
 
 /* The model classes here are the base classes for the classes defined in
  * ./core.js, ./community.js, ./groups.js, etc.
@@ -97,11 +97,12 @@ export class Source {
     const url = new URL(path, await this.baseUrl());
     return url.toString();
   }
-  dataset(pathParts) {
-    return new Dataset(this, pathParts);
+
+  dataset(pathParts, versionDescriptor) {
+    return new Dataset(this, pathParts, versionDescriptor);
   }
-  narrative(pathParts) {
-    return new Narrative(this, pathParts);
+  narrative(pathParts, versionDescriptor) {
+    return new Narrative(this, pathParts, versionDescriptor);
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -139,9 +140,11 @@ export class Source {
 }
 
 export class Resource {
-  constructor(source, pathParts) {
+  constructor(source, pathParts, versionDescriptor) {
     this.source = source;
     this.pathParts = pathParts;
+    this.versionDescriptor = versionDescriptor;
+    [this.versionDate, this.versionUrls] = this.versionInfo(versionDescriptor);
 
     // Require baseParts, otherwise we have no actual dataset/narrative path.
     // This inspects baseParts because some of the pathParts (above) may not
@@ -178,6 +181,22 @@ export class Resource {
   get baseName() {
     return this.baseParts.join("_");
   }
+  versionInfo(versionDescriptor) {
+    /**
+     * Interrogates the resource index to find the appropriate version of the
+     * resource and associated subresource URLs by comparing to
+     * this.versionDescriptor.
+     * This method should be overridden by subclasses when they are used to
+     * handle URLs which extract version descriptors.
+     * @param {(string|false)} versionDescriptor from the URL string
+     * @throws {BadRequest}
+     * @returns {([string, Object]|[null, undefined])} [0]: versionDate [1]: versionUrls
+     */
+    if (versionDescriptor) {
+      throw new BadRequest(`This resource cannot handle versioned dataset requests (version descriptor requested: "${this.versionDescriptor}")`)
+    }
+    return [null, undefined];
+  }
   async exists() {
     throw new Error("exists() must be implemented by Resource subclasses");
   }
@@ -213,6 +232,25 @@ export class Subresource {
     throw new Error("validTypes() must be implemented by Subresource subclasses");
   }
   async url(method = 'GET', headers = {}) {
+    /**
+     * Check if the resource has versionUrls, and if it does then we use that
+     * URL rather than constructing a URL from the basename. If we have
+     * versionUrls but not for this (subresource) type then we know this
+     * subresource doesn't exist for this version of the resource.
+     *
+     * Note that the URL is not signed, and changes will be required to support
+     * this as needed.
+     */
+    if (this.resource.versionUrls) {
+      if (!['HEAD', 'GET'].includes(method)) {
+        throw new InternalServerError(`Only the GET and HEAD methods are available for previous resource versions`);
+      }
+      if (this.resource.versionUrls[this.type]) {
+        return this.resource.versionUrls[this.type];
+      }
+      throw new NotFound(`This version of the resource does not have a subresource for ${this.type}`);
+    }
+
     return await this.resource.source.urlFor(this.baseName, method, headers);
   }
   get baseName() {
@@ -234,9 +272,18 @@ export class Dataset extends Resource {
 
   async exists() {
     const method = "HEAD";
-    const _exists = async (type) =>
-      (await fetch(await this.subresource(type).url(method), {method, cache: "no-store"})).status === 200;
-
+    const _exists = async (type) => {
+      let url;
+      try {
+        url = await this.subresource(type).url(method);
+      } catch (err) {
+        if (err instanceof NotFound) {
+          return false;
+        }
+        throw err;
+      }
+      return (await fetch(url, {method, cache: "no-store"})).status === 200;
+    }
     const all = async (...promises) =>
       (await Promise.all(promises)).every(x => x);
 
@@ -304,9 +351,18 @@ export class Narrative extends Resource {
 
   async exists() {
     const method = "HEAD";
-    const _exists = async () =>
-      (await fetch(await this.subresource("md").url(method), {method, cache: "no-store"})).status === 200;
-
+    const _exists = async () => {
+      let url;
+      try {
+        url = await this.subresource("md").url(method);
+      } catch (err) {
+        if (err instanceof NotFound) {
+          return false;
+        }
+        throw err;
+      }
+      return (await fetch(url, {method, cache: "no-store"})).status === 200;
+    }
     return (await _exists()) || false;
   }
 

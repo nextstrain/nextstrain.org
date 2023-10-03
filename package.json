@@ -19,7 +19,7 @@
     "start": "npm run server",
     "//test": "echo 'NODE_OPTIONS is required until this issue is resolved: https://github.com/facebook/jest/issues/9430 '",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest --roots ./test/",
-    "test:ci": "start-server-and-test 'node server.js --verbose >./test/server.log 2>&1' http://localhost:5000 test",
+    "test:ci": "start-server-and-test 'RESOURCE_INDEX=test/date_descriptor_index.json node server.js --verbose >./test/server.log 2>&1' http://localhost:5000 test",
     "dev": "./develop.sh"
   },
   "dependencies": {

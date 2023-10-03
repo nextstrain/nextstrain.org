@@ -36,7 +36,7 @@ export const setSource = (sourceExtractor) => (req, res, next) => {
  * @returns {expressMiddleware}
  */
 export const setDataset = (pathExtractor) => (req, res, next) => {
-  req.context.dataset = req.context.source.dataset(pathParts(pathExtractor(req)));
+  req.context.dataset = req.context.source.dataset(...pathParts(pathExtractor(req)));
   next();
 };
 
@@ -195,7 +195,7 @@ export const optionsNarrative = options.forAuthzObject(req => req.context.narrat
  * @returns {expressMiddleware}
  */
 export const setNarrative = (pathExtractor) => (req, res, next) => {
-  req.context.narrative = req.context.source.narrative(pathParts(pathExtractor(req)));
+  req.context.narrative = req.context.source.narrative(...pathParts(pathExtractor(req)));
   next();
 };
 
@@ -250,24 +250,41 @@ export const putNarrative = contentTypesConsumed([
 
 
 /**
- * Split a dataset or narrative `path` into an array of parts.
+ * Split a dataset or narrative `path` into an array of parts and a version
+ * descriptor.
  *
  * If `path` is a tangletree path (i.e. refers to two datasets), returns only
  * the parts for the first dataset.
  *
+ * We always attempt to extract a version descriptor from the provided path,
+ * returning false if one is not present.
+ *
  * @param {String} path
- * @returns {String[]}
+ * @returns {[String[], (String|false)]} [0]: array of path parts, [1]: version
+ * descriptor
  */
 function pathParts(path = "") {
-  const normalizedPath = path
-    .split(":")[0]          // Use only the first dataset in a tangletree (dual dataset) path.
-    .replace(/^\/+/, "")    // Ignore leading slashes
-    .replace(/\/+$/, "")    //   …and trailing slashes.
-  ;
+  // Use only the first dataset in a tangletree (dual dataset) path.
+  let normalizedPath = path.split(":")[0]          
 
-  if (!normalizedPath) return [];
+  /* The part of the path starting with "@" is the version descriptor - this
+  will later be mapped to the appropriate fetch URL (e.g. S3 version ID) via the
+  resource index. The version descriptor is greedy and may itself include '@'
+  characters. Note that '@' characters may be present in the URL path but not in
+  the `path` argument here. */
 
-  return normalizedPath.split("/");
+  let rest;
+  [normalizedPath, ...rest] = normalizedPath.split("@");
+  const versionDescriptor = rest.join("@") || false;
+
+  // Ignore leading & trailing slashes (after version descriptor removal)
+  normalizedPath = normalizedPath
+    .replace(/\/+$/, "")
+    .replace(/^\/+/, "");
+
+  const nameParts = normalizedPath ? normalizedPath.split("/") : [];
+
+  return [nameParts, versionDescriptor]
 }
 
 

@@ -14,11 +14,12 @@ export class UrlDefinedSource extends Source {
   async baseUrl() {
     return `https://${this.authority}`;
   }
-  dataset(pathParts) {
-    return new UrlDefinedDataset(this, pathParts);
+
+  dataset(pathParts, versionDescriptor) {
+    return new UrlDefinedDataset(this, pathParts, versionDescriptor);
   }
-  narrative(pathParts) {
-    return new UrlDefinedNarrative(this, pathParts);
+  narrative(pathParts, versionDescriptor) {
+    return new UrlDefinedNarrative(this, pathParts, versionDescriptor);
   }
 
   // available datasets & narratives are unknown when the dataset is specified by the URL
@@ -50,8 +51,17 @@ class UrlDefinedDataset extends Dataset {
     // Override check for underscores (_), as we want to allow arbitrary
     // external URLs.
   }
+  versionInfo() {
+    /* Version descriptors make no sense for fetch sources, but our routing approach always extracts them */
+    return [null, undefined];
+  }
   get baseName() {
-    return this.baseParts.join("/");
+    /**
+     * The baseName includes anything that looks like a version descriptor.
+     * Minor bug: If the requested URL ends with a '@' then it'll be dropped here.
+     */
+    const version = this.versionDescriptor ? `@${this.versionDescriptor}` : ""
+    return this.baseParts.join("/") + version;
   }
   subresource(type) {
     return new UrlDefinedDatasetSubresource(this, type);
@@ -89,8 +99,14 @@ class UrlDefinedNarrative extends Narrative {
     // Override check for underscores (_), as we want to allow arbitrary
     // external URLs.
   }
+  versionInfo() {
+    /* Version descriptors make no sense for fetch sources, but our routing approach always extracts them */
+    return [null, undefined];
+  }
   get baseName() {
-    return this.baseParts.join("/");
+    /* see comment in UrlDefinedDataset */
+    const version = this.versionDescriptor ? `@${this.versionDescriptor}` : ""
+    return this.baseParts.join("/") + version;
   }
   subresource(type) {
     return new UrlDefinedNarrativeSubresource(this, type);

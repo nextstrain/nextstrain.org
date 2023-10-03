@@ -4,6 +4,7 @@ import { fetch } from '../fetch.js';
 import { NotFound } from '../httpErrors.js';
 import * as utils from '../utils/index.js';
 import { Source, Dataset } from './models.js';
+import { ResourceVersions } from "../resourceIndex.js";
 
 const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
@@ -25,8 +26,8 @@ export class CoreSource extends Source {
     return url.toString();
   }
 
-  dataset(pathParts) {
-    return new CoreDataset(this, pathParts);
+  dataset(pathParts, versionDescriptor) {
+    return new CoreDataset(this, pathParts, versionDescriptor);
   }
 
   // The computation of these globals should move here.
@@ -93,6 +94,7 @@ export class CoreStagingSource extends CoreSource {
 }
 
 class CoreDataset extends Dataset {
+  /* NOTE: This class is also used for staging datasets */
   resolve() {
     /* XXX TODO: Reimplement this in terms of methods on the source, not by
      * breaking encapsulation by using a process-wide global.
@@ -120,10 +122,41 @@ class CoreDataset extends Dataset {
     const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
 
     if (nextDefaultPart) {
-      const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart]);
+      const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart], this.versionDescriptor);
       return dataset.resolve();
     }
 
     return this;
   }
+
+  /**
+   * Parse a URL-provided version descriptor (currently only in YYYY-MM-DD
+   * format) and return the appropriate version date (YYYY-MM-DD string) and the
+   * associated versionUrls (an object linking available file types to their
+   * access URLs). THe returned versionDate is null if no appropriate version is
+   * available.
+   *
+   * We only want to do this for core datasets, not staging.
+   *
+   * @param {(string|false)} versionDescriptor from the URL
+   * @throws {BadRequest || NotFound}
+   * @returns {([string, Object]|[null, undefined])} [0]: versionDate [1]:
+   * versionUrls
+   */
+  versionInfo(versionDescriptor) {
+    
+    if (this.source.name!=='core') {
+      return super.versionInfo(versionDescriptor);
+    }
+
+    if (!versionDescriptor) {
+      return [null, undefined];
+    }
+
+    const versions = new ResourceVersions(this.source.name, 'dataset', this.pathParts.join("/"));
+    const versionDate = versions.versionDateFromDescriptor(this.versionDescriptor);
+    const versionUrls = versionDate ? versions.subresourceUrls(versionDate) : undefined
+    return [versionDate, versionUrls];
+  }
+
 }

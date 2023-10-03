@@ -56,11 +56,11 @@ export class GroupSource extends Source {
     return `${this.group.name}/`;
   }
 
-  dataset(pathParts) {
-    return new GroupDataset(this, pathParts);
+  dataset(pathParts, versionDescriptor) {
+    return new GroupDataset(this, pathParts, versionDescriptor);
   }
-  narrative(pathParts) {
-    return new GroupNarrative(this, pathParts);
+  narrative(pathParts, versionDescriptor) {
+    return new GroupNarrative(this, pathParts, versionDescriptor);
   }
 
   async urlFor(path, method = 'GET', headers = {}) {
