@@ -9,19 +9,14 @@ terraform {
 }
 
 locals {
-  server_policy_name = (
-    var.env == "production"
-    ? "NextstrainDotOrgServerInstance"
-    : "NextstrainDotOrgServerInstance-${var.env}"
-  )
-
   # The "dev" policy is used for all non-production environments, i.e. the
   # "testing" environment.
   #
   # It allows reduced, read-only access to a subset of non-public production
   # resources for which there aren't non-production counterparts (e.g.
   # s3://nextstrain-data).
-  server_policy_file_name = (
+
+  server_policy_name = (
     var.env == "production"
     ? "NextstrainDotOrgServerInstance"
     : "NextstrainDotOrgServerInstance-${var.env}"
@@ -42,7 +37,7 @@ resource "aws_iam_policy" "server" {
   name        = local.server_policy_name
   description = local.server_policy_description
 
-  policy = file("${path.module}/policy/${local.server_policy_file_name}.json")
+  policy = file("${path.module}/policy/${local.server_policy_name}.json")
 }
 
 moved {
