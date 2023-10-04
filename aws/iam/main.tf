@@ -20,11 +20,11 @@ locals {
   #
   # It allows reduced, read-only access to a subset of non-public production
   # resources for which there aren't non-production counterparts (e.g.
-  # s3://nextstrain-data).  The naming is historical.
+  # s3://nextstrain-data).
   server_policy_file_name = (
     var.env == "production"
     ? "NextstrainDotOrgServerInstance"
-    : "NextstrainDotOrgServerInstanceDev"
+    : "NextstrainDotOrgServerInstance-${var.env}"
   )
 
   server_policy_description = (
