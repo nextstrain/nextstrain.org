@@ -43,6 +43,35 @@
         "arn:aws:s3:::nextstrain-groups/test/*",
         "arn:aws:s3:::nextstrain-groups/test-private/*"
       ]
+    },
+    {
+      "Sid": "ListInventories",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "nextstrain-data/*",
+            "nextstrain-staging/*"
+          ]
+        }
+      },
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::nextstrain-inventories"
+      ]
+    },
+    {
+      "Sid": "GetInventories",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::nextstrain-inventories/nextstrain-data/*",
+        "arn:aws:s3:::nextstrain-inventories/nextstrain-staging/*"
+      ]
     }
   ]
 }
