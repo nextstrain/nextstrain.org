@@ -1,15 +1,4 @@
 {
-  "name": "static",
-  "description": "Static content for nextstrain.org",
-  "version": "1.0.1",
-  "author": "james hadfield",
-  "keywords": [
-    "nextstrain",
-    "bioinformatics",
-    "phylodynamics"
-  ],
-  "license": "MIT",
-  "main": "n/a",
   "engines": {
     "node": "^16",
     "npm": "^7 || ^8"
@@ -22,11 +11,8 @@
     "build": "gatsby build",
     "test": "gatsby build",
     "build:pp": "gatsby build --prefix-paths",
-    "build:gh": "npm run clean && npm run build:pp && gh-pages -d public",
     "clean": "rm -rf public",
     "lint:md": "remark content/posts/",
-    "write-good": "write-good $(glob 'content/posts/**/*.md')",
-    "format:js": "prettier '**/*.{js,jsx}' --write",
     "heroku-postbuild": "gatsby build"
   },
   "dependencies": {
@@ -78,15 +64,8 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "cli-glob": "^0.1.0",
-    "gh-pages": "^1.0.0",
-    "prettier": "^1.5.3",
     "remark-cli": "^4.0.0",
-    "remark-preset-lint-recommended": "^3.0.1",
-    "stylefmt": "^6.0.0",
-    "stylelint": "^8.0.0",
-    "stylelint-config-standard": "^17.0.0",
-    "write-good": "^0.11.3"
+    "remark-preset-lint-recommended": "^3.0.1"
   },
   "remarkConfig": {
     "plugins": [
