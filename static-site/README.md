@@ -71,6 +71,18 @@ npm install
 4. Edit `./src/components/Cards/coreCards.js`, `./content/community-datasets.yaml` or `./src/components/Cards/narrativeCards.js` to include the card & title.
 5. Edit `./src/components/Footer/index.jsx` to provide credit for the photo.
 
+### Adding new team members
+
+To add a new team member to the [nextstrain.org/team](https://nextstrain.org/team) page, make a PR in this repo with the following changes:
+1. Add an image for the team member to the [./static/team](./static/team) directory.
+2. Add an entry for the team member to the [./src/components/People/teamMembers.js](./src/components/People/teamMembers.js) file in the appropriate list.
+   Note that the lists are currently ordered by alphabetical order by the last names.
+
+After the above PR is merged, the new team member can then be added to the [docs.nextstrain.org](https://docs.nextstrain.org) footer.
+1. Make a PR in the [nextstrain/sphinx-theme](https://github.com/nextstrain/sphinx-theme) to update the custom [footer](https://github.com/nextstrain/sphinx-theme/blob/main/lib/nextstrain/sphinx/theme/footer.html) with the new team member.
+2. Merge the PR and follow [instructions to release a new version of the theme on PyPI](https://github.com/nextstrain/sphinx-theme#releasing).
+3. Once the new version is available on PyPI, trigger RTD rebuilds for the latest/stable doc versions to update the footer.
+
 ### External Links in the sidebar
 
 The `./additional_sidebar_entries.yaml` file defines external links which we wish to display in the sidebar of the documentation & help pages.
