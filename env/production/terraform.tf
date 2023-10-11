@@ -52,6 +52,8 @@ module "iam" {
   }
 
   env = "production"
+
+  COGNITO_USER_POOL_ID = module.cognito.COGNITO_USER_POOL_ID
 }
 
 moved {

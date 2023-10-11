@@ -293,6 +293,16 @@ The following group settings endpoints exist::
 
     {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/settings/overview
 
+The following group membership endpoints exist::
+
+    {GET, HEAD, OPTIONS} /groups/{name}/settings/members
+
+    {GET, HEAD, OPTIONS} /groups/{name}/settings/roles
+
+    {GET, HEAD, OPTIONS} /groups/{name}/settings/roles/{role}/members
+
+    {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/settings/roles/{role}/members/{username}
+
 .. _motivation:
 
 Motivation

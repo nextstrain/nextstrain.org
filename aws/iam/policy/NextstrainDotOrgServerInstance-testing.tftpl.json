@@ -18,7 +18,16 @@
       ],
       "Resource": [
         "arn:aws:s3:::nextstrain-groups"
-      ]
+      ],
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "blab/*",
+            "test/*",
+            "test-private/*"
+          ]
+        }
+      }
     },
     {
       "Sid": "MultitenantBucketObjectActions",
@@ -30,7 +39,21 @@
         "s3:DeleteObject"
       ],
       "Resource": [
-        "arn:aws:s3:::nextstrain-groups/*"
+        "arn:aws:s3:::nextstrain-groups/blab/*",
+        "arn:aws:s3:::nextstrain-groups/test/*",
+        "arn:aws:s3:::nextstrain-groups/test-private/*"
+      ]
+    },
+    {
+      "Sid": "CognitoUserPoolActions",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:AdminAddUserToGroup",
+        "cognito-idp:AdminRemoveUserFromGroup",
+        "cognito-idp:ListUsersInGroup"
+      ],
+      "Resource": [
+        "arn:aws:cognito-idp:us-east-1:827581582529:userpool/${COGNITO_USER_POOL_ID}"
       ]
     }
   ]

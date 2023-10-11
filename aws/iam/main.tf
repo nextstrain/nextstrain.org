@@ -37,7 +37,11 @@ resource "aws_iam_policy" "server" {
   name        = local.server_policy_name
   description = local.server_policy_description
 
-  policy = file("${path.module}/policy/${local.server_policy_name}.json")
+  policy = templatefile(
+    "${path.module}/policy/${local.server_policy_name}.tftpl.json", {
+      COGNITO_USER_POOL_ID = var.COGNITO_USER_POOL_ID
+    }
+  )
 }
 
 moved {
