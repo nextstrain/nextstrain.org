@@ -99,6 +99,22 @@ jobs:
           curl "$(jq -r .output_stream_url build.json)" \
             --fail --silent --show-error --location
 
+      - name: Check Heroku build
+        run: |
+          id="$(jq -r .id build.json)"
+
+          curl https://api.heroku.com/apps/"$HEROKU_APP"/builds/"$id" \
+            --fail --silent --show-error --location --netrc \
+            --header 'Accept: application/vnd.heroku+json; version=3' \
+              | tee build.json
+
+          status="$(jq -r .status build.json)"
+
+          if [[ "$status" != succeeded ]]; then
+            echo "build status is $status (not succeeded)" >&2
+            exit 1
+          fi
+
       - if: always()
         name: Logout of Heroku
         run: sed -i -e '/^machine api\.heroku\.com/d' ~/.netrc
