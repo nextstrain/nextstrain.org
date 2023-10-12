@@ -50,6 +50,23 @@ if (PRODUCTION && !REVIEW_APP && !REDIS) {
   throw new Error("REDIS_URL required in production mode");
 }
 
+if (REDIS) {
+  /* Use "info memory" command instead of "config get maxmemory-policy" since
+   * Heroku Redis disables admin commands, which includes "config".
+   */
+  const memoryInfo = new Map(
+    (await REDIS.info("memory"))
+      .split(/\r\n/)
+      .map(line => line.match(/^(?<key>[^:]+):(?<value>.*)$/)?.groups)
+      .filter(matched => matched)
+      .map(({key, value}) => [key.replace(/_/g, "-"), value])
+  );
+  const maxmemoryPolicy = memoryInfo.get("maxmemory-policy");
+  if (maxmemoryPolicy !== "volatile-ttl") {
+    throw new Error(`Redis maxmemory-policy is "${maxmemoryPolicy}", but it *must* be "volatile-ttl".`);
+  }
+}
+
 
 function herokuRedisClient(urlStr) {
   const url = new URL(urlStr);
