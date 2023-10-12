@@ -32,6 +32,19 @@ export const PRODUCTION = process.env.NODE_ENV === "production";
 
 
 /**
+ * Running as a Heroku Review app?
+ *
+ * These run in production mode but do not have access to sensitive information
+ * (private S3 buckets, production Redis, production encryption keys, etc).
+ *
+ * See {@link https://devcenter.heroku.com/articles/github-integration-review-apps#injected-environment-variables}.
+ *
+ * @type {boolean}
+ */
+export const REVIEW_APP = !!process.env.HEROKU_PR_NUMBER;
+
+
+/**
  * Path to a JSON file containing configuration values.
  *
  * Only some configuration variables will fall back from the environment to
