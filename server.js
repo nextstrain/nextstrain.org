@@ -2,7 +2,6 @@ import argparse from 'argparse';
 import http from 'http';
 import * as utils from './src/utils/index.js';
 
-const version = utils.getGitHash();
 const nextstrainAbout = `
   Nextstrain is an open-source project to harness the scientific and public
   health potential of pathogen genome data.
@@ -11,9 +10,8 @@ const nextstrainAbout = `
   See https://github.com/nextstrain/nextstrain.org for more.
 `;
 const parser = new argparse.ArgumentParser({
-  version,
   addHelp: true,
-  description: `Nextstrain.org server version ${version}`,
+  description: `Nextstrain.org server`,
   epilog: nextstrainAbout
 });
 parser.addArgument('--verbose', {action: "storeTrue", help: "verbose server logging"});
