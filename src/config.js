@@ -201,6 +201,19 @@ export const OIDC_GROUPS_CLAIM = fromEnvOrConfig("OIDC_GROUPS_CLAIM");
 
 
 /**
+ * Fixed time (in seconds) by which the IdP backdates the "iat" claim of the ID
+ * token.
+ *
+ * @type {number}
+ */
+export const OIDC_IAT_BACKDATED_BY = fromEnvOrConfig("OIDC_IAT_BACKDATED_BY", 0);
+
+if (typeof OIDC_IAT_BACKDATED_BY !== 'number') {
+  throw new Error(`OIDC_IAT_BACKDATED_BY value is not a number; got "${OIDC_IAT_BACKDATED_BY}"`);
+}
+
+
+/**
  * Path to a JSON file containing Groups data.
  *
  * Defaults to env/production/groups.json if {@link PRODUCTION} or

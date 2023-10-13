@@ -19,7 +19,7 @@ import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/error
 import partition from 'lodash.partition';
 import BearerStrategy from './bearer.js';
 import { getTokens, setTokens, deleteTokens } from './session.js';
-import { PRODUCTION, OIDC_ISSUER_URL, OIDC_JWKS_URL, OAUTH2_AUTHORIZATION_URL, OAUTH2_TOKEN_URL, OAUTH2_LOGOUT_URL, OAUTH2_SCOPES_SUPPORTED, OIDC_USERNAME_CLAIM, OIDC_GROUPS_CLAIM, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, OAUTH2_CLI_CLIENT_ID } from '../config.js';
+import { PRODUCTION, OIDC_ISSUER_URL, OIDC_JWKS_URL, OAUTH2_AUTHORIZATION_URL, OAUTH2_TOKEN_URL, OAUTH2_LOGOUT_URL, OAUTH2_SCOPES_SUPPORTED, OIDC_USERNAME_CLAIM, OIDC_GROUPS_CLAIM, OIDC_IAT_BACKDATED_BY, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, OAUTH2_CLI_CLIENT_ID } from '../config.js';
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
 import { copyCookie } from '../middleware.js';
@@ -716,8 +716,8 @@ async function verifyIdToken(idToken, client = OAUTH2_CLIENT_ID) {
     if (typeof claims.iat !== "number") {
       throw new JWTClaimValidationFailed(`"iat" claim must be a number`, "iat", "invalid");
     }
-    if (claims.iat < staleBefore) {
-      throw new AuthnTokenTooOld(`"iat" claim less than user's staleBefore: ${claims.iat} < ${staleBefore}`);
+    if (claims.iat + OIDC_IAT_BACKDATED_BY < staleBefore) {
+      throw new AuthnTokenTooOld(`"iat" claim (plus any backdating) less than user's staleBefore: ${claims.iat} + ${OIDC_IAT_BACKDATED_BY} < ${staleBefore}`);
     }
   }
 
