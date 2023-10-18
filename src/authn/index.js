@@ -19,42 +19,13 @@ import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/error
 import partition from 'lodash.partition';
 import BearerStrategy from './bearer.js';
 import { getTokens, setTokens, deleteTokens } from './session.js';
-import { PRODUCTION, OIDC_ISSUER_URL, OIDC_JWKS_URL, OAUTH2_AUTHORIZATION_URL, OAUTH2_TOKEN_URL, OAUTH2_LOGOUT_URL, OAUTH2_SCOPES_SUPPORTED, OIDC_USERNAME_CLAIM, OIDC_GROUPS_CLAIM, OIDC_IAT_BACKDATED_BY, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, OAUTH2_CLI_CLIENT_ID } from '../config.js';
+import { PRODUCTION, OIDC_ISSUER_URL, OIDC_JWKS_URL, OAUTH2_AUTHORIZATION_URL, OAUTH2_TOKEN_URL, OAUTH2_LOGOUT_URL, OAUTH2_SCOPES_SUPPORTED, OIDC_USERNAME_CLAIM, OIDC_GROUPS_CLAIM, OIDC_IAT_BACKDATED_BY, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, OAUTH2_CLI_CLIENT_ID, SESSION_COOKIE_DOMAIN, SESSION_SECRET, SESSION_MAX_AGE } from '../config.js';
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
 import { copyCookie } from '../middleware.js';
 import { REDIS } from '../redis.js';
 import { userStaleBefore } from '../user.js';
 import * as utils from '../utils/index.js';
-
-/* In production, share the cookie across nextstrain.org and all subdomains so
- * sessions are portable (as long as the session store and secret are also
- * shared by the deployments).  Otherwise, set a host-only cookie.
- *
- * Note that this also means the cookie will be sent to third-party services we
- * host on subdomains, like docs.nextstrain.org, support.nextstrain.org, and
- * others.  Although we do "trust" these providers, I still have some
- * reservations about it as it does increase the surface area for potential
- * session hijacking via cookie theft.  The big mitigation for me is that this
- * cookie is already HTTP-only, so JS injections on those providers (which are
- * much much more likely than server-side injections) can't access the cookie.
- * The comprehensive, longer term solution (that everyone serious about
- * security does for essentially this same reason) is to move our internal
- * services off the user-facing domain (e.g. support.nextstrain-team.org)
- * and/or accomplish session portability another way (e.g. explicit SSO by
- * next.nextstrain.org against nextstrain.org as an IdP instead of implicit SSO
- * via session sharing).
- *   -trs, 18 March 2022
- */
-const SESSION_COOKIE_DOMAIN = PRODUCTION
-  ? "nextstrain.org"
-  : undefined;
-
-const SESSION_SECRET = PRODUCTION
-  ? process.env.SESSION_SECRET
-  : "BAD SECRET FOR DEV ONLY";
-
-const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30d in seconds
 
 const OIDC_JWKS = createRemoteJWKSet(new URL(OIDC_JWKS_URL));
 

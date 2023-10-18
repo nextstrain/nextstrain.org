@@ -239,6 +239,46 @@ if (typeof OIDC_IAT_BACKDATED_BY !== 'number') {
 
 
 /**
+ * Domain attribute to use for the session cookie.
+ *
+ * See {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#domaindomain-value}.
+ *
+ * Defaults to no domain (null), which means the session cookie will be
+ * host-only.  This is typically what's desired.
+ *
+ * @type {string}
+ * @default null
+ */
+export const SESSION_COOKIE_DOMAIN = fromEnvOrConfig("SESSION_COOKIE_DOMAIN", null);
+
+
+/**
+ * Secret(s) used to sign the session ids stored in session cookies.
+ *
+ * May be an array of strings to allow secret rotation over time.  The first
+ * secret should be the current secret, the one used for signing; others are
+ * old secrets to still accept for signature verification.
+ *
+ * Required if {@link PRODUCTION}, optional otherwise.
+ *
+ * @type {string|string[]}
+ */
+export const SESSION_SECRET = fromEnvOrConfig("SESSION_SECRET", PRODUCTION ? undefined : "BAD SECRET FOR DEV ONLY");
+
+
+/**
+ * Maximum age for the session cookie, in seconds.
+ *
+ * Expiration of session cookies is rolling, so making any request resets the
+ * cookie expiration date to the current time plus this value.
+ *
+ * @type {number}
+ * @default 2592000 (30 days, in seconds)
+ */
+export const SESSION_MAX_AGE = fromEnvOrConfig("SESSION_MAX_AGE", 30 * 24 * 60 * 60); // 30d in seconds
+
+
+/**
  * Path to a JSON file containing Groups data.
  *
  * Defaults to env/production/groups.json if {@link PRODUCTION} or

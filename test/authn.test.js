@@ -23,6 +23,7 @@ afterEach(() => {
 
 test("SESSION_ENCRYPTION_KEYS required in production", async () => {
   process.env.NODE_ENV = "production";
+  process.env.SESSION_SECRET = "not a secret";
 
   await expect(async () => await import("../src/authn/session"))
     .rejects
