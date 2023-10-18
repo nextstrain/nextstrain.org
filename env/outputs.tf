@@ -6,14 +6,26 @@ output "COGNITO_USER_POOL_ID" {
   value = module.cognito.COGNITO_USER_POOL_ID
 }
 
-output "COGNITO_BASE_URL" {
-  value = module.cognito.COGNITO_BASE_URL
+output "OIDC_IDP_URL" {
+  value = module.cognito.OIDC_IDP_URL
 }
 
-output "COGNITO_CLIENT_ID" {
-  value = module.cognito.COGNITO_CLIENT_ID
+output "OAUTH2_CLIENT_ID" {
+  value = module.cognito.OAUTH2_CLIENT_ID
 }
 
-output "COGNITO_CLI_CLIENT_ID" {
-  value = module.cognito.COGNITO_CLI_CLIENT_ID
+output "OAUTH2_CLI_CLIENT_ID" {
+  value = module.cognito.OAUTH2_CLI_CLIENT_ID
+}
+
+output "OAUTH2_LOGOUT_URL" {
+  value = module.cognito.OAUTH2_LOGOUT_URL
+}
+
+output "OIDC_USERNAME_CLAIM" {
+  value = "cognito:username"
+}
+
+output "OIDC_GROUPS_CLAIM" {
+  value = "cognito:groups"
 }

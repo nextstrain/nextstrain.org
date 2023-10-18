@@ -19,7 +19,7 @@ import { JOSEError, JWTClaimValidationFailed, JWTExpired } from 'jose/util/error
 import partition from 'lodash.partition';
 import BearerStrategy from './bearer.js';
 import { getTokens, setTokens, deleteTokens } from './session.js';
-import { PRODUCTION, COGNITO_USER_POOL_ID, COGNITO_BASE_URL, COGNITO_CLIENT_ID, COGNITO_CLI_CLIENT_ID } from '../config.js';
+import { PRODUCTION, OIDC_ISSUER_URL, OIDC_JWKS_URL, OAUTH2_AUTHORIZATION_URL, OAUTH2_TOKEN_URL, OAUTH2_LOGOUT_URL, OAUTH2_SCOPES_SUPPORTED, OIDC_USERNAME_CLAIM, OIDC_GROUPS_CLAIM, OIDC_IAT_BACKDATED_BY, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, OAUTH2_CLI_CLIENT_ID } from '../config.js';
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
 import { copyCookie } from '../middleware.js';
@@ -56,11 +56,22 @@ const SESSION_SECRET = PRODUCTION
 
 const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30d in seconds
 
-const COGNITO_REGION = COGNITO_USER_POOL_ID.split("_")[0];
+const OIDC_JWKS = createRemoteJWKSet(new URL(OIDC_JWKS_URL));
 
-const COGNITO_USER_POOL_URL = `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}`;
+// These are all scopes defined by OpenID Connect.
+const requiredScopes = ["openid", "profile"];
+const optionalScopes = ["email", "offline_access"];
 
-const COGNITO_JWKS = createRemoteJWKSet(new URL(`${COGNITO_USER_POOL_URL}/.well-known/jwks.json`));
+const missingScopes = requiredScopes.filter(s => !OAUTH2_SCOPES_SUPPORTED.has(s));
+if (missingScopes.length) {
+  throw new Error(`OAuth2 IdP does not advertise support for the required scopes: ${Array.from(missingScopes).join(" ")}`);
+}
+
+const OAUTH2_SCOPES = [
+  ...requiredScopes,
+  ...optionalScopes.filter(s => OAUTH2_SCOPES_SUPPORTED.has(s)),
+];
+
 
 /* Registered clients to accept for Bearer tokens.
  *
@@ -68,8 +79,8 @@ const COGNITO_JWKS = createRemoteJWKSet(new URL(`${COGNITO_USER_POOL_URL}/.well-
  * server start and might want to if we start having third-party clients, but
  * avoid a start-time dep for now.
  */
-const BEARER_COGNITO_CLIENT_IDS = [
-  COGNITO_CLI_CLIENT_ID,  // Nextstrain CLI
+const BEARER_OAUTH2_CLIENT_IDS = [
+  OAUTH2_CLI_CLIENT_ID,  // Nextstrain CLI
 ];
 
 /* Arbitrary ids for the various strategies for Passport.  Makes explicit the
@@ -91,10 +102,12 @@ function setup(app) {
     STRATEGY_OAUTH2,
     new OAuth2Strategy(
       {
-        authorizationURL: `${COGNITO_BASE_URL}/oauth2/authorize`,
-        tokenURL: `${COGNITO_BASE_URL}/oauth2/token`,
-        clientID: COGNITO_CLIENT_ID,
+        authorizationURL: OAUTH2_AUTHORIZATION_URL,
+        tokenURL: OAUTH2_TOKEN_URL,
+        clientID: OAUTH2_CLIENT_ID,
         callbackURL: "/logged-in",
+        scope: OAUTH2_SCOPES,
+        clientSecret: OAUTH2_CLIENT_SECRET,
         pkce: true,
         state: true,
         passReqToCallback: true,
@@ -110,9 +123,7 @@ function setup(app) {
           // All users are ok, as we control the entire user pool.
           return done(null, user);
         } catch (e) {
-          return e instanceof JOSEError
-            ? done(null, false, "Error verifying token")
-            : done(e);
+          return done(e);
         }
       }
     )
@@ -127,7 +138,7 @@ function setup(app) {
       },
       async (idToken, done) => {
         try {
-          const user = await userFromIdToken(idToken, BEARER_COGNITO_CLIENT_IDS);
+          const user = await userFromIdToken(idToken, BEARER_OAUTH2_CLIENT_IDS);
           return done(null, user);
         } catch (e) {
           if (e instanceof JOSEError) {
@@ -433,10 +444,10 @@ function setup(app) {
   app.route("/logout").get((req, res) => {
     req.session.destroy(() => {
       const params = {
-        client_id: COGNITO_CLIENT_ID,
+        client_id: OAUTH2_CLIENT_ID,
         logout_uri: req.context.origin
       };
-      res.redirect(`${COGNITO_BASE_URL}/logout?${querystring.stringify(params)}`);
+      res.redirect(`${OAUTH2_LOGOUT_URL}?${querystring.stringify(params)}`);
     });
   });
 }
@@ -504,8 +515,8 @@ function authnWithSession(req, res, next) {
 
 
 /**
- * Creates a user record from the given `idToken` after verifying it and the
- * associated `accessToken`.
+ * Creates a user record from the given `idToken` after verifying it and
+ * ensuring the associated `accessToken` and `refreshToken` exist.
  *
  * Use this function instead of {@link userFromIdToken} if you have all three
  * tokens (e.g. after initial OAuth2 login or session token renewal), as it
@@ -514,7 +525,7 @@ function authnWithSession(req, res, next) {
  * @param {String} idToken
  * @param {String} accessToken
  * @param {String} refreshToken
- * @param {String|String[]} client. Optional. Passed to `verifyToken()`.
+ * @param {String|String[]} client. Optional. Passed to `verifyIdToken()`.
  * @returns {User} User record with e.g. `username` and `groups` keys.
  */
 async function userFromTokens({idToken, accessToken, refreshToken}, client = undefined) {
@@ -522,11 +533,35 @@ async function userFromTokens({idToken, accessToken, refreshToken}, client = und
   if (!accessToken) throw new Error("missing accessToken");
   if (!refreshToken) throw new Error("missing refreshToken");
 
-  /* Verify access token for good measure, but pull user information from the
-   * identity token (which is its intended purpose).  Note that refresh tokens
-   * are opaque blobs not subject to verification.
+  /* Pull user information from the OIDC identity token, which is its intended
+   * purpose.
+   *
+   * The OAuth2 access token¹ is for accessing other resources protected by the
+   * IdP, such as the OIDC "user info" endpoint², but we don't currently use
+   * it.  It is sometimes verifiable, depending on the IdP and authentication
+   * flow, but not necessary (nor always possible) to do so in our use.³  We
+   * treat it thus as an opaque blob, as suggested by the OAuth2 spec.¹
+   *
+   * Note that OAuth2 refresh tokens are opaque blobs never subject to
+   * verification.
+   *   -trs, 12 Oct 2023
+   *
+   * ¹ <https://datatracker.ietf.org/doc/html/rfc6749#section-1.4>
+   *
+   * ² <https://openid.net/specs/openid-connect-core-1_0.html#UserInfo>
+   *   <https://docs.aws.amazon.com/cognito/latest/developerguide/userinfo-endpoint.html>
+   *
+   * ³ AWS Cognito documents its access tokens as JWTs and provides details for
+   *   verifying them.  Azure AD's are also JWTs, but various details make
+   *   generalized verification difficult (e.g. issuer is not the IdP we
+   *   authenticate with).  Neither provides the OIDC "at_hash" claims in the
+   *   id token that would let us treat the paired access token as an opaque
+   *   but verifiable blob, as we're using the authorization code flow⁴ which
+   *   does not require it.⁵
+   *
+   * ⁴ <https://openid.net/specs/openid-connect-core-1_0.html#Authentication>
+   * ⁵ <https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowTokenValidation>
    */
-  await verifyToken(accessToken, "access", client);
 
   // Verifies idToken
   return await userFromIdToken(idToken, client);
@@ -537,16 +572,16 @@ async function userFromTokens({idToken, accessToken, refreshToken}, client = und
  * Creates a user record from the given `idToken` after verifying it.
  *
  * @param {String} idToken
- * @param {String|String[]} client. Optional. Passed to `verifyToken()`.
+ * @param {String|String[]} client. Optional. Passed to `verifyIdToken()`.
  * @returns {User} User record with e.g. `username` and `groups` keys.
  */
 async function userFromIdToken(idToken, client = undefined) {
-  const idClaims = await verifyToken(idToken, "id", client);
+  const idClaims = await verifyIdToken(idToken, client);
 
-  const {groups, authzRoles, flags, cognitoGroups} = parseCognitoGroups(idClaims["cognito:groups"] || []);
+  const {groups, authzRoles, flags, cognitoGroups} = parseCognitoGroups(idClaims[OIDC_GROUPS_CLAIM] || []);
 
   const user = {
-    username: idClaims["cognito:username"],
+    username: idClaims[OIDC_USERNAME_CLAIM],
     groups,
     authzRoles,
     flags,
@@ -629,37 +664,47 @@ function splitGroupRole(cognitoGroup) {
 
 
 /**
- * Verifies all aspects of the given `token` (a signed JWT from our AWS Cognito
- * user pool) which is expected to be used for the given `use`.
+ * Verifies all aspects of the given OIDC `idToken` (a signed JWT from our AWS
+ * Cognito user pool).
  *
  * Assertions about expected algorithms, audience, issuer, and token use follow
  * guidelines from
  * <https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html>.
  *
- * @param {String} token
- * @param {String} use
+ * @param {String} idToken
  * @param {String} client. Optional `client_id` or list of `client_id`s
- *                 expected for the token. Only relevant when `use` is not
- *                 `access`. Defaults to this server's client id.
+ *                 expected for the token. Defaults to this server's client id.
  * @returns {Object} Verified claims from the token's payload
  */
-async function verifyToken(token, use, client = COGNITO_CLIENT_ID) {
-  const {payload: claims} = await jwtVerify(token, COGNITO_JWKS, {
+async function verifyIdToken(idToken, client = OAUTH2_CLIENT_ID) {
+  const {payload: claims} = await jwtVerify(idToken, OIDC_JWKS, {
     algorithms: ["RS256"],
-    issuer: COGNITO_USER_POOL_URL,
-    audience: use !== "access" ? client : null,
+    issuer: OIDC_ISSUER_URL,
+    audience: client,
   });
 
+  /* AWS Cognito includes the kind of token, id or access, in the claims for
+   * each token itself, e.g. so if you're expecting id tokens you can verify
+   * someone handed you an id token and not an access token.  This presumably
+   * helps block token misuse attacks, e.g. when code that's expecting an id
+   * token is given an access token that looks close enough in terms of claims
+   * but ends up breaking unasserted expections of the code and allowing an
+   * authz bypass or privilege escalation.
+   *
+   * There is not, AFAICT, a standard claim for this information in OIDC, and
+   * other IdPs don't provide it, so we only check this claim if it exists.
+   *   -trs, 11 Oct 2023
+   */
   const claimedUse = claims["token_use"];
 
-  if (claimedUse !== use) {
+  if (claimedUse !== undefined && claimedUse !== "id") {
     throw new JWTClaimValidationFailed(`unexpected "token_use" claim value: ${claimedUse}`, "token_use", "check_failed");
   }
 
   /* Verify the token was issued at (iat) a time more recent than our staleness
    * horizon for the user.
    */
-  const username = claims[{id: "cognito:username", access: "username"}[claimedUse]];
+  const username = claims[OIDC_USERNAME_CLAIM];
 
   if (!username) {
     throw new JWTClaimValidationFailed("missing username");
@@ -671,8 +716,8 @@ async function verifyToken(token, use, client = COGNITO_CLIENT_ID) {
     if (typeof claims.iat !== "number") {
       throw new JWTClaimValidationFailed(`"iat" claim must be a number`, "iat", "invalid");
     }
-    if (claims.iat < staleBefore) {
-      throw new AuthnTokenTooOld(`"iat" claim less than user's staleBefore: ${claims.iat} < ${staleBefore}`);
+    if (claims.iat + OIDC_IAT_BACKDATED_BY < staleBefore) {
+      throw new AuthnTokenTooOld(`"iat" claim (plus any backdating) less than user's staleBefore: ${claims.iat} + ${OIDC_IAT_BACKDATED_BY} < ${staleBefore}`);
     }
   }
 
@@ -693,11 +738,16 @@ async function verifyToken(token, use, client = COGNITO_CLIENT_ID) {
  *   except by initiating a new login.
  */
 async function renewTokens(refreshToken) {
-  const response = await fetch(`${COGNITO_BASE_URL}/oauth2/token`, {
+  const response = await fetch(OAUTH2_TOKEN_URL, {
     method: "POST",
     body: new URLSearchParams([
       ["grant_type", "refresh_token"],
-      ["client_id", COGNITO_CLIENT_ID],
+      ["client_id", OAUTH2_CLIENT_ID],
+      ...(
+        OAUTH2_CLIENT_SECRET
+          ? [["client_secret", OAUTH2_CLIENT_SECRET]]
+          : []
+      ),
       ["refresh_token", refreshToken],
     ]),
   });

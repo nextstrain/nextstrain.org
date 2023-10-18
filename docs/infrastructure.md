@@ -72,13 +72,23 @@ Several variables are required but obtain defaults from a config file (e.g. `env
 
   - `COGNITO_USER_POOL_ID` must be set to the id of the Cognito user pool to use for authentication.
 
-  - `COGNITO_BASE_URL` must be set to the URL of the Cognito user pool's hosted UI.
-    In production, this is `https://login.nextstrain.org`.
-    In development and testing, this would be something like `https://nextstrain-testing.auth.us-east-1.amazoncognito.com`.
+  - `OIDC_IDP_URL` must be set to the URL of the Cognito user pool's IdP endpoint.
+    This is something like `https://cognito-idp.{REGION}.amazonaws.com/{REGION}_{ID}`.
 
-  - `COGNITO_CLIENT_ID` must be set to the OAuth2 client id for the nextstrain.org client registered with the Cognito user pool.
+  - `OAUTH2_CLIENT_ID` must be set to the OAuth2 client id for the nextstrain.org client registered with the Cognito user pool.
 
-  - `COGNITO_CLI_CLIENT_ID` must be set to the OAuth2 client id for the Nextstrain CLI client registered with the Cognito user pool.
+  - `OAUTH2_CLI_CLIENT_ID` must be set to the OAuth2 client id for the Nextstrain CLI client registered with the Cognito user pool.
+
+  - `OAUTH2_LOGOUT_URL` overrides any value discovered via IdP metadata.
+    For Cognito, which doesn't provide a value via metadata, this must be set to the logout URL of the Cognito user pool's hosted UI.
+    In production, this is `https://login.nextstrain.org/logout`.
+    In development and testing, this would be something like `https://nextstrain-testing.auth.us-east-1.amazoncognito.com/logout`.
+
+  - `OIDC_USERNAME_CLAIM` must be set to the field in the id token claims which contains the username for a user.
+    For Cognito, this is `cognito:username`.
+
+  - `OIDC_GROUPS_CLAIM` must be set to the field in the id token claims which contains the list of group names for a user.
+    For Cognito, this is `cognito:groups`.
 
 Variables in the environment override defaults from the config file.
 

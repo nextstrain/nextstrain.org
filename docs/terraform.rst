@@ -262,10 +262,13 @@ Each configuration provides outputs of key-value pairs corresponding to
 environment (or config) variables required by the nextstrain.org server::
 
     $ terraform output
-    COGNITO_BASE_URL=https://login.nextstrain.org
-    COGNITO_CLIENT_ID=rki99ml8g2jb9sm1qcq9oi5n
-    COGNITO_CLI_CLIENT_ID=2vmc93kj4fiul8uv40uqge93m5
     COGNITO_USER_POOL_ID=us-east-1_Cg5rcTged
+    OIDC_IDP_URL=https://cognito-idp.us-east-1.amazonaws.com/us-east-1_Cg5rcTged
+    OAUTH2_CLIENT_ID=rki99ml8g2jb9sm1qcq9oi5n
+    OAUTH2_CLI_CLIENT_ID=2vmc93kj4fiul8uv40uqge93m5
+    OAUTH2_LOGOUT_URL=https://login.nextstrain.org/logout
+    OIDC_USERNAME_CLAIM=cognito:username
+    OIDC_GROUPS_CLAIM=cognito:groups
 
 Outputs are stored and tracked in the remote state and may be updated when
 applying configuration changes.  We cache non-sensitive outputs in JSON config
