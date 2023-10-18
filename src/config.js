@@ -118,6 +118,8 @@ export const COGNITO_USER_POOL_ID = fromEnvOrConfig("COGNITO_USER_POOL_ID");
  * URL of the OIDC IdP for our user directory (e.g. our Cognito user pool's
  * hosted UI and OAuth2 endpoints).
  *
+ * Required.
+ *
  * @type {string}
  */
 export const OIDC_IDP_URL = fromEnvOrConfig("OIDC_IDP_URL");
@@ -150,7 +152,7 @@ async function oidcConfiguration(idpUrl) {
   return await response.json();
 }
 
-/** "issuer" metadata field in  */
+/** "issuer" metadata field in OIDC configuration */
 export const OIDC_ISSUER_URL = fromEnvOrConfig("OIDC_ISSUER_URL", OIDC_CONFIGURATION.issuer);
 
 /** "jwks_uri" metadata field in OIDC configuration */
@@ -173,6 +175,8 @@ export const OAUTH2_SCOPES_SUPPORTED = new Set(fromEnvOrConfig("OAUTH2_SCOPES_SU
  * OAuth2 client id of nextstrain.org server as registered with our IdP (e.g.
  * our Cognito user pool).
  *
+ * Required.
+ *
  * @type {string}
  */
 export const OAUTH2_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLIENT_ID");
@@ -182,6 +186,7 @@ export const OAUTH2_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLIENT_ID");
  * Optional OAuth2 client secret corresponding to the {@link OAUTH2_CLIENT_ID}.
  *
  * @type {string}
+ * @default null
  */
 export const OAUTH2_CLIENT_SECRET = fromEnvOrConfig("OAUTH2_CLIENT_SECRET", null);
 
@@ -192,6 +197,8 @@ export const OAUTH2_CLIENT_SECRET = fromEnvOrConfig("OAUTH2_CLIENT_SECRET", null
  *
  * Used to identify its tokens provided via Bearer auth.
  *
+ * Required.
+ *
  * @type {string}
  */
 export const OAUTH2_CLI_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLI_CLIENT_ID");
@@ -200,6 +207,8 @@ export const OAUTH2_CLI_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLI_CLIENT_ID");
 /**
  * ID token claim field containing the username for a user.
  *
+ * Required.
+ *
  * @type {string}
  */
 export const OIDC_USERNAME_CLAIM = fromEnvOrConfig("OIDC_USERNAME_CLAIM");
@@ -207,6 +216,8 @@ export const OIDC_USERNAME_CLAIM = fromEnvOrConfig("OIDC_USERNAME_CLAIM");
 
 /**
  * ID token claim field containing the list of role group names for a user.
+ *
+ * Required.
  *
  * @type {string}
  */
@@ -218,6 +229,7 @@ export const OIDC_GROUPS_CLAIM = fromEnvOrConfig("OIDC_GROUPS_CLAIM");
  * token.
  *
  * @type {number}
+ * @default 0
  */
 export const OIDC_IAT_BACKDATED_BY = fromEnvOrConfig("OIDC_IAT_BACKDATED_BY", 0);
 
