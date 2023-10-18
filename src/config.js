@@ -289,3 +289,30 @@ export const SESSION_MAX_AGE = fromEnvOrConfig("SESSION_MAX_AGE", 30 * 24 * 60 *
 export const GROUPS_DATA_FILE =
      process.env.GROUPS_DATA_FILE
   ?? path.join(__basedir, "env", (PRODUCTION ? "production" : "testing"), "groups.json");
+
+
+/**
+ * Name of the S3 bucket to use for Nextstrain Groups storage.
+ *
+ * The layout of objects in the bucket will be like so:
+ *
+ *   ${bucketName}/
+ *     ${groupNameA}/
+ *       group-logo.png
+ *       group-overview.md
+ *       datasets/
+ *         ${datasetName}.json
+ *         ${datasetName}_${sidecarType}.json
+ *         …
+ *       narratives/
+ *         ${narrativeName}.md
+ *         …
+ *     ${groupNameB}/
+ *       …
+ *     …
+ *
+ *
+ * @type {string}
+ * @default nextstrain-groups
+ */
+export const GROUPS_BUCKET = fromEnvOrConfig("GROUPS_BUCKET", "nextstrain-groups");
