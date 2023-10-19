@@ -152,10 +152,10 @@ CloudFronted.
 Contains JSONs for staging copies of our core builds.
 Fetches by the server happen over unauthenticated HTTP.
 
-### nextstrain-inrb
+### nextstrain-groups
 
 Private.
-Access controlled by IAM groups/policies.
+Contains data for all groups.
 Fetches by the server happen via the S3 HTTP API using signed URLs.
 
 ## EC2 instances
