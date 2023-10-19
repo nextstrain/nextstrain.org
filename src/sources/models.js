@@ -171,6 +171,12 @@ class Resource {
     if (pathParts.some(part => part.includes("_"))) {
       throw new BadRequest(`Resource (e.g. dataset and narrative) paths may not include underscores (_); use slashes (/) instead`);
     }
+    /* Forbid '@' characters in pathParts as these will be used to identify the
+     * version descriptor.
+     */
+    if (pathParts.some(part => part.includes("@"))) {
+        throw new BadRequest('This resource does not (yet) allow version descriptors and therefore must not contain "@"');
+      }
   }
   get baseParts() {
     return this.pathParts.slice();
