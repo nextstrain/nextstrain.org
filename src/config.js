@@ -281,6 +281,9 @@ export const SESSION_MAX_AGE = fromEnvOrConfig("SESSION_MAX_AGE", 30 * 24 * 60 *
 /**
  * Path to a JSON file containing Groups data.
  *
+ * If sourced from the config file, relative paths are resolved relative to the
+ * directory containing the config file.
+ *
  * Defaults to env/production/groups.json if {@link PRODUCTION} or
  * env/testing/groups.json otherwise.
  *
@@ -288,7 +291,16 @@ export const SESSION_MAX_AGE = fromEnvOrConfig("SESSION_MAX_AGE", 30 * 24 * 60 *
  */
 export const GROUPS_DATA_FILE =
      process.env.GROUPS_DATA_FILE
+  ?? configPath(configFile?.GROUPS_DATA_FILE)
   ?? path.join(__basedir, "env", (PRODUCTION ? "production" : "testing"), "groups.json");
+
+function configPath(value) {
+  if (!CONFIG_FILE)
+    throw new Error(`configPath() called without CONFIG_FILE set`);
+  if (value === null || value === undefined)
+    return value;
+  return path.resolve(path.dirname(CONFIG_FILE), value);
+}
 
 
 /**
