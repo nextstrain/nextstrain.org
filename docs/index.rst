@@ -25,6 +25,7 @@ nextstrain.org
     :caption: Internals
     :maxdepth: 2
 
+    production
     authz
     sessions
     routing

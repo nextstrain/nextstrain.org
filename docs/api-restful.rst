@@ -290,6 +290,8 @@ The following group settings endpoints exist::
 
     {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/settings/overview
 
+.. _api-groups-membership:
+
 The following group membership endpoints exist::
 
     {GET, HEAD, OPTIONS} /groups/{name}/settings/members
