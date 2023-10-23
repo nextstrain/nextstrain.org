@@ -107,11 +107,17 @@ function maybeJSON(x) {
 /**
  * Id of our Cognito user pool.
  *
- * Required.
+ * Required for the following endpoints to be available:
+ *
+ *     /groups/{name}/settings/members
+ *     /groups/{name}/settings/roles/{role}/members
+ *     /groups/{name}/settings/roles/{role}/members/{username}
+ *
+ * Otherwise, they'll return 503 Service Unavailable.
  *
  * @type {string}
  */
-export const COGNITO_USER_POOL_ID = fromEnvOrConfig("COGNITO_USER_POOL_ID");
+export const COGNITO_USER_POOL_ID = fromEnvOrConfig("COGNITO_USER_POOL_ID", null);
 
 
 /**
