@@ -24,4 +24,5 @@ extensions = [
 
 intersphinx_mapping = {
     'docs': ('https://docs.nextstrain.org/page/', None),
+    'cli': ('https://docs.nextstrain.org/projects/cli/page/', None),
 }
