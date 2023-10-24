@@ -23,7 +23,6 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'docs': ('https://docs.nextstrain.org/en/latest/', None),
-    'augur': ('https://docs.nextstrain.org/projects/augur/en/stable', None),
-    'auspice': ('https://docs.nextstrain.org/projects/auspice/en/stable', None),
+    'docs': ('https://docs.nextstrain.org/page/', None),
+    'cli': ('https://docs.nextstrain.org/projects/cli/page/', None),
 }

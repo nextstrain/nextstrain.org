@@ -17,13 +17,13 @@ The API's design tries to:
    making it possible to maintain backwards compatibility for existing clients.
 
 The initial functionality is focused on dataset and narrative management
-endpoints to support the `nextstrain remote`_ family of commands (see
-motivation_).  In the future, we intend to expand the functionality and make this
-API a foundation for serving other software clients and user audiences.
+endpoints to support the :ref:`cli:nextstrain remote` family of commands
+(see motivation_).  In the future, we intend to expand the functionality and
+make this API a foundation for serving other software clients and user
+audiences.
 
 .. _RESTful: https://restfulapi.net
 .. _content negotiation: https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation
-.. _nextstrain remote: https://docs.nextstrain.org/projects/cli/en/stable/commands/remote/
 
 .. highlight:: none
 
@@ -87,7 +87,7 @@ the request wasn't authenticated and a `403 Forbidden`_ response if it was.
 Requests are authenticated by one of two methods:
 
 1. An Authorization_ header bearing an identity (id) token, such as those
-   managed by the `nextstrain login`_ command.  For example::
+   managed by the :ref:`cli:nextstrain login` command.  For example::
 
        Authorization: Bearer eyJraWQiOiJyM3…
 
@@ -105,7 +105,6 @@ user.
 .. _401 Unauthorized: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
 .. _403 Forbidden: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
 .. _Authorization: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization
-.. _nextstrain login: https://docs.nextstrain.org/projects/cli/en/stable/commands/login/
 
 
 Media types
@@ -128,8 +127,9 @@ header to identify the representation being sent.
 Datasets
 --------
 
-See also our `data formats`_ documentation for more information on how these
-different JSON files are used and their content.
+See also our :doc:`data formats <docs:reference/data-formats>` documentation
+for more information on how these different JSON files are used and their
+content.
 
 ``application/vnd.nextstrain.dataset.main+json``
     Main JSON content for the dataset.  Currently only v2 datasets are
@@ -150,15 +150,14 @@ different JSON files are used and their content.
     Intended primarily for curious humans instead of programs and so may change
     over time.  Not recommended for stable programmatic use.
 
-.. _data formats: https://docs.nextstrain.org/en/latest/reference/data-formats.html
 .. _JSON Schema: https://json-schema.org
 
 
 Narratives
 ----------
 
-See also our `narrative format`_ documentation for more information on the
-Markdown content.
+See also our :doc:`narrative format <docs:tutorials/narratives-how-to-write>`
+documentation for more information on the Markdown content.
 
 ``text/vnd.nextstrain.narrative+markdown``
     The primary Markdown content for the narrative.
@@ -167,8 +166,6 @@ Markdown content.
     Currently an alias for ``text/vnd.nextstrain.narrative+markdown``.
     Intended primarily for curious humans instead of programs and so may change
     over time.  Not recommended for stable programmatic use.
-
-.. _narrative format: https://docs.nextstrain.org/en/latest/tutorials/narratives-how-to-write.html
 
 
 Link header
@@ -308,19 +305,17 @@ The following group membership endpoints exist::
 Motivation
 ==========
 
-Development was motivated by the goal for `Nextstrain CLI`_ to make requests to
-nextstrain.org using normal user login credentials instead instead of making
-requests directly to S3 using separate, per-user AWS IAM credentials.  An
-alternative solution of using temporary AWS credentials provisioned by an AWS
-Cognito Identity Pool seemed like a clear choice given we're using Cognito User
-Pools for authentication, but it wasn't feasible to appropriately scope the
-credentials for each group of users due to limitations of resource tags and IAM
-policy tag matching.
+Development was motivated by the goal for :doc:`Nextstrain CLI <cli:index>` to
+make requests to nextstrain.org using normal user login credentials instead
+instead of making requests directly to S3 using separate, per-user AWS IAM
+credentials.  An alternative solution of using temporary AWS credentials
+provisioned by an AWS Cognito Identity Pool seemed like a clear choice given
+we're using Cognito User Pools for authentication, but it wasn't feasible to
+appropriately scope the credentials for each group of users due to limitations
+of resource tags and IAM policy tag matching.
 
 Proxying through nextstrain.org also gives us a lot more power to make the API
 easier for clients to work with (e.g. auto-compressing for them, setting
 resource metadata, validating schemas to prevent bad uploads, etc) and makes
 backend changes easier to coordinate since clients won't be directly accessing
 the storage backend.
-
-.. _Nextstrain CLI: https://docs.nextstrain.org/projects/cli/en/stable/
