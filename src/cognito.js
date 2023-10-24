@@ -12,13 +12,14 @@ import {
   UserNotFoundException,
 } from "@aws-sdk/client-cognito-identity-provider";
 
+import * as aws from "./aws.js";
 import { COGNITO_USER_POOL_ID } from "./config.js";
 import { NotFound, ServiceUnavailable } from "./httpErrors.js";
 
 
 const REGION = COGNITO_USER_POOL_ID?.split("_")[0];
 
-const cognito = new CognitoIdentityProviderClient({ region: REGION });
+const cognito = new CognitoIdentityProviderClient({ ...aws.clientConfig, region: REGION });
 
 
 function checkServiceAvailable() {

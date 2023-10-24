@@ -13,9 +13,10 @@ import {
   paginateListObjectsV2,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import * as aws from "./aws.js";
 import { normalizeHeaders } from "./utils/index.js";
 
-const client = new S3Client();
+const client = new S3Client({...aws.clientConfig});
 
 
 /**
