@@ -68,17 +68,23 @@ const configFile = CONFIG_FILE
 /**
  * Obtain a configuration variable from the environment or the config file.
  *
- * Values obtained from the environment will be deserialized from JSON if
- * possible.
+ * By default, values obtained from the environment will be deserialized from
+ * JSON if possible.
+ *
+ * Optional conversion functions may be called on undefined values when there
+ * is no value present in the environment or config file.
  *
  * @param {string} name - Variable name, e.g. "COGNITO_USER_POOL_ID"
  * @param {any} default - Final fallback value
+ * @param {object} options
+ * @param {function} options.fromEnv - conversion function to apply to values obtained from the environment; defaults to {@link maybeJSON}
+ * @param {function} options.fromConfig - conversion function to apply to values obtained from the config file; defaults to the identity function
  * @throws {Error} if no value is found and default is undefined
  */
-const fromEnvOrConfig = (name, default_) => {
+const fromEnvOrConfig = (name, default_, {fromEnv = maybeJSON, fromConfig = x => x} = {}) => {
   const value =
-       maybeJSON(process.env[name])
-    || configFile?.[name];
+       fromEnv(process.env[name])
+    || fromConfig(configFile?.[name]);
 
   if (!value && default_ === undefined) {
     throw new Error(`${name} is required (because default is undefined) but it was not found in the environment or config file (${CONFIG_FILE})`);
@@ -101,6 +107,23 @@ function maybeJSON(x) {
     }
   }
   return x;
+}
+
+/**
+ * Resolve a value as a filesystem path relative to {@link CONFIG_FILE}.
+ *
+ * Values which are null or undefined are passed thru.
+ *
+ * @param {?string} value - relative or absolute path
+ * @returns {?string} absolute path
+ * @throws {Error} if {@link CONFIG_FILE} is not set
+ */
+function configPath(value) {
+  if (!CONFIG_FILE)
+    throw new Error(`configPath() called without CONFIG_FILE set`);
+  if (value === null || value === undefined)
+    return value;
+  return path.resolve(path.dirname(CONFIG_FILE), value);
 }
 
 
@@ -290,23 +313,11 @@ export const SESSION_MAX_AGE = fromEnvOrConfig("SESSION_MAX_AGE", 30 * 24 * 60 *
  * If sourced from the config file, relative paths are resolved relative to the
  * directory containing the config file.
  *
- * Defaults to env/production/groups.json if {@link PRODUCTION} or
- * env/testing/groups.json otherwise.
+ * Required.
  *
  * @type {string}
  */
-export const GROUPS_DATA_FILE =
-     process.env.GROUPS_DATA_FILE
-  ?? configPath(configFile?.GROUPS_DATA_FILE)
-  ?? path.join(__basedir, "env", (PRODUCTION ? "production" : "testing"), "groups.json");
-
-function configPath(value) {
-  if (!CONFIG_FILE)
-    throw new Error(`configPath() called without CONFIG_FILE set`);
-  if (value === null || value === undefined)
-    return value;
-  return path.resolve(path.dirname(CONFIG_FILE), value);
-}
+export const GROUPS_DATA_FILE = fromEnvOrConfig("GROUPS_DATA_FILE", undefined, {fromConfig: configPath});
 
 
 /**

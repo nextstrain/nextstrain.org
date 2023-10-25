@@ -65,9 +65,6 @@ Deploys to the production app are performed by manually [promoting](https://devc
   - `CONFIG_FILE` is the path to a JSON file defining the defaults for the required variables below.
     If not provided, the checked-in files `env/production/config.json` and `env/testing/config.json` are used (depending on the value of `NODE_ENV`).
 
-  - `GROUPS_DATA_FILE` is the path to a JSON file defining the known Groups.
-    If not provided, the checked-in files `env/production/groups.json` and `env/testing/groups.json` are used (depending on the value of `NODE_ENV`).
-
 Several variables are required but obtain defaults from a config file (e.g. `env/production/config.json`):
 
   - `COGNITO_USER_POOL_ID` must be set to the id of the Cognito user pool to use for authentication.
@@ -89,6 +86,9 @@ Several variables are required but obtain defaults from a config file (e.g. `env
 
   - `OIDC_GROUPS_CLAIM` must be set to the field in the id token claims which contains the list of group names for a user.
     For Cognito, this is `cognito:groups`.
+
+  - `GROUPS_DATA_FILE` is the path to a JSON file defining the known Groups.
+    Our config files point to the checked-in files `env/production/groups.json` and `env/testing/groups.json`.
 
 Variables in the environment override defaults from the config file.
 
