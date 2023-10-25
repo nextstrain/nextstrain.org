@@ -6,5 +6,6 @@
   "COGNITO_USER_POOL_ID": "us-east-1_Cg5rcTged",
   "OIDC_USERNAME_CLAIM": "cognito:username",
   "OIDC_GROUPS_CLAIM": "cognito:groups",
-  "SESSION_COOKIE_DOMAIN": "nextstrain.org"
+  "SESSION_COOKIE_DOMAIN": "nextstrain.org",
+  "GROUPS_DATA_FILE": "groups.json"
 }
