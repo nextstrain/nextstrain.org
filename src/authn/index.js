@@ -215,7 +215,7 @@ function setup(app) {
            */
           if (err instanceof JWTExpired || err instanceof AuthnTokenTooOld) {
             debug(`Renewing tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
-            ({idToken, accessToken} = await renewTokens(refreshToken));
+            ({idToken, accessToken, refreshToken} = await renewTokens(refreshToken));
 
             const updatedUser = await userFromTokens({idToken, accessToken, refreshToken});
 
@@ -726,12 +726,19 @@ async function verifyIdToken(idToken, client = OAUTH2_CLIENT_ID) {
 
 
 /**
- * Exchanges `refreshToken` for a new `idToken` and `accessToken`.
+ * Exchanges `refreshToken` for a new `idToken` and `accessToken` and possibly
+ * `refreshToken`.
+ *
+ * The returned `refreshToken` will be identical to the passed in
+ * `refreshToken` unless the IdP provides an updated one with the rest of the
+ * tokens.  This is at the discretion of the IdP, see
+ * {@link https://datatracker.ietf.org/doc/html/rfc6749#section-6}.
  *
  * @param {String} refreshToken
  * @returns {Object} tokens
  * @returns {String} tokens.idToken
  * @returns {String} tokens.accessToken
+ * @returns {String} tokens.refreshToken
  * @throws {AuthnRefreshTokenInvalid} If the `refreshToken` is invalid,
  *   expired, revoked, or was issued to another client.  Existing tokens should
  *   be discarded if this error occurs as there is ~no way to recover from it
@@ -788,11 +795,12 @@ async function renewTokens(refreshToken) {
       throw new Error(`failed to renew tokens: ${response.status} ${response.statusText}: ${body}`);
   }
 
-  const {id_token: idToken, access_token: accessToken} = JSON.parse(body);
+  const {id_token: idToken, access_token: accessToken, refresh_token: refreshTokenUpdate} = JSON.parse(body);
 
   return {
     idToken,
     accessToken,
+    refreshToken: refreshTokenUpdate ?? refreshToken,
   };
 }
 
