@@ -107,8 +107,8 @@ Redis
 =====
 
 Redis 6 is required for session storage and related data.  It must be
-configured with persistence_ enabled (preferrably both RDB and AOF) and a
-specific `key eviction policy`_::
+configured with `TLS support`_, persistence_ enabled (preferrably both RDB and
+AOF), and a specific `key eviction policy`_::
 
     maxmemory-policy volatile-ttl
 
@@ -122,6 +122,7 @@ TLS (i.e. the `rediss` protocol) is required, but certificate host name
 checking is not enabled so a self-signed certificate may be used.  User
 authentication is recommended but not required.
 
+.. _TLS support: https://redis.io/docs/management/security/encryption/
 .. _persistence: https://redis.io/docs/management/persistence/
 .. _key eviction policy: https://redis.io/docs/reference/eviction/#eviction-policies
 
