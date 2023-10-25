@@ -65,8 +65,9 @@ Session objects are stored in Redis under keys like
 as JSON.
 
 .. note::
-    If Redis is not configured (e.g. in local development), then sessions are
-    stored on the filesystem under :file:`sessions/{session.id}.json`.
+    If Redis is not configured (e.g. in local development or single-instance
+    production), then sessions are stored on the filesystem under
+    :file:`sessions/{session.id}.json`.
 
 
 Lifetime

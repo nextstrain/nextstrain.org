@@ -106,9 +106,9 @@ set in the environment.
 Redis
 =====
 
-Redis 6 is required for session storage and related data.  It must be
-configured with `TLS support`_, persistence_ enabled (preferrably both RDB and
-AOF), and a specific `key eviction policy`_::
+Redis 6 is required by default for session storage and related data.  It must
+be configured with `TLS support`_, persistence_ enabled (preferrably both RDB
+and AOF), and a specific `key eviction policy`_::
 
     maxmemory-policy volatile-ttl
 
@@ -125,6 +125,25 @@ authentication is recommended but not required.
 .. _TLS support: https://redis.io/docs/management/security/encryption/
 .. _persistence: https://redis.io/docs/management/persistence/
 .. _key eviction policy: https://redis.io/docs/reference/eviction/#eviction-policies
+
+Disabling
+---------
+
+Two other requirements must be met to safely disable the requirement for Redis:
+
+ 1. The app server's filesystem must be persistent and durable (e.g. across
+    host restarts).
+
+ 2. Only a single app server instance must be run, *or*, in a load-balancing
+    configuration of multiple app server instances (e.g. horizontal scaling),
+    all instances must use a shared filesystem that's consistent and supports
+    atomic rename-based writes.
+
+If these are met, then the requirement for Redis can be disabled by setting::
+
+    REDIS_REQUIRED=false
+
+in the environment or config file.
 
 
 Session encryption

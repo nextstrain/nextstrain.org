@@ -19,7 +19,7 @@
 
 import Redis from 'ioredis';
 
-import { PRODUCTION, REVIEW_APP } from './config.js';
+import { REDIS_REQUIRED } from './config.js';
 import * as utils from './utils/index.js';
 
 
@@ -33,21 +33,8 @@ const REDIS = process.env.REDIS_URL
   ? herokuRedisClient(process.env.REDIS_URL)
   : null;
 
-/* XXX TODO: Provision lowest-tier Heroku Redis addon for review apps and
- * remove the !REVIEW_APP condition.
- *
- * Heroku has good support for this, but to enable it I think we need to switch
- * how we configure review apps.  Currently they're configured via the Heroku
- * Dashboard¹.  I think we need to switch to the app.json file² instead, as
- * described in the review app documentation.³
- *   -trs, 12 Oct 2023
- *
- * ¹ <https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d/settings>
- * ² <https://devcenter.heroku.com/articles/app-json-schema>
- * ³ <https://devcenter.heroku.com/articles/github-integration-review-apps>
- */
-if (PRODUCTION && !REVIEW_APP && !REDIS) {
-  throw new Error("REDIS_URL required in production mode");
+if (!REDIS && REDIS_REQUIRED) {
+  throw new Error("REDIS_URL required by default in production mode (or by config).  If you understand the implications of not using Redis (see the production requirements doc) and want to override this check, set REDIS_REQUIRED=false.");
 }
 
 if (REDIS) {
