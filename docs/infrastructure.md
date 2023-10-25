@@ -41,6 +41,8 @@ Deploys to the production app are performed by manually [promoting](https://devc
     You may prepend new keys to use for new sessions (i.e. key rotation) but do not drop old keys or old sessions will be unusable and people will be forcibly logged out.
     Keys must be 256 bits in length.
 
+  - `SESSION_COOKIE_DOMAIN` is set when necessary to allow sharing of session cookies between parent and subdomains, e.g. nextstrain.org and next.nextstrain.org.
+
   - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are tied to the `nextstrain.org` AWS IAM user.
     These credentials allow the backend web server limited access to private S3 buckets.
 
