@@ -1,8 +1,8 @@
 import React from "react";
 import Helmet from "react-helmet";
-import { graphql } from "gatsby";
+import { graphql, navigate } from "gatsby";
 import SEO from "../components/SEO/SEO";
-import { siteTitle } from "../../data/SiteConfig";
+import { siteTitle, groupsApp } from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
 import UserDataWrapper from "../layouts/userDataWrapper";
@@ -13,6 +13,11 @@ class Index extends React.Component {
     // Workaround so index page doesn't flash when pages are redirecting
     // See github issue: https://github.com/gatsbyjs/gatsby/issues/5329#issuecomment-484741119
     const browser = typeof window !== "undefined" && window;
+
+    if (browser && groupsApp) {
+      navigate("/groups");
+      return null;
+    }
 
     const postEdges = this.props.data.allMarkdownRemark.edges;
     return (

@@ -10,3 +10,5 @@ export const siteUrl = "https://nextstrain.org";
 
 // Website description used for RSS feeds/meta description tag.
 export const siteDescription = "Real-time tracking of pathogen evolution";
+
+export const groupsApp = false;
