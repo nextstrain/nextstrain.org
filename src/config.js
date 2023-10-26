@@ -128,6 +128,21 @@ function configPath(value) {
 
 
 /**
+ * AWS region to use for services where it's not otherwise specified.
+ *
+ * Currently, this should be the region where the S3 buckets live as the region
+ * for the Cognito user pool is embedded in its id.
+ *
+ * If unspecified, then the AWS SDK's own logic for determining region is used.
+ * In practice, that means the standard AWS config file (since the SDK also
+ * looks at the AWS_REGION environment variable).
+ *
+ * @type string
+ */
+export const AWS_REGION = fromEnvOrConfig("AWS_REGION", null);
+
+
+/**
  * Id of our Cognito user pool.
  *
  * Required for the following endpoints to be available:

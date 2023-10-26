@@ -46,6 +46,9 @@ Deploys to the production app are performed by manually [promoting](https://devc
   - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are tied to the `nextstrain.org` AWS IAM user.
     These credentials allow the backend web server limited access to private S3 buckets.
 
+  - `AWS_REGION` should be set to the region containing S3 buckets.
+    This is `us-east-1` for production and testing.
+
   - `REDIS_URL` is provided by the Heroku Redis add-on.
     It should not be modified directly.
     Our [authentication handlers](../src/authn/index.js) rewrite it at server start to use a secure TLS connection.

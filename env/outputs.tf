@@ -1,6 +1,11 @@
 # These outputs are shared by all Terraform configurations (production and
 # testing environments) via symlinks.  They correspond to required environment
 # variables for the nextstrain.org server.
+data "aws_region" "current" {}
+
+output "AWS_REGION" {
+  value = data.aws_region.current.name
+}
 
 output "COGNITO_USER_POOL_ID" {
   value = module.cognito.COGNITO_USER_POOL_ID
