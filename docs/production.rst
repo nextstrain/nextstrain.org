@@ -73,6 +73,38 @@ The Node.js server should not be directly accessible on the network.  It should
 only be accessible via the reverse proxy.
 
 
+AWS configuration
+=================
+
+AWS credentials and a region must be configured for access to services like S3
+and Cognito (if using).
+
+The standard AWS credential sources are used, e.g. environment variables,
+shared credential and config files, instance metadata, etc.  Environment
+variables are the typical choice, including:
+
+.. parsed-literal::
+
+    AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY
+    *AWS_SESSION_TOKEN*
+
+Variable names in italics may not be necessary for all configurations.
+
+Region may be configured with::
+
+    AWS_REGION
+
+set in the environment or config file.  If not set, the standard AWS config
+file, if any, is consulted.
+
+See the AWS SDK for JS v3 documentation for details on the standard
+configuration methods for credentials_ and region_.
+
+.. _credentials: https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-credentials-node.html
+.. _region: https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-region.html
+
+
 S3
 ==
 
@@ -81,19 +113,6 @@ Nextstrain Groups data storage.
 
 The `GROUPS_BUCKET` environment variable or config file field may be used to
 override the default bucket name of `nextstrain-groups`.
-
-The standard AWS credential sources are used, e.g. environment variables,
-credential and profile files, instance metadata, etc.  Environment variables
-are the typical choice, including:
-
-.. parsed-literal::
-
-    AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY
-    *AWS_SESSION_TOKEN*
-    *AWS_REGION*
-
-Variable names in italics may not be necessary for all configurations.
 
 If using an alternative S3-compatible object store, point the server at its
 endpoint with::
