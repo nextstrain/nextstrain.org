@@ -29,3 +29,7 @@ output "OIDC_USERNAME_CLAIM" {
 output "OIDC_GROUPS_CLAIM" {
   value = "cognito:groups"
 }
+
+output "GROUPS_DATA_FILE" {
+  value = "groups.json"
+}

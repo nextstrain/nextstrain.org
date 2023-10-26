@@ -1,5 +1,12 @@
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import * as utils from '../../utils/index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const __basedir = path.join(__dirname, "..", "..", "..");
+
 
 /* Build the available datasets by querying the manifest JSONs
  * Note that this will require restarting the server to update!
@@ -120,8 +127,9 @@ const convertManifestJsonToAvailableDatasetList = (old) => {
  * SIDE EFFECT: modifies global.availableDatasets
  */
 const setAvailableDatasetsFromManifest = () => {
+  const manifestPath = path.join(__basedir, `./data/manifest_core.json`);
   try {
-    const data = JSON.parse(fs.readFileSync(`./data/manifest_core.json`));
+    const data = JSON.parse(fs.readFileSync(manifestPath));
     const {datasets, secondTreeOptions, defaults} = convertManifestJsonToAvailableDatasetList(data);
     global.availableDatasets.core = datasets;
     global.availableDatasets.secondTreeOptions.core = secondTreeOptions;
@@ -132,10 +140,10 @@ const setAvailableDatasetsFromManifest = () => {
     global.availableDatasets.staging = datasets;
     global.availableDatasets.secondTreeOptions.staging = secondTreeOptions;
     global.availableDatasets.defaults.staging = defaults;
-    utils.verbose(`Successfully loaded ./data/manifest_core.json which we'll use for both core & staging sources.`);
+    utils.verbose(`Successfully loaded ${manifestPath} which we'll use for both core & staging sources.`);
   } catch (e) {
     console.error(e);
-    utils.warn(`Failed to parse ./data/manifest_core.json - please check its contents (e.g. this could be a JSON formatting error).`);
+    utils.warn(`Failed to parse ${manifestPath} - please check its contents (e.g. this could be a JSON formatting error).`);
   }
 };
 

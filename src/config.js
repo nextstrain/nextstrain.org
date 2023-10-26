@@ -68,17 +68,23 @@ const configFile = CONFIG_FILE
 /**
  * Obtain a configuration variable from the environment or the config file.
  *
- * Values obtained from the environment will be deserialized from JSON if
- * possible.
+ * By default, values obtained from the environment will be deserialized from
+ * JSON if possible.
+ *
+ * Optional conversion functions may be called on undefined values when there
+ * is no value present in the environment or config file.
  *
  * @param {string} name - Variable name, e.g. "COGNITO_USER_POOL_ID"
  * @param {any} default - Final fallback value
+ * @param {object} options
+ * @param {function} options.fromEnv - conversion function to apply to values obtained from the environment; defaults to {@link maybeJSON}
+ * @param {function} options.fromConfig - conversion function to apply to values obtained from the config file; defaults to the identity function
  * @throws {Error} if no value is found and default is undefined
  */
-const fromEnvOrConfig = (name, default_) => {
+const fromEnvOrConfig = (name, default_, {fromEnv = maybeJSON, fromConfig = x => x} = {}) => {
   const value =
-       maybeJSON(process.env[name])
-    || configFile?.[name];
+       fromEnv(process.env[name])
+    || fromConfig(configFile?.[name]);
 
   if (!value && default_ === undefined) {
     throw new Error(`${name} is required (because default is undefined) but it was not found in the environment or config file (${CONFIG_FILE})`);
@@ -103,20 +109,45 @@ function maybeJSON(x) {
   return x;
 }
 
+/**
+ * Resolve a value as a filesystem path relative to {@link CONFIG_FILE}.
+ *
+ * Values which are null or undefined are passed thru.
+ *
+ * @param {?string} value - relative or absolute path
+ * @returns {?string} absolute path
+ * @throws {Error} if {@link CONFIG_FILE} is not set
+ */
+function configPath(value) {
+  if (!CONFIG_FILE)
+    throw new Error(`configPath() called without CONFIG_FILE set`);
+  if (value === null || value === undefined)
+    return value;
+  return path.resolve(path.dirname(CONFIG_FILE), value);
+}
+
 
 /**
  * Id of our Cognito user pool.
  *
- * Required.
+ * Required for the following endpoints to be available:
+ *
+ *     /groups/{name}/settings/members
+ *     /groups/{name}/settings/roles/{role}/members
+ *     /groups/{name}/settings/roles/{role}/members/{username}
+ *
+ * Otherwise, they'll return 503 Service Unavailable.
  *
  * @type {string}
  */
-export const COGNITO_USER_POOL_ID = fromEnvOrConfig("COGNITO_USER_POOL_ID");
+export const COGNITO_USER_POOL_ID = fromEnvOrConfig("COGNITO_USER_POOL_ID", null);
 
 
 /**
  * URL of the OIDC IdP for our user directory (e.g. our Cognito user pool's
  * hosted UI and OAuth2 endpoints).
+ *
+ * Required.
  *
  * @type {string}
  */
@@ -150,7 +181,7 @@ async function oidcConfiguration(idpUrl) {
   return await response.json();
 }
 
-/** "issuer" metadata field in  */
+/** "issuer" metadata field in OIDC configuration */
 export const OIDC_ISSUER_URL = fromEnvOrConfig("OIDC_ISSUER_URL", OIDC_CONFIGURATION.issuer);
 
 /** "jwks_uri" metadata field in OIDC configuration */
@@ -173,6 +204,8 @@ export const OAUTH2_SCOPES_SUPPORTED = new Set(fromEnvOrConfig("OAUTH2_SCOPES_SU
  * OAuth2 client id of nextstrain.org server as registered with our IdP (e.g.
  * our Cognito user pool).
  *
+ * Required.
+ *
  * @type {string}
  */
 export const OAUTH2_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLIENT_ID");
@@ -182,6 +215,7 @@ export const OAUTH2_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLIENT_ID");
  * Optional OAuth2 client secret corresponding to the {@link OAUTH2_CLIENT_ID}.
  *
  * @type {string}
+ * @default null
  */
 export const OAUTH2_CLIENT_SECRET = fromEnvOrConfig("OAUTH2_CLIENT_SECRET", null);
 
@@ -192,6 +226,8 @@ export const OAUTH2_CLIENT_SECRET = fromEnvOrConfig("OAUTH2_CLIENT_SECRET", null
  *
  * Used to identify its tokens provided via Bearer auth.
  *
+ * Required.
+ *
  * @type {string}
  */
 export const OAUTH2_CLI_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLI_CLIENT_ID");
@@ -200,6 +236,8 @@ export const OAUTH2_CLI_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLI_CLIENT_ID");
 /**
  * ID token claim field containing the username for a user.
  *
+ * Required.
+ *
  * @type {string}
  */
 export const OIDC_USERNAME_CLAIM = fromEnvOrConfig("OIDC_USERNAME_CLAIM");
@@ -207,6 +245,8 @@ export const OIDC_USERNAME_CLAIM = fromEnvOrConfig("OIDC_USERNAME_CLAIM");
 
 /**
  * ID token claim field containing the list of role group names for a user.
+ *
+ * Required.
  *
  * @type {string}
  */
@@ -218,6 +258,7 @@ export const OIDC_GROUPS_CLAIM = fromEnvOrConfig("OIDC_GROUPS_CLAIM");
  * token.
  *
  * @type {number}
+ * @default 0
  */
 export const OIDC_IAT_BACKDATED_BY = fromEnvOrConfig("OIDC_IAT_BACKDATED_BY", 0);
 
@@ -227,13 +268,80 @@ if (typeof OIDC_IAT_BACKDATED_BY !== 'number') {
 
 
 /**
+ * Domain attribute to use for the session cookie.
+ *
+ * See {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#domaindomain-value}.
+ *
+ * Defaults to no domain (null), which means the session cookie will be
+ * host-only.  This is typically what's desired.
+ *
+ * @type {string}
+ * @default null
+ */
+export const SESSION_COOKIE_DOMAIN = fromEnvOrConfig("SESSION_COOKIE_DOMAIN", null);
+
+
+/**
+ * Secret(s) used to sign the session ids stored in session cookies.
+ *
+ * May be an array of strings to allow secret rotation over time.  The first
+ * secret should be the current secret, the one used for signing; others are
+ * old secrets to still accept for signature verification.
+ *
+ * Required if {@link PRODUCTION}, optional otherwise.
+ *
+ * @type {string|string[]}
+ */
+export const SESSION_SECRET = fromEnvOrConfig("SESSION_SECRET", PRODUCTION ? undefined : "BAD SECRET FOR DEV ONLY");
+
+
+/**
+ * Maximum age for the session cookie, in seconds.
+ *
+ * Expiration of session cookies is rolling, so making any request resets the
+ * cookie expiration date to the current time plus this value.
+ *
+ * @type {number}
+ * @default 2592000 (30 days, in seconds)
+ */
+export const SESSION_MAX_AGE = fromEnvOrConfig("SESSION_MAX_AGE", 30 * 24 * 60 * 60); // 30d in seconds
+
+
+/**
  * Path to a JSON file containing Groups data.
  *
- * Defaults to env/production/groups.json if {@link PRODUCTION} or
- * env/testing/groups.json otherwise.
+ * If sourced from the config file, relative paths are resolved relative to the
+ * directory containing the config file.
+ *
+ * Required.
  *
  * @type {string}
  */
-export const GROUPS_DATA_FILE =
-     process.env.GROUPS_DATA_FILE
-  ?? path.join(__basedir, "env", (PRODUCTION ? "production" : "testing"), "groups.json");
+export const GROUPS_DATA_FILE = fromEnvOrConfig("GROUPS_DATA_FILE", undefined, {fromConfig: configPath});
+
+
+/**
+ * Name of the S3 bucket to use for Nextstrain Groups storage.
+ *
+ * The layout of objects in the bucket will be like so:
+ *
+ *   ${bucketName}/
+ *     ${groupNameA}/
+ *       group-logo.png
+ *       group-overview.md
+ *       datasets/
+ *         ${datasetName}.json
+ *         ${datasetName}_${sidecarType}.json
+ *         …
+ *       narratives/
+ *         ${narrativeName}.md
+ *         …
+ *     ${groupNameB}/
+ *       …
+ *     …
+ *
+ *
+ * @type {string}
+ * @default nextstrain-groups
+ */
+export const GROUPS_BUCKET = fromEnvOrConfig("GROUPS_BUCKET", "nextstrain-groups");

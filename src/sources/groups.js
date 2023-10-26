@@ -1,16 +1,15 @@
-import AWS from 'aws-sdk';
-
 import { Buffer } from 'buffer';
 import yamlFront from 'yaml-front-matter';
 import * as authz from '../authz/index.js';
+import { GROUPS_BUCKET } from '../config.js';
 import { fetch } from '../fetch.js';
 import { Group } from '../groups.js';
+import * as s3 from '../s3.js';
 import * as utils from '../utils/index.js';
+import { map } from '../utils/iterators.js';
 import { Source, Dataset, Narrative } from './models.js';
 
-const S3 = new AWS.S3();
-
-const BUCKET = "nextstrain-groups";
+const BUCKET = GROUPS_BUCKET;
 const DATASET_PREFIX = "datasets/";
 const NARRATIVE_PREFIX = "narratives/";
 
@@ -65,57 +64,31 @@ class GroupSource extends Source {
   }
 
   async urlFor(path, method = 'GET', headers = {}) {
-    const normalizedHeaders = utils.normalizeHeaders(headers);
-    const action = {
-      GET: { name: "getObject" },
-      HEAD: { name: "headObject" },
-      PUT: {
-        name: "putObject",
-        params: {
-          ContentType: normalizedHeaders["content-type"],
-          ContentEncoding: normalizedHeaders["content-encoding"],
-        },
-      },
-      DELETE: { name: "deleteObject" },
-    };
-
-    if (!action[method]) throw new Error(`Unsupported method: ${method}`);
-
-    return S3.getSignedUrl(action[method].name, {
-      Expires: expires(),
-      Bucket: BUCKET,
-      Key: `${this.prefix}${path}`,
-      ...action[method].params,
+    return await s3.signedUrl({
+      method,
+      bucket: BUCKET,
+      key: `${this.prefix}${path}`,
+      headers,
+      ...expiration(),
     });
   }
   async _listFiles(listPrefix = "") {
     const prefix = this.prefix + listPrefix;
 
-    return new Promise((resolve, reject) => {
-      let files = [];
-      S3.listObjectsV2({Bucket: BUCKET, Prefix: prefix}).eachPage((err, data, done) => {
-        if (err) {
-          utils.warn(`Could not list S3 objects for group '${this.group.name}'\n${err.message}`);
-          return reject(err);
-        }
-        if (data===null) { // no more data
-          return resolve(files);
-        }
+    const keys = await map(
+      s3.listObjects({bucket: BUCKET, prefix}),
+      object => object.Key,
+    );
 
-        /* Remove the prefix from the key, producing a plain "file" name.  The
-         * filter on startsWith is unnecessary in theory given the Prefix param
-         * of listObjectsV2 above, but it guards against something going awry.
-         *   -trs, 16 Feb 2022
-         */
-        files = files.concat(
-          data.Contents
-            .map(object => object.Key)
-            .filter(key => key.startsWith(prefix))
-            .map(key => key.slice(prefix.length))
-        );
-        return done();
-      });
-    });
+    /* Remove the prefix from the key, producing a plain "file" name.  The
+     * filter on startsWith is unnecessary in theory given the prefix param
+     * of listObjects above, but it guards against something going awry.
+     *   -trs, 16 Feb 2022 (updated 18 Oct 2023)
+     */
+    return keys
+      .filter(key => key.startsWith(prefix))
+      .map(key => key.slice(prefix.length))
+    ;
   }
   async availableDatasets() {
     const files = await this._listFiles(DATASET_PREFIX);
@@ -281,25 +254,27 @@ function authzPolicy(group) {
 
 
 /**
- * Seconds until current expiration point.
+ * Expiration parameters for S3 signed URLs.
  *
  * A fixed expiration point of 2 hours after the start of the current clock
- * hour is calculated, and the time remaining until then is returned.  This
- * will range between 1 and 2 hours.
+ * hour is calculated.  The time remaining until then will range between 1 and
+ * 2 hours.
  *
  * This technique allows us to generate stable S3 signed URLs for each clock
  * hour, thus making them cachable.
  *
- * @returns {number} seconds
+ * @returns {{issuedAt: number, expiresIn: number}}
  */
-function expires() {
+function expiration() {
   const now = Math.ceil(Date.now() / 1000); // seconds since Unix epoch
   const hours = 3600; // seconds
 
   const startOfCurrentHour = now - (now % hours);
-  const expiresAt = startOfCurrentHour + 2*hours;
 
-  return expiresAt - now;
+  return {
+    issuedAt: startOfCurrentHour,
+    expiresIn: 2*hours,
+  };
 }
 
 

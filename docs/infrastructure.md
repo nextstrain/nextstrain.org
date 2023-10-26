@@ -41,6 +41,8 @@ Deploys to the production app are performed by manually [promoting](https://devc
     You may prepend new keys to use for new sessions (i.e. key rotation) but do not drop old keys or old sessions will be unusable and people will be forcibly logged out.
     Keys must be 256 bits in length.
 
+  - `SESSION_COOKIE_DOMAIN` is set when necessary to allow sharing of session cookies between parent and subdomains, e.g. nextstrain.org and next.nextstrain.org.
+
   - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are tied to the `nextstrain.org` AWS IAM user.
     These credentials allow the backend web server limited access to private S3 buckets.
 
@@ -65,9 +67,6 @@ Deploys to the production app are performed by manually [promoting](https://devc
   - `CONFIG_FILE` is the path to a JSON file defining the defaults for the required variables below.
     If not provided, the checked-in files `env/production/config.json` and `env/testing/config.json` are used (depending on the value of `NODE_ENV`).
 
-  - `GROUPS_DATA_FILE` is the path to a JSON file defining the known Groups.
-    If not provided, the checked-in files `env/production/groups.json` and `env/testing/groups.json` are used (depending on the value of `NODE_ENV`).
-
 Several variables are required but obtain defaults from a config file (e.g. `env/production/config.json`):
 
   - `COGNITO_USER_POOL_ID` must be set to the id of the Cognito user pool to use for authentication.
@@ -89,6 +88,9 @@ Several variables are required but obtain defaults from a config file (e.g. `env
 
   - `OIDC_GROUPS_CLAIM` must be set to the field in the id token claims which contains the list of group names for a user.
     For Cognito, this is `cognito:groups`.
+
+  - `GROUPS_DATA_FILE` is the path to a JSON file defining the known Groups.
+    Our config files point to the checked-in files `env/production/groups.json` and `env/testing/groups.json`.
 
 Variables in the environment override defaults from the config file.
 
@@ -152,10 +154,10 @@ CloudFronted.
 Contains JSONs for staging copies of our core builds.
 Fetches by the server happen over unauthenticated HTTP.
 
-### nextstrain-inrb
+### nextstrain-groups
 
 Private.
-Access controlled by IAM groups/policies.
+Contains data for all groups.
 Fetches by the server happen via the S3 HTTP API using signed URLs.
 
 ## EC2 instances

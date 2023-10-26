@@ -2,17 +2,28 @@ import {jest} from '@jest/globals';
 import Benchmark from 'benchmark';
 import { randomKey } from '../src/cryptography.js';
 
+const env = process.env;
 
 /* Allow each test() to import() modules separately so we can explicitly test
  * require-time behaviours.
+ *
+ * Isolate process.env for each test so changes don't leak across tests.
  */
 beforeEach(() => {
   jest.resetModules();
+  process.env = { ...env };
+});
+
+/* Reset process.env overrides.
+ */
+afterEach(() => {
+  process.env = env;
 });
 
 
 test("SESSION_ENCRYPTION_KEYS required in production", async () => {
   process.env.NODE_ENV = "production";
+  process.env.SESSION_SECRET = "not a secret";
 
   await expect(async () => await import("../src/authn/session"))
     .rejects

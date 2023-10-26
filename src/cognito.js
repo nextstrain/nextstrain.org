@@ -12,13 +12,21 @@ import {
   UserNotFoundException,
 } from "@aws-sdk/client-cognito-identity-provider";
 
+import * as aws from "./aws.js";
 import { COGNITO_USER_POOL_ID } from "./config.js";
-import { NotFound } from "./httpErrors.js";
+import { NotFound, ServiceUnavailable } from "./httpErrors.js";
 
 
-const REGION = COGNITO_USER_POOL_ID.split("_")[0];
+const REGION = COGNITO_USER_POOL_ID?.split("_")[0];
 
-const cognito = new CognitoIdentityProviderClient({ region: REGION });
+const cognito = new CognitoIdentityProviderClient({ ...aws.clientConfig, region: REGION });
+
+
+function checkServiceAvailable() {
+  if (!COGNITO_USER_POOL_ID) {
+    throw new ServiceUnavailable(`Server not configured with support for Nextstrain Groups membership management (no COGNITO_USER_POOL_ID).`);
+  }
+}
 
 
 /**
@@ -28,6 +36,8 @@ const cognito = new CognitoIdentityProviderClient({ region: REGION });
  * @yields {object} user, see <https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/interfaces/usertype.html>
  */
 export async function* listUsersInGroup(name) {
+  checkServiceAvailable();
+
   const paginator = paginateListUsersInGroup({client: cognito}, {
     UserPoolId: COGNITO_USER_POOL_ID,
     GroupName: name,
@@ -47,6 +57,8 @@ export async function* listUsersInGroup(name) {
  * @throws {NotFound} if username is unknown
  */
 export async function addUserToGroup(username, group) {
+  checkServiceAvailable();
+
   try {
     await cognito.send(new AdminAddUserToGroupCommand({
       UserPoolId: COGNITO_USER_POOL_ID,
@@ -70,6 +82,8 @@ export async function addUserToGroup(username, group) {
  * @throws {NotFound} if username is unknown
  */
 export async function removeUserFromGroup(username, group) {
+  checkServiceAvailable();
+
   try {
     await cognito.send(new AdminRemoveUserFromGroupCommand({
       UserPoolId: COGNITO_USER_POOL_ID,
