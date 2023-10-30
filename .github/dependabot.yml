@@ -5,7 +5,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/auspice-client/"
     # If you want to run this manually, go to https://github.com/nextstrain/nextstrain.org/network/updates
-    # and click "Last checked …" then "Check for updates".
+    # and click "Recent update jobs" then "Check for updates".
     schedule:
       interval: "daily"
     allow:
