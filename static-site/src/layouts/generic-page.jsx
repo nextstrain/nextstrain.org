@@ -1,12 +1,11 @@
 import React from "react";
 import Helmet from "react-helmet";
-import { siteTitle } from "../../data/SiteConfig";
+import { siteTitle, Footer } from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
 import MainLayout from "../components/layout";
 import UserDataWrapper from "../layouts/userDataWrapper";
 import { BigSpacer, HugeSpacer, Line } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
-import Footer from "../components/Footer";
 
 const GenericPage = ({location, children, banner}) => (
   <MainLayout>
