@@ -75,6 +75,9 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
 export const canUserEditGroupSettings = async (groupName) => {
   try {
     const groupOverviewOptions = await fetch(uri`/groups/${groupName}/settings/overview`, { method: "OPTIONS" });
+    if ([401, 403].includes(groupOverviewOptions.status)) {
+      console.log("You can ignore the console error above; it is used to determine whether the edit button is shown.");
+    }
     const allowedMethods = new Set(groupOverviewOptions.headers.get("Allow")?.split(/\s*,\s*/));
     const editMethods = ["PUT", "DELETE"];
     return editMethods.every((method) => allowedMethods.has(method));
