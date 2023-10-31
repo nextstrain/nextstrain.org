@@ -1,9 +1,12 @@
-module.exports = {
-  siteTitle: "Nextstrain",
-  siteTitleAlt: "Real-time tracking of pathogen evolution", // Alternative site title for SEO.
-  siteLogo: "/static/logos/nextstrain-logo-small.png", // Logo used for SEO
-  siteUrl: "https://nextstrain.org",
-  pathPrefix: "/",
-  siteDescription: "Real-time tracking of pathogen evolution", // Website description used for RSS feeds/meta description tag.
-  progressBarColor: "#5097BA"
-};
+export const siteTitle = "Nextstrain";
+
+// Alternative site title for SEO.
+export const siteTitleAlt = "Real-time tracking of pathogen evolution";
+
+// Logo used for SEO
+export const siteLogo = "/static/logos/nextstrain-logo-small.png";
+
+export const siteUrl = "https://nextstrain.org";
+
+// Website description used for RSS feeds/meta description tag.
+export const siteDescription = "Real-time tracking of pathogen evolution";

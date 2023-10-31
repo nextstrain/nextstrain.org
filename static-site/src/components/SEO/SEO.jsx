@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import { pathPrefix, siteLogo, siteUrl, siteDescription, siteTitle, siteTitleAlt, siteFBAppID } from "../../../data/SiteConfig";
+import { siteLogo, siteUrl, siteDescription, siteTitle, siteTitleAlt, siteFBAppID } from "../../../data/SiteConfig";
+import { pathPrefix } from "../../../data/GatsbyConfig";
 
 class SEO extends Component {
   render() {
