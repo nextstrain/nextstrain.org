@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import config from "../../../data/SiteConfig";
+import { pathPrefix, siteLogo, siteUrl, siteDescription, siteTitle, siteTitleAlt, siteFBAppID } from "../../../data/SiteConfig";
 
 class SEO extends Component {
   render() {
@@ -15,23 +15,23 @@ class SEO extends Component {
       description = postMeta.description
         ? postMeta.description
         : postNode.excerpt;
-      image = postMeta.cover || config.siteLogo;
-      postURL = config.siteUrl + config.pathPrefix + postPath;
+      image = postMeta.cover || siteLogo;
+      postURL = siteUrl + pathPrefix + postPath;
     } else {
-      title = config.siteTitle;
-      description = config.siteDescription;
-      image = config.siteLogo;
+      title = siteTitle;
+      description = siteDescription;
+      image = siteLogo;
     }
-    const realPrefix = config.pathPrefix === "/" ? "" : config.pathPrefix;
-    image = config.siteUrl + realPrefix + image;
-    const blogURL = config.siteUrl + config.pathPrefix;
+    const realPrefix = pathPrefix === "/" ? "" : pathPrefix;
+    image = siteUrl + realPrefix + image;
+    const blogURL = siteUrl + pathPrefix;
     const schemaOrgJSONLD = [
       {
         "@context": "http://schema.org",
         "@type": "WebSite",
         url: blogURL,
         name: title,
-        alternateName: config.siteTitleAlt ? config.siteTitleAlt : ""
+        alternateName: siteTitleAlt ? siteTitleAlt : ""
       }
     ];
     if (postSEO) {
@@ -56,7 +56,7 @@ class SEO extends Component {
           "@type": "BlogPosting",
           url: blogURL,
           name: title,
-          alternateName: config.siteTitleAlt ? config.siteTitleAlt : "",
+          alternateName: siteTitleAlt ? siteTitleAlt : "",
           headline: title,
           image: {
             "@type": "ImageObject",

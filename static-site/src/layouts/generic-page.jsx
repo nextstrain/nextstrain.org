@@ -1,6 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
-import config from "../../data/SiteConfig";
+import { siteTitle } from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
 import MainLayout from "../components/layout";
 import UserDataWrapper from "../layouts/userDataWrapper";
@@ -11,7 +11,7 @@ import Footer from "../components/Footer";
 const GenericPage = ({location, children, banner}) => (
   <MainLayout>
     <div className="index-container">
-      <Helmet title={config.siteTitle} />
+      <Helmet title={siteTitle} />
       <main>
         <UserDataWrapper>
           <NavBar location={location} />

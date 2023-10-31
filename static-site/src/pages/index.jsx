@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import { graphql } from "gatsby";
 import SEO from "../components/SEO/SEO";
-import config from "../../data/SiteConfig";
+import { siteTitle } from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
 import UserDataWrapper from "../layouts/userDataWrapper";
@@ -18,7 +18,7 @@ class Index extends React.Component {
     return (
       <MainLayout>
         <div className="index-container">
-          <Helmet title={config.siteTitle} />
+          <Helmet title={siteTitle} />
           <SEO postEdges={postEdges} />
           <main>
             <UserDataWrapper>

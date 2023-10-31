@@ -1,7 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import styled, {ThemeProvider} from "styled-components";
-import config from "../../data/SiteConfig";
+import { siteTitle, siteDescription } from "../../data/SiteConfig";
 import {theme} from '../layouts/theme';
 
 /**
@@ -23,8 +23,8 @@ export default class MainLayout extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>{`${config.siteTitle}`}</title>
-          <meta name="description" content={config.siteDescription} />
+          <title>{`${siteTitle}`}</title>
+          <meta name="description" content={siteDescription} />
           <link rel="me" href="https://mstdn.science/@nextstrain" />
         </Helmet>
         <ThemeProvider theme={theme}>
