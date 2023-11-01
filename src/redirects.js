@@ -74,10 +74,6 @@ const setup = (app) => {
       return next('route');
     });
 
-  /* We redirect /ncov/zh -> /ncov/global/zh here rather than the manifest file as the URL structure currently
-  conflates a language part ("zh") with a region ("europe") so we want to keep zh out of the manifest JSON */
-  app.route("/ncov/zh").get((req, res) => res.redirect("/ncov/global/zh"));
-
   /**
    * DOCS & HELP Redirects
    * In November 2020 we shifted the docs from being hosted by this server
