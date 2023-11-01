@@ -4,14 +4,10 @@
  * @module user
  */
 
-import { REDIS } from './redis.js';
+import { KvNamespace } from "./kv.js";
 
 
-/**
- * Transient, in-memory "store" for userStaleBefore timestamps when Redis isn't
- * available (e.g. in local dev).
- */
-const userStaleBeforeTransientStore = new Map();
+const staleBefore = new KvNamespace("userStaleBefore");
 
 
 /**
@@ -26,9 +22,7 @@ const userStaleBeforeTransientStore = new Map();
  * @see markUserStaleBeforeNow
  */
 async function userStaleBefore(username) {
-  const timestamp = REDIS
-    ? parseInt(await REDIS.get(`userStaleBefore:${username}`), 10)
-    : userStaleBeforeTransientStore.get(username);
+  const timestamp = parseInt(await staleBefore.get(username), 10);
 
   return Number.isInteger(timestamp)
     ? timestamp
@@ -62,19 +56,17 @@ async function markUserStaleBeforeNow(username) {
    *   -trs, 8 June 2022
    */
   const now = Math.ceil(Date.now() / 1000);
-  if (REDIS) {
-    /* The TTL must be greater than the maximum lifetime of an id/access token
-     * or any other cached user data.  AWS Cognito limits the maximum lifetime
-     * of id/access tokens to 24 hours, and those tokens are the only cached
-     * user data we're using this timestamp for currently.  Set expiration to
-     * 25 hours to avoid any clock jitter issues.
-     *   -trs, 10 May 2022
-     */
-    const result = await REDIS.set(`userStaleBefore:${username}`, now, "EX", 25 * 60 * 60);
-    return result === "OK";
-  }
-  userStaleBeforeTransientStore.set(username, now);
-  return true;
+
+  /* The TTL must be greater than the maximum lifetime of an id/access token
+   * or any other cached user data.  AWS Cognito limits the maximum lifetime
+   * of id/access tokens to 24 hours, and those tokens are the only cached
+   * user data we're using this timestamp for currently.  Set expiration to
+   * 25 hours to avoid any clock jitter issues.
+   *   -trs, 10 May 2022
+   */
+  const ttl = 25 * 60 * 60 * 1000; // milliseconds
+
+  return await staleBefore.set(username, now, ttl);
 }
 
 

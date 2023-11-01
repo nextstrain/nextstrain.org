@@ -292,10 +292,11 @@ function setup(app) {
       });
     }
 
-    /* If no REDIS_URL is available, then we are running in a development
-    environment and want to use a local FileStore to store the session.
-    We limit the retries to 0 to avoid excessive warnings when the
-    browser remembers a session id that is not on your filesystem */
+    /* If no REDIS_URL is available (e.g. in local development or
+     * single-instance production), then use a local FileStore to store the
+     * session.  We limit the retries to 0 to avoid excessive warnings when the
+     * browser remembers a session id that is not on your filesystem.
+     */
     utils.verbose("Storing sessions as files under session/");
     return new FileStore({ttl: SESSION_MAX_AGE, retries: 0});
   };

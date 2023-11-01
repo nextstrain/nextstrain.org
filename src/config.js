@@ -323,6 +323,30 @@ export const SESSION_MAX_AGE = fromEnvOrConfig("SESSION_MAX_AGE", 30 * 24 * 60 *
 
 
 /**
+ * Flag indicating if Redis (via REDIS_URL) is required.
+ *
+ * Defaults to true if {@link PRODUCTION} and not {@link REVIEW_APP}, otherwise
+ * false.
+ *
+ * @type {boolean}
+ */
+/* XXX TODO: Provision lowest-tier Heroku Redis addon for review apps and
+ * remove the !REVIEW_APP condition.
+ *
+ * Heroku has good support for this, but to enable it I think we need to switch
+ * how we configure review apps.  Currently they're configured via the Heroku
+ * Dashboard¹.  I think we need to switch to the app.json file² instead, as
+ * described in the review app documentation.³
+ *   -trs, 12 Oct 2023
+ *
+ * ¹ <https://dashboard.heroku.com/pipelines/38f67fc7-d93c-40c6-a182-501da2f89d9d/settings>
+ * ² <https://devcenter.heroku.com/articles/app-json-schema>
+ * ³ <https://devcenter.heroku.com/articles/github-integration-review-apps>
+ */
+export const REDIS_REQUIRED = fromEnvOrConfig("REDIS_REQUIRED", PRODUCTION && !REVIEW_APP);
+
+
+/**
  * Path to a JSON file containing Groups data.
  *
  * If sourced from the config file, relative paths are resolved relative to the
