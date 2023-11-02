@@ -2,8 +2,9 @@
  * Configuration variables for the nextstrain.org server.
  *
  * Values which aren't hardcoded are typically provided by environment
- * variables of the same name.  Some variables have hardcoded fallback values
- * when the environment variable is missing or empty.
+ * variables or config file fields of the same name.  Some variables have
+ * hardcoded fallback values when neither the environment variable nor config
+ * file field is present.
  *
  * See also {@link https://docs.nextstrain.org/projects/nextstrain-dot-org/page/infrastructure.html#environment-variables}.
  *
