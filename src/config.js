@@ -75,6 +75,12 @@ const configFile = CONFIG_FILE
  * Optional conversion functions may be called on undefined values when there
  * is no value present in the environment or config file.
  *
+ * Values are considered missing even when defined if they are an explicit null
+ * or the empty string, e.g. X="null" (which is parsed as JSON) and X="" in the
+ * environment are both treated the same as not defining X at all in the
+ * environment.  The same applies to config file fields, e.g. {"X": null} and
+ * {"X": ""}.
+ *
  * @param {string} name - Variable name, e.g. "COGNITO_USER_POOL_ID"
  * @param {any} [default] - Final fallback value; if undefined then the variable is considered required.
  * @param {object} [options]
@@ -83,15 +89,36 @@ const configFile = CONFIG_FILE
  * @throws {Error} if no value is found and default is undefined
  */
 export const fromEnvOrConfig = (name, default_, {fromEnv = maybeJSON, fromConfig = x => x} = {}) => {
-  const value =
-       fromEnv(process.env[name])
-    || fromConfig(configFile?.[name]);
+  const required = default_ === undefined;
 
-  if (!value && default_ === undefined) {
+  /* Missing means undefined, null, or the empty string and
+   * ?? covers too little (only undefined and null) but
+   * || covers too much (0, false, etc.)
+   * so convert to null and then use ??.
+   */
+  const nullIfMissing = value => missing(value) ? null : value;
+
+  const value =
+       nullIfMissing(fromEnv(process.env[name]))
+    ?? nullIfMissing(fromConfig(configFile?.[name]))
+    ?? default_;
+
+  if (required && missing(value)) {
     throw new Error(`${name} is required (because default is undefined) but it was not found in the environment or config file (${CONFIG_FILE})`);
   }
-  return value || default_;
+  return value;
 };
+
+
+/**
+ * Missing means undefined, null, or the empty string.
+ *
+ * @param {any} value
+ * @returns {boolean}
+ */
+function missing(value) {
+  return value === undefined || value === null || value === "";
+}
 
 
 /**
@@ -122,8 +149,11 @@ function maybeJSON(x) {
 function configPath(value) {
   if (!CONFIG_FILE)
     throw new Error(`configPath() called without CONFIG_FILE set`);
-  if (value === null || value === undefined)
-    return value;
+
+  // Don't path.resolve() on a missing value
+  if (missing(value))
+    return;
+
   return path.resolve(path.dirname(CONFIG_FILE), value);
 }
 
