@@ -76,10 +76,10 @@ const configFile = CONFIG_FILE
  * is no value present in the environment or config file.
  *
  * @param {string} name - Variable name, e.g. "COGNITO_USER_POOL_ID"
- * @param {any} default - Final fallback value
- * @param {object} options
- * @param {function} options.fromEnv - conversion function to apply to values obtained from the environment; defaults to {@link maybeJSON}
- * @param {function} options.fromConfig - conversion function to apply to values obtained from the config file; defaults to the identity function
+ * @param {any} [default] - Final fallback value; if undefined then the variable is considered required.
+ * @param {object} [options]
+ * @param {function} [options.fromEnv] - conversion function to apply to values obtained from the environment; defaults to {@link maybeJSON}
+ * @param {function} [options.fromConfig] - conversion function to apply to values obtained from the config file; defaults to the identity function
  * @throws {Error} if no value is found and default is undefined
  */
 const fromEnvOrConfig = (name, default_, {fromEnv = maybeJSON, fromConfig = x => x} = {}) => {
