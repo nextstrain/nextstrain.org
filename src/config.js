@@ -82,7 +82,7 @@ const configFile = CONFIG_FILE
  * @param {function} [options.fromConfig] - conversion function to apply to values obtained from the config file; defaults to the identity function
  * @throws {Error} if no value is found and default is undefined
  */
-const fromEnvOrConfig = (name, default_, {fromEnv = maybeJSON, fromConfig = x => x} = {}) => {
+export const fromEnvOrConfig = (name, default_, {fromEnv = maybeJSON, fromConfig = x => x} = {}) => {
   const value =
        fromEnv(process.env[name])
     || fromConfig(configFile?.[name]);
