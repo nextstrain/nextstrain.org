@@ -138,7 +138,7 @@ function configPath(value) {
  * In practice, that means the standard AWS config file (since the SDK also
  * looks at the AWS_REGION environment variable).
  *
- * @type string
+ * @type {string}
  */
 export const AWS_REGION = fromEnvOrConfig("AWS_REGION", null);
 
