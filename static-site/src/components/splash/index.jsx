@@ -12,8 +12,8 @@ import Footer from "../Footer";
 import { createGroupCards } from "./userGroups";
 import { UserContext } from "../../layouts/userDataWrapper";
 
-const Section = ({title, abstract, cards, buttonText, buttonLink}) => (
-  <div className="col-md-6" style={{paddingBottom: "40px"}}>
+const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
+  <div id={id} className="col-md-6" style={{paddingBottom: "40px"}}>
     <div style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100%"}}>
       <Styles.H1>{title}</Styles.H1>
       <Styles.CenteredFocusParagraph style={{flexGrow: 1}}>
@@ -80,6 +80,7 @@ class Splash extends React.Component {
 
         <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
           <Section
+            id="sars-cov-2"
             title="SARS-CoV-2 (COVID-19)"
             abstract="We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
             In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses."
@@ -88,6 +89,7 @@ class Splash extends React.Component {
             buttonLink="/sars-cov-2"
           />
           <Section
+            id="groups"
             title="Nextstrain Groups"
             abstract="We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience."
             cards={createGroupCards([{name: "neherlab"}, {name: "spheres"}])}
@@ -95,6 +97,7 @@ class Splash extends React.Component {
             buttonLink="/groups"
           />
           <Section
+            id="pathogens"
             title="Explore pathogens"
             abstract="Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team."
             cards={coreCards}
@@ -102,6 +105,7 @@ class Splash extends React.Component {
             buttonLink="/pathogens"
           />
           <Section
+            id="community"
             title="From the community"
             abstract={(<>
               Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
@@ -112,6 +116,7 @@ class Splash extends React.Component {
             buttonLink="/community"
           />
           <Section
+            id="narratives"
             title="Narratives"
             abstract="Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data."
             cards={narrativeCards}
