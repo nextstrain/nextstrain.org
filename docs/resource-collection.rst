@@ -25,8 +25,12 @@ point to the (JSON) file.
 Automated index generation
 ==========================
 
-*This section will be updated once the
-index creation is automated.*
+The resource collection index is rebuilt every night via a GitHub action running
+from this repo.
+
+*This approach should be revisited when (if) we start indexing private data,
+especially for the potential of the GitHub action logging sensitive information
+which will be publicly visible.*
 
 AWS settings necessary for resource collection
 ==============================================
@@ -67,8 +71,13 @@ Index creation (Inventory access and index upload)
 
 **Automated index generation**
 
-*This section will be updated once the
-index creation is automated.*
+The GitHub action assumes necessary AWS permissions via the IAM role
+`GitHubActionsRoleResourceIndexer
+<https://us-east-1.console.aws.amazon.com/iamv2/home?region=us-east-1#/roles/details/GitHubActionsRoleResourceIndexer>`__
+which is obtained using OIDC. This role uses permissions from the IAM policy
+`NextstrainResourceIndexer
+<https://us-east-1.console.aws.amazon.com/iamv2/home?region=us-east-1#/policies/details/arn%3Aaws%3Aiam%3A%3A827581582529%3Apolicy%2FNextstrainResourceIndexer>`__
+to list & read the S3 inventories, as well as upload the new index.
 
 **Local index generation for development purposes**
 

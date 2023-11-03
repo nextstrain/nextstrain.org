@@ -1,0 +1,38 @@
+name: index resources
+
+on:
+  # Run at ~4am UTC time which is (± an hour) 4am UK, 5am Switzerland, midnight
+  # US east coast, 9pm US west coast so that for most users (and most
+  # developers) the index regenerates overnight
+  schedule:
+    - cron: '0 4 * * *'
+
+  # Manually triggered using GitHub's UI
+  workflow_dispatch:
+
+jobs:
+  rebuild-index:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # needed to interact with GitHub's OIDC Token endpoint
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: npm ci
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::827581582529:role/GitHubActionsRoleResourceIndexer
+      - name: Rebuild the index
+        run: |
+          node resourceIndexer/main.js \
+            --gzip --output resources.json.gz
+      - name: Upload the new index, overwriting the existing index
+        run: |
+          aws s3 cp resources.json.gz s3://nextstrain-inventories/resources.json.gz
