@@ -2,8 +2,9 @@
  * Configuration variables for the nextstrain.org server.
  *
  * Values which aren't hardcoded are typically provided by environment
- * variables of the same name.  Some variables have hardcoded fallback values
- * when the environment variable is missing or empty.
+ * variables or config file fields of the same name.  Some variables have
+ * hardcoded fallback values when neither the environment variable nor config
+ * file field is present.
  *
  * See also {@link https://docs.nextstrain.org/projects/nextstrain-dot-org/page/infrastructure.html#environment-variables}.
  *
@@ -74,23 +75,50 @@ const configFile = CONFIG_FILE
  * Optional conversion functions may be called on undefined values when there
  * is no value present in the environment or config file.
  *
+ * Values are considered missing even when defined if they are an explicit null
+ * or the empty string, e.g. X="null" (which is parsed as JSON) and X="" in the
+ * environment are both treated the same as not defining X at all in the
+ * environment.  The same applies to config file fields, e.g. {"X": null} and
+ * {"X": ""}.
+ *
  * @param {string} name - Variable name, e.g. "COGNITO_USER_POOL_ID"
- * @param {any} default - Final fallback value
- * @param {object} options
- * @param {function} options.fromEnv - conversion function to apply to values obtained from the environment; defaults to {@link maybeJSON}
- * @param {function} options.fromConfig - conversion function to apply to values obtained from the config file; defaults to the identity function
+ * @param {any} [default] - Final fallback value; if undefined then the variable is considered required.
+ * @param {object} [options]
+ * @param {function} [options.fromEnv] - conversion function to apply to values obtained from the environment; defaults to {@link maybeJSON}
+ * @param {function} [options.fromConfig] - conversion function to apply to values obtained from the config file; defaults to the identity function
  * @throws {Error} if no value is found and default is undefined
  */
-const fromEnvOrConfig = (name, default_, {fromEnv = maybeJSON, fromConfig = x => x} = {}) => {
-  const value =
-       fromEnv(process.env[name])
-    || fromConfig(configFile?.[name]);
+export const fromEnvOrConfig = (name, default_, {fromEnv = maybeJSON, fromConfig = x => x} = {}) => {
+  const required = default_ === undefined;
 
-  if (!value && default_ === undefined) {
+  /* Missing means undefined, null, or the empty string and
+   * ?? covers too little (only undefined and null) but
+   * || covers too much (0, false, etc.)
+   * so convert to null and then use ??.
+   */
+  const nullIfMissing = value => missing(value) ? null : value;
+
+  const value =
+       nullIfMissing(fromEnv(process.env[name]))
+    ?? nullIfMissing(fromConfig(configFile?.[name]))
+    ?? default_;
+
+  if (required && missing(value)) {
     throw new Error(`${name} is required (because default is undefined) but it was not found in the environment or config file (${CONFIG_FILE})`);
   }
-  return value || default_;
+  return value;
 };
+
+
+/**
+ * Missing means undefined, null, or the empty string.
+ *
+ * @param {any} value
+ * @returns {boolean}
+ */
+function missing(value) {
+  return value === undefined || value === null || value === "";
+}
 
 
 /**
@@ -121,8 +149,11 @@ function maybeJSON(x) {
 function configPath(value) {
   if (!CONFIG_FILE)
     throw new Error(`configPath() called without CONFIG_FILE set`);
-  if (value === null || value === undefined)
-    return value;
+
+  // Don't path.resolve() on a missing value
+  if (missing(value))
+    return;
+
   return path.resolve(path.dirname(CONFIG_FILE), value);
 }
 
@@ -137,7 +168,7 @@ function configPath(value) {
  * In practice, that means the standard AWS config file (since the SDK also
  * looks at the AWS_REGION environment variable).
  *
- * @type string
+ * @type {string}
  */
 export const AWS_REGION = fromEnvOrConfig("AWS_REGION", null);
 
