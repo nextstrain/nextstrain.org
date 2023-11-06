@@ -50,7 +50,7 @@ S3 inventories
 We currently produce inventories for the core (s3://nextstrain-data) and
 staging (s3://nextstrain-staging) buckets which are generated daily and
 published to s3://nextstrain-inventories. The
-s3://nextstrain-inventories bucket is a private bucket. The inventory
+s3://nextstrain-inventories bucket is a private bucket with versioning enabled. The inventory
 configuration can be found in the AWS console for
 `core <https://s3.console.aws.amazon.com/s3/management/nextstrain-data/inventory/view?region=us-east-1&id=config-v1>`__
 and
@@ -62,9 +62,10 @@ s3://nextstrain-inventories/nextstrain-data/config-v1 and
 s3://nextstrain-inventories/nextstrain-staging/config-v1, respectively.
 The cost of these is minimal (less than $1/bucket/year).
 
-A lifecycle rule on the s3://nextstrain-inventories bucket (`console
-link <https://s3.console.aws.amazon.com/s3/management/nextstrain-inventories/lifecycle/view?region=us-east-1&id=delete+stale+inventories>`__)
-deletes all inventory-related files 30 days after they are created.
+A lifecycle rule on the s3://nextstrain-inventories bucket (`console link
+<https://s3.console.aws.amazon.com/s3/management/nextstrain-inventories/lifecycle/view?region=us-east-1&id=delete+stale+inventories>`__)
+marks inventory-related files as deleted 30 days after they are created, and
+permanently deletes them 7 days later.
 
 Index creation (Inventory access and index upload)
 --------------------------------------------------
@@ -91,6 +92,18 @@ respectively.
 To upload the index you will need write access for
 s3://nextstrain-inventories/resources.json.gz. Note that if your aims are
 limited to local development purposes this is not necessary (see `Local development`_).
+
+
+Index backups
+-------------
+
+The ``nextstrain-inventories`` bucket is version enabled so past versions of
+``s3://nextstrain-inventories/resources.json.gz`` are available.
+
+A lifecycle rule on the s3://nextstrain-inventories bucket (`console link
+<https://s3.console.aws.amazon.com/s3/management/nextstrain-inventories/lifecycle/view?region=us-east-1&id=delete+old+versions+of+the+index>`__)
+permanently deletes past versions of this file 30 days after it became
+noncurrent (i.e. it was replaced with a new upload of the index.)
 
 
 Index access by the server
