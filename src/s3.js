@@ -42,15 +42,15 @@ export async function* listObjects({bucket, prefix}) {
  * Generate a signed URL for an S3 object.
  *
  * @param {object} params
- * @param {string} params.method - HEAD, GET, PUT, DELETE
  * @param {string} params.bucket - name of bucket
  * @param {string} params.key - object key
+ * @param {string} [params.method] - HEAD, GET, PUT, DELETE. Default: GET
  * @param {object} [params.headers] - Content-Type and/or Content-Encoding headers for PUT
  * @param {number} [params.expiresIn] - seconds until the URL expires
  * @param {number} [params.issuedAt] - absolute time in seconds since the Unix epoch at which the signed URL should be considered issued at, i.e. when the countdown for expiresIn starts
  * @returns {string} signed URL
  */
-export async function signedUrl({method, bucket, key, headers, expiresIn, issuedAt} = {method: "GET", headers: {}}) {
+export async function signedUrl({method="GET", bucket, key, headers={}, expiresIn, issuedAt}) {
   const normalizedHeaders = normalizeHeaders(headers);
 
   const commands = new Map([
