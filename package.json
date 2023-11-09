@@ -14,7 +14,7 @@
   "scripts": {
     "build": "./build.sh",
     "lint": "eslint --ext .js,.jsx .",
-    "server": "node server.js",
+    "server": "npm run groups",
     "groups": "node server.js --app ./src/groupsApp.js",
     "start": "npm run server",
     "//test": "echo 'NODE_OPTIONS is required until this issue is resolved: https://github.com/facebook/jest/issues/9430 '",
