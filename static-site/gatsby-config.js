@@ -26,12 +26,6 @@ module.exports = {
       options: {
         plugins: [
           {
-            resolve: "gatsby-remark-images",
-            options: {
-              maxWidth: 800
-            }
-          },
-          {
             resolve: "gatsby-remark-responsive-iframe"
           },
           "gatsby-remark-prismjs",
@@ -53,7 +47,6 @@ module.exports = {
         domain: "nextstrain.org",
       },
     },
-    "gatsby-plugin-sharp",
     // "gatsby-plugin-catch-links" // See https://github.com/nextstrain/nextstrain.org/issues/34
   ],
 };
