@@ -67,7 +67,6 @@ module.exports = {
         domain: "nextstrain.org",
       },
     },
-    "gatsby-plugin-sharp",
     // "gatsby-plugin-catch-links" // See https://github.com/nextstrain/nextstrain.org/issues/34
   ],
 };
