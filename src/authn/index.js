@@ -22,6 +22,7 @@ import { getTokens, setTokens, deleteTokens } from './session.js';
 import { PRODUCTION, OIDC_ISSUER_URL, OIDC_JWKS_URL, OAUTH2_AUTHORIZATION_URL, OAUTH2_TOKEN_URL, OAUTH2_LOGOUT_URL, OAUTH2_SCOPES_SUPPORTED, OIDC_USERNAME_CLAIM, OIDC_GROUPS_CLAIM, OIDC_IAT_BACKDATED_BY, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, OAUTH2_CLI_CLIENT_ID, SESSION_COOKIE_DOMAIN, SESSION_SECRET, SESSION_MAX_AGE } from '../config.js';
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
+import { Unauthorized, HttpErrors } from '../httpErrors.js';
 import { copyCookie } from '../middleware.js';
 import { REDIS } from '../redis.js';
 import { userStaleBefore } from '../user.js';
@@ -437,8 +438,27 @@ function setup(app) {
  * @type {expressMiddleware}
  */
 function authnWithToken(req, res, next) {
-  const authenticate = passport.authenticate(STRATEGY_BEARER, (err, user) => {
+  const authenticate = passport.authenticate(STRATEGY_BEARER, (err, user, challenge, status) => {
+    /* Passport strategies have four result states.  Handle all four, as the
+     * STRATEGY_BEARER can produce all of them.
+     */
+
+    // error: something went wrong internally; can't be remediated by client
     if (err) return next(err);
+
+    // failure: authn attempted but failed; may be remediated by client
+    if (!user && (challenge || status)) {
+      if (challenge) {
+        res.set("WWW-Authenticate", challenge);
+      }
+      return next(
+        status
+          ? new HttpErrors[status]()
+          : new Unauthorized()
+      );
+    }
+
+    // success: authn worked
     if (user) {
       /* Mark the request as being token-authenticated, which is strongly
        * indicative of an API client (as browser clients use cookied-based
@@ -448,6 +468,8 @@ function authnWithToken(req, res, next) {
 
       return req.login(user, { session: false }, next);
     }
+
+    // pass: authn not attempted
     return next();
   });
   return authenticate(req, res, next);
