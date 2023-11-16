@@ -10,6 +10,6 @@
   },
   "navbarComponent": "navbar.js",
   "splashComponent": "splash.js",
-  "browserTitle": "Nextstrain",
+  "browserTitle": "Nextstrain @ Contoso",
   "plausibleDataDomain": "nextstrain.org"
 }

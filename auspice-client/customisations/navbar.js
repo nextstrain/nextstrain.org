@@ -122,8 +122,7 @@ const NavBar = ({sidebar, narrativeTitle, width}) => {
           null : (
             <div style={{...styles.flexColumns, paddingRight: "12px"}}>
               <div style={{flex: 5}}/>
-              <Link href="https://docs.nextstrain.org/en/latest/index.html" style={styles.link} text="DOCS"/>
-              <Link href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" style={styles.link} text="HELP"/>
+              <Link href="https://docs.contoso.com/nextstrain-groups" style={styles.link} text="HELP"/>
               <WhoAmI sidebar={sidebar}/>
             </div>
           )
