@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "gatsby";
 import * as Styles from "../splash/styles";
-import { SmallSpacer, BigSpacer, Line } from "../../layouts/generalComponents";
+import { SmallSpacer, BigSpacer } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
 import { ListOfPeople } from "../People/avatars";
 
@@ -55,8 +55,6 @@ class Footer extends React.Component {
   render() {
     return (
       <div>
-        <Line style={{margin: "30px 0px 10px 0px"}}/>
-
         <div className="row">
           <div className="col-md-1"/>
           <div className="col-md-10">
@@ -122,8 +120,6 @@ class Footer extends React.Component {
             </Styles.FooterParagraph>
           </div>
         </div>
-
-        <BigSpacer/>
       </div>
     );
   }
