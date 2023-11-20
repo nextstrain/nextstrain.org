@@ -255,6 +255,9 @@ Clients
 Two OAuth 2.0 clients (sometimes called "applications") must be registered with
 the IdP.
 
+App server client
+~~~~~~~~~~~~~~~~~
+
 A `confidential, web application client <oauth2-clients_>`__ is required for
 use by the app server to implement browser-based sessions.  Its id and secret
 are configured by `OAUTH2_CLIENT_ID` and `OAUTH2_CLIENT_SECRET`.  The app
@@ -270,10 +273,11 @@ server does not strictly require a secret.  The client registration must allow:
 
   - a logout redirection URL of `https://<host>`
 
-Token lifetimes for this client should be configured with consideration that
-the id token lifetime affects how often background renewal requests are
-necessary and the refresh token lifetime limits the maximum duration of web
-sessions.
+.. _oauth2-clients: https://datatracker.ietf.org/doc/html/rfc6749#section-2.1
+.. _PKCE: https://datatracker.ietf.org/doc/html/rfc7636
+
+CLI client
+~~~~~~~~~~
 
 A `public, native application client <oauth2-clients_>`__ is required for use
 by the :doc:`Nextstrain CLI <cli:index>` and is permitted by the app server to
@@ -286,8 +290,14 @@ make `Bearer`-authenticated requests.  Its id is configured by
     the standard OAuth 2.0 flows.  We anticipate changing this in the
     future.
 
-.. _oauth2-clients: https://datatracker.ietf.org/doc/html/rfc6749#section-2.1
-.. _PKCE: https://datatracker.ietf.org/doc/html/rfc7636
+
+Token lifetimes
+~~~~~~~~~~~~~~~
+
+Token lifetimes for the clients should be configured with consideration that
+the id token lifetime affects how often background renewal requests are
+necessary and the refresh token lifetime limits the maximum duration of web or
+CLI sessions.
 
 
 Authorization role groups
