@@ -239,6 +239,7 @@ file are::
     OAUTH2_CLIENT_ID
     OAUTH2_CLIENT_SECRET
     OAUTH2_CLI_CLIENT_ID
+    OAUTH2_CLI_CLIENT_REDIRECT_URIS
     OIDC_USERNAME_CLAIM
     OIDC_GROUPS_CLAIM
 
@@ -282,13 +283,34 @@ CLI client
 A `public, native application client <oauth2-clients_>`__ is required for use
 by the :doc:`Nextstrain CLI <cli:index>` and is permitted by the app server to
 make `Bearer`-authenticated requests.  Its id is configured by
-`OAUTH2_CLI_CLIENT_ID`.
+`OAUTH2_CLI_CLIENT_ID`.  The client registration must allow:
 
-.. note::
-    Currently Nextstrain CLI is tightly bound to AWS Cognito and requires
-    its Secure Remote Password authentication flow implemented outside of
-    the standard OAuth 2.0 flows.  We anticipate changing this in the
-    future.
+  - the authorization code flow, ideally with PKCE_ support
+
+  - issuance of refresh tokens, either by default or by requesting the
+    `offline_access` scope
+
+  - at least one authentication redirection (sometimes "callback") URL of
+    `http://127.0.0.1:<port>/` or `http://localhost:<port>/`
+
+The CLI auto-discovers its OpenID client configuration (and the IdP
+configuration) from the app server.  The app server must be configured to know
+the CLI client's redirect URIs with `OAUTH2_CLI_CLIENT_REDIRECT_URIS` so the
+URLs can be included in the discovery response.
+
+If the IdP allows for `http://` redirect URIs for loopback IPs (e.g.
+`127.0.0.1`), then the loopback IP should be preferred over using `localhost`,
+as per best current practice described in `RFC 8252 § 8.3`_.
+
+If the IdP allows relaxed port matching for loopback IP/localhost redirect
+URIs, as per best current practice described in `RFC 8252 § 7.3`_, then only a
+single redirect URI needs to be registered with the IdP.  Otherwise, multiple
+redirect URIs with varying ports should be registered to allow the CLI
+alternatives to choose from in case it can't bind a given port on a user's
+computer.
+
+.. _RFC 8252 § 7.3: https://datatracker.ietf.org/doc/html/rfc8252#section-7.3
+.. _RFC 8252 § 8.3: https://datatracker.ietf.org/doc/html/rfc8252#section-8.3
 
 
 Token lifetimes

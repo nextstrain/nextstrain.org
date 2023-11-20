@@ -14,6 +14,10 @@ output "OAUTH2_CLI_CLIENT_ID" {
   value = aws_cognito_user_pool_client.nextstrain-cli.id
 }
 
+output "OAUTH2_CLI_CLIENT_REDIRECT_URIS" {
+  value = aws_cognito_user_pool_client.nextstrain-cli.callback_urls
+}
+
 output "OAUTH2_LOGOUT_URL" {
   value = format("https://%s/logout", coalesce(
     one(aws_cognito_user_pool_domain.custom[*].domain),

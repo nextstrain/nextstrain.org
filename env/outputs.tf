@@ -23,6 +23,10 @@ output "OAUTH2_CLI_CLIENT_ID" {
   value = module.cognito.OAUTH2_CLI_CLIENT_ID
 }
 
+output "OAUTH2_CLI_CLIENT_REDIRECT_URIS" {
+  value = module.cognito.OAUTH2_CLI_CLIENT_REDIRECT_URIS
+}
+
 output "OAUTH2_LOGOUT_URL" {
   value = module.cognito.OAUTH2_LOGOUT_URL
 }

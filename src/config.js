@@ -247,6 +247,24 @@ export const OAUTH2_SCOPES_SUPPORTED = new Set(fromEnvOrConfig("OAUTH2_SCOPES_SU
 
 
 /**
+ * Effective OpenID Connect (OIDC) identity provider configuration document
+ * after potential local overrides.
+ *
+ * Defined here to keep the overridden fields close to their declarations
+ * above.
+ */
+export const EFFECTIVE_OIDC_CONFIGURATION = {
+  ...OIDC_CONFIGURATION,
+  issuer: OIDC_ISSUER_URL,
+  jwks_uri: OIDC_JWKS_URL,
+  authorization_endpoint: OAUTH2_AUTHORIZATION_URL,
+  token_endpoint: OAUTH2_TOKEN_URL,
+  end_session_endpoint: OAUTH2_LOGOUT_URL,
+  scopes_supported: OAUTH2_SCOPES_SUPPORTED,
+};
+
+
+/**
  * OAuth2 client id of nextstrain.org server as registered with our IdP (e.g.
  * our Cognito user pool).
  *
@@ -277,6 +295,23 @@ export const OAUTH2_CLIENT_SECRET = fromEnvOrConfig("OAUTH2_CLIENT_SECRET", null
  * @type {string}
  */
 export const OAUTH2_CLI_CLIENT_ID = fromEnvOrConfig("OAUTH2_CLI_CLIENT_ID");
+
+
+/**
+ * OAuth2 client redirect URIs (e.g. callback URLs) for Nextstrain CLI as
+ * registered with the IdP.
+ *
+ * These URLs are not themselves used by the server but are provided to
+ * (discovered by) Nextstrain CLI in a client configuration section of the
+ * OpenID configuration document served at /.well-known/openid-configuration.
+ *
+ * The name of this config var uses "redirect_uri" as the term since that's the
+ * literal field name used by the OIDC/OAuth2 specs in several places (initial
+ * auth requests, client metadata registration/querying, etc.).
+ *
+ * @type {string[]}
+ */
+export const OAUTH2_CLI_CLIENT_REDIRECT_URIS = fromEnvOrConfig("OAUTH2_CLI_CLIENT_REDIRECT_URIS");
 
 
 /**
