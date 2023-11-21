@@ -454,6 +454,15 @@ app.route("/schemas/*")
   .all((req, res, next) => next(new NotFound()));
 
 
+/* OpenID Connect 1.0 configuration.  Retrieved by Nextstrain CLI to
+ * discovery necessary authentication details.
+ *
+ * <https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata>
+ */
+app.routeAsync("/.well-known/openid-configuration")
+  .getAsync(endpoints.openid.providerConfiguration);
+
+
 /* Auspice HTML pages and assets.
  *
  * Auspice hardcodes URL paths that start with /dist/… in its Webpack config,

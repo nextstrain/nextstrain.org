@@ -44,6 +44,16 @@
       "Resource": [
         "arn:aws:cognito-idp:us-east-1:827581582529:userpool/${COGNITO_USER_POOL_ID}"
       ]
+    },
+    {
+      "Sid": "GetResourcesIndex",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::nextstrain-inventories/resources.json.gz"
+      ]
     }
   ]
 }
