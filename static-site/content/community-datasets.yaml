@@ -212,3 +212,7 @@ data:
     maintainers: Kelian Perez, Stephane Guindon (LIRMM, CNRS)
     date: '2022-09-13'
     title: Epidemic history of RYMV in West Africa (Using BEAST and DiscretizeMCC methodology)
+  - url: https://nextstrain.org/community/AlbertRockG/ncov-cames/CAMES
+    maintainers: Albert Rock A. Gangbadja (TIDRC, UAC, Abomey-Calavi, Benin)
+    date: '2023-11-22'
+    title: Genomic epidemiology of SARS-CoV-2 in CAMES countries
