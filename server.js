@@ -15,6 +15,7 @@ const parser = new argparse.ArgumentParser({
   epilog: nextstrainAbout
 });
 parser.addArgument('--verbose', {action: "storeTrue", help: "verbose server logging"});
+parser.addArgument('--app', {defaultValue: "./src/app.js", help: "File which exports the Express application to serve (i.e. the entrypoint)."});
 const args = parser.parseArgs();
 global.verbose = args.verbose;
 
@@ -23,7 +24,7 @@ const port = process.env.PORT || 5000;
 /* Import app after setting global.verbose so that calls to utils.verbose()
  * respect our --verbose option as expected.
  */
-const {default: app} = await import('./src/app.js');
+const {default: app} = await import(args.app);
 
 app.set("port", port);
 

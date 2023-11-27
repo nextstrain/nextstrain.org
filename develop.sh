@@ -6,6 +6,6 @@ trap 'kill 0' EXIT
 (cd static-site && npm run develop) &
 
 # Start Express server with proxying of Gatsby assets to localhost:8000
-NODE_ENV="dev" GATSBY_DEV_URL=http://localhost:8000 ./node_modules/.bin/nodemon --verbose -- server.js --verbose
+NODE_ENV="dev" GATSBY_DEV_URL=http://localhost:8000 ./node_modules/.bin/nodemon --verbose -- server.js --verbose "$@"
 
 wait

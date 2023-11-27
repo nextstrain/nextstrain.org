@@ -4,6 +4,7 @@ import styled, {css} from 'styled-components';
 import { startsWith } from "lodash";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { UserContext } from "../../layouts/userDataWrapper";
+import { groupsApp } from "../../../data/SiteConfig";
 
 const NavContainer = styled.div`
   display: flex;
@@ -104,12 +105,17 @@ class NavBar extends React.Component {
     const rainbowTitle = title.split("").map((letter, i) =>
       <NavLogoCharacter key={i} colorIndex={i}>{letter}</NavLogoCharacter>
     );
+    const SubTitle = styled.div`
+      color: black;
+    `;
     return (
       this.props.minified ?
         <div/>
         :
         <Link to="/">
           {rainbowTitle}
+          {groupsApp &&
+            <SubTitle>Groups Server</SubTitle>}
         </Link>
     );
   }
@@ -121,15 +127,19 @@ class NavBar extends React.Component {
         {this.getLogo()}
         {this.getLogoType()}
         <div style={{flex: 5}}/>
-        <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" >HELP</NavLinkToGoToServer>
-        <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</NavLinkToGoToServer>
-        { /* Only display "blog" if we're not minified */
-          minified ?
-            null :
-            this.selectedClass("blog") ?
-              <NavLinkInactive minified={minified}>BLOG</NavLinkInactive> :
-              <NavLinkToBeHandledByGatsby minified={minified} to="/blog">BLOG</NavLinkToBeHandledByGatsby>
-        }
+        {!groupsApp &&
+          <>
+            <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" >HELP</NavLinkToGoToServer>
+            <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</NavLinkToGoToServer>
+            { /* Only display "blog" if we're not minified */
+              minified ?
+                null :
+                this.selectedClass("blog") ?
+                  <NavLinkInactive minified={minified}>BLOG</NavLinkInactive> :
+                  <NavLinkToBeHandledByGatsby minified={minified} to="/blog">BLOG</NavLinkToBeHandledByGatsby>
+            }
+          </>
+         }
         {this.context.user ? (
           <NavLinkToGoToServer minified={minified} href="/whoami">
             <span role="img" aria-labelledby="userIcon">👤</span>

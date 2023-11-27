@@ -1,4 +1,4 @@
-const config = require("./data/SiteConfig");
+const config = require("./data/GatsbyConfig");
 
 module.exports = {
   pathPrefix: config.pathPrefix,

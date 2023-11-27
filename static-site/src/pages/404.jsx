@@ -2,7 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import styled from "styled-components";
 // import SEO from "../components/SEO/SEO";
-import config from "../../data/SiteConfig";
+import { siteTitle } from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
 import Splash from "../components/splash";
 import UserDataWrapper from "../layouts/userDataWrapper";
@@ -18,7 +18,7 @@ const FourOhFour = () => {
     browser && (
       <MainLayout>
         <div className="index-container">
-          <Helmet title={config.siteTitle} />
+          <Helmet title={siteTitle} />
           <main>
             <UserDataWrapper>
               <NavBar minified/>

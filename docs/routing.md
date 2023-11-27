@@ -27,8 +27,9 @@ particularly between the server-side and client-side routes.
 
 The server-side routes try to adhere to some basic organizational principles:
 
-  * Routes (e.g. `/charon/getDataset`) go in `src/app.js`.  The longer we can
-    keep all (server-side) routes in one place, the better.
+  * Routes (e.g. `/charon/getDataset`) live in `src/routing/` and are documented
+    in `src/app.js`.  Having all routes listed in the entrypoint file makes it
+    easier to see ordering without cross-referencing across files.
 
   * Endpoints ("route handlers", e.g. `charon.getDataset(req, res, next)`) live
     in `src/endpoints/`, grouped into arbitrary directories/files/modules as
