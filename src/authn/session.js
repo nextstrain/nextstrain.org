@@ -20,7 +20,7 @@ const KEYRING = keyringFromParamString(SESSION_ENCRYPTION_KEYS || `RANDOM=${rand
  * @param {Object} session - typically req.session
  * @returns {{idToken, accessToken, refreshTokens}|null}
  */
-async function getTokens(session) {
+export async function getTokens(session) {
   if (session?.encryptedTokens) {
     const context = {sid: session.id};
     const decryptedTokens = JSON.parse(await decrypt(KEYRING, session.encryptedTokens, context));
@@ -42,7 +42,7 @@ async function getTokens(session) {
  * @param {Object} session - typically req.session
  * @param {{idToken, accessToken, refreshTokens}|null} tokens - if null, removes any existing tokens from the session
  */
-async function setTokens(session, tokens) {
+export async function setTokens(session, tokens) {
   if (tokens) {
     /* Encryption context to bind this message to this session.  For example,
      * this prevents coyping of the encrypted tokens from one session to
@@ -71,13 +71,6 @@ async function setTokens(session, tokens) {
  *
  * @param {Object} session - typically req.session
  */
-async function deleteTokens(session) {
+export async function deleteTokens(session) {
   return await setTokens(session, null);
 }
-
-
-export {
-  getTokens,
-  setTokens,
-  deleteTokens,
-};

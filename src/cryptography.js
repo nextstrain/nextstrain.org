@@ -65,7 +65,7 @@ import { randomBytes } from 'crypto';
 /* These must be changed with care.  Blithely changing them could make existing
  * ciphertexts undecryptable.
  */
-const KEY_LENGTH_BITS = 256;
+export const KEY_LENGTH_BITS = 256;
 const KEY_COMMITMENT_POLICY = awsCrypto.CommitmentPolicy.FORBID_ENCRYPT_ALLOW_DECRYPT;
 const WRAPPING_SUITE = awsCrypto.RawAesWrappingSuiteIdentifier.AES256_GCM_IV12_TAG16_NO_PADDING;
 const DATA_SUITE = awsCrypto.AlgorithmSuiteIdentifier.ALG_AES256_GCM_IV12_TAG16_HKDF_SHA256;
@@ -88,7 +88,7 @@ const {
  *    key names and base64-encoded key material
  * @returns {Object}
  */
-function keyringFromParamString(keyParamString) {
+export function keyringFromParamString(keyParamString) {
   const keyParams = Array.from((new URLSearchParams(keyParamString)).entries());
 
   // Decryption with any key passed in.
@@ -128,7 +128,7 @@ function keyringFromParamString(keyParamString) {
  *   contextualizes this plaintext to prevent context shifts; not encrypted!
  * @returns {String} base64-encoded encrypted message (ciphertext)
  */
-async function encrypt(keyring, plaintext, context) {
+export async function encrypt(keyring, plaintext, context) {
   const {result: encryptedMessage} = await _encrypt(
     keyring,
     plaintext,
@@ -155,7 +155,7 @@ async function encrypt(keyring, plaintext, context) {
  *   contextualizes the plaintext to prevent context shifts; not encrypted!
  * @returns {String} plaintext
  */
-async function decrypt(keyring, ciphertext, context) {
+export async function decrypt(keyring, ciphertext, context) {
   const {plaintext, messageHeader: {encryptionContext}} =
     await _decrypt(keyring, Buffer.from(ciphertext, "base64"));
 
@@ -176,15 +176,6 @@ async function decrypt(keyring, ciphertext, context) {
  *
  * @param {Number} [byteLength] - length of key in bytes
  */
-function randomKey(byteLength = KEY_LENGTH_BITS / 8) {
+export function randomKey(byteLength = KEY_LENGTH_BITS / 8) {
   return Buffer.from(randomBytes(byteLength)).toString("base64url");
 }
-
-
-export {
-  KEY_LENGTH_BITS,
-  keyringFromParamString,
-  encrypt,
-  decrypt,
-  randomKey,
-};

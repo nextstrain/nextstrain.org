@@ -10,7 +10,7 @@ import { Transform } from 'stream';
  *
  * @param {{dryRun: boolean}}
  */
-function setupConsole({dryRun = true}) {
+export function setupConsole({dryRun = true}) {
   if (!dryRun) return;
 
   const LinePrefixer = class extends Transform {
@@ -56,7 +56,7 @@ function setupConsole({dryRun = true}) {
  *   - https://nodejs.org/api/process.html#event-unhandledrejection
  *   - https://nodejs.org/api/process.html#event-rejectionhandled
  */
-function reportUnhandledRejectionsAtExit() {
+export function reportUnhandledRejectionsAtExit() {
   const unhandledRejections = new Set();
   process.on("unhandledRejection", (_, promise) => unhandledRejections.add(promise));
   process.on("rejectionHandled", (promise) => unhandledRejections.delete(promise));
@@ -83,7 +83,7 @@ function reportUnhandledRejectionsAtExit() {
  * @param {string[]} argv
  * @returns {Promise<{code, signal, argv}>}
  */
-async function run(argv) {
+export async function run(argv) {
   return new Promise((resolve, reject) => {
     const proc = spawn(argv[0], argv.slice(1), {stdio: ["ignore", "pipe", "pipe"]});
 
@@ -98,10 +98,3 @@ async function run(argv) {
     });
   });
 }
-
-
-export {
-  setupConsole,
-  reportUnhandledRejectionsAtExit,
-  run,
-};

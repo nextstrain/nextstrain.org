@@ -3,23 +3,23 @@ import fetch from 'node-fetch';
 import { NotFound } from '../httpErrors.js';
 
 
-const verbose = (msg, ...rest) => {
+export const verbose = (msg, ...rest) => {
   if (global.verbose) {
     console.log(chalk.greenBright(`[verbose]\t${msg}`), ...rest);
   }
 };
-const log = (msg, ...rest) => {
+export const log = (msg, ...rest) => {
   console.log(chalk.blueBright(msg), ...rest);
 };
-const warn = (msg, ...rest) => {
+export const warn = (msg, ...rest) => {
   console.warn(chalk.redBright(`[warning]\t${msg}`), ...rest);
 };
-const error = (msg, ...rest) => {
+export const error = (msg, ...rest) => {
   console.error(chalk.redBright(`[error]\t${msg}`), ...rest);
   process.exit(2);
 };
 
-const fetchJSON = async (url) => {
+export const fetchJSON = async (url) => {
   verbose(`Fetching ${url}`);
   const res = await fetch(url);
 
@@ -46,7 +46,7 @@ const fetchJSON = async (url) => {
   return res.json();
 };
 
-const responseDetails = async (response) => [
+export const responseDetails = async (response) => [
   `${response.status} ${response.statusText}`,
   await response.text()
 ];
@@ -57,7 +57,7 @@ const responseDetails = async (response) => [
  * @param {Array} files. Array of strings.
  * @returns {Array}
  */
-const getDatasetsFromListOfFilenames = (filenames) => {
+export const getDatasetsFromListOfFilenames = (filenames) => {
   /* Please see https://github.com/nextstrain/nextstrain.org/pull/65 for comments
   which indicate that this function "weirdly mixes a functional, stream-based
   approach with a procedural approach" and is a candidate for refactoring.
@@ -88,7 +88,7 @@ const getDatasetsFromListOfFilenames = (filenames) => {
     .join("/"));
 };
 
-const parseNarrativeLanguage = (narrative) => {
+export const parseNarrativeLanguage = (narrative) => {
   const urlParts = narrative.split("/");
   let language = urlParts[urlParts.length - 2];
   if (language === 'sit-rep') language = 'en';
@@ -104,7 +104,7 @@ const parseNarrativeLanguage = (narrative) => {
  * @params {object} headers
  * @returns {object}
  */
-const normalizeHeaders = (headers) => {
+export const normalizeHeaders = (headers) => {
   const withValues =
     Object.entries(headers)
       .filter(([, value]) => value != null && value !== "");
@@ -113,16 +113,4 @@ const normalizeHeaders = (headers) => {
    * lowercasing and combining duplicate headers as appropriate.
    */
   return Object.fromEntries((new fetch.Headers(withValues)).entries());
-};
-
-export {
-  verbose,
-  log,
-  warn,
-  error,
-  fetchJSON,
-  responseDetails,
-  getDatasetsFromListOfFilenames,
-  parseNarrativeLanguage,
-  normalizeHeaders,
 };

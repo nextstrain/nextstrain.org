@@ -5,7 +5,7 @@ import { splitPrefixIntoParts, joinPartsIntoPrefix } from '../../utils/prefix.js
 import * as metaSources from '../../metaSources.js';
 
 /* handler for /charon/getAvailable requests */
-const getAvailable = async (req, res) => {
+export const getAvailable = async (req, res) => {
   const prefix = req.query.prefix ?? "/";
   utils.verbose(`getAvailable prefix: "${prefix}"`);
 
@@ -52,7 +52,3 @@ async function collectAllAvailableGroups(user) {
     narratives: narratives.map((request) => ({request}))
   };
 }
-
-export {
-  getAvailable,
-};

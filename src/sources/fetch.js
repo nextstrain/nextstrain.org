@@ -2,7 +2,7 @@ import * as authz from '../authz/index.js';
 
 import { Source, Dataset, DatasetSubresource, Narrative, NarrativeSubresource } from './models.js';
 
-class UrlDefinedSource extends Source {
+export class UrlDefinedSource extends Source {
   constructor(authority) {
     super();
 
@@ -112,7 +112,3 @@ class UrlDefinedNarrativeSubresource extends NarrativeSubresource {
     return this.resource.baseName;
   }
 }
-
-export {
-  UrlDefinedSource,
-};

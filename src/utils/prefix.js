@@ -28,7 +28,7 @@ const sourceClassToName = new Map(
  * The inverse of splitPrefixIntoParts() is joinPartsIntoPrefix(), which should
  * roundtrip losslessly.
  */
-const splitPrefixIntoParts = (prefix) => {
+export const splitPrefixIntoParts = (prefix) => {
   if (!prefix) throw new Error("'prefix' is null or empty");
 
   const prefixParts = prefix
@@ -111,7 +111,7 @@ const splitPrefixIntoParts = (prefix) => {
  * automatically provided reverse URL-construction/interpolation function on
  * the matched route.
  */
-const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) => {
+export const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) => {
   const leadingParts = [];
 
   const sourceName = sourceClassToName.get(source.constructor);
@@ -155,12 +155,5 @@ const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) =
 
 /* Round-trip prefix through split/join to canonicalize it for comparison.
  */
-const canonicalizePrefix = async (prefix) =>
+export const canonicalizePrefix = async (prefix) =>
   joinPartsIntoPrefix(splitPrefixIntoParts(prefix));
-
-
-export {
-  splitPrefixIntoParts,
-  joinPartsIntoPrefix,
-  canonicalizePrefix,
-};

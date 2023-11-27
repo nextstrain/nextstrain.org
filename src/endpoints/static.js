@@ -23,9 +23,9 @@ const gatsbyAssetPath = (...subpath) =>
 
 /* Handlers for static assets.
  */
-const auspiceAssets = expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'});
+export const auspiceAssets = expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'});
 
-const gatsbyAssets = express.static(gatsbyAssetPath());
+export const gatsbyAssets = express.static(gatsbyAssetPath());
 
 
 /**
@@ -49,7 +49,7 @@ const gatsbyAssets = express.static(gatsbyAssetPath());
  *
  * @returns {Promise}
  */
-const sendFile = async (res, filePath, options) => {
+export const sendFile = async (res, filePath, options) => {
   return new Promise((resolve, reject) => {
     res.sendFile(filePath, options, (err) => {
       if (err) return reject(new InternalServerError(err));
@@ -68,7 +68,7 @@ const sendFile = async (res, filePath, options) => {
  *
  * @type {asyncExpressHandler}
  */
-const sendAuspiceEntrypoint = async (req, res) => {
+export const sendAuspiceEntrypoint = async (req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
   return await sendFile(
     res,
@@ -92,7 +92,7 @@ const sendAuspiceEntrypoint = async (req, res) => {
  * @param {String} page - Path to a Gatsby page's rendered static HTML file
  * @returns {asyncExpressHandler}
  */
-const sendGatsbyPage = (page) => async (req, res) => {
+export const sendGatsbyPage = (page) => async (req, res) => {
   if (req.app.locals.gatsbyDevUrl) {
     const pageUrl = (new URL(page, req.app.locals.gatsbyDevUrl)).toString();
 
@@ -125,7 +125,7 @@ const sendGatsbyPage = (page) => async (req, res) => {
  *
  * @type {asyncExpressHandler}
  */
-const sendGatsbyEntrypoint = sendGatsbyPage("index.html");
+export const sendGatsbyEntrypoint = sendGatsbyPage("index.html");
 
 
 /**
@@ -137,7 +137,7 @@ const sendGatsbyEntrypoint = sendGatsbyPage("index.html");
  *
  * @type {asyncExpressHandler}
  */
-const sendGatsby404 = async (req, res) => {
+export const sendGatsby404 = async (req, res) => {
   /* When app.locals.gatsbyDevUrl is in use, the following 404 status is
    * overwritten with the upstream response status (usually 200).  Not a big
    * deal during development, but a difference worth noting.  Fixable if
@@ -155,15 +155,3 @@ const sendGatsby404 = async (req, res) => {
  * @param {express.request} req
  * @param {express.response} res
  */
-
-
-export {
-  auspiceAssets,
-  gatsbyAssets,
-
-  sendFile,
-  sendAuspiceEntrypoint,
-  sendGatsbyPage,
-  sendGatsbyEntrypoint,
-  sendGatsby404,
-};

@@ -2,12 +2,12 @@ import { BadRequest, isHttpError } from '../../httpErrors.js';
 import { splitPrefixIntoParts } from '../../utils/prefix.js';
 import { setSource, setDataset, canonicalizeDataset, setNarrative } from '../sources.js';
 import './setAvailableDatasets.js'; // sets globals
-import { getAvailable } from './getAvailable.js';
-import { getDataset } from './getDataset.js';
-import { getNarrative } from './getNarrative.js';
-import { getSourceInfo } from './getSourceInfo.js';
+export { getAvailable } from './getAvailable.js';
+export { getDataset } from './getDataset.js';
+export { getNarrative } from './getNarrative.js';
+export { getSourceInfo } from './getSourceInfo.js';
 
-const setSourceFromPrefix = setSource(req => {
+export const setSourceFromPrefix = setSource(req => {
   const prefix = req.query.prefix;
   if (!prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
 
@@ -23,9 +23,9 @@ const setSourceFromPrefix = setSource(req => {
   return req.context.splitPrefixIntoParts.source;
 });
 
-const setDatasetFromPrefix = setDataset(req => req.context.splitPrefixIntoParts.prefixParts.join("/"));
+export const setDatasetFromPrefix = setDataset(req => req.context.splitPrefixIntoParts.prefixParts.join("/"));
 
-const canonicalizeDatasetPrefix = canonicalizeDataset((req, resolvedPrefix) => {
+export const canonicalizeDatasetPrefix = canonicalizeDataset((req, resolvedPrefix) => {
   // A absolute base is required but we won't use it, so use something bogus.
   const resolvedUrl = new URL(req.originalUrl, "http://x");
   resolvedUrl.searchParams.set("prefix", resolvedPrefix);
@@ -33,7 +33,7 @@ const canonicalizeDatasetPrefix = canonicalizeDataset((req, resolvedPrefix) => {
   return resolvedUrl.pathname + resolvedUrl.search;
 });
 
-const setNarrativeFromPrefix = setNarrative(req => {
+export const setNarrativeFromPrefix = setNarrative(req => {
   const {prefixParts} = req.context.splitPrefixIntoParts;
 
   // Remove 'en' from nCoV narrative prefixParts
@@ -46,15 +46,3 @@ const setNarrativeFromPrefix = setNarrative(req => {
 
   return prefixParts.join("/");
 });
-
-export {
-  setSourceFromPrefix,
-  setDatasetFromPrefix,
-  canonicalizeDatasetPrefix,
-  setNarrativeFromPrefix,
-
-  getAvailable,
-  getDataset,
-  getNarrative,
-  getSourceInfo
-};
