@@ -124,6 +124,7 @@ const NavBar = ({sidebar, narrativeTitle, width}) => {
               <div style={{flex: 5}}/>
               <Link href="https://docs.nextstrain.org/en/latest/index.html" style={styles.link} text="DOCS"/>
               <Link href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" style={styles.link} text="HELP"/>
+              <Link href="/contact" style={styles.link} text="CONTACT"/>
               <WhoAmI sidebar={sidebar}/>
             </div>
           )

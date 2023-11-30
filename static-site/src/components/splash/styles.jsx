@@ -118,6 +118,10 @@ export const FocusParagraph = styled.p`
   line-height: ${(props) => props.theme.tightLineHeight};
 `;
 
+export const NarrowFocusParagraph = styled(FocusParagraph)`
+  max-width: 640px;
+`;
+
 export const IconParagraph = styled.div`
   margin-top: 0px;
   margin-right: auto;
