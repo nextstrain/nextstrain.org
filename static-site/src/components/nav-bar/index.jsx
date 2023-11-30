@@ -129,7 +129,6 @@ class NavBar extends React.Component {
         <div style={{flex: 5}}/>
         {!groupsApp &&
           <>
-            <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/learn/about-nextstrain.html" >HELP</NavLinkToGoToServer>
             <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</NavLinkToGoToServer>
             <NavLinkToBeHandledByGatsby minified={minified} to="/contact">CONTACT</NavLinkToBeHandledByGatsby>
             { /* Only display "blog" if we're not minified */
