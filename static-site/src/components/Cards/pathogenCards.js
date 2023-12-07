@@ -20,6 +20,11 @@ const pathogenCards = [
     title: "Influenza"
   },
   {
+    img: "lassa.png",
+    url: "/lassa",
+    title: "Lassa"
+  },
+  {
     img: "measles.jpg",
     url: "/measles",
     title: "Measles"
