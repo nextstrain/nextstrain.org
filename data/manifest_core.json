@@ -193,6 +193,13 @@
           "default": "seasonal"
         }
       },
+      "lassa": {
+        "resolution": {
+          "l": "",
+          "s": "",
+          "default": "s"
+        }
+      },
       "measles": "",
       "mpox": {
         "resolution": {
