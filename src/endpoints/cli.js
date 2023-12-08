@@ -11,7 +11,7 @@ const authorization = process.env.GITHUB_TOKEN
   : "";
 
 
-async function download(req, res) {
+export async function download(req, res) {
   const version = req.params.version;
   const assetSuffix = req.params.assetSuffix;
   if (!version || !assetSuffix) throw new BadRequest();
@@ -35,7 +35,7 @@ async function download(req, res) {
 }
 
 
-async function downloadPRBuild(req, res) {
+export async function downloadPRBuild(req, res) {
   const prId = Number(req.params.prId);
   if (!prId || !Number.isFinite(prId)) throw new BadRequest("PR id is not a number");
 
@@ -78,7 +78,7 @@ async function downloadPRBuild(req, res) {
 }
 
 
-async function downloadCIBuild(req, res) {
+export async function downloadCIBuild(req, res) {
   if (!authorization) {
     throw new ServiceUnavailable("Server does not have authorization to download CI builds.");
   }
@@ -141,7 +141,7 @@ function assertStatusOk(response) {
 }
 
 
-function installer (req, res) {
+export function installer (req, res) {
   const os = req.params.os;
   switch (os) {
     case "linux":
@@ -155,11 +155,3 @@ function installer (req, res) {
       throw new NotFound(`No installer for OS: ${os}`);
   }
 }
-
-
-export {
-  download,
-  downloadPRBuild,
-  downloadCIBuild,
-  installer,
-};

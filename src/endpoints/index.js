@@ -1,19 +1,8 @@
-import * as charon from './charon/index.js';
-import * as cli from './cli.js';
-import * as groups from "./groups.js";
-import * as openid from './openid.js';
-import * as options from './options.js';
-import * as sources from './sources.js';
-import * as static_ from './static.js';
-import * as users from './users.js';
-
-export {
-  charon,
-  cli,
-  groups,
-  openid,
-  options,
-  sources,
-  static_ as static,
-  users,
-};
+export * as charon from './charon/index.js';
+export * as cli from './cli.js';
+export * as groups from "./groups.js";
+export * as openid from './openid.js';
+export * as options from './options.js';
+export * as sources from './sources.js';
+export * as static from './static.js';
+export * as users from './users.js';

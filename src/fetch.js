@@ -8,7 +8,7 @@ const _fetch = __fetch.defaults({
   cacheManager: process.env.FETCH_CACHE || "/tmp/fetch-cache",
 });
 
-const fetch = async (url, options) => {
+export const fetch = async (url, options) => {
   /* "url" may be a URL or a Request object, but always construct our own
    * Request() so the rest of this function only has to deal with a single
    * interface instead of looking for properties like "method" and "cache" on
@@ -28,7 +28,7 @@ const fetch = async (url, options) => {
   return response;
 };
 
-class Request extends __fetch.Request {
+export class Request extends __fetch.Request {
   /* make-fetch-happen's fetch() extends Node's fetch() by adding support for
    * several caching-related features in the WHATWG Fetch spec that Node
    * doesn't implement.  However, make-fetch-happen (unintentionally?) assumes
@@ -69,8 +69,3 @@ class Request extends __fetch.Request {
    */
   get cache() { return this[FETCH_OPTIONS].cache; }
 }
-
-export {
-  fetch,
-  Request,
-};

@@ -1,7 +1,7 @@
 import { BadRequest } from '../../httpErrors.js';
 import { sendNarrativeSubresource } from '../sources.js';
 
-const getNarrative = async (req, res) => {
+export const getNarrative = async (req, res) => {
   const query = req.query;
   const validTypes = new Set(["markdown", "md"]);
 
@@ -10,8 +10,4 @@ const getNarrative = async (req, res) => {
   }
 
   return await sendNarrativeSubresource("md")(req, res);
-};
-
-export {
-  getNarrative,
 };

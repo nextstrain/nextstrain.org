@@ -2,7 +2,7 @@ import url from 'url';
 import { splitPrefixIntoParts } from './utils/prefix.js';
 import { parseNarrativeLanguage } from './utils/index.js';
 
-const setup = (app) => {
+export const setup = (app) => {
 
   /* send auspice to the auspice docs (currently hosted on docs.nextstrain.org) */
   app.route("/auspice")
@@ -140,8 +140,4 @@ const setup = (app) => {
       .get((req, res) => res.redirect(to));
   }
 
-};
-
-export {
-  setup
 };

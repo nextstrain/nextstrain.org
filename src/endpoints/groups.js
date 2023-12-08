@@ -7,7 +7,7 @@ import { slurp } from "../utils/iterators.js";
 import * as options from "./options.js";
 
 
-const setGroup = (nameExtractor) => (req, res, next) => {
+export const setGroup = (nameExtractor) => (req, res, next) => {
   const group = new Group(nameExtractor(req));
 
   authz.assertAuthorized(req.user, authz.actions.Read, group);
@@ -20,7 +20,7 @@ const setGroup = (nameExtractor) => (req, res, next) => {
 /* Group customizations
  */
 
-const optionsGroup = options.forAuthzObject(req => req.context.group);
+export const optionsGroup = options.forAuthzObject(req => req.context.group);
 
 
 /* Group logo
@@ -29,21 +29,21 @@ const optionsGroup = options.forAuthzObject(req => req.context.group);
 
 /* GET
  */
-const getGroupLogo = contentTypesProvided([
+export const getGroupLogo = contentTypesProvided([
   ["image/png", sendGroupLogo],
 ]);
 
 
 /* PUT
  */
-const putGroupLogo = contentTypesConsumed([
+export const putGroupLogo = contentTypesConsumed([
   ["image/png", receiveGroupLogo],
 ]);
 
 
 /* DELETE
  */
-const deleteGroupLogo = async (req, res) => {
+export const deleteGroupLogo = async (req, res) => {
   authz.assertAuthorized(req.user, authz.actions.Write, req.context.group);
 
   const method = "DELETE";
@@ -60,7 +60,7 @@ const deleteGroupLogo = async (req, res) => {
 
 /* GET
  */
-const getGroupOverview = contentTypesProvided([
+export const getGroupOverview = contentTypesProvided([
   ["text/markdown", sendGroupOverview],
   ["text/plain", sendGroupOverview],
 ]);
@@ -68,14 +68,14 @@ const getGroupOverview = contentTypesProvided([
 
 /* PUT
  */
-const putGroupOverview = contentTypesConsumed([
+export const putGroupOverview = contentTypesConsumed([
   ["text/markdown", receiveGroupOverview],
 ]);
 
 
 /* DELETE
  */
-const deleteGroupOverview = async (req, res) => {
+export const deleteGroupOverview = async (req, res) => {
   authz.assertAuthorized(req.user, authz.actions.Write, req.context.group);
 
   const method = "DELETE";
@@ -156,7 +156,7 @@ async function receiveGroupLogo(req, res) {
 
 /* Members and roles
  */
-const listMembers = async (req, res) => {
+export const listMembers = async (req, res) => {
   const group = req.context.group;
 
   authz.assertAuthorized(req.user, authz.actions.Read, group);
@@ -165,7 +165,7 @@ const listMembers = async (req, res) => {
 };
 
 
-const listRoles = (req, res) => {
+export const listRoles = (req, res) => {
   const group = req.context.group;
 
   authz.assertAuthorized(req.user, authz.actions.Read, group);
@@ -175,7 +175,7 @@ const listRoles = (req, res) => {
 };
 
 
-const listRoleMembers = async (req, res) => {
+export const listRoleMembers = async (req, res) => {
   const group = req.context.group;
   const {roleName} = req.params;
 
@@ -185,7 +185,7 @@ const listRoleMembers = async (req, res) => {
 };
 
 
-const getRoleMember = async (req, res) => {
+export const getRoleMember = async (req, res) => {
   const group = req.context.group;
   const {roleName, username} = req.params;
 
@@ -201,7 +201,7 @@ const getRoleMember = async (req, res) => {
 };
 
 
-const putRoleMember = async (req, res) => {
+export const putRoleMember = async (req, res) => {
   const group = req.context.group;
   const {roleName, username} = req.params;
 
@@ -213,7 +213,7 @@ const putRoleMember = async (req, res) => {
 };
 
 
-const deleteRoleMember = async (req, res) => {
+export const deleteRoleMember = async (req, res) => {
   const group = req.context.group;
   const {roleName, username} = req.params;
 
@@ -222,26 +222,4 @@ const deleteRoleMember = async (req, res) => {
   await group.revokeRole(roleName, username);
 
   return res.status(204).end();
-};
-
-
-export {
-  setGroup,
-  optionsGroup,
-
-  getGroupLogo,
-  putGroupLogo,
-  deleteGroupLogo,
-
-  getGroupOverview,
-  putGroupOverview,
-  deleteGroupOverview,
-
-  listMembers,
-  listRoles,
-  listRoleMembers,
-
-  getRoleMember,
-  putRoleMember,
-  deleteRoleMember,
 };

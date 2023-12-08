@@ -15,7 +15,7 @@ import { deleteByUrls, proxyFromUpstream, proxyToUpstream } from "../upstream.js
  *   instance from the request
  * @returns {expressMiddleware}
  */
-const setSource = (sourceExtractor) => (req, res, next) => {
+export const setSource = (sourceExtractor) => (req, res, next) => {
   const source = sourceExtractor(req);
 
   authz.assertAuthorized(req.user, authz.actions.Read, source);
@@ -35,7 +35,7 @@ const setSource = (sourceExtractor) => (req, res, next) => {
  * @param {pathExtractor} pathExtractor - Function to extract a dataset path from the request
  * @returns {expressMiddleware}
  */
-const setDataset = (pathExtractor) => (req, res, next) => {
+export const setDataset = (pathExtractor) => (req, res, next) => {
   req.context.dataset = req.context.source.dataset(pathParts(pathExtractor(req)));
   next();
 };
@@ -48,7 +48,7 @@ const setDataset = (pathExtractor) => (req, res, next) => {
  * @param {pathBuilder} pathBuilder - Function to build a fully-specified path
  * @returns {expressMiddleware}
  */
-const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
+export const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
   const dataset = req.context.dataset;
   const resolvedDataset = dataset.resolve();
 
@@ -71,7 +71,7 @@ const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
  *
  * @type {expressMiddlewareAsync}
  */
-const ifDatasetExists = async (req, res, next) => {
+export const ifDatasetExists = async (req, res, next) => {
   authz.assertAuthorized(req.user, authz.actions.Read, req.context.dataset);
 
   if (!(await req.context.dataset.exists())) throw new NotFound();
@@ -88,7 +88,7 @@ const ifDatasetExists = async (req, res, next) => {
  * want to point Auspice at these endpoints and still support v1.
  *   -trs, 22 Nov 2021
  */
-const sendDatasetSubresource = type =>
+export const sendDatasetSubresource = type =>
   sendSubresource(req => req.context.dataset.subresource(type));
 
 
@@ -104,7 +104,7 @@ const getDatasetTipFrequencies = getDatasetSubresource("tip-frequencies");
 const getDatasetMeasurements   = getDatasetSubresource("measurements");
 
 
-const getDataset = contentTypesProvided([
+export const getDataset = contentTypesProvided([
   ["text/html", ifDatasetExists, sendAuspiceEntrypoint],
   ["application/json", getDatasetMain],
   ["application/vnd.nextstrain.dataset.main+json", getDatasetMain],
@@ -136,7 +136,7 @@ const putDatasetTipFrequencies = putDatasetSubresource("tip-frequencies");
 const putDatasetMeasurements   = putDatasetSubresource("measurements");
 
 
-const putDataset = contentTypesConsumed([
+export const putDataset = contentTypesConsumed([
   ["application/vnd.nextstrain.dataset.main+json", putDatasetMain],
   ["application/vnd.nextstrain.dataset.root-sequence+json", putDatasetRootSequence],
   ["application/vnd.nextstrain.dataset.tip-frequencies+json", putDatasetTipFrequencies],
@@ -174,14 +174,14 @@ const deleteResource = resourceExtractor => async (req, res) => {
 };
 
 
-const deleteDataset = deleteResource(req => req.context.dataset);
-const deleteNarrative = deleteResource(req => req.context.narrative);
+export const deleteDataset = deleteResource(req => req.context.dataset);
+export const deleteNarrative = deleteResource(req => req.context.narrative);
 
 
 /* OPTIONS
  */
-const optionsDataset = options.forAuthzObject(req => req.context.dataset);
-const optionsNarrative = options.forAuthzObject(req => req.context.narrative);
+export const optionsDataset = options.forAuthzObject(req => req.context.dataset);
+export const optionsNarrative = options.forAuthzObject(req => req.context.narrative);
 
 
 /* Narratives
@@ -194,7 +194,7 @@ const optionsNarrative = options.forAuthzObject(req => req.context.narrative);
  * @param {pathExtractor} pathExtractor - Function to extract a narrative path from the request
  * @returns {expressMiddleware}
  */
-const setNarrative = (pathExtractor) => (req, res, next) => {
+export const setNarrative = (pathExtractor) => (req, res, next) => {
   req.context.narrative = req.context.source.narrative(pathParts(pathExtractor(req)));
   next();
 };
@@ -206,7 +206,7 @@ const setNarrative = (pathExtractor) => (req, res, next) => {
  *
  * @type {expressMiddlewareAsync}
  */
-const ifNarrativeExists = async (req, res, next) => {
+export const ifNarrativeExists = async (req, res, next) => {
   authz.assertAuthorized(req.user, authz.actions.Read, req.context.narrative);
 
   if (!(await req.context.narrative.exists())) throw new NotFound();
@@ -216,7 +216,7 @@ const ifNarrativeExists = async (req, res, next) => {
 
 /* GET
  */
-const sendNarrativeSubresource = type =>
+export const sendNarrativeSubresource = type =>
   sendSubresource(req => req.context.narrative.subresource(type));
 
 
@@ -226,7 +226,7 @@ const getNarrativeMarkdown = contentTypesProvided([
 ]);
 
 
-const getNarrative = contentTypesProvided([
+export const getNarrative = contentTypesProvided([
   ["text/html", ifNarrativeExists, sendAuspiceEntrypoint],
   ["text/markdown", getNarrativeMarkdown],
   ["text/vnd.nextstrain.narrative+markdown", getNarrativeMarkdown],
@@ -244,7 +244,7 @@ const putNarrativeMarkdown = contentTypesConsumed([
 ]);
 
 
-const putNarrative = contentTypesConsumed([
+export const putNarrative = contentTypesConsumed([
   ["text/vnd.nextstrain.narrative+markdown", putNarrativeMarkdown],
 ]);
 
@@ -391,26 +391,3 @@ function receiveSubresource(subresourceExtractor) {
  * @param {express.request} req
  * @param {express.response} res
  */
-
-
-export {
-  setSource,
-
-  setDataset,
-  canonicalizeDataset,
-  ifDatasetExists,
-  getDataset,
-  putDataset,
-  deleteDataset,
-  optionsDataset,
-
-  setNarrative,
-  ifNarrativeExists,
-  getNarrative,
-  putNarrative,
-  deleteNarrative,
-  optionsNarrative,
-
-  sendDatasetSubresource,
-  sendNarrativeSubresource,
-};
