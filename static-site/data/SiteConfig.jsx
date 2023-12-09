@@ -20,12 +20,12 @@ export const groupsApp = false;
 export const groupsTitle = "Scalable Sharing with Nextstrain Groups";
 
 export const ErrorBannerInitialMessage = () => (<>
-  Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org</a> if you believe this to be an error.
+  Please <Link to="/contact">contact us</Link> if you believe this to be an error.
 </>);
 
 export const DataFetchError = () => (<>
   Something went wrong getting data.
-  Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org</a> if this continues to happen.
+  Please <Link to="/contact">contact us</Link> if this continues to happen.
 </>);
 
 export const GroupsAbstract = () => (<>

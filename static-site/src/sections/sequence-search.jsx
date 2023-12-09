@@ -1,5 +1,6 @@
 import React from "react";
 import Select, {createFilter} from 'react-select';
+import { Link } from 'gatsby';
 import styled from 'styled-components';
 import {FaFile, FaExclamation} from "react-icons/fa";
 import { SmallSpacer, MediumSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
@@ -80,9 +81,7 @@ class SequencesToDatasets extends React.Component {
             <strong style={{color: 'red', paddingBottom: '20px'}}>
               This functionality is no longer being maintained, but we hope to revisit this in the future. 
               {` Please `}
-              <a href={"mailto:hello@nextstrain.org"} style={{color: "inherit", textDecoration: "underline"}}>
-                get in touch
-              </a>
+              <Link to="/contact">contact us</Link>
               {` if you were relying on this functionality and we'll see if we can help.`}
             </strong>
             <p/>
