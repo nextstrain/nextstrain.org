@@ -1,5 +1,6 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import { Link } from 'gatsby';
 import {
   SmallSpacer,
   HugeSpacer,
@@ -19,7 +20,7 @@ const nextstrainLogoPNG = "/favicon.png";
 const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (
   <>
-    These data represent analyses and situation-reports produced by the core Nextstrain team.
+    These data represent analyses and situation-reports produced by the <Link to="/team">core Nextstrain team</Link>.
     We aim to provide a continually-updated view of publicly available data to show pathogen evolution and epidemic spread.
     The pipeline used to generate each dataset is available on <a href="https://github.com/nextstrain/">our GitHub page</a> or by loading a dataset and
     clicking the &ldquo;built with&rdquo; link at the top of the page.
