@@ -21,6 +21,8 @@ const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (
   <>
     These data represent analyses and situation-reports produced by the <Link to="/team">core Nextstrain team</Link>.
+    Explore analyses produced by others on the <Link to="/groups">Groups</Link> and <Link to="/community">Community</Link> pages.
+    <br/><br/>
     We aim to provide a continually-updated view of publicly available data to show pathogen evolution and epidemic spread.
     The pipeline used to generate each dataset is available on <a href="https://github.com/nextstrain/">our GitHub page</a> or by loading a dataset and
     clicking the &ldquo;built with&rdquo; link at the top of the page.
