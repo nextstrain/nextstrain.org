@@ -26,9 +26,6 @@ const abstract = (
     While we strive to keep datasets updated, there may be some staleness; the date when the dataset was updated can be found in the footer of each visualisation.
     In particular, data with a datestamp in the table below <small>(YYYY-MM-DD)</small> reflects an analysis at a point in time.
     <br/><br/>
-    To learn more about nextstrain please see <a href="https://docs.nextstrain.org/en/latest/index.html">our documentation</a> or ask a question
-    on the <a href="https://discussion.nextstrain.org/">discussion forum</a>.
-    <br/><br/>
     <AnchorLink to={"search"} title={"Click here to scroll down to all Nextstrain-maintained pathogen analyses"} />.
   </>
 );
