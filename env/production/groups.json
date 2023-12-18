@@ -226,5 +226,9 @@
   {
     "name": "arkansas-tuberculosis-private",
     "isPublic": false
+  },
+  {
+    "name": "Mycobacterium-NZ",
+    "isPublic": false
   }
 ]
