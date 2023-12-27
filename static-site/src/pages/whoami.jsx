@@ -12,9 +12,21 @@ const UserPage = () => {
     <Fragment>
       You&apos;re logged in as <strong>{user.username}</strong>.
       <SubText>
-        You have access to the following private Nextstrain groups, which each
+        You have access to the following Nextstrain groups, which each
         contain a collection of datasets and/or narratives:
       </SubText>
+
+      Public:
+
+      <UserGroupsList>
+        {visibleGroups.filter((group) => !group.private).map((group) => (
+          <li>
+            <a href={`/groups/${group.name}`}>{group.name}</a>
+          </li>
+        ))}
+      </UserGroupsList>
+
+      Private:
 
       <UserGroupsList>
         {visibleGroups.filter((group) => group.private).map((group) => (
@@ -23,6 +35,7 @@ const UserPage = () => {
           </li>
         ))}
       </UserGroupsList>
+
       <a href="/logout">Logout</a>
     </Fragment>
   );
