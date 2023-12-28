@@ -1,5 +1,6 @@
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import { Link } from 'gatsby';
 import {
   SmallSpacer,
   HugeSpacer,
@@ -19,15 +20,14 @@ const nextstrainLogoPNG = "/favicon.png";
 const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (
   <>
-    These data represent analyses and situation-reports produced by the core Nextstrain team.
+    These data represent analyses and situation-reports produced by the <Link to="/team">core Nextstrain team</Link>.
+    Explore analyses produced by others on the <Link to="/groups">Groups</Link> and <Link to="/community">Community</Link> pages.
+    <br/><br/>
     We aim to provide a continually-updated view of publicly available data to show pathogen evolution and epidemic spread.
     The pipeline used to generate each dataset is available on <a href="https://github.com/nextstrain/">our GitHub page</a> or by loading a dataset and
     clicking the &ldquo;built with&rdquo; link at the top of the page.
-    While we strive to keep datasets updated, there may be some staleness; the date when the dataset was updated can be found in the footer of each visualisation.
+    While we strive to keep datasets updated, there may be some staleness; the date when the dataset was updated can be found at the top of each visualisation.
     In particular, data with a datestamp in the table below <small>(YYYY-MM-DD)</small> reflects an analysis at a point in time.
-    <br/><br/>
-    To learn more about nextstrain please see <a href="https://docs.nextstrain.org/en/latest/index.html">our documentation</a> or ask a question
-    on the <a href="https://discussion.nextstrain.org/">discussion forum</a>.
     <br/><br/>
     <AnchorLink to={"search"} title={"Click here to scroll down to all Nextstrain-maintained pathogen analyses"} />.
   </>
