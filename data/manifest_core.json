@@ -3,12 +3,42 @@
     "pathogen": {
       "dengue": {
         "serotype": {
-          "denv1": "",
-          "denv2": "",
-          "denv3": "",
-          "denv4": "",
-          "all": "",
-          "default": "denv1"
+          "denv1": {
+            "segment": {
+              "genome": "",
+              "E": "",
+              "default": "genome"
+            }
+          },
+          "denv2": {
+            "segment": {
+              "genome": "",
+              "E": "",
+              "default": "genome"
+            }
+          },
+          "denv3": {
+            "segment": {
+              "genome": "",
+              "E": "",
+              "default": "genome"
+            }
+          },
+          "denv4": {
+            "segment": {
+              "genome": "",
+              "E": "",
+              "default": "genome"
+            }
+          },
+          "all": {
+            "segment": {
+              "genome": "",
+              "E": "",
+              "default": "genome"
+            }
+          },
+          "default": "all"
         }
       },
       "ebola": "",
