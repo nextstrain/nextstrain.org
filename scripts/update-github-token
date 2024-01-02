@@ -1,0 +1,59 @@
+#!/bin/bash
+# Updates nextstrain.org Heroku apps with a new GitHub token.
+#
+set -euo pipefail
+
+main() {
+    if [ "$#" -ne 1 ]; then
+      echo "Usage: $0 <GITHUB_TOKEN>"
+      exit 1
+    fi
+
+    check-deps
+
+    check-heroku-access
+
+    update-github-token "$1"
+}
+
+check-deps () {
+    echo "This script depends on heroku and jq. Checking that they are available..."
+
+    heroku --help > /dev/null
+    jq --help > /dev/null
+
+    echo "Done."
+}
+
+check-heroku-access() {
+    echo "Checking that you are logged in. If you see an error, please log in to Heroku CLI."
+
+    heroku whoami >/dev/null
+
+    echo "You are logged in. Checking access..."
+
+    is_nextstrain_admin=$(heroku teams --json | jq '.[] | select(.name == "nextstrain" and .role == "admin") | length == 1')
+    if [[ -z "$is_nextstrain_admin" ]]; then
+      echo "ERROR: Insufficient access with Heroku CLI. Please log out then log back in to Heroku CLI as a member of the Nextstrain team."
+      exit 1
+    fi
+
+    echo "You have access."
+}
+
+update-github-token() {
+    new_token="$1"
+
+    echo "Updating tokens..."
+
+    for app in "nextstrain-dev" "nextstrain-canary" "nextstrain-server"
+    do
+        old_token=$(heroku config:get GITHUB_TOKEN --app "$app")
+        echo "[$app] Replacing old token $old_token with $new_token"
+        heroku config:set GITHUB_TOKEN="$new_token" --app "$app"
+    done
+
+    echo "Done."
+}
+
+main "$@"
