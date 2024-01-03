@@ -45,11 +45,11 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
         }
         <div style={{marginTop: "30px"}}/>
         {pageInfo.showDatasets ?
-          <ListAvailable type="datasets" data={available.datasets} width={browserDimensions.width} dispatch={dispatch} changePage={changePage}/> :
+          <ListAvailable type="datasets" data={available.datasets} width={browserDimensions.width}/> :
           null
         }
         {pageInfo.showNarratives ?
-          <ListAvailable type="narratives" data={available.narratives} width={browserDimensions.width} dispatch={dispatch} changePage={changePage}/> :
+          <ListAvailable type="narratives" data={available.narratives} width={browserDimensions.width}/> :
           null
         }
       </div>
@@ -59,7 +59,7 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
 
 
 /* lifted from auspice's default splash page */
-function ListAvailable({type, data, width, dispatch, changePage}) {
+function ListAvailable({type, data, width}) {
   const numCols = width > 1000 ? 3 : width > 750 ? 2 : 1;
   const ColumnList = styled.ul`
     -moz-column-count: ${numCols};
@@ -79,7 +79,7 @@ function ListAvailable({type, data, width, dispatch, changePage}) {
         <div style={{flex: "1 50%", minWidth: "0"}}>
           {(data && data.length) ? (
             <ColumnList>
-              {data.map((d) => formatDataset(d.request, dispatch, changePage))}
+              {data.map((d) => formatDataset(d.request))}
             </ColumnList>
           ) :
             "None found."
@@ -114,17 +114,19 @@ function ErrorMessage({errorMessage}) {
   );
 }
 
+const ListItem = styled.li`
+  margin: 5px 0;
+`
+
 /* lifted from auspice's default splash page */
-function formatDataset(requestPath, dispatch, changePage) {
+function formatDataset(requestPath) {
+
+  // FIXME: Do we actually need dispatch and changePage here? I've removed them for now.
+
   return (
-    <li key={requestPath}>
-      <div
-        style={{color: "#5097BA", textDecoration: "none", cursor: "pointer", fontWeight: "400", fontSize: "94%"}}
-        onClick={() => dispatch(changePage({path: requestPath, push: true}))}
-      >
-        {requestPath}
-      </div>
-    </li>
+    <ListItem key={requestPath}>
+      <a href={"/" + requestPath}>{requestPath}</a>
+    </ListItem>
   );
 }
 
