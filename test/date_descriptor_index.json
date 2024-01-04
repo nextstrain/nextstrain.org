@@ -1,0 +1,66 @@
+{
+  "core": {
+    "dataset": {
+      "zika": {
+        "versions": [
+          {
+            "date": "2023-05-20",
+            "fileUrls": {
+              "root-sequence": "https://nextstrain-data.s3.amazonaws.com/zika_root-sequence.json?versionId=_SzKCiKRw7hZhoQogzoTNM8cXP8CI3ML",
+              "main": "https://nextstrain-data.s3.amazonaws.com/zika.json?versionId=Wa5c62lKoEHaPLBw9e4ZypwLjmR26JYt"
+            }
+          },
+          {
+            "date": "2023-02-21",
+            "fileUrls": {
+              "root-sequence": "https://nextstrain-data.s3.amazonaws.com/zika_root-sequence.json?versionId=xSaqFeCujRdPmjuYx_MEO8gETcvX9xfC",
+              "main": "https://nextstrain-data.s3.amazonaws.com/zika.json?versionId=PTcu5h8Q_NH1a55x9cO_Ynt82FuPQHqu"
+            }
+          },
+          {
+            "date": "2022-10-05",
+            "fileUrls": {
+              "main": "https://nextstrain-data.s3.amazonaws.com/zika.json?versionId=cQV2g9_MA5eIWOvzsgwjTjJnMsaaB0hu"
+            }
+          },
+          {
+            "date": "2022-08-01",
+            "fileUrls": {
+              "main": "https://nextstrain-data.s3.amazonaws.com/zika.json?versionId=alPSrW5IF27Aw7S3BiQ35.LNmjnneoXv"
+            }
+          }
+        ]
+      },
+      "WNV/NA": {
+        "versions": [
+          {
+            "date": "2021-04-08",
+            "fileUrls": {
+              "main": "https://nextstrain-data.s3.amazonaws.com/WNV_NA.json?versionId=HTsBopAsMJuAmgVx0soPJp_H8kbsPs5J"
+            }
+          },
+          {
+            "date": "2020-11-18",
+            "fileUrls": {
+              "main": "https://nextstrain-data.s3.amazonaws.com/WNV_NA.json?versionId=7lRiCIu.cP5RTZkm7m7kPSvo6GbD846H"
+            }
+          },
+          {
+            "date": "2019-10-30",
+            "fileUrls": {
+              "meta": "https://nextstrain-data.s3.amazonaws.com/WNV_NA_meta.json?versionId=7azn45EHKK_rNpjG4bUdrxEBZvFY83eT",
+              "tree": "https://nextstrain-data.s3.amazonaws.com/WNV_NA_tree.json?versionId=5le2HoAybE5V739je1FbfHdkyHWV0hVO"
+            }
+          },
+          {
+            "date": "2019-08-30",
+            "fileUrls": {
+              "meta": "https://nextstrain-data.s3.amazonaws.com/WNV_NA_meta.json?versionId=S39COgoSfnyS2H8AiPw4ZGgzQuSObh6E",
+              "tree": "https://nextstrain-data.s3.amazonaws.com/WNV_NA_tree.json?versionId=MnxN.X6Svw.mWucLhCbqNLqOztY8ypM6"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

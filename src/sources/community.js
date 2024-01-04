@@ -60,11 +60,11 @@ export class CommunitySource extends Source {
     return `${this.repoName}@${branch}`;
   }
 
-  dataset(pathParts) {
-    return new CommunityDataset(this, pathParts);
+  dataset(pathParts, versionDescriptor) {
+    return new CommunityDataset(this, pathParts, versionDescriptor);
   }
-  narrative(pathParts) {
-    return new CommunityNarrative(this, pathParts);
+  narrative(pathParts, versionDescriptor) {
+    return new CommunityNarrative(this, pathParts, versionDescriptor);
   }
 
   async availableDatasets() {

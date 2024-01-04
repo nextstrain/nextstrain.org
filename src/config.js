@@ -450,3 +450,15 @@ export const GROUPS_DATA_FILE = fromEnvOrConfig("GROUPS_DATA_FILE", undefined, {
  * @default nextstrain-groups
  */
 export const GROUPS_BUCKET = fromEnvOrConfig("GROUPS_BUCKET", "nextstrain-groups");
+
+
+/**
+ * Location of the JSON file to be used as the resource collection index. Can be
+ * a S3 address or a local filepath, if S3 then the file must be gzipped.
+ *
+ * If sourced from the config file, relative paths are resolved relative to the
+ * repo root directory ("nextstrain.org").
+ *
+ * Falsey values result in the resource collection functionality not being used.
+ */
+export const RESOURCE_INDEX = fromEnvOrConfig("RESOURCE_INDEX", null);

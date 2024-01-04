@@ -31,4 +31,5 @@ nextstrain.org
     routing
     infrastructure
     terraform
+    resource-collection
     glossary
