@@ -128,8 +128,38 @@ async function updateResourceVersions() {
   resources = JSON.parse(fileContents);
 }
 
+/**
+ * XXX FIXME - class is a stub
+ */
+class ListResources {
+  constructor() {
+    // process query params here?
+  }
+  get data() {
+    /* Subset for dev purposes (prior to API working properly) to flu datasets, zika and rsv */
+    const datasets = Object.fromEntries(
+      Object.entries(resources.core.dataset).map(([name, data]) => {
+        if (['zika', 'flu', 'rsv'].includes(name.split('/')[0])) {
+          return [name, data.versions.map((v) => v.date)];
+        }
+        return undefined;
+      })
+      .filter((d) => {
+        /* This filtering should be applied upstream to the index creation script */
+        if (d && d[0].endsWith('/frequencies')) return undefined;
+        if (d && d[0].endsWith('/2019-09')) return undefined;
+        if (d && d[0].startsWith('zika/')) return undefined;
+        return d
+      })
+      .filter((el) => !!el)
+    )
+    return {datasets}
+  }
+}
+
+
 export {
   ResourceVersions,
-
+  ListResources,
   updateResourceVersions,
 }

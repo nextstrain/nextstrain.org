@@ -18,6 +18,7 @@ const {
   schemas,
   staging,
   staticSite,
+  listResources,
 } = routing;
 
 
@@ -173,6 +174,18 @@ openid.setup(app);
  *   /edit/narratives
  */
 auspice.setup(app);
+
+
+/* ListResources API
+*
+* TODO -- how should this really interact with the RESOURCE_INDEX env variable?
+* If not set, return 400 badrequest?
+*
+* This must come before Gastby / staticSite.setup()
+* as it's greedy so it'll sends 404
+*/
+listResources.setup(app);
+
 
 
 /* static-site (Gatsby).
