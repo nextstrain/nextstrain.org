@@ -6,6 +6,7 @@ import {
   HugeSpacer,
   FlexCenter,
 } from "../layouts/generalComponents";
+import ListResources from "../components/ListResources/index";
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
@@ -71,6 +72,7 @@ class Index extends React.Component {
   }
 
   render() {
+    console.log("Render cycle for <Pathogens>")
     return (
       <GenericPage location={this.props.location}>
         <splashStyles.H1>{title}</splashStyles.H1>
@@ -81,6 +83,10 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
+
+        <HugeSpacer/>
+        <ListResources/>
+        <HugeSpacer/>
 
         <HugeSpacer />
         <Cards squashed cards={pathogenCards}/>
