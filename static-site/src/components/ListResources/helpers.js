@@ -1,34 +1,113 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { sum } from "lodash";
+
+
+
+
+
+
+// const usePrevious = (value, initialValue) => {
+//   const ref = useRef(initialValue);
+//   useEffect(() => {
+//     ref.current = value;
+//   });
+//   return ref.current;
+// };
+
+// const useEffectDebugger = (effectHook, dependencies, dependencyNames = []) => {
+//   const previousDeps = usePrevious(dependencies, []);
+
+//   const changedDeps = dependencies.reduce((accum, dependency, index) => {
+//     if (dependency !== previousDeps[index]) {
+//       const keyName = dependencyNames[index] || index;
+//       return {
+//         ...accum,
+//         [keyName]: {
+//           before: previousDeps[index],
+//           after: dependency
+//         }
+//       };
+//     }
+
+//     return accum;
+//   }, {});
+
+//   if (Object.keys(changedDeps).length) {
+//     console.log('[use-effect-debugger] ', changedDeps);
+//   }
+
+//   useEffect(effectHook, [effectHook, ...dependencies]);
+// };
+
+
 
 /**
- * React hook which returns a sorted and filtered set of cards
+ * React hook which manipulates data about resources + versions and returns them in a
+ * form for display.
+ * 
+ * 
  * @param {string} method 
- * @param {[]} selectedFilterOptions 
- * @param {Card[]} cards CHANGED FIXME
- * @param {function} setOrderedData 
- * @returns {Card[]} same data structure as @param cards
+ * @param {string[]} selectedFilterOptions 
+ * @param {TKTK} originalData
+ * @param {function} setState 
+ * @returns {TKTK}
  */
-export const useSortAndFilter = (method, selectedFilterOptions, cards, setOrderedData) => {
+export const useSortAndFilterData = (sortMethod, selectedFilterOptions, originalData, setState) => {
   useEffect(() => {
-    if (!cards) return;
-    console.log(`Sorting by ${method} ` + (selectedFilterOptions.length ? `filtering to ${selectedFilterOptions.map((el) => el.value).join(", ")}` : '(no filtering)'))
+    if (!originalData) return;
+    console.log(`useSortAndFilterData:: sortMethod "${sortMethod}" ` + (selectedFilterOptions.length ? `filtering to ${selectedFilterOptions.map((el) => el.value).join(", ")}` : '(no filtering)'))
+    let data = JSON.parse(JSON.stringify(originalData.datasets)); // Data comes from a JSON API
 
-    let data = clone(cards)
-    data = filterCards(data, selectedFilterOptions);
+    data = _filterRawData(data, selectedFilterOptions);
 
-    // Certain calculations (e.g. number of datasets) must be calculated after any filtering
-    // (and similarly, the pruning of cards only makes sense after filtering)
-    calculateCounts(data)
-    data = pruneCards(data)    
-    backpropagateInformation(data)
+    // console.log("\tsorting not yet implemented TODO XXX")
 
-    sortCards(data, method)
+    /* data into 1-deep levels based on lastUpdated */
+    /* this could be a lot more efficient */
+    const lastUpdated = [...new Set(
+      Object.values(data).map((dates) => dates[0])
+    )].sort().reverse();
+    let dataByUpdated = lastUpdated.map(() => ({}));
+    Object.entries(data).forEach(([name, dates]) => {
+      const store = dataByUpdated[lastUpdated.indexOf(dates[0])];
+      const [groupName, ...nameParts] = name.split('/');
+      const info = {
+        name,
+        groupName,
+        nameParts,
+        lastUpdated: dates[0],
+        dates,
+        nVersions: dates.length,
+      };
+      if (!store[groupName]) store[groupName] = [];
+      store[groupName].push(info);
+    });
+    dataByUpdated = dataByUpdated
+      .map((obj) => Object.entries(obj))
+      .flat()
+      .map(([groupName, groupResources]) => {
+        const groupInfo = {
+          groupName,
+          lastUpdated: groupResources[0].lastUpdated, /* all resources in group are the same */
+          nResources: groupResources.length,
+          nVersions: sum(groupResources.map((r) => r.nVersions)),
+        }
+        /* sort the resources by their name, so (e.g.) flu/seasonal/h3n2/ha/*
+         are grouped together, then flu/seasonal/h3n2/ha/*, etc */
+        groupResources.sort((a, b) => a.name > b.name)
+        return [groupInfo, groupResources];
+      })
+    console.log(dataByUpdated)
 
-    setOrderedData(data);
+    
+    // dataByUpdated = [dataByUpdated[0]]
+    // dataByUpdated[0][1] = dataByUpdated[0][1].slice(-1)
 
-  }, [cards, method, selectedFilterOptions, setOrderedData])
+    setState(dataByUpdated);
 
-} 
+  }, [sortMethod, selectedFilterOptions, originalData, setState])
+}
+
 
 /**
  * React hook which scans the provided data (cards) and returns the
@@ -39,27 +118,44 @@ export const useSortAndFilter = (method, selectedFilterOptions, cards, setOrdere
  */
 export function useFilterOptions(data) {
   const [state, setState] = useState([]);
-  const counts = {};
+
   useEffect(() => {
     console.log("ListResources::useFilterOptions")
-    function _walk(card) {
-      // only count if it's a dataset (not an intermediate card) // TODO XXX revisit once hierarchy created
-      if (card.url) {
-        card.name.split('/').forEach((word) => {
-          if (counts[word]) counts[word]++
-          else counts[word]=1
-        })
-      }
-      card.children.forEach(_walk);
+
+    const counts = {};
+    const increment = (key) => {
+      if (!counts[key]) counts[key] = 0;
+      counts[key]++
     }
-    data.forEach(_walk)
-    const nCounts = Object.entries(counts).length;
+  
+
+    data.map(([_, resources]) => {
+      resources.forEach((resource) => {
+        increment(resource.groupName);
+        resource.nameParts.forEach(increment);
+      })
+    })
+
+
+    // function _walk(card) {
+    //   // only count if it's a dataset (not an intermediate card) // TODO XXX revisit once hierarchy created
+    //   if (card.url) {
+    //     card.name.split('/').forEach((word) => {
+    //       if (counts[word]) counts[word]++
+    //       else counts[word]=1
+    //     })
+    //   }
+    //   card.children.forEach(_walk);
+    // }
+    // data.forEach(_walk)
+    const nCounts = Object.keys(counts).length;
     const options = Object.entries(counts)
       .sort((a,b) => a[1]<b[1] ? 1 : -1)
       .filter(([_word, count]) => count!==nCounts) // filter out search options present in all datasets (not working, TODO XXX)
       .map(([word, count]) => {
         return {value: word, label: `${word} (${count})`}
       });
+
     setState(options);
   }, [data]);
   return state
@@ -236,6 +332,28 @@ function sortCards(data, method) {
     }
     data.forEach(_sort)
     data.sort(_sortFn);
+  }
+}
+
+
+
+function _filterRawData(data, selectedFilterOptions) {
+  if (selectedFilterOptions.length===0) return data;
+  const searchValues = selectedFilterOptions.map((o) => o.value);
+  return Object.fromEntries(
+    Object.entries(data).filter((el) => _include(el[0]))
+  )
+
+  /* filtering is via union (AND) of selectedFilterOptions */
+  function _include(name) {
+    // console.log("Comparing, ", c.name, c.children.length, _hasChildren(c))
+    return searchValues.map((searchString) => {
+      if (searchString.includes("/")) { // user-typed search // TODO XXX they won't always have '/'!!!
+        return name.includes(searchString)
+      } else {  
+        return name.split('/').includes(searchString)
+      }
+    }).every((x) => x);
   }
 }
 
