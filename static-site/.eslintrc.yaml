@@ -1,2 +1,28 @@
-# This empty ESLint configuration file disables Gatsby's default ESLint rules.
-# ESLint is configured at the top level of this repository.
+# Prevent parent configuration from being applied.
+root: true
+
+extends:
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+
+settings:
+  react:
+    version: "16"
+
+ignorePatterns:
+  - public/
+
+rules:
+  react/jsx-key: off
+  react/jsx-no-target-blank: off
+  react/no-unescaped-entities: off
+  react/no-unknown-property: off
+  react/prop-types: off
+  react-hooks/exhaustive-deps: off
+
+parserOptions:
+  sourceType: module
+  ecmaVersion: 2022
+
+env:
+  es6: true

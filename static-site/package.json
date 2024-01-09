@@ -12,6 +12,7 @@
     "test": "gatsby build",
     "build:pp": "gatsby build --prefix-paths",
     "clean": "rm -rf public",
+    "lint": "eslint --ext .js,.jsx .",
     "lint:md": "remark content/posts/",
     "heroku-postbuild": "gatsby build"
   },
@@ -64,6 +65,9 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "remark-cli": "^4.0.0",
     "remark-preset-lint-recommended": "^3.0.1"
   },
