@@ -208,7 +208,7 @@ class DatasetMap extends React.Component {
         key={dataset.coords.toString()}
       >
         <MapMarkerContainer>
-          <a href={dataset.url} data-tip data-for={dataset.url} dataset={dataset}>
+          <a href={dataset.url} data-tip data-for={dataset.url}>
             {isNextstrainDataset ? nextstrainDataset : communityDatasets[dataset.level]}
           </a>
         </MapMarkerContainer>
