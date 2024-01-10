@@ -13,7 +13,7 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
   useEffect(() => {
     const setCurrentLogo = async () => {
       const currentLogo = await getGroupLogo();
-      if (!cleanUp) setLogo({ ...logo, current: currentLogo });
+      if (!cleanUp) setLogo(l => ({ ...l, current: currentLogo }));
     }
 
     let cleanUp = false;
