@@ -6,6 +6,7 @@ export default class UserDataWrapper extends React.Component {
   state = {
     user: undefined,
     visibleGroups: undefined,
+    groupMemberships: undefined,
   }
 
   componentDidMount() {

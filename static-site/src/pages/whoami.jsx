@@ -6,18 +6,30 @@ import { Logos } from "../components/logos";
 import MainLayout from "../components/layout";
 
 const UserPage = () => {
-  const { user, visibleGroups } = useContext(UserContext);
+  const { user, groupMemberships } = useContext(UserContext);
 
   const LoggedIn = () => (
     <Fragment>
       You&apos;re logged in as <strong>{user.username}</strong>.
       <SubText>
-        You have access to the following private Nextstrain groups, which each
+        You are a member of the following Nextstrain groups, which each
         contain a collection of datasets and/or narratives:
       </SubText>
 
+      Public:
+
       <UserGroupsList>
-        {visibleGroups.filter((group) => group.private).map((group) => (
+        {groupMemberships.filter((group) => group.isPublic).map((group) => (
+          <li key={group.name}>
+            <a href={`/groups/${group.name}`}>{group.name}</a>
+          </li>
+        ))}
+      </UserGroupsList>
+
+      Private:
+
+      <UserGroupsList>
+        {groupMemberships.filter((group) => !group.isPublic).map((group) => (
           <li key={group.name}>
             <a href={`/groups/${group.name}`}>{group.name}</a>
           </li>
