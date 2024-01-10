@@ -1,8 +1,5 @@
-import React, { Fragment, useContext } from "react";
-import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
-import * as Styles from "./styles";
+import React, { useContext } from "react";
 import Cards from "../Cards";
-import { HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import { theme } from "../../layouts/theme";
 import { UserContext } from "../../layouts/userDataWrapper";
 
@@ -27,30 +24,3 @@ export const GroupCards = ({squashed}) => {
     <Cards cards={createGroupCards(visibleGroups || [])} squashed={squashed}/>
   );
 };
-
-const UserGroups = () => {
-  // Right now this component is only used when we know we have a user
-  const { user } = useContext(UserContext);
-  return (
-    <Fragment>
-      <ScrollableAnchor id={'groups'}>
-        <Styles.H1>Nextstrain Groups</Styles.H1>
-      </ScrollableAnchor>
-
-      <FlexCenter>
-        <Styles.CenteredFocusParagraph>
-          Nextstrain groups represent collections of datasets, potentially with controlled access.
-          You (
-          <Styles.StrongerText>{user.username}</Styles.StrongerText>
-          ) have access to the following groups (a padlock icon indicates a private group):
-        </Styles.CenteredFocusParagraph>
-      </FlexCenter>
-
-      <GroupCards squashed/>
-
-      <HugeSpacer/>
-    </Fragment>
-  );
-};
-
-export default UserGroups;
