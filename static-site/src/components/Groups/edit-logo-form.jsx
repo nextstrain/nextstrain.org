@@ -19,6 +19,14 @@ const EditLogoForm = ({ groupName, createErrorMessage, clearErrorMessage }) => {
     let cleanUp = false;
     setCurrentLogo();
     return () => cleanUp = true;
+
+  /* This goes against the rule of hooks since it does not handle prop updates.
+   * However, with local testing, I couldn't find a scenario that results in
+   * prop updates after initial load. Keep this in mind when making changes to
+   * this component or its usages.
+   *   -victorlin, 11 Jan 2024
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getGroupLogo = async () => {
