@@ -18,7 +18,7 @@ const UserPage = () => {
 
       <UserGroupsList>
         {visibleGroups.filter((group) => group.private).map((group) => (
-          <li>
+          <li key={group.name}>
             <a href={`/groups/${group.name}`}>{group.name}</a>
           </li>
         ))}
