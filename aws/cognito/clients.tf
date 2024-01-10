@@ -97,7 +97,7 @@ resource "aws_cognito_user_pool_client" "nextstrain-cli" {
   # Token lifetimes dictate background refresh (and re-login) rates for the CLI.
   id_token_validity      = 60
   access_token_validity  = 60
-  refresh_token_validity = 30
+  refresh_token_validity = 90
   token_validity_units {
     access_token  = "minutes"
     id_token      = "minutes"
