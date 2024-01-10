@@ -67,10 +67,10 @@ class Index extends React.Component {
     // Set up a banner or update the existing one if the repo doesn't exist
     if (this.state.repoNotFound) {
       const notFound = (<>
-        The GitHub repository <a href={`https://github.com/${userName}/${repoName}`}>{userName}/{repoName}</a> doesn't exist (or is private), or there was an error getting data for that repository.
+        The GitHub repository <a href={`https://github.com/${userName}/${repoName}`}>{userName}/{repoName}</a> {"doesn't"} exist (or is private), or there was an error getting data for that repository.
       </>);
       const description = (<>
-        <p>If you're setting up your own Community on GitHub repository, see <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">our documentation</a>.</p>
+        <p>If {"you're"} setting up your own Community on GitHub repository, see <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">our documentation</a>.</p>
         <p>For a list of featured Nextstrain Community datasets, check out the <a href="/community">Community page</a>.</p>
       </>);
       if (!bannerTitle) {
