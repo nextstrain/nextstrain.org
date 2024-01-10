@@ -13,7 +13,7 @@ ignorePatterns:
   - public/
 
 rules:
-  react/prop-types: off
+  react/prop-types: off # Remove this override once all props have been typed using PropTypes or TypeScript.
 
 parserOptions:
   sourceType: module
