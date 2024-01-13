@@ -12,7 +12,7 @@
     "test": "gatsby build",
     "build:pp": "gatsby build --prefix-paths",
     "clean": "rm -rf public",
-    "lint": "eslint --ext .js,.jsx .",
+    "lint": "DEBUG=eslint:cli-engine eslint --ext .js,.jsx .",
     "lint:md": "remark content/posts/",
     "heroku-postbuild": "gatsby build"
   },
