@@ -71,7 +71,7 @@ const Blurb = styled.div`
   text-align: left;
 `
 
-const Comma = ({}) => (
+const Comma = () => (
   <span style={{marginLeft: "2px", marginRight: "2px"}}>
     ,
   </span>
