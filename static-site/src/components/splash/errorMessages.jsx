@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'gatsby';
 import * as splashStyles from "./styles";
 import { ErrorBannerInitialMessage, DataFetchError } from '../../../data/SiteConfig';
 

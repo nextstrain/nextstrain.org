@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Collapsible from "react-collapsible";
+import React from "react";
 import styled from "styled-components";
 import {
   SmallSpacer,
