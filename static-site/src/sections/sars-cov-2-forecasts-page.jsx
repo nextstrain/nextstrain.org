@@ -48,8 +48,6 @@ const acknowledgement = (
 )
 
 function Index(props) {
-  const [ cladeType, setCladeType ] = useState("nextstrainClades");
-
   return (
     <GenericPage location={props.location}>
       <splashStyles.H1>{title}</splashStyles.H1>
