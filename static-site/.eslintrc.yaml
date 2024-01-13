@@ -2,6 +2,7 @@
 root: true
 
 extends:
+  - eslint:recommended
   - plugin:react/recommended
   - plugin:react-hooks/recommended
 
@@ -13,6 +14,9 @@ ignorePatterns:
   - public/
 
 rules:
+  no-case-declarations: off
+  no-empty-pattern: off
+  no-unused-vars: off
   react/prop-types: off # Remove this override once all props have been typed using PropTypes or TypeScript.
 
 parserOptions:
@@ -20,4 +24,6 @@ parserOptions:
   ecmaVersion: 2022
 
 env:
+  browser: true
   es6: true
+  node: true
