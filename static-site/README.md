@@ -36,6 +36,16 @@ npm run build
 npm run serve
 ```
 
+### Troubleshooting installation on MacOS
+
+**sharp build failures**
+
+Building `sharp` from source requires `vips` and `pkg-config`, which may be
+installed via homebrew (`brew install vips pkg-config`). See [this
+issue](https://github.com/nextstrain/nextstrain.org/issues/597) for more.
+
+
+
 ### Troubleshooting on Linux
 If `npm install` fails and you are getting an error about the Gatsby `sharp` plugin dependency, it could be related to the [Node support for sharp issue reported here](https://github.com/lovell/sharp/issues/1668). We have found the best results with version 10 of Node -- run `node -v` to check which version you have. Please see [the readme in the parent directory](../README.md#build-nextstrainorg-locally) for our recommended way to install these dependencies. (If you're using `nvm` to manage node installations, you can try running `nvm install 10`).
 After this, `node -v` should display `v10.*`.
