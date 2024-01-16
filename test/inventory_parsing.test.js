@@ -3,6 +3,7 @@
  */
 
 import { parseInventory } from '../resourceIndexer/inventory.js';
+import { remapCoreUrl } from '../resourceIndexer/coreUrlRemapping.js';
 
 /**
  * Following is all the versions for s3://nextstrain-data/zika_meta.json as of
@@ -48,6 +49,26 @@ test('back-to-back delete markers', async () => {
   const shuffled = await parseInventory({objects: shuffle(test_data), versionsExist: true})
     expect(shuffled.map((el) => el.versionId))
       .toEqual(should_be.map((el) => el.VersionId))   
+})
+
+/**
+ * Core URL remapping involves the (committed) `manifest_core.json` and our
+ * parsing of that file in the server code
+ * `convertManifestJsonToAvailableDatasetList`, as well as some resource indexer
+ * specific code. Adding some simple sanity tests here guards against
+ * inadvertent changes.
+ */
+test('core URL redirects (via our manifest) are correctly obtained', async () => {
+  const expected_url_redirects = {
+    'dengue/denv1': 'dengue/denv1/genome',
+    WNV: 'WNV/NA',
+    'flu/seasonal': 'flu/seasonal/h3n2/ha/2y',
+    'flu/seasonal/h3n2': 'flu/seasonal/h3n2/ha/2y',
+    'flu/seasonal/h3n2/ha': 'flu/seasonal/h3n2/ha/2y',
+  }
+  Object.entries(expected_url_redirects).forEach(([from, to]) => {
+    expect(remapCoreUrl(from)).toEqual(to);
+  })
 })
 
 

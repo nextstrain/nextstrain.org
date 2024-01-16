@@ -1,6 +1,7 @@
 import { SOURCE, VALID_AUSPICE_PATTERNS, INVALID_AUSPICE_PATTERNS,
   DATESTAMP_REGEX, SIDECAR_TYPES } from './constants.js';
 import { collectInventory } from './inventory.js';
+import { remapCoreUrl } from "./coreUrlRemapping.js";
 
 /**
  * The inventory of buckets (especially the core bucket) is in some ways a
@@ -75,15 +76,12 @@ function categoriseCoreObjects(item, staging) {
   item.subresourceType = auspiceFileInfo.subresourceType;
   
   /**
-   * Currently the resourcePath is based completely off the key name,
-   * paralleling how the nextstrain.org URLs of datasets are mapped to resource
-   * paths and then to S3 keys. In the future we may change this in order to
-   * group together files with different s3 key names but which we want to
-   * associate with the same nextstrain.org URL. For example, we may which to
-   * combine the auspice datasets behind `ncov/gisaid/africa` and
-   * `ncov/gisaid/africa/all-time`.
+   * We remap the expected URls (created from the S3 key name) using the same
+   * underlying data that the server uses to redirect certain URLs. This allows
+   * "new" URLs (i.e. where the client gets redirected to) to contain the entire
+   * history of the resource
    */
-  item.resourcePath = auspiceFileInfo.urlPath;
+  item.resourcePath = remapCoreUrl(auspiceFileInfo.urlPath);
 
   return item;
 }
