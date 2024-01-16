@@ -144,7 +144,6 @@ export class Resource {
     this.source = source;
     this.pathParts = pathParts;
     this.versionDescriptor = versionDescriptor;
-    [this.versionDate, this.versionUrls] = this.versionInfo(versionDescriptor);
 
     // Require baseParts, otherwise we have no actual dataset/narrative path.
     // This inspects baseParts because some of the pathParts (above) may not
@@ -241,12 +240,15 @@ export class Subresource {
      * Note that the URL is not signed, and changes will be required to support
      * this as needed.
      */
-    if (this.resource.versionUrls) {
+
+    const versionUrls = this.resource.versionInfo(this.resource.versionDescriptor)[1];
+
+    if (versionUrls) {
       if (!['HEAD', 'GET'].includes(method)) {
         throw new InternalServerError(`Only the GET and HEAD methods are available for previous resource versions`);
       }
-      if (this.resource.versionUrls[this.type]) {
-        return this.resource.versionUrls[this.type];
+      if (versionUrls[this.type]) {
+        return versionUrls[this.type];
       }
       throw new NotFound(`This version of the resource does not have a subresource for ${this.type}`);
     }
