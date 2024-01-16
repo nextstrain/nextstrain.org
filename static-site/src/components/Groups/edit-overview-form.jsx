@@ -28,6 +28,14 @@ const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) 
     let cleanUp = false;
     setCurrentOverview();
     return () => cleanUp = true;
+
+  /* This goes against the rule of hooks since it does not handle prop updates.
+   * However, with local testing, I couldn't find a scenario that results in
+   * prop updates after initial load. Keep this in mind when making changes to
+   * this component or its usages.
+   *   -victorlin, 11 Jan 2024
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getOverview = async () => {
@@ -90,7 +98,7 @@ const EditOverviewForm = ({ groupName, createErrorMessage, clearErrorMessage }) 
       <label htmlFor="edit-group-overview">
         <splashStyles.H4>Overview</splashStyles.H4>
         <splashStyles.CenteredFocusParagraph style={{ margin: 5 }}>
-          See <a href="https://docs.nextstrain.org/page/guides/share/groups/customize.html" target="_blank">Group customization docs</a>{' '}
+          See <a href="https://docs.nextstrain.org/page/guides/share/groups/customize.html" target="_blank" rel="noreferrer noopener">Group customization docs</a>{' '}
           for details on how to format your overview.
         </splashStyles.CenteredFocusParagraph>
       </label>

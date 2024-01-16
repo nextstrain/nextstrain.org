@@ -42,7 +42,7 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
     <GenericPage location={location}>
       <FlexGridRight>
         <splashStyles.Button to={uri`/groups/${groupName}`}>
-          Return to "{groupName}" Page
+          Return to {`"${groupName}"`} Page
         </splashStyles.Button>
       </FlexGridRight>
       <MediumSpacer/>
@@ -50,7 +50,7 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
       {errorMessage && <ErrorBanner title={errorMessage.title} contents={errorMessage.contents} />}
 
       <splashStyles.H2>
-        Editing "{groupName}" Group Settings
+        Editing {`"${groupName}"`} Group Settings
       </splashStyles.H2>
       <HugeSpacer/>
 

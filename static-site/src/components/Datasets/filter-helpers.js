@@ -38,7 +38,7 @@ export function computeFilterValues(currentFilters, availableFilterValues, mode,
       }
       break;
     case "remove": // fallthrough
-    case "inactivate":
+    case "inactivate": {
       if (currentlyFilteredTraits.indexOf(trait) === -1) {
         console.error(`trying to ${mode} values from an un-initialised filter!`);
         return false;
@@ -58,6 +58,7 @@ export function computeFilterValues(currentFilters, availableFilterValues, mode,
         }
       }
       break;
+    }
     default:
       console.error(`computeFilterValues called with invalid mode: ${mode}`);
       return false; // don't set state

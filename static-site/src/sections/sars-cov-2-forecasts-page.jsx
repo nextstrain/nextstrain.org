@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Collapsible from "react-collapsible";
+import React from "react";
 import styled from "styled-components";
 import {
   SmallSpacer,
@@ -48,8 +47,6 @@ const acknowledgement = (
 )
 
 function Index(props) {
-  const [ cladeType, setCladeType ] = useState("nextstrainClades");
-
   return (
     <GenericPage location={props.location}>
       <splashStyles.H1>{title}</splashStyles.H1>
