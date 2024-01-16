@@ -269,10 +269,11 @@ function validIntermediate(id, date, objects) {
 
 export const coreS3Data = {
   name: 'core',
-  async collect({local}) {
+  async collect({local, save}) {
     return await collectInventory({
       name: this.name,
       local,
+      save,
       inventoryBucket: "nextstrain-inventories",
       inventoryPrefix: "nextstrain-data/config-v1/"
     })
