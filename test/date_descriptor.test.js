@@ -10,7 +10,7 @@
 /**
  * Example dev use:
  * run the server in a separate process via:
- * RESOURCE_INDEX="./devData/index.json" node server.js --verbose
+ * RESOURCE_INDEX="./test/date_descriptor_index.json" node server.js --verbose
  * Then run this test file via:
  * NODE_OPTIONS='--experimental-vm-modules' npx jest test/date_descriptor.test.js
  */
