@@ -238,6 +238,12 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
 
   res.set(copyHeaders(upstreamRes.headers, forwardedUpstreamResHeaders));
 
+  /* Allow private (e.g. browser) caches to store this response, but require
+   * them to revalidate it every time before use.  They'll make conditional
+   * requests which we can respond to quickly from our own server-side cache.
+   */
+  res.set("Cache-Control", "private, no-cache");
+
   /* Check if the request conditions (e.g. If-None-Match) are satisfied (e.g.
    * against our response ETag) and short-circuit with a 304 if we can!
    */
