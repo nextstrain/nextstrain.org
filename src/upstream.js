@@ -92,20 +92,20 @@ export async function proxyToUpstream(req, res, upstreamUrlExtractor, contentTyp
     ...copyHeaders(req, ["Content-Encoding", "Content-Length"]),
 
     /* XXX TODO: Consider setting Cache-Control rather than relying on
-      * ambiguous defaults.  Potentially impacts:
-      *
-      *   - Our own fetch() caching, including in sendSubresource() above
-      *   - Our Charon endpoints, if upstream headers are sent to the browser?
-      *   - CloudFront caching (not sure about its default behaviour)
-      *   - Browsers, if fetched directly, such as by redirection
-      *
-      * I think a cautious initial value would be to set "private" or "public"
-      * depending on the Source and then always set "must-revalidate,
-      * proxy-revalidate, max-age=0".  This would allow caches (ours,
-      * browsers, CloudFront?) to store the data but always check upstream
-      * with conditional requests.
-      *   -trs, 7 Dec 2021
-      */
+     * ambiguous defaults.  Potentially impacts:
+     *
+     *   - Our own fetch() caching, including in sendSubresource() above
+     *   - Our Charon endpoints, if upstream headers are sent to the browser?
+     *   - CloudFront caching (not sure about its default behaviour)
+     *   - Browsers, if fetched directly, such as by redirection
+     *
+     * I think a cautious initial value would be to set "private" or "public"
+     * depending on the Source and then always set "must-revalidate,
+     * proxy-revalidate, max-age=0".  This would allow caches (ours,
+     * browsers, CloudFront?) to store the data but always check upstream
+     * with conditional requests.
+     *   -trs, 7 Dec 2021
+     */
   };
 
   // Body of the request as a Node stream
@@ -123,32 +123,32 @@ export async function proxyToUpstream(req, res, upstreamUrlExtractor, contentTyp
   }
 
   /* Our upstreams for PUTs are all S3, and S3 requires a Content-Length
-    * header (i.e. doesn't accept streaming PUTs).  If we don't have a
-    * Content-Length from the request (i.e. the request is a streaming PUT or
-    * we're doing on-the-fly compression), then we have to buffer the entire
-    * body into memory so we can calculate length for S3.  When passed a
-    * buffer instead of a stream, fetch() will calculate Content-Length for us
-    * before sending the request.
-    *
-    * An alternative to buffering the whole body is to use S3's multipart
-    * upload API, but the minimum part size is 5MB so some buffering would be
-    * required anyway.  Multipart uploads would add inherent complexity at
-    * runtime and also design time, as we'd have to rework our data model.
-    *
-    * In a review of all the (compressed) core and group datasets (nearly
-    * 11k), over 99% are less than 5MB and none are more than 15MB.  Given
-    * that we'd only be able to use multipart uploads for less than 1% of
-    * datasets and even the largest datasets would fit comfortably in memory,
-    * it doesn't seem worth implementing.
-    *
-    * Allow buffering up to 20MB of data after gzip compression (guaranteed by
-    * Content-Encoding handling above).  Requests that exceed this will get a
-    * 413 error (thrown by readStream()), and if this becomes an issue we can
-    * consider bumping the limit.  Clients also have the option of
-    * pre-compressing the data and including a Content-Length themselves so we
-    * don't have to buffer it, in which case we don't limit request sizes.
-    *   -trs, 21 Jan 2022
-    */
+   * header (i.e. doesn't accept streaming PUTs).  If we don't have a
+   * Content-Length from the request (i.e. the request is a streaming PUT or
+   * we're doing on-the-fly compression), then we have to buffer the entire
+   * body into memory so we can calculate length for S3.  When passed a
+   * buffer instead of a stream, fetch() will calculate Content-Length for us
+   * before sending the request.
+   *
+   * An alternative to buffering the whole body is to use S3's multipart
+   * upload API, but the minimum part size is 5MB so some buffering would be
+   * required anyway.  Multipart uploads would add inherent complexity at
+   * runtime and also design time, as we'd have to rework our data model.
+   *
+   * In a review of all the (compressed) core and group datasets (nearly
+   * 11k), over 99% are less than 5MB and none are more than 15MB.  Given
+   * that we'd only be able to use multipart uploads for less than 1% of
+   * datasets and even the largest datasets would fit comfortably in memory,
+   * it doesn't seem worth implementing.
+   *
+   * Allow buffering up to 20MB of data after gzip compression (guaranteed by
+   * Content-Encoding handling above).  Requests that exceed this will get a
+   * 413 error (thrown by readStream()), and if this becomes an issue we can
+   * consider bumping the limit.  Clients also have the option of
+   * pre-compressing the data and including a Content-Length themselves so we
+   * don't have to buffer it, in which case we don't limit request sizes.
+   *   -trs, 21 Jan 2022
+   */
   if (!headers["Content-Length"]) {
     body = await readStream(body, { limit: 20_000_000 /* 20MB */ });
   }
