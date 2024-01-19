@@ -230,5 +230,9 @@
   {
     "name": "Mycobacterium-NZ",
     "isPublic": false
+  },
+  {
+    "name": "LANL-HIV-DB",
+    "isPublic": true
   }
 ]
