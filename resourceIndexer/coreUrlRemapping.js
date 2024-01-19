@@ -25,6 +25,7 @@ export const remapCoreUrl = (urlPath) => {
     resolvedPath = resolveAll(
       convertManifestJsonToAvailableDatasetList(serverManifest).defaults
     )
+    console.log(resolvedPath)
   }
   return resolvedPath[urlPath] || urlPath;
 }

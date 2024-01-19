@@ -68,6 +68,8 @@ function categoriseCoreObjects(item, staging) {
   // Some filenames have a double underscore (presumably by mistake)
   if (key.includes('__')) return false;
 
+  if (key === 'ncov_gisaid.json') return false; // TODO XXX
+
   // We don't have narratives on the core/staging buckets, so all that's left is
   // to check if the key looks like a valid auspice file
   const auspiceFileInfo = auspiceFile(key);

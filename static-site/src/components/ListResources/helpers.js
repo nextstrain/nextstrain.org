@@ -57,7 +57,7 @@ export const useSortAndFilterData = (sortMethod, selectedFilterOptions, original
     if (!originalData) return;
     console.log(`useSortAndFilterData:: sortMethod "${sortMethod}" ` + (selectedFilterOptions.length ? `filtering to ${selectedFilterOptions.map((el) => el.value).join(", ")}` : '(no filtering)'))
     let data = JSON.parse(JSON.stringify(originalData.datasets)); // Data comes from a JSON API
-
+    console.log("original data", originalData)
     data = _filterRawData(data, selectedFilterOptions);
 
     // console.log("\tsorting not yet implemented TODO XXX")
@@ -116,25 +116,24 @@ export const useSortAndFilterData = (sortMethod, selectedFilterOptions, original
  * filtered by "flu", then the updated set of available filtering
  * options should only consider keywords in flu-like datasets.
  */
-export function useFilterOptions(data) {
+export function useFilterOptions(resourceGroups) {
   const [state, setState] = useState([]);
 
   useEffect(() => {
-    console.log("ListResources::useFilterOptions")
+    console.log("ListResources::useFilterOptions::useEffect")
 
     const counts = {};
     const increment = (key) => {
       if (!counts[key]) counts[key] = 0;
       counts[key]++
     }
-  
 
-    data.map(([_, resources]) => {
-      resources.forEach((resource) => {
+    for (const [_, resources] of resourceGroups) {
+      for (const resource of resources) {
         increment(resource.groupName);
         resource.nameParts.forEach(increment);
-      })
-    })
+      }
+    }
 
 
     // function _walk(card) {
@@ -157,7 +156,7 @@ export function useFilterOptions(data) {
       });
 
     setState(options);
-  }, [data]);
+  }, [resourceGroups]);
   return state
 }
 

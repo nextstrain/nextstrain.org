@@ -139,7 +139,7 @@ class ListResources {
     /* Subset for dev purposes (prior to API working properly) to flu datasets, zika and rsv */
     const datasets = Object.fromEntries(
       Object.entries(resources.core.dataset).map(([name, data]) => {
-        if (['zika', 'flu', 'rsv'].includes(name.split('/')[0])) {
+        if (['zika', 'flu', 'rsv', 'dengue'].includes(name.split('/')[0])) {
           return [name, data.versions.map((v) => v.date)];
         }
         return undefined;

@@ -1,25 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 /* Default import for react-tooltip v5 is ES modules, but webpack baulks at that.
 Using the available common JS build instead to avoid having to debug Gatsby, which
 isn't a nice experience and which we plan to replace shortly  */
 import {Tooltip} from 'react-tooltip-v5/dist/react-tooltip.cjs';
 import 'react-tooltip-v5/dist/react-tooltip.css';
 // import "./cards.css";
-import { ResourceGroup } from './ResourceGroup.jsx';
-import { useSortAndFilterData, useFilterOptions, cardHierarchy } from './helpers';
+import { useSortAndFilterData, useFilterOptions } from './helpers';
 import CreatableSelect from 'react-select/creatable';
 import {Spinner} from './spinner';
+import { ResourceListing } from "./ResourceListing";
+import {Showcase} from "./Showcase";
+import { ResourceModal } from "./ResourceModal";
+import { DateUpdatedSelector } from "./DateUpdatedSelector";
 
 function ListResources({apiQuery, dataType}) {
   console.log("<ListResources>")
   const originalData = useDataFetch(apiQuery, dataType);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState([]);
   const [sortMethod, changeSortMethod] = useState("lastUpdated");
-  const [data, setData] = useState([]);
-  useSortAndFilterData(sortMethod, selectedFilterOptions, originalData, setData)
-  // const availableFilterOptions = useFilterOptions(data);
+  const [resourceGroups, setResourceGroups] = useState([]);
+  const [modalResourceData, setModalResourceData ] = useState(null);
+  const dismissModal = useCallback(() => setModalResourceData(null), [])
+  useSortAndFilterData(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
+  const availableFilterOptions = useFilterOptions(resourceGroups);
 
-  if (!data?.length) {
+  console.log("ListResources::modalResourceData", modalResourceData)
+
+  /* TODO - add setModalResourceData to context? lots of prop drilling at the moment */
+
+  const showcaseData = useMemo(() => [{'name': 'A'}, {'name': 'B'}, {'name': 'C'}], []); // SUpplied as a prop + then decorated here
+
+  if (!resourceGroups?.length) {
     return (
       <div className="cardsV2">
         <div id="cardsContainer">
@@ -30,18 +41,23 @@ function ListResources({apiQuery, dataType}) {
   }
 
   return (
-    <div className="cardsV2">
-      <div id="cardsContainer">
+    <div className="cardsV2"> {/* TODO change classname */}
+      <div id="cardsContainer"> {/* TODO change id / remove */}
 
-        {/* <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/> */}
-        {/* <Filter options={availableFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/> */}
+        <Showcase data={showcaseData}/>
 
-        <div style={{paddingTop: '50px'}}>
-          {data.map((group) => (
-            <ResourceGroup data={group} key={`${group.name}_${group[0].lastUpdated}`}/>
-          ))}
-        </div>
+        <Filter options={availableFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
+
+        <DateUpdatedSelector/>
+
+        <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
+
+        <ResourceListing data={resourceGroups} setModal={setModalResourceData} />
+
         <Tooltip id="iconTooltip" />
+
+        <ResourceModal data={modalResourceData} dismissModal={dismissModal}/>
+
       </div>
     </div>
   )

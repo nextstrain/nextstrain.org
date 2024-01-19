@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { MdCached, MdOutlineShare } from "react-icons/md";
-import { BeadPlot } from "./BeadPlot.jsx";
+import {Hover} from "./Hover.jsx";
 
 const nextstrainSidebarBackgroundColor = `rgb(242, 242, 242)`;
 const nextstrainSidebarBorderColor = `rgb(204, 204, 204)`;
@@ -21,12 +21,14 @@ const ResourceGroupContainer = styled.div`
  * TODO - flexbox or grid? Probably want grid-like aesthetics.
  */
 const ResourceTilesContainer = styled.div`
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   column-gap: 5px;
   row-gap: 5px;
-  width: 100%;
+  width: 100%; */
+
+
 `
 
 /**
@@ -77,19 +79,19 @@ const ResourceTileContainer = styled.div`
   /* background-color: aquamarine; */
   background-color: white;
   border: 2px solid black;
-  min-width: max(250px, 24%);
-  max-width: max(250px, 49%);
+  min-width: max(250px, 20%);
+  max-width: max(250px, 40%);
 
-
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
-  align-items: flex-start;
+  align-items: flex-start; */
   color: #4F4B50;
 `
 
 const ResourceTileUpperSection = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -99,7 +101,14 @@ const ResourceTileUpperSection = styled.div`
 `
 
 
-const ResourceTile = ({data}) => {
+const ResourceTile = ({data, setModal}) => {
+
+  /**
+   * I wanted to use a library to manage on-hover tooltips but couldn't find a satisfactory one.
+   * Requirements: component as tooltip + only render the component when hovered
+   */
+  const [hovered, setHovered] = useState(false);
+  console.log("ResourceTile", data)
 
   return (
     <ResourceTileContainer>
@@ -109,12 +118,21 @@ const ResourceTile = ({data}) => {
           description="Total number of available versions"
           Icon={MdCached}
           text={data.nVersions}
+          handleClick={() => setModal(data)}
         />
-        <Name name={data.name}/>
+        <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)}>
+          <Name name={data.name} hovered={hovered} />
+        </div>
+
+        { hovered && (
+          <Hover dates={data.dates}/>
+        )}
+
       </ResourceTileUpperSection>
 
       {/* <span style={{flexGrow: 100}}/> */}
-      <BeadPlot versions={data.dates} xPx={200}/>
+      {/* <BeadPlot versions={data.dates} xPx={200}/> */}
+      {/* <SparkLine versions={data.dates}/> */}
 
     </ResourceTileContainer>
   )
@@ -125,17 +143,22 @@ const ResourceTile = ({data}) => {
  * TKTK
  * @param {Object} props React props
  * @param {[groupInfo, groupMembers]} props.data
+ * @param {function} props.setModal
  * @returns 
  */
-export const ResourceGroup = ({data}) => {
+export const ResourceGroup = ({data, setModal}) => {
   const [groupInfo, groupMembers] = data;
+
+  console.log("ResourceGroup", "groupInfo", groupInfo, "groupMembers", groupMembers)
+
+
   return (
     <ResourceGroupContainer>
       <ResourceGroupHeader data={groupInfo}/>
       <ResourceTilesContainer>
         {/* what to do when there's only one tile in a group? */}
         {groupMembers.map((d) => (
-          <ResourceTile data={d} key={d.name}/>
+          <ResourceTile data={d} setModal={setModal} key={d.name}/>
         ))}
       </ResourceTilesContainer>
     </ResourceGroupContainer>
@@ -154,17 +177,15 @@ function NextstrainLogo(name) {
 /**
  * <Name> is the element for a collection's title. It may or may not be a link.
  */
-function Name({name}) {
+function Name({name, hovered}) {
   const prettyName = name.replace(/\//g, "│"); // ASCII 179
   const href = `/${name}`
   return (
-    <a href={href} target="_blank" rel="noreferrer"
-      data-tooltip-id="iconTooltip" data-tooltip-place="top"
-      data-tooltip-content={"Click to view the (current / latest) dataset"}
-      style={{ fontSize: '1.8rem', fontWeight: '300'}}
-    >
-      {prettyName}
-    </a>
+      <a href={href} target="_blank" rel="noreferrer"
+        style={{ fontSize: '1.8rem', fontWeight: hovered ? '500' : '300'}} /* use CSS selector instead? */
+      >
+        {prettyName}
+      </a>
   )
 }
 
