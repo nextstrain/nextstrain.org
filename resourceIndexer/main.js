@@ -52,6 +52,8 @@ function parseArgs() {
     help: "Only fetch data from a subset of collections. Source names are those defined in COLLECTIONS"});
   argparser.addArgument("--resourceTypes", {metavar: "<name>", type: "string", nargs: '+', choices: ['dataset', 'intermediate'],
     help: "Only index data matching specified resource types"});
+  argparser.addArgument("--save-inventories", {action: 'storeTrue',
+    help: "Save the fetched inventories + manifest files to ./devData so that future invocations can use --local"});
   argparser.addArgument("--output", {metavar: "<json>", required: true})
   argparser.addArgument("--indent", {action: 'storeTrue', help: 'Indent the output JSON'})
   argparser.addArgument("--gzip", {action: 'storeTrue', help: 'GZip the output JSON'})
@@ -76,6 +78,9 @@ async function main(args) {
   if (args.verbose) {
     logger.transports.forEach((t) => t.level = 'verbose');
   }
+  if (args.local && args.save_inventories) {
+    throw new ResourceIndexerError('Arguments --local and --save-inventories cannot be used together.')
+  }
 
   const resources = {};
   const restrictResourceTypes = args.resourceTypes ? new Set(args.resourceTypes) : false;
@@ -85,7 +90,7 @@ async function main(args) {
       continue
     }
 
-    const groupedObjects = (await collection.collect({local: args.local}))
+    const groupedObjects = (await collection.collect({local: args.local, save: args.save_inventories}))
       .map(collection.categorise)
       .filter((item) => !!item)
       .filter((item) => restrictResourceTypes ? restrictResourceTypes.has(item.resourceType) : true)

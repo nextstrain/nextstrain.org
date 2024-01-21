@@ -1,6 +1,7 @@
 import * as fs from 'node:fs/promises';
 import neatCsv from 'neat-csv';
 import zlib from 'zlib';
+import {writeFileSync} from 'fs';
 import { promisify } from 'util';
 import AWS from 'aws-sdk';
 import {logger} from './logger.js';
@@ -23,7 +24,7 @@ const gunzip = promisify(zlib.gunzip)
  * - inventory: object[]      list of entries in the inventory, using the schema to define keys
  * - versionsExist: boolean   are key versions present within the bucket?
  */
-const fetchInventoryRemote = async ({bucket, prefix, name}) => {
+const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
   const S3 = new AWS.S3();
   const _prefix = escapeStringRegexp(prefix.replace(/\/*$/, "/"));
   const manifestKeyPattern = new RegExp(`^${_prefix}\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}Z/manifest\\.json$`);
@@ -41,18 +42,29 @@ const fetchInventoryRemote = async ({bucket, prefix, name}) => {
   });
   logger.info(`inventory for ${name} - manifest key: ${manifestKey}`)
 
-  const {schema, inventoryKey, versionsExist} = await S3.getObject({Bucket: bucket, Key: manifestKey})
+  const manifest = await S3.getObject({Bucket: bucket, Key: manifestKey})
     .promise()
-    .then((response) => _parseManifest(JSON.parse(response.Body.toString('utf-8'))));
+    .then((response) => JSON.parse(response.Body.toString('utf-8')));
+  const {schema, inventoryKey, versionsExist} = _parseManifest(manifest);
 
   logger.info(`inventory for ${name} - parsed manifest JSON`)
 
-  const inventory = await S3.getObject({Bucket: bucket, Key: inventoryKey})
+  const inventoryGzipped = await S3.getObject({Bucket: bucket, Key: inventoryKey})
     .promise()
-    .then((response) => gunzip(response.Body))
+    .then((response) => response.Body)
+
+  const inventory = await gunzip(inventoryGzipped)
     .then((data) => neatCsv(data, schema));
 
   logger.info(`inventory for ${name} - fetched ${inventory.length} rows`)
+
+  if (save) {
+    const fnames = _localPaths(name);
+    logger.info(`Saving data to ${fnames.manifest} and ${fnames.inventory}`);
+    writeFileSync(fnames.manifest, JSON.stringify(manifest, null, 2));
+    writeFileSync(fnames.inventory, inventoryGzipped);
+  }
+
   return {inventory, versionsExist};
 }
 
@@ -66,8 +78,7 @@ const fetchInventoryRemote = async ({bucket, prefix, name}) => {
  * - versionsExist: boolean   are key versions present within the bucket?
  */
 const fetchInventoryLocal = async ({name}) => {
-  const manifestPath = `./devData/${name}.manifest.json`;
-  const inventoryPath = `./devData/${name}.inventory.csv.gz`;
+  const {manifest: manifestPath, inventory: inventoryPath} = _localPaths(name)
   logger.info(`inventory for ${name} -- reading S3 inventories from ${manifestPath} and ${inventoryPath}`);
   const manifest = JSON.parse(await fs.readFile(manifestPath));
   const {schema, versionsExist} = _parseManifest(manifest);
@@ -117,12 +128,12 @@ export const parseInventory = async ({objects, versionsExist}) => {
  * downloads from S3)
  * @returns S3Object[]
  */
-export const collectInventory = async ({name, local, inventoryBucket, inventoryPrefix}) => {
+export const collectInventory = async ({name, local, save, inventoryBucket, inventoryPrefix}) => {
   let objects, versionsExist;
   try {
     const fetchInventory = local ? fetchInventoryLocal : fetchInventoryRemote;
     ({ inventory: objects, versionsExist} = await fetchInventory(
-      {bucket: inventoryBucket, prefix: inventoryPrefix, name}
+      {bucket: inventoryBucket, prefix: inventoryPrefix, name, save}
     ));
   } catch (e) {
     logger.error(`There was an error while fetching the S3 inventory for ${name}. This is fatal.`)
@@ -257,3 +268,15 @@ function _parseManifest(manifest) {
   }
 }
 
+/**
+ * Returns the local filepaths for the manifest and inventories associated
+ * with this collection
+ * @param {string} name Collection name
+ * @returns {object} keys 'manifest' and 'inventory'
+ */
+function _localPaths(name) {
+  return {
+    manifest: `./devData/${name}.manifest.json`,
+    inventory: `./devData/${name}.inventory.csv.gz`,
+  }
+}

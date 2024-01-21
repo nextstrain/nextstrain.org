@@ -43,7 +43,8 @@ export const setDataset = (pathExtractor) => (req, res, next) => {
 
 /**
  * Generate Express middleware that redirects to the canonical path for the
- * current {@link Dataset} if it is not fully resolved.
+ * current {@link Dataset} if it is not fully resolved. Any provided version
+ * descriptor is included in the redirect.
  *
  * @param {pathBuilder} pathBuilder - Function to build a fully-specified path
  * @returns {expressMiddleware}
@@ -54,9 +55,11 @@ export const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
 
   if (dataset === resolvedDataset) return next();
 
+  const version = dataset.versionDescriptor ? `@${dataset.versionDescriptor}` : '';
+
   const canonicalPath = pathBuilder.length >= 2
-    ? pathBuilder(req, resolvedDataset.pathParts.join("/"))
-    : pathBuilder(resolvedDataset.pathParts.join("/"));
+    ? pathBuilder(req, resolvedDataset.pathParts.join("/") + version)
+    : pathBuilder(resolvedDataset.pathParts.join("/") + version);
 
   /* 307 Temporary Redirect preserves request method, unlike 302 Found, which
    * is important since this middleware function may be used in non-GET routes.

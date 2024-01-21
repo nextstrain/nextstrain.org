@@ -23,17 +23,28 @@ Local index generation
 The resource index may be regenerated locally, see ``node
 ./resourceIndexer/main.js --help`` for details. By default, this will access S3
 manifest files in order to create the index (see necessary AWS permissions
-below), however you can point the indexer to local files if desired. To use
-local files, download a suitable manifest and inventory from
-``s3://nextstrain-inventories`` and name them like so:
+below), however you can use local copies of the (S3) manifest + inventory for a
+smoother development experience.
 
-* For ``nextstrain-data``: ``./devData/core.manifest.json`` and ``core.inventory.csv.gz``
-* For ``nexstrain-staging``: ``./devData/staging.manifest.json`` and ``staging.inventory.csv.gz``
+To save a local copy of the latest S3 manifest & inventory:
+```
+mkdir -p devData
+node ./resourceIndexer/main.js --save-inventories ...
+```
 
-then run the indexer with the ``--local`` flag.
+This will create ``./devData/core.manifest.json`` and
+``./devData/core.inventory.csv.gz`` for the core (nextstrain-data) source and
+``./devData/staging.manifest.json`` and ``./devData/staging.inventory.csv.gz``
+for the staging source. Alternately you can manually obtain a suitable manifest
+and inventory from ``s3://nextstrain-inventories`` 
 
-To use a locally produced index, set the env variable ``RESOURCE_INDEX`` to
-point to the (JSON) file when you run the server.
+To generate the index using these local files run the indexer with the ``--local`` flag.
+
+Using a local index
+===================
+
+Set the env variable ``RESOURCE_INDEX`` to point to the local JSON file when you
+run the server.
 
 
 Automated index generation

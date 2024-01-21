@@ -10,7 +10,7 @@
 /**
  * Example dev use:
  * run the server in a separate process via:
- * RESOURCE_INDEX="./devData/index.json" node server.js --verbose
+ * RESOURCE_INDEX="./test/date_descriptor_index.json" node server.js --verbose
  * Then run this test file via:
  * NODE_OPTIONS='--experimental-vm-modules' npx jest test/date_descriptor.test.js
  */
@@ -300,6 +300,54 @@ describe("Valid narratives", () => {
     })
   }
 })
+
+const redirects = [
+  ["WNV", "WNV/NA"],
+  /* Note that WNV is not in the index, so this versioned test ensures we are
+  not checking the existence/validity of any version descriptor against the WNV
+  resource, rather we are redirecting and deferring those checks */
+  ["WNV@2020-01-01", "WNV/NA@2020-01-01"],
+]
+
+describe("Paths redirect with version descriptors", () => {
+  /* See <https://github.com/node-fetch/node-fetch#manual-redirect> for how
+  fetch stores the redirect location when {redirect: 'manual'} */
+  
+  redirects.forEach(([fromUrl, toUrl]) => {
+    /* test RESTful API */
+    (['html', 'json']).forEach((type) => {
+      it(`REST API: ${fromUrl} goes to ${toUrl} (${type})`, async () => {
+        const res = await fetchType(`${BASE_URL}/${fromUrl}`, type);
+        expect(res.status).toEqual(307);
+        expect(res.headers.get('location')).toEqual(`${BASE_URL}/${toUrl}`);
+      })
+    })
+
+
+    /* test Charon API */
+    const charonUrl = (path, sidecar) =>
+      `${BASE_URL}/charon/getDataset?prefix=${path}${sidecar ? `&type=root-sequence` : ''}`;
+
+    /* note that the redirect URL of charon requests is constructed by creating
+    a URL object (the RESTful API does not) which results in '/' and '@' being
+    escaped in the query. This isn't necessary, but it's also fine to do so. */
+
+    it(`Charon main dataset: ${fromUrl} goes to ${toUrl} `, async () => {
+      const res = await fetch(charonUrl(fromUrl, false), {redirect: 'manual'});
+      expect(res.status).toEqual(307);
+      expect(decodeURIComponent(res.headers.get('location'))).toEqual(charonUrl(toUrl, false));
+    })
+
+    it(`Charon sidecar: ${fromUrl} goes to ${toUrl} `, async () => {
+      const res = await fetch(charonUrl(fromUrl, true), {redirect: 'manual'});
+      expect(res.status).toEqual(307);
+      expect(decodeURIComponent(res.headers.get('location'))).toEqual(charonUrl(toUrl, true));
+    })
+
+  })
+
+})
+
 
 /**
  * Map the sidecar names we use day-to-day to their content types
