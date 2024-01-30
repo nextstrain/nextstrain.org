@@ -32,7 +32,7 @@ jobs:
       - run: npm run build
       - run: npm run lint
       # configure AWS to run dev server necessary for `npm run test:ci`
-      - uses: aws-actions/configure-aws-credentials@v1
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
           aws-access-key-id: ${{ secrets.DEV_SERVER_AWS_ACCESS_KEY_ID }}
