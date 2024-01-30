@@ -42,7 +42,7 @@ jobs:
         #
         # ¹ https://github.com/actions/cache/blob/main/workarounds.md#update-a-cache
         # ² https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#usage-limits-and-eviction-policy
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: remind-to-promote-state-hash
           key: remind-to-promote-state-hash-${{ github.run_id }}
