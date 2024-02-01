@@ -22,32 +22,12 @@ export const setup = (app) => {
     res.redirect(`/groups${req.originalUrl}`);
   });
 
-  /** prior to June 2021 our core nCoV builds were available at
-   * /ncov/global, ncov/asia etc. These used GISAID data exclusively.
-   * We now have GISAID builds and GenBank builds, and so the URLs
-   * (i.e. names on s3://nextstrain-data) have changed. We add redirects
-   * for the old URLs to point to the new GISAID URLs.
-   * The timestamped URLs (e.g. /ncov/:region/YYYY-MM-DD) which currently exist
-   * will not be redirected, but new URLs will be of the format
-   * /ncov/gisaid/:region/YYYY-MM-DD.
-   */
-  app.route('/ncov/:region((global|asia|oceania|north-america|south-america|europe|africa))')
-    .get((req, res) => res.redirect(
-      url.format({
-        pathname: `/ncov/gisaid/${req.params.region}`,
-        query: req.query
-      })
-    ));
-
-  /**
-   * We shifted from using 'monkeypox' to 'mpox', as per WHO naming
-   * recommendations. Note that monkeypox YYYY-MM-DD URLs remain,
-   * e.g. /monkeypox/hmpxv1/2022-09-04
-   */
-  app.route('/monkeypox').get((req, res) => res.redirect('/mpox'));
-  app.route('/monkeypox/mpxv').get((req, res) => res.redirect('/mpox/all-clades'));
-  app.route('/monkeypox/hmpxv1').get((req, res) => res.redirect('/mpox/clade-IIb'));
-  app.route('/monkeypox/hmpxv1/big').get((req, res) => res.redirect('/mpox/lineage-B.1'));
+  /* handle redirects for dataset paths which have changed name & preserve any queries */
+  for (const [requestPath, redirectPath] of datasetRedirects()) {
+    app.route(requestPath).get((req, res) =>
+      res.redirect(url.format({pathname: redirectPath, query: req.query}))
+    )
+  }
 
   /*
    * Redirect to translations of narratives if the client has
@@ -141,3 +121,48 @@ export const setup = (app) => {
   }
 
 };
+
+
+/**
+ * Produces a list of dataset redirects. These are defined in a stand-alone
+ * function so that they can be easily reused by the resource indexer to
+ * associate "old" filenames with their new dataset path.
+ *
+ * Express routes can include patterns and regexes but these are hard to parse
+ * outside of express so for these redirects you must use plain strings.
+ *
+ * @returns {[string,string][]} for each entry, [0]: request URL path, [1]:
+ * redirect URL path
+ */
+export function datasetRedirects() {
+
+  /** prior to June 2021 our core nCoV builds were available at
+   * /ncov/global, ncov/asia etc. These used GISAID data exclusively.
+   * We now have GISAID builds and GenBank builds, and so the URLs
+   * (i.e. names on s3://nextstrain-data) have changed. We add redirects
+   * for the old URLs to point to the new GISAID URLs.
+   * The timestamped URLs (e.g. /ncov/:region/YYYY-MM-DD) which currently exist
+   * will not be redirected, but new URLs will be of the format
+   * /ncov/gisaid/:region/YYYY-MM-DD.
+   */
+  const ncovRegionRedirects =
+    ['global', 'asia', 'oceania', 'north-america', 'south-america', 'europe', 'africa']
+    .map((region) => [`/ncov/${region}`, `/ncov/gisaid/${region}`]);
+
+  /**
+   * We shifted from using 'monkeypox' to 'mpox', as per WHO naming
+   * recommendations. Note that monkeypox YYYY-MM-DD URLs remain,
+   * e.g. /monkeypox/hmpxv1/2022-09-04
+   */
+  const monkeypoxRedirects = [
+    ['/monkeypox', '/mpox'],
+    ['/monkeypox/mpxv', '/mpox/all-clades'],
+    ['/monkeypox/hmpxv1', '/mpox/clade-IIb'],
+    ['/monkeypox/hmpxv1/big', '/mpox/lineage-B.1'],
+  ];
+
+  return [
+    ...ncovRegionRedirects,
+    ...monkeypoxRedirects,
+  ]
+}
