@@ -234,5 +234,9 @@
   {
     "name": "LANL-HIV-DB",
     "isPublic": true
+  },
+  {
+    "name": "ESFLU",
+    "isPublic": false
   }
 ]
