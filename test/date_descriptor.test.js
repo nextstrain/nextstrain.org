@@ -349,6 +349,26 @@ describe("Paths redirect with version descriptors", () => {
 })
 
 
+const redirectsRestOnly = [
+  /* Following paths are redirected early on in our routing stack and doesn't involve
+  any checking of the version provided */
+  ["monkeypox/mpxv", "mpox/all-clades"],
+  ["monkeypox/mpxv@anything", "mpox/all-clades@anything"]
+]
+
+describe("Paths redirect according to hardcoded top-level redirects", () => {
+  redirectsRestOnly.forEach(([fromUrl, toUrl]) => {
+    (['html', 'json']).forEach((type) => {
+      it(`REST API: ${fromUrl} goes to ${toUrl} (${type})`, async () => {
+        const res = await fetchType(`${BASE_URL}/${fromUrl}`, type);
+        expect(res.status).toEqual(302); // res.redirect() has a default of 302
+        expect(res.headers.get('location')).toEqual(`${BASE_URL}/${toUrl}`);
+      })
+    })
+  })
+})
+
+
 /**
  * Map the sidecar names we use day-to-day to their content types
  * used within the server

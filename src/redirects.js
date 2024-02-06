@@ -27,6 +27,12 @@ export const setup = (app) => {
     app.route(requestPath).get((req, res) =>
       res.redirect(url.format({pathname: redirectPath, query: req.query}))
     )
+    /* redirect versioned requests as well. The format or existence of the
+    version isn't checked here, but it will be when the (redirected) request is
+    handled */
+    app.route(`${requestPath}@:version`).get((req, res) =>
+      res.redirect(url.format({pathname: `${redirectPath}@${req.params.version}`, query: req.query}))
+    )
   }
 
   /*
