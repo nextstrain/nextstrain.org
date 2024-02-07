@@ -96,12 +96,12 @@ async function updateResourceVersions() {
   if (RESOURCE_INDEX.startsWith("s3://")) {
     const parts = RESOURCE_INDEX.match(/^s3:\/\/(.+?)\/(.+)$/);
     const [Bucket, Key] = [parts[1], parts[2]];
-    utils.verbose(`Updating available resources index from s3://${Bucket}/${Key}`);
+    utils.verbose(`[RESOURCE INDEX UPDATE S3] Fetching index from s3://${Bucket}/${Key}`);
     try {
       const newETag = (await fetch(await signedUrl({bucket:Bucket, key:Key, method: 'HEAD'}), {method: 'HEAD'}))
         .headers.get('etag'); // value is enclosed in double quotes, but that doesn't matter for our purposes
       if (newETag && newETag === eTag) {
-        utils.verbose("Skipping available resource update as eTag hasn't changed");
+        utils.verbose(`[RESOURCE INDEX UPDATE S3] Skipping as eTag hasn't changed: ${eTag}`);
         return;
       }
       const res = await fetch(await signedUrl({bucket:Bucket, key:Key, method: 'GET'}), {method: 'GET'})
@@ -110,8 +110,9 @@ async function updateResourceVersions() {
       }
       const newResources = JSON.parse(await gunzip(await res.buffer()));
       [resources, eTag] = [newResources, newETag];
+      utils.verbose(`[RESOURCE INDEX UPDATE S3] Updated. New eTag: ${eTag}`);
     } catch (err) {
-      utils.warn(`Resource updating failed: ${err.message}`)
+      utils.warn(`[RESOURCE INDEX UPDATE S3] updating failed: ${err.message}`)
     }
     return;
   }
