@@ -1,3 +1,5 @@
+import url from 'url';
+
 import * as endpoints from '../endpoints/index.js';
 import * as sources from '../sources/index.js';
 
@@ -40,7 +42,10 @@ export function setup(app) {
   ;
 
   app.routeAsync("/staging/*")
-    .all(setDataset(req => req.params[0]), canonicalizeDataset(path => `/staging/${path}`))
+    .all(
+      setDataset(req => req.params[0]),
+      canonicalizeDataset((req, path) => url.format({pathname: `/staging/${path}`, query: req.query}))
+    )
     .getAsync(getDataset)
     .putAsync(putDataset)
     .deleteAsync(deleteDataset)

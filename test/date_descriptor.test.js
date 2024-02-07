@@ -307,13 +307,16 @@ const redirects = [
   not checking the existence/validity of any version descriptor against the WNV
   resource, rather we are redirecting and deferring those checks */
   ["WNV@2020-01-01", "WNV/NA@2020-01-01"],
+  /* URL queries should be preserved across the redirect, but only for the RESTful API */
+  ["WNV@2020-01-01?c=region", "WNV/NA@2020-01-01?c=region", {charon: false}],
+  ["staging/WNV@2020-01-01?c=region", "staging/WNV/NA@2020-01-01?c=region", {charon: false}],
 ]
 
 describe("Paths redirect with version descriptors", () => {
   /* See <https://github.com/node-fetch/node-fetch#manual-redirect> for how
   fetch stores the redirect location when {redirect: 'manual'} */
   
-  redirects.forEach(([fromUrl, toUrl]) => {
+  redirects.forEach(([fromUrl, toUrl, opts]) => {
     /* test RESTful API */
     (['html', 'json']).forEach((type) => {
       it(`REST API: ${fromUrl} goes to ${toUrl} (${type})`, async () => {
@@ -325,6 +328,14 @@ describe("Paths redirect with version descriptors", () => {
 
 
     /* test Charon API */
+    if (opts?.charon === false) return;
+
+    // Charon API datasets (prefix query) must not contain a query themselves
+    it (`Charon prefix doesn't include query params`, () => {
+      expect(fromUrl.includes('?')).toBeFalsy();
+      expect(toUrl.includes('?')).toBeFalsy();
+    })
+
     const charonUrl = (path, sidecar) =>
       `${BASE_URL}/charon/getDataset?prefix=${path}${sidecar ? `&type=root-sequence` : ''}`;
 
