@@ -31,6 +31,12 @@ export function setupApp() {
   app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
   app.use(middleware.rejectParentTraversals);
 
+  /* Parse queries with `querystring` so that we can roundtrip queries using
+   * `querystring.stringify` or the single-argument form of `url.format` (which
+   * uses `querystring.stringify`)
+   */
+  app.set("query parser", "simple")
+
 
   /* Setup a request-scoped context object for passing arbitrary request-local
    * data between route and param middleware and route handlers.  Akin to
