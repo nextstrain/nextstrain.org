@@ -57,9 +57,7 @@ export const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
 
   const version = dataset.versionDescriptor ? `@${dataset.versionDescriptor}` : '';
 
-  const canonicalPath = pathBuilder.length >= 2
-    ? pathBuilder(req, resolvedDataset.pathParts.join("/") + version)
-    : pathBuilder(resolvedDataset.pathParts.join("/") + version);
+  const canonicalPath = pathBuilder(req, resolvedDataset.pathParts.join("/") + version);
 
   /* 307 Temporary Redirect preserves request method, unlike 302 Found, which
    * is important since this middleware function may be used in non-GET routes.
@@ -356,27 +354,13 @@ function receiveSubresource(subresourceExtractor) {
  * @returns {String} Path for {@link Source#dataset} or {@link Source#narrative}
  */
 
-/* Confused about the duplication below?  It's the documented way to handle
- * overloaded (e.g. arity-dependent) function signatures.¹  Note that it relies
- * on the "nestled" or "cuddled" end and start comment markers.
- *   -trs, 16 June 2022
- *
- * ¹ https://github.com/jsdoc/jsdoc/issues/1017
- */
 /**
  * @callback pathBuilder
- *
- * @param {String} path - Canonical path for the dataset within the context of
- *   the current {@link Source}
- * @returns {String} Fully-specified path to redirect to
- *//**
-* @callback pathBuilder
-*
-* @param {express.request} req
-* @param {String} path - Canonical path for the dataset within the context of
-*   the current {@link Source}
-* @returns {String} Fully-specified path to redirect to
-*/
+ * @param {express.request} req
+ * @param {String} path - Canonical path (not including query) for the dataset
+ *   within the context of the current {@link Source}
+ * @returns {String} Fully-specified path (including query) to redirect to
+ */
 
 /**
  * @callback subresourceExtractor
