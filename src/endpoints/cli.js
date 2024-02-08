@@ -1,9 +1,12 @@
+import LinkHeader from 'http-link-header';
 import jszip from 'jszip';
 import mime from 'mime';
+import pep440 from '@renovatebot/pep440';
 import { pipeline } from 'stream/promises';
 import { BadRequest, InternalServerError, NotFound, ServiceUnavailable } from '../httpErrors.js';
 import { fetch } from '../fetch.js';
 import { uri } from '../templateLiterals.js';
+import { map } from '../utils/iterators.js';
 
 
 const authorization = process.env.GITHUB_TOKEN
@@ -16,14 +19,49 @@ export async function download(req, res) {
   const assetSuffix = req.params.assetSuffix;
   if (!version || !assetSuffix) throw new BadRequest();
 
-  const endpoint = version === "latest"
-    ? "https://api.github.com/repos/nextstrain/cli/releases/latest"
-    : uri`https://api.github.com/repos/nextstrain/cli/releases/tags/${version}`;
+  /* Convert "latest" into a valid version constraint (albeit one with no
+   * constraints).
+   *
+   * Convert an (assumed) exact version into a valid version constraint using
+   * the exact equality operator.
+   */
+  const constraint =
+           version === "latest" ?             "" :
+    !pep440.validRange(version) ? `==${version}` :
+                                         version ;
 
-  const response = await fetch(endpoint, {headers: {authorization}});
-  assertStatusOk(response);
+  /* Fetch all releases, 100 per request.  This will remain only a single
+   * request for a while as we currently only have 24 releases to GitHub and
+   * the entire project has only had 88 releases (to PyPI) in ~6 years, an
+   * average of roughly 15 releases per year.  Additionally, our fetch()
+   * caching will greatly reduce actual network traffic and latency.  Taken
+   * together, I have no qualms putting this chained set of fetches in the path
+   * of every response from this download handler (at least for now).
+   *   -trs, 12 Feb 2024
+   */
+  const releases = new Map(await map(
+    (async function* () {
+      let nextPage = "https://api.github.com/repos/nextstrain/cli/releases?per_page=100";
 
-  const release = await response.json();
+      while (nextPage) {
+        const response = await fetch(nextPage, {headers: {authorization}});
+        assertStatusOk(response);
+
+        yield* await response.json();
+
+        nextPage = LinkHeader.parse(response.headers.get("Link") ?? "").rel("next")[0];
+      }
+    })(),
+    r => [r.tag_name, r]
+  ));
+
+  const maxSatisfyingVersion = pep440.maxSatisfying([...releases.keys()], constraint);
+
+  if (!maxSatisfyingVersion) {
+    throw new NotFound(`No release version matches requested PEP 440/508 version constraint(s): ${constraint || "[none]"} ("${version}")`);
+  }
+
+  const release = releases.get(maxSatisfyingVersion);
   const assetName = `nextstrain-cli-${release.tag_name}-${assetSuffix}`;
   const asset = release.assets.find(a => a.name === assetName);
 
