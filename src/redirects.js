@@ -49,6 +49,23 @@ export const setup = (app) => {
   app.route('/monkeypox/hmpxv1').get((req, res) => res.redirect('/mpox/clade-IIb'));
   app.route('/monkeypox/hmpxv1/big').get((req, res) => res.redirect('/mpox/lineage-B.1'));
 
+  /**
+   * We shifted from separating seasonal and avian influenza builds 
+   * as nextstrain.org/flu/seasonal and nextstrain.org/flu/avian, to 
+   * nextstrain.org/seasonal-flu and nextstrain.org/avian-flu
+   */
+  app.route('/flu/avian').get((req, res) => res.redirect('/avian-flu'));
+  app.route('/flu/avian/h5nx').get((req, res) => res.redirect('/avian-flu/h5nx'));
+  app.route('/flu/avian/h5n1').get((req, res) => res.redirect('/avian-flu/h5n1'));
+  app.route('/flu/avian/h7n9').get((req, res) => res.redirect('/avian-flu/h7n9'));
+  app.route('/flu/avian/h9n2').get((req, res) => res.redirect('/avian-flu/h9n2'));
+
+  app.route('/flu/seasonal').get((req, res) => res.redirect('/seasonal-flu'));
+  app.route('/flu/seasonal/h3n2').get((req, res) => res.redirect('/seasonal-flu/h3n2'));
+  app.route('/flu/seasonal/h1n1pdm').get((req, res) => res.redirect('/seasonal-flu/h1n1pdm'));
+  app.route('/flu/seasonal/vic').get((req, res) => res.redirect('/seasonal-flu/vic'));
+  app.route('/flu/seasonal/yam').get((req, res) => res.redirect('/seasonal-flu/yam'));
+
   /*
    * Redirect to translations of narratives if the client has
    * set language preference and the translation is available
