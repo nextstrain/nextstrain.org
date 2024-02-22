@@ -20,6 +20,11 @@ const pathogenCards = [
     title: "Influenza"
   },
   {
+    img: "avianinfluenza.png",
+    url: "/avian-flu",
+    title: "Avian Influenza"
+  },
+  {
     img: "lassa.png",
     url: "/lassa",
     title: "Lassa"
