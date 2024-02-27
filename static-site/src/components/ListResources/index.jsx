@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import styled from 'styled-components';
 /* Default import for react-tooltip v5 is ES modules, but webpack baulks at that.
 Using the available common JS build instead to avoid having to debug Gatsby, which
 isn't a nice experience and which we plan to replace shortly  */
@@ -8,10 +9,14 @@ import 'react-tooltip-v5/dist/react-tooltip.css';
 import { useSortAndFilterData, useFilterOptions } from './helpers';
 import CreatableSelect from 'react-select/creatable';
 import {Spinner} from './spinner';
-import { ResourceListing } from "./ResourceListing";
 import {Showcase} from "./Showcase";
 import { ResourceModal } from "./ResourceModal";
 import { DateUpdatedSelector } from "./DateUpdatedSelector";
+import { ResourceGroup } from './ResourceGroup';
+
+const ResourceListingContainer = styled.div`
+  padding-top: 50px;
+`;
 
 function ListResources({apiQuery, dataType}) {
   console.log("<ListResources>")
@@ -23,6 +28,12 @@ function ListResources({apiQuery, dataType}) {
   const dismissModal = useCallback(() => setModalResourceData(null), [])
   useSortAndFilterData(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
+
+  /* Following useful to start with a single modal open */
+  // useEffect( () => {
+  //   if (!resourceGroups?.length) return;
+  //   setModalResourceData(resourceGroups[0][1][0])
+  // }, [resourceGroups])
 
   console.log("ListResources::modalResourceData", modalResourceData)
 
@@ -52,7 +63,11 @@ function ListResources({apiQuery, dataType}) {
 
         <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
 
-        <ResourceListing data={resourceGroups} setModal={setModalResourceData} />
+        <ResourceListingContainer>
+          {resourceGroups.map((resourceGroup) => (
+            <ResourceGroup data={resourceGroup} setModal={setModalResourceData} key={resourceGroup[0].groupName+resourceGroup[0].lastUpdated} />
+          ))}
+        </ResourceListingContainer>
 
         <Tooltip id="iconTooltip" />
 

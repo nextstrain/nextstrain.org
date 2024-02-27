@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { MdCached, MdOutlineShare } from "react-icons/md";
-import {Hover} from "./Hover.jsx";
+import { ResourceTile } from "./ResourceTile.jsx"
 
 const nextstrainSidebarBackgroundColor = `rgb(242, 242, 242)`;
 const nextstrainSidebarBorderColor = `rgb(204, 204, 204)`;
@@ -73,72 +73,6 @@ const ResourceGroupHeader = ({data}) => {
   )
 }
 
-const ResourceTileContainer = styled.div`
-  /* margin: 5px; */
-  padding: 5px;
-  /* background-color: aquamarine; */
-  background-color: white;
-  border: 2px solid black;
-  min-width: max(250px, 20%);
-  max-width: max(250px, 40%);
-
-  /* display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 10px;
-  align-items: flex-start; */
-  color: #4F4B50;
-`
-
-const ResourceTileUpperSection = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 10px;
-  align-items: center;
-  color: #4F4B50;
-`
-
-
-const ResourceTile = ({data, setModal}) => {
-
-  /**
-   * I wanted to use a library to manage on-hover tooltips but couldn't find a satisfactory one.
-   * Requirements: component as tooltip + only render the component when hovered
-   */
-  const [hovered, setHovered] = useState(false);
-  console.log("ResourceTile", data)
-
-  return (
-    <ResourceTileContainer>
-
-      <ResourceTileUpperSection>
-        <IconContainer
-          description="Total number of available versions"
-          Icon={MdCached}
-          text={data.nVersions}
-          handleClick={() => setModal(data)}
-        />
-        <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)}>
-          <Name name={data.name} hovered={hovered} />
-        </div>
-
-        { hovered && (
-          <Hover dates={data.dates}/>
-        )}
-
-      </ResourceTileUpperSection>
-
-      {/* <span style={{flexGrow: 100}}/> */}
-      {/* <BeadPlot versions={data.dates} xPx={200}/> */}
-      {/* <SparkLine versions={data.dates}/> */}
-
-    </ResourceTileContainer>
-  )
-}
-
-
 /**
  * TKTK
  * @param {Object} props React props
@@ -149,7 +83,9 @@ const ResourceTile = ({data, setModal}) => {
 export const ResourceGroup = ({data, setModal}) => {
   const [groupInfo, groupMembers] = data;
 
-  console.log("ResourceGroup", "groupInfo", groupInfo, "groupMembers", groupMembers)
+  // console.log("ResourceGroup", "groupInfo", groupInfo, "groupMembers", groupMembers)
+
+  const wordLengths = _wordLengths(groupMembers.map((d) => d.name))
 
 
   return (
@@ -157,8 +93,8 @@ export const ResourceGroup = ({data, setModal}) => {
       <ResourceGroupHeader data={groupInfo}/>
       <ResourceTilesContainer>
         {/* what to do when there's only one tile in a group? */}
-        {groupMembers.map((d) => (
-          <ResourceTile data={d} setModal={setModal} key={d.name}/>
+        {groupMembers.map((d, i) => (
+          <ResourceTile data={d} setModal={setModal} key={d.name} wordLengths={wordLengths} previousName={i===0 ? null : groupMembers[i-1].name}/>
         ))}
       </ResourceTilesContainer>
     </ResourceGroupContainer>
@@ -173,21 +109,6 @@ function NextstrainLogo(name) {
   return <img alt="nextstrain logo" height="35px" src={nextstrainLogo}/>
 }
 
-
-/**
- * <Name> is the element for a collection's title. It may or may not be a link.
- */
-function Name({name, hovered}) {
-  const prettyName = name.replace(/\//g, "│"); // ASCII 179
-  const href = `/${name}`
-  return (
-      <a href={href} target="_blank" rel="noreferrer"
-        style={{ fontSize: '1.8rem', fontWeight: hovered ? '500' : '300'}} /* use CSS selector instead? */
-      >
-        {prettyName}
-      </a>
-  )
-}
 
 
 function IconContainer({description, Icon, text, handleClick=undefined, selected=false}) {
@@ -206,4 +127,16 @@ function IconContainer({description, Icon, text, handleClick=undefined, selected
       {text}
     </div>
   )
+}
+
+
+function _wordLengths(names) {
+  const wordLengths = []
+  for (const name of names) {
+    for (const [i, word] of name.split('/').entries()) { // TODO -- do this in a more central place
+      if (i>=wordLengths.length) wordLengths.push(0);
+      if (wordLengths[i]<word.length) wordLengths[i]=word.length;
+    }
+  }
+  return wordLengths;
 }
