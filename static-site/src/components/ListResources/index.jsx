@@ -23,12 +23,14 @@ function ListResources({apiQuery, dataType}) {
   console.log("<ListResources>")
   const originalData = useDataFetch(apiQuery, dataType);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState([]);
-  const [sortMethod, changeSortMethod] = useState("lastUpdated");
+  const [sortMethod, changeSortMethod] = useState("alphabetical");
   const [resourceGroups, setResourceGroups] = useState([]);
   const [modalResourceData, setModalResourceData ] = useState(null);
   const dismissModal = useCallback(() => setModalResourceData(null), [])
   useSortAndFilterData(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
+
+  console.log("resourceGroups", resourceGroups)
 
   /* Following useful to start with a single modal open */
   // useEffect( () => {
@@ -64,13 +66,13 @@ function ListResources({apiQuery, dataType}) {
 
         <ScrollableAnchor id={"list"}>
           <ResourceListingContainer>
-            {resourceGroups.map((resourceGroup) => (
-              <ResourceGroup data={resourceGroup} setModal={setModalResourceData} key={resourceGroup[0].groupName+resourceGroup[0].lastUpdated} />
+            {resourceGroups.map((group) => (
+              <ResourceGroup data={group} sortMethod={sortMethod} setModal={setModalResourceData} key={group.groupName} />
               ))}
           </ResourceListingContainer>
         </ScrollableAnchor>
 
-        <Tooltip id="iconTooltip" />
+        <Tooltip style={{fontSize: '16px'}} id="iconTooltip" />
 
         <ResourceModal data={modalResourceData} dismissModal={dismissModal}/>
 
@@ -112,11 +114,11 @@ function SortOptions({sortMethod, changeSortMethod}) {
     changeSortMethod(event.target.value);
   }
   return (
-    <div className="radioSort">
+    <SortContainer>
       Sort cards by: 
       <input type="radio" onChange={onChangeValue} value="alphabetical" checked={"alphabetical"===sortMethod} /> alphabetical
       <input type="radio" onChange={onChangeValue} value="lastUpdated" checked={"lastUpdated"===sortMethod} /> lastUpdated
-    </div>
+    </SortContainer>
   )
 }
 
@@ -140,3 +142,14 @@ function Filter({options, selectedFilterOptions, setSelectedFilterOptions}) {
   )
 
 }
+
+
+const SortContainer = styled.div`
+  padding-top: 10px;
+  font-size: 1.8rem;
+  & input {
+    margin-left: 20px;
+    margin-right: 5px;
+  }
+
+`

@@ -12,7 +12,8 @@ import {Hover} from "./Hover.jsx";
 function Name({name, hovered, wordLengths, previousName}) {
   const href = `/${name}`;
   const words = name.split("/");
-  const j = hovered ? 0 : (previousName || "").split("/").map((word, i) => word === words[i]).findIndex((el) => !el);
+  const prevWords = (previousName||"").split("/");
+  const j = hovered ? 0 : prevWords.map((word, i) => word === words[i]).findIndex((el) => !el);
   const prettyName = words
     .map((word, i) => i>=j ? word + ' '.repeat(wordLengths[i]-word.length) : ' '.repeat(wordLengths[i]))
     .join("│") // ASCII 179
@@ -57,13 +58,13 @@ const ResourceTileUpperSection = styled.div`
 `
 
 // TODO XXX - duplicated from ResourceGroup.jsx
-function IconContainer({description, Icon, text, handleClick=undefined, selected=false}) {
-  const iconProps = {size: "1.2em"};
-  if (selected) iconProps.color = '#4F4B50';
+function IconContainer({description, Icon, text, handleClick=undefined}) {
+  const color = "#aaa";
+  const iconProps = {size: "1.2em", color};
   const hasOnClick = typeof handleClick === 'function';
   return (
     <div
-      style={{display: 'flex', alignItems: 'center', gap: '3px', cursor: hasOnClick?'pointer':'auto'}}
+      style={{display: 'flex', color, alignItems: 'center', gap: '3px', cursor: hasOnClick?'pointer':'auto'}}
       data-tooltip-id="iconTooltip"
       data-tooltip-content={description}
       data-tooltip-place="top"
@@ -101,15 +102,16 @@ export const ResourceTile = ({data, setModal, wordLengths, previousName}) => {
     <ResourceTileContainer>
 
       <ResourceTileUpperSection>
+        <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onShiftClick}>
+          <Name name={data.name} hovered={hovered} wordLengths={wordLengths} previousName={previousName}/>
+        </div>
+
         <IconContainer
-          description="Total number of available versions"
+          description={`${data.nVersions} snapshots of this dataset available (click to see them)`}
           Icon={MdCached}
           text={data.nVersions}
           handleClick={() => setModal(data)}
         />
-        <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onShiftClick}>
-          <Name name={data.name} hovered={hovered} wordLengths={wordLengths} previousName={previousName}/>
-        </div>
 
         { hovered && (
           <Hover dates={data.dates}/>

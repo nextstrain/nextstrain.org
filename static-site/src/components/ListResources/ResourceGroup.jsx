@@ -46,17 +46,28 @@ const ResourceGroupHeaderContainer = styled.div`
   color: #4F4B50;
 `
 
-const ResourceGroupHeader = ({data}) => {
+const ResourceGroupHeader = ({data, sortMethod}) => {
 
+  const title = sortMethod === 'alphabetical' ? data.groupName : `Datasets last updated ${data.groupName}`
+
+  console.log(data.groupName, )
+
+  let lastUpdatedText = '';
+  if (sortMethod==='alphabetical') {
+    const lastUpdatedDates = data.resources.map((r) => r.lastUpdated)
+    lastUpdatedText = `Last updated between ${lastUpdatedDates.at(-1)} & ${lastUpdatedDates.at(0)}`;
+  }
   return (
     <ResourceGroupHeaderContainer>
 
       <NextstrainLogo/>
       <span style={{ fontSize: '2rem', fontWeight: '700'}}>
-        {data.groupName}
+        {title}
       </span>
       {/* todo graph / viz / whatever */}
-      <span>{`${data.nResources} resources updated ${data.lastUpdated}`}</span>
+      <span>
+        {lastUpdatedText}
+      </span>
       <span style={{flexGrow: 100}}/>
       <IconContainer
         description="Total number of distinct resources in this group"
@@ -80,21 +91,21 @@ const ResourceGroupHeader = ({data}) => {
  * @param {function} props.setModal
  * @returns 
  */
-export const ResourceGroup = ({data, setModal}) => {
-  const [groupInfo, groupMembers] = data;
+export const ResourceGroup = ({data, sortMethod, setModal}) => {
+  // const [groupInfo, groupMembers] = data;
 
   // console.log("ResourceGroup", "groupInfo", groupInfo, "groupMembers", groupMembers)
 
-  const wordLengths = _wordLengths(groupMembers.map((d) => d.name))
+  const wordLengths = _wordLengths(data.resources.map((d) => d.name))
 
 
   return (
     <ResourceGroupContainer>
-      <ResourceGroupHeader data={groupInfo}/>
+      <ResourceGroupHeader data={data} sortMethod={sortMethod}/>
       <ResourceTilesContainer>
         {/* what to do when there's only one tile in a group? */}
-        {groupMembers.map((d, i) => (
-          <ResourceTile data={d} setModal={setModal} key={d.name} wordLengths={wordLengths} previousName={i===0 ? null : groupMembers[i-1].name}/>
+        {data.resources.map((d, i) => (
+          <ResourceTile data={d} setModal={setModal} key={d.name} wordLengths={wordLengths} previousName={i===0 ? null : data.resources[i-1].name}/>
         ))}
       </ResourceTilesContainer>
     </ResourceGroupContainer>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { sum } from "lodash";
 
 
 
@@ -18,55 +17,80 @@ export const useSortAndFilterData = (sortMethod, selectedFilterOptions, original
   useEffect(() => {
     if (!originalData) return;
     console.log(`useSortAndFilterData:: sortMethod "${sortMethod}" ` + (selectedFilterOptions.length ? `filtering to ${selectedFilterOptions.map((el) => el.value).join(", ")}` : '(no filtering)'))
+    // TODO XXX - the original implementation used JSON stringify & parse to ensure a deep copy
+    // but we shouldn't need to do this
     let data = JSON.parse(JSON.stringify(originalData.datasets)); // Data comes from a JSON API
-    console.log("original data", originalData)
     data = _filterRawData(data, selectedFilterOptions);
 
-    // console.log("\tsorting not yet implemented TODO XXX")
+    /**
+     * Function which returns a reducer function. 
+     */
+    function partitionBy(method) {
+      return function(store, datum) {
+        const name = datum[0];
+        const nameParts = name.split('/');
+        const sortedDates = [...datum[1]].sort(); // TODO - should be done as we parse the API response
 
-    /* data into 1-deep levels based on lastUpdated */
-    /* this could be a lot more efficient */
-    const lastUpdated = [...new Set(
-      Object.values(data).map((dates) => dates[0])
-    )].sort().reverse();
-    let dataByUpdated = lastUpdated.map(() => ({}));
-    Object.entries(data).forEach(([name, dates]) => {
-      const store = dataByUpdated[lastUpdated.indexOf(dates[0])];
-      const [groupName, ...nameParts] = name.split('/');
-      const info = {
-        name,
-        groupName,
-        nameParts,
-        lastUpdated: dates[0],
-        dates,
-        nVersions: dates.length,
-      };
-      if (!store[groupName]) store[groupName] = [];
-      store[groupName].push(info);
-    });
-    dataByUpdated = dataByUpdated
-      .map((obj) => Object.entries(obj))
-      .flat()
-      .map(([groupName, groupResources]) => {
-        const groupInfo = {
-          groupName,
-          lastUpdated: groupResources[0].lastUpdated, /* all resources in group are the same */
-          nResources: groupResources.length,
-          nVersions: sum(groupResources.map((r) => r.nVersions)),
+        let groupName
+        if (method === 'lastUpdated') {
+          groupName = sortedDates.at(-1)
+        } else {
+          if (method !== 'alphabetical') {
+            console.error(`Unknown sort method ${method} - falling back to alphabetical sorting`)
+          }
+          groupName = nameParts[0];
+          // following is a hack to mock in-progress work which separates out these namespaces (url-spaces?)
+          if (groupName === 'flu') {
+            groupName = nameParts[1] === 'seasonal' ? 'seasonal-flu' : 'avian-flu';
+          }
         }
-        /* sort the resources by their name, so (e.g.) flu/seasonal/h3n2/ha/*
-         are grouped together, then flu/seasonal/h3n2/ha/*, etc */
-        groupResources.sort((a, b) => a.name > b.name)
-        return [groupInfo, groupResources];
-      })
-    console.log(dataByUpdated)
 
-    
-    // dataByUpdated = [dataByUpdated[0]]
-    // dataByUpdated[0][1] = dataByUpdated[0][1].slice(-1)
+        if (!store[groupName]) store[groupName] = []
+        const resourceDetails = {
+          name,
+          groupName, /* decoupled from nameParts */
+          nameParts, /* we should use this in child components rather than lots of splitting on '/' */
+          firstUpdated: sortedDates[0],
+          lastUpdated: sortedDates.at(-1),
+          dates: sortedDates,
+          nVersions: sortedDates.length,
+        };
+        store[groupName].push(resourceDetails)
+        return store;
+      }
+    }
 
-    setState(dataByUpdated);
+    /**
+     * Turn the array of resources (via `partition`) into a group object
+     */
+    function makeGroup([groupName, resources]) {
+      const groupInfo = {
+        groupName,
+        nResources: resources.length,
+        nVersions: resources.reduce((total, r) => total+r.nVersions, 0),
+        firstUpdated: resources.map((r) => r.firstUpdated).sort()[0],
+        lastUpdated: resources.map((r) => r.lastUpdated).sort()[1],
+        resources: resources.sort(sortGroupResources),
+      }
+      return groupInfo;
+    }
 
+    /**
+     * Within each group we sort the resources by their lastUpdated date.
+     * Perhaps this could be an option in the future, or maybe link to the
+     * higher-level group-sort option (e.g. what if we sorted by oldestDataset
+     * or oldest-lastUpdated?)
+     * 
+     * For resources last updated on the same day we sort alphabetically
+     */
+    function sortGroupResources(a, b) {
+      return a.lastUpdated === b.lastUpdated ? (a.name < b.name) : (a.lastUpdated < b.lastUpdated)
+    }
+
+    const partition = partitionBy(sortMethod);
+    const partitions = Object.entries(data).reduce(partition, {});
+    const resourceGroups = Object.entries(partitions).map(makeGroup);
+    setState(resourceGroups);
   }, [sortMethod, selectedFilterOptions, originalData, setState])
 }
 
@@ -90,8 +114,8 @@ export function useFilterOptions(resourceGroups) {
       counts[key]++
     }
 
-    for (const [_, resources] of resourceGroups) {
-      for (const resource of resources) {
+    for (const group of resourceGroups) {
+      for (const resource of group.resources) {
         increment(resource.groupName);
         resource.nameParts.forEach(increment);
       }
