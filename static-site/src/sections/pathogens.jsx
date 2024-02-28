@@ -1,5 +1,5 @@
 import React from "react";
-import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import { configureAnchors } from "react-scrollable-anchor";
 import { Link } from 'gatsby';
 import {
   SmallSpacer,
@@ -8,15 +8,10 @@ import {
 } from "../layouts/generalComponents";
 import ListResources from "../components/ListResources/index";
 import * as splashStyles from "../components/splash/styles";
-import DatasetSelect from "../components/Datasets/dataset-select";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
-import Cards from "../components/Cards/index";
-import pathogenCards from "../components/Cards/pathogenCards";
 import { AnchorLink } from "../components/Datasets/pathogen-page-introduction";
-import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
 
-const nextstrainLogoPNG = "/favicon.png";
 
 const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (
@@ -33,26 +28,6 @@ const abstract = (
     <AnchorLink to={"search"} title={"Click here to scroll down to all Nextstrain-maintained pathogen analyses"} />.
   </>
 );
-
-const tableColumns = [
-  {
-    name: "Name",
-    value: (dataset) => dataset.name,
-    url: (dataset) => dataset.url
-  },
-  {
-    name: "Type",
-    value: (dataset) => dataset.type
-  },
-  {
-    name: "Contributor",
-    value: () => "Nextstrain",
-    valueMobile: () => "",
-    url: () => "https://nextstrain.org",
-    logo: () => (<img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/>)
-  }
-];
-
 
 class Index extends React.Component {
   constructor(props) {
@@ -87,22 +62,6 @@ class Index extends React.Component {
         <HugeSpacer/>
         <ListResources/>
         <HugeSpacer/>
-
-        <HugeSpacer />
-        <Cards squashed cards={pathogenCards}/>
-        <HugeSpacer />
-
-        <ScrollableAnchor id={"search"}>
-          <div>
-            {this.state.data && (
-              <DatasetSelect
-                datasets={this.state.data}
-                columns={tableColumns}
-              />
-            )}
-            {this.state.errorFetchingData && <DataFetchErrorParagraph />}
-          </div>
-        </ScrollableAnchor>
       </GenericPage>
     );
   }
