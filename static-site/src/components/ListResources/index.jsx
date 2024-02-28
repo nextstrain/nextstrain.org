@@ -7,7 +7,7 @@ import {Tooltip} from 'react-tooltip-v5/dist/react-tooltip.cjs';
 import 'react-tooltip-v5/dist/react-tooltip.css';
 // import "./cards.css";
 import { useSortAndFilterData, useFilterOptions } from './helpers';
-import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
 import {Spinner} from './spinner';
 import {Showcase} from "./Showcase";
 import { ResourceModal } from "./ResourceModal";
@@ -29,13 +29,13 @@ function ListResources({apiQuery, dataType}) {
   useSortAndFilterData(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
 
+  console.log("selectedFilterOptions", selectedFilterOptions)
+
   /* Following useful to start with a single modal open */
   // useEffect( () => {
   //   if (!resourceGroups?.length) return;
   //   setModalResourceData(resourceGroups[0][1][0])
   // }, [resourceGroups])
-
-  console.log("ListResources::modalResourceData", modalResourceData)
 
   /* TODO - add setModalResourceData to context? lots of prop drilling at the moment */
 
@@ -94,8 +94,6 @@ function useDataFetch() {
         setState(
           await fetch(url)
             .then((res) => res.json())
-            // .then((jsn) => jsn[dataType] || [])
-            // .then((cards) => cardHierarchy(cards))
         )
       } catch (err) {
         console.error(err);
@@ -124,7 +122,7 @@ function SortOptions({sortMethod, changeSortMethod}) {
 function Filter({options, setSelectedFilterOptions}) {
   return (
     <div className="filter">
-      <CreatableSelect
+      <Select
         placeholder={"Filter by words in dataset names, or type in your own substring"}
         isMulti options={options}
         onChange={setSelectedFilterOptions}
