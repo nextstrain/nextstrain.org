@@ -13,6 +13,7 @@ import {Showcase} from "./Showcase";
 import { ResourceModal } from "./ResourceModal";
 import { DateUpdatedSelector } from "./DateUpdatedSelector";
 import { ResourceGroup } from './ResourceGroup';
+import ScrollableAnchor from "react-scrollable-anchor";
 
 const ResourceListingContainer = styled.div`
   padding-top: 50px;
@@ -28,8 +29,6 @@ function ListResources({apiQuery, dataType}) {
   const dismissModal = useCallback(() => setModalResourceData(null), [])
   useSortAndFilterData(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
-
-  console.log("selectedFilterOptions", selectedFilterOptions)
 
   /* Following useful to start with a single modal open */
   // useEffect( () => {
@@ -55,19 +54,21 @@ function ListResources({apiQuery, dataType}) {
     <div className="cardsV2"> {/* TODO change classname */}
       <div id="cardsContainer"> {/* TODO change id / remove */}
 
-        <Showcase data={showcaseData}/>
+        <Showcase data={showcaseData} availableFilterOptions={availableFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
-        <Filter options={availableFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
+        <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
         <DateUpdatedSelector/>
 
         <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
 
-        <ResourceListingContainer>
-          {resourceGroups.map((resourceGroup) => (
-            <ResourceGroup data={resourceGroup} setModal={setModalResourceData} key={resourceGroup[0].groupName+resourceGroup[0].lastUpdated} />
-          ))}
-        </ResourceListingContainer>
+        <ScrollableAnchor id={"list"}>
+          <ResourceListingContainer>
+            {resourceGroups.map((resourceGroup) => (
+              <ResourceGroup data={resourceGroup} setModal={setModalResourceData} key={resourceGroup[0].groupName+resourceGroup[0].lastUpdated} />
+              ))}
+          </ResourceListingContainer>
+        </ScrollableAnchor>
 
         <Tooltip id="iconTooltip" />
 
@@ -119,13 +120,21 @@ function SortOptions({sortMethod, changeSortMethod}) {
   )
 }
 
-function Filter({options, setSelectedFilterOptions}) {
+function Filter({options, selectedFilterOptions, setSelectedFilterOptions}) {
   return (
     <div className="filter">
       <Select
-        placeholder={"Filter by words in dataset names, or type in your own substring"}
+        placeholder={"Filter by keywords in dataset names"}
         isMulti options={options}
+        value={selectedFilterOptions}
         onChange={setSelectedFilterOptions}
+        styles={{
+          // https://react-select.com/styles#inner-components
+          placeholder: (baseStyles) => ({...baseStyles, fontSize: "16px"}),
+          input: (baseStyles) => ({...baseStyles, fontSize: "16px"}),
+          option: (baseStyles) => ({...baseStyles, fontSize: "14px"}),
+          multiValue: (baseStyles) => ({...baseStyles, fontSize: "16px", backgroundColor: '#f4d5b7'}),
+        }}
       />
     </div>
   )
