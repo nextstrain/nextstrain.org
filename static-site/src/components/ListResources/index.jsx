@@ -23,7 +23,7 @@ function ListResources({apiQuery, dataType}) {
   console.log("<ListResources>")
   const originalData = useDataFetch(apiQuery, dataType);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState([]);
-  const [sortMethod, changeSortMethod] = useState("alphabetical");
+  const [sortMethod, changeSortMethod] = useState("lastUpdated");
   const [resourceGroups, setResourceGroups] = useState([]);
   const [modalResourceData, setModalResourceData ] = useState(null);
   const dismissModal = useCallback(() => setModalResourceData(null), [])
@@ -60,7 +60,7 @@ function ListResources({apiQuery, dataType}) {
 
         <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
-        <DateUpdatedSelector/>
+        {/* <DateUpdatedSelector/> */}
 
         <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
 
@@ -115,7 +115,7 @@ function SortOptions({sortMethod, changeSortMethod}) {
   }
   return (
     <SortContainer>
-      Sort cards by: 
+      Group resources by: 
       <input type="radio" onChange={onChangeValue} value="alphabetical" checked={"alphabetical"===sortMethod} /> alphabetical
       <input type="radio" onChange={onChangeValue} value="lastUpdated" checked={"lastUpdated"===sortMethod} /> lastUpdated
     </SortContainer>

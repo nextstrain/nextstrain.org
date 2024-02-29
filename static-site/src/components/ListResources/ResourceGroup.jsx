@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { MdCached, MdOutlineShare } from "react-icons/md";
@@ -8,12 +8,11 @@ import { lollipopScale } from "./Lollipop";
 import { quickLinkData } from "./Showcase";
 
 
-const nextstrainSidebarBackgroundColor = `rgb(242, 242, 242)`;
 const nextstrainSidebarBorderColor = `rgb(204, 204, 204)`;
 
 const ResourceGroupContainer = styled.div`
   font-size: 18px;
-  background-color: ${nextstrainSidebarBackgroundColor};
+  background-color: rgb(251, 251, 251);
   /* border: 1px solid red; */
   margin-bottom: 10px;
   border: 2px solid ${nextstrainSidebarBorderColor};
@@ -31,6 +30,11 @@ const ResourceTilesContainer = styled.div`
   column-count: auto;
   column-width: 400px;
   column-gap: 1em; /* 1em is default */
+
+  /* The following doesn't have any transitions, and (AFAIK) transitions aren't possible
+  on 'display'. I tried to use <https://www.npmjs.com/package/react-collapsed> but it isn't
+  compatible with this version of Gatsby. */
+  /* display: ${(props) => props.isCollapsed ? 'none' : 'block'}; */
 `
 
 /**
@@ -85,6 +89,11 @@ const FlexColumnContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-grow: 10;
+`
+
+const CollapseContainer = styled.div`
+  padding: 5px 0px 5px 20px;
+  cursor: pointer;
 `
 
 
@@ -145,6 +154,7 @@ const ResourceGroupHeader = ({data, sortMethod, setModal}) => {
           </QuickLinksContainer>
         )}
 
+
       </FlexColumnContainer>
 
 
@@ -156,28 +166,41 @@ const ResourceGroupHeader = ({data, sortMethod, setModal}) => {
 
 
 export const ResourceGroup = ({data, sortMethod, setModal}) => {
-  // const [groupInfo, groupMembers] = data;
 
-  // console.log("ResourceGroup", "groupInfo", groupInfo, "groupMembers", groupMembers)
+  const collapsibleThreshold = 10;
+  const collapsible = data.resources.length > collapsibleThreshold;
+  const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
+  const displayResources = isCollapsed ? data.resources.slice(0, collapsibleThreshold) : data.resources;
 
   const wordLengths = _wordLengths(data.resources.map((d) => d.name))
-  // const lastUpdatedDates = data.resources.map((r) => r.lastUpdated);
-  // const lollipopXScale = lollipopScale(lastUpdatedDates.at(-1), lastUpdatedDates.at(0))
   const lollipopXScale = lollipopScale(data.firstUpdated, data.lastUpdated);
   return (
     <ResourceGroupContainer>
-      <ResourceGroupHeader data={data} sortMethod={sortMethod} setModal={setModal}/>
+      <ResourceGroupHeader data={data} sortMethod={sortMethod} setModal={setModal}
+        isCollapsed={isCollapsed} setCollapsed={setCollapsed}
+      />
       <ResourceTilesContainer>
         {/* what to do when there's only one tile in a group? */}
-        {data.resources.map((d, i) => (
+        {displayResources.map((d, i) => (
           <ResourceTile data={d} setModal={setModal} key={d.name}
                         wordLengths={wordLengths} previousName={i===0 ? null : data.resources[i-1].name}
                         lollipopXScale={lollipopXScale}/>
         ))}
       </ResourceTilesContainer>
+
+      {collapsible && (
+        <CollapseContainer onClick={() => setCollapsed(!isCollapsed)}>
+          {isCollapsed ?
+            String.fromCharCode(9660)+` show ${data.resources.length - collapsibleThreshold} more datasets` : 
+            String.fromCharCode(9650)+' collapse datasets'}
+        </CollapseContainer>
+      )}
+
     </ResourceGroupContainer>
   )
 }
+
+
 
 function NextstrainLogo(name) {
   /**

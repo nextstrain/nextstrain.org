@@ -31,7 +31,7 @@ function Name({name, hovered, wordLengths, previousName}) {
 const ResourceTileContainer = styled.div`
   padding: 3px;
   /* background-color: aquamarine; */
-  background-color: white;
+  /* background-color: white; */
   color: #4F4B50;
 `
 
