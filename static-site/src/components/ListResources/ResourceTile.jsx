@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import { MdCached } from "react-icons/md";
 import {Hover} from "./Hover.jsx";
-
+import { Lollipop } from "./Lollipop.jsx";
 
 
 /**
@@ -82,7 +82,7 @@ function IconContainer({description, Icon, text, handleClick=undefined}) {
  * @param {*} param0 
  * @returns 
  */
-export const ResourceTile = ({data, setModal, wordLengths, previousName}) => {
+export const ResourceTile = ({data, setModal, wordLengths, previousName, lollipopXScale}) => {
 
   /**
    * I wanted to use a library to manage on-hover tooltips but couldn't find a satisfactory one.
@@ -102,6 +102,9 @@ export const ResourceTile = ({data, setModal, wordLengths, previousName}) => {
     <ResourceTileContainer>
 
       <ResourceTileUpperSection>
+
+        <Lollipop x={lollipopXScale} date={data.lastUpdated}/>
+
         <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onShiftClick}>
           <Name name={data.name} hovered={hovered} wordLengths={wordLengths} previousName={previousName}/>
         </div>

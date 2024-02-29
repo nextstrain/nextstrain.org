@@ -69,7 +69,7 @@ export const useSortAndFilterData = (sortMethod, selectedFilterOptions, original
         nResources: resources.length,
         nVersions: resources.reduce((total, r) => total+r.nVersions, 0),
         firstUpdated: resources.map((r) => r.firstUpdated).sort()[0],
-        lastUpdated: resources.map((r) => r.lastUpdated).sort()[1],
+        lastUpdated: resources.map((r) => r.lastUpdated).sort().at(-1),
         resources: resources.sort(sortGroupResources),
       }
       return groupInfo;

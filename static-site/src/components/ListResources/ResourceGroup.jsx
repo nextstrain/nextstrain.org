@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { MdCached, MdOutlineShare } from "react-icons/md";
 import { ResourceTile } from "./ResourceTile.jsx"
+import { lollipopScale } from "./Lollipop";
+
 
 const nextstrainSidebarBackgroundColor = `rgb(242, 242, 242)`;
 const nextstrainSidebarBorderColor = `rgb(204, 204, 204)`;
@@ -84,28 +86,25 @@ const ResourceGroupHeader = ({data, sortMethod}) => {
   )
 }
 
-/**
- * TKTK
- * @param {Object} props React props
- * @param {[groupInfo, groupMembers]} props.data
- * @param {function} props.setModal
- * @returns 
- */
+
 export const ResourceGroup = ({data, sortMethod, setModal}) => {
   // const [groupInfo, groupMembers] = data;
 
   // console.log("ResourceGroup", "groupInfo", groupInfo, "groupMembers", groupMembers)
 
   const wordLengths = _wordLengths(data.resources.map((d) => d.name))
-
-
+  // const lastUpdatedDates = data.resources.map((r) => r.lastUpdated);
+  // const lollipopXScale = lollipopScale(lastUpdatedDates.at(-1), lastUpdatedDates.at(0))
+  const lollipopXScale = lollipopScale(data.firstUpdated, data.lastUpdated);
   return (
     <ResourceGroupContainer>
       <ResourceGroupHeader data={data} sortMethod={sortMethod}/>
       <ResourceTilesContainer>
         {/* what to do when there's only one tile in a group? */}
         {data.resources.map((d, i) => (
-          <ResourceTile data={d} setModal={setModal} key={d.name} wordLengths={wordLengths} previousName={i===0 ? null : data.resources[i-1].name}/>
+          <ResourceTile data={d} setModal={setModal} key={d.name}
+                        wordLengths={wordLengths} previousName={i===0 ? null : data.resources[i-1].name}
+                        lollipopXScale={lollipopXScale}/>
         ))}
       </ResourceTilesContainer>
     </ResourceGroupContainer>
