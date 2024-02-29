@@ -3,8 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { MdCached, MdOutlineShare } from "react-icons/md";
-import { ResourceTile } from "./ResourceTile.jsx"
+import { ResourceTile, ResourceLink } from "./ResourceTile.jsx"
 import { lollipopScale } from "./Lollipop";
+import { quickLinkData } from "./Showcase";
 
 
 const nextstrainSidebarBackgroundColor = `rgb(242, 242, 242)`;
@@ -48,43 +49,111 @@ const ResourceGroupHeaderContainer = styled.div`
   color: #4F4B50;
 `
 
-const ResourceGroupHeader = ({data, sortMethod}) => {
+const ResourceHeaderRow = styled.div`
+  /* padding: 5px; */
+  /* margin-bottom: 5px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+  color: #4F4B50;
+  width: 100%;
+`
+
+const QuickLinksContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 16px;
+  position: relative;
+`
+
+const QuickLinkContainer = styled.div`
+  padding-left: 10px;
+`
+
+const QuickLinkLink = styled.a`
+  font-family: monospace;
+  color: ${(props) => props.hovered ? '#31586c' : '#5097BA'} !important;
+  cursor: pointer;
+  text-decoration: none !important;
+`
+
+const FlexColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-grow: 10;
+`
+
+
+const ResourceGroupHeader = ({data, sortMethod, setModal}) => {
 
   const title = sortMethod === 'alphabetical' ? data.groupName : `Datasets last updated ${data.groupName}`
-
-  console.log(data.groupName, )
 
   let lastUpdatedText = '';
   if (sortMethod==='alphabetical') {
     const lastUpdatedDates = data.resources.map((r) => r.lastUpdated)
     lastUpdatedText = `Last updated between ${lastUpdatedDates.at(-1)} & ${lastUpdatedDates.at(0)}`;
   }
+
+  const resourcesByName = Object.fromEntries(data.resources.map((r) => [r.name, r]));
+  const quickLinks = quickLinkData.filter((ql) => !!resourcesByName[ql.name])
+
   return (
     <ResourceGroupHeaderContainer>
 
       <NextstrainLogo/>
-      <span style={{ fontSize: '2rem', fontWeight: '700'}}>
-        {title}
-      </span>
-      {/* todo graph / viz / whatever */}
-      <span>
-        {lastUpdatedText}
-      </span>
-      <span style={{flexGrow: 100}}/>
-      <IconContainer
-        description="Total number of distinct resources in this group"
-        Icon={MdOutlineShare}
-        text={data.nResources}
-      />
-      <IconContainer
-        description="Total number of available versions for the resources listed in this group"
-        Icon={MdCached}
-        text={data.nVersions}
-      />
+
+      <FlexColumnContainer>
+        
+        <ResourceHeaderRow>
+          <span style={{ fontSize: '2rem', fontWeight: '700'}}>
+            {title}
+          </span>
+          {/* todo graph / viz / whatever */}
+          <span>
+            {lastUpdatedText}
+          </span>
+          <span style={{flexGrow: 100}}/>
+          <IconContainer
+            description="Total number of distinct resources in this group"
+            Icon={MdOutlineShare}
+            text={data.nResources}
+          />
+          <IconContainer
+            description="Total number of available versions for the resources listed in this group"
+            Icon={MdCached}
+            text={data.nVersions}
+          />
+        </ResourceHeaderRow>
+
+  
+        {!!quickLinks.length && (
+          <QuickLinksContainer>
+            Quick links:
+            {quickLinks.map((ql) => (
+              <QuickLinkContainer key={ql.name}>
+                <ResourceLink data={resourcesByName[ql.name]} setModal={setModal}>
+                  <QuickLinkLink>
+                    {ql.display}
+                  </QuickLinkLink>
+                </ResourceLink>
+              </QuickLinkContainer>
+            ))}
+          </QuickLinksContainer>
+        )}
+
+      </FlexColumnContainer>
+
 
     </ResourceGroupHeaderContainer>
   )
 }
+
+
 
 
 export const ResourceGroup = ({data, sortMethod, setModal}) => {
@@ -98,7 +167,7 @@ export const ResourceGroup = ({data, sortMethod, setModal}) => {
   const lollipopXScale = lollipopScale(data.firstUpdated, data.lastUpdated);
   return (
     <ResourceGroupContainer>
-      <ResourceGroupHeader data={data} sortMethod={sortMethod}/>
+      <ResourceGroupHeader data={data} sortMethod={sortMethod} setModal={setModal}/>
       <ResourceTilesContainer>
         {/* what to do when there's only one tile in a group? */}
         {data.resources.map((d, i) => (

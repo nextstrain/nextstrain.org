@@ -50,6 +50,7 @@ export const useSortAndFilterData = (sortMethod, selectedFilterOptions, original
           name,
           groupName, /* decoupled from nameParts */
           nameParts, /* we should use this in child components rather than lots of splitting on '/' */
+          sortingName: _sortableName(nameParts),
           firstUpdated: sortedDates[0],
           lastUpdated: sortedDates.at(-1),
           dates: sortedDates,
@@ -147,4 +148,22 @@ function _filterRawData(data, selectedFilterOptions) {
     const words = name.split('/')
     return searchValues.map((searchString) => words.includes(searchString)).every((x) => x);
   }
+}
+
+
+/**
+ * Generally an alphabetical sorting of URL paths is a nice way to view the datasets,
+ * however this results in temporal sorting such as [12y 2y 6m 6y] etc. This function
+ * produces strings which, when sorted alphabetically, are in a nicer order.
+ */
+function _sortableName(words) {
+  const w = words.map((word) => {
+    const m = word.match(/^(\d+)([ym])$/);
+    if (m) {
+      if (m[2]==='y') return String(parseInt(m[1])*12).padStart(4,'0')
+      return m[1].padStart(4,'0')
+    }
+    return word
+  })
+  return w.join("/")
 }

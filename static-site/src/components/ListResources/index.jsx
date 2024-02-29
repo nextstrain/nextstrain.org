@@ -16,7 +16,7 @@ import { ResourceGroup } from './ResourceGroup';
 import ScrollableAnchor from "react-scrollable-anchor";
 
 const ResourceListingContainer = styled.div`
-  padding-top: 50px;
+  padding-top: 30px;
 `;
 
 function ListResources({apiQuery, dataType}) {

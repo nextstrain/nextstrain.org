@@ -20,6 +20,18 @@ const showcaseData = [
   {name: "RSV",          img: "rsv1.png",              filters: ["rsv"]},
 ]
 
+/**
+ * Quicklinks are similar to showcase data & should also come from the API.
+ * Hardcoding here for convenience. 
+ */
+export const quickLinkData = [
+  {name: 'flu/seasonal/h3n2/ha/2y', display: 'h3n2/ha'},
+  {name: 'flu/seasonal/h1n1pdm/ha/2y', display: 'h1n1pdm/ha'},
+  {name: 'flu/seasonal/vic/ha/2y', display: 'vic/ha'},
+  {name: 'rsv/a/genome', display: 'RSV/A'},
+  {name: 'rsv/b/genome', display: 'RSV/B'},
+  {name: 'flu/avian/h5nx/ha', display: 'h5nx/ha'},
+]
 
 export const Showcase = ({availableFilterOptions, setSelectedFilterOptions}) => {
   /* We should validate that the showcase data (however it arrives) exists in

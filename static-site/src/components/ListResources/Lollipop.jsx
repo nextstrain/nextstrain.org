@@ -22,7 +22,7 @@ export function Lollipop({x, date, dates}) {
   // thresholds are already set
   const thresholds = x._thresholds;
   const data = dates.map((d) => x._getX(new Date(d)));
-  const bandwidth = 7;
+  const bandwidth = 60;
   // console.log(thresholds, "data", data, bandwidth)
   const k = kde(epanechnikov(bandwidth), thresholds, data);
 
@@ -70,7 +70,7 @@ export function lollipopScale(x1, x2) {
   const duration = Math.round((span[1]-span[0])/(1000*60*60*24)); // In days. Doesn't account for time complexities. 
   const getX = (dateObj) => Math.round((dateObj-span[0])/(1000*60*60*24));
 
-  const numThresholds = 20;
+  const numThresholds = 40;
   const thresholdAmount = duration/(numThresholds-1);
   const thresholds = [0]
   while (thresholds.length<numThresholds) {

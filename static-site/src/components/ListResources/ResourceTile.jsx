@@ -84,10 +84,38 @@ function IconContainer({description, Icon, text, handleClick=undefined}) {
  */
 export const ResourceTile = ({data, setModal, wordLengths, previousName, lollipopXScale}) => {
 
+  return (
+    <ResourceTileContainer>
+
+      <ResourceTileUpperSection>
+
+        <Lollipop x={lollipopXScale} date={data.lastUpdated} dates={data.dates}/>
+
+        <ResourceLink data={data} setModal={setModal}>
+          <Name name={data.name} wordLengths={wordLengths} previousName={previousName}/>
+        </ResourceLink>
+
+        <IconContainer
+          description={`${data.nVersions} snapshots of this dataset available (click to see them)`}
+          Icon={MdCached}
+          text={data.nVersions}
+          handleClick={() => setModal(data)}
+        />
+
+      </ResourceTileUpperSection>
+
+    </ResourceTileContainer>
+  )
+}
+
+
+export const ResourceLink = ({children, data, setModal}) => {
+
   /**
    * I wanted to use a library to manage on-hover tooltips but couldn't find a satisfactory one.
    * Requirements: component as tooltip + only render the component when hovered
    */
+
   const [hovered, setHovered] = useState(false);
   // console.log("ResourceTile", data)
 
@@ -99,33 +127,16 @@ export const ResourceTile = ({data, setModal, wordLengths, previousName, lollipo
   }
 
   return (
-    <ResourceTileContainer>
-
-      <ResourceTileUpperSection>
-
-        <Lollipop x={lollipopXScale} date={data.lastUpdated} dates={data.dates}/>
-
-        <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onShiftClick}>
-          <Name name={data.name} hovered={hovered} wordLengths={wordLengths} previousName={previousName}/>
-        </div>
-
-        <IconContainer
-          description={`${data.nVersions} snapshots of this dataset available (click to see them)`}
-          Icon={MdCached}
-          text={data.nVersions}
-          handleClick={() => setModal(data)}
-        />
-
-        { hovered && (
-          <Hover dates={data.dates}/>
-        )}
-
-      </ResourceTileUpperSection>
-
-      {/* <span style={{flexGrow: 100}}/> */}
-      {/* <BeadPlot versions={data.dates} xPx={200}/> */}
-      {/* <SparkLine versions={data.dates}/> */}
-
-    </ResourceTileContainer>
+    <div>
+      <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onShiftClick}>
+        {React.cloneElement(children, { hovered })}
+      </div>
+      { hovered && (
+        <Hover dates={data.dates}/>
+      )}
+    </div>
   )
+
+  
 }
+
