@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import styled from 'styled-components';
 import { MdCached } from "react-icons/md";
 import {Hover} from "./Hover.jsx";
@@ -28,27 +28,14 @@ function Name({name, hovered, wordLengths, previousName}) {
 }
 
 
-
-
 const ResourceTileContainer = styled.div`
-  /* margin: 5px; */
   padding: 3px;
   /* background-color: aquamarine; */
   background-color: white;
-  /* border: 2px solid black; */
-  min-width: max(250px, 20%);
-  max-width: max(250px, 40%);
-
-  /* display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 10px;
-  align-items: flex-start; */
   color: #4F4B50;
 `
 
 const ResourceTileUpperSection = styled.div`
-  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -119,20 +106,26 @@ export const ResourceLink = ({children, data, setModal}) => {
   const [hovered, setHovered] = useState(false);
   // console.log("ResourceTile", data)
 
-  const onShiftClick = (e) => {
+  const onShiftClick = useCallback((e) => {
     if (e.shiftKey) {
       setModal(data);
       e.preventDefault(); // we don't want the child <a> element to receive the click
     }
-  }
+  }, [data, setModal])
+
+  const onMouseOver = useCallback((event) => {
+    setHovered([event.clientX, event.clientY])
+  },[])
+
+  const onMouseOut = useCallback(() => setHovered(false), [setHovered]);
 
   return (
     <div>
-      <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onShiftClick}>
-        {React.cloneElement(children, { hovered })}
+      <div onMouseOver={onMouseOver} onMouseOut={onMouseOut} onClick={onShiftClick}>
+        {React.cloneElement(children, { hovered: !!hovered })}
       </div>
       { hovered && (
-        <Hover dates={data.dates}/>
+        <Hover x={hovered[0]} y={hovered[1]} dates={data.dates}/>
       )}
     </div>
   )

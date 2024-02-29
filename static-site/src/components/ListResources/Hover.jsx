@@ -13,10 +13,10 @@ const Container = styled.div`
   margin-bottom: 10px;
   border-radius: 5px;
   padding: 10px;
-  position: absolute;
+  position: fixed;
   width: max-content;
-  left: 30px;
-  top: 25px;
+  left: ${(props) => props.x-100}px;
+  top: ${(props) => props.y+15}px;
   z-index: 999;
 `;
 
@@ -31,10 +31,10 @@ const HelpText = styled.div`
 /**
  *
  */
-export const Hover = ({dates}) => {
-  console.log("<Hover>")
+export const Hover = ({dates, x, y}) => {
+  // console.log("<Hover>", x, y)
   return (
-    <Container>
+    <Container x={x} y={y}>
 
       {dates.length} total snapshots, YY updates over the past two years:
       <SparkLine versions={dates}/>

@@ -20,18 +20,17 @@ const ResourceGroupContainer = styled.div`
   border-radius: 5px;
 `;
 
-/**
- * TODO - flexbox or grid? Probably want grid-like aesthetics.
- */
+
+
 const ResourceTilesContainer = styled.div`
-  /* display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  column-gap: 5px;
-  row-gap: 5px;
-  width: 100%; */
-
-
+  /* Most of the time this works nicely, but there are a few situations where it
+  doesn't. When the page width is such that a single column overflows (not
+  really a problem with this CSS) and for some page widths the content overflows
+  the <ResourceTileContainer>
+  */
+  column-count: auto;
+  column-width: 400px;
+  column-gap: 1em; /* 1em is default */
 `
 
 /**
