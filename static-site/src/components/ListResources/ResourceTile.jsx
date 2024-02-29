@@ -118,14 +118,13 @@ export const ResourceLink = ({children, data, setModal}) => {
   },[])
 
   const onMouseOut = useCallback(() => setHovered(false), [setHovered]);
-
   return (
     <div>
       <div onMouseOver={onMouseOver} onMouseOut={onMouseOut} onClick={onShiftClick}>
         {React.cloneElement(children, { hovered: !!hovered })}
       </div>
       { hovered && (
-        <Hover x={hovered[0]} y={hovered[1]} dates={data.dates}/>
+        <Hover x={hovered[0]} y={hovered[1]} data={data}/>
       )}
     </div>
   )

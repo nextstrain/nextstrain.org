@@ -100,7 +100,7 @@ const ResourceGroupHeader = ({data, sortMethod, setModal}) => {
 
   const resourcesByName = Object.fromEntries(data.resources.map((r) => [r.name, r]));
   const quickLinks = quickLinkData.filter((ql) => !!resourcesByName[ql.name])
-
+  console.log("quickLinks", quickLinks)
   return (
     <ResourceGroupHeaderContainer>
 
@@ -136,7 +136,7 @@ const ResourceGroupHeader = ({data, sortMethod, setModal}) => {
             {quickLinks.map((ql) => (
               <QuickLinkContainer key={ql.name}>
                 <ResourceLink data={resourcesByName[ql.name]} setModal={setModal}>
-                  <QuickLinkLink>
+                  <QuickLinkLink href={`/${ql.name}`} target="_blank" rel="noreferrer">
                     {ql.display}
                   </QuickLinkLink>
                 </ResourceLink>

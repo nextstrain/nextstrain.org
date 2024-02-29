@@ -14,7 +14,8 @@ const Container = styled.div`
   border-radius: 5px;
   padding: 10px;
   position: fixed;
-  width: max-content;
+  /* width: max-content; */
+  max-width: 420px; /* the sparkline width is 400px */
   left: ${(props) => props.x-100}px;
   top: ${(props) => props.y+15}px;
   z-index: 999;
@@ -27,17 +28,22 @@ const HelpText = styled.div`
   font-size: 16px;
 `
 
+const Title = styled.div`
+  font-family: monospace;
+  font-size: 16px;
+`
 
 /**
  *
  */
-export const Hover = ({dates, x, y}) => {
+export const Hover = ({data, x, y}) => {
   // console.log("<Hover>", x, y)
   return (
     <Container x={x} y={y}>
 
-      {dates.length} total snapshots, YY updates over the past two years:
-      <SparkLine versions={dates}/>
+      <Title>{data.name}</Title>
+      {data.dates.length} total snapshots, YY updates over the past two years:
+      <SparkLine versions={data.dates}/>
 
       <HelpText>
         Click to load latest dataset (in a new tab)
