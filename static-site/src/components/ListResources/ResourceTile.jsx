@@ -103,7 +103,7 @@ export const ResourceTile = ({data, setModal, wordLengths, previousName, lollipo
 
       <ResourceTileUpperSection>
 
-        <Lollipop x={lollipopXScale} date={data.lastUpdated}/>
+        <Lollipop x={lollipopXScale} date={data.lastUpdated} dates={data.dates}/>
 
         <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onShiftClick}>
           <Name name={data.name} hovered={hovered} wordLengths={wordLengths} previousName={previousName}/>
