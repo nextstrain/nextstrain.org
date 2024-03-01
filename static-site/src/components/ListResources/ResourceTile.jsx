@@ -6,32 +6,47 @@ import {Hover} from "./Hover.jsx";
 import { Lollipop } from "./Lollipop.jsx";
 
 
+/* Following is very ad-hoc */
+const nameFontSize = 16; // px
+const pixelsPerCharacter = 10.85; // presumably depends on the font the browser chooses?
+const versionSize = 55; // ???
+const lollipopWidth = 80;
+const gapSize = 10;
+export const _maxTileWidth = (names) => {
+  let max = 200; // pixels
+  for (const name of names) {
+    const px = name.length*pixelsPerCharacter;
+    if (px > max) max=px;
+  }
+  return max + lollipopWidth + versionSize + gapSize*2;
+}
+
+
 /**
  * <Name> is the element for a collection's title. It may or may not be a link.
  */
-function Name({name, hovered, wordLengths, previousName}) {
+function Name({name, displayName, hovered}) {
   const href = `/${name}`;
-  const words = name.split("/");
-  const prevWords = (previousName||"").split("/");
-  const j = hovered ? 0 : prevWords.map((word, i) => word === words[i]).findIndex((el) => !el);
-  const prettyName = words
-    .map((word, i) => i>=j ? word + ' '.repeat(wordLengths[i]-word.length) : ' '.repeat(wordLengths[i]))
-    .join("│") // ASCII 179
   return (
       <a href={href} target="_blank" rel="noreferrer"
-        style={{ fontSize: '1.8rem', fontFamily: 'monospace', whiteSpace: 'pre',
+        style={{ fontSize: `${nameFontSize}px`, fontFamily: 'monospace', whiteSpace: 'pre',
           color: hovered ? '#31586c' : '#5097BA'}}
       >
-        {prettyName}
+        {/* {prettyName} */}
+        {hovered ? displayName.hovered : displayName.default}
       </a>
   )
 }
+
+
+
 
 
 const ResourceTileContainer = styled.div`
   padding: 3px;
   /* background-color: aquamarine; */
   /* background-color: white; */
+  overflow: hidden;
   color: #4F4B50;
 `
 
@@ -39,7 +54,7 @@ const ResourceTileUpperSection = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  gap: 10px;
+  gap: ${gapSize}px;
   align-items: center;
   color: #4F4B50;
 `
@@ -69,7 +84,7 @@ function IconContainer({description, Icon, text, handleClick=undefined}) {
  * @param {*} param0 
  * @returns 
  */
-export const ResourceTile = ({data, setModal, wordLengths, previousName, lollipopXScale}) => {
+export const ResourceTile = ({data, setModal, lollipopXScale}) => {
 
   return (
     <ResourceTileContainer>
@@ -79,7 +94,7 @@ export const ResourceTile = ({data, setModal, wordLengths, previousName, lollipo
         <Lollipop x={lollipopXScale} date={data.lastUpdated} dates={data.dates}/>
 
         <ResourceLink data={data} setModal={setModal}>
-          <Name name={data.name} wordLengths={wordLengths} previousName={previousName}/>
+          <Name name={data.name} displayName={data.displayName}/>
         </ResourceLink>
 
         <IconContainer

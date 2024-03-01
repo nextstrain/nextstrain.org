@@ -10,7 +10,7 @@ import ListResources from "../components/ListResources/index";
 import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import GenericPage from "../layouts/generic-page";
-import { AnchorLink } from "../components/Datasets/pathogen-page-introduction";
+// import { AnchorLink } from "../components/Datasets/pathogen-page-introduction";
 
 
 const title = "Nextstrain-maintained pathogen analyses";
@@ -24,8 +24,6 @@ const abstract = (
     clicking the &ldquo;built with&rdquo; link at the top of the page.
     While we strive to keep datasets updated, there may be some staleness; the date when the dataset was updated can be found at the top of each visualisation.
     In particular, data with a datestamp in the table below <small>(YYYY-MM-DD)</small> reflects an analysis at a point in time.
-    <br/><br/>
-    <AnchorLink to={"search"} title={"Click here to scroll down to all Nextstrain-maintained pathogen analyses"} />.
   </>
 );
 

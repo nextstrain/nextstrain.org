@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable */ 
 import React, {memo, useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
 

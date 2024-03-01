@@ -11,7 +11,7 @@ import Select from 'react-select';
 import {Spinner} from './spinner';
 import {Showcase} from "./Showcase";
 import { ResourceModal } from "./ResourceModal";
-import { DateUpdatedSelector } from "./DateUpdatedSelector";
+// import { DateUpdatedSelector } from "./DateUpdatedSelector";
 import { ResourceGroup } from './ResourceGroup';
 import ScrollableAnchor from "react-scrollable-anchor";
 
@@ -30,7 +30,7 @@ function ListResources({apiQuery, dataType}) {
   useSortAndFilterData(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
 
-  console.log("resourceGroups", resourceGroups)
+  // console.log("resourceGroups", resourceGroups)
 
   /* Following useful to start with a single modal open */
   // useEffect( () => {

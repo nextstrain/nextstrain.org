@@ -43,7 +43,7 @@ export const Showcase = ({availableFilterOptions, setSelectedFilterOptions}) => 
   return (
     <div>
       <Byline>
-        Showcase datasets: click on any of these tiles to filter the available datasets
+        Showcase groups of datasets: click on any of these tiles to filter the available datasets
       </Byline>
       <ShowcaseContainer>
         {showcaseData.map((el) => (

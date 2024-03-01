@@ -57,8 +57,17 @@ export const useSortAndFilterData = (sortMethod, selectedFilterOptions, original
           nVersions: sortedDates.length,
         };
         store[groupName].push(resourceDetails)
+
+        console.log(Object.keys(store))
+
         return store;
       }
+    }
+
+    function sortGroups(groupA, groupB) {
+      return sortMethod === 'lastUpdated' ?
+        groupA.groupName < groupB.groupName : // YYYY-MM-DD strings are nicely sortable
+        groupA.groupName.toLowerCase() > groupB.groupName.toLowerCase();
     }
 
     /**
@@ -90,7 +99,9 @@ export const useSortAndFilterData = (sortMethod, selectedFilterOptions, original
 
     const partition = partitionBy(sortMethod);
     const partitions = Object.entries(data).reduce(partition, {});
-    const resourceGroups = Object.entries(partitions).map(makeGroup);
+    const resourceGroups = Object.entries(partitions)
+      .map(makeGroup)
+      .sort(sortGroups)
     setState(resourceGroups);
   }, [sortMethod, selectedFilterOptions, originalData, setState])
 }
@@ -125,6 +136,7 @@ export function useFilterOptions(resourceGroups) {
     const nCounts = Object.keys(counts).length;
     const options = Object.entries(counts)
       .sort((a,b) => a[1]<b[1] ? 1 : -1)
+      /* eslint-disable-next-line */
       .filter(([_, count]) => count!==nCounts) // filter out search options present in all datasets (not working, TODO XXX)
       .map(([word, count]) => {
         return {value: word, label: `${word} (${count})`}

@@ -11,7 +11,7 @@ const Container = styled.div`
   min-width: ${width}px;
 `
 
-export function Lollipop({x, date, dates}) {
+export function Lollipop({x, dates}) {
   // const cx = x(new Date(date));
   // const color = RAINBOW20[Math.floor(cx/(width+1) * 20)]
 
@@ -95,7 +95,7 @@ export function lollipopScale(x1, x2) {
   x._thresholds = thresholds;
   x._getX = getX;
 
-  const domMax = 0.001;
+  // const domMax = 0.001;
 
   // const y = d3.scaleLinear()
   //   .domain([0, domMax])

@@ -46,7 +46,7 @@ export const ResourceModal = ({data, dismissModal}) => {
    * I've previously not been able to use d3 to manipulate the DOM within Gatsby, but
    * the following seems to be working? It's a little bit buggy but that can be fixed
    */
-  const handleRef = useCallback((node) => {setRef(node)})
+  const handleRef = useCallback((node) => {setRef(node)}, [])
   useEffect(() => {
     const handleEsc = (event) => {
        if (event.key === 'Escape') {dismissModal()}

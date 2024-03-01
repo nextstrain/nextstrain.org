@@ -3,10 +3,9 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { MdCached, MdOutlineShare } from "react-icons/md";
-import { ResourceTile, ResourceLink } from "./ResourceTile.jsx"
+import { ResourceTile, ResourceLink, _maxTileWidth } from "./ResourceTile.jsx"
 import { lollipopScale } from "./Lollipop";
 import { quickLinkData } from "./Showcase";
-
 
 const nextstrainSidebarBorderColor = `rgb(204, 204, 204)`;
 
@@ -27,8 +26,9 @@ const ResourceTilesContainer = styled.div`
   really a problem with this CSS) and for some page widths the content overflows
   the <ResourceTileContainer>
   */
-  column-count: auto;
-  column-width: 400px;
+  /* column-count: 2; */
+  /* column-width: 400px; */
+  column-width: ${(props) => props.maxTileWidth}px;
   column-gap: 1em; /* 1em is default */
 
   /* The following doesn't have any transitions, and (AFAIK) transitions aren't possible
@@ -109,7 +109,7 @@ const ResourceGroupHeader = ({data, sortMethod, setModal}) => {
 
   const resourcesByName = Object.fromEntries(data.resources.map((r) => [r.name, r]));
   const quickLinks = quickLinkData.filter((ql) => !!resourcesByName[ql.name])
-  console.log("quickLinks", quickLinks)
+
   return (
     <ResourceGroupHeaderContainer>
 
@@ -171,27 +171,27 @@ export const ResourceGroup = ({data, sortMethod, setModal}) => {
   const collapsible = data.resources.length > collapsibleThreshold;
   const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
   const displayResources = isCollapsed ? data.resources.slice(0, collapsibleThreshold) : data.resources;
+  _setDisplayName(displayResources)
 
-  const wordLengths = _wordLengths(data.resources.map((d) => d.name))
+  const maxTileWidth = _maxTileWidth(displayResources.map((r) => r.displayName.default));
+
   const lollipopXScale = lollipopScale(data.firstUpdated, data.lastUpdated);
   return (
     <ResourceGroupContainer>
       <ResourceGroupHeader data={data} sortMethod={sortMethod} setModal={setModal}
         isCollapsed={isCollapsed} setCollapsed={setCollapsed}
       />
-      <ResourceTilesContainer>
+      <ResourceTilesContainer maxTileWidth={maxTileWidth}>
         {/* what to do when there's only one tile in a group? */}
-        {displayResources.map((d, i) => (
-          <ResourceTile data={d} setModal={setModal} key={d.name}
-                        wordLengths={wordLengths} previousName={i===0 ? null : data.resources[i-1].name}
-                        lollipopXScale={lollipopXScale}/>
+        {displayResources.map((d) => (
+          <ResourceTile data={d} setModal={setModal} key={d.name} lollipopXScale={lollipopXScale}/>
         ))}
       </ResourceTilesContainer>
 
       {collapsible && (
         <CollapseContainer onClick={() => setCollapsed(!isCollapsed)}>
           {isCollapsed ?
-            String.fromCharCode(9660)+` show ${data.resources.length - collapsibleThreshold} more datasets` : 
+            String.fromCharCode(9658)+` show ${data.resources.length - collapsibleThreshold} more datasets` : 
             String.fromCharCode(9650)+' collapse datasets'}
         </CollapseContainer>
       )}
@@ -202,7 +202,7 @@ export const ResourceGroup = ({data, sortMethod, setModal}) => {
 
 
 
-function NextstrainLogo(name) {
+function NextstrainLogo() {
   /**
    * TODO -- map the resource collection name to a suitable logo.
    * Currently we are only using core datasets
@@ -231,13 +231,25 @@ function IconContainer({description, Icon, text, handleClick=undefined, selected
 }
 
 
-function _wordLengths(names) {
-  const wordLengths = []
-  for (const name of names) {
-    for (const [i, word] of name.split('/').entries()) { // TODO -- do this in a more central place
-      if (i>=wordLengths.length) wordLengths.push(0);
-      if (wordLengths[i]<word.length) wordLengths[i]=word.length;
+function _setDisplayName(resources) {
+  /**
+   * Given successive nameParts:
+   *      [ flu, seasonal, h1n1pdm]   
+   *      [ flu, seasonal, h3n2]
+   * Change the second entry to ~hide flu & seasonal
+   */
+  const sep = "│"; // ASCII 179
+
+  resources.forEach((r, i) => {
+    let name;
+    if (i===0) { /* We want this for the first element in _each column_ but I don't know how to do that */
+      name = r.nameParts.join(sep);
+    } else {
+      name = r.nameParts
+        .map((word, j) => word === resources[i-1].nameParts[j])
+        .map((match, j) => match ? ' '.repeat(r.nameParts[j].length) : r.nameParts[j])
+        .join(sep);
     }
-  }
-  return wordLengths;
+    r.displayName = {hovered: r.nameParts.join(sep), default: name}
+  })
 }

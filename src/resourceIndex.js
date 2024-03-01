@@ -136,19 +136,31 @@ class ListResources {
     // process query params here?
   }
   get data() {
+
+    /**
+     * TODO - don't hardcode these, use our routing rules instead. TODO XXX
+     */
+    const skipFirstWords = [
+      "zika-test", "zika-tutorial-metadata-via-api", "zika-v2",
+      "ncovRegional", "ncov-country-dta-w-frequencies", "ncov-priorities", "ncov-with-priorities", "ncovRefocus","ncov-test", "ncov-2020-01-24",
+      "seattle-flu-mock",
+    ]
+
     /* Subset for dev purposes (prior to API working properly) to flu datasets, zika and rsv */
     const datasets = Object.fromEntries(
       Object.entries(resources.core.dataset).map(([name, data]) => {
-        if (['zika', 'flu', 'rsv', 'dengue'].includes(name.split('/')[0])) {
-          return [name, data.versions.map((v) => v.date)];
-        }
-        return undefined;
+        // if (['zika', 'flu', 'rsv', 'dengue'].includes(name.split('/')[0])) {
+        //   return [name, data.versions.map((v) => v.date)];
+        // }
+        // return undefined;
+        return [name, data.versions.map((v) => v.date)];
       })
       .filter((d) => {
         /* This filtering should be applied upstream to the index creation script */
         if (d && d[0].endsWith('/frequencies')) return undefined;
         if (d && d[0].endsWith('/2019-09')) return undefined;
         if (d && d[0].startsWith('zika/')) return undefined;
+        if (d && skipFirstWords.includes(d[0].split("/")[0])) return undefined;
         return d
       })
       .filter((el) => !!el)
