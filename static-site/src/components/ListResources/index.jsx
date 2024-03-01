@@ -91,8 +91,13 @@ function useDataFetch() {
   useEffect(() => {
     console.log("ListResources::useDataFetch::useEffect")
     async function fetchAndParse() {
-      const url = `http://localhost:5000/list-resources`;
-      console.log(`Fetching from ${url}`)
+
+
+      // const url = `http://localhost:5000/list-resources`;
+      // console.log(`Fetching from ${url}`)
+
+      const url = `/list-resources`;
+
       try {
         setState(
           await fetch(url)

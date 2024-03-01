@@ -58,8 +58,6 @@ export const useSortAndFilterData = (sortMethod, selectedFilterOptions, original
         };
         store[groupName].push(resourceDetails)
 
-        console.log(Object.keys(store))
-
         return store;
       }
     }
