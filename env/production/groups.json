@@ -238,5 +238,9 @@
   {
     "name": "ESFLU",
     "isPublic": true
+  },
+  {
+    "name": "UVIP",
+    "isPublic": false
   }
 ]
