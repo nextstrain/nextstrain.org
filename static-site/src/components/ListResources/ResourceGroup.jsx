@@ -99,7 +99,7 @@ const CollapseContainer = styled.div`
 
 const ResourceGroupHeader = ({data, sortMethod, setModal}) => {
 
-  const title = sortMethod === 'alphabetical' ? data.groupName : `Datasets last updated ${data.groupName}`
+  const title = sortMethod === 'alphabetical' ? data.groupName : `All datasets last updated ${data.groupName}`
 
   let lastUpdatedText = '';
   if (sortMethod==='alphabetical') {

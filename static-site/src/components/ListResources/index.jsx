@@ -120,9 +120,9 @@ function SortOptions({sortMethod, changeSortMethod}) {
   }
   return (
     <SortContainer>
-      Group resources by: 
-      <input type="radio" onChange={onChangeValue} value="alphabetical" checked={"alphabetical"===sortMethod} /> alphabetical
-      <input type="radio" onChange={onChangeValue} value="lastUpdated" checked={"lastUpdated"===sortMethod} /> lastUpdated
+      Group and sort resources by: 
+      <input type="radio" onChange={onChangeValue} value="alphabetical" checked={"alphabetical"===sortMethod} /> pathogen (sorted alphabetically)
+      <input type="radio" onChange={onChangeValue} value="lastUpdated" checked={"lastUpdated"===sortMethod} /> most recently updated (group by last updated date)
     </SortContainer>
   )
 }
