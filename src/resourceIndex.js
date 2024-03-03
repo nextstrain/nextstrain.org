@@ -144,6 +144,7 @@ class ListResources {
       "zika-test", "zika-tutorial-metadata-via-api", "zika-v2",
       "ncovRegional", "ncov-country-dta-w-frequencies", "ncov-priorities", "ncov-with-priorities", "ncovRefocus","ncov-test", "ncov-2020-01-24",
       "seattle-flu-mock",
+      "seasonal-flu", "avian-flu", // these exist in preparation for an upcoming namespace shift
     ]
 
     /* Subset for dev purposes (prior to API working properly) to flu datasets, zika and rsv */
