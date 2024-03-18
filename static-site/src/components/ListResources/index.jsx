@@ -15,6 +15,7 @@ import {Spinner} from '../Spinner/Spinner';
 import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
+import {ResourceModal, SetModalContext} from "./Modal";
 
 /**
  * A React component to fetch data and display the available resources,
@@ -31,10 +32,11 @@ function ListResources({sourceId, versioned=true, elWidth}) {
   const [resourceGroups, setResourceGroups] = useState([]);
   useSortAndFilter(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
+  const [modal, setModal ] = useState(null);
 
   if (dataError) {
     return (
-      <ErrorContainer>
+      <ErrorContainer>  
         {"Whoops - listing resources isn't working!"}
         <br/>
         {'Please '}<a href="/contact" style={{fontWeight: 300}}>get in touch</a>{" if this keeps happening"}
@@ -56,20 +58,26 @@ function ListResources({sourceId, versioned=true, elWidth}) {
 
       <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
 
-      <ScrollableAnchor id={"list"}>
-        <div>
-          {resourceGroups.map((group) => (
-            <ResourceGroup key={group.groupName}
-              data={group}
-              elWidth={elWidth}
-              numGroups={resourceGroups.length}
-              sortMethod={sortMethod}
-            />
-          ))}
-        </div>
-      </ScrollableAnchor>
+      <SetModalContext.Provider value={setModal}>
+        <ScrollableAnchor id={"list"}>
+          <div>
+            {resourceGroups.map((group) => (
+              <ResourceGroup key={group.groupName}
+                data={group}
+                elWidth={elWidth}
+                numGroups={resourceGroups.length}
+                sortMethod={sortMethod}
+              />
+            ))}
+          </div>
+        </ScrollableAnchor>
+      </SetModalContext.Provider>
 
       <Tooltip style={{fontSize: '1.6rem'}} id="listResourcesTooltip"/>
+
+      { versioned && (
+        <ResourceModal data={modal} dismissModal={() => setModal(null)}/>
+      )}
 
     </ListResourcesContainer>
   )
