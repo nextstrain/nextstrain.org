@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, {useState, useCallback, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory } from "react-icons/md";
+import { SetModalContext } from './Modal';
 
 
 /**
@@ -83,6 +84,8 @@ export function IconContainer({Icon, text, handleClick=undefined, color="#aaa"})
  * @returns 
  */
 export const IndividualResource = ({data, isMobile}) => {
+  const setModal = useContext(SetModalContext);
+  const setThisModal = useCallback(() => setModal(data), [setModal, data]);
   const ref = useRef(null);
   const [topOfColumn, setTopOfColumn] = useState(false);
   useEffect(() => {
@@ -98,7 +101,7 @@ export const IndividualResource = ({data, isMobile}) => {
 
       <FlexRow>
 
-        <ResourceLinkWrapper data={data}>          
+        <ResourceLinkWrapper onShiftClick={setThisModal}>
           <Name displayName={data.displayName} href={data.url} topOfColumn={topOfColumn}/>
         </ResourceLinkWrapper>
 
@@ -107,6 +110,7 @@ export const IndividualResource = ({data, isMobile}) => {
             <IconContainer
               Icon={MdHistory}
               text={data.nVersions}
+              handleClick={setThisModal}
             />
           </TooltipWrapper>
         )}
@@ -122,15 +126,21 @@ export const IndividualResource = ({data, isMobile}) => {
  * Wrapper component which monitors for mouse-over events and injects a
  * `hovered: boolean` prop into the child.
  */
-export const ResourceLinkWrapper = ({children}) => {
+export const ResourceLinkWrapper = ({children, onShiftClick}) => {
   const [hovered, setHovered] = useState(false);
   const onMouseOver = useCallback(() => {
     setHovered(true)
   },[])
   const onMouseOut = useCallback(() => setHovered(false), [setHovered]);
+  const onClick = useCallback((e) => {
+    if (e.shiftKey) {
+      onShiftClick();
+      e.preventDefault(); // child elements (e.g. <a>) shouldn't receive the click
+    }
+  }, [onShiftClick])
   return (
     <div>
-      <div onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+      <div onMouseOver={onMouseOver} onMouseOut={onMouseOut}  onClick={onClick}>
         {React.cloneElement(children, { hovered })}
       </div>
     </div>
