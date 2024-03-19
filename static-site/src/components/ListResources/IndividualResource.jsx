@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { MdHistory } from "react-icons/md";
 import { SetModalContext } from './Modal';
 
+export const LINK_COLOR = '#5097BA'
+export const LINK_HOVER_COLOR = '#31586c'
+
 
 /**
  * These variables allow calculation of the width of <IndividualResource>,
@@ -22,11 +25,11 @@ export const getMaxResourceWidth = (names) => {
   return nameWidth + gapSize + iconWidth;
 }
 
-const ResourceLink = styled.a`
+export const ResourceLink = styled.a`
   font-size: ${resourceFontSize}px;
   font-family: monospace;
   white-space: pre; /* don't collapse back-to-back spaces */
-  color: ${(props) => props.hovered ? '#31586c' : '#5097BA'} !important;
+  color: ${(props) => props.hovered ? LINK_HOVER_COLOR : LINK_COLOR} !important;
   text-decoration: none !important;
 `;
 
@@ -63,14 +66,18 @@ export function TooltipWrapper({description, children}) {
   )
 } 
 
-export function IconContainer({Icon, text, handleClick=undefined, color="#aaa"}) {
-  const iconProps = {size: "1.2em", color};
+export function IconContainer({Icon, text, handleClick=undefined, color=undefined, hoverColor=undefined}) {
+  const [hovered, setHovered] = useState(false);
+  const defaultColor = '#aaa';
+  const defaultHoverColor = "rgb(79, 75, 80)";
+  const col = hovered ? (hoverColor || defaultHoverColor) : (color || defaultColor);
+  const iconProps = {size: "1.2em", color: col};
   const hasOnClick = typeof handleClick === 'function';
+  const cursor = hasOnClick ? 'pointer' : 'auto';
+  const style = {display: 'flex', color: col, alignItems: 'center', gap: '3px', cursor};
+
   return (
-    <div
-      style={{display: 'flex', color, alignItems: 'center', gap: '3px', cursor: hasOnClick?'pointer':'auto'}}
-      onClick={hasOnClick ? handleClick : ()=>{}}
-    >
+    <div style={style} onClick={hasOnClick ? handleClick : undefined} onMouseOver={() => {setHovered(true)}} onMouseOut={() => setHovered(false)}>
       <Icon {...iconProps}/>
       {text}
     </div>

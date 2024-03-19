@@ -25,8 +25,15 @@ import {ResourceModal, SetModalContext} from "./Modal";
  * will be expanded. Similarly, we define versioned: boolean here in the UI whereas
  * this may be better expressed as a property of the API response.
  */
-function ListResources({sourceId, versioned=true, elWidth}) {
-  const [originalData, dataError] = useDataFetch(sourceId, versioned);
+function ListResources({
+  sourceId,
+  versioned=true,
+  elWidth,
+  quickLinks,
+  defaultGroupLinks=false, /* should the group name itself be a url? (which we let the server redirect) */
+  groupDisplayNames, /* mapping from group name -> display name */
+}) {
+  const [originalData, dataError] = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
   const [resourceGroups, setResourceGroups] = useState([]);
@@ -63,7 +70,7 @@ function ListResources({sourceId, versioned=true, elWidth}) {
           <div>
             {resourceGroups.map((group) => (
               <ResourceGroup key={group.groupName}
-                data={group}
+                data={group} quickLinks={quickLinks}
                 elWidth={elWidth}
                 numGroups={resourceGroups.length}
                 sortMethod={sortMethod}

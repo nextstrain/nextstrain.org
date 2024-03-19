@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory, MdFormatListBulleted, MdChevronRight } from "react-icons/md";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
-import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer } from "./IndividualResource.jsx"
+import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
+  ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource.jsx"
+import { SetModalContext } from "./Modal.jsx";
 
-const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed}) => {
+const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}) => {
+  const setModal = useContext(SetModalContext);
+  /* Filter the known quick links to those which appear in resources of this group */
+  const resourcesByName = Object.fromEntries(data.resources.map((r) => [r.name, r]));
+  const quickLinksToDisplay = (quickLinks || []).filter((ql) => !!resourcesByName[ql.name] || ql.groupName===data.groupName)
 
   return (
     <HeaderContainer>
@@ -15,9 +21,17 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
       <FlexColumnContainer>
         
         <HeaderRow>
-          <span style={{ fontSize: '2rem', fontWeight: '700'}}>
-            {data.groupName}
-          </span>
+          {data.groupUrl ? (
+            <TooltipWrapper description={`Click to load the default (and most recent) analysis for ${data.groupDisplayName || data.groupName}`}>
+              <GroupLink style={{ fontSize: '2rem', fontWeight: '500'}} href={data.groupUrl} target="_blank" rel="noreferrer">
+                {data.groupDisplayName || data.groupName}
+              </GroupLink>
+            </TooltipWrapper>
+          ) : (
+            <span style={{ fontSize: '2rem', fontWeight: '500'}}>
+              {data.groupDisplayName || data.groupName}
+            </span>
+          )}
           {/* Currently we hide the byline on mobile, but we could render it as a separate row */}
           {!isMobile && (
             <TooltipWrapper description={`The most recently updated datasets in this group were last updated on ${data.lastUpdated}` +
@@ -44,21 +58,40 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
           )}
         </HeaderRow>
 
-        {collapsible && (
-          <div style={{display: 'flex', width: '100%'}}>
-          <CollapseContainer onClick={() => setCollapsed(!isCollapsed)}>
-            <Rotate rotate={isCollapsed ? '0' : '90'}>
-              <MdChevronRight size="30px"/>
-            </Rotate>
-            {isCollapsed ? (
-              <TooltipWrapper description={`For brevity we're only showing a subset of ${data.groupName} resources - click to show them all`}>
-                {` show ${data.resources.length - resourcesToShowWhenCollapsed} more datasets`}
+        {!!quickLinksToDisplay.length && (
+          <HeaderRow style={{fontSize: '1.6rem', paddingTop: '5px', whiteSpace: 'nowrap'}}>
+            { !isMobile && (
+              <TooltipWrapper description={"Quick links are a hand-curated selection of datasets in this group"}>
+                Quick links:
               </TooltipWrapper>
-            ) : (
-              ' collapse datasets'
             )}
-          </CollapseContainer>
-          </div>
+            {quickLinksToDisplay.map((ql) => (
+              <div style={{paddingLeft: '5px'}} key={ql.name}>
+                <ResourceLinkWrapper onShiftClick={() => {setModal(resourcesByName[ql.name])}}>
+                  <ResourceLink href={`/${ql.name}`} target="_blank" rel="noreferrer">
+                    {ql.display}
+                  </ResourceLink>
+                </ResourceLinkWrapper>
+              </div>
+            ))}
+          </HeaderRow>
+        )}
+
+        {collapsible && (
+          <Clickable onClick={() => setCollapsed(!isCollapsed)}>
+            <HeaderRow style={{alignItems: 'center', fontSize: '1.6rem', paddingLeft: '0px', gap: '0px'}}>
+              <Rotate rotate={isCollapsed ? '0' : '90'}>
+                <MdChevronRight size="30px"/>
+              </Rotate>
+              {isCollapsed ? (
+                <TooltipWrapper description={`For brevity we're only showing a subset of ${data.groupName} resources - click to show them all`}>
+                  {` show ${data.resources.length - resourcesToShowWhenCollapsed} more datasets`}
+                </TooltipWrapper>
+              ) : (
+                ' collapse datasets'
+              )}
+            </HeaderRow>
+          </Clickable>
         )}
 
       </FlexColumnContainer>
@@ -70,7 +103,7 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
 /**
  * Displays a single resource group (e.g. a single pathogen)
  */
-export const ResourceGroup = ({data, elWidth, numGroups, sortMethod}) => {
+export const ResourceGroup = ({data, elWidth, numGroups, sortMethod, quickLinks}) => {
   const {collapseThreshold, resourcesToShowWhenCollapsed} = collapseThresolds(numGroups);
   const collapsible = data.resources.length > collapseThreshold;
   const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
@@ -83,7 +116,7 @@ export const ResourceGroup = ({data, elWidth, numGroups, sortMethod}) => {
 
   return (
     <ResourceGroupContainer>
-      <ResourceGroupHeader data={data}
+      <ResourceGroupHeader data={data} quickLinks={quickLinks}
         setCollapsed={setCollapsed} collapsible={collapsible}
         isCollapsed={isCollapsed} resourcesToShowWhenCollapsed={resourcesToShowWhenCollapsed}
         isMobile={isMobile}
@@ -149,15 +182,11 @@ const FlexColumnContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-grow: 10;
+  overflow: hidden;
 `
 
-const CollapseContainer = styled.div`
-  /* flexbox used to vertically align the icon & text */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+const Clickable = styled.div`
   cursor: pointer;
-  font-size: 1.6rem;
 `;
 
 const Rotate = styled.div`
@@ -169,6 +198,13 @@ const Rotate = styled.div`
   transform: rotate(${(props) => props.rotate}deg);
 `;
 
+const GroupLink = styled.a`
+  color: ${LINK_COLOR} !important;
+  text-decoration: none !important;
+  &:hover {
+    color: ${LINK_HOVER_COLOR} !important;
+  }
+`
 
 function NextstrainLogo() {
   /**

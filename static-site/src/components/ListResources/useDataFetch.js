@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
  * response, however in the future we may shift this to the API response and it
  * may vary across the resources returned.
  */
-export function useDataFetch(sourceId, versioned) {
+export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames) {
   const [state, setState] = useState(undefined);
   const [error, setError] = useState(undefined);
   useEffect(() => {
@@ -36,8 +36,8 @@ export function useDataFetch(sourceId, versioned) {
       resource path). This grouping is constant for all UI options so we do it a
       single time following the data fetch */
       try {
-        const partitions = partitionByPathogen(pathVersions, pathPrefix, versioned)
-        setState(groupsFrom(partitions, pathPrefix));
+        const partitions = partitionByPathogen(pathVersions, pathPrefix, versioned);
+        setState(groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames));
       } catch (err) {
         console.error(`Error while parsing fetched data`);
         console.error(err);
@@ -46,7 +46,7 @@ export function useDataFetch(sourceId, versioned) {
     }
 
     fetchAndParse();
-  }, [sourceId, versioned]);
+  }, [sourceId, versioned, defaultGroupLinks, groupDisplayNames]);
   return [state, error]
 }
 
@@ -94,21 +94,28 @@ function partitionByPathogen(pathVersions, pathPrefix, versioned) {
  * Turn the provided partitions (an object mapping groupName to an array of resources)
  * into an array of groups.
  */
-function groupsFrom(partitions, pathPrefix) {
+function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames) {
   return Object.entries(partitions).map(makeGroup)
 
   function makeGroup([groupName, resources]) {
     const groupInfo = {
       groupName: groupName,
-      groupUrl: `${pathPrefix}${groupName}`,
       nResources: resources.length,
       nVersions: resources.reduce((total, r) => r.nVersions ? total+r.nVersions : total, 0) || undefined,
       lastUpdated: resources.map((r) => r.lastUpdated).sort().at(-1),
       resources,
     }
+    /* add optional properties */
+    if (defaultGroupLinks) {
+      groupInfo.groupUrl = `/${pathPrefix}${groupName}`;
+    }
+    if (groupDisplayNames?.[groupName]) {
+      groupInfo.groupDisplayName = groupDisplayNames[groupName];
+    }
     return groupInfo;
   }
 }
+
 
 /**
  * Generally an alphabetical sorting of URL paths is a nice way to view the datasets,
