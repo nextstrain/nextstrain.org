@@ -112,7 +112,7 @@ export const ResourceGroup = ({data, elWidth, numGroups, sortMethod, quickLinks}
   /* isMobile: boolean determines whether we expose snapshots, as we hide them on small screens */
   const isMobile = elWidth < 500;
 
-  const maxResourceWidth = getMaxResourceWidth(displayResources.map((r) => r.displayName.default));
+  const maxResourceWidth = getMaxResourceWidth(displayResources);
 
   return (
     <ResourceGroupContainer>

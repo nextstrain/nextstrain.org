@@ -82,7 +82,9 @@ function partitionByPathogen(pathVersions, pathPrefix, versioned) {
       resourceDetails.lastUpdated = sortedDates.at(-1);
       resourceDetails.dates = sortedDates;
       resourceDetails.nVersions = sortedDates.length;
+      resourceDetails.updateCadence = updateCadence(sortedDates.map((date)=> new Date(date)));
     }
+
     store[groupName].push(resourceDetails)
 
     return store;
@@ -132,4 +134,54 @@ function _sortableName(words) {
     return word
   })
   return w.join("/")
+}
+
+
+const msInADay = 1000*60*60*24
+
+/**
+ * Considers the updates over the past two years and uses a heuristic based on
+ * the median interval between updates to provide a summary of how frequently
+ * the resource has been updated. Also considers the consistency (essentially
+ * variance) of these updates, and whether the dataset continues to be updated.
+ */
+function updateCadence(dateObjects) {
+  const threshold = new Date(); // today
+  threshold.setFullYear(threshold.getFullYear()-2)
+
+  const intervals = dateObjects.reduce((intervals, date, idx) => {
+    if (idx===0 || date < threshold) return intervals;
+    // get num days between subsequent dates, ignoring complexities such as DST
+    intervals.push(Math.round((date - dateObjects[idx-1])/msInADay))
+    return intervals;
+  }, []).sort((a, b) => a-b);
+
+  if (!intervals.length) return {summary: "rarely", description: "This dataset hasn't seen any updates in the past 2 years."};
+
+  if (intervals.length < 3) {
+    return {summary: "rarely", description: `This dataset has been updated ${intervals.length+1} times in the past 2 years.`};
+  }
+
+  const lastUpdateDaysAgo = Math.round(((new Date()) - dateObjects.at(-1))/msInADay);
+  const median = intervals[Math.floor(intervals.length/2)];
+  const mad = intervals.map((x) => Math.abs(x-median)).sort((a, b) => a-b)[Math.floor(intervals.length/2)]
+
+  let description;
+  description = `Over the past two years this dataset's been updated ${mad*2 > median ? 'irregularly' : 'consistently'} every `;
+  description += median===1 ? '~day' : `~${median} days`;
+  if (lastUpdateDaysAgo > median*3) description+=", however it hasn't been updated for a while";
+  description += '.';
+
+  if (median <= 1) {
+    return {summary: "daily", description};
+  } else if (median < 4) {
+    return {summary: "every few days", description};
+  } else if (median < 10) {
+    return {summary: "weekly", description};
+  } else if (median < 18) {
+    return {summary: "fortnightly", description};
+  } else if (median < 40) {
+    return {summary: "monthly", description};
+  }
+  return {summary: "rarely", description};
 }

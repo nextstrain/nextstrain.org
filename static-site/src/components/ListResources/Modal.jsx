@@ -45,13 +45,18 @@ export const ResourceModal = ({data, dismissModal}) => {
         <CloseIcon onClick={dismissModal}/>
         <Title>{data.name.replace(/\//g, "│")}</Title>
 
-        <a href={`/${data.name}`}  target="_blank" rel="noreferrer noopener">
-          Click to load the latest available snapshot
-        </a>
-        <p/>
-        <Bold>
-          {`${data.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
-        </Bold>
+        <div style={{paddingBottom: '5px'}}>
+          <Bold>
+            {`${data.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
+          </Bold>
+          <a style={{fontSize: '1.8rem', paddingLeft: '10px'}}
+            href={`/${data.name}`}  target="_blank" rel="noreferrer noopener">
+            (click to view the latest available snapshot)
+          </a>
+        </div>
+        <div>
+          {data.updateCadence.description}
+        </div>
 
         <div ref={handleRef} /> {/* d3 controlled div */}
 
