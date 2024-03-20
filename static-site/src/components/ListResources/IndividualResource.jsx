@@ -14,15 +14,19 @@ export const LINK_HOVER_COLOR = '#31586c'
  * is nicely aligned. There are other ways (e.g. querying the DOM) but
  * this is simpler and seems to be working well.
  */
-const [resourceFontSize, pxPerChar] = [16, 10];
-const iconWidth = 50; // including text
+const [resourceFontSize, namePxPerChar, summaryPxPerChar] = [16, 10, 8];
+const iconWidth = 20; // not including text
 const gapSize = 10;
-export const getMaxResourceWidth = (names) => {
-  const nameWidth = names.reduce((w, n) => {
-    const _w = n.length*pxPerChar;
+export const getMaxResourceWidth = (displayResources) => {
+  return displayResources.reduce((w, r) => {
+    /* add the pixels for the display name */
+    let _w = r.displayName.default.length * namePxPerChar;
+    if (r.nVersions) {
+      _w += gapSize + iconWidth;
+      _w += ((r?.updateCadence?.summary?.length || 0) + 5 + String(r.nVersions).length)*summaryPxPerChar;
+    }
     return _w>w ? _w : w;
-  }, 200); // 200 is the minimum
-  return nameWidth + gapSize + iconWidth;
+  }, 200); // 200 (pixels) is the minimum
 }
 
 export const ResourceLink = styled.a`
@@ -113,12 +117,18 @@ export const IndividualResource = ({data, isMobile}) => {
         </ResourceLinkWrapper>
 
         {data.versioned && !isMobile && (
-          <TooltipWrapper description={`${data.nVersions} snapshots of this dataset available (click to see them)`}>
+          <TooltipWrapper description={
+            data.updateCadence.description +
+            "<br/>"+
+            `In total there are ${data.nVersions} snapshots of this dataset available (click to see them).`
+          }>
+            <div style={{fontSize: "1.6rem"}}>
             <IconContainer
               Icon={MdHistory}
-              text={data.nVersions}
+              text={`${data.updateCadence.summary} (n=${data.nVersions})`}
               handleClick={setThisModal}
             />
+            </div>
           </TooltipWrapper>
         )}
 
