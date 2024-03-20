@@ -8,7 +8,7 @@ import {
 import ListResources from "../components/ListResources/index";
 import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
-import {coreQuickLinks, coreGroupDisplayNames} from "../../content/resource-listing.yaml";
+import {coreQuickLinks, coreGroupDisplayNames, coreShowcase} from "../../content/resource-listing.yaml";
 
 const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (
@@ -37,6 +37,7 @@ class Index extends React.Component {
 
         <HugeSpacer/>
         <ListResources sourceId="core" resourceType="dataset"
+          showcase={coreShowcase}
           quickLinks={coreQuickLinks} defaultGroupLinks groupDisplayNames={coreGroupDisplayNames}/>
         <HugeSpacer/>
       </GenericPage>

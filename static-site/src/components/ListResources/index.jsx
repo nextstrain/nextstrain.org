@@ -16,6 +16,7 @@ import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalContext} from "./Modal";
+import { Showcase, useShowcaseCards} from "./Showcase";
 
 /**
  * A React component to fetch data and display the available resources,
@@ -32,8 +33,10 @@ function ListResources({
   quickLinks,
   defaultGroupLinks=false, /* should the group name itself be a url? (which we let the server redirect) */
   groupDisplayNames, /* mapping from group name -> display name */
+  showcase, /* showcase cards */
 }) {
   const [originalData, dataError] = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
+  const showcaseCards = useShowcaseCards(showcase, originalData);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
   const [resourceGroups, setResourceGroups] = useState([]);
@@ -61,6 +64,9 @@ function ListResources({
 
   return (
     <ListResourcesContainer>
+
+      <Showcase cards={showcaseCards} setSelectedFilterOptions={setSelectedFilterOptions}/>
+
       <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
       <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
