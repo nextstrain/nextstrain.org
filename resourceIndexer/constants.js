@@ -1,6 +1,15 @@
-export const DATESTAMP_REGEX = /_\d{4}-\d{2}-\d{2}/;
+export const DATESTAMP_REGEXES = [
+  /_\d{4}-\d{2}-\d{2}/,
+  /_\d{4}-\d{2}/, /* used in some influenza datasets */
+]
 
-export const INVALID_AUSPICE_PATTERNS = [/_seq\.json$/, /_sequences\.json$/, /_entropy\.json$/, /_titers\.json$/];
+export const INVALID_AUSPICE_PATTERNS = [
+  /_seq\.json$/,
+  /_sequences\.json$/,
+  /_entropy\.json$/,
+  /_titers\.json$/,
+  /_frequencies\.json$/, /* historically used for flu analyses outside of auspice */
+];
 
 /**
  * These patterns can be used to classify files which are potentially valid
