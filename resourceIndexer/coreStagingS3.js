@@ -1,5 +1,5 @@
 import { SOURCE, VALID_AUSPICE_PATTERNS, INVALID_AUSPICE_PATTERNS,
-  DATESTAMP_REGEX, SIDECAR_TYPES } from './constants.js';
+  DATESTAMP_REGEXES, SIDECAR_TYPES } from './constants.js';
 import { collectInventory } from './inventory.js';
 import { remapCoreUrl } from "./coreUrlRemapping.js";
 
@@ -8,7 +8,7 @@ import { remapCoreUrl } from "./coreUrlRemapping.js";
  * historical record of work over the years, but this isn't really what we want
  * to display to users. As some examples:
  *    - Files which don't match a resource to list should be excluded
- *    - Datestamped files (i.e. _YYYY-MM-DD in the filename) are excluded
+ *    - Datestamped files (e.g. _YYYY-MM-DD in the filename) are excluded
  *      (we use S3 versioning instead)
  * 
  * If the s3 object is to be excluded we return false here.
@@ -70,7 +70,7 @@ function categoriseCoreObjects(item, staging) {
 
   // We don't have narratives on the core/staging buckets, so all that's left is
   // to check if the key looks like a valid auspice file
-  const auspiceFileInfo = auspiceFile(key);
+  const auspiceFileInfo = auspiceFile(key, staging);
   if (!auspiceFileInfo) return false
   item.resourceType = 'dataset';
   item.subresourceType = auspiceFileInfo.subresourceType;
@@ -90,8 +90,12 @@ function categoriseCoreObjects(item, staging) {
  * Returns false if the filename doesn't appear to be an auspice dataset/sidecar file
  * Otherwise returns an object with properties subresourceType and urlPath
  */
-function auspiceFile(filename) {
-  if (filename.match(DATESTAMP_REGEX)) return false;
+function auspiceFile(filename, staging) {
+  if (!staging) { /* only filter out datasets with a datestamp for the core (versioned) bucket */
+    for (const r of DATESTAMP_REGEXES) {
+      if (filename.match(r)) return false;
+    }
+  }
   for (const pattern of INVALID_AUSPICE_PATTERNS) {
     if (filename.match(pattern)) return false;
   }
@@ -282,10 +286,11 @@ export const coreS3Data = {
 
 export const stagingS3Data = {
   name: 'staging',
-  async collect({local}) {
+  async collect({local, save}) {
     return await collectInventory({
       name: this.name,
       local,
+      save,
       inventoryBucket: "nextstrain-inventories",
       inventoryPrefix: "nextstrain-staging/config-v1/"
     })
