@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.6",
+    "d3": "^7.9.0",
     "gatsby": "^2.32.13",
     "gatsby-plugin-catch-links": "^2.1.24",
     "gatsby-plugin-feed": "^2.3.26",
@@ -56,6 +57,7 @@
     "react-share": "^1.15.1",
     "react-styled-flexboxgrid": "^2.6.0",
     "react-tooltip": "^4.2.10",
+    "react-tooltip-v5": "npm:react-tooltip@^5.26.3",
     "react-tweet-embed": "^1.1.0",
     "react-twitter-widgets": "^1.4.0",
     "react-virtualized": "^9.22.3",

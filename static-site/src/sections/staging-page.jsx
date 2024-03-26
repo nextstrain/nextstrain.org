@@ -7,14 +7,13 @@ import {
 import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
+import ListResources from "../components/ListResources/index";
 
 const title = "Staging Data";
 const abstract = (
   <>
     Staging datasets & narratives are intended primarily for internal (Nextstrain team) usage.
     They should be considered unreleased and/or out of date; they should not be used to draw scientific conclusions.
-    <p/>
-    The listing of these resources is currently not available.
   </>
 );
 
@@ -53,7 +52,11 @@ class Index extends React.Component {
             {abstract}
           </splashStyles.CenteredFocusParagraph>
         </FlexCenter>
-        <HugeSpacer /> <HugeSpacer />
+        <HugeSpacer />
+
+        <ListResources sourceId="staging" resourceType="dataset" versioned={false}/>
+
+        <HugeSpacer />
 
       </GenericPage>
     );

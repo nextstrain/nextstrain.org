@@ -18,6 +18,7 @@ const {
   schemas,
   staging,
   staticSite,
+  listResources,
 } = routing;
 
 
@@ -173,6 +174,13 @@ openid.setup(app);
  *   /edit/narratives
  */
 auspice.setup(app);
+
+
+/* Set up the API to serve resource-listing requests
+ * If RESOURCE_INDEX is false, all API requests are currently non-200.
+ * Note: must come before staticSite.setup as Gatsby will greedily process routes
+ */
+listResources.setup(app);
 
 
 /* static-site (Gatsby).
