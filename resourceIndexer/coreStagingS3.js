@@ -282,10 +282,11 @@ export const coreS3Data = {
 
 export const stagingS3Data = {
   name: 'staging',
-  async collect({local}) {
+  async collect({local, save}) {
     return await collectInventory({
       name: this.name,
       local,
+      save,
       inventoryBucket: "nextstrain-inventories",
       inventoryPrefix: "nextstrain-staging/config-v1/"
     })
