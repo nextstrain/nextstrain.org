@@ -33,7 +33,7 @@ jobs:
         run: |
           node resourceIndexer/main.js \
             --gzip --output resources.json.gz \
-            --resourceTypes dataset --collections core
+            --resourceTypes dataset --collections core staging
       - name: Upload the new index, overwriting the existing index
         run: |
           aws s3 cp resources.json.gz s3://nextstrain-inventories/resources.json.gz
