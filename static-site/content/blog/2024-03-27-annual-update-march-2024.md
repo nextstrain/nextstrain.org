@@ -4,7 +4,7 @@ date: "2024-03-27"
 title: "Nextstrain Annual Update March 2024"
 ---
 
-_The nextstrain.org blog has not seen a lot of use lately. Here we're piloting at least trying to do an annual update._
+_The nextstrain.org blog has not seen a lot of use lately. Here we're piloting an effort to post annual updates._
 
 Following initial intensive COVID-19 pandemic response in 2020 to 2022, we have returned to a baseline of tracking various pathogens, software development and user support. After a peak during the pandemic with high traffic volume and a large number of user interactions, we have entered a fairly steady period with about 5-10 fold more visitors to nextstrain.org than pre-pandemic. Overall, this is a level we are comfortable with and we are looking into ways to sustainably build on the status quo and further develop Nextstrain in ways that serve the public health and pathogen genomics communities best.
 
