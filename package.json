@@ -20,7 +20,7 @@
     "//test": "echo 'NODE_OPTIONS is required until this issue is resolved: https://github.com/facebook/jest/issues/9430 '",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest --roots ./test/",
     "test:ci": "start-server-and-test 'RESOURCE_INDEX=test/date_descriptor_index.json node server.js --verbose >./test/server.log 2>&1' http://localhost:5000 test",
-    "dev": "./develop.sh"
+    "dev": "NODE_ENV=development nodemon --verbose -- server.js --verbose \"$@\""
   },
   "dependencies": {
     "@aws-crypto/client-node": "^3.1.1",
@@ -37,8 +37,8 @@
     "connect-redis": "^4.0.3",
     "content-type": "^1.0.4",
     "cookie": "^0.4.2",
-    "cors": "^2.8.5",
     "debug": "^4.3.4",
+    "eslint-config-next": "^14.1.4",
     "express": "^4.17.1",
     "express-naked-redirect": "^0.1.2",
     "express-session": "^1.16.2",
@@ -58,6 +58,7 @@
     "mime": "^2.5.2",
     "neat-csv": "^7.0.0",
     "negotiator": "^0.6.2",
+    "next": "^14.1.4",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.5.0",
@@ -74,6 +75,7 @@
     "@babel/eslint-parser": "^7.18.9",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@jest/globals": "^29.0.2",
+    "@types/react": "^18.2.73",
     "babel-plugin-lodash": "^3.2.11",
     "benchmark": "^2.1.4",
     "eslint": "^8.23.0",

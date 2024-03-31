@@ -27,7 +27,7 @@ export function setup(app) {
   app.use("/staging", setSource(req => new CoreStagingSource())); // eslint-disable-line no-unused-vars
 
   app.routeAsync("/staging")
-    .getAsync(endpoints.static.sendGatsbyPage("staging/index.html"))
+    .getAsync(endpoints.nextJsApp.handleRequest)
   ;
 
   app.routeAsync("/staging/narratives")

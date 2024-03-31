@@ -178,12 +178,13 @@ auspice.setup(app);
 
 /* Set up the API to serve resource-listing requests
  * If RESOURCE_INDEX is false, all API requests are currently non-200.
- * Note: must come before staticSite.setup as Gatsby will greedily process routes
+ * Note: must come before staticSite.setup as that handler (next.js) will
+ * catch all routes
  */
 listResources.setup(app);
 
 
-/* static-site (Gatsby).
+/* static-site (Next.js).
  */
 await staticSite.setup(app);
 

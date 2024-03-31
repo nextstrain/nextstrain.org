@@ -7,7 +7,7 @@ If you have any questions, or simply want to say hi, please give us a shout at h
 
 This repo comprises:
   1. A server (`./server.js`) which serves all the content on [nextstrain.org](https://nextstrain.org), handles authentication and responds to API requests.
-  1. The [splash & documentation pages](#Splash--documentation-pages), which are built using Gatsby & located in the `./static-site` directory.
+  1. The [frontend pages](#Splash--documentation-pages), located in the `./static-site` directory.
   1. Code to build a customised version of the [Auspice](#Auspice) client, which is located in the `./auspice-client` directory.
 
 This repository provides the tools you need to [build nextstrain.org locally](#build-nextstrainorg-locally) and [deploy nextstrain.org](#deploy-nextstrainorg).
@@ -41,7 +41,7 @@ from this directory (the "nextstrain.org" directory).
 
 
 ### 3. Build the site
-`npm run build` runs `./build.sh` to build both the static site & an auspice client with customisations.
+`npm run build` runs `./build.sh` to build both the static site & an Auspice client with customisations.
 The following section details the different ways to serve these pages on a local server after building the site.
 
 ### 4. Run server
@@ -52,17 +52,13 @@ This should mirror exactly what you see when you visit [nextstrain.org](https://
 In order to replicate the live behavior, you will need the appropriate environment variables set (see below).
 
 #### Run server in development mode
-If you are developing on nextstrain.org, we recommend running:
+If you are developing on nextstrain.org there are a few recommended paths depending on your aim:
 
-`npm run dev` , which runs `./develop.sh` to launch a development server of nextstrain.org, by default available at [localhost:5000](http://localhost:5000).
-Changes to files in `./static-site` will be reflected in the corresponding pages on the development server without needing to refresh.
+For most cases running `npm run dev` should do what you want.
+It will both watch for any changes to the server code (`./src`) and restart the server when you update the code, and also watch for any changes to the next.js frontend code (`./static-site`) and use hot-reloading to update the site as you make changes.
 
 This works by running the main nextstrain server on port 5000, running the Gatsby (see below for more on Gatsby) server on port 8000, and proxying requests to the Gatsby server as necessary.
 
-An alternative approach is to build the site (as above) and then start the server:
-```sh
-NODE_ENV="dev" npm run server
-```
 
 ### Environment variables
 
@@ -76,9 +72,13 @@ For running locally, you should ensure
 
 ---
 
-## Splash page (and other misc pages)
-There are a number of pages built using Gatsby and found in `./static-site/`.
-See [static-site/README.md](./static-site/README.md) for instructions on how to add content and develop this portion of the site in isolation.
+## Frontend pages other than Auspice
+
+All of the frontend (client) pages in nextstrain.org except for those using Auspice to visualise datasets are built using [Next.JS](https://nextjs.org) and found in `./static-site/`.
+
+See [static-site/README.md](./static-site/README.md) for instructions on how to add content.
+See above for how to run the server in development mode which will allow you to develop these pages.
+
 In production, these are compiled (`npm run build`) and served via the nextstrain.org server (`npm run server`).
 
 ---
