@@ -57,7 +57,9 @@ If you are developing on nextstrain.org there are a few recommended paths depend
 For most cases running `npm run dev` should do what you want.
 It will both watch for any changes to the server code (`./src`) and restart the server when you update the code, and also watch for any changes to the next.js frontend code (`./static-site`) and use hot-reloading to update the site as you make changes.
 
-This works by running the main nextstrain server on port 5000, running the Gatsby (see below for more on Gatsby) server on port 8000, and proxying requests to the Gatsby server as necessary.
+If you are only making changes to the server code or want to test the compiled frontend site you can run `npm run dev:ssg`.
+This will still restart the server if you modify server code but it will not update if you change any code in `./static-site`.
+This also allows testing the next.js frontend code as it would appear in the live site.
 
 
 ### Environment variables
@@ -69,6 +71,7 @@ For running locally, you should ensure
   Alternatively, these may be configured using `~/.aws/credentials`.
   If you add a new profile to `~/.aws/credentials`, you can then tell the server to use it by setting `AWS_PROFILE=...`.
 
+If you have built the next.js part of the site (`./static-site`), via `npx next build static-site` or similar, then setting `USE_PREBUILT_STATIC_SITE=1` will use these built assets rather than server-side compilation.
 
 ---
 

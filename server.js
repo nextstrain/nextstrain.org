@@ -60,6 +60,11 @@ const server = http
     console.log(`  Server listening on port ${server.address().port}`);
     console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`);
     console.log(`  Server is running in ${app.locals.production ? 'production' : 'development'} mode`);
+    if (app.locals.STATIC_SITE_PRODUCTION) {
+      console.log(`  Next.js frontend is running in production mode (statically generated assets)`)
+    } else {
+      console.log(`  Next.js frontend is running in development mode (hot reloading etc)`)
+    }
     console.log("\n  -------------------------------------------------------------------------\n\n");
   })
   .on("error", (err) => {

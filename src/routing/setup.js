@@ -4,7 +4,7 @@ import nakedRedirect from 'express-naked-redirect';
 import express from 'express';
 import compression from 'compression';
 
-import { PRODUCTION } from '../config.js';
+import { PRODUCTION, STATIC_SITE_PRODUCTION } from '../config.js';
 import { addAsync } from '../async.js';
 import * as authn from '../authn/index.js';
 import { replacer as jsonReplacer } from '../json.js';
@@ -20,13 +20,13 @@ export function setupApp() {
   app.set("json replacer", jsonReplacer);
 
   app.locals.production = PRODUCTION;
-  app.locals.gatsbyDevUrl = PRODUCTION ? null : process.env.GATSBY_DEV_URL;
+  app.locals.STATIC_SITE_PRODUCTION = STATIC_SITE_PRODUCTION;
 
   // In production, trust Heroku as a reverse proxy and Express will use request
   // metadata from the proxy.
   if (PRODUCTION) app.enable("trust proxy");
 
-  app.use(sslRedirect()); // redirect HTTP to HTTPS
+  if (PRODUCTION) app.use(sslRedirect()); // redirect HTTP to HTTPS
   app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
   app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
   app.use(middleware.rejectParentTraversals);

@@ -462,3 +462,21 @@ export const GROUPS_BUCKET = fromEnvOrConfig("GROUPS_BUCKET", "nextstrain-groups
  * Falsey values result in the resource collection functionality not being used.
  */
 export const RESOURCE_INDEX = fromEnvOrConfig("RESOURCE_INDEX", null);
+
+/**
+ * The nextJs route handler can operate in dev mode (hot reloading etc) or in
+ * production mode where it serves pre-compiled assets (created via `npx next
+ * build`). A common development aim is to test using pre-compiled assets
+ * without the overhead of running the entire nextstrain.org server in
+ * production mode.
+ *
+ * The reverse is not true - there's no need to run static-site in dev mode
+ * and the overall site in production mode - and that configuration is prevented
+ * here.
+ *
+ * There is a side-effect to this - if the nextJsApp is set up in "production"
+ * mode it will re-set `NODE_ENV=production`. This will have undesired
+ * side-effects if any of our code inspects that variable rather than using the
+ * canonical PRODUCTION flag set here. 
+ */
+export const STATIC_SITE_PRODUCTION = PRODUCTION || !!process.env.USE_PREBUILT_STATIC_SITE;
