@@ -1,12 +1,9 @@
 
 import React from "react";
 import styled from "styled-components";
-// import { goToAnchor } from 'react-scrollable-anchor';
+import { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
 import { FlexCenter } from "../../layouts/generalComponents";
 
-const goToAnchor = (to) => {console.log("FIXME XXX scroll to", to)}
-
-// TODO XXX FIXME
 export const AnchorLink = ({to, title}) => <Clickable onClick={() => goToAnchor(to)}>{title}</Clickable>;
 
 export function PathogenPageIntroduction({data}) {

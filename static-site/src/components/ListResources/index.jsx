@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link'
 import styled from 'styled-components';
 import Select from 'react-select';
-// import ScrollableAnchor from "react-scrollable-anchor";
+import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
 import {Tooltip} from 'react-tooltip-v5';
 import { useFilterOptions } from './useFilterOptions';
 import { useSortAndFilter } from "./useSortAndFilter";
@@ -68,7 +68,7 @@ function ListResources({
       <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
 
       <SetModalContext.Provider value={setModal}>
-        {/* <ScrollableAnchor id={"list"}> */}
+        <ScrollableAnchor id={"list"}>
           <div>
             {resourceGroups.map((group) => (
               <ResourceGroup key={group.groupName}
@@ -79,7 +79,7 @@ function ListResources({
               />
             ))}
           </div>
-        {/* </ScrollableAnchor> */}
+        </ScrollableAnchor>
       </SetModalContext.Provider>
 
       <Tooltip style={{fontSize: '1.6rem'}} id="listResourcesTooltip"/>

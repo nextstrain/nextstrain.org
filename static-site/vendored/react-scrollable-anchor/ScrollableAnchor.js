@@ -1,14 +1,12 @@
+/* eslint-disable */
+/* Eslint identifies some react deprecations which we should attend to by
+switching to a different library when necessary */
+
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
 import Manager from './Manager'
 
 export default class ScrollableAnchor extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    id: PropTypes.string,
-  }
-
   constructor(props) {
     super(props)
     this.id = props.id || props.children.ref

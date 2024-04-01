@@ -1,5 +1,4 @@
 import React from "react";
-// import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import Link from 'next/link'
 import {
   SmallSpacer,

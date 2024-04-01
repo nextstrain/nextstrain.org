@@ -1,6 +1,6 @@
 import React from "react";
 import Link from 'next/link'
-// import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import ScrollableAnchor, { configureAnchors } from '../../vendored/react-scrollable-anchor/index';
 import { uri } from "../../../src/templateLiterals.js";
 import { HugeSpacer, FlexGridRight } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
@@ -14,7 +14,7 @@ import { canUserEditGroupSettings } from "./group-settings-page";
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    // configureAnchors({ offset: -10 });
+    configureAnchors({ offset: -10 });
     this.state = {
       groupNotFound: false,
       nonExistentPath: this.props.resourcePath?.join("/"),
@@ -115,7 +115,7 @@ class Index extends React.Component {
         <SourceInfoHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (
-          // <ScrollableAnchor id={"datasets"}>
+          <ScrollableAnchor id={"datasets"}>
             <div>
               <splashStyles.H3>Available datasets</splashStyles.H3>
               {this.state.datasets.length === 0 ?
@@ -132,11 +132,11 @@ class Index extends React.Component {
                 />
               }
             </div>
-          // </ScrollableAnchor>
+          </ScrollableAnchor>
         )}
         <HugeSpacer />
         {this.state.sourceInfo.showNarratives && (
-          // <ScrollableAnchor id={"narratives"}>
+          <ScrollableAnchor id={"narratives"}>
             <div>
               <splashStyles.H3>Available narratives</splashStyles.H3>
               {this.state.narratives.length === 0 ?
@@ -154,7 +154,7 @@ class Index extends React.Component {
                 />
               }
             </div>
-          // </ScrollableAnchor>
+          </ScrollableAnchor>
         )}
       </GenericPage>
     );

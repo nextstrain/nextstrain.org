@@ -1,5 +1,5 @@
 import React from "react";
-// import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
+import ScrollableAnchor, { configureAnchors } from '../../../vendored/react-scrollable-anchor/index';
 import Link from 'next/link'
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
@@ -37,10 +37,10 @@ const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
 
 
 class Splash extends React.Component {
-  // constructor() {
-  //   super();
-  //   configureAnchors({ offset: -10 });
-  // }
+  constructor() {
+    super();
+    configureAnchors({ offset: -10 });
+  }
 
   static contextType = UserContext;
 
@@ -128,9 +128,9 @@ class Splash extends React.Component {
         <HugeSpacer/>
 
         {/* PHILOSOPHY */}
-        {/* <ScrollableAnchor id={'philosophy'}> */}
+        <ScrollableAnchor id={'philosophy'}>
           <Styles.H1>Philosophy</Styles.H1>
-        {/* </ScrollableAnchor> */}
+        </ScrollableAnchor>
         <div className="row">
           <div className="col-md-6">
             <BigSpacer/>
@@ -184,9 +184,9 @@ class Splash extends React.Component {
         {/* Bioinformatics toolkit */}
         <HugeSpacer/>
 
-        {/* <ScrollableAnchor id={'tools'}> */}
+        <ScrollableAnchor id={'tools'}>
           <Styles.H1>A bioinformatics and data viz toolkit</Styles.H1>
-        {/* </ScrollableAnchor> */}
+        </ScrollableAnchor>
 
         <FlexCenter>
           <Styles.CenteredFocusParagraph>

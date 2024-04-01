@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from "react";
-// import ScrollableAnchor from "react-scrollable-anchor";
+import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
 import * as Styles from "./styles";
 import Cards from "../Cards";
 import { HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
@@ -33,9 +33,9 @@ const UserGroups = () => {
   const { user } = useContext(UserContext);
   return (
     <Fragment>
-      {/* <ScrollableAnchor id={'groups'}> */}
+      <ScrollableAnchor id={'groups'}>
         <Styles.H1>Nextstrain Groups</Styles.H1>
-      {/* </ScrollableAnchor> */}
+      </ScrollableAnchor>
 
       <FlexCenter>
         <Styles.CenteredFocusParagraph>

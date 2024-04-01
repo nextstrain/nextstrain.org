@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 import React from "react";
-// import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import ScrollableAnchor, { configureAnchors } from '../../vendored/react-scrollable-anchor/index';
 import { MdPerson } from "react-icons/md";
 import { get } from 'lodash';
 import {
@@ -145,7 +145,7 @@ const tableColumns = [
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    // configureAnchors({ offset: -10 });
+    configureAnchors({ offset: -10 });
     this.state = {
       catalogueDatasets: sarscov2Catalogue.datasets,
       filterParsed: false
@@ -209,7 +209,7 @@ class Index extends React.Component {
 
         <PathogenPageIntroduction data={contents} />
 
-        {/* <ScrollableAnchor id={"datasets"}> */}
+        <ScrollableAnchor id={"datasets"}>
           <div>
             <HugeSpacer /><HugeSpacer />
             <splashStyles.H2 $left>
@@ -238,9 +238,9 @@ class Index extends React.Component {
             )}
 
           </div>
-        {/* </ScrollableAnchor> */}
+        </ScrollableAnchor>
 
-        {/* <ScrollableAnchor id={"sit-reps"}> */}
+        <ScrollableAnchor id={"sit-reps"}>
           <div>
             <HugeSpacer /><HugeSpacer />
             <splashStyles.H2 $left>
@@ -262,7 +262,7 @@ class Index extends React.Component {
               </div>
             </div>
           </div>
-        {/* </ScrollableAnchor> */}
+        </ScrollableAnchor>
       </GenericPage>
     );
   }

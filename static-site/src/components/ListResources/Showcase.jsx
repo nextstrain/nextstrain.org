@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {CardInner, CardImg, CardTitle} from "../Cards/styles";
 import { theme } from "../../layouts/theme";
-// import { goToAnchor } from 'react-scrollable-anchor';
+import { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
 import { createFilterOption } from "./useFilterOptions";
 
 const cardWidthHeight = 160; // pixels
@@ -34,7 +34,7 @@ const ShowcaseTile = ({data, setSelectedFilterOptions}) => {
   const filter = useCallback(
     () => {
       setSelectedFilterOptions(data.filters.map(createFilterOption));
-      // goToAnchor("list");
+      goToAnchor("list");
     },
     [setSelectedFilterOptions, data]
   )

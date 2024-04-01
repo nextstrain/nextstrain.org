@@ -1,3 +1,9 @@
+/* eslint-disable */
+/* We disable eslint for this vendored code. Eslint identifies (correctly) that
+`arguments` shouldn't exist in fat-arrow functions, but they are - perhaps
+browsers aren't spec-compliant or perhaps transpilation is at play here
+*/
+
 export const debounce = (func, wait, immediate) => {
   let timeout
   return () => {

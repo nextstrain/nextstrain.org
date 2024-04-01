@@ -1,3 +1,6 @@
+/* eslint-disable */
+/* Eslint identifies a few minor errors in this vendored code which aren't blocking */
+
 import jump from 'jump.js'
 import { debounce } from './utils/func'
 import { getBestAnchorGivenScrollLocation, getScrollTop } from './utils/scroll'
