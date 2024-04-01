@@ -5,17 +5,14 @@ import { siteTitle, siteDescription } from "../../data/SiteConfig";
 import {theme} from '../layouts/theme';
 
 /**
+ * History:
  * This file was designed for Gatsby v1 and was located at `src/layouts/index.jsx`
  * Gatsby v2 removed this "top level component". I've followed the migration path outlined in
  * https://www.gatsbyjs.org/docs/migrating-from-v1-to-v2/#remove-or-refactor-layout-components
- * however in theory this could be removed completely.
+ * however in theory this could be removed completely. It remained unchanged when we moved
+ * the static-site over to Next.JS in early 2024.
  */
 
-// Import global stylesheets
-import '../styles/prism.css';
-import "../styles/browserCompatability.css";
-import "../styles/bootstrap.css";
-import "../styles/globals.css";
 
 export default class MainLayout extends React.Component {
   render() {
@@ -37,7 +34,7 @@ export default class MainLayout extends React.Component {
   }
 }
 
-const GlobalStyles = styled.div`\
+const GlobalStyles = styled.div`
 
   a {
     text-decoration: none;

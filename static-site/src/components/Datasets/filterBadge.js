@@ -14,6 +14,7 @@ const BaseContainer = styled.div`
   padding: 0px 2px 0px 2px;
 `;
 
+
 const TextContainer = styled(BaseContainer)`
   display: inline-block;
   cursor: help;
@@ -26,7 +27,7 @@ const IconContainer = styled.div`
   /* left vertical border */
   border-width: 0px 0px 0px 1px;
   border-style: solid;
-  border-color: #BDD8E5; */
+  border-color: #BDD8E5;
   min-width: 20px;
   padding: 0px 1px 0px 5px;
   display: inline-block;
@@ -39,7 +40,7 @@ const IconContainer = styled.div`
   & > svg {
     transform: translate(-2px, 2px);
   }
-`;
+`
 
 const UnselectedFilterTextContainer = styled(BaseContainer)`
   margin: 1px 2px 1px 2px;

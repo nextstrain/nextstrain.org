@@ -27,7 +27,7 @@ const abstract = (
     href="https://github.com/nextstrain/forecasts-ncov/">forecasts-ncov GitHub repo</a>, while
     further details on the MLR model implementation can be found in the <a
     href="https://www.github.com/blab/evofr">evofr GitHub repo</a>. Enabled by data from <a
-    href="https://gisaid.org/"><img alt="GISAID" src={gisaidLogo} width={70}/></a>.</>
+    href="https://gisaid.org/"><img alt="GISAID" src={gisaidLogo.default.src} width={70}/></a>.</>
     <p/>
     <>These analyses are the work of <a
     href="https://bedford.io/team/marlin-figgins/">Marlin Figgins</a>, <a
@@ -76,7 +76,7 @@ function Index(props) {
 // not currently used, but may restore
 // const DisclaimerBanner = () => {
 //   return (
-//     <splashStyles.FixedBanner backgroundColor="#ffedcc">
+//     <splashStyles.FixedBanner $backgroundColor="#ffedcc">
 //       <splashStyles.StrongerText>
 //         {disclaimer}
 //       </splashStyles.StrongerText>

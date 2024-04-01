@@ -1,5 +1,6 @@
 import React from "react";
-import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import Link from 'next/link'
+// import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import { uri } from "../../../src/templateLiterals.js";
 import { HugeSpacer, FlexGridRight } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
@@ -13,11 +14,10 @@ import { canUserEditGroupSettings } from "./group-settings-page";
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    configureAnchors({ offset: -10 });
-    const nonExistentPath = this.props["*"];
+    // configureAnchors({ offset: -10 });
     this.state = {
       groupNotFound: false,
-      nonExistentPath,
+      nonExistentPath: this.props.resourcePath?.join("/"),
       editGroupSettingsAllowed: false
     };
   }
@@ -34,7 +34,7 @@ class Index extends React.Component {
   };
 
   async componentDidMount() {
-    const groupName = this.props["groupName"];
+    const groupName = this.props.groupName;
     try {
       const [sourceInfo, availableData] = await Promise.all([
         fetchAndParseJSON(uri`/charon/getSourceInfo?prefix=/groups/${groupName}/`),
@@ -55,7 +55,7 @@ class Index extends React.Component {
   }
 
   banner() {
-    const groupName = this.props["groupName"];
+    const groupName = this.state.groupName;
     let bannerTitle, bannerContents;
     // Set up a banner if dataset doesn't exist
     if (this.state.nonExistentPath) {
@@ -73,7 +73,7 @@ class Index extends React.Component {
     // Set up a banner or update the existing one if the group doesn't exist
     if (this.state.groupNotFound) {
       const notFound = `The Nextstrain Group "${groupName}" doesn't exist yet, or there was an error getting data for that group.`;
-      const linkToGroupsPage = <p>For available Nextstrain Groups, check out the <a href="/groups">Groups page</a>.</p>;
+      const linkToGroupsPage = <p>For available Nextstrain Groups, check out the <Link href="/groups">Groups page</Link>.</p>;
       if (!bannerTitle) {
         bannerTitle = notFound;
         bannerContents = linkToGroupsPage;
@@ -115,7 +115,7 @@ class Index extends React.Component {
         <SourceInfoHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (
-          <ScrollableAnchor id={"datasets"}>
+          // <ScrollableAnchor id={"datasets"}>
             <div>
               <splashStyles.H3>Available datasets</splashStyles.H3>
               {this.state.datasets.length === 0 ?
@@ -132,11 +132,11 @@ class Index extends React.Component {
                 />
               }
             </div>
-          </ScrollableAnchor>
+          // </ScrollableAnchor>
         )}
         <HugeSpacer />
         {this.state.sourceInfo.showNarratives && (
-          <ScrollableAnchor id={"narratives"}>
+          // <ScrollableAnchor id={"narratives"}>
             <div>
               <splashStyles.H3>Available narratives</splashStyles.H3>
               {this.state.narratives.length === 0 ?
@@ -154,7 +154,7 @@ class Index extends React.Component {
                 />
               }
             </div>
-          </ScrollableAnchor>
+          // </ScrollableAnchor>
         )}
       </GenericPage>
     );

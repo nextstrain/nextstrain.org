@@ -8,6 +8,7 @@ import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
 import ListResources from "../components/ListResources/index";
+import { withRouter } from 'next/router'
 
 const title = "Staging Data";
 const abstract = (
@@ -23,17 +24,24 @@ class Index extends React.Component {
     this.state = {};
   }
 
-  async componentDidMount() {
-    this.setState({
-      nonExistentPath: this.props["*"]
-    });
+  checkRouterParams() {
+    /* Check the next.js router for query params which indicate that the URL was
+    attempting to load a resource but it doesn't exist, e.g. "/staging/no/dataset/here".
+    We update state which results in an error banner being shown. */
+    if (!this.state.resourcePath && this.props.router.query?.staging) {
+      this.setState({resourcePath: "staging/"+this.props.router.query.staging.join("/")})
+    }    
   }
 
+  componentDidMount() {this.checkRouterParams()}
+  componentDidUpdate() {this.checkRouterParams()}
+
+
   banner() {
-    if (this.state.nonExistentPath && (this.state.nonExistentPath.length > 0)) {
-      const bannerTitle = this.state.nonExistentPath.startsWith("narratives/")
-        ? `The staging narrative "nextstrain.org${this.props.location.pathname}" doesn't exist.`
-        : `The staging dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+    if (this.state.resourcePath) {
+      const bannerTitle = this.state.resourcePath.startsWith("narratives/")
+        ? `The staging narrative "nextstrain.org/${this.state.resourcePath}" doesn't exist.`
+        : `The staging dataset "nextstrain.org/${this.state.resourcePath}" doesn't exist.`;
       const bannerContents = `Here is the staging page instead.`;
       return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
     }
@@ -63,4 +71,4 @@ class Index extends React.Component {
   }
 }
 
-export default Index;
+export default withRouter(Index);

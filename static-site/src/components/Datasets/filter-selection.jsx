@@ -28,7 +28,7 @@ const StyledTooltip = styled(ReactTooltip)`
 export const FilterSelect = ({options, applyFilter, title}) => {
   return (
     <CenteredContainer>
-      <splashStyles.H3 left>
+      <splashStyles.H3 $left>
         {title}
         <>
           <span style={{cursor: "help"}} data-tip data-for={"build-filter-info"}>

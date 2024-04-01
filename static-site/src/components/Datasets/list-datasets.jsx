@@ -1,7 +1,12 @@
 import React from "react";
 import styled from 'styled-components';
-import {Grid, Col, Row} from 'react-styled-flexboxgrid';
+// import {Grid, Col, Row} from 'react-styled-flexboxgrid';
 import { CenteredContainer } from "./styles";
+
+// FIXME XXX
+const Grid = styled.div``;
+const Col = styled.div``;
+const Row = styled.div``;
 
 export const StyledLink = styled.a`
   color: #444 !important;

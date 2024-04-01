@@ -25,14 +25,24 @@ class Index extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({
-      nonExistentDatasetName: this.props["*"]
-    });
+    /**
+     * The /influenza page currently appears under three distinct routes:
+     * (1) /influenza
+     * (2) /influenza/*
+     * (3) /flu/* where the path doesn't match an actual (auspice) dataset
+     * We use the following pathname inspection to display the appropriate
+     * error message (cases (2) and (3) only)
+     */
+    if (window.location.pathname !== '/influenza') {
+      this.setState({
+        nonExistentDatasetName: window.location.pathname
+      });
+    }
   }
 
   banner() {
-    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
-      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+    if (this.state.nonExistentDatasetName) {
+      const bannerTitle = `The dataset "nextstrain.org${this.state.nonExistentDatasetName}" doesn't exist.`;
       const bannerContents = `Here is the influenza page with a list of Nextstrain-maintained influenza datasets.`;
       return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
     }

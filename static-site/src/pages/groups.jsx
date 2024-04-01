@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import ScrollableAnchor from "react-scrollable-anchor";
+// import ScrollableAnchor from "react-scrollable-anchor";
 import { SmallSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
@@ -92,9 +92,9 @@ class GroupsPage extends React.Component {
         <GroupCards squashed/>
         <HugeSpacer />
 
-        <ScrollableAnchor id={'datasets'}>
+        {/* <ScrollableAnchor id={'datasets'}> */}
           <splashStyles.H2>Available Datasets</splashStyles.H2>
-        </ScrollableAnchor>
+        {/* </ScrollableAnchor> */}
         <FlexCenter>
           <splashStyles.CenteredFocusParagraph>
             {`Note that this listing is refreshed every ~6 hours.
@@ -109,9 +109,9 @@ class GroupsPage extends React.Component {
           />
         )}
         <HugeSpacer />
-        <ScrollableAnchor id={'datasets'}>
+        {/* <ScrollableAnchor id={'datasets'}> */}
           <splashStyles.H2>Available Narratives</splashStyles.H2>
-        </ScrollableAnchor>
+        {/* </ScrollableAnchor> */}
         {this.state.dataLoaded && (
           <DatasetSelect
             datasets={this.state.narratives}

@@ -1,10 +1,12 @@
 
 import React from "react";
-import {Link} from 'gatsby';
 import styled from "styled-components";
-import { goToAnchor } from 'react-scrollable-anchor';
+// import { goToAnchor } from 'react-scrollable-anchor';
 import { FlexCenter } from "../../layouts/generalComponents";
 
+const goToAnchor = (to) => {console.log("FIXME XXX scroll to", to)}
+
+// TODO XXX FIXME
 export const AnchorLink = ({to, title}) => <Clickable onClick={() => goToAnchor(to)}>{title}</Clickable>;
 
 export function PathogenPageIntroduction({data}) {
@@ -16,11 +18,9 @@ export function PathogenPageIntroduction({data}) {
             <li key={s.to}>
               {s.type === "external" ?
                 <a href={s.to}>{s.title}</a> :
-                s.type === "gatsby" ?
-                  <Link to={s.to}>{s.title}</Link> :
-                  s.type === "anchor" ?
-                    <AnchorLink to={s.to} title={s.title} /> :
-                    null
+                s.type === "anchor" ?
+                  <AnchorLink to={s.to} title={s.title} /> :
+                  null
               }
               {s.subtext && (
                 <Subtext>{s.subtext}</Subtext>

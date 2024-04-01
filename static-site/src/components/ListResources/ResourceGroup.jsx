@@ -2,7 +2,6 @@
 import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory, MdFormatListBulleted, MdChevronRight } from "react-icons/md";
-import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
   ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource.jsx"
 import { SetModalContext } from "./Modal.jsx";
@@ -122,7 +121,7 @@ export const ResourceGroup = ({data, elWidth, numGroups, sortMethod, quickLinks}
         isMobile={isMobile}
       />
 
-      <IndividualResourceContainer maxResourceWidth={maxResourceWidth}>
+      <IndividualResourceContainer $maxResourceWidth={maxResourceWidth}>
         {/* what to do when there's only one tile in a group? */}
         {displayResources.map((d) => (
           // We use key changes to re-render the component & thus recompute the DOM position
@@ -145,7 +144,7 @@ const ResourceGroupContainer = styled.div`
 const IndividualResourceContainer = styled.div`
   /* Columns are a simple CSS solution which works really well _if_ we can calculate the expected maximum 
   resource width */
-  column-width: ${(props) => props.maxResourceWidth}px;
+  column-width: ${(props) => props.$maxResourceWidth}px;
   column-gap: 20px;
 `
 
@@ -211,7 +210,8 @@ function NextstrainLogo() {
    * TODO -- map the resource collection name to a suitable logo.
    * Currently we are only using core datasets
    */
-  return <img alt="nextstrain logo" height="35px" src={nextstrainLogo}/>
+  const nextstrainLogoPath = '/nextstrain-logo-small.png'; // next.js surfaced from /static-site/public
+  return <img alt="nextstrain logo" height="35px" src={nextstrainLogoPath}/>
 }
 
 /**

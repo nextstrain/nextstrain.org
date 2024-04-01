@@ -50,14 +50,14 @@ export const Logos = () => (
       </Styles.FooterParagraph>
 
       <AllLogosContainer>
-        <Logo href="http://www.fredhutch.org/" imgSrc={fredHutchLogo} width={90}/>
-        <Logo href="http://www.unibas.ch/" imgSrc={uniBasLogo} width={110}/>
-        <Logo href="https://www.nih.gov/" imgSrc={nihLogo} width={60}/>
-        <Logo href="https://www.gatesfoundation.org/" imgSrc={bmgfLogo} width={130}/>
-        <Logo href="https://www.sib.swiss/" imgSrc={sibLogo} width={80}/>
-        <Logo href="https://www.mapbox.com" imgSrc={mapBoxLogo} width={110}/>
-        <Logo href="https://www.nih.gov/news-events/news-releases/open-science-prize-announces-epidemic-tracking-tool-grand-prize-winner" imgSrc={ospLogo} width={100}/>
-        <Logo href="http://biozentrum.org/" imgSrc={bzLogo} width={115}/>
+        <Logo href="http://www.fredhutch.org/" imgSrc={fredHutchLogo.default.src} width={90}/>
+        <Logo href="http://www.unibas.ch/" imgSrc={uniBasLogo.default.src} width={110}/>
+        <Logo href="https://www.nih.gov/" imgSrc={nihLogo.default.src} width={60}/>
+        <Logo href="https://www.gatesfoundation.org/" imgSrc={bmgfLogo.default.src} width={130}/>
+        <Logo href="https://www.sib.swiss/" imgSrc={sibLogo.default.src} width={80}/>
+        <Logo href="https://www.mapbox.com" imgSrc={mapBoxLogo.default.src} width={110}/>
+        <Logo href="https://www.nih.gov/news-events/news-releases/open-science-prize-announces-epidemic-tracking-tool-grand-prize-winner" imgSrc={ospLogo.default.src} width={100}/>
+        <Logo href="http://biozentrum.org/" imgSrc={bzLogo.default.src} width={115}/>
       </AllLogosContainer>
     </div>
   </div>

@@ -1,5 +1,8 @@
+// We use <a> elements not <Link> because the links here need to go to the server which will then send the Auspice entrypoint
+/* eslint-disable @next/next/no-html-link-for-pages */
+
 import React from "react";
-import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+// import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import { MdPerson } from "react-icons/md";
 import { get } from 'lodash';
 import {
@@ -10,13 +13,14 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
-import DatasetMap from "../components/Datasets/dataset-map";
+// import DatasetMap from "../components/Datasets/dataset-map";
 import { SituationReportsByLanguage } from "../components/Datasets/situation-reports-by-language";
 import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
+import { withRouter } from 'next/router'
 
 const nextstrainLogoPNG = "/favicon.png";
 
@@ -141,7 +145,7 @@ const tableColumns = [
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    configureAnchors({ offset: -10 });
+    // configureAnchors({ offset: -10 });
     this.state = {
       catalogueDatasets: sarscov2Catalogue.datasets,
       filterParsed: false
@@ -160,17 +164,22 @@ class Index extends React.Component {
     this.setState({
       filterList,
       filterParsed,
-      // assume /ncov/* (or /sars-cov-2/*) is attempting to access dataset
-      // and if this page has been served then the dataset
-      // doesn't exist.
-      // For some reason if this is set in the constructor it breaks the banner.
-      nonExistentDatasetName: this.props["*"]
     });
   }
 
+  componentDidUpdate() {
+    if (!this.state.resourcePath) {
+      if (this.props.router.query?.['sars-cov-2']) {
+        this.setState({resourcePath: "sars-cov-2/" + this.props.router.query['sars-cov-2'].join("/")});
+      } else if (this.props.router.query?.ncov) {
+        this.setState({resourcePath: "ncov/" + this.props.router.query.ncov.join("/")});
+      }
+    }
+  }
+
   banner() {
-    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
-      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+    if (this.state.resourcePath) {
+      const bannerTitle = `The dataset "nextstrain.org/${this.state.resourcePath}" doesn't exist.`;
       const bannerContents = (<>
         {`Here is the SARS-CoV-2 page, where we have listed featured datasets,
         narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
@@ -200,10 +209,10 @@ class Index extends React.Component {
 
         <PathogenPageIntroduction data={contents} />
 
-        <ScrollableAnchor id={"datasets"}>
+        {/* <ScrollableAnchor id={"datasets"}> */}
           <div>
             <HugeSpacer /><HugeSpacer />
-            <splashStyles.H2 left>
+            <splashStyles.H2 $left>
               All SARS-CoV-2 datasets
             </splashStyles.H2>
             <SmallSpacer />
@@ -220,7 +229,7 @@ class Index extends React.Component {
                 datasets={this.state.filterList}
                 columns={tableColumns}
                 interface={[
-                  DatasetMap,
+                  // DatasetMap,
                   "FilterSelect",
                   "FilterDisplay",
                   "ListDatasets"
@@ -229,12 +238,12 @@ class Index extends React.Component {
             )}
 
           </div>
-        </ScrollableAnchor>
+        {/* </ScrollableAnchor> */}
 
-        <ScrollableAnchor id={"sit-reps"}>
+        {/* <ScrollableAnchor id={"sit-reps"}> */}
           <div>
             <HugeSpacer /><HugeSpacer />
-            <splashStyles.H2 left>
+            <splashStyles.H2 $left>
               All SARS-CoV-2 situation reports
             </splashStyles.H2>
             <SmallSpacer />
@@ -253,7 +262,7 @@ class Index extends React.Component {
               </div>
             </div>
           </div>
-        </ScrollableAnchor>
+        {/* </ScrollableAnchor> */}
       </GenericPage>
     );
   }
@@ -284,4 +293,4 @@ function parseDatasetsFilterList(datasets) {
   });
 }
 
-export default Index;
+export default withRouter(Index);

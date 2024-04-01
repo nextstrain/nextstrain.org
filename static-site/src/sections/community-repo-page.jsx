@@ -1,5 +1,6 @@
 import React from "react";
-import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
+import Link from 'next/link'
+// import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
 import { HugeSpacer } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
@@ -11,11 +12,9 @@ import SourceInfoHeading from "../components/splash/sourceInfoHeading";
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    configureAnchors({ offset: -10 });
-    const nonExistentPath = this.props["*"];
+    // configureAnchors({ offset: -10 });
     this.state = {
       repoNotFound: false,
-      nonExistentPath
     };
   }
 
@@ -55,13 +54,13 @@ class Index extends React.Component {
   }
 
   banner() {
-    const {userName, repoName, location} = this.props;
+    const {isNarrative, userName, repoName, resourcePath, nonDefaultResourcePathParts} = this.props;
     let bannerTitle, bannerContents;
-    // Set up a banner if dataset or narrative doesn't exist
-    if (this.state.nonExistentPath) {
-      bannerTitle = location.pathname.startsWith("/community/narratives/")
-        ? `The narrative "nextstrain.org/community/narratives/${userName}/${repoName}/${this.state.nonExistentPath}" doesn't exist.`
-        : `The dataset "nextstrain.org/community/${userName}/${repoName}/${this.state.nonExistentPath}" doesn't exist.`;
+    // Set up a banner if we have additional resource path parts dataset or narrative doesn't exist
+    if (isNarrative || nonDefaultResourcePathParts.length) {
+      bannerTitle = isNarrative
+        ? `The narrative "nextstrain.org/${resourcePath}" doesn't exist.`
+        : `The dataset "nextstrain.org/${resourcePath}" doesn't exist.`;
       bannerContents = `Here is the page for the "${userName}/${repoName}" repository.`;
     }
     // Set up a banner or update the existing one if the repo doesn't exist
@@ -71,7 +70,7 @@ class Index extends React.Component {
       </>);
       const description = (<>
         <p>If {"you're"} setting up your own Community on GitHub repository, see <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">our documentation</a>.</p>
-        <p>For a list of featured Nextstrain Community datasets, check out the <a href="/community">Community page</a>.</p>
+        <p>For a list of featured Nextstrain Community datasets, check out the <Link href="/community">Community page</Link>.</p>
       </>);
       if (!bannerTitle) {
         bannerTitle = notFound;
@@ -106,7 +105,7 @@ class Index extends React.Component {
         <SourceInfoHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (
-          <ScrollableAnchor id={"datasets"}>
+          // <ScrollableAnchor id={"datasets"}>
             <div>
               <splashStyles.H3>Available datasets</splashStyles.H3>
               {this.state.datasets.length === 0 ?
@@ -123,11 +122,11 @@ class Index extends React.Component {
                 />
               }
             </div>
-          </ScrollableAnchor>
+          // </ScrollableAnchor>
         )}
         <HugeSpacer />
         {this.state.sourceInfo.showNarratives && (
-          <ScrollableAnchor id={"narratives"}>
+          // <ScrollableAnchor id={"narratives"}>
             <div>
               <splashStyles.H3>Available narratives</splashStyles.H3>
               {this.state.narratives.length === 0 ?
@@ -145,7 +144,7 @@ class Index extends React.Component {
                 />
               }
             </div>
-          </ScrollableAnchor>
+          // </ScrollableAnchor>
         )}
       </GenericPage>
     );
