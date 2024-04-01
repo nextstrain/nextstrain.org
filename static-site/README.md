@@ -8,65 +8,69 @@
 This directory contains the documentation files and static site generator for nextstrain.
 For general `nextstrain.org` documentation including the nextstrain server (including the `/charon/...` API endpoints) and auspice customizations, see [nextstrain.org/README.md](../README.md).
 
-## Installing
-
-See [the readme](../README.md#build-nextstrainorg-locally) in the parent directory for instructions on how to install prerequisites and install nextstrain.org locally.
-
-### Developing locally
-
-For most cases, development servers for nextstrain.org can by run from the root of this repo - see the main README section: [Build nextstrain.org in development mode](../README.md#run-server-in-development-mode).
-
-To develop just the static-site part of nextstrain.org, you may run:
-
-```
-npm install
-npm run develop
-```
-
-Note that certain parts of the gatsby site rely on API handlers not implemented in the gatsby dev server.
-For these to work in development mode, you should run the gatsby dev server while also running the nextstrain.org server - see the main README section: [Build nextstrain.org in development mode](../README.md#run-server-in-development-mode).
-
-### Testing the production build
-
-If you wish to test the production build of just the static-site portion of nextstrain.org, you may run:
-
-```
-npm install
-npm run build
-npm run serve
-```
-
-### Troubleshooting installation on MacOS
-
-**sharp build failures**
-
-Building `sharp` from source requires `vips` and `pkg-config`, which may be
-installed via homebrew (`brew install vips pkg-config`). See [this
-issue](https://github.com/nextstrain/nextstrain.org/issues/597) for more.
+The static-site is built using [Next.JS](https://nextjs.org/).
+An understanding of Next.JS concepts will be generally helpful for understanding the different moving parts however this README will attempt to link to the salient documentation as needed.
 
 
+## Installing & developing
 
-### Troubleshooting on Linux
-If `npm install` fails and you are getting an error about the Gatsby `sharp` plugin dependency, it could be related to the [Node support for sharp issue reported here](https://github.com/lovell/sharp/issues/1668). We have found the best results with version 10 of Node -- run `node -v` to check which version you have. Please see [the readme in the parent directory](../README.md#build-nextstrainorg-locally) for our recommended way to install these dependencies. (If you're using `nvm` to manage node installations, you can try running `nvm install 10`).
-After this, `node -v` should display `v10.*`.
+There are no specific dependencies or software defined within `./static-site`, so all that's needed is to follow the [installation instructions in the parent directory's README](../README.md#build-nextstrainorg-locally).
 
+> TL;DR: In the parent directory, run `node server.js` with your usual environment variables, or run `npm run dev` which will also watch for any changes to the server code. Both will serve the pages defined here using hot-reloading so that any changes are immediately reflected on localhost.
 
-Delete the `node_modules/` folder and run `npm install` again.
-If that still doesn't work, delete the `node_modules/` folder again and run the following commands:
-```sh
-npm install sharp
-npm install
-```
+## Page-base routing
 
+> See [our routing docs](https://docs.nextstrain.org/projects/nextstrain-dot-org/en/latest/routing.html) for a high level overview of the routing used in nextstrain.org
 
-If `npm run develop` fails and you are getting an error about `pngquant`, delete the `node_modules/` folder and run the following commands:
-```sh
-sudo apt-get install libpng-dev
-npm install
-```
+We use Next.JS' [Pages Router](https://nextjs.org/docs/pages) to define routes based on filenames within `./static-site/pages`.
+The [Next.JS dynamic routing](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) docs explain mapping between filenames and URL paths.
+
+Currently these are the only Next.JS pages we serve. If the path doesn't exist in `./static-site/pages` (and it's not handled elsewhere by the nextstrain.org server) then the default 404 page will be displayed.
 
 
-## Adding content
+### Routing conflicts
+
+As alluded to in [our routing docs](https://docs.nextstrain.org/projects/nextstrain-dot-org/en/latest/routing.html) the presence of Next.JS routing + our own server routing can cause conflicts if not used appropriately.
+We'll use an example here to demonstrate how such a conflict could occur:
+
+We currently route requests for `/zika` to the auspice entrypoint.
+If a Next.JS page `./static-site/pages/zika.jsx` existed then requests to `/zika` would still go to Auspice, because that route takes priority in our nextstrain.org server route hierarchy.
+However if we included a client-side `<Link href='/zika'>` component then via client-side routing you would be able to load the Next.JS Zika page. (Refreshing the page would go back to Auspice, as the browser would make a new request to `/zika`.)
+Please don't do this!
+
+
+## Pages are statically generated
+
+In production mode all pages are statically generated at build time.
+Whilst pages may make API requests to the server for information, there is no server-rendering involved.
+This mode can be used during development by setting the env variable `USE_PREBUILT_STATIC_SITE=1`; don't forget to build the static-site before running the server (e.g. `npx next build static-site`).
+
+In development mode the pages are dynamically served by the server to allow hot-reloading etc (this is the default situation if you don't specify `NODE_ENV=production` or `USE_PREBUILT_STATIC_SITE=1`)
+
+## Folder structure under ./static-site/src
+
+Prior to using Next.JS we used Gatsby which enforced a specific folder structure which is still visible within `./static-site/src`.
+This file structure was kept during the migration to Next.JS but no longer has any significance.
+We maintain it here for simplicity but at some point we may do a mass file reorgansiation.
+
+The vast majority of Next.JS pages within `./static-site/pages` are files of only a few lines which import & re-export the appropriate component from within `./static-site/src`.
+
+### public directory
+
+We use a `static-site/public` directory for assets which are exposed at the root (nextstrain.org) URL.
+
+### static directory
+
+When starting the server you may see a warning message:
+
+> ⚠ The static directory has been deprecated in favor of the public directory.
+
+However assets within this directory (`./static-site/static`) are not exposed.
+We may wish to rename this directory to avoid any doubt.
+
+
+
+# Adding content
 * [See this page in the docs](https://nextstrain.org/docs/contributing/documentation)
 
 ### Adding new cards / tiles for the splash page
@@ -92,11 +96,6 @@ After the above PR is merged, the new team member can then be added to the [docs
 1. Make a PR in the [nextstrain/sphinx-theme](https://github.com/nextstrain/sphinx-theme) to update the custom [footer](https://github.com/nextstrain/sphinx-theme/blob/main/lib/nextstrain/sphinx/theme/footer.html) with the new team member.
 2. Merge the PR and follow [instructions to release a new version of the theme on PyPI](https://github.com/nextstrain/sphinx-theme#releasing).
 3. Once the new version is available on PyPI, trigger RTD rebuilds for the latest/stable doc versions to update the footer.
-
-### External Links in the sidebar
-
-The `./additional_sidebar_entries.yaml` file defines external links which we wish to display in the sidebar of the documentation & help pages.
-These will be displayed with a small icon indicating that they are external links (the rendering component is at `./src/components/Sidebar/index.jsx`).
 
 
 ## Deploying
