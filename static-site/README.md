@@ -58,6 +58,7 @@ The vast majority of Next.JS pages within `./static-site/pages` are files of onl
 ### public directory
 
 We use a `static-site/public` directory for assets which are exposed at the root (nextstrain.org) URL.
+At the moment these largely consist of images used in blog posts.
 
 ### static directory
 
@@ -67,8 +68,6 @@ When starting the server you may see a warning message:
 
 However assets within this directory (`./static-site/static`) are not exposed.
 We may wish to rename this directory to avoid any doubt.
-
-
 
 # Adding content
 * [See this page in the docs](https://nextstrain.org/docs/contributing/documentation)

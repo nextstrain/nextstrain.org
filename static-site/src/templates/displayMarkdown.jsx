@@ -1,6 +1,5 @@
 import React from "react";
 import Helmet from "react-helmet";
-import { graphql } from "gatsby";
 import styled from "styled-components";
 import SEO from "../components/SEO/SEO";
 import NavBar from '../components/nav-bar';
@@ -9,8 +8,7 @@ import { CenteredContainer, MarkdownContent } from "../layouts/generalComponents
 import UserDataWrapper from "../layouts/userDataWrapper";
 import Footer from "../components/Footer";
 import MainLayout from "../components/layout";
-
-const parseSlug = require("../util/parseSlug");
+import { parseMarkdown } from "../util/parseMarkdown";
 
 export default class GenericTemplate extends React.Component {
   constructor(props) {
@@ -52,56 +50,43 @@ export default class GenericTemplate extends React.Component {
     return (
       <div>
         <MobileToggleIconContainer onClick={this.toggleSidebar}>
-          <MobileToggleIcon sidebarOpen={this.state.sidebarOpen}>
+          <MobileToggleIcon $sidebarOpen={this.state.sidebarOpen}>
             {this.state.sidebarOpen ? iconX : iconSliders}
           </MobileToggleIcon>
         </MobileToggleIconContainer>
-        <GreyOverlay sidebarOpen={this.state.sidebarOpen} onClick={this.toggleSidebar}/>
+        <GreyOverlay $sidebarOpen={this.state.sidebarOpen} onClick={this.toggleSidebar}/>
       </div>
     );
   }
 
-  renderPostDate(postNode) {
-    const date = postNode.frontmatter.date;
-    return (<PostDate>{ date ? date : "" }</PostDate>);
-  }
-
   render() {
-    // console.log("genericTemplate props:", this.props)
-    const { slug } = this.props.pathContext; /* defined by createPages */
-    const postNode = this.props.data.postBySlug;
-    const post = postNode.frontmatter;
-    const showAuthor = ["blog", "reports"].indexOf(parseSlug.parseSlug(slug).section) !== -1;
+    const {author, date, title, blogUrlName, mdstring, sidebarData} = this.props;
+    /* create a description for SEO from the blog metadata */
+    const description = `Nextstrain blog post from ${date}; author(s): ${author}`
     return (
       <MainLayout>
         <Helmet>
-          <title>{post.title}</title>
+          <title>{title}</title>
         </Helmet>
-        <SEO postPath={slug} postNode={postNode} postSEO />
+        <SEO title={title} description={description} blogUrlName={blogUrlName} />
         <SidebarBodyFlexContainer className="container">
-          <SidebarContainer sidebarOpen={this.state.sidebarOpen}>
+          <SidebarContainer $sidebarOpen={this.state.sidebarOpen}>
             <UserDataWrapper>
               <NavBar minified location={this.props.location} />
             </UserDataWrapper>
             <Sidebar
-              selectedSlug={slug}
-              allNodes={this.props.data.allSlugs.edges}
+              title="BLOG"
+              posts={sidebarData}
             />
           </SidebarContainer>
           <ContentContainer>
             <CenteredContainer>
               <PostAuthorSurrounds>
-                {showAuthor ? (
-                  <div>
-                    <PostAuthor>{post.author}</PostAuthor>
-                    { this.renderPostDate(postNode) }
-                  </div>
-                ) : (
-                  this.renderPostDate(postNode)
-                )}
+                <PostAuthor>{author}</PostAuthor>
+                <PostDate>{date}</PostDate>
               </PostAuthorSurrounds>
-              <PostTitle>{post.title}</PostTitle>
-              <MarkdownContent dangerouslySetInnerHTML={{ __html: postNode.html }} />
+              <PostTitle>{title}</PostTitle>
+              <MarkdownContent dangerouslySetInnerHTML={{ __html: markdownHtml(mdstring) }} />
             </CenteredContainer>
 
             <Footer/>
@@ -125,8 +110,8 @@ const SidebarContainer = styled.div`
   flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
   overflow-y: scroll;  /*adds scroll to this container*/
   left: 0px;
-  min-width: ${(props) => props.sidebarOpen ? props.theme.sidebarWidth : "0px"};
-  max-width: ${(props) => props.sidebarOpen ? props.theme.sidebarWidth : "0px"};
+  min-width: ${(props) => props.$sidebarOpen ? props.theme.sidebarWidth : "0px"};
+  max-width: ${(props) => props.$sidebarOpen ? props.theme.sidebarWidth : "0px"};
   background-color: #F2F2F2;
   box-shadow: -3px 0px 3px -3px rgba(0, 0, 0, 0.2) inset;
   transition: width 0.3s ease-in-out;
@@ -162,16 +147,16 @@ const PostDate = styled.span`
 `;
 const GreyOverlay = styled.div`
   position: absolute;
-  visibility: ${(props) => props.sidebarOpen ? "visible" : "hidden"};
-  opacity: ${(props) => props.sidebarOpen ? "1" : "0"};
+  visibility: ${(props) => props.$sidebarOpen ? "visible" : "hidden"};
+  opacity: ${(props) => props.$sidebarOpen ? "1" : "0"};
   top: 0;
-  left: ${(props) => props.sidebarOpen ? props.theme.sidebarWidth : 0};
+  left: ${(props) => props.$sidebarOpen ? props.theme.sidebarWidth : 0};
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.5);
   z-index: 8000;
   cursor: pointer;
-  transition: ${(props) => props.sidebarOpen ? 'visibility 0s ease-out, left 0.3s ease-out, opacity 0.3s ease-out' : 'left 0.3s ease-out, opacity 0.3s ease-out, visibility 0s ease-out 0.3s'};
+  transition: ${(props) => props.$sidebarOpen ? 'visibility 0s ease-out, left 0.3s ease-out, opacity 0.3s ease-out' : 'left 0.3s ease-out, opacity 0.3s ease-out, visibility 0s ease-out 0.3s'};
 `;
 
 const MobileToggleIconContainer = styled.div`
@@ -190,40 +175,19 @@ const MobileToggleIconContainer = styled.div`
 `;
 const MobileToggleIcon = styled.div`
   position: absolute;
-  width: ${(props) => props.sidebarOpen ? "30px" : "25px"};
-  height: ${(props) => props.sidebarOpen ? "30px" : "25px"};
+  width: ${(props) => props.$sidebarOpen ? "30px" : "25px"};
+  height: ${(props) => props.$sidebarOpen ? "30px" : "25px"};
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
   cursor: pointer;
 `;
 
-export const pageQuery = graphql`
-  query genericTemplate($slug: String!) {
-    allSlugs: allMarkdownRemark {
-      edges {
-        node {
-          fields {
-            slug
-            chapterOrder
-            postOrder
-            anchorText
-          }
-        }
-      }
-    }
-    postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
-      timeToRead
-      excerpt
-      frontmatter {
-        title
-        author
-        date
-      }
-      fields {
-        slug
-      }
-    }
+function markdownHtml(mdstring) {
+  try {
+    return parseMarkdown(mdstring);
+  } catch (error) {
+    console.error(`Error parsing markdown: ${error}`);
+    return '<p>There was an error parsing markdown content.</p>';
   }
-`;
+}

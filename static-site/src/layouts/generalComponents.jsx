@@ -97,5 +97,8 @@ export const MarkdownContent = styled.div`
     border: 0;
     border-top: 1px solid #ccc;
   }
+  img {
+    max-width: 100%;
+  }
 `;
 

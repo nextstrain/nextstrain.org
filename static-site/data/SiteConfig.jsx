@@ -8,7 +8,7 @@ export const siteTitle = "Nextstrain";
 export const siteTitleAlt = "Real-time tracking of pathogen evolution";
 
 // Logo used for SEO
-export const siteLogo = "/static/logos/nextstrain-logo-small.png";
+export const siteLogo = "/nextstrain-logo-small.png";
 
 export const siteUrl = "https://nextstrain.org";
 
