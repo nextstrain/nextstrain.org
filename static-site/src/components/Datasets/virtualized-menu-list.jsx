@@ -57,6 +57,10 @@ export const VirtualizedMenuList = ({ children, maxHeight, focusedOption }) => {
    * Wraps each option in a CellMeasurer which measures the row height based
    * on the contents of the option and passes this height to the parent List
    * component via the cache
+   *
+   * Note that react-virtualized uses findDOMNode which is deprecated in
+   * StrictMode, which we avoid by using the `registerChild` ref. See
+   * <https://github.com/bvaughn/react-virtualized/issues/1572>
    */
   const rowRenderer = ({ index, key, parent, style }) => (
     <CellMeasurer
@@ -66,9 +70,11 @@ export const VirtualizedMenuList = ({ children, maxHeight, focusedOption }) => {
       parent={parent}
       rowIndex={index}
     >
-      <div style={style}>
-        {children[index]}
-      </div>
+      {({registerChild}) => (
+        <div ref={registerChild} style={style}>
+          {children[index]}
+        </div>
+      )}
     </CellMeasurer>
   );
 

@@ -3,7 +3,6 @@
 
 import React from "react";
 import ScrollableAnchor, { configureAnchors } from '../../vendored/react-scrollable-anchor/index';
-import { MdPerson } from "react-icons/md";
 import { get } from 'lodash';
 import {
   SmallSpacer,
@@ -21,9 +20,6 @@ import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
 import { withRouter } from 'next/router'
-
-const nextstrainLogoPNG = "/favicon.png";
-
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Labs from all over the world are sequencing SARS-CoV-2 and sharing genomic data.
@@ -131,14 +127,10 @@ const tableColumns = [
   {
     name: "Contributor",
     value: (dataset) => dataset.contributor,
-    valueMobile: () => "",
     url: (dataset) => dataset.contributorUrl,
     logo: (dataset) => dataset.contributor==="Nextstrain Team" ?
-      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
+      <img alt="nextstrain.org" className="logo" width="24px" src={"/nextstrain-logo-small.png"}/> :
       undefined,
-    logoMobile: (dataset) => dataset.contributor==="Nextstrain Team" ?
-      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
-      <MdPerson/>
   }
 ];
 

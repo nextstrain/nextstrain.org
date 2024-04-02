@@ -65,7 +65,7 @@ const SelectedFilterTextContainer = styled(BaseContainer)`
 
 const BadgeContainer = styled.div`
   background-color: #E9F2F6;
-  ${(props) => props.striped ? 'background: repeating-linear-gradient(135deg, #E9F2F6, #E9F2F6 5px, transparent 5px, transparent 10px);' : ''};
+  ${(props) => props.$striped ? 'background: repeating-linear-gradient(135deg, #E9F2F6, #E9F2F6 5px, transparent 5px, transparent 10px);' : ''};
   display: inline-block;
   font-size: 14px;
   border-radius: 2px;
@@ -99,8 +99,8 @@ export const Tooltip = ({id, children}) => (
  */
 export const FilterBadge = ({remove, canMakeInactive, active, activate, inactivate, children, id, onHoverMessage="The visible data is being filtered by this"}) => {
   return (
-    <BadgeContainer striped={canMakeInactive && !active}>
-      <TextContainer active={canMakeInactive ? active : true} data-tip data-for={id}>
+    <BadgeContainer $striped={canMakeInactive && !active}>
+      <TextContainer data-tip data-for={id}>
         {children}
       </TextContainer>
       <Tooltip id={id}>

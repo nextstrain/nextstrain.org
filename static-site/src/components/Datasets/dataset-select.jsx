@@ -79,8 +79,6 @@ class DatasetSelect extends React.Component {
                 />
               );
             case "ListDatasets":
-              return <h1 key="ListDatasets">TODO</h1>
-              /* eslint-disable-next-line */
               return (
                 <ListDatasets
                   key="ListDatasets"

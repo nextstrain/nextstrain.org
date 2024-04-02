@@ -1,16 +1,16 @@
 import React from "react";
 import styled from 'styled-components';
-// import {Grid, Col, Row} from 'react-styled-flexboxgrid';
 import { CenteredContainer } from "./styles";
 
-// FIXME XXX
-const Grid = styled.div``;
-const Col = styled.div``;
-const Row = styled.div``;
+const Row = styled.div`
+  padding: 10px 1px 10px 1px;
+  display: flex;
+  flex-direction: row;
+`;
 
 export const StyledLink = styled.a`
   color: #444 !important;
-  font-weight: ${(props) => props.bold ? 500 : 300} !important;
+  font-weight: ${(props) => props.$bold ? 500 : 300} !important;
   &:hover,
   &:focus {
     color: #5097BA !important;
@@ -30,7 +30,6 @@ const RowContainer = styled.div`
   font-size: 18px;
   padding: 10px 1px 10px 1px;
   line-height: 24px;
-  ${(props) => props.border && `border-bottom: 1px solid #CCC;`}
 `;
 
 const LogoContainerLink = styled.a`
@@ -46,107 +45,63 @@ const LogoContainer = styled.span`
   width: 24px;
 `;
 
-/**
- * columnStyles returns the properties + custom styles
- * for a given number of columns. See http://flexboxgrid.com
- * for details. This function is a patch for our current
- * implementation and should be revisited when we add support
- * for richer table views.                james, april 2022
- */
-const calcColumnStyles = (numCols) => {
-  const useEllipses = {
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden'
-  };
-  const col1 = [{xs: 8, sm: 6, md: 7}];
-  const col2 = numCols > 2 ?
-    [
-      {xs: false, sm: 3, md: 3, style: {...useEllipses}},
-      {xs: 4, sm: false, style: {textAlign: 'right', ...useEllipses}}
-    ] :
-    [
-      {xs: false, sm: 6, md: 5, style: {...useEllipses}},
-      {xs: 4, sm: false, style: {textAlign: 'right', ...useEllipses}}
-    ];
-  const col3 = [{xs: false, sm: 3, md: 2, style: {...useEllipses}}];
-  return [col1, col2, col3];
-};
+const SingleColumn = styled.div``;
+
+const Col1 = styled.div`
+  flex-basis: 60%;
+`;
+const Col2 = styled.div`
+  flex-basis: 40%;
+`;
+
 
 const HeaderRow = ({columns}) => {
   const names = columns.map((c) => c.name);
-  const columnStyles = calcColumnStyles(names.length);
-  return (
-    <RowContainer>
+  if (columns.length===1) {
+    return (
       <Row>
-        {/* column 1 (typically the dataset) - same rendering on main & mobile views */}
-        <Col {...columnStyles[0][0]} key={names[0]}>{names[0]}</Col>
-
-        {/* column 2: (typically the contributor) - both main & mobile views */}
-        {names.length>=2 && (
-          <>
-            <Col {...columnStyles[1][0]} key={names[1]}>{names[1]}</Col>
-            <Col {...columnStyles[1][1]} key={`${names[1]}-mobile`}>{names[1]}</Col>
-          </>
-        )}
-
-        {/* column 3: optional. Not rendered on small screens. */}
-        {names.length===3 && (
-          <Col {...columnStyles[2][0]} key={names[2]}>{names[2]}</Col>
-        )}
+        <SingleColumn>{names[0]}</SingleColumn>
       </Row>
-    </RowContainer>
-  );
-};
+    )
+  }
+  return (
+    <Row>
+      <Col1>{names[0]}</Col1>
+      <Col2>{names[1]}</Col2>
+    </Row>
+  )
+}
 
 const NormalRow = ({columns, dataset}) => {
-  const names = columns.map((c) => c.name);
-  const columnStyles = calcColumnStyles(names.length);
-  return (
-    <RowContainer>
+  if (columns.length===1) {
+    return (
       <Row>
-        {/* column 1 (typically the dataset) - same rendering on main & mobile views */}
-        <Col {...columnStyles[0][0]} key={names[0]}>
+        <SingleColumn>
           <Value dataset={dataset} columnInfo={columns[0]} firstColumn/>
-        </Col>
-
-        {/* column 2: (typically the contributor) - both main & mobile views */}
-        {names.length>=2 && (
-          <>
-            <Col {...columnStyles[1][0]} key={names[1]}>
-              <Value dataset={dataset} columnInfo={columns[1]}/>
-            </Col>
-            <Col {...columnStyles[1][1]} key={`${names[1]}-mobile`}>
-              <Value dataset={dataset} columnInfo={columns[1]} mobileView/>
-            </Col>
-          </>
-        )}
-
-        {/* column 3: optional. Not rendered on small screens. */}
-        {names.length===3 && (
-          <Col {...columnStyles[2][0]} key={names[2]}>
-            <Value dataset={dataset} columnInfo={columns[2]} mobileView/>
-          </Col>
-        )}
+        </SingleColumn>
       </Row>
-    </RowContainer>
-  );
-};
+    )
+  }
+  return (
+    <Row>
+      <Col1>
+        <Value dataset={dataset} columnInfo={columns[0]} firstColumn/>
+      </Col1>
+      <Col2>
+        <Value dataset={dataset} columnInfo={columns[1]}/>
+      </Col2>
+    </Row>
+  )
+}
 
 /**
  * Render the value for a particular cell in the table.
  * May be a link and/or have a logo, depending on the data in `columnInfo`
  */
-const Value = ({dataset, columnInfo, mobileView, firstColumn}) => {
+const Value = ({dataset, columnInfo, firstColumn}) => {
   const url = typeof columnInfo.url === "function" && columnInfo.url(dataset);
-  const value = mobileView && typeof columnInfo.valueMobile === "function" ?
-    columnInfo.valueMobile(dataset) :
-    columnInfo.value(dataset);
-  const logo = mobileView && typeof columnInfo.logoMobile === "function" ?
-    columnInfo.logoMobile(dataset) :
-    typeof columnInfo.logo === "function" ?
-      columnInfo.logo(dataset) :
-      undefined;
+  const value = columnInfo.value(dataset);
+  const logo = typeof columnInfo.logo === "function" ? columnInfo.logo(dataset) : undefined;
   return (
     <>
       {(logo && url) ?
@@ -156,7 +111,7 @@ const Value = ({dataset, columnInfo, mobileView, firstColumn}) => {
           null
       }
       {url ?
-        <StyledLink bold={firstColumn} href={url}>{value}</StyledLink> :
+        <StyledLink $bold={firstColumn} href={url}>{value}</StyledLink> :
         value
       }
     </>
@@ -172,7 +127,6 @@ const Value = ({dataset, columnInfo, mobileView, firstColumn}) => {
  * @prop {Array} columns Array of columns. Each entry is an object with following properties:
  *       `name` {string} To be displayed in the header
  *       `value` {function} return the value, given an individual entry from `datasets`
- *       `valueMobile` {function | undefined} value to be used on small screens
  *       `url` {function | undefined} render the value as a link to this URL
  *       `logo` {function | undefined} if the function returns "nextstrain" then we render the Nextstrain logo.
  * @returns React Component
@@ -180,14 +134,14 @@ const Value = ({dataset, columnInfo, mobileView, firstColumn}) => {
 export const ListDatasets = ({datasets, columns}) => {
   return (
     <CenteredContainer>
-      <Grid fluid>
+      <RowContainer>
         <HeaderRow columns={columns}/>
         <DatasetSelectionResultsContainer>
           {datasets.map((dataset) => (
             <NormalRow dataset={dataset} columns={columns} key={columns[0].value(dataset)}/>
           ))}
         </DatasetSelectionResultsContainer>
-      </Grid>
+      </RowContainer>
     </CenteredContainer>
   );
 };

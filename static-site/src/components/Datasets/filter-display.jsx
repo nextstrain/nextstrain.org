@@ -4,14 +4,14 @@
  */
 import { sum } from "lodash";
 import React from "react";
-// import { Tooltip, FilterBadge} from "./filterBadge";
+import { Tooltip, FilterBadge} from "./filterBadge";
 import { CenteredContainer } from "./styles";
 
 
 const Intersect = ({id}) => (
   <span style={{fontSize: "2rem", fontWeight: 300, padding: "0px 4px 0px 2px", cursor: 'help'}} data-tip data-for={id}>
     ∩
-    <div id={id}>{`Groups of filters are combined by intersection`}</div>
+    <Tooltip id={id}>{`Groups of filters are combined by intersection`}</Tooltip>
   </span>
 );
 const Union = () => (
@@ -102,7 +102,7 @@ function createFilterBadges(filters, filterName, applyFilter) {
 
 function createIndividualBadge({filterName, item, label, onHoverMessage, applyFilter}) {
   return (
-    <div
+    <FilterBadge
       key={item.value}
       id={String(item.value)}
       remove={() => {applyFilter("remove", filterName, [item.value]);}}
@@ -113,6 +113,6 @@ function createIndividualBadge({filterName, item, label, onHoverMessage, applyFi
       inactivate={() => {applyFilter("inactivate", filterName, [item.value]);}}
     >
       {label}
-    </div>
+    </FilterBadge>
   );
 }
