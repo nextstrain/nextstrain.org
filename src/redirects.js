@@ -160,6 +160,14 @@ const datasetRedirectPatterns = [
   ['/monkeypox/hmpxv1', '/mpox/clade-IIb'],
   ['/monkeypox/hmpxv1/big', '/mpox/lineage-B.1'],
   ["/monkeypox", "/mpox"],
+
+   /**
+     * We shifted avian-flu and seasonal-flu to top level to stop nesting them
+     * both under flu/ so that avian-flu is more discoverable
+     */
+   ['/flu/avian(.*)', '/avian-flu(.*)'],
+   ['/flu/seasonal(.*)', '/seasonal-flu(.*)'],
+
 ].map(([originalPattern, redirectPattern]) => [
   match(`${originalPattern}${versionDatasetPattern}`),
   compile(`${redirectPattern}${versionDatasetPattern}`)
