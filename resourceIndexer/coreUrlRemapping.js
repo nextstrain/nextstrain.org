@@ -1,9 +1,8 @@
 import { readFileSync } from "fs";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ResourceIndexerError } from "./errors.js";
 import { convertManifestJsonToAvailableDatasetList } from "../src/endpoints/charon/parseManifest.js";
-import { datasetRedirects } from "../src/redirects.js";
+import { updateDatasetUrl } from "../src/redirects.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,17 +25,20 @@ export const remapCoreUrl = (urlPath) => {
       convertManifestJsonToAvailableDatasetList(serverManifest).defaults
     )
   }
-  return resolvedPath[urlPath] || urlPath;
+
+  /**
+   * Process server-hardcoded dataset redirects before the defaults, as the
+   * path we redirect to may itself be further redirected by the defaults.
+   * e.g. redirects monkeypox -> mpox, core routing redirects mpox -> mpox/clade-IIb
+   * Requires a leading slash to match the paths expected in server.
+   */
+  const serverRedirectedUrlPath = _removeSlashes(updateDatasetUrl(`/${urlPath}`))
+  return resolvedPath[serverRedirectedUrlPath] || serverRedirectedUrlPath
 }
 
 
 /**
- * The server redirects core dataset URLs via two (complementary) approaches.
- * 
- * First, there is a set of hardcoded redirects (src/redirects.js), as exposed by
- * the `datasetRedirects` function.
- * 
- * Secondly, we use our own "manifest JSON" to compute a map of partial paths
+ * Use our own "manifest JSON" to compute a map of partial paths
  * and their next (default) path,
  * e.g. flu → seasonal
  *      flu/seasonal → h3n2
@@ -45,10 +47,10 @@ export const remapCoreUrl = (urlPath) => {
  * resolve the entire path for every partial path, for instance
  *      flu → flu/seasonal/h3n2/h2/2y
  *      flu/seasonal → flu/seasonal/h3n2/h2/2y
- * 
- * This function combines those approaches and returns a complete list of
- * URL paths and the final URL path they would be redirected to.
- * @param {Object} defaults 
+ *
+ * This function returns a complete list of URL paths and the full URL path
+ * they would be redirected to.
+ * @param {Object} defaults
  * @returns {Object}
  */
 function resolveAll(defaults) {
@@ -62,21 +64,6 @@ function resolveAll(defaults) {
     }
     urlMap[partialPath] = resolvedPath;
   })
-
-  /**
-   * Process server-hardcoded dataset redirects after the above defaults, as the
-   * path we redirect to may itself be further redirected by the defaults.
-   */
-  const redirects = datasetRedirects().map((paths) => paths.map(_removeSlashes));
-  for (const [requestUrlPath, redirectUrlPath] of redirects) {
-    // The datasetRedirects are simple paths, with no version descriptors or
-    // queries or patterns/regex like behaviour. Nonetheless it's prudent
-    // to add some basic checks for these
-    if (requestUrlPath.includes('@') || requestUrlPath.includes(':') || requestUrlPath.includes('?')) {
-      throw new ResourceIndexerError(`Hardcoded server redirect '${requestUrlPath}' is invalid.`);
-    }
-    urlMap[requestUrlPath] = urlMap[redirectUrlPath] || redirectUrlPath;
-  }
 
   return urlMap;
 }
