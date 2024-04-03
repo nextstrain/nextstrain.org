@@ -1,0 +1,66 @@
+# The following data is used to provide hardcoded data for the resource-listing
+# UI such as the "showcase" tiles, quicklinks etc. This data isn't automatically
+# derived and is only (currently) used for the static-site UI. For sources
+# beyond "core" (e.g. groups, community), if we want to customise the display it
+# makes more sense to store this information in the bucket or repo,
+# respectively, and then send it in the API response from the server. 
+
+
+# Quick links are displayed in the header part of a pathogen group (e.g. "flu"
+# or "dengue"). They are displayed in order, as space allows. They act as a
+# shortcut to access the resource defined by their "name".
+coreQuickLinks:
+  # flu quick links taken from tiles on /influenza, dropping yam (no seqs) and h5nx instead of h5n1
+  - name: 'flu/seasonal/h3n2/ha/2y'
+    display: 'h3n2/ha/2y'
+  - name: 'flu/seasonal/h1n1pdm/ha/2y'
+    display: 'h1n1pdm/ha/2y'
+  - name: 'flu/seasonal/vic/ha/2y'
+    display: 'vic/ha/2y'
+  - name: 'flu/avian/h5nx/ha'
+    display: 'h5nx/ha'
+  - name: 'flu/avian/h7n9/ha'
+    display: 'h7n9/ha'
+  - name: 'flu/avian/h9n2/ha'
+    display: 'h9n2/ha'
+  - name: 'rsv/a/genome'
+    display: 'RSV/A'
+  - name: 'rsv/b/genome'
+    display: 'RSV/B'
+  # There is an (undocumented) special case to allow a group-level link to a
+  # page for that pathogen. We've only really built out these pages for one
+  # pathogen (SC2) and we may never expand these to other pathogens. Or we
+  # might, and we can revisit the UI to expose them in which case.
+  - groupName: 'ncov'
+    display: '[SARS-CoV-2 main page]'
+    name: 'sars-cov-2'
+  - name: 'ncov/gisaid/21L/global/6m'
+    display: '21L/global/6m (GISAID)'
+  # note that open/21L doesn't exist
+  - name: 'ncov/gisaid/global/6m'
+    display: 'global/6m (GISAID)'
+  - name: 'ncov/open/global/6m'
+    display: 'global/6m (open data)'
+
+coreGroupDisplayNames:
+  flu: flu (seasonal and avian influenza)
+  WNV: WNV (West Nile Virus)
+  ncov: ncov (SARS-CoV-2)
+  mpox: mpox
+
+
+# Showcase tiles must define a filter query which is a list of dataset name
+# "words" (where words are joined by "/" to form the URL path) as well as a PNG
+# image which is relative to static-site/static/splash_images. The number of
+# showcase tiles which will be shown is decided by the UI and changes with
+# screen size.
+coreShowcase:
+  - {name: "SARS-CoV-2",        img: "ncov.png",              filters: ["ncov"]}
+  - {name: "Seasonal Flu",      img: "seasonalinfluenza.png", filters: ["flu", "seasonal"]}
+  - {name: "Avian Flu",         img: "avianinfluenza.png",    filters: ["flu", "avian"]}
+  - {name: "mpox",              img: "mpox.png",              filters: ["mpox"]}
+  - {name: "RSV",               img: "rsv1.png",              filters: ["rsv"]}
+  - {name: "dengue",            img: "dengue.png",            filters: ["dengue"]}
+  - {name: "Ebola (West Africa)", img: "ebola.png",           filters: ["ebola"]}
+  - {name: "Measles",           img: "measles.jpg",           filters: ["measles"]}
+  - {name: "Zika",              img: "zika.png",              filters: ["zika"]}

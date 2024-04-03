@@ -2,7 +2,7 @@ import fs from 'fs';
 import * as utils from './utils/index.js';
 import zlib from 'zlib';
 import { promisify } from 'util';
-import { NotFound, BadRequest } from './httpErrors.js';
+import { NotFound, BadRequest, InternalServerError } from './httpErrors.js';
 import { RESOURCE_INDEX } from './config.js';
 import { signedUrl } from './s3.js';
 import { fetch } from './fetch.js';
@@ -128,8 +128,90 @@ async function updateResourceVersions() {
   resources = JSON.parse(fileContents);
 }
 
+/**
+ * ListResources is intended to respond to resource listing queries. The current
+ * implementation only handles a single source Id and single resource type, but
+ * this will be extended as needed.
+ */
+class ListResources {
+  constructor(sourceIds, resourceTypes) {
+    if (sourceIds.length>1) {
+      throw new BadRequest(`Listing resources currently only supports a single source`)
+    }
+    if (resourceTypes.length>1) {
+      throw new BadRequest(`Listing resources currently only supports a single resource type`)
+    }
+    if (!resources[sourceIds[0]]) {
+      throw new BadRequest(`Source ${sourceIds[0]} does not exist in the index`)
+    }
+    this.sourceId = sourceIds[0];
+    this.resourceType = resourceTypes[0];
+  }
+
+  coreDatasetFilter([name, ]) {
+    /* Consult the manifest to and restrict our listed resources to those whose
+    _first words_ appear as a top-level key the manifest. Subsequent words
+    aren't checked, so datasets may be returned which aren't explicitly defined
+    in the manifest.
+
+    This is very similar to restricting based on the routing rules (e.g. using
+    `coreBuildPaths`) however the manifest is a subset of those and is used here
+    as the listed resources should be those for which we have added the pathogen
+    name to the manifest.
+    */
+    if (!this._coreDatasetFirstWords) {
+      this._coreDatasetFirstWords = new Set(
+        global?.availableDatasets?.core?.map((path) => path.split("/")[0]) || []
+      );
+    }
+    return this._coreDatasetFirstWords.has(name.split("/")[0])
+  }
+
+  pathPrefixBySource(name) {
+    /**
+     * We separate out the "source part" from the "pathParts" part in our
+     * routing logic, creating corresponding Source and Resource objects. Here
+     * we go in the other direction. We could link the two approaches in the
+     * future if it's felt this duplication is too brittle.
+     */
+    switch (name) {
+      case "core":
+        return ""
+      case "staging":
+        return "staging/"
+      default:
+        throw new InternalServerError(`Source "${name}" does not have a corresponding prefix`)
+    }
+  }
+
+
+  get data() {
+    const _resources = resources?.[this.sourceId]?.[this.resourceType];
+    if (!_resources) {
+      throw new NotFound(`No resources exist for the provided source-id / resource-type`);
+    }
+    if (this.resourceType !== 'dataset') {
+      throw new InternalServerError(`Resource listing is currently only implemented for datasets`);
+    }
+    const pathVersions = Object.fromEntries(
+      Object.entries(_resources).map(([name, data]) => {
+        return [name, data.versions.map((v) => v.date)];
+      })
+      .filter((d) => this.sourceId==='core' ? this.coreDatasetFilter(d) : true)
+    )
+    const d = {}
+    d[this.resourceType] = {}
+    d[this.resourceType][this.sourceId] = {
+      pathVersions,
+      pathPrefix: this.pathPrefixBySource(this.sourceId)
+    }
+    return d;
+  }
+}
+
+
 export {
   ResourceVersions,
-
+  ListResources,
   updateResourceVersions,
 }

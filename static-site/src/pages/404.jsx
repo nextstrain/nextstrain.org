@@ -38,7 +38,7 @@ const FourOhFour = () => {
   );
 };
 
-const ErrorContainer = styled.div`
+export const ErrorContainer = styled.div`
   color: ${(props) => props.theme.errorRed};
   max-width: 640px;
   padding: 130px 0px 80px 0px;

@@ -11,3 +11,4 @@ export * as openid from './openid.js';
 export * as schemas from './schemas.js';
 export * as staging from './staging.js';
 export * as staticSite from './staticSite.js';
+export * as listResources from './listResources.js';
