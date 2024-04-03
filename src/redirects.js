@@ -1,4 +1,5 @@
 import url from 'url';
+import { match, compile } from "path-to-regexp";
 import { splitPrefixIntoParts } from './utils/prefix.js';
 import { parseNarrativeLanguage } from './utils/index.js';
 
@@ -23,17 +24,15 @@ export const setup = (app) => {
   });
 
   /* handle redirects for dataset paths which have changed name & preserve any queries */
-  for (const [requestPath, redirectPath] of datasetRedirects()) {
-    app.route(requestPath).get((req, res) =>
-      res.redirect(url.format({pathname: redirectPath, query: req.query}))
-    )
-    /* redirect versioned requests as well. The format or existence of the
-    version isn't checked here, but it will be when the (redirected) request is
-    handled */
-    app.route(`${requestPath}@:version`).get((req, res) =>
-      res.redirect(url.format({pathname: `${redirectPath}@${req.params.version}`, query: req.query}))
-    )
-  }
+  /* We do route matching within `updateDatasetUrl`, so just capture all routes */
+  app.route("/*").get((req, res, next) => {
+    const urlPath = url.parse(req.url).pathname;
+    const newUrlPath = updateDatasetUrl(urlPath);
+    if (newUrlPath !== urlPath) {
+      return res.redirect(url.format({pathname: newUrlPath, query: req.query}))
+    }
+    return next('route')
+  });
 
   /*
    * Redirect to translations of narratives if the client has
@@ -127,6 +126,58 @@ export const setup = (app) => {
   }
 
 };
+
+/**
+ * Checks if the provided URL pathname matches are any of our datasetRedirectPatterns
+ * If the there is match, then return the new URL for the dataset.
+ * If there is no match, then return the original URL pathname.
+ *
+ * @param {string} originalUrlPathname
+ * @returns {string}
+ */
+export function updateDatasetUrl(originalUrlPathname) {
+  /** A list of original patterns with matching redirect patterns
+   * Order matters as the function returns the first matching pattern,
+   * so list more specific patterns first.
+   *
+   * The original and redirect patterns MUST share the same params
+   */
+  const datasetRedirectPatterns = [
+    /** prior to June 2021 our core nCoV builds were available at
+     * /ncov/global, ncov/asia etc. These used GISAID data exclusively.
+     * We now have GISAID builds and GenBank builds, and so the URLs
+     * (i.e. names on s3://nextstrain-data) have changed. We add redirects
+     * for the old URLs to point to the new GISAID URLs.
+     * The timestamped URLs (e.g. /ncov/:region/YYYY-MM-DD) which currently exist
+     * will not be redirected, but new URLs will be of the format
+     * /ncov/gisaid/:region/YYYY-MM-DD.
+     */
+    ['/ncov/:region(global|asia|oceania|north-america|south-america|europe|africa)', '/ncov/gisaid/:region'],
+    /**
+     * We shifted from using 'monkeypox' to 'mpox', as per WHO naming
+     * recommendations. Note that monkeypox YYYY-MM-DD URLs remain,
+     * e.g. /monkeypox/hmpxv1/2022-09-04
+     */
+    ['/monkeypox/mpxv', '/mpox/all-clades'],
+    ['/monkeypox/hmpxv1', '/mpox/clade-IIb'],
+    ['/monkeypox/hmpxv1/big', '/mpox/lineage-B.1'],
+    ["/monkeypox", "/mpox"],
+  ];
+
+  // Include an optional versioned dataset pattern for all redirect patterns
+  const versionDatasetPattern = ":version(@.*)?"
+
+  for (const [originalPattern, redirectPattern] of datasetRedirectPatterns) {
+    const urlMatch = match(`${originalPattern}${versionDatasetPattern}`);
+
+    const matchingURL = urlMatch(originalUrlPathname)
+    if (matchingURL) {
+      const toPath = compile(`${redirectPattern}${versionDatasetPattern}`)
+      return toPath({...matchingURL.params})
+    }
+  }
+  return originalUrlPathname
+}
 
 
 /**
