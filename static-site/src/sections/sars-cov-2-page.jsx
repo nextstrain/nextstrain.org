@@ -12,7 +12,7 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
-// import DatasetMap from "../components/Datasets/dataset-map";
+import DatasetMap from "../components/Datasets/dataset-map";
 import { SituationReportsByLanguage } from "../components/Datasets/situation-reports-by-language";
 import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-introduction";
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
@@ -221,7 +221,7 @@ class Index extends React.Component {
                 datasets={this.state.filterList}
                 columns={tableColumns}
                 interface={[
-                  // DatasetMap,
+                  DatasetMap,
                   "FilterSelect",
                   "FilterDisplay",
                   "ListDatasets"
