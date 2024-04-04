@@ -230,7 +230,13 @@
           "default": "s"
         }
       },
-      "measles": "",
+      "measles": {
+        "resolution": {
+          "genome": "",
+          "N450": "",
+          "default": "genome"
+        }
+      },
       "mpox": {
         "resolution": {
           "all-clades": "",
