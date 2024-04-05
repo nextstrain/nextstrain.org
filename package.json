@@ -8,7 +8,7 @@
   "repository": "github:nextstrain/nextstrain.org",
   "homepage": "https://nextstrain.org",
   "engines": {
-    "node": "^20",
+    "node": "20.9.0",
     "npm": "^10"
   },
   "scripts": {
