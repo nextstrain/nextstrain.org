@@ -136,7 +136,6 @@ const PostTitle = styled.h1`
 const PostAuthorSurrounds = styled.div`
   min-height: 2rem;
   font-size: ${(props) => props.theme.niceFontSize};
-  font-weight: 100;
   color: ${(props) => props.theme.medGrey};
 `;
 const PostAuthor = styled.span`

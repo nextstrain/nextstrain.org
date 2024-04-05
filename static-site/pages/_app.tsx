@@ -7,7 +7,7 @@ import "../src/styles/globals.css";
 
 // Custom fonts bundled (i.e. no external requests), see <https://nextjs.org/docs/pages/building-your-application/optimizing/fonts>
 const lato = Lato({
-  weight: ['100', '300', '400', '700'],
+  weight: ['300', '400', '700'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
   variable: '--lato',
