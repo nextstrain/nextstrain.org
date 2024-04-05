@@ -5,7 +5,6 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 
 const auspiceEntrypoint = fs.readFileSync("auspice-client/dist/index.html").toString();
-const gatsby404 = fs.readFileSync("static-site/public/404.html").toString();
 
 /* It would be better if none of these tests relied on actual production
  * datasets/narratives and instead solely used fixtures explicitly put in place
@@ -36,7 +35,7 @@ describe("datasets", () => {
     testPaths([
       { case: "nested",        path: "/flu/seasonal/h3n2/ha/2y" },
       { case: "canonicalized", path: "/flu/seasonal" },
-      { case: "top-level",     path: "/zika", tipFrequencies: false },
+      { case: "top-level",     path: "/zika", tipFrequencies: false, missingResourcePageExists: false },
     ]);
     describe("bogus", () => {
       testBadRequest("/flu/seasonal/h3n2_ha_2y");
@@ -61,8 +60,8 @@ describe("datasets", () => {
       { case: "alt branch", path: "/community/nextstrain/community-test@alt/beta-cov", ...noSidecars },
     ]);
     describe("bogus", () => {
-      testGatsby404("/community/nextstrain/community-test@does-not-exist");
-      testGatsby404("/community/nextstrain/does-not-exist");
+      testMissingResourcePage("/community/nextstrain/community-test@does-not-exist");
+      testMissingResourcePage("/community/nextstrain/does-not-exist");
       testBadRequest("/community/nextstrain/community-test/zika_tutorial");
 
       // Community repos may have underscores in their repo name, but not
@@ -81,8 +80,8 @@ describe("datasets", () => {
       { case: "top-level", path: "/groups/blab/beta-cov", ...noSidecars },
     ]);
     describe("bogus", () => {
-      testGatsby404("/groups/blab/does-not-exist");
-      testGatsby404("/groups/does-not-exist");
+      testMissingResourcePage("/groups/blab/does-not-exist");
+      testMissingResourcePage("/groups/does-not-exist");
       testBadRequest("/groups/blab/ncov_19B");
     });
   });
@@ -107,7 +106,7 @@ describe("datasets", () => {
     cases.forEach(testPath);
   }
 
-  function testPath({case: case_, path, rootSequence = true, tipFrequencies = true, testDoesNotExist = true}) {
+  function testPath({case: case_, path, rootSequence = true, tipFrequencies = true, testDoesNotExist = true, missingResourcePageExists = true}) {
     describe(case_, () => {
       // Auspice
       testIsAuspice(path);
@@ -166,7 +165,11 @@ describe("datasets", () => {
 
       // Non-existent datasets under this path
       if (testDoesNotExist) {
-        testGatsby404(`${path}/does-not-exist`);
+        if (missingResourcePageExists) {
+          testMissingResourcePage(`${path}/does-not-exist`)
+        } else {
+          testBase404Page(`${path}/does-not-exist`)
+        }
       }
     });
   }
@@ -176,8 +179,8 @@ describe("narratives", () => {
 
   describe("core", () => {
     testPaths([
-      { case: "top-level", path: "/narratives/intro-to-narratives" },
-      { case: "nested",    path: "/narratives/ncov/sit-rep/2020-08-14" },
+      { case: "top-level", path: "/narratives/intro-to-narratives",     missingResourcePageExists: false },
+      { case: "nested",    path: "/narratives/ncov/sit-rep/2020-08-14", missingResourcePageExists: false },
     ]);
     describe("bogus", () => {
       testBadRequest("/narratives/ncov_sit-rep/2020-08-14");
@@ -201,7 +204,7 @@ describe("narratives", () => {
       { case: "alt branch", path: "/community/narratives/nextstrain/community-test@alt/alternate-branch" },
     ]);
     describe("bogus", () => {
-      testGatsby404("/community/narratives/nextstrain/community-test@does-not-exist");
+      testMissingResourcePage("/community/narratives/nextstrain/community-test@does-not-exist");
       testBadRequest("/community/narratives/nextstrain/community-test/nested_intro-to-narratives");
     });
   });
@@ -211,7 +214,7 @@ describe("narratives", () => {
       { case: "nested", path: "/groups/blab/narratives/test/fixture" },
     ]);
     describe("bogus", () => {
-      testGatsby404("/groups/blab/narratives/does-not-exist");
+      testMissingResourcePage("/groups/blab/narratives/does-not-exist");
       testBadRequest("/groups/blab/narratives/test_fixture");
     });
   });
@@ -235,7 +238,7 @@ describe("narratives", () => {
     cases.forEach(testPath);
   }
 
-  function testPath({case: case_, path, testDoesNotExist = true}) {
+  function testPath({case: case_, path, testDoesNotExist = true, missingResourcePageExists=true}) {
     describe(case_, () => {
       // Auspice
       testIsAuspice(path);
@@ -260,7 +263,11 @@ describe("narratives", () => {
 
       // Non-existent narratives under this path
       if (testDoesNotExist) {
-        testGatsby404(`${path}/does-not-exist`);
+        if (missingResourcePageExists) {
+          testMissingResourcePage(`${path}/does-not-exist`)
+        } else {
+          testBase404Page(`${path}/does-not-exist`)
+        }
       }
     });
   }
@@ -306,8 +313,9 @@ function testPathMediaTypes({path, mediaTypes, additionalAcceptableTypes, checkB
   });
 }
 
-function testGatsby404(path) {
-  describe(`${path} sends Gatsby 404`, () => {
+
+function testBase404Page(path) {
+  describe(`${path} sends our (Next.js) 404 page`, () => {
     const req = fetch(url(path), {headers: {accept: "text/html,*/*;q=0.1"}});
 
     test("status is 404", async () => {
@@ -315,10 +323,36 @@ function testGatsby404(path) {
       expect(res.status).toBe(404);
     });
 
+    /* Next.js pages don't contain much/any HTML content as that arrives via
+    subsequent requests. We could change this by adding a <noscript> section to
+    the 404 page, but nextstrain.org without JS is not feasible */
     test("body looks like 404 page", async () => {
       const res = await req;
-      expect(await res.text()).toBe(gatsby404);
+      expect((await res.text()).includes('"page":"/404"')).toBe(true)
     });
+  });
+}
+
+
+function testMissingResourcePage(path) {
+  /**
+   * We have a number of pages which catch a missing resource and display a
+   * customised "this <resource> doesn't exist" (for instance,
+   * "nextstrain.org/flu/does-not-exist"). These are valid next.js pages,
+   * and so have response 200.
+   */
+  describe(`${path} sends a high-level page indicating missing resource`, () => {
+    const req = fetch(url(path), {headers: {accept: "text/html,*/*;q=0.1"}});
+
+    test("status is 200", async () => {
+      const res = await req;
+      expect(res.status).toBe(200);
+    });
+
+    /* Next.js pages don't contain much/any HTML content as that arrives via
+    subsequent requests, and this includes the "This <resource> doesn't exist"
+    banner, so in the current format it's hard to make assertions about the HTML
+    content. (But what we really want to test is whether the banner appears!) */
   });
 }
 
