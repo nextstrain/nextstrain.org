@@ -11,5 +11,6 @@
   "navbarComponent": "navbar.js",
   "splashComponent": "splash.js",
   "browserTitle": "Nextstrain",
-  "plausibleDataDomain": "nextstrain.org"
+  "plausibleDataDomain": "nextstrain.org",
+  "linkOutModal": true
 }
