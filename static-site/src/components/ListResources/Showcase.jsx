@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {CardInner, CardImg, CardTitle} from "../Cards/styles";
 import { theme } from "../../layouts/theme";
-import { goToAnchor } from 'react-scrollable-anchor';
+import { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
 import { createFilterOption } from "./useFilterOptions";
 
 const cardWidthHeight = 160; // pixels
@@ -43,7 +43,7 @@ const ShowcaseTile = ({data, setSelectedFilterOptions}) => {
     <CardOuter>
       <CardInner>
         <div onClick={filter}>
-          <CardTitle squashed>
+          <CardTitle $squashed>
             {data.name}
           </CardTitle>
           <CardImgWrapper filename={data.img}/>
@@ -97,9 +97,9 @@ const getColor = () => {
 const CardImgWrapper = ({filename}) => {
   let src;
   try {
-    src = require(`../../../static/splash_images/${filename}`);
+    src = require(`../../../static/splash_images/${filename}`).default.src;
   } catch {
-    src = require(`../../../static/splash_images/empty.png`);
+    src = require(`../../../static/splash_images/empty.png`).default.src;
   }
   return <CardImg src={src} alt={""} color={getColor()}/>
 }

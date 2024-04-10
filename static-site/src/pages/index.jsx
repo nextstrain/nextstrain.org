@@ -1,6 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
-import { graphql, navigate } from "gatsby";
+import { withRouter } from 'next/router'
 import SEO from "../components/SEO/SEO";
 import { siteTitle, groupsApp } from "../../data/SiteConfig";
 import NavBar from '../components/nav-bar';
@@ -10,25 +10,21 @@ import MainLayout from "../components/layout";
 
 class Index extends React.Component {
   render() {
-    // Workaround so index page doesn't flash when pages are redirecting
-    // See github issue: https://github.com/gatsbyjs/gatsby/issues/5329#issuecomment-484741119
-    const browser = typeof window !== "undefined" && window;
 
-    if (browser && groupsApp) {
-      navigate("/groups");
+    if (groupsApp) { /* see (top-level file) `groupsApp.md` for more */
+      this.props.router.replace("/groups")
       return null;
     }
 
-    const postEdges = this.props.data.allMarkdownRemark.edges;
     return (
       <MainLayout>
         <div className="index-container">
           <Helmet title={siteTitle} />
-          <SEO postEdges={postEdges} />
+          <SEO/>
           <main>
             <UserDataWrapper>
               <NavBar location={this.props.location} />
-              {browser && <Splash />}
+              <Splash/>
             </UserDataWrapper>
           </main>
         </div>
@@ -37,27 +33,4 @@ class Index extends React.Component {
   }
 }
 
-export default Index;
-
-export const pageQuery = graphql`
-  query IndexQuery {
-    allMarkdownRemark(
-      limit: 2000
-      sort: { fields: [frontmatter___date], order: DESC }
-    ) {
-      edges {
-        node {
-          fields {
-            slug
-          }
-          excerpt
-          timeToRead
-          frontmatter {
-            title
-            date
-          }
-        }
-      }
-    }
-  }
-`;
+export default withRouter(Index);

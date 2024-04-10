@@ -56,7 +56,7 @@ Arranged not alphabetically but conceptually since the terms are searchable and 
     The Express server performs server-side routing, which means it responds to HTTP requests for a matching path.
     Express route declarations include the stack of `request handlers <request handler>` to use.
 
-    The Gatsby app performs client-side routing, which means it displays content based on the browser's ``location``.
+    The Next.js app (sometimes referred to as the "static site") performs client-side routing, which means it displays content based on the browser's ``location``.
 
   request handler
     also *Express handler*, *route handler*, or just *handler*.

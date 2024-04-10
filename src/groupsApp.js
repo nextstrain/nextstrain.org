@@ -75,7 +75,7 @@ openid.setup(app);
 auspice.setup(app);
 
 
-/* static-site (Gatsby).
+/* static-site (Next.JS).
  */
 await staticSite.setup(app);
 

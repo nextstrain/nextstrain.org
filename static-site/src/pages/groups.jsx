@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import ScrollableAnchor from "react-scrollable-anchor";
+import ScrollableAnchor from '../../vendored/react-scrollable-anchor/index';
 import { SmallSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
@@ -109,7 +109,7 @@ class GroupsPage extends React.Component {
           />
         )}
         <HugeSpacer />
-        <ScrollableAnchor id={'datasets'}>
+        <ScrollableAnchor id={'narratives'}>
           <splashStyles.H2>Available Narratives</splashStyles.H2>
         </ScrollableAnchor>
         {this.state.dataLoaded && (

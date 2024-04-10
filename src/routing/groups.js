@@ -48,17 +48,13 @@ export function setup(app) {
     });
 
   app.routeAsync("/groups/:groupName")
-    /* sendGatsbyPage("groups/:groupName/index.html") should work, but it
-     * renders wrong for some reason that's not clear.
-     */
-    .getAsync(endpoints.static.sendGatsbyEntrypoint)
-    ;
+    .getAsync(endpoints.nextJsApp.handleRequest)
 
   app.use("/groups/:groupName/settings",
     endpoints.groups.setGroup(req => req.params.groupName));
 
   app.routeAsync("/groups/:groupName/settings")
-    .getAsync(endpoints.static.sendGatsbyEntrypoint);
+    .getAsync(endpoints.nextJsApp.handleRequest)
 
   app.routeAsync("/groups/:groupName/settings/logo")
     .getAsync(getGroupLogo)
@@ -121,9 +117,9 @@ export function setup(app) {
   /* For requests for text/html, the first /whoami implementation returned bare
    * bones HTML dynamic on the logged in user.  This was later replaced by a
    * redirect to /users/:name (for a logged in session) or /users (if no one
-   * logged in), which then rendered a Gatsby page.  However, the /users/:name
+   * logged in), which then rendered a static-site page.  However, the /users/:name
    * form was purely aesthetic: :name was not used for routing at all.  Instead
-   * of keeping up this fiction, have /whoami render the Gatsby page directly,
+   * of keeping up this fiction, have /whoami render the static-site page directly,
    * at least until we _actually_ implement user profile pages.
    *   -trs, 4 Oct 2021
    */

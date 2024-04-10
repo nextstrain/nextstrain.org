@@ -1,13 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link'
 import styled from 'styled-components';
 import Select from 'react-select';
-import ScrollableAnchor from "react-scrollable-anchor";
-/* Default import for react-tooltip v5 is ES modules, but webpack baulks at that.
-Using the available common JS build instead to avoid having to debug Gatsby, which
-isn't a nice experience and which we plan to replace shortly  */
-import {Tooltip} from 'react-tooltip-v5/dist/react-tooltip.cjs';
-import 'react-tooltip-v5/dist/react-tooltip.css';
-
+import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
+import {Tooltip} from 'react-tooltip-v5';
 import { useFilterOptions } from './useFilterOptions';
 import { useSortAndFilter } from "./useSortAndFilter";
 import { useDataFetch } from "./useDataFetch";
@@ -49,7 +45,7 @@ function ListResources({
       <ErrorContainer>  
         {"Whoops - listing resources isn't working!"}
         <br/>
-        {'Please '}<a href="/contact" style={{fontWeight: 300}}>get in touch</a>{" if this keeps happening"}
+        {'Please '}<Link href="/contact" style={{fontWeight: 300}}>get in touch</Link>{" if this keeps happening"}
       </ErrorContainer>
     )
   }

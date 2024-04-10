@@ -10,12 +10,7 @@ import MainLayout from "../components/layout";
 
 
 const FourOhFour = () => {
-  // Workaround so 404 page doesn't flash when pages are redirecting
-  // See github issue: https://github.com/gatsbyjs/gatsby/issues/5329#issuecomment-484741119
-  const browser = typeof window !== "undefined" && window;
-
   return (
-    browser && (
       <MainLayout>
         <div className="index-container">
           <Helmet title={siteTitle} />
@@ -35,7 +30,6 @@ const FourOhFour = () => {
         </div>
       </MainLayout>
     )
-  );
 };
 
 export const ErrorContainer = styled.div`

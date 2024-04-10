@@ -1,9 +1,10 @@
 import React from 'react';
-import ReactMapboxGl, { ZoomControl, Marker, Cluster } from "react-mapbox-gl";
+import Map, {Marker, NavigationControl} from 'react-map-gl';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { remove } from "lodash";
 import { FaInfoCircle } from "react-icons/fa";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const MapMarkerContainer = styled.div`
   position: relative;
@@ -28,13 +29,8 @@ const Flex = styled.div`
   display: flex;
   justify-content: space-around;
   margin: 0em 1em 3em 1em;
-  max-width: 1080px;
-  @media (max-width: 1080px) {
-    max-width: 100vw;
-  }
   @media (max-width: 720px) {
     flex-direction: column;
-    max-width: 100vw;
     margin: 1em 0 3em;
   }
 `;
@@ -88,16 +84,7 @@ const LegendIconContainer = styled.span`
   color: #888;
 `;
 
-const mapDefaults = {
-  maxBounds: [[-175, -60], [190, 75]],
-  zoomOverall: 0,
-  zoomPin: 3,
-};
-
-const Map = ReactMapboxGl({
-  accessToken: "pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2tqcnM5bXIxMWV1eTJzazN2YXVrODVnaiJ9.7iPttR9a_W7zuYlUCfrz6A",
-  scrollZoom: false
-});
+const MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2tqcnM5bXIxMWV1eTJzazN2YXVrODVnaiJ9.7iPttR9a_W7zuYlUCfrz6A";
 
 const circle = (size, fill, text) => {
   const sizeAdjusted = size+2;
@@ -186,24 +173,12 @@ class DatasetMap extends React.Component {
     this.setState({zoomToIndex: null});
   }
 
-  ClusterMarker = (coordinates, pointCount) => {
-    const size = pointCount < 10 ? 20 : pointCount < 50 ? 30 : 40;
-    return (
-      <Marker
-        key={coordinates.toString()}
-        coordinates={coordinates}
-      >
-        <MapMarkerContainer data-tip data-for={"cluster-tooltip"}>
-          {circle(size, "grey", pointCount)}
-        </MapMarkerContainer>
-      </Marker>);
-  };
-
   MapMarker = (dataset) => {
     const isNextstrainDataset = dataset.org.name === "Nextstrain Team";
     return (
       <Marker
-        coordinates={dataset.coords}
+        latitude={dataset.coords[1]}
+        longitude={dataset.coords[0]}
         anchor="bottom"
         key={dataset.coords.toString()}
       >
@@ -226,31 +201,26 @@ class DatasetMap extends React.Component {
   render() {
     // We don't map the stub datasets that are used to define the hierarchy
     const datasetsToMap = this.props.datasets.filter((dataset) => dataset.url !== undefined && dataset.coords !== undefined && dataset.name !== "Global");
-    // Nextstrain datasets go separate from clustered community datasets on the map
+    // Nextstrain datasets handled separately
     const nextstrainDatasets = remove(datasetsToMap, (b) => b.org && b.org.name === "Nextstrain Team");
 
     return (
       <Flex>
         <MapContainer>
           <Map
-            style="https://api.mapbox.com/styles/v1/trvrb/ciu03v244002o2in5hlm3q6w2?access_token=pk.eyJ1IjoidHJ2cmIiLCJhIjoiY2tqcnM5bXIxMWV1eTJzazN2YXVrODVnaiJ9.7iPttR9a_W7zuYlUCfrz6A"
-            containerStyle={{height: "100%", width: "100%"}}
-            zoom={[mapDefaults.zoomOverall]}
-            maxBounds={mapDefaults.maxBounds}
+            mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
+            mapStyle={`https://api.mapbox.com/styles/v1/trvrb/ciu03v244002o2in5hlm3q6w2?access_token=${MAPBOX_ACCESS_TOKEN}`}
+            style={{height: "100%", width: "100%"}}
+            /* setting `zoom` prop seems to disable <NavigationControl> zooming, but the default (0) is what we want */
+            maxBounds={[[-175, -60], [190, 75]]}
+            onLoad={ReactTooltip.rebuild}
             onZoomEnd={ReactTooltip.rebuild}
             onDragEnd={ReactTooltip.rebuild}
+            renderWorldCopies={false}
           >
-            <ZoomControl zoomDiff={1.0} style={{top: "auto", bottom: "15px", right: "10px"}}/>
+            <NavigationControl position='bottom-right' showCompass={false}/>
             {Legend(legendEntries)}
-            {/* Clustering of community datasets according to https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md#cluster */}
-            <Cluster ClusterMarkerFactory={this.ClusterMarker} zoomOnClick zoomOnClickPadding={200} maxZoom={5} radius={30}>
-              {datasetsToMap.map((dataset, index) => this.MapMarker(dataset, index))}
-            </Cluster>
-            {/* Tooltips for cluster markers: */}
-            <StyledTooltip type="light" id={"cluster-tooltip"} effect="solid">
-              <div style={{fontStyle: "italic"}}>Click to zoom on this cluster of datasets</div>
-            </StyledTooltip>
-            {/* Nextstrain datasets: */}
+            {datasetsToMap.map((dataset, index) => this.MapMarker(dataset, index))}
             {nextstrainDatasets.map((dataset) => this.MapMarker(dataset))}
             {/* Tooltips for map markers: */}
             {[...nextstrainDatasets, ...datasetsToMap].map((dataset) => this.MapMarkerTooltip(dataset))}

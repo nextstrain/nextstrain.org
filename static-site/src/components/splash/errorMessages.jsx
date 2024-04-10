@@ -3,7 +3,7 @@ import * as splashStyles from "./styles";
 import { ErrorBannerInitialMessage, DataFetchError } from '../../../data/SiteConfig';
 
 export const ErrorBanner = ({title, contents}) => (
-  <splashStyles.FixedBanner backgroundColor="#c2c1be">
+  <splashStyles.FixedBanner $backgroundColor="#c2c1be">
     <splashStyles.StrongerText>
       {title}
     </splashStyles.StrongerText>

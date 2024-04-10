@@ -6,19 +6,6 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  static-site-lint:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: static-site/
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '16'
-      - run: npm ci
-      - run: npm run lint
-
   test:
     if: github.repository == 'nextstrain/nextstrain.org'
     runs-on: ubuntu-latest
@@ -26,11 +13,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version-file: 'package.json'
       - run: node --version
       - run: npm ci
+      # building the static site (Next.js) will fail if linting fails, so explicitly run linting
+      # first to make the test output clearer
+      - run: npm run lint:server
+      - run: npm run lint:static-site
       - run: npm run build
-      - run: npm run lint
       # configure AWS to run dev server necessary for `npm run test:ci`
       - uses: aws-actions/configure-aws-credentials@v4
         with:

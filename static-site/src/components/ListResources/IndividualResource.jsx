@@ -33,14 +33,14 @@ export const ResourceLink = styled.a`
   font-size: ${resourceFontSize}px;
   font-family: monospace;
   white-space: pre; /* don't collapse back-to-back spaces */
-  color: ${(props) => props.hovered ? LINK_HOVER_COLOR : LINK_COLOR} !important;
+  color: ${(props) => props.$hovered ? LINK_HOVER_COLOR : LINK_COLOR} !important;
   text-decoration: none !important;
 `;
 
-function Name({displayName, hovered, href, topOfColumn}) {
+function Name({displayName, $hovered, href, topOfColumn}) {
   return (
-    <ResourceLink href={href} target="_blank" rel="noreferrer" hovered={hovered}>
-      {'• '}{(hovered||topOfColumn) ? displayName.hovered : displayName.default}
+    <ResourceLink href={href} target="_blank" rel="noreferrer" $hovered={$hovered}>
+      {'• '}{($hovered||topOfColumn) ? displayName.hovered : displayName.default}
     </ResourceLink>
   )
 }
@@ -107,7 +107,7 @@ export const IndividualResource = ({data, isMobile}) => {
   }, []);
 
   return (
-    <Container innerRef={ref}>
+    <Container ref={ref}>
 
       <FlexRow>
 
@@ -151,7 +151,7 @@ export const ResourceLinkWrapper = ({children, onShiftClick}) => {
   return (
     <div>
       <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onClick}>
-        {React.cloneElement(children, { hovered })}
+        {React.cloneElement(children, { $hovered: hovered })}
       </div>
     </div>
   )  

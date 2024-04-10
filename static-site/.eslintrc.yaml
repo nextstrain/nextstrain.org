@@ -5,6 +5,13 @@ extends:
   - eslint:recommended
   - plugin:react/recommended
   - plugin:react-hooks/recommended
+  # We use the recommended Next.js eslint configuration `next/core-web-vitals` as per
+  # <https://nextjs.org/docs/pages/building-your-application/configuring/eslint#core-web-vitals>
+  # As of April 2024, the extension simply adds the `@next/next/core-web-vitals` plugin:
+  # <https://github.com/vercel/next.js/blob/canary/packages/eslint-config-next/core-web-vitals.js>
+  # Which in turn adds the `@next/next` and `@next/next/recommended` rulesets defined in
+  # <https://github.com/vercel/next.js/blob/canary/packages/eslint-plugin-next/src/index.ts>
+  - next/core-web-vitals
 
 settings:
   react:
@@ -15,6 +22,7 @@ ignorePatterns:
 
 rules:
   react/prop-types: off # Remove this override once all props have been typed using PropTypes or TypeScript.
+  '@next/next/no-img-element': off # Remove this if we use next.js optimisations for <img>
 
 parserOptions:
   sourceType: module

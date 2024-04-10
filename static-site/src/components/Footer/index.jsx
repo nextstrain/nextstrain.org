@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "gatsby";
+import Link from 'next/link'
 import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
@@ -69,7 +69,7 @@ class Footer extends React.Component {
                   <div style={{margin: "0px 0px"}}/>
                   <ListOfPeople people="current" />
                   {"Please see the "}
-                  <Link to="/team">team page</Link>
+                  <Link href="/team">team page</Link>
                   {" for more details."}
                 </>
                 )}

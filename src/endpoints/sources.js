@@ -3,7 +3,7 @@ import { NotFound } from '../httpErrors.js';
 import * as authz from '../authz/index.js';
 import { contentTypesProvided, contentTypesConsumed } from '../negotiate.js';
 import * as options from './options.js';
-import { sendAuspiceEntrypoint } from './static.js';
+import { sendAuspiceEntrypoint } from './auspice.js';
 import { deleteByUrls, proxyFromUpstream, proxyToUpstream } from "../upstream.js";
 
 

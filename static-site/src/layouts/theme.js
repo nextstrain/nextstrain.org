@@ -19,7 +19,7 @@ export const theme = {
   /* FONTS / LINE HEIGHTS ETC */
   niceLineHeight: 1.6,
   tightLineHeight: 1.4,
-  generalFont: "Lato, Helvetica Neue, Helvetica, sans-serif",
+  generalFont: "var(--lato), Helvetica Neue, Helvetica, sans-serif",
   niceFontSize: "16px",
   smallFontSize: "12px",
 

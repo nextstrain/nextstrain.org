@@ -9,19 +9,7 @@ html {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Lato', 'Helvetica Neue', sans-serif;
+    /* We use nextjs' next/font to manage our primary font (Lato). `var(--lato)` is defined in pages/_app.tsx */
+    font-family: var(--lato), 'Helvetica Neue', sans-serif;
     font-weight: 300;
-}
-
-@media (min-width: 550px) { /* apply these styles down to/until we're at 700px */
-  .twitterRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-  .twitterColumn {
-    display: flex;
-    flex-direction: column;
-  }
 }

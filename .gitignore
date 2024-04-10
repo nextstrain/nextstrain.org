@@ -43,3 +43,7 @@ terraform.tfstate*
 
 # Terraform plans, per our suggested usage in docs
 /env/*/plan
+
+# nextjs
+static-site/next-env.d.ts
+static-site/.next

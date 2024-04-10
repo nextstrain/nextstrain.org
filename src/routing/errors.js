@@ -115,11 +115,15 @@ export async function setup(app) {
 
     if (err instanceof NotFound) {
       /* A note about routing: if the current URL path (i.e. req.path) matches a
-       * a page known to Gatsby (e.g. via the Gatsby page's "path" or "matchPath"
-       * properties), then Gatsby will perform client-side routing to load that
-       * page even though we're serving a static page (404.html) here.
+       * a page known to the NextJS routes ("pages") then that page will be
+       * shown (with response code 200). Moving to server-side rendering of
+       * NotFound errors (and InternalServerError etc) will not only solve this
+       * but will also allow us to provide information about the error. See the
+       * following issues for more:
+       * <https://github.com/nextstrain/nextstrain.org/issues/774>
+       * <https://github.com/nextstrain/nextstrain.org/issues/518>
        */
-      return await endpoints.static.sendGatsby404(req, res);
+      return await endpoints.nextJsApp.handleRequest(req, res);
     }
 
     utils.verbose(`Sending ${err} error as HTML with Express' default error handler`);

@@ -1,7 +1,7 @@
 import * as authz from '../authz/index.js';
 import { ALL_GROUPS } from '../groups.js';
 import { contentTypesProvided } from '../negotiate.js';
-import { sendGatsbyPage } from './static.js';
+import * as nextJsApp from './nextjs.js';
 
 
 /**
@@ -24,7 +24,7 @@ const visibleGroups = (user) => ALL_GROUPS
 
 // Provide the client-side app with info about the current user
 export const getWhoami = contentTypesProvided([
-  ["html", sendGatsbyPage("whoami/index.html")],
+  ["html", nextJsApp.handleRequest],
   ["json", (req, res) =>
     // Express's JSON serialization drops keys with undefined values
     res.json({

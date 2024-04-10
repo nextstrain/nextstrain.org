@@ -8,10 +8,10 @@ class Cards extends React.Component {
   cards(bootstrapColumnSize) {
     return this.props.cards.map((d) => (
       <div className={`col-sm-${bootstrapColumnSize}`} key={d.title}>
-        <Styles.CardOuter squashed={this.props.squashed}>
+        <Styles.CardOuter $squashed={this.props.squashed}>
           <Styles.CardInner>
             <a href={`${d.url}`}>
-              <Styles.CardTitle squashed={this.props.squashed}>
+              <Styles.CardTitle $squashed={this.props.squashed}>
                 {d.title}
               </Styles.CardTitle>
               {d.private ? (
@@ -19,7 +19,7 @@ class Cards extends React.Component {
                   <Padlock/>
                 </Styles.BottomRightLabel>
               ) : null}
-              {d.img ? <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`)} alt={""} color={d.color}/> : null}
+              {d.img ? <Styles.CardImg src={require(`../../../static/splash_images/${d.img}`).default.src} alt={""} color={d.color}/> : null}
             </a>
           </Styles.CardInner>
         </Styles.CardOuter>

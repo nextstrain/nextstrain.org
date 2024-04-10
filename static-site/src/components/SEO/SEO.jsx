@@ -1,30 +1,20 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { siteLogo, siteUrl, siteDescription, siteTitle, siteTitleAlt } from "../../../data/SiteConfig";
-import { pathPrefix } from "../../../data/GatsbyConfig";
+
+const pathPrefix = "/"
 
 class SEO extends Component {
   render() {
-    const { postNode, postPath, postSEO } = this.props;
-    let title;
-    let description;
-    let image;
-    let postURL;
-    if (postSEO) {
-      const postMeta = postNode.frontmatter;
-      title = postMeta.title;
-      description = postMeta.description
-        ? postMeta.description
-        : postNode.excerpt;
-      image = postMeta.cover || siteLogo;
-      postURL = siteUrl + pathPrefix + postPath;
-    } else {
-      title = siteTitle;
-      description = siteDescription;
-      image = siteLogo;
-    }
+    const title = this.props.title || siteTitle;
+    const description = this.props.description || siteDescription;
+    const postSEO = !!this.props.blogUrlName;
+    /** The terminology here ('postUrl', 'blogURL') is carried over from an
+     * ancient Gatsby iteration of the website, which itself was probably copied
+     * from a template. */
+    const postURL = this.props.blogUrlName ? `${siteUrl}${pathPrefix}blog/${this.props.blogUrlName}` : undefined;
     const realPrefix = pathPrefix === "/" ? "" : pathPrefix;
-    image = siteUrl + realPrefix + image;
+    const image = siteUrl + realPrefix + siteLogo;
     const blogURL = siteUrl + pathPrefix;
     const schemaOrgJSONLD = [
       {

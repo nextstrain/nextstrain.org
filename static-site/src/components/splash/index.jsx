@@ -1,6 +1,6 @@
 import React from "react";
-import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
-import { Link } from 'gatsby';
+import ScrollableAnchor, { configureAnchors } from '../../../vendored/react-scrollable-anchor/index';
+import Link from 'next/link'
 import Cards from "../Cards";
 import nCoVCards from "../Cards/nCoVCards";
 import coreCards from "../Cards/coreCards";
@@ -63,7 +63,7 @@ class Splash extends React.Component {
             potential of pathogen genome data. We provide a continually-updated view of publicly
             available data alongside powerful analytic and visualization tools for use by the
             community. Our goal is to aid epidemiological understanding and improve outbreak
-            response. If you have any questions, please <Link to="/contact">contact us</Link>.
+            response. If you have any questions, please <Link href="/contact">contact us</Link>.
           </Styles.CenteredFocusParagraph>
         </FlexCenter>
 
@@ -176,7 +176,7 @@ class Splash extends React.Component {
             <Styles.FocusParagraph>
               Nextstrain is under active development and we have big plans for its future, including
               visualization, bioinformatics analysis and an increasing number and variety of
-              datasets. If you have any questions or ideas, please <Link to="/contact">contact us</Link>.
+              datasets. If you have any questions or ideas, please <Link href="/contact">contact us</Link>.
             </Styles.FocusParagraph>
           </div>
         </div>

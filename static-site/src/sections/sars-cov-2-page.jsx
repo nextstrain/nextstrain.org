@@ -1,6 +1,8 @@
+// We use <a> elements not <Link> because the links here need to go to the server which will then send the Auspice entrypoint
+/* eslint-disable @next/next/no-html-link-for-pages */
+
 import React from "react";
-import ScrollableAnchor, { configureAnchors } from "react-scrollable-anchor";
-import { MdPerson } from "react-icons/md";
+import ScrollableAnchor, { configureAnchors } from '../../vendored/react-scrollable-anchor/index';
 import { get } from 'lodash';
 import {
   SmallSpacer,
@@ -17,9 +19,7 @@ import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/langua
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 import GenericPage from "../layouts/generic-page";
 import { ErrorBanner } from "../components/splash/errorMessages";
-
-const nextstrainLogoPNG = "/favicon.png";
-
+import { withRouter } from 'next/router'
 
 const title = "Nextstrain SARS-CoV-2 resources";
 const abstract = `Labs from all over the world are sequencing SARS-CoV-2 and sharing genomic data.
@@ -127,14 +127,10 @@ const tableColumns = [
   {
     name: "Contributor",
     value: (dataset) => dataset.contributor,
-    valueMobile: () => "",
     url: (dataset) => dataset.contributorUrl,
     logo: (dataset) => dataset.contributor==="Nextstrain Team" ?
-      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
+      <img alt="nextstrain.org" className="logo" width="24px" src={"/nextstrain-logo-small.png"}/> :
       undefined,
-    logoMobile: (dataset) => dataset.contributor==="Nextstrain Team" ?
-      <img alt="nextstrain.org" className="logo" width="24px" src={nextstrainLogoPNG}/> :
-      <MdPerson/>
   }
 ];
 
@@ -160,17 +156,22 @@ class Index extends React.Component {
     this.setState({
       filterList,
       filterParsed,
-      // assume /ncov/* (or /sars-cov-2/*) is attempting to access dataset
-      // and if this page has been served then the dataset
-      // doesn't exist.
-      // For some reason if this is set in the constructor it breaks the banner.
-      nonExistentDatasetName: this.props["*"]
     });
   }
 
+  componentDidUpdate() {
+    if (!this.state.resourcePath) {
+      if (this.props.router.query?.['sars-cov-2']) {
+        this.setState({resourcePath: "sars-cov-2/" + this.props.router.query['sars-cov-2'].join("/")});
+      } else if (this.props.router.query?.ncov) {
+        this.setState({resourcePath: "ncov/" + this.props.router.query.ncov.join("/")});
+      }
+    }
+  }
+
   banner() {
-    if (this.state.nonExistentDatasetName && (this.state.nonExistentDatasetName.length > 0)) {
-      const bannerTitle = `The dataset "nextstrain.org${this.props.location.pathname}" doesn't exist.`;
+    if (this.state.resourcePath) {
+      const bannerTitle = `The dataset "nextstrain.org/${this.state.resourcePath}" doesn't exist.`;
       const bannerContents = (<>
         {`Here is the SARS-CoV-2 page, where we have listed featured datasets,
         narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
@@ -203,7 +204,7 @@ class Index extends React.Component {
         <ScrollableAnchor id={"datasets"}>
           <div>
             <HugeSpacer /><HugeSpacer />
-            <splashStyles.H2 left>
+            <splashStyles.H2 $left>
               All SARS-CoV-2 datasets
             </splashStyles.H2>
             <SmallSpacer />
@@ -234,7 +235,7 @@ class Index extends React.Component {
         <ScrollableAnchor id={"sit-reps"}>
           <div>
             <HugeSpacer /><HugeSpacer />
-            <splashStyles.H2 left>
+            <splashStyles.H2 $left>
               All SARS-CoV-2 situation reports
             </splashStyles.H2>
             <SmallSpacer />
@@ -284,4 +285,4 @@ function parseDatasetsFilterList(datasets) {
   });
 }
 
-export default Index;
+export default withRouter(Index);

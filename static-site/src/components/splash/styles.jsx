@@ -34,7 +34,7 @@ export const H1 = styled.div`
 `;
 
 export const H2 = styled.div`
-  text-align: ${(props) => props.left ? "left" : "center"};
+  text-align: ${(props) => props.$left ? "left" : "center"};
   font-size: 24px;
   line-height: 32px;
   font-weight: 500;
@@ -45,7 +45,7 @@ export const H2 = styled.div`
 `;
 
 export const H3 = styled.div`
-  text-align: ${(props) => props.left ? "left" : "center"};
+  text-align: ${(props) => props.$left ? "left" : "center"};
   font-size: 20px;
   line-height: 32px;
   font-weight: 500;
@@ -56,7 +56,7 @@ export const H3 = styled.div`
 `;
 
 export const H4 = styled.div`
-  text-align: ${(props) => props.left ? "left" : "center"};
+  text-align: ${(props) => props.$left ? "left" : "center"};
   font-size: 18px;
   line-height: 32px;
   font-weight: 500;
@@ -81,7 +81,7 @@ export const Heading = styled.div`
 
 export const SitRepTitle = styled.div`
   font-family: ${(props) => props.theme.generalFont};
-  font-weight: ${(props) => props.attn ? "600": "500"};
+  font-weight: ${(props) => props.$attn ? "600": "500"};
   font-size: 16px;
   @media (max-width: 768px) {
     font-size: 18px;
@@ -199,7 +199,7 @@ export const FixedBanner = styled.div`
   left: 0px;
   width: 100%;
   height: 10%;
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.$backgroundColor};
   font-size: 18px;
   padding: 25px 0px 25px 0px;
   margin: 25px 0px 25px 0px;

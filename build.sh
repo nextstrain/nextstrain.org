@@ -32,11 +32,8 @@ main() {
 }
 
 build-static() {
-    echo "Building the static site (./static-site/public/)"
-    cd static-site
-    npm ci
-    npm run build # build using gatsby. Can take a few minutes.
-    cd ..
+    echo "Building the static Next.JS app (pages defined in static-site/pages, assets written to static-site/.next)"
+    ./node_modules/.bin/next build static-site
 }
 
 build-auspice() {

@@ -1,7 +1,6 @@
 import React from "react";
-import {Link} from 'gatsby';
+import Link from 'next/link'
 import styled, {css} from 'styled-components';
-import { startsWith } from "lodash";
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { UserContext } from "../../layouts/userDataWrapper";
 import { groupsApp } from "../../../data/SiteConfig";
@@ -28,7 +27,7 @@ const NavLogo = styled.div`
   padding-top: 0px;
   padding-bottom: 0px;
   cursor: pointer;
-  font-size: ${(props) => props.minified ? '12px' : '16px'};
+  font-size: ${(props) => props.$minified ? '12px' : '16px'};
 `;
 
 const NavLogoCharacter = styled.span`
@@ -37,42 +36,32 @@ const NavLogoCharacter = styled.span`
   font-size: 20px;
   font-weight: 400;
   cursor: pointer;
-  color: ${(props) => {
-    try {
-      return props.theme.titleColors[props.colorIndex];
-    } catch (err) {
-      console.log("ERROR in props.", props);
-      return "black";
-    }
-  }};
+  color: ${(props) => props.theme.titleColors?.[props.$colorIndex]};
 `;
 
 const baseLinkCss = css`
-  padding-left: ${(props) => props.minified ? '6px' : '12px'};
-  padding-right: ${(props) => props.minified ? '6px' : '12px'};
+  padding-left: ${(props) => props.$minified ? '6px' : '12px'};
+  padding-right: ${(props) => props.$minified ? '6px' : '12px'};
   padding-top: 20px;
   padding-bottom: 20px;
   text-decoration: none !important;
-  font-size: ${(props) => props.minified ? '12px' : '16px'} !important;
+  font-size: ${(props) => props.$minified ? '12px' : '16px'} !important;
   font-weight: 400;
 `;
 
-/** Link which, if relative, will have event handlers attached by gatsby.
- * This means it _won't_ be seen by the server!
- */
-const NavLinkToBeHandledByGatsby = styled((props) => <Link {...props} />)`
+/** Next.JS <Link> (will be handled client-side)
+*/
+const ClientSideLink = styled((props) => <Link {...props} />)`
   ${baseLinkCss}
-  color: ${(props) => props.minified ? '#000000' : props.theme.darkGrey} !important;
+  color: ${(props) => props.$minified ? '#000000' : props.theme.darkGrey} !important;
   cursor: pointer;
 `;
 
-/** Link which shouldn't have any event handlers attached by gatsby. This means it'll go to the server
- * even if it's a relative link, which is essential for some functionality, but can cause
- * a page flash
+/** HTML anchor (<a>) element. HTML request will be made to server, i.e. won't be handled client-side.
  */
-const NavLinkToGoToServer = styled.a`
+const ServerSideLink = styled.a`
   ${baseLinkCss}
-  color: ${(props) => props.minified ? '#000000' : props.theme.darkGrey} !important;
+  color: ${(props) => props.$minified ? '#000000' : props.theme.darkGrey} !important;
   cursor: pointer;
 `;
 
@@ -87,14 +76,14 @@ class NavBar extends React.Component {
 
   selectedClass(name) {
     if (!this.props.location || !this.props.location.pathname) return "";
-    return startsWith(this.props.location.pathname, `/${name}`); // can't run this.props.location.pathname.startsWith(`/${name}`) on IE
+    return String(this.props.location.pathname).startsWith(`/${name}`);
   }
 
   getLogo() {
     return (
       <NavLogo>
-        <Link to="/">
-          <img alt="Logo" width="40" src={nextstrainLogo}/>
+        <Link href="/">
+          <img alt="Logo" width="40" src={nextstrainLogo.src}/>
         </Link>
       </NavLogo>
     );
@@ -103,7 +92,7 @@ class NavBar extends React.Component {
   getLogoType() {
     const title = "Nextstrain";
     const rainbowTitle = title.split("").map((letter, i) =>
-      <NavLogoCharacter key={i} colorIndex={i}>{letter}</NavLogoCharacter>
+      <NavLogoCharacter key={i} $colorIndex={i}>{letter}</NavLogoCharacter>
     );
     const SubTitle = styled.div`
       color: black;
@@ -112,7 +101,7 @@ class NavBar extends React.Component {
       this.props.minified ?
         <div/>
         :
-        <Link to="/">
+        <Link href="/">
           {rainbowTitle}
           {groupsApp &&
             <SubTitle>Groups Server</SubTitle>}
@@ -129,24 +118,24 @@ class NavBar extends React.Component {
         <div style={{flex: 5}}/>
         {!groupsApp &&
           <>
-            <NavLinkToGoToServer minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</NavLinkToGoToServer>
-            <NavLinkToBeHandledByGatsby minified={minified} to="/contact">CONTACT</NavLinkToBeHandledByGatsby>
+            <ServerSideLink $minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</ServerSideLink>
+            <ClientSideLink $minified={minified} href="/contact">CONTACT</ClientSideLink>
             { /* Only display "blog" if we're not minified */
               minified ?
                 null :
                 this.selectedClass("blog") ?
-                  <NavLinkInactive minified={minified}>BLOG</NavLinkInactive> :
-                  <NavLinkToBeHandledByGatsby minified={minified} to="/blog">BLOG</NavLinkToBeHandledByGatsby>
+                  <NavLinkInactive $minified={minified}>BLOG</NavLinkInactive> :
+                  <ClientSideLink $minified={minified} href="/blog">BLOG</ClientSideLink>
             }
           </>
          }
         {this.context.user ? (
-          <NavLinkToGoToServer minified={minified} href="/whoami">
+          <ServerSideLink $minified={minified} href="/whoami">
             <span role="img" aria-labelledby="userIcon">👤</span>
             {` ${this.context.user.username}`}
-          </NavLinkToGoToServer>
+          </ServerSideLink>
         ) :
-          <NavLinkToGoToServer minified={minified} href="/login">LOGIN</NavLinkToGoToServer>
+          <ServerSideLink $minified={minified} href="/login">LOGIN</ServerSideLink>
         }
         <div style={{width: this.props.minified ? 12 : 0 }}/>
       </NavContainer>

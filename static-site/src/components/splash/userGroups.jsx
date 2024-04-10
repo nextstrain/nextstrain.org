@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from "react";
-import ScrollableAnchor from "react-scrollable-anchor";
+import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
 import * as Styles from "./styles";
 import Cards from "../Cards";
 import { HugeSpacer, FlexCenter } from "../../layouts/generalComponents";

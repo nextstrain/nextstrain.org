@@ -91,7 +91,7 @@ export class SituationReportsByLanguage extends React.Component {
                     <div key={narrative.url} className="col-sm-4">
                       <FlexCenter>
                         <a href={narrative.url}>
-                          <splashStyles.SitRepTitle attn={index === 0}>
+                          <splashStyles.SitRepTitle $attn={index === 0}>
                             <FaFile />
                             {" "+narrative.date}
                           </splashStyles.SitRepTitle>

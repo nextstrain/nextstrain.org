@@ -82,7 +82,7 @@ const Avatar = ({name, image, link, blurb, teamPage, comma=false}) => {
     return (
       <>
         <Sideways style={{alignItems: blurb ? "top" : "center"}}>
-          <a href={link}><img alt={name} src={require("../../../static/team/"+image)}/></a>
+          <a href={link}><img alt={name} src={require("../../../static/team/"+image).default.src}/></a>
           <UpDown>
             <a href={link}><Name>{name}</Name></a>
             {blurb && (
@@ -97,7 +97,7 @@ const Avatar = ({name, image, link, blurb, teamPage, comma=false}) => {
   return (
     <>
       <a href={link}>
-        <img alt={name} src={require("../../../static/team/"+image)}/>
+        <img alt={name} src={require("../../../static/team/"+image).default.src}/>
         <Name>{name}</Name>
       </a>
       {comma && <Comma/>}

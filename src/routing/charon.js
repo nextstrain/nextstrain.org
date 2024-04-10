@@ -1,5 +1,3 @@
-import cors from 'cors';
-import { PRODUCTION } from '../config.js';
 import * as endpoints from '../endpoints/index.js';
 import * as utils from '../utils/index.js';
 import { NotFound } from '../httpErrors.js';
@@ -8,10 +6,6 @@ import { NotFound } from '../httpErrors.js';
 /** Define the Charon API routes.
  */
 export async function setup(app) {
-  if (!PRODUCTION) {
-    // allow cross-origin from the gatsby dev server
-    app.use("/charon", cors({ origin: 'http://localhost:8000' }));
-  }
 
   app.routeAsync("/charon/getAvailable")
     .getAsync(endpoints.charon.getAvailable);

@@ -4,6 +4,7 @@ export * as groups from "./groups.js";
 export * as openid from './openid.js';
 export * as options from './options.js';
 export * as sources from './sources.js';
-export * as static from './static.js';
+export * as auspice from './auspice.js';
+export * as nextJsApp from './nextjs.js';
 export * as users from './users.js';
 export * as listResources from './listResources.js';
