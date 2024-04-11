@@ -1,14 +1,26 @@
 /* eslint-disable no-await-in-loop */
 import { strict as assert } from 'assert';
+import path from 'path';
 import * as authz from "./authz/index.js";
 import { GROUPS_DATA_FILE } from './config.js';
 import * as cognito from "./cognito.js";
 import { NotFound } from './httpErrors.js';
 import { GroupSource } from "./sources/index.js";
 import { markUserStaleBeforeNow } from "./user.js";
+import { rootDirFullPath } from "./utils/index.js";
 
 import { readFile } from 'fs/promises';
 const GROUPS_DATA = JSON.parse(await readFile(GROUPS_DATA_FILE));
+
+/**
+ * Summary string of where the groups known to the server come from
+ * (useful for debugging purposes)
+ */
+export function groupsSummary() {
+  const nPublic = GROUPS_DATA.filter((g)=>g.isPublic).length;
+  const groupsFile = path.relative(rootDirFullPath, GROUPS_DATA_FILE); // shown relative to server.js
+  return `Available Nextstrain Groups defined in '${groupsFile}' (${nPublic} public, ${GROUPS_DATA.length-nPublic} private)`
+}
 
 /**
  * Map of Nextstrain Groups from their (normalized) name to their static config

@@ -1,4 +1,5 @@
 import { getAwsId } from "./aws.js";
+import { groupsSummary } from "./groups.js";
 
 export const nextstrainAbout = `
   Nextstrain is an open-source project to harness the scientific and public
@@ -21,5 +22,6 @@ export async function startupMessage(server, app) {
     console.log(`  Next.js frontend is running in development mode (hot reloading etc)`)
   }
   console.log(`  AWS credentials: ${awsId}`)
+  console.log("  " + groupsSummary());
   console.log("\n  -------------------------------------------------------------------------\n\n");
 }

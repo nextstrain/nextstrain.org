@@ -1,6 +1,8 @@
 import chalk from 'chalk';
 import fetch from 'node-fetch';
 import { NotFound } from '../httpErrors.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 
 const verbose = (msg, ...rest) => {
@@ -115,6 +117,12 @@ const normalizeHeaders = (headers) => {
   return Object.fromEntries((new fetch.Headers(withValues)).entries());
 };
 
+/**
+ * A string of the absolute path of the nextstrain.org root directory
+ * (i.e. where `server.js` is)
+ */
+const rootDirFullPath =  path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+
 export {
   verbose,
   log,
@@ -125,4 +133,5 @@ export {
   getDatasetsFromListOfFilenames,
   parseNarrativeLanguage,
   normalizeHeaders,
+  rootDirFullPath,
 };
