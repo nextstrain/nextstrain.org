@@ -63,7 +63,7 @@ const TeamPage = () => {
 
 
 const Team = props => (
-  <GenericPage location={props.location}>
+  <GenericPage location={props.location} footerProps={{showTeamAvatars: false}}>
     <TeamPage/>
   </GenericPage>
 );
