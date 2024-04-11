@@ -1,4 +1,4 @@
-
+import { getAwsId } from "./aws.js";
 
 export const nextstrainAbout = `
   Nextstrain is an open-source project to harness the scientific and public
@@ -7,6 +7,9 @@ export const nextstrainAbout = `
 `;
 
 export async function startupMessage(server, app) {
+
+  const awsId = await getAwsId();
+
   console.log("  -------------------------------------------------------------------------");
   console.log('                             NEXTSTRAIN SERVER');
   console.log(nextstrainAbout);
@@ -17,5 +20,6 @@ export async function startupMessage(server, app) {
   } else {
     console.log(`  Next.js frontend is running in development mode (hot reloading etc)`)
   }
+  console.log(`  AWS credentials: ${awsId}`)
   console.log("\n  -------------------------------------------------------------------------\n\n");
 }
