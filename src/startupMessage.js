@@ -23,5 +23,6 @@ export async function startupMessage(server, app) {
   }
   console.log(`  AWS credentials: ${awsId}`)
   console.log("  " + groupsSummary());
+  console.log('  Github token present? ' + (process.env.GITHUB_TOKEN ? 'Yes' : 'No'))
   console.log("\n  -------------------------------------------------------------------------\n\n");
 }
