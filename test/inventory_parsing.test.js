@@ -62,9 +62,9 @@ test('core URL redirects (via our manifest) are correctly obtained', async () =>
   const expected_url_redirects = {
     'dengue/denv1': 'dengue/denv1/genome',
     WNV: 'WNV/NA',
-    'flu/seasonal': 'flu/seasonal/h3n2/ha/2y',
-    'flu/seasonal/h3n2': 'flu/seasonal/h3n2/ha/2y',
-    'flu/seasonal/h3n2/ha': 'flu/seasonal/h3n2/ha/2y',
+    'seasonal-flu': 'seasonal-flu/h3n2/ha/2y',
+    'seasonal-flu/h3n2': 'seasonal-flu/h3n2/ha/2y',
+    'seasonal-flu/h3n2/ha': 'seasonal-flu/h3n2/ha/2y',
   }
   Object.entries(expected_url_redirects).forEach(([from, to]) => {
     expect(remapCoreUrl(from)).toEqual(to);

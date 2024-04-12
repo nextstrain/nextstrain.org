@@ -33,19 +33,19 @@ describe("datasets", () => {
 
   describe("core", () => {
     testPaths([
-      { case: "nested",        path: "/flu/seasonal/h3n2/ha/2y" },
-      { case: "canonicalized", path: "/flu/seasonal" },
+      { case: "nested",        path: "/seasonal-flu/h3n2/ha/2y", missingResourcePageExists: false  },
+      { case: "canonicalized", path: "/seasonal-flu", missingResourcePageExists: false  },
       { case: "top-level",     path: "/zika", rootSequence: false, tipFrequencies: false, missingResourcePageExists: false },
     ]);
     describe("bogus", () => {
-      testBadRequest("/flu/seasonal/h3n2_ha_2y");
+      testBadRequest("/seasonal-flu/h3n2_ha_2y");
     });
   });
 
   describe("staging", () => {
     testPaths([
-      { case: "nested",        path: "/staging/flu/seasonal/h3n2/ha/2y" },
-      { case: "canonicalized", path: "/staging/flu/seasonal" },
+      { case: "nested",        path: "/staging/seasonal-flu/h3n2/ha/2y" },
+      { case: "canonicalized", path: "/staging/seasonal-flu" },
       { case: "top-level",     path: "/staging/zika", tipFrequencies: false },
     ]);
     describe("bogus", () => {
