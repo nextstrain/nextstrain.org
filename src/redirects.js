@@ -168,6 +168,11 @@ const datasetRedirectPatterns = [
    ['/flu/avian(.*)', '/avian-flu(.*)'],
    ['/flu/seasonal(.*)', '/seasonal-flu(.*)'],
 
+   /**
+    * Redirect /flu URL itself. We choose seasonal-flu to mimic historical behaviour
+    */
+   ['/flu', '/seasonal-flu'],
+
 ].map(([originalPattern, redirectPattern]) => [
   match(`${originalPattern}${versionDatasetPattern}`),
   compile(`${redirectPattern}${versionDatasetPattern}`)
