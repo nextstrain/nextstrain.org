@@ -132,6 +132,9 @@ async function updateResourceVersions() {
  * ListResources is intended to respond to resource listing queries. The current
  * implementation only handles a single source Id and single resource type, but
  * this will be extended as needed.
+ * 
+ * There's definitely an inheritance structure here, but I haven't spent time to
+ * really draw it out. So instead of polymorphism we use conditionals.
  */
 class ListResources {
   constructor(sourceIds, resourceTypes) {
@@ -148,63 +151,87 @@ class ListResources {
     this.resourceType = resourceTypes[0];
   }
 
-  coreDatasetFilter([name, ]) {
-    /* Consult the manifest to and restrict our listed resources to those whose
-    _first words_ appear as a top-level key the manifest. Subsequent words
-    aren't checked, so datasets may be returned which aren't explicitly defined
-    in the manifest.
+  filterFn() {
 
-    This is very similar to restricting based on the routing rules (e.g. using
-    `coreBuildPaths`) however the manifest is a subset of those and is used here
-    as the listed resources should be those for which we have added the pathogen
-    name to the manifest.
-    */
-    if (!this._coreDatasetFirstWords) {
-      this._coreDatasetFirstWords = new Set(
-        global?.availableDatasets?.core?.map((path) => path.split("/")[0]) || []
-      );
-    }
-    return this._coreDatasetFirstWords.has(name.split("/")[0])
+    // TODO XXX
+    const _coreDatasetFirstWords = new Set(
+      global?.availableDatasets?.core?.map((path) => path.split("/")[0]) || []
+    );
+
+    const fn = ({
+      dataset: {
+        core([name, ]) {
+          /* Consult the manifest to and restrict our listed resources to those whose
+          _first words_ appear as a top-level key the manifest. Subsequent words
+          aren't checked, so datasets may be returned which aren't explicitly defined
+          in the manifest.
+      
+          This is very similar to restricting based on the routing rules (e.g. using
+          `coreBuildPaths`) however the manifest is a subset of those and is used here
+          as the listed resources should be those for which we have added the pathogen
+          name to the manifest.
+          */
+          return _coreDatasetFirstWords.has(name.split("/")[0])
+        },
+        staging() {return true;},
+      },
+      intermediate: {
+        core() {return true;},
+      },
+    })[this.resourceType][this.sourceId];
+    if (fn!==undefined) return fn;
+    throw new InternalServerError(`Source "${this.sourceId}" + resource type "${this.resourceType} does not have a corresponding filter function`);
   }
 
-  pathPrefixBySource(name) {
+  pathPrefix() {
     /**
      * We separate out the "source part" from the "pathParts" part in our
      * routing logic, creating corresponding Source and Resource objects. Here
      * we go in the other direction. We could link the two approaches in the
      * future if it's felt this duplication is too brittle.
+     * 
+     * Returns string | undefined
      */
-    switch (name) {
-      case "core":
-        return ""
-      case "staging":
-        return "staging/"
-      default:
-        throw new InternalServerError(`Source "${name}" does not have a corresponding prefix`)
-    }
+    const prefix = ({
+      dataset: {
+        core() {return "";},
+        staging() {return "staging/";},
+      },
+    })?.[this.resourceType]?.[this.sourceId]?.();
+    return prefix;
   }
 
+  pathVersions(_resources) {
+    const fn = ({
+      dataset() {
+        return Object.entries(_resources).map(([name, data]) => {
+          return [name, data.versions.map((v) => v.date)];
+        })
+      },
+      intermediate() {
+        return Object.entries(_resources).map(([name, data]) => {
+          return [name, Object.fromEntries((data.versions).map(({date, fileUrls}) => [date, fileUrls]))] // FIXME XXX
+        });
+      },
+    })[this.resourceType];
+    if (!fn) throw new InternalServerError(`Resource type "${this.resourceType} does not have a path version extractor`);
+    return fn();
+  }
 
   get data() {
     const _resources = resources?.[this.sourceId]?.[this.resourceType];
     if (!_resources) {
       throw new NotFound(`No resources exist for the provided source-id / resource-type`);
     }
-    if (this.resourceType !== 'dataset') {
-      throw new InternalServerError(`Resource listing is currently only implemented for datasets`);
-    }
-    const pathVersions = Object.fromEntries(
-      Object.entries(_resources).map(([name, data]) => {
-        return [name, data.versions.map((v) => v.date)];
-      })
-      .filter((d) => this.sourceId==='core' ? this.coreDatasetFilter(d) : true)
-    )
-    const d = {}
-    d[this.resourceType] = {}
+    const d = {};
+    d[this.resourceType] = {};
     d[this.resourceType][this.sourceId] = {
-      pathVersions,
-      pathPrefix: this.pathPrefixBySource(this.sourceId)
-    }
+      pathPrefix: this.pathPrefix(),
+      pathVersions: Object.fromEntries(
+        this.pathVersions(_resources)
+          .filter(this.filterFn())
+      )
+    };
     return d;
   }
 }

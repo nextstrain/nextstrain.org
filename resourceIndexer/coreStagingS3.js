@@ -30,40 +30,60 @@ function categoriseCoreObjects(item, staging) {
     || key.startsWith('datasets_')
   ) return false;
 
-  // On the core bucket, directory-like hierarchies are used for intermediate
-  // files. These intermediate files may include files which auspice can
-  // display, but nextstrain.org cannot map URLs to directory-like hierarchies.
-  // There are other resourceTypes here we may consider in the future -- e.g.
-  // model output JSONs
-  if (key.includes("/")) {
-    if (staging===true) return false;
-    if (key.startsWith('files/')) {
-      if (
-        key.includes('/archive/')
-        || key.includes('/test/')
-        || key.includes('/workflows/')
-        || key.includes('/branch/')
-        || key.includes('/trial/')
-        || key.includes('/test-data/')
-        || key.includes('jen_test/')
-        || key.match(/\/nextclade-full-run-[\d-]+--UTC\//)
-        || key.match(/\/\d{4}-\d{2}-\d{2}_results.json/) // forecasts-ncov
-        || key.endsWith('.png')                          // forecasts-ncov
-      ) {
-        return false;
-      }
-      item.resourceType = 'intermediate';
-      /* The ID is used for grouping. For a nextstrain.org dataset this would be
-      combined with the source to form a nextstrain URL, however that's not
-      applicable here. Instead we use the filepath information without the
-      leading 'files/' and without the (trailing) filename so that different
-      files in the same directory structure get grouped together. For instance,
-      files/ncov/open/x.json -> ncov/open */
-      item.resourcePath = key.split('/').slice(1, -1).join('/')
-      return item;
+  /* Intermediate files in the core bucket are many and varied, however we expect them
+  to follow the format specified in <https://docs.nextstrain.org/en/latest/reference/data-files.html>
+  At the moment we only consider "workflows", i.e. files in `/files/workflows/*`
+  as there are no "datasets" ("build files"?) intermediates.
+  The file name schema is:
+    /files
+      /workflows
+        {/workflow-repo}                (matching github.com/nextstrain{/workflow-repo})
+          {/arbitrary-structure*}
+            /metadata.tsv.zst (etc)
+            /sequences.fasta.zst (etc)
+  For the current listing we filter out any files where "/arbitrary-structure*" matches
+  some hardcoded list in an attempt to filter out test runs which we don't want to surface.
+  
+  We also include /files/ncov which predates the above structure design.
+
+  The reported resource ID does not include the "/files/workflows" prefix.
+
+  Redirects aren't considered when constructing the ID, so (e.g.) "monkeypox" and "mpox" are independent.
+  */
+  const intermediateExcludePatterns = [
+    /\/branch\//,
+    /\/test\//,
+    /\/trial\//,
+    /\/trials\//,
+    /\/nextclade-full-run[\d-]+--UTC\//, /* We could detail versions via the datestamped filename if desired */
+    /\/\d{4}-\d{2}-\d{2}_results\.json/, // forecasts-ncov
+    /\.png$/, // forecasts-ncov
+  ]
+  if ((key.startsWith("files/workflows/") || key.startsWith("files/ncov/")) && staging===false) {
+    for (const pattern of intermediateExcludePatterns) {
+      if (key.match(pattern)) return false;
     }
-    return false;
+    item.resourceType = 'intermediate';
+    /* The ID is used for grouping. For a nextstrain.org dataset this would be
+    combined with the source to form a nextstrain URL, however that's not
+    applicable here. Instead we use the filepath information without the
+    leading 'files/' and without the (trailing) filename so that different
+    files in the same directory structure get grouped together. For instance:
+    * files/ncov/open/100k/metadata.tsv.xz -> ncov/open/100k
+    * files/workflows/zika/sequences.fasta.zst -> zika
+    */
+    item.resourcePath = key
+      .replace(/^files\/ncov\//, "ncov/")
+      .replace(/^files\/workflows\//, "")
+      .replace(/\/[^\/]+$/, '')
+    return item;
   }
+
+  /* All other files with a directory-like structure, including those on the
+  staging bucket, are ignored. Note that this removes files which don't conform
+  to the structure described above, as well as some files on the staging bucket.
+  */
+  if (key.includes("/")) return false;  
 
   // Some filenames have a double underscore (presumably by mistake)
   if (key.includes('__')) return false;

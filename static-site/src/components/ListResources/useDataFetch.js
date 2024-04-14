@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-
 /**
  * Fetches the datasets for the provided `sourceId` and parses the data into an
  * array of groups, each representing a "pathogen" and detailing the available
@@ -11,11 +10,11 @@ import { useState, useEffect } from 'react';
  * response, however in the future we may shift this to the API response and it
  * may vary across the resources returned.
  */
-export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames) {
+export function useDataFetch(sourceId, resourceType, versioned, defaultGroupLinks, groupDisplayNames) {
   const [state, setState] = useState(undefined);
   const [error, setError] = useState(undefined);
   useEffect(() => {
-    const url = `/list-resources/${sourceId}`;
+    const url = `/list-resources/${sourceId}/${resourceType}`;
 
     async function fetchAndParse() {
       let pathVersions, pathPrefix;
@@ -25,7 +24,7 @@ export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDispla
           console.error(`ERROR: fetching data from "${url}" returned status code ${response.status}`);
           return setError(true);
         }
-        ({ pathVersions, pathPrefix } = (await response.json()).dataset[sourceId]);
+        ({ pathVersions, pathPrefix } = (await response.json())[resourceType][sourceId]);
       } catch (err) {
         console.error(`Error while fetching data from "${url}"`);
         console.error(err);
@@ -36,7 +35,7 @@ export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDispla
       resource path). This grouping is constant for all UI options so we do it a
       single time following the data fetch */
       try {
-        const partitions = partitionByPathogen(pathVersions, pathPrefix, versioned);
+        const partitions = partitionByPathogen(resourceType, pathVersions, pathPrefix, versioned);
         setState(groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames));
       } catch (err) {
         console.error(`Error while parsing fetched data`);
@@ -46,7 +45,7 @@ export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDispla
     }
 
     fetchAndParse();
-  }, [sourceId, versioned, defaultGroupLinks, groupDisplayNames]);
+  }, [sourceId, resourceType, versioned, defaultGroupLinks, groupDisplayNames]);
   return [state, error]
 }
 
@@ -56,27 +55,37 @@ export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDispla
  * representing group names (pathogen names) and values which are arrays of
  * resource objects. 
  */
-function partitionByPathogen(pathVersions, pathPrefix, versioned) {
+function partitionByPathogen(resourceType, pathVersions, pathPrefix, versioned) {
 
   return Object.entries(pathVersions).reduce(reduceFn, {});
   
   function reduceFn(store, datum) {
     const name = datum[0];
     const nameParts = name.split('/');
-    const sortedDates = [...datum[1]].sort();
+    const sortedDates = resourceType==='dataset' ? 
+      [...datum[1]].sort() :
+      [...Object.keys(datum[1])].sort();
 
     let groupName = nameParts[0];
 
     if (!store[groupName]) store[groupName] = []
+
     const resourceDetails = {
       name,
       groupName, /* decoupled from nameParts */
       nameParts,
       sortingName: _sortableName(nameParts),
-      url: `/${pathPrefix}${name}`,
       lastUpdated: sortedDates.at(-1),
       versioned
     };
+    if (resourceType==='dataset') {
+      resourceDetails.url = `/${pathPrefix}${name}`;
+    } else if (resourceType==='intermediate') {
+      resourceDetails.fileUrls = datum[1];
+      const fileCounts = Object.values(resourceDetails.fileUrls)
+        .map((fileUrls) => Object.keys(fileUrls).length);
+      resourceDetails.fileCounts = {min: Math.min(...fileCounts), max: Math.max(...fileCounts)};
+    }
     if (versioned) {
       resourceDetails.firstUpdated = sortedDates[0];
       resourceDetails.lastUpdated = sortedDates.at(-1);
