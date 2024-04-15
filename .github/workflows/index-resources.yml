@@ -19,8 +19,40 @@ jobs:
     defaults:
       run:
         shell: bash
+    env:
+      HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
+      HEROKU_PIPELINE: 38f67fc7-d93c-40c6-a182-501da2f89d9d
+      APP_NAME: ${{ matrix.app_name }}
+    strategy:
+      matrix:
+        app_name: ["nextstrain-server", "nextstrain-canary"]
     steps:
+      - name: Get latest slug ID for ${{ env.APP_NAME }}
+        run: |
+          slug_id=$(
+            curl -n https://api.heroku.com/pipelines/"$HEROKU_PIPELINE"/latest-releases \
+              --fail --silent --show-error \
+              -H "Accept: application/vnd.heroku+json; version=3" \
+              -H "Authorization: Bearer $HEROKU_TOKEN" \
+              | jq -r '.[] | select(.app | .name == env.APP_NAME) | .slug.id')
+
+          echo "SLUG_ID=$slug_id" | tee -a "$GITHUB_ENV"
+
+      - name: Get latest commit hash for ${{ env.app_name }}
+        run: |
+          commit_hash=$(
+            curl -n https://api.heroku.com/apps/"$APP_NAME"/slugs/"$SLUG_ID" \
+              --fail --silent --show-error \
+              -H "Accept: application/vnd.heroku+json; version=3" \
+              -H "Authorization: Bearer $HEROKU_TOKEN" \
+              | jq -r '.commit')
+
+          echo "COMMIT_HASH=$commit_hash" | tee -a "$GITHUB_ENV"
+
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.COMMIT_HASH }}
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
@@ -36,4 +68,4 @@ jobs:
             --resourceTypes dataset --collections core staging
       - name: Upload the new index, overwriting the existing index
         run: |
-          aws s3 cp resources.json.gz s3://nextstrain-inventories/resources.json.gz
+          aws s3 cp resources.json.gz s3://nextstrain-inventories/"$APP_NAME"/resources.json.gz
