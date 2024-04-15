@@ -246,5 +246,9 @@
   {
     "name": "Phylovir",
     "isPublic": false
+  },
+  {
+    "name": "WorldwideInfluenzaCentre",
+    "isPublic": false
   }
 ]
