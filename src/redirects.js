@@ -23,6 +23,11 @@ const setup = (app) => {
     res.redirect(`/groups${req.originalUrl}`);
   });
 
+  /* We experimented with an /influenza page (motivated by the /sars-cov-2 page) but ultimately
+  it remained a stub. Redirect to the (core) /pathogens page */
+  app.route("/influenza")
+    .get((req, res) => res.redirect('/pathogens'));
+
   /* handle redirects for dataset paths which have changed name & preserve any queries */
   /* We do route matching within `updateDatasetUrl`, so just capture all routes */
   app.route("/*").get((req, res, next) => {

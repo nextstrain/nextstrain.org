@@ -10,7 +10,7 @@
 # or "dengue"). They are displayed in order, as space allows. They act as a
 # shortcut to access the resource defined by their "name".
 coreQuickLinks:
-  # flu quick links taken from tiles on /influenza, dropping yam (no seqs) and h5nx instead of h5n1
+  # flu quick links taken from tiles on (now removed) /influenza, dropping yam (no seqs) and h5nx instead of h5n1
   - name: 'seasonal-flu/h3n2/ha/2y'
     display: 'h3n2/ha/2y'
   - name: 'seasonal-flu/h1n1pdm/ha/2y'
