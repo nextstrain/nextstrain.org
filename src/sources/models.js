@@ -28,10 +28,10 @@ import { NotFound, BadRequest, InternalServerError } from '../httpErrors.js';
  *
  *   const coreSource = new CoreSource()
  *
- * The core dataset "flu/seasonal/h3n2/ha/2y" is represented by a Dataset
+ * The core dataset "seasonal-flu/h3n2/ha/2y" is represented by a Dataset
  * instance you get by calling:
  *
- *   const dataset = coreSource.dataset(["flu", "seasonal", "h3n2", "ha", "2y"])
+ *   const dataset = coreSource.dataset(["seasonal-flu", "h3n2", "ha", "2y"])
  *
  * That Dataset has Subresources identified by the names "main" and
  * "tip-frequencies", which you get by calling:
@@ -42,13 +42,13 @@ import { NotFound, BadRequest, InternalServerError } from '../httpErrors.js';
  * These Subresources can be retrieved at the following URLs, which you obtain
  * using the Subresource.url() method:
  *
- *   https://nextstrain-data.s3.amazonaws.com/flu_seasonal_h3n2_ha_2y.json
- *   https://nextstrain-data.s3.amazonaws.com/flu_seasonal_h3n2_ha_2y_tip-frequencies.json
+ *   https://nextstrain-data.s3.amazonaws.com/seasonal-flu_h3n2_ha_2y.json
+ *   https://nextstrain-data.s3.amazonaws.com/seasonal-flu_h3n2_ha_2y_tip-frequencies.json
  *
  * Typically, the URL for a specific Subresource is composed from details in
  * the Source, Resource, and Subresource instances.  For example:
  *
- *   https://nextstrain-data.s3.amazonaws.com/flu_seasonal_h3n2_ha_2y_tip-frequencies.json
+ *   https://nextstrain-data.s3.amazonaws.com/seasonal-flu_h3n2_ha_2y_tip-frequencies.json
  *   \______________________________________/ \_____________________/ \__________________/
  *                from Source                      from Dataset              from
  *                                                                     DatasetSubresource
@@ -298,8 +298,8 @@ class Dataset extends Resource {
    * Resolve this Dataset to its full canonical path, if this one is partially
    * specified and defaults exist (i.e. if this one is an alias).
    *
-   * For example, in our core source, /flu/seasonal/h3n2 is an alias for
-   * /flu/seasonal/h3n2/ha/2y.
+   * For example, in our core source, /seasonal-flu/h3n2 is an alias for
+   * /seasonal-flu/h3n2/ha/2y.
    *
    * Returns this Dataset itself if it's already the canonical one or no
    * aliases exist.  Thus, you can compare `dataset === dataset.resolve()` to

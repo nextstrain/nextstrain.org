@@ -56,10 +56,10 @@ charon.setup(app);
 /* Core datasets and narratives
  *
  * Routes:
+ *   /avian-flu
  *   /dengue
  *   /ebola
  *   /enterovirus
- *   /flu
  *   /lassa
  *   /measles
  *   /mers
@@ -69,6 +69,7 @@ charon.setup(app);
  *   /ncov
  *   /nextclade
  *   /rsv
+ *   /seasonal-flu
  *   /tb
  *   /WNV
  *   /yellow-fever

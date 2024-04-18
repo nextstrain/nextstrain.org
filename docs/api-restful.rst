@@ -33,16 +33,16 @@ Synopsis
 .. code-block:: bash
 
     # Download a main dataset JSON file…
-    curl https://nextstrain.org/flu/seasonal/h3n2/ha/2y                         \
+    curl https://nextstrain.org/seasonal-flu/h3n2/ha/2y                         \
         --header 'Accept: application/vnd.nextstrain.dataset.main+json'         \
         --compressed                                                            \
-            > flu_seasonal_h3n2_ha_2y.json
+            > seasonal-flu_h3n2_ha_2y.json
 
     # …and re-upload it another location.
     curl https://nextstrain.org/groups/blab/flu/latest                          \
         --header 'Authorization: Bearer eyJraWQiOiJyM3…'                        \
         --header 'Content-Type: application/vnd.nextstrain.dataset.main+json'   \
-        --upload-file flu_seasonal_h3n2_ha_2y.json
+        --upload-file seasonal-flu_h3n2_ha_2y.json
 
 
     # Download a narrative Markdown file…
@@ -250,15 +250,16 @@ Endpoints
 
 The following dataset endpoints exist::
 
+    {GET, HEAD, PUT, DELETE, OPTIONS} /avian-flu/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /dengue/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /ebola/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /enterovirus/*
-    {GET, HEAD, PUT, DELETE, OPTIONS} /flu/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /lassa/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /measles/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /mers/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /mumps/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /ncov/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /seasonal-flu/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /tb/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /WNV/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /yellow-fever/*

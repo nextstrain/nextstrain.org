@@ -40,13 +40,13 @@ export const remapCoreUrl = (urlPath) => {
 /**
  * Use our own "manifest JSON" to compute a map of partial paths
  * and their next (default) path,
- * e.g. flu → seasonal
- *      flu/seasonal → h3n2
+ * e.g. seasonal-flu → h3n2
+ *      seasonal-flu/h3n2 → h2
  *      etc
  * and uses an iterative approach to resolve the final path. Here we want to
  * resolve the entire path for every partial path, for instance
- *      flu → flu/seasonal/h3n2/h2/2y
- *      flu/seasonal → flu/seasonal/h3n2/h2/2y
+ *      seasonal-flu → seasonal-flu/h3n2/h2/2y
+ *      seasonal-flu/h3n2 → seasonal-flu/h3n2/h2/2y
  *
  * This function returns a complete list of URL paths and the full URL path
  * they would be redirected to.
