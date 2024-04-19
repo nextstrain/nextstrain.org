@@ -35,7 +35,7 @@ describe("datasets", () => {
     testPaths([
       { case: "nested",        path: "/flu/seasonal/h3n2/ha/2y" },
       { case: "canonicalized", path: "/flu/seasonal" },
-      { case: "top-level",     path: "/zika", tipFrequencies: false, missingResourcePageExists: false },
+      { case: "top-level",     path: "/zika", rootSequence: false, tipFrequencies: false, missingResourcePageExists: false },
     ]);
     describe("bogus", () => {
       testBadRequest("/flu/seasonal/h3n2_ha_2y");
