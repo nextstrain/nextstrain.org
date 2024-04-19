@@ -23,7 +23,7 @@ const visibleGroups = (user) => ALL_GROUPS
 
 
 // Provide the client-side app with info about the current user
-export const getWhoami = contentTypesProvided([
+const getWhoami = contentTypesProvided([
   ["html", nextJsApp.handleRequest],
   ["json", (req, res) =>
     // Express's JSON serialization drops keys with undefined values
@@ -33,3 +33,8 @@ export const getWhoami = contentTypesProvided([
     })
   ],
 ]);
+
+
+export {
+  getWhoami,
+};

@@ -32,7 +32,7 @@ const sendV1Dataset = async (res, metaJsonUrl, treeJsonUrl) => {
   return res.send(datasetJson);
 };
 
-export const getDataset = async (req, res) => {
+const getDataset = async (req, res) => {
   const type = req.query.type ?? "main";
 
   utils.log(`Getting (nextstrain) datasets for: ${req.url.split('?')[1]}`);
@@ -52,4 +52,8 @@ export const getDataset = async (req, res) => {
     }
     throw errV2;
   }
+};
+
+export {
+  getDataset,
 };

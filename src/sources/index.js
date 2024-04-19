@@ -1,7 +1,15 @@
 /* See ./models.js for an explanation of the design of these classes.
  */
 
-export { CoreSource, CoreStagingSource } from './core.js';
-export { CommunitySource } from './community.js';
-export { UrlDefinedSource } from './fetch.js';
-export { GroupSource } from './groups.js';
+import { CoreSource, CoreStagingSource } from './core.js';
+import { CommunitySource } from './community.js';
+import { UrlDefinedSource } from './fetch.js';
+import { GroupSource } from './groups.js';
+
+export {
+  CoreSource,
+  CoreStagingSource,
+  CommunitySource,
+  UrlDefinedSource,
+  GroupSource,
+};

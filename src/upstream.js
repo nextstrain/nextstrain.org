@@ -20,7 +20,7 @@ const pipeline = promisify(stream.pipeline);
  *
  * @param {String[]} urls - URLs of the objects to be deleted.
  */
-export async function deleteByUrls(urls) {
+async function deleteByUrls(urls) {
   const method = "DELETE";
   const responses = await Promise.all(urls.map(url => fetch(url, {method})));
 
@@ -42,7 +42,7 @@ export async function deleteByUrls(urls) {
  * @param {String} url - Resource URL
  * @param {String} accept - HTTP Accept header value
  */
-export async function proxyFromUpstream(req, res, url, accept) {
+async function proxyFromUpstream(req, res, url, accept) {
   return await proxyResponseBodyFromUpstream(req, res, new Request(url, {
     headers: {
       Accept: accept,
@@ -83,7 +83,7 @@ export async function proxyFromUpstream(req, res, url, accept) {
  * @param {upstreamUrlExtractor} upstreamUrlExtractor - Callback to retrieve resource URL
  * @param {string} contentType - `Content-Type` header value to send
  */
-export async function proxyToUpstream(req, res, upstreamUrlExtractor, contentType) {
+async function proxyToUpstream(req, res, upstreamUrlExtractor, contentType) {
   const method = "PUT";
 
   // eslint-disable-next-line prefer-const
@@ -352,3 +352,10 @@ function copyHeaders(headerSource, headerNames) {
  * @param {string} method - HTTP method
  * @param {Object} headers - HTTP headers
  */
+
+
+export {
+  deleteByUrls,
+  proxyFromUpstream,
+  proxyToUpstream,
+};

@@ -87,7 +87,7 @@ import { NotFound, BadRequest, InternalServerError } from '../httpErrors.js';
  *  -trs, Dec 2021
  */
 
-export class Source {
+class Source {
   async baseUrl() {
     throw new Error("async baseUrl() must be implemented by subclasses");
   }
@@ -139,7 +139,7 @@ export class Source {
   }
 }
 
-export class Resource {
+class Resource {
   constructor(source, pathParts, versionDescriptor) {
     this.source = source;
     this.pathParts = pathParts;
@@ -213,7 +213,7 @@ export class Resource {
   }
 }
 
-export class Subresource {
+class Subresource {
   constructor(resource, type) {
     if (this.constructor === Subresource) {
       throw new Error("Subresource interface class must be subclassed");
@@ -267,7 +267,7 @@ export class Subresource {
 }
 
 
-export class Dataset extends Resource {
+class Dataset extends Resource {
   static get Subresource() {
     return DatasetSubresource;
   }
@@ -319,7 +319,7 @@ export class Dataset extends Resource {
   }
 }
 
-export class DatasetSubresource extends Subresource {
+class DatasetSubresource extends Subresource {
   static validTypes = ["main", "root-sequence", "tip-frequencies", "measurements", "meta", "tree"];
 
   mediaType = `application/vnd.nextstrain.dataset.${this.type}+json`;
@@ -346,7 +346,7 @@ export class DatasetSubresource extends Subresource {
 }
 
 
-export class Narrative extends Resource {
+class Narrative extends Resource {
   static get Subresource() {
     return NarrativeSubresource;
   }
@@ -376,7 +376,7 @@ export class Narrative extends Resource {
   }
 }
 
-export class NarrativeSubresource extends Subresource {
+class NarrativeSubresource extends Subresource {
   static validTypes = ["md"];
 
   mediaType = "text/vnd.nextstrain.narrative+markdown";
@@ -391,3 +391,16 @@ export class NarrativeSubresource extends Subresource {
     return `${this.resource.baseName}.md`;
   }
 }
+
+
+export {
+  Source,
+  Resource,
+  Subresource,
+
+  Dataset,
+  DatasetSubresource,
+
+  Narrative,
+  NarrativeSubresource,
+};

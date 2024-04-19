@@ -405,7 +405,7 @@ const setNodeBranchAttrs = (v2) => {
 };
 
 
-export const convertFromV1 = ({tree, meta}) => {
+const convertFromV1 = ({tree, meta}) => {
   const v2 = {version: "v2", meta: {}};
   // set metadata
   setColorings(v2["meta"], meta);
@@ -418,4 +418,9 @@ export const convertFromV1 = ({tree, meta}) => {
   setVaccineChoicesOnNodes(v2, meta);
   removeNonV2TreeProps(v2);
   return v2;
+};
+
+
+export {
+  convertFromV1,
 };

@@ -21,7 +21,7 @@ const staleBefore = new KvNamespace("userStaleBefore");
  * @returns {Number|null} timestamp
  * @see markUserStaleBeforeNow
  */
-export async function userStaleBefore(username) {
+async function userStaleBefore(username) {
   const timestamp = parseInt(await staleBefore.get(username), 10);
 
   return Number.isInteger(timestamp)
@@ -41,7 +41,7 @@ export async function userStaleBefore(username) {
  * @returns {Boolean} True if set succeeded; false if not.
  * @see userStaleBefore
  */
-export async function markUserStaleBeforeNow(username) {
+async function markUserStaleBeforeNow(username) {
   /* Keying on usernames, instead of say the "sub" (subject) attribute of a
    * user, makes this API more ergonomic and avoids needing to convert from
    * username → sub in contexts where we only have username (e.g. a request
@@ -68,3 +68,9 @@ export async function markUserStaleBeforeNow(username) {
 
   return await staleBefore.set(username, now, ttl);
 }
+
+
+export {
+  userStaleBefore,
+  markUserStaleBeforeNow,
+};

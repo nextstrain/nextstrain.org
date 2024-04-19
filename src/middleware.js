@@ -16,7 +16,7 @@ import * as utils from './utils/index.js';
  */
 const allowedCorsMethods = new Set(["GET", "HEAD"]);
 
-export const allowPublicReadOnlyCors = (req, res, next) => {
+const allowPublicReadOnlyCors = (req, res, next) => {
   if (allowedCorsMethods.has(req.method)) {
     /* All origins are ok for GET and HEAD requests.
      *
@@ -75,7 +75,7 @@ const PARENT_TRAVERSALS = new Set(["..", "%2e.", ".%2e", "%2e%2e"]);
 const isParentTraversal = pathPart =>
   PARENT_TRAVERSALS.has(pathPart.toLowerCase());
 
-export const rejectParentTraversals = (req, res, next) => {
+const rejectParentTraversals = (req, res, next) => {
   if (req.path.split("/").some(isParentTraversal)) {
     throw new BadRequest("parent traversal in path");
   }
@@ -91,7 +91,7 @@ export const rejectParentTraversals = (req, res, next) => {
  *
  * The copy only happens if the old cookie is sent and the new cookie is not.
  */
-export const copyCookie = (oldName, newName) => (req, res, next) => {
+const copyCookie = (oldName, newName) => (req, res, next) => {
   const rawCookies = cookie.parse(req.headers.cookie ?? "", {decode: String});
 
   const oldCookie = rawCookies[oldName];
@@ -104,4 +104,11 @@ export const copyCookie = (oldName, newName) => (req, res, next) => {
   }
 
   return next();
+};
+
+
+export {
+  allowPublicReadOnlyCors,
+  rejectParentTraversals,
+  copyCookie,
 };

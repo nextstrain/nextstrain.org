@@ -12,7 +12,7 @@ class NextstrainError extends Error {
  * Thrown when a token renewal attempt is made with an invalid refresh token.
  * See {@link module:./authn.renewTokens}.
  */
-export class AuthnRefreshTokenInvalid extends NextstrainError {}
+class AuthnRefreshTokenInvalid extends NextstrainError {}
 
 
 /**
@@ -23,10 +23,17 @@ export class AuthnRefreshTokenInvalid extends NextstrainError {}
  *
  * See {@link module:./authn.verifyToken}.
  */
-export class AuthnTokenTooOld extends NextstrainError {}
+class AuthnTokenTooOld extends NextstrainError {}
 
 
 /* Thrown when a user is not authorized to do something.  Turned into an
  * appropriate HTTP response by our server-wide error handler.
  */
-export class AuthzDenied extends NextstrainError {}
+class AuthzDenied extends NextstrainError {}
+
+
+export {
+  AuthnRefreshTokenInvalid,
+  AuthnTokenTooOld,
+  AuthzDenied,
+};

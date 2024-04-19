@@ -1,14 +1,31 @@
-export * as auspice from './auspice.js';
-export * as canary from './canary.js';
-export * as charon from './charon.js';
-export * as cli from './cli.js';
-export * as community from './community.js';
-export * as core from './core.js';
-export * as errors from "./errors.js";
-export * as fetch from './fetch.js';
-export * as groups from './groups.js';
-export * as listResources from './listResources.js';
-export * as openid from './openid.js';
-export * as schemas from './schemas.js';
-export * as staging from './staging.js';
-export * as staticSite from './staticSite.js';
+import * as auspice from './auspice.js';
+import * as canary from './canary.js';
+import * as charon from './charon.js';
+import * as cli from './cli.js';
+import * as community from './community.js';
+import * as core from './core.js';
+import * as errors from "./errors.js";
+import * as fetch from './fetch.js';
+import * as groups from './groups.js';
+import * as listResources from './listResources.js';
+import * as openid from './openid.js';
+import * as schemas from './schemas.js';
+import * as staging from './staging.js';
+import * as staticSite from './staticSite.js';
+
+export {
+  auspice,
+  canary,
+  charon,
+  cli,
+  community,
+  core,
+  errors,
+  fetch,
+  groups,
+  listResources,
+  openid,
+  schemas,
+  staging,
+  staticSite,
+};

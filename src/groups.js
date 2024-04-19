@@ -33,7 +33,7 @@ const GROUP_RECORDS = new Map(
 /**
  * Data model class representing a Nextstrain Group.
  */
-export class Group {
+class Group {
   constructor(name) {
     const groupRecord = GROUP_RECORDS.get(normalizeGroupName(name));
 
@@ -201,7 +201,7 @@ export class Group {
  * @param {string} name
  * @throws {Error}
  */
-export function assertValidGroupName(name) {
+function assertValidGroupName(name) {
   const {ok, msg} = validateGroupName(name);
   if (!ok) throw new Error(`invalid group name: ${msg}`);
 }
@@ -219,7 +219,7 @@ export function assertValidGroupName(name) {
  * @param {string} name
  * @returns {{ok: boolean, msg: string}} result
  */
-export function validateGroupName(name) {
+function validateGroupName(name) {
   assert(typeof name === "string", "name is a string");
 
   /* XXX TODO: This does not include many Unicode characters people may
@@ -279,7 +279,7 @@ export function validateGroupName(name) {
  * @returns {string} Name converted to Unicode Normalization Form NFKC and
  *   lowercased in en-US.
  */
-export function normalizeGroupName(name) {
+function normalizeGroupName(name) {
   return name.normalize("NFKC").toLocaleLowerCase("en-US");
 }
 
@@ -295,5 +295,14 @@ export function normalizeGroupName(name) {
  *
  * @type {Group[]}
  */
-export const ALL_GROUPS = Array.from(GROUP_RECORDS.keys())
+const ALL_GROUPS = Array.from(GROUP_RECORDS.keys())
   .map(name => new Group(name));
+
+
+export {
+  Group,
+  assertValidGroupName,
+  validateGroupName,
+  normalizeGroupName,
+  ALL_GROUPS,
+};
