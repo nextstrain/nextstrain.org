@@ -7,7 +7,7 @@ export { getDataset } from './getDataset.js';
 export { getNarrative } from './getNarrative.js';
 export { getSourceInfo } from './getSourceInfo.js';
 
-export const setSourceFromPrefix = setSource(req => {
+const setSourceFromPrefix = setSource(req => {
   const prefix = req.query.prefix;
   if (!prefix) throw new BadRequest("Required query parameter 'prefix' is missing");
 
@@ -23,9 +23,9 @@ export const setSourceFromPrefix = setSource(req => {
   return req.context.splitPrefixIntoParts.source;
 });
 
-export const setDatasetFromPrefix = setDataset(req => req.context.splitPrefixIntoParts.prefixParts.join("/"));
+const setDatasetFromPrefix = setDataset(req => req.context.splitPrefixIntoParts.prefixParts.join("/"));
 
-export const canonicalizeDatasetPrefix = canonicalizeDataset((req, resolvedPrefix) => {
+const canonicalizeDatasetPrefix = canonicalizeDataset((req, resolvedPrefix) => {
   // A absolute base is required but we won't use it, so use something bogus.
   const resolvedUrl = new URL(req.originalUrl, "http://x");
   resolvedUrl.searchParams.set("prefix", resolvedPrefix);
@@ -33,7 +33,7 @@ export const canonicalizeDatasetPrefix = canonicalizeDataset((req, resolvedPrefi
   return resolvedUrl.pathname + resolvedUrl.search;
 });
 
-export const setNarrativeFromPrefix = setNarrative(req => {
+const setNarrativeFromPrefix = setNarrative(req => {
   const {prefixParts} = req.context.splitPrefixIntoParts;
 
   // Remove 'en' from nCoV narrative prefixParts
@@ -46,3 +46,10 @@ export const setNarrativeFromPrefix = setNarrative(req => {
 
   return prefixParts.join("/");
 });
+
+export {
+  setSourceFromPrefix,
+  setDatasetFromPrefix,
+  canonicalizeDatasetPrefix,
+  setNarrativeFromPrefix,
+};

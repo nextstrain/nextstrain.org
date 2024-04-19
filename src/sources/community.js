@@ -9,7 +9,7 @@ const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
   : "";
 
-export class CommunitySource extends Source {
+class CommunitySource extends Source {
   constructor(owner, repoName) {
     super();
 
@@ -199,3 +199,7 @@ class CommunityNarrative extends Narrative {
     return [`narratives/${this.source.repoName}`, ...this.pathParts];
   }
 }
+
+export {
+  CommunitySource,
+};

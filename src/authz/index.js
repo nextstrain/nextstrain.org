@@ -5,12 +5,6 @@ import { Source, Resource } from '../sources/models.js';
 import actions from './actions.js';
 import tags from './tags.js';
 
-export {
-  actions,
-  tags,
-};
-
-
 /**
  * Checks if a user is allowed to take an action on an object.
  *
@@ -22,7 +16,7 @@ export {
  * @param {object} object - Object being acted upon.
  * @returns {boolean}
  */
-export function authorized(user, action, object) {
+function authorized(user, action, object) {
   // user may be null
   assert(!user || user.authzRoles != null, "user.authzRoles is not null if user is not null");
   assert(actions.has(action), "action is known");
@@ -78,7 +72,7 @@ export function authorized(user, action, object) {
  * @param {Set} objectTags - Tags of object being acted upon.
  * @returns {boolean}
  */
-export function evaluatePolicy(policy, userRoles, action, objectTags) {
+function evaluatePolicy(policy, userRoles, action, objectTags) {
   assert(Array.isArray(policy));
   assert(policy.every(({tag, role, allow}) => tag && role && allow));
   assert(objectTags instanceof Set);
@@ -117,8 +111,18 @@ export function evaluatePolicy(policy, userRoles, action, objectTags) {
  * @param {object} object - Object being acted upon.
  * @throws {AuthzDenied}
  */
-export function assertAuthorized(user, action, object) {
+function assertAuthorized(user, action, object) {
   if (!authorized(user, action, object)) {
     throw new AuthzDenied();
   }
 }
+
+
+export {
+  authorized,
+  assertAuthorized,
+  evaluatePolicy,
+
+  actions,
+  tags,
+};

@@ -21,7 +21,7 @@ import { NotAcceptable, UnsupportedMediaType } from './httpErrors.js';
  *
  * @returns {Function} An async routing function which will perform the dispatch.
  */
-export function contentTypesProvided(providers) {
+function contentTypesProvided(providers) {
   const types = providers.map(([type, ...handlers]) => type); // eslint-disable-line no-unused-vars
   const handlersByType = Object.fromEntries(providers.map(([type, ...handlers]) => [type, handlers]));
 
@@ -96,7 +96,7 @@ function Links(links) {
  *
  * @returns {Function} An async routing function which will perform the dispatch.
  */
-export function contentTypesConsumed(providers) {
+function contentTypesConsumed(providers) {
   const types = providers.map(([type, handler]) => type); // eslint-disable-line no-unused-vars
   const handlers = Object.fromEntries(providers);
 
@@ -116,3 +116,9 @@ export function contentTypesConsumed(providers) {
     throw new UnsupportedMediaType();
   };
 }
+
+
+export {
+  contentTypesProvided,
+  contentTypesConsumed,
+};

@@ -3,7 +3,7 @@ import { match, compile } from "path-to-regexp";
 import { splitPrefixIntoParts } from './utils/prefix.js';
 import { parseNarrativeLanguage } from './utils/index.js';
 
-export const setup = (app) => {
+const setup = (app) => {
 
   /* send auspice to the auspice docs (currently hosted on docs.nextstrain.org) */
   app.route("/auspice")
@@ -173,7 +173,7 @@ const datasetRedirectPatterns = [
  * @param {string} originalUrlPathname
  * @returns {string}
  */
-export function updateDatasetUrl(originalUrlPathname) {
+function updateDatasetUrl(originalUrlPathname) {
   for (const [urlMatch, toPath] of datasetRedirectPatterns) {
     const matchingURL = urlMatch(originalUrlPathname)
     if (matchingURL) {
@@ -182,3 +182,8 @@ export function updateDatasetUrl(originalUrlPathname) {
   }
   return originalUrlPathname
 }
+
+export {
+  setup,
+  updateDatasetUrl,
+};

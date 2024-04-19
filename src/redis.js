@@ -29,7 +29,7 @@ import * as utils from './utils/index.js';
  * Connection is made at app start if `REDIS_URL` is defined in the
  * environment, such as in our Heroku deployments.  Otherwise remains null.
  */
-export const REDIS = process.env.REDIS_URL
+const REDIS = process.env.REDIS_URL
   ? herokuRedisClient(process.env.REDIS_URL)
   : null;
 
@@ -87,3 +87,8 @@ function scrubUrl(url) {
   scrubbedUrl.password = "XXXXXX";
   return scrubbedUrl;
 }
+
+
+export {
+  REDIS,
+};

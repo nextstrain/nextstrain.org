@@ -18,7 +18,7 @@ const auspiceAssetPath = (...subpath) =>
 
 /* Handlers for static assets.
  */
-export const auspiceAssets = expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'});
+const auspiceAssets = expressStaticGzip(auspiceAssetPath(), {maxAge: '30d'});
 
 
 /**
@@ -61,7 +61,7 @@ const sendFile = async (res, filePath, options) => {
  *
  * @type {asyncExpressHandler}
  */
-export const sendAuspiceEntrypoint = async (req, res) => {
+const sendAuspiceEntrypoint = async (req, res) => {
   utils.verbose(`Sending Auspice entrypoint for ${req.originalUrl}`);
   return await sendFile(
     res,
@@ -77,3 +77,8 @@ export const sendAuspiceEntrypoint = async (req, res) => {
  * @param {express.request} req
  * @param {express.response} res
  */
+
+export {
+  auspiceAssets,
+  sendAuspiceEntrypoint,
+};

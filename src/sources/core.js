@@ -10,7 +10,7 @@ const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
   : "";
 
-export class CoreSource extends Source {
+class CoreSource extends Source {
   get name() { return "core"; }
   async baseUrl() { return "https://nextstrain-data.s3.amazonaws.com/"; }
   get repo() { return "nextstrain/narratives"; }
@@ -86,7 +86,7 @@ export class CoreSource extends Source {
   }
 }
 
-export class CoreStagingSource extends CoreSource {
+class CoreStagingSource extends CoreSource {
   get name() { return "staging"; }
   async baseUrl() { return "https://nextstrain-staging.s3.amazonaws.com/"; }
   get repo() { return "nextstrain/narratives"; }
@@ -160,3 +160,8 @@ class CoreDataset extends Dataset {
   }
 
 }
+
+export {
+  CoreSource,
+  CoreStagingSource,
+};

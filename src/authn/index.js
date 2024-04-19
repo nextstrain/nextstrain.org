@@ -69,7 +69,7 @@ const STRATEGY_SESSION = "session";
  */
 const RESAVE_TO_SESSION = Symbol("RESAVE_TO_SESSION");
 
-export function setup(app) {
+function setup(app) {
   passport.use(
     STRATEGY_OAUTH2,
     new OAuth2Strategy(
@@ -797,3 +797,8 @@ async function renewTokens(refreshToken) {
     refreshToken: refreshTokenUpdate ?? refreshToken,
   };
 }
+
+
+export {
+  setup
+};

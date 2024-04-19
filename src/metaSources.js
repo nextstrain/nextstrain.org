@@ -10,7 +10,7 @@ import * as utils from './utils/index.js';
  * us to update this state on our own timeframe, independent
  * of API requests.
  */
-export const Groups = (() => {
+const Groups = (() => {
 
   const publiclyVisible = source =>
     authz.authorized(null, authz.actions.Read, source);
@@ -85,3 +85,7 @@ export const Groups = (() => {
   }
   return MetaGroupSource;
 })();
+
+export {
+  Groups,
+};

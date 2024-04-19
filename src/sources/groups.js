@@ -14,7 +14,7 @@ const DATASET_PREFIX = "datasets/";
 const NARRATIVE_PREFIX = "narratives/";
 
 
-export class GroupSource extends Source {
+class GroupSource extends Source {
   constructor(groupOrName) {
     super();
 
@@ -312,3 +312,8 @@ function parseUrl(url) {
     throw err;
   }
 }
+
+
+export {
+  GroupSource,
+};
