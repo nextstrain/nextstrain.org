@@ -27,10 +27,15 @@ const visibleGroups = (user) => ALL_GROUPS
  * order of groups returned matches the order in the `groups.json` data file.
  *
  * @param {Object | undefined} user. `undefined` represents a non-logged-in user
- * @returns {Array} Each element is a Group object.
+ * @returns {Array} Each element represents a group with a a subset of properties from
+ *                  the Group class.
  */
 const groupMemberships = (user) => user?.groups
   ?.map(name => new Group(name))
+   .map(group => ({
+     name: group.name,
+     isPublic: group.isPublic,
+  }))
   ?? []
 ;
 
