@@ -10,7 +10,7 @@ import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
 import Footer from "../Footer";
-import { createGroupCards } from "./userGroups";
+import { createGroupCards } from "./groupCards";
 import { UserContext } from "../../layouts/userDataWrapper";
 
 const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
