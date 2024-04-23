@@ -234,6 +234,11 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
      * client can decode the body itself.
      */
     ...(!upstreamReq.compress ? ["Content-Encoding"] : []),
+
+    /* Forward Content-Type if our response doesn't already have a preferred
+     * type set (e.g. from prior content negotiation).
+     */
+    ...(!res.get("Content-Type") ? ["Content-Type"] : []),
   ];
 
   res.set(copyHeaders(upstreamRes.headers, forwardedUpstreamResHeaders));
