@@ -1,6 +1,63 @@
 {
     "user": "guest",
     "pathogen": {
+      "avian-flu": {
+        "subtype": {
+          "h5n1": {
+            "segment": {
+              "ha": "",
+              "mp": "",
+              "na": "",
+              "ns": "",
+              "np": "",
+              "pa": "",
+              "pb1": "",
+              "pb2": "",
+              "default": "ha"
+            }
+          },
+          "h5nx": {
+            "segment": {
+              "ha": "",
+              "mp": "",
+              "na": "",
+              "ns": "",
+              "np": "",
+              "pa": "",
+              "pb1": "",
+              "pb2": "",
+              "default": "ha"
+            }
+          },
+          "h7n9": {
+            "segment": {
+              "ha": "",
+              "mp": "",
+              "na": "",
+              "ns": "",
+              "np": "",
+              "pa": "",
+              "pb1": "",
+              "pb2": "",
+              "default": "ha"
+            }
+          },
+          "h9n2": {
+            "segment": {
+              "ha": "",
+              "mp": "",
+              "na": "",
+              "ns": "",
+              "np": "",
+              "pa": "",
+              "pb1": "",
+              "pb2": "",
+              "default": "ha"
+              }
+          },
+          "default": "h5nx"
+        }
+      },
       "dengue": {
         "serotype": {
           "denv1": {
@@ -54,173 +111,111 @@
           "default": "d68"
         }
       },
-      "flu": {
-        "category": {
-          "avian": {
-            "subtype": {
-              "h5n1": {
-                "segment": {
-                  "ha": "",
-                  "mp": "",
-                  "na": "",
-                  "ns": "",
-                  "np": "",
-                  "pa": "",
-                  "pb1": "",
-                  "pb2": "",
-                  "default": "ha"
+      "seasonal-flu": {
+        "lineage": {
+          "h3n2": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
                 }
               },
-              "h5nx": {
-                "segment": {
-                  "ha": "",
-                  "mp": "",
-                  "na": "",
-                  "ns": "",
-                  "np": "",
-                  "pa": "",
-                  "pb1": "",
-                  "pb2": "",
-                  "default": "ha"
+              "na": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
                 }
               },
-              "h7n9": {
-                "segment": {
-                  "ha": "",
-                  "mp": "",
-                  "na": "",
-                  "ns": "",
-                  "np": "",
-                  "pa": "",
-                  "pb1": "",
-                  "pb2": "",
-                  "default": "ha"
-                }
-              },
-              "h9n2": {
-                "segment": {
-                  "ha": "",
-                  "mp": "",
-                  "na": "",
-                  "ns": "",
-                  "np": "",
-                  "pa": "",
-                  "pb1": "",
-                  "pb2": "",
-                  "default": "ha"
-                }
-              },
-              "default": "h5nx"
+              "default": "ha"
             }
           },
-          "seasonal": {
-            "lineage": {
-              "h3n2": {
-                "segment": {
-                  "ha": {
-                    "resolution": {
-                      "6m": "",
-                      "2y": "",
-                      "3y": "",
-                      "6y": "",
-                      "12y": "",
-                      "default": "2y"
-                    }
-                  },
-                  "na": {
-                    "resolution": {
-                      "6m": "",
-                      "2y": "",
-                      "3y": "",
-                      "6y": "",
-                      "12y": "",
-                      "default": "2y"
-                    }
-                  },
-                  "default": "ha"
+          "h1n1pdm": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "pandemic": "",
+                  "default": "2y"
                 }
               },
-              "h1n1pdm": {
-                "segment": {
-                  "ha": {
-                    "resolution": {
-                      "6m": "",
-                      "2y": "",
-                      "3y": "",
-                      "6y": "",
-                      "12y": "",
-                      "pandemic": "",
-                      "default": "2y"
-                    }
-                  },
-                  "na": {
-                    "resolution": {
-                      "6m": "",
-                      "2y": "",
-                      "3y": "",
-                      "6y": "",
-                      "12y": "",
-                      "pandemic": "",
-                      "default": "2y"
-                    }
-                  },
-                  "default": "ha"
+              "na": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "pandemic": "",
+                  "default": "2y"
                 }
               },
-              "vic": {
-                "segment": {
-                  "ha": {
-                    "resolution": {
-                      "6m": "",
-                      "2y": "",
-                      "3y": "",
-                      "6y": "",
-                      "12y": "",
-                      "default": "2y"
-                    }
-                  },
-                  "na": {
-                    "resolution": {
-                      "6m": "",
-                      "2y": "",
-                      "3y": "",
-                      "6y": "",
-                      "12y": "",
-                      "default": "2y"
-                    }
-                  },
-                  "default": "ha"
-                }
-              },
-              "yam": {
-                "segment": {
-                  "ha": {
-                    "resolution": {
-                      "6m": "",
-                      "2y": "",
-                      "3y": "",
-                      "6y": "",
-                      "12y": "",
-                      "default": "2y"
-                    }
-                  },
-                  "na": {
-                    "resolution": {
-                      "6m": "",
-                      "2y": "",
-                      "3y": "",
-                      "6y": "",
-                      "12y": "",
-                      "default": "2y"
-                    }
-                  },
-                  "default": "ha"
-                }
-              },
-              "default": "h3n2"
+              "default": "ha"
             }
           },
-          "default": "seasonal"
+          "vic": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "default": "ha"
+            }
+          },
+          "yam": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "default": "ha"
+            }
+          },
+          "default": "h3n2"
         }
       },
       "lassa": {

@@ -23,6 +23,11 @@ const setup = (app) => {
     res.redirect(`/groups${req.originalUrl}`);
   });
 
+  /* We experimented with an /influenza page (motivated by the /sars-cov-2 page) but ultimately
+  it remained a stub. Redirect to the (core) /pathogens page */
+  app.route("/influenza")
+    .get((req, res) => res.redirect('/pathogens'));
+
   /* handle redirects for dataset paths which have changed name & preserve any queries */
   /* We do route matching within `updateDatasetUrl`, so just capture all routes */
   app.route("/*").get((req, res, next) => {
@@ -160,6 +165,19 @@ const datasetRedirectPatterns = [
   ['/monkeypox/hmpxv1', '/mpox/clade-IIb'],
   ['/monkeypox/hmpxv1/big', '/mpox/lineage-B.1'],
   ["/monkeypox", "/mpox"],
+
+   /**
+     * We shifted avian-flu and seasonal-flu to top level to stop nesting them
+     * both under flu/ so that avian-flu is more discoverable
+     */
+   ['/flu/avian(.*)', '/avian-flu(.*)'],
+   ['/flu/seasonal(.*)', '/seasonal-flu(.*)'],
+
+   /**
+    * Redirect /flu URL itself. We choose seasonal-flu to mimic historical behaviour
+    */
+   ['/flu', '/seasonal-flu'],
+
 ].map(([originalPattern, redirectPattern]) => [
   match(`${originalPattern}${versionDatasetPattern}`),
   compile(`${redirectPattern}${versionDatasetPattern}`)

@@ -10,18 +10,18 @@
 # or "dengue"). They are displayed in order, as space allows. They act as a
 # shortcut to access the resource defined by their "name".
 coreQuickLinks:
-  # flu quick links taken from tiles on /influenza, dropping yam (no seqs) and h5nx instead of h5n1
-  - name: 'flu/seasonal/h3n2/ha/2y'
+  # flu quick links taken from tiles on (now removed) /influenza, dropping yam (no seqs) and h5nx instead of h5n1
+  - name: 'seasonal-flu/h3n2/ha/2y'
     display: 'h3n2/ha/2y'
-  - name: 'flu/seasonal/h1n1pdm/ha/2y'
+  - name: 'seasonal-flu/h1n1pdm/ha/2y'
     display: 'h1n1pdm/ha/2y'
-  - name: 'flu/seasonal/vic/ha/2y'
+  - name: 'seasonal-flu/vic/ha/2y'
     display: 'vic/ha/2y'
-  - name: 'flu/avian/h5nx/ha'
+  - name: 'avian-flu/h5nx/ha'
     display: 'h5nx/ha'
-  - name: 'flu/avian/h7n9/ha'
+  - name: 'avian-flu/h7n9/ha'
     display: 'h7n9/ha'
-  - name: 'flu/avian/h9n2/ha'
+  - name: 'avian-flu/h9n2/ha'
     display: 'h9n2/ha'
   - name: 'rsv/a/genome'
     display: 'RSV/A'
@@ -43,7 +43,8 @@ coreQuickLinks:
     display: 'global/6m (open data)'
 
 coreGroupDisplayNames:
-  flu: flu (seasonal and avian influenza)
+  "avian-flu": avian-flu (influenza)
+  "seasonal-flu": seasonal-flu (influenza)
   WNV: WNV (West Nile Virus)
   ncov: ncov (SARS-CoV-2)
   mpox: mpox
@@ -56,8 +57,8 @@ coreGroupDisplayNames:
 # screen size.
 coreShowcase:
   - {name: "SARS-CoV-2",        img: "ncov.png",              filters: ["ncov"]}
-  - {name: "Seasonal Flu",      img: "seasonalinfluenza.png", filters: ["flu", "seasonal"]}
-  - {name: "Avian Flu",         img: "avianinfluenza.png",    filters: ["flu", "avian"]}
+  - {name: "Seasonal Flu",      img: "seasonalinfluenza.png", filters: ["seasonal-flu"]}
+  - {name: "Avian Flu",         img: "avianinfluenza.png",    filters: ["avian-flu"]}
   - {name: "mpox",              img: "mpox.png",              filters: ["mpox"]}
   - {name: "RSV",               img: "rsv1.png",              filters: ["rsv"]}
   - {name: "dengue",            img: "dengue.png",            filters: ["dengue"]}

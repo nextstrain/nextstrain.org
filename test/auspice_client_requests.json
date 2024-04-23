@@ -1,17 +1,23 @@
 [
   {
-    "name": "Fetch core Nextstrain dataset (flu/seasonal/h3n2/ha/2y)",
-    "url": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y",
+    "name": "Fetch core Nextstrain dataset (seasonal-flu/h3n2/ha/2y)",
+    "url": "/charon/getDataset?prefix=/seasonal-flu/h3n2/ha/2y",
     "expectStatusCode": 200,
     "responseIsJson": true,
     "__comment": "We could define JSON schemas for each API and validate the response here"
   },
   {
-    "name": "Check that the dataset request for /flu redirects to a specific dataset",
-    "url": "/charon/getDataset?prefix=/flu",
+    "name": "Check that the dataset request for /seasonal-flu redirects to a specific dataset",
+    "url": "/charon/getDataset?prefix=/seasonal-flu",
     "expectStatusCode": 307,
     "responseIsJson": false,
-    "redirectsTo": "/charon/getDataset?prefix=flu%2Fseasonal%2Fh3n2%2Fha%2F2y"
+    "redirectsTo": "/charon/getDataset?prefix=seasonal-flu%2Fh3n2%2Fha%2F2y"
+  },
+  {
+    "name": "/flu URLs are not redirected in the charon API (but they are in the RESTful API)",
+    "url": "/charon/getDataset?prefix=/flu",
+    "expectStatusCode": 404,
+    "responseIsJson": false
   },
   {
     "name": "Check that the main getAvailable API call returns a JSON",
@@ -88,13 +94,13 @@
   },
   {
     "name": "Check getDataset API for sidecar file tip-frequencies",
-    "url": "/charon/getDataset?prefix=/flu/seasonal/h3n2/ha/2y&type=tip-frequencies",
+    "url": "/charon/getDataset?prefix=/seasonal-flu/h3n2/ha/2y&type=tip-frequencies",
     "expectStatusCode": 200,
     "responseIsJson": true
   },
   {
     "name": "Fetch dataset using /fetch URLs (from S3 staging bucket)",
-    "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/flu_seasonal_h3n2_ha_2y.json",
+    "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/seasonal-flu_h3n2_ha_2y.json",
     "expectStatusCode": 200,
     "responseIsJson": true
   },
@@ -116,7 +122,7 @@
   },
   {
     "name": "Fetch sidecar file using /fetch URLs (root-sequence JSON from S3 staging bucket)",
-    "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/flu_seasonal_h3n2_ha_2y.json&type=root-sequence",
+    "url": "/charon/getDataset?prefix=/fetch/staging.nextstrain.org/seasonal-flu_h3n2_ha_2y.json&type=root-sequence",
     "expectStatusCode": 200,
     "responseIsJson": true
   },
@@ -172,12 +178,12 @@
   },
   {
     "name": "Underscores aren't permitted for core datasets",
-    "url": "/charon/getDataset?prefix=/flu/seasonal/h3n2_ha_2y",
+    "url": "/charon/getDataset?prefix=/seasonal-flu/h3n2_ha_2y",
     "expectStatusCode": 400
   },
   {
     "name": "Underscores aren't permitted for staging datasets",
-    "url": "/charon/getDataset?prefix=/staging/flu/seasonal/h3n2_ha_2y",
+    "url": "/charon/getDataset?prefix=/staging/seasonal-flu/h3n2_ha_2y",
     "expectStatusCode": 400
   },
   {

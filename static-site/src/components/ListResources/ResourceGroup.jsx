@@ -217,13 +217,13 @@ function NextstrainLogo() {
 /**
  * Adds the `displayName` property to each resource.
  * Given successive nameParts:
- *      [ flu, seasonal, h1n1pdm]   
- *      [ flu, seasonal, h3n2]
+ *      [ seasonal-flu, h1n1pdm]   
+ *      [ seasonal-flu, h3n2]
  * We want to produce two names: a default name, which contains all parts,
  * and a displayName which hides the fields that match the preceding name.
  * This allows for a UI to display them in a tree-like manner such as:
- *      "flu | seasonal | h1n1pdm"
- *      "    |          | h3n2"
+ *      "seasonal-flu | h1n1pdm"
+ *      "             | h3n2"
  */
 function _setDisplayName(resources) {
   const sep = "│"; // ASCII 179

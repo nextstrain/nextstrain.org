@@ -30,10 +30,10 @@ const coreBuildPaths = [
    * As of 2024-03 this list includes 3 paths not in the manifest: 'monkeypox',
    * 'yellow-fever' and 'mers'
    */
+  "/avian-flu",
   "/dengue",
   "/ebola",
   "/enterovirus",
-  "/flu",
   "/lassa",
   "/measles",
   "/mers",
@@ -43,6 +43,7 @@ const coreBuildPaths = [
   "/ncov",
   "/nextclade",
   "/rsv",
+  "/seasonal-flu",
   "/tb",
   "/WNV",
   "/yellow-fever",
