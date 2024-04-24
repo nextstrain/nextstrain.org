@@ -5,57 +5,233 @@
         "subtype": {
           "h5n1": {
             "segment": {
-              "ha": "",
-              "mp": "",
-              "na": "",
-              "ns": "",
-              "np": "",
-              "pa": "",
-              "pb1": "",
-              "pb2": "",
+              "ha": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "mp": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "ns": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "np": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "pa": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "pb1": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "pb2": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
               "default": "ha"
             }
           },
           "h5nx": {
             "segment": {
-              "ha": "",
-              "mp": "",
-              "na": "",
-              "ns": "",
-              "np": "",
-              "pa": "",
-              "pb1": "",
-              "pb2": "",
+              "ha": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "mp": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "ns": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "np": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "pa": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "pb1": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
+              "pb2": {
+                "resolution": {
+                  "all-time": "",
+                  "2y": "",
+                  "default": "2y"
+                }
+              },
               "default": "ha"
             }
           },
           "h7n9": {
             "segment": {
-              "ha": "",
-              "mp": "",
-              "na": "",
-              "ns": "",
-              "np": "",
-              "pa": "",
-              "pb1": "",
-              "pb2": "",
+              "ha": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "mp": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "ns": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "np": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pa": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pb1": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pb2": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
               "default": "ha"
             }
           },
           "h9n2": {
             "segment": {
-              "ha": "",
-              "mp": "",
-              "na": "",
-              "ns": "",
-              "np": "",
-              "pa": "",
-              "pb1": "",
-              "pb2": "",
+              "ha": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "mp": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "ns": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "np": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pa": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pb1": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pb2": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
               "default": "ha"
-              }
+            }
           },
-          "default": "h5nx"
+          "default": "h5n1"
         }
       },
       "dengue": {
