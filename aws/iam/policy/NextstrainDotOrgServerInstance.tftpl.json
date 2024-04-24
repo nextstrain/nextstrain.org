@@ -52,7 +52,8 @@
         "s3:GetObject"
       ],
       "Resource": [
-        "arn:aws:s3:::nextstrain-inventories/resources.json.gz"
+        "arn:aws:s3:::nextstrain-inventories/resources.json.gz",
+        "arn:aws:s3:::nextstrain-inventories/resources/*.json.gz"
       ]
     }
   ]
