@@ -480,24 +480,7 @@ function parseCognitoGroups(cognitoGroups) {
     // Just the Nextstrain Group names (i.e. excluding the "/role" suffix)
     groups: [...new Set(nextstrainGroupsRoles.map(g => splitGroupRole(g).group))],
 
-    /* During a transition period while we move users from unsuffixed Cognito
-     * groups to role-suffixed Cognito groups, assume the least privileged
-     * Nextstrain Group role (viewer) for each unsuffixed group membership we
-     * find.  This matches the existing capabilities via nextstrain.org before
-     * the existence of group membership roles.
-     *
-     * XXX TODO: Remove this .map(...) immediately after the transition period
-     * is over.
-     *   -trs, 5 Jan 2022
-     *
-     * This now only applies to existing sessions established before 4 March
-     * 2022, as the behind-the-scenes migration of Cognito groups is complete.
-     * In order to remove the .map(...) we'll need to log every one out by
-     * invalidating all such sessions or wait for such sessions to gradually
-     * decay and naturally expire.
-     *   -trs, 4 Mar 2022
-     */
-    authzRoles: new Set(nextstrainGroupsRoles.map(g => g.includes("/") ? g : `${g}/viewers`)),
+    authzRoles: new Set(nextstrainGroupsRoles),
 
     /* User flags
      */
