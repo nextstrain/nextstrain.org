@@ -1,6 +1,4 @@
-import cookie from 'cookie';
 import { BadRequest } from './httpErrors.js';
-import * as utils from './utils/index.js';
 
 
 /* CORS policy to allow read-only requests for public resources.
@@ -83,32 +81,7 @@ const rejectParentTraversals = (req, res, next) => {
 };
 
 
-/**
- * Copies a request cookie from *oldName* to *newName*.
- *
- * Modifies the HTTP Cookie header in `req.headers` to make it appear as if the
- * same data was sent for both cookie names.
- *
- * The copy only happens if the old cookie is sent and the new cookie is not.
- */
-const copyCookie = (oldName, newName) => (req, res, next) => {
-  const rawCookies = cookie.parse(req.headers.cookie ?? "", {decode: String});
-
-  const oldCookie = rawCookies[oldName];
-  const newCookie = rawCookies[newName];
-
-  if (oldCookie && !newCookie) {
-    utils.verbose(`Copying cookie ${oldName} to ${newName}`);
-    // Appending is safe because we know there is an existing cookie already
-    req.headers.cookie += `; ${newName}=${oldCookie}`;
-  }
-
-  return next();
-};
-
-
 export {
   allowPublicReadOnlyCors,
   rejectParentTraversals,
-  copyCookie,
 };

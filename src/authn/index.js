@@ -1,8 +1,6 @@
 // Server handlers for authentication (authn).  Authorization (authz) is done
 // in the server's charon handlers.
 //
-import { strict as assert } from 'assert';
-
 import debugFactory from 'debug';
 const debug = debugFactory("nextstrain:authn");
 import querystring from 'querystring';
@@ -23,7 +21,6 @@ import { PRODUCTION, OIDC_ISSUER_URL, OIDC_JWKS_URL, OAUTH2_AUTHORIZATION_URL, O
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
 import { Unauthorized, HttpErrors } from '../httpErrors.js';
-import { copyCookie } from '../middleware.js';
 import { REDIS } from '../redis.js';
 import { userStaleBefore } from '../user.js';
 import * as utils from '../utils/index.js';
@@ -231,23 +228,6 @@ function setup(app) {
   };
 
   app.use(
-    /* Changing our session cookie from host-only to domain-wide by adding the
-     * "domain" option required a name change to avoid two identically-named
-     * but distinct cookies causing shadowing and general confusion.  We avoid
-     * disrupting sessions by transparently copying the old cookie, named
-     * "nextstrain.org", to the new cookie, named "nextstrain.org-session", if
-     * the old was sent but the new was not.  Each new response sets the new
-     * cookie, so subsequent requests will then send both cookies and no copy
-     * will happen.  The old cookie will naturally expire after 30 days since
-     * it will no longer be updated with each response.
-     *
-     * XXX TODO: Remove copyCookie() after its been deployed for at least 30
-     * days (SESSION_MAX_AGE), as any outstanding old cookies will have expired
-     * by then.
-     *   -trs, 6 April 2022
-     */
-    copyCookie("nextstrain.org", "nextstrain.org-session"),
-
     session({
       name: "nextstrain.org-session",
       secret: SESSION_SECRET,
@@ -263,25 +243,6 @@ function setup(app) {
         maxAge: SESSION_MAX_AGE * 1000 // milliseconds
       }
     }),
-
-    /* Sessions remember the options of their specific cookies and preserve
-     * them on each response, so upgrade the new cookies of existing sessions
-     * to domain-wide ones.
-     *
-     * XXX TODO: Remove this after its been deployed for at least 30 days
-     * (SESSION_MAX_AGE), as any new sessions start with domain set and any
-     * old sessions either got upgraded or have expired by then.
-     *   -trs, 6 April 2022
-     */
-    (req, res, next) => {
-      if (req.session?.cookie && req.session.cookie.domain !== SESSION_COOKIE_DOMAIN) {
-        utils.verbose(`Updating session cookie domain to ${SESSION_COOKIE_DOMAIN} (was ${req.session.cookie.domain})`);
-        req.session.cookie.domain = SESSION_COOKIE_DOMAIN;
-        req.session.touch();
-        return req.session.save(next);
-      }
-      return next();
-    },
   );
 
   app.use(passport.initialize());
