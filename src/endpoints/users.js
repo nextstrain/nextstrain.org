@@ -1,5 +1,5 @@
 import * as authz from '../authz/index.js';
-import { ALL_GROUPS, Group } from '../groups.js';
+import { ALL_GROUPS } from '../groups.js';
 import { contentTypesProvided } from '../negotiate.js';
 import * as nextJsApp from './nextjs.js';
 
@@ -30,15 +30,7 @@ const visibleGroups = (user) => ALL_GROUPS
  *                  the Group class.
  */
 const groupMemberships = (user) => user?.groups
-  ?.map(name => {
-      try {
-        return new Group(name);
-      } catch (error) {
-        // Nextstrain Group does not exist for the Cognito group prefix
-        return null;
-      }})
-   .filter(group => group !== null)
-   .map(group => ({
+  ?.map(group => ({
      name: group.name,
      isPublic: group.isPublic,
   }))
