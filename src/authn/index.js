@@ -64,11 +64,6 @@ const STRATEGY_OAUTH2 = "oauth2";
 const STRATEGY_BEARER = "bearer";
 const STRATEGY_SESSION = "session";
 
-/* Flag indicating that the user object was updated during deserialization from
- * an existing session and that it needs to be resaved back to the session.
- */
-const RESAVE_TO_SESSION = Symbol("RESAVE_TO_SESSION");
-
 function setup(app) {
   passport.use(
     STRATEGY_OAUTH2,
@@ -125,26 +120,13 @@ function setup(app) {
     )
   );
 
-  /* XXX TODO: Stop serializing the whole user profile back to the session once
-   * we no longer want to reserve the option of rolling back to older versions
-   * of the codebase which don't store tokens in the session.  For now,
-   * continuing to serialize the entire user profile means that newly
-   * established sessions will continue to work after such a rollback.
-   *  -trs, 16 May 2022
+  /* We recreate user objects solely from the stored tokens, so technically
+   * don't need any serialized user stored in the session, but marking each
+   * session with its username is useful for logging (e.g. see below) as well
+   * as ad-hoc adminstration and troubleshooting.
    */
-  // Serialize the entire user profile to the session store to avoid additional
-  // requests to Cognito when we need to load back a user profile from their
-  // session cookie.
   passport.serializeUser((user, done) => {
-    let serializedUser = {...user}; // eslint-disable-line prefer-const
-
-    // Deflate authzRoles and flags from Set to Array
-    for (const key of ["authzRoles", "flags"]) {
-      if (key in serializedUser) {
-        serializedUser[key] = [...serializedUser[key]];
-      }
-    }
-
+    const serializedUser = {username: user.username};
     return done(null, JSON.stringify(serializedUser));
   });
 
@@ -164,116 +146,62 @@ function setup(app) {
      */
     req.context.authnWithSession = true;
 
-    let user = JSON.parse(serializedUser); // eslint-disable-line prefer-const
+    const {username} = JSON.parse(serializedUser);
 
-    /* If we have tokens in the session, then we ignore the serialized user
-     * object and instead recreate the user object directly from the tokens.
-     * This lets us avoid issues with user object migrations over time (like we
-     * had to deal with previously) and also lets us periodically refresh user
-     * data from Cognito when we automatically renew tokens.
+    /* We ignore the serialized user object and instead recreate the user
+     * object directly from the tokens.  This lets us avoid issues with user
+     * object migrations over time (like we had to deal with previously) and
+     * also lets us periodically refresh user data from Cognito when we
+     * automatically renew tokens.
      */
     const tokens = await getTokens(req.session);
-    if (tokens) {
-      debug(`Restoring user object for ${user.username} from tokens (session ${req.session.id.substr(0, 7)}…)`);
-      let {idToken, accessToken, refreshToken} = tokens;
 
+    if (!tokens) {
+      debug(`Unable to restore user object for ${username} without tokens (session ${req.session.id.substr(0, 7)}…)`);
+      return null;
+    }
+
+    debug(`Restoring user object for ${username} from tokens (session ${req.session.id.substr(0, 7)}…)`);
+    let {idToken, accessToken, refreshToken} = tokens;
+
+    try {
       try {
-        try {
-          return await userFromTokens({idToken, accessToken, refreshToken});
-        } catch (err) {
-          /* If expired, then try to renew tokens.  This may still fail if the
-           * refreshToken expired or was revoked since being stored in the
-           * session.
-           */
-          if (err instanceof JWTExpired || err instanceof AuthnTokenTooOld) {
-            debug(`Renewing tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
-            ({idToken, accessToken, refreshToken} = await renewTokens(refreshToken));
-
-            const updatedUser = await userFromTokens({idToken, accessToken, refreshToken});
-
-            // Update tokens in session only _after_ we verify them and have a user.
-            await setTokens(req.session, {idToken, accessToken, refreshToken});
-
-            // Success after renewal.
-            debug(`Renewed tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
-            return updatedUser;
-          }
-          throw err; // recaught immediately below
-        }
+        return await userFromTokens({idToken, accessToken, refreshToken});
       } catch (err) {
-        /* If tokens are unsuable (invalid, expired, revoked, etc) then remove
-         * them from the session and log the user out by returning a null user
-         * object.  Passport will remove the user from the session.  This may
-         * trigger a redirect to login later in the request processing.
+        /* If expired, then try to renew tokens.  This may still fail if the
+         * refreshToken expired or was revoked since being stored in the
+         * session.
          */
-        if (err instanceof JOSEError || err instanceof AuthnRefreshTokenInvalid) {
-          debug(`Destroying unusable tokens for ${user.username} (session ${req.session.id.substr(0, 7)}…)`);
-          await deleteTokens(req.session);
-          return null;
+        if (err instanceof JWTExpired || err instanceof AuthnTokenTooOld) {
+          debug(`Renewing tokens for ${username} (session ${req.session.id.substr(0, 7)}…)`);
+          ({idToken, accessToken, refreshToken} = await renewTokens(refreshToken));
+
+          const updatedUser = await userFromTokens({idToken, accessToken, refreshToken});
+
+          // Update tokens in session only _after_ we verify them and have a user.
+          await setTokens(req.session, {idToken, accessToken, refreshToken});
+
+          // Success after renewal.
+          debug(`Renewed tokens for ${username} (session ${req.session.id.substr(0, 7)}…)`);
+          return updatedUser;
         }
-
-        // Internal error of some kind
-        throw err;
+        throw err; // recaught immediately below
       }
-    }
-
-    /* We have an old session without tokens stored in it, so we must look at
-     * serializedUser and reconstitute the original user object.
-     */
-    debug(`Restoring user object for ${user.username} from serialized user (session ${req.session.id.substr(0, 7)}…)`);
-
-    // Inflate authzRoles and flags from Array back into a Set
-    for (const key of ["authzRoles", "flags"]) {
-      if (key in user) {
-        user[key] = new Set(user[key]);
+    } catch (err) {
+      /* If tokens are unsuable (invalid, expired, revoked, etc) then remove
+       * them from the session and log the user out by returning a null user
+       * object.  Passport will remove the user from the session.  This may
+       * trigger a redirect to login later in the request processing.
+       */
+      if (err instanceof JOSEError || err instanceof AuthnRefreshTokenInvalid) {
+        debug(`Destroying unusable tokens for ${username} (session ${req.session.id.substr(0, 7)}…)`);
+        await deleteTokens(req.session);
+        return null;
       }
+
+      // Internal error of some kind
+      throw err;
     }
-
-    const update = (originalCognitoGroups, reason) => {
-      const {groups, authzRoles, flags, cognitoGroups} = parseCognitoGroups(originalCognitoGroups);
-      utils.verbose(`Updating user object for ${user.username}: ${reason}`);
-      user.groups = groups;
-      user.authzRoles = authzRoles;
-      user.flags = flags;
-      user.cognitoGroups = cognitoGroups;
-      user[RESAVE_TO_SESSION] = true;
-    };
-
-    /* Update existing sessions that pre-date the presence of authzRoles.  When
-     * authzRoles is absent, "groups" is the unparsed set of Cognito groups.
-     */
-    if (!("authzRoles" in user)) update(user.groups || [], "missing authzRoles");
-
-    /* Update existing sessions that pre-date the presence of flags.  When
-     * flags is absent, then authzRoles is the unparsed set of Cognito groups.
-     *
-     * In almost all cases, flags will be an empty set.  However, if a user is
-     * added to a flags group (or other internal group) in Cognito *and* then
-     * also establishes a new session in production before this new flags
-     * support (i.e. internal groups support) support is deployed to
-     * production, then that session's user object will be wrong and we'll fix
-     * it here.  Such a wrong user object would have, for example, a "!flags"
-     * Nextstrain Group with role "!flags/canary".  This is likely to only
-     * impact internal team members.
-     */
-    if (!("flags" in user)) update([...user.authzRoles], "missing flags");
-
-    /* Future updates can pass user.cognitoGroups to update().  The updates
-     * above predate that property.
-     *   -trs, 18 March 2022
-     */
-
-    /* Check the final user object is the right shape.  This would be better
-     * with types and TypeScript, or even a validation library, but asserts are
-     * ok for now in the absence of either of those.
-     */
-    assert(typeof user.username === "string");
-    assert(Array.isArray(user.groups));
-    assert(user.authzRoles instanceof Set);
-    assert(user.flags instanceof Set);
-    assert(Array.isArray(user.cognitoGroups));
-
-    return user;
   }
 
   // Setup session storage and passport.
@@ -359,19 +287,6 @@ function setup(app) {
   app.use(passport.initialize());
   app.use(authnWithToken);
   app.use(authnWithSession);
-
-  // If the user object was modified in deserializeUser during restore from the
-  // session, then persist the modifications back into the session by updating
-  // the user object in the session via req.login().  The session will detect
-  // its been changed and save itself to the store at the end of the request.
-  app.use((req, res, next) => {
-    if (req.user?.[RESAVE_TO_SESSION]) {
-      utils.verbose(`Resaving user object for ${req.user.username} back to the session`);
-      delete req.user[RESAVE_TO_SESSION];
-      return req.login(req.user, next);
-    }
-    return next();
-  });
 
   // Routes
   //
