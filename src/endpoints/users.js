@@ -30,7 +30,14 @@ const visibleGroups = (user) => ALL_GROUPS
  *                  the Group class.
  */
 const groupMemberships = (user) => user?.groups
-  ?.map(name => new Group(name))
+  ?.map(name => {
+      try {
+        return new Group(name);
+      } catch (error) {
+        // Nextstrain Group does not exist for the Cognito group prefix
+        return null;
+      }})
+   .filter(group => group !== null)
    .map(group => ({
      name: group.name,
      isPublic: group.isPublic,
