@@ -23,8 +23,7 @@ const visibleGroups = (user) => ALL_GROUPS
 
 
 /**
- * Returns an array of Nextstrain groups that a given *user* is a member of. The
- * order of groups returned matches the order in the `groups.json` data file.
+ * Returns an array of Nextstrain groups that a given *user* is a member of.
  *
  * @param {Object | undefined} user. `undefined` represents a non-logged-in user
  * @returns {Array} Each element represents a group with a a subset of properties from
