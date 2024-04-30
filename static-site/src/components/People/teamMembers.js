@@ -20,6 +20,13 @@ export const teamMembers = {
       link: "https://neherlab.org/ivan-aksamentov.html",
       blurb: "Ivan joined the team in 2020 and focuses on Nextclade and some of the algorithms in Nextstrain's underlying tools."
     },
+    {    
+      name: "John SJ Anderson",
+      image: "john-sj-anderson.jpg",
+      link: "https://bedford.io/team/john-sj-anderson/",
+      blurb:
+        "John joined the team in 2024 and works on all aspects of Nextstrain.",
+    },
     {
       name: "Kim Andrews",
       image: "kim-andrews.jpg",
