@@ -21,6 +21,12 @@ export const teamMembers = {
       blurb: "Ivan joined the team in 2020 and focuses on Nextclade and some of the algorithms in Nextstrain's underlying tools."
     },
     {
+      name: "Kim Andrews",
+      image: "kim-andrews.jpg",
+      link: "https://bedford.io/team/kim-andrews/",
+      blurb: "Kim joined the team in 2023 with a background in ecological and evolutionary genomics, and focuses on pathogen workflows."
+    },
+    {
       name: "Jennifer Chang",
       image: "jennifer-chang.jpg",
       link: "https://bedford.io/team/jennifer-chang/",
