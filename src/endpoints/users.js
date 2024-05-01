@@ -1,5 +1,5 @@
 import * as authz from '../authz/index.js';
-import { ALL_GROUPS, Group } from '../groups.js';
+import { ALL_GROUPS } from '../groups.js';
 import { contentTypesProvided } from '../negotiate.js';
 import * as nextJsApp from './nextjs.js';
 
@@ -23,16 +23,14 @@ const visibleGroups = (user) => ALL_GROUPS
 
 
 /**
- * Returns an array of Nextstrain groups that a given *user* is a member of. The
- * order of groups returned matches the order in the `groups.json` data file.
+ * Returns an array of Nextstrain groups that a given *user* is a member of.
  *
  * @param {Object | undefined} user. `undefined` represents a non-logged-in user
  * @returns {Array} Each element represents a group with a a subset of properties from
  *                  the Group class.
  */
 const groupMemberships = (user) => user?.groups
-  ?.map(name => new Group(name))
-   .map(group => ({
+  ?.map(group => ({
      name: group.name,
      isPublic: group.isPublic,
   }))

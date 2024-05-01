@@ -20,6 +20,7 @@ import { getTokens, setTokens, deleteTokens } from './session.js';
 import { PRODUCTION, OIDC_ISSUER_URL, OIDC_JWKS_URL, OAUTH2_AUTHORIZATION_URL, OAUTH2_TOKEN_URL, OAUTH2_LOGOUT_URL, OAUTH2_SCOPES_SUPPORTED, OIDC_USERNAME_CLAIM, OIDC_GROUPS_CLAIM, OIDC_IAT_BACKDATED_BY, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, OAUTH2_CLI_CLIENT_ID, SESSION_COOKIE_DOMAIN, SESSION_SECRET, SESSION_MAX_AGE } from '../config.js';
 import { AuthnRefreshTokenInvalid, AuthnTokenTooOld } from '../exceptions.js';
 import { fetch } from '../fetch.js';
+import { Group } from '../groups.js';
 import { Unauthorized, HttpErrors } from '../httpErrors.js';
 import { REDIS } from '../redis.js';
 import { userStaleBefore } from '../user.js';
@@ -465,7 +466,7 @@ async function userFromIdToken(idToken, client = undefined) {
  * authzRoles, and any flags.
  *
  * @returns {object} result
- * @returns {string[]} result.groups - Names of the Nextstrain Groups of which this user is a member.
+ * @returns {Group[]} result.groups - Nextstrain Groups of which this user is a member.
  * @returns {Set} result.authzRoles - Authorization roles granted to this user.
  * @returns {Set} result.flags - Flags on this user.
  */
@@ -477,8 +478,17 @@ function parseCognitoGroups(cognitoGroups) {
   const [internalGroups, nextstrainGroupsRoles] = partition(cognitoGroups, g => g.startsWith("!"));
 
   return {
-    // Just the Nextstrain Group names (i.e. excluding the "/role" suffix)
-    groups: [...new Set(nextstrainGroupsRoles.map(g => splitGroupRole(g).group))],
+    groups: [
+      // Just the Nextstrain Group names (i.e. excluding the "/role" suffix)
+      ...new Set(nextstrainGroupsRoles.map(g => splitGroupRole(g).group))
+    ].map(name => {
+      try {
+        return new Group(name);
+      } catch (error) {
+        // Nextstrain Group does not exist for the Cognito group prefix
+        return null;
+      }
+    }).filter(group => group !== null),
 
     authzRoles: new Set(nextstrainGroupsRoles),
 
@@ -504,7 +514,7 @@ function parseCognitoGroups(cognitoGroups) {
  * @typedef User
  * @type {object}
  * @property {string} username
- * @property {string[]} groups - Names of the Nextstrain Groups of which this user is a member.
+ * @property {Group[]} groups - Nextstrain Groups of which this user is a member.
  * @property {Set} authzRoles - Authorization roles granted to this user.
  */
 
