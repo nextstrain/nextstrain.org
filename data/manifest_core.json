@@ -3,6 +3,12 @@
     "pathogen": {
       "avian-flu": {
         "subtype": {
+          "h5n1-cattle-outbreak": {
+              "segment": {
+                  "genome": "",
+                  "default": "genome"
+              }
+          },
           "h5n1": {
             "segment": {
               "ha": {
