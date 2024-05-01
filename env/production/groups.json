@@ -250,5 +250,9 @@
   {
     "name": "WorldwideInfluenzaCentre",
     "isPublic": false
+  },
+  {
+    "name": "PekoszLab",
+    "isPublic": false
   }
 ]
