@@ -11,10 +11,11 @@
  * @module config
  */
 import { readFile } from 'fs/promises';
-import fetch from 'node-fetch';
 import path, { dirname } from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
+
+import { fetch } from './fetch.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
