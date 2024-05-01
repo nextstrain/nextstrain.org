@@ -1,14 +1,8 @@
 import argparse from 'argparse';
 import http from 'http';
 import * as utils from './src/utils/index.js';
+import { nextstrainAbout, startupMessage } from './src/startupMessage.js';
 
-const nextstrainAbout = `
-  Nextstrain is an open-source project to harness the scientific and public
-  health potential of pathogen genome data.
-
-  This is the server behind nextstrain.org.
-  See https://github.com/nextstrain/nextstrain.org for more.
-`;
 const parser = new argparse.ArgumentParser({
   addHelp: true,
   description: `Nextstrain.org server`,
@@ -55,17 +49,8 @@ const server = http
     return app(req, res);
   })
   .on("listening", () => {
-    console.log("  -------------------------------------------------------------------------");
-    console.log(nextstrainAbout);
-    console.log(`  Server listening on port ${server.address().port}`);
-    console.log(`  Accessible at https://nextstrain.org or http://localhost:${server.address().port}`);
-    console.log(`  Server is running in ${app.locals.production ? 'production' : 'development'} mode`);
-    if (app.locals.STATIC_SITE_PRODUCTION) {
-      console.log(`  Next.js frontend is running in production mode (statically generated assets)`)
-    } else {
-      console.log(`  Next.js frontend is running in development mode (hot reloading etc)`)
-    }
-    console.log("\n  -------------------------------------------------------------------------\n\n");
+    utils.log(`Server now listening on port ${server.address().port} (startup message will appear shortly)`);
+    startupMessage(server, app)
   })
   .on("error", (err) => {
     if (err.code === 'EADDRINUSE') {

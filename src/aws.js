@@ -5,6 +5,7 @@
  */
 import { NodeHttpHandler } from "@smithy/node-http-handler";
 import { ProxyAgent } from "proxy-agent";
+import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
 
 import { AWS_REGION } from "./config.js";
 
@@ -32,3 +33,23 @@ export const clientConfig = {
         httpsAgent: agent,
     }),
 };
+
+/**
+ * Attempt to identify the IAM user name behind the current AWS credentials
+ * (useful for debugging / server start-up messages). Some external users of
+ * the nextstrain server may be using non-AWS services, but these may still be
+ * compatible with STS so we make a best-effort attempt here.
+ */
+export async function getAwsId() {
+  const client = new STSClient(clientConfig);
+  const command = new GetCallerIdentityCommand({});
+  try {
+    const data = await client.send(command);
+    if (data.Arn.startsWith('arn:aws:iam::')) {
+      return (`IAM user '${data.Arn.replace(/^.+user\//, '')}'`)
+    }
+    return data.Arn; // report the ARN for non-IAM credentials
+  } catch (error) {
+    return `ERROR: ${error}`
+  }
+}
