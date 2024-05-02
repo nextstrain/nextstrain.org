@@ -1,5 +1,7 @@
+import debugFactory from 'debug';
 import __fetch from 'make-fetch-happen';
-import * as utils from './utils/index.js';
+
+const debug = debugFactory("nextstrain:fetch");
 
 const FETCH_OPTIONS = Symbol("Request options for make-fetch-happen");
 
@@ -16,14 +18,14 @@ const fetch = async (url, options) => {
    */
   const request = new Request(url, options);
 
-  utils.verbose(`[fetch] ${request.method} ${request.url} (cache: ${request.cache})`);
+  debug(`${request.method} ${request.url} (cache: ${request.cache})`);
 
   // See comment below on why we do fetch(request, options)
   const response = await _fetch(request, request[FETCH_OPTIONS]);
   const cachedAt = response.headers.get("X-Local-Cache-Time"); // documented by make-fetch-happen
   const cachedStatus = response.headers.get("X-Local-Cache-Status"); // documented by make-fetch-happen
 
-  utils.verbose(`[fetch] ${response.status} ${response.statusText} ${response.url} ${(cachedAt || cachedStatus) ? `(cache ${cachedStatus}, timestamp ${cachedAt})` : ''}`);
+  debug(`${response.status} ${response.statusText} ${response.url} ${(cachedAt || cachedStatus) ? `(cache ${cachedStatus}, timestamp ${cachedAt})` : ''}`);
 
   return response;
 };
