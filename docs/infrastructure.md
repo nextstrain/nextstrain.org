@@ -75,6 +75,10 @@ Deploys to the production app are performed by manually [promoting](https://devc
     If `NODE_ENV="production"` then `USE_PREBUILT_STATIC_SITE` has no effect.
     (P.S. to use prebuilt assets they must first be built, typically via `npm run build`.)
 
+  - `DEBUG` controls debug-level logging output from our own codebase as well as many of our deps (e.g. Express and its related packages).
+    As examples, to see the output from our own code, set `DEBUG=nextstrain:*`; to also see the output from the [`compression` module](https://www.npmjs.com/package/compression), set `DEBUG=nextstrain:*,compression`.
+    Refer to the [`debug` module documentation](https://www.npmjs.com/package/debug) for more information.
+
 
 Several variables are required but obtain defaults from a config file (e.g. `env/production/config.json`):
 

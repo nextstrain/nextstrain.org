@@ -73,6 +73,9 @@ For running locally, you should ensure
 
 If you have built the next.js part of the site (`./static-site`), via `npx next build static-site` or similar, then setting `USE_PREBUILT_STATIC_SITE=1` will use these built assets rather than server-side compilation.
 
+Use `DEBUG` to control debug-level logging output.
+In particular, setting `DEBUG=nextstrain:*` is useful to see all output from our own codebase.
+
 ---
 
 ## Frontend pages other than Auspice
