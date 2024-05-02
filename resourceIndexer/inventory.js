@@ -4,11 +4,13 @@ import zlib from 'zlib';
 import {writeFileSync} from 'fs';
 import { promisify } from 'util';
 import AWS from 'aws-sdk';
-import {logger} from './logger.js';
 import { DateTime } from 'luxon';
 import escapeStringRegexp from 'escape-string-regexp';
 import { ResourceIndexerError } from './errors.js';
+import debugFactory from 'debug';
+const debug = debugFactory("nextstrain:resource-indexer:inventory");
 const gunzip = promisify(zlib.gunzip)
+
 
 /**
  * Fetches and reads the latest inventory from the provided bucket/prefix:
@@ -40,14 +42,14 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
       resolve(orderedKeys[0])
     });
   });
-  logger.info(`inventory for ${name} - manifest key: ${manifestKey}`)
+  console.log(`inventory for ${name} - manifest key: ${manifestKey}`)
 
   const manifest = await S3.getObject({Bucket: bucket, Key: manifestKey})
     .promise()
     .then((response) => JSON.parse(response.Body.toString('utf-8')));
   const {schema, inventoryKey, versionsExist} = _parseManifest(manifest);
 
-  logger.info(`inventory for ${name} - parsed manifest JSON`)
+  console.log(`inventory for ${name} - parsed manifest JSON`)
 
   const inventoryGzipped = await S3.getObject({Bucket: bucket, Key: inventoryKey})
     .promise()
@@ -56,11 +58,11 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
   const inventory = await gunzip(inventoryGzipped)
     .then((data) => neatCsv(data, schema));
 
-  logger.info(`inventory for ${name} - fetched ${inventory.length} rows`)
+  console.log(`inventory for ${name} - fetched ${inventory.length} rows`)
 
   if (save) {
     const fnames = _localPaths(name);
-    logger.info(`Saving data to ${fnames.manifest} and ${fnames.inventory}`);
+    console.log(`Saving data to ${fnames.manifest} and ${fnames.inventory}`);
     writeFileSync(fnames.manifest, JSON.stringify(manifest, null, 2));
     writeFileSync(fnames.inventory, inventoryGzipped);
   }
@@ -79,12 +81,12 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
  */
 const fetchInventoryLocal = async ({name}) => {
   const {manifest: manifestPath, inventory: inventoryPath} = _localPaths(name)
-  logger.info(`inventory for ${name} -- reading S3 inventories from ${manifestPath} and ${inventoryPath}`);
+  console.log(`inventory for ${name} -- reading S3 inventories from ${manifestPath} and ${inventoryPath}`);
   const manifest = JSON.parse(await fs.readFile(manifestPath));
   const {schema, versionsExist} = _parseManifest(manifest);
   const decompress = inventoryPath.toLowerCase().endsWith('.gz') ? gunzip : (x) => x;
   const inventory = await neatCsv(await decompress(await fs.readFile(inventoryPath)), schema);
-  logger.info(`inventory for ${name} - read ${inventory.length} rows from the local file`)
+  console.log(`inventory for ${name} - read ${inventory.length} rows from the local file`)
   return {inventory, versionsExist};
 }
 
@@ -136,7 +138,7 @@ export const collectInventory = async ({name, local, save, inventoryBucket, inve
       {bucket: inventoryBucket, prefix: inventoryPrefix, name, save}
     ));
   } catch (e) {
-    logger.error(`There was an error while fetching the S3 inventory for ${name}. This is fatal.`)
+    console.error(`There was an error while fetching the S3 inventory for ${name}. This is fatal.`)
     throw e;
   }
   return await parseInventory({objects, versionsExist})
@@ -154,7 +156,7 @@ function _checkVersionedObjects(objects) {
 
   return objects.filter((item) => {
     if (!item.VersionId) {
-      logger.verbose(`Object ${item.Bucket}/${item.Key} is ignored as it is missing a versionId in a bucket we consider to be versioned.`);
+      debug(`Object ${item.Bucket}/${item.Key} is ignored as it is missing a versionId in a bucket we consider to be versioned.`);
       return false;
     }
     if (!item.hasOwnProperty('IsLatest')) { // eslint-disable-line no-prototype-builtins
@@ -195,7 +197,7 @@ function _checkNonVersionedObjects(objects) {
   const keys = new Set();
   objects.forEach((item) => {
     if (item.hasOwnProperty('VersionId')) { // eslint-disable-line no-prototype-builtins
-      logger.verbose(`Object ${item.Bucket}/${item.Key} has a versionId ('${item.VersionId}') but the bucket is not versioned! The item will be ignored.`);
+      debug(`Object ${item.Bucket}/${item.Key} has a versionId ('${item.VersionId}') but the bucket is not versioned! The item will be ignored.`);
       return false;
     }
     if (keys.has(item.Key)) {
