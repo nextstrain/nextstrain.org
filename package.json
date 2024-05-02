@@ -21,7 +21,7 @@
     "start": "npm run server",
     "//test": "echo 'NODE_OPTIONS is required until this issue is resolved: https://github.com/facebook/jest/issues/9430 '",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest --roots ./test/",
-    "test:ci": "start-server-and-test 'USE_PREBUILT_STATIC_SITE=1 RESOURCE_INDEX=test/date_descriptor_index.json DEBUG=\"nextstrain:fetch${DEBUG:+,}${DEBUG:-}\" node server.js --verbose >./test/server.log 2>&1' http://localhost:5000 test",
+    "test:ci": "start-server-and-test 'USE_PREBUILT_STATIC_SITE=1 RESOURCE_INDEX=test/date_descriptor_index.json DEBUG=\"nextstrain:*${DEBUG:+,}${DEBUG:-}\" node server.js --verbose >./test/server.log 2>&1' http://localhost:5000 test",
     "dev": "NODE_ENV=development nodemon --verbose -- server.js --verbose \"$@\"",
     "dev:ssg": "NODE_ENV=development USE_PREBUILT_STATIC_SITE=1 nodemon --verbose -- server.js --verbose \"$@\""
   },
