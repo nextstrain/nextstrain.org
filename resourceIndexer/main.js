@@ -2,7 +2,6 @@
 import { ArgumentParser } from 'argparse';
 import fs from 'fs';
 import { coreS3Data, stagingS3Data } from "./coreStagingS3.js";
-import {logger} from './logger.js';
 import zlib from 'zlib';
 import { promisify } from 'util';
 import { ResourceIndexerError } from './errors.js';
@@ -44,6 +43,7 @@ function parseArgs() {
       resources. Resources are organised in a hierarchical fashion via source → resourceType → resourcePath.
       Each resource contains a list of available versions, where applicable.
       The output JSON is intended for consumption by the nextstrain.org server.
+      For more verbose logging set a 'DEBUG=nextstrain:*' env variable.
     `,
   });
   argparser.addArgument("--local", {action: 'storeTrue',
@@ -57,7 +57,6 @@ function parseArgs() {
   argparser.addArgument("--output", {metavar: "<json>", required: true})
   argparser.addArgument("--indent", {action: 'storeTrue', help: 'Indent the output JSON'})
   argparser.addArgument("--gzip", {action: 'storeTrue', help: 'GZip the output JSON'})
-  argparser.addArgument("--verbose", {action: 'storeTrue', help: 'Verbose logging'})
 
   return argparser.parseArgs();
 }
@@ -65,7 +64,7 @@ function parseArgs() {
 
 main(parseArgs())
   .catch((err) => {
-    logger.error(err.message);
+    console.error(err.message);
     if (!(err instanceof ResourceIndexerError)) {
       console.trace(err);
     }
@@ -75,9 +74,6 @@ main(parseArgs())
 
 async function main(args) {
 
-  if (args.verbose) {
-    logger.transports.forEach((t) => t.level = 'verbose');
-  }
   if (args.local && args.save_inventories) {
     throw new ResourceIndexerError('Arguments --local and --save-inventories cannot be used together.')
   }
