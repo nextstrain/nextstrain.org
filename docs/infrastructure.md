@@ -71,9 +71,9 @@ Deploys to the production app are performed by manually [promoting](https://devc
     If not provided, the checked-in files `env/production/config.json` and `env/testing/config.json` are used (depending on the value of `NODE_ENV`).
 
   - `USE_PREBUILT_STATIC_SITE` is useful for development purposes and allows you to run the static site (sometimes referred to as the "frontend" or the "Next.js site") using pre-built assets, which is how it behaves in production mode.
-  In the absence of this variable the `NODE_ENV` is used to decide whether to use pre-built assets ("production mode") or compile assets as requested ("development mode").
-  If `NODE_ENV="production"` then `USE_PREBUILT_STATIC_SITE` has no effect.
-  (P.S. to use prebuilt assets they must first be built, typically via `npm run build`.)
+    In the absence of this variable the `NODE_ENV` is used to decide whether to use pre-built assets ("production mode") or compile assets as requested ("development mode").
+    If `NODE_ENV="production"` then `USE_PREBUILT_STATIC_SITE` has no effect.
+    (P.S. to use prebuilt assets they must first be built, typically via `npm run build`.)
 
 
 Several variables are required but obtain defaults from a config file (e.g. `env/production/config.json`):
