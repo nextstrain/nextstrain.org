@@ -12,6 +12,10 @@ on:
 
   workflow_call:
 
+# Only allow one run of the workflow per branch that triggers the workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+
 defaults:
   run:
     # This is the same as GitHub Action's `bash` keyword as of 20 June 2023:
