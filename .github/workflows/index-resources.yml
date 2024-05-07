@@ -34,6 +34,21 @@ jobs:
           node resourceIndexer/main.js \
             --gzip --output resources.json.gz \
             --resourceTypes dataset --collections core staging
-      - name: Upload the new index, overwriting the existing index
+      - name: Extract RESOURCE_CONFIG from config module
         run: |
-          aws s3 cp resources.json.gz s3://nextstrain-inventories/resources.json.gz
+          # This conditional is to continue to support servers that are still
+          # using versions of this code that do not include the get-resource-index
+          # script. We can remove it once all the servers have been updated.
+          #   -Jover, 01 May 2024
+          if [[ -f ".scripts/get-resource-index.js" ]]; then
+            resource_index=$(node scripts/get-resource-index.js)
+          else
+            resource_index=$(jq -r '.RESOURCE_INDEX' ./env/production/config.json)
+          fi
+
+          echo "RESOURCE_INDEX=$resource_index" | tee -a "$GITHUB_ENV"
+
+      - name: Upload the new index, overwriting the existing index
+        if: ${{ startsWith(env.RESOURCE_INDEX, 's3://') }}
+        run: |
+          aws s3 cp resources.json.gz "$RESOURCE_INDEX"
