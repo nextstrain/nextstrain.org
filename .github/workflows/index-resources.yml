@@ -12,8 +12,47 @@ on:
 
   workflow_call:
 
+defaults:
+  run:
+    # This is the same as GitHub Action's `bash` keyword as of 20 June 2023:
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+    #
+    # Completely spelling it out here so that GitHub can't change it out from under us
+    # and we don't have to refer to the docs to know the expected behavior.
+    shell: bash --noprofile --norc -eo pipefail {0}
+
 jobs:
+  build-ref-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      ref-matrix: ${{ steps.ref-matrix.outputs.ref-matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+      - id: ref-matrix
+        name: Create ref matrix
+        env:
+          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == 'workflow_call' || \
+               ("$GITHUB_EVENT_NAME" == 'workflow_dispatch' && "$GITHUB_REF" != 'refs/heads/master') ]]; then
+            # This the commit SHA that triggered the workflow.
+            # For the workflow_call, this is in the context of the calling workflow.
+            # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
+            ref_matrix=$(jq -c --null-input '[ env.GITHUB_SHA ]')
+          else
+            ref_matrix=$(./scripts/get-resource-index-ref-matrix)
+          fi
+
+          echo "ref-matrix=$ref_matrix" | tee -a "$GITHUB_OUTPUT"
+
   rebuild-index:
+    needs: [build-ref-matrix]
+    strategy:
+      matrix:
+        ref: ${{ fromJson(needs.build-ref-matrix.outputs.ref-matrix) }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint
@@ -24,10 +63,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # This the commit SHA that triggered the workflow.
-          # For the workflow_call, this is in the context of the calling workflow.
-          # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
-          ref: ${{ github.sha }}
+          ref: ${{ matrix.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'

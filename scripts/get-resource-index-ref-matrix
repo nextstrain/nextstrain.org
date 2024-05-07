@@ -1,0 +1,92 @@
+#!/bin/bash
+# Checks the Nextstrain production and canary Heroku apps to determine
+# if they are using the same `config.RESOURCE_INDEX` and returns a JSON array
+# of the the commit hashes for the different RESOURCE_INDEX.
+#
+# Intended to be used within the `index-resources.yml` GH Action workflow.
+set -euo pipefail
+
+: "${HEROKU_TOKEN:?The HEROKU_TOKEN environment variable is required.}"
+: "${HEROKU_PIPELINE:=38f67fc7-d93c-40c6-a182-501da2f89d9d}"
+
+: "${PROD_APP_NAME:=nextstrain-server}"
+: "${CANARY_APP_NAME:=nextstrain-canary}"
+
+main () {
+    local prod_commit prod_resource_index
+    local canary_commit canary_resource_index
+    local jq_array
+
+    prod_commit=$(get_heroku_slug_commit "$PROD_APP_NAME")
+    prod_resource_index=$(get_resource_index_at_commit "$prod_commit")
+
+    canary_commit=$(get_heroku_slug_commit "$CANARY_APP_NAME")
+    canary_resource_index=$(get_resource_index_at_commit "$canary_commit")
+
+    if [[ "$prod_resource_index" == "$canary_resource_index" ]]; then
+        jq_array='[ $PROD_COMMIT ]'
+    else
+        jq_array='[ $PROD_COMMIT, $CANARY_COMMIT ]'
+    fi
+
+    ref_matrix=$(jq -c --null-input \
+                    --arg PROD_COMMIT "$prod_commit" \
+                    --arg CANARY_COMMIT "$canary_commit" \
+                    "$jq_array")
+
+    echo "$ref_matrix"
+}
+
+get_heroku_slug_commit() {
+    local app_name="$1"
+    local slug_id commit_hash
+    slug_id=$(curl https://api.heroku.com/pipelines/"$HEROKU_PIPELINE"/latest-releases \
+                --fail --silent --show-error \
+                -H "Accept: application/vnd.heroku+json; version=3" \
+                -H "Authorization: Bearer $HEROKU_TOKEN" \
+                | jq -r --arg APP_NAME "$app_name" '.[] | select(.app | .name == $APP_NAME) | .slug.id')
+
+    commit_hash=$(curl https://api.heroku.com/apps/"$app_name"/slugs/"$slug_id" \
+                    --fail --silent --show-error \
+                    -H "Accept: application/vnd.heroku+json; version=3" \
+                    -H "Authorization: Bearer $HEROKU_TOKEN" \
+                    | jq -r '.commit')
+
+    echo "$commit_hash"
+}
+
+
+get_resource_index_at_commit() {
+    local commit_hash="$1"
+    local repo repo_archive resource_index
+    repo="$(mktemp -dt nextstrain-dot-org-repo-$commit_hash-XXXXXX)"
+    repo_archive="$repo/nextstrain.org.tar.gz"
+
+    trap "rm -rf '$repo'" EXIT
+
+    curl -fsSL \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        https://api.github.com/repos/nextstrain/nextstrain.org/tarball/"$commit_hash" \
+        > "$repo_archive"
+
+    tar xz --file="$repo_archive" \
+        --strip-components=1 \
+        -C "$repo"
+
+    # This conditional is to continue to support servers that are still
+    # using versions of this code that do not include the get-resource-index
+    # script. We can remove it once all the servers have been updated.
+    #   -Jover, 01 May 2024
+    if [[ -f "$repo/scripts/get-resource-index.js" ]]; then
+        npm ci --silent --prefix "$repo"
+        resource_index=$(node "$repo"/scripts/get-resource-index.js)
+    else
+        resource_index=$(jq -r '.RESOURCE_INDEX' "$repo"/env/production/config.json)
+    fi
+
+    echo "$resource_index"
+}
+
+
+main "$@"
