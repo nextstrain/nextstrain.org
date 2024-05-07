@@ -10,6 +10,8 @@ on:
   # Manually triggered using GitHub's UI
   workflow_dispatch:
 
+  workflow_call:
+
 jobs:
   rebuild-index:
     runs-on: ubuntu-latest
@@ -21,6 +23,11 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
+        with:
+          # This the commit SHA that triggered the workflow.
+          # For the workflow_call, this is in the context of the calling workflow.
+          # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
+          ref: ${{ github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
