@@ -1,6 +1,9 @@
 # environment variables
 /environment*
 
+# Heroku build
+/build/
+
 # auspice build
 /auspice-client/index.html
 /auspice-client/dist/

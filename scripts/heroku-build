@@ -1,0 +1,112 @@
+#!/bin/bash
+# Build a Heroku app slug using the Heroku (classic) buildpack interface.
+# <https://devcenter.heroku.com/articles/buildpack-api>
+#
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+echo "---> Hello from $0"
+echo "     Source directory is $PWD"
+echo "     Build  directory is $PWD/build"
+echo
+echo "---> Removing any previous build/app/"
+rm -rf build/app/
+
+echo
+echo "---> Ensuring build dirs exist"
+mkdir -vp build/{app,cache,env}
+
+echo
+echo "---> Copying source to build/app/"
+# Don't use `git archive` because it excludes uncommitted (but unignored) files
+# in the working tree.  Pass thru tar so that it handles directory creation for
+# us.
+git ls-files --cached --others --exclude-standard -z \
+  | tar --create  --file - --null --files-from - \
+  | tar --extract --file - --verbose -C build/app/
+
+echo
+echo "---> Setting buildpack env vars from source"
+export SOURCE_VERSION SOURCE_DESCRIPTION
+echo "     SOURCE_VERSION=${SOURCE_VERSION:=$(git describe --always --dirty)}"
+echo "     SOURCE_DESCRIPTION=${SOURCE_DESCRIPTION:=$(git log -1 --format=%s)}"
+
+if [[ ! -d build/pack ]]; then
+  echo
+  echo "---> Cloning buildpack into build/pack/"
+  git clone --depth 1 https://github.com/heroku/heroku-buildpack-nodejs build/pack
+else
+  echo
+  echo "---> Using buildpack in build/pack/"
+fi
+
+echo
+echo "---> Buildpack version is $(git -C build/pack describe --always --dirty)"
+
+echo
+echo "---> Running buildpack"
+docker run \
+  --rm --interactive $(tty --quiet && echo --tty) \
+  --user $(id -u):$(id -g) \
+  --volume "$(realpath build/app)":/build/app:rw \
+  --volume "$(realpath build/pack)":/build/pack:ro \
+  --volume "$(realpath build/cache)":/build/cache:rw \
+  --volume "$(realpath build/env)":/build/env:ro \
+  --env STACK=heroku-20 \
+  --env SOURCE_VERSION \
+  --env SOURCE_DESCRIPTION \
+  --env NODE_MODULES_CACHE=false \
+  heroku/heroku:20-build bash -c '
+       /build/pack/bin/detect  /build/app \
+    && /build/pack/bin/compile /build/app /build/cache /build/env
+  '
+
+# The remaining steps are part of the unpublished (but somewhat documented)
+# "slug compiler"¹ for classic Heroku buildpacks.
+#
+# The Procfile conversion is a published part of Heroku's upcoming "Cloud
+# Native" buildpacks, though, so nab the per-line regex from there.²
+#
+# ¹ <https://devcenter.heroku.com/articles/slug-compiler>
+# ² <https://github.com/heroku/buildpacks-procfile/blob/df64135f/src/procfile.rs#L42-L44>
+echo
+echo "---> Converting Procfile to JSON"
+jq --slurp --raw-input '
+    split("\n")
+  | map(capture("^[[:space:]]*(?<key>[a-zA-Z0-9_-]+):?\\s+(?<value>.*)[[:space:]]*"))
+  | from_entries
+' < build/app/Procfile | tee build/app/Procfile.json
+
+echo
+echo "---> Writing build/app/.heroku/BASH_ENV for use with BASH_ENV"
+tee build/app/.heroku/BASH_ENV <<<'
+  for f in "$(dirname "$BASH_SOURCE")"/../.profile.d/*; do
+      # On Heroku dynos, the slug is at /app and HOME=/app, but that is not
+      # true elsewhere and HOME often points somewhere completely separate.
+      # Make the .profile.d/ scripts portable when using this BASH_ENV script.
+      HOME="$(realpath "$(dirname "$BASH_SOURCE")"/..)" source "$f"
+  done
+'
+
+# <https://devcenter.heroku.com/articles/platform-api-deploying-slugs>
+echo
+echo "---> Packing build/app/ into build/slug.tar.gz"
+tar --create --gzip --file build/slug.tar.gz -C build/ ./app/
+sha256sum build/slug.tar.gz > build/slug.tar.gz.sha256sum
+du --human-readable --si --summarize build/app/ build/slug.tar.gz
+
+# <https://devcenter.heroku.com/articles/platform-api-reference#slug-create>
+echo
+echo "---> Generating build/slug.json metadata for slug creation"
+jq \
+  --null-input \
+  --argjson procfile "$(<build/app/Procfile.json)" \
+  --arg checksum "$(awk '{print "SHA256:" $1}' build/slug.tar.gz.sha256sum)" \
+  '{
+    "stack": "heroku-20",
+    "commit": $ENV.SOURCE_VERSION,
+    "commit_description": $ENV.SOURCE_DESCRIPTION,
+    "process_types": $procfile,
+    "checksum": $checksum,
+  }' | tee build/slug.json

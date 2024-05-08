@@ -5,9 +5,17 @@ on:
       - master
   pull_request:
   workflow_dispatch:
+defaults:
+  run:
+    # This is the same as GitHub Action's `bash` keyword as of 20 June 2023:
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+    #
+    # Completely spelling it out here so that GitHub can't change it out from under us
+    # and we don't have to refer to the docs to know the expected behavior.
+    shell: bash --noprofile --norc -eo pipefail {0}
 jobs:
-  test:
-    if: github.repository == 'nextstrain/nextstrain.org'
+  # Lint regardless of build or test status and lint early.
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,18 +24,59 @@ jobs:
           node-version-file: 'package.json'
       - run: node --version
       - run: npm ci
-      # building the static site (Next.js) will fail if linting fails, so explicitly run linting
-      # first to make the test output clearer
       - run: npm run lint:server
       - run: npm run lint:static-site
-      - run: npm run build
+
+  # Build into Heroku slug so we can deploy the same build that we test.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: ./scripts/heroku-build
+
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            build/slug.tar.gz
+            build/slug.tar.gz.sha256sum
+            build/slug.json
+
+  # Run tests in Heroku runtime environment against our built slug.
+  test:
+    if: github.repository == 'nextstrain/nextstrain.org'
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: heroku/heroku:20
+    env:
+      # Override NODE_ENV=production default in production build (slug)
+      NODE_ENV: development
+
+      # Set up Heroku runtime environment.  See bash(1) or
+      # <https://www.gnu.org/software/bash/manual/bash.html#Invoked-non_002dinteractively>.
+      BASH_ENV: .heroku/BASH_ENV
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build/
+      - run: sha256sum --check build/slug.tar.gz.sha256sum
+      - run: tar --extract --file build/slug.tar.gz --xform 's,^[.]/app/,,'
+      - run: node --version
+
+      # (Re-)install dev deps which got pruned from production build (slug)
+      - run: npm ci
+
       # configure AWS to run dev server necessary for `npm run test:ci`
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
           aws-access-key-id: ${{ secrets.DEV_SERVER_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.DEV_SERVER_AWS_SECRET_ACCESS_KEY }}
-      - run: aws sts get-caller-identity
+
       - run: npm run test:ci
         env:
           # Tests make GitHub API requests which are rate limited.
@@ -38,25 +87,19 @@ jobs:
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: logs
+          name: test-logs
           path: test/server.log
 
-  # XXX TODO: It'd be nice to avoid the rebuild on Heroku and instead deploy
-  # the artifacts (source code + generated files + node_modules/) already built
-  # above.  This would dramatically reduce deploy times and move us closer to
-  # "deploy what you tested", but it may also run into platform compatibility
-  # issues given CI is building on a different platform (arch + OS + sys libs)
-  # than Heroku's dynos and some deps are compiled.  But should try it and see!
-  # Or do our build above inside a Heroku buildpack…
-  #   -trs, 2 May 2022
   deploy:
     if: |2
          github.repository == 'nextstrain/nextstrain.org'
       && github.event_name == 'push'
       && github.ref == 'refs/heads/master'
 
-    # Wait for "test" job above to pass.
-    needs: test
+    # Wait for "build" and "test" jobs above to pass.
+    needs:
+      - build
+      - test
 
     # Only one "deploy" job at a time.
     concurrency: deploy
@@ -78,61 +121,51 @@ jobs:
     env:
       HEROKU_APP: nextstrain-canary
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build/
+
       - name: Login to Heroku
         run: echo "machine api.heroku.com login $HEROKU_USER password $HEROKU_TOKEN" >> ~/.netrc
         env:
           HEROKU_USER: "${{ secrets.HEROKU_USER }}"
           HEROKU_TOKEN: "${{ secrets.HEROKU_TOKEN }}"
 
-      - name: Define Heroku build source
+      - name: Upload slug
         run: |
-          jq --null-input '{
-            "source_blob": {
-              "url": "https://github.com/\(env.GITHUB_REPOSITORY)/archive/\(env.GITHUB_SHA).tar.gz",
-              "version": env.GITHUB_SHA
-            }
-          }' | tee build-source.json
-
-      - name: Start Heroku build
-        run: |
-          curl https://api.heroku.com/apps/"$HEROKU_APP"/builds \
-            --fail --silent --show-error --location --netrc \
-            --data-binary @build-source.json \
+          # <https://devcenter.heroku.com/articles/platform-api-reference#slug-create>
+          curl https://api.heroku.com/apps/"$HEROKU_APP"/slugs \
+            --data-binary @build/slug.json \
             --header 'Content-Type: application/json' \
             --header 'Accept: application/vnd.heroku+json; version=3' \
-              | tee build.json
+            --fail --silent --show-error --location --netrc \
+              | tee slug.json
 
-      - name: Monitor Heroku build
+          curl "$(jq -r .blob.url slug.json)" \
+            --request "$(jq -r .blob.method slug.json | tr a-z A-Z)" \
+            --header "Content-Type:" \
+            --data-binary @build/slug.tar.gz \
+            --fail --location --netrc \
+              | cat
+
+      - name: Release slug
         run: |
-          curl "$(jq -r .output_stream_url build.json)" \
-            --fail --silent --show-error --location
+          # <https://devcenter.heroku.com/articles/platform-api-reference#release-create>
+          curl https://api.heroku.com/apps/"$HEROKU_APP"/releases \
+            --data-binary @<(jq '{slug: .id}' slug.json) \
+            --header 'Content-Type: application/json' \
+            --header 'Accept: application/vnd.heroku+json; version=3' \
+            --fail --silent --show-error --location --netrc \
+              | tee release.json
 
-      - name: Check Heroku build
-        run: |
-          id="$(jq -r .id build.json)"
-          SECONDS=0
-          maxwait=60
-
-          while [[ $SECONDS -lt $maxwait ]]; do
-            curl https://api.heroku.com/apps/"$HEROKU_APP"/builds/"$id" \
-              --fail --silent --show-error --location --netrc \
-              --header 'Accept: application/vnd.heroku+json; version=3' \
-                | tee build.json
-
-            status="$(jq -r .status build.json)"
-
-            if [[ "$status" == succeeded ]]; then
-              break
-            else
-              echo "build status is $status (not succeeded); will check again" >&2
-              sleep 5
-            fi
-          done
-
-          if [[ "$status" != succeeded ]]; then
-            echo "build status is $status (not succeeded) after waiting $SECONDS seconds" >&2
-            exit 1
-          fi
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy
+          path: |
+            slug.json
+            release.json
 
       - if: always()
         name: Logout of Heroku
