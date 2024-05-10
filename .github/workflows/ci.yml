@@ -134,7 +134,7 @@ jobs:
       - name: Login to Heroku
         run: echo "machine api.heroku.com login $HEROKU_USER password $HEROKU_TOKEN" >> ~/.netrc
         env:
-          HEROKU_USER: "${{ secrets.HEROKU_USER }}"
+          HEROKU_USER: "${{ vars.HEROKU_USER }}"
           HEROKU_TOKEN: "${{ secrets.HEROKU_TOKEN }}"
 
       - name: Upload slug
