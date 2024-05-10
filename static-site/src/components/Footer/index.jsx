@@ -53,6 +53,7 @@ const SplashImagesCredit = () => (
 
 class Footer extends React.Component {
   render() {
+    const showTeamAvatars = this.props.showTeamAvatars!==false; // same as a functional component with default of true
     return (
       <div>
         <div className="row">
@@ -62,7 +63,7 @@ class Footer extends React.Component {
               {"Hadfield "}<i>{"et al., "}</i>
               <a href="https://doi.org/10.1093/bioinformatics/bty407" target="_blank" rel="noreferrer noopener">Nextstrain: real-time tracking of pathogen evolution</a>
               <i>, Bioinformatics</i> (2018)
-              {(typeof window !== 'undefined' && window.location.pathname.replace(/\//g, "")!=="team") && (
+              {showTeamAvatars && (
                 <>
                   <div style={{margin: "10px 0px"}}/>
                   The core Nextstrain team is
