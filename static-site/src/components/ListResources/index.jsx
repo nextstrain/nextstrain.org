@@ -12,6 +12,7 @@ import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalContext} from "./Modal";
+import { ResourceModalFiles } from "./ModalFiles";
 import { Showcase, useShowcaseCards} from "./Showcase";
 
 /**
@@ -24,6 +25,7 @@ import { Showcase, useShowcaseCards} from "./Showcase";
  */
 function ListResources({
   sourceId,
+  resourceType='dataset', /* matches --resourceTypes for the indexer */
   versioned=true,
   elWidth,
   quickLinks,
@@ -31,7 +33,8 @@ function ListResources({
   groupDisplayNames, /* mapping from group name -> display name */
   showcase, /* showcase cards */
 }) {
-  const [originalData, dataError] = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
+  const [originalData, dataError] = useDataFetch(sourceId, resourceType, versioned, defaultGroupLinks, groupDisplayNames);
+  console.log(originalData)
   const showcaseCards = useShowcaseCards(showcase, originalData);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
@@ -84,8 +87,10 @@ function ListResources({
 
       <Tooltip style={{fontSize: '1.6rem'}} id="listResourcesTooltip"/>
 
-      { versioned && (
+      { versioned && resourceType==='dataset' ? (
         <ResourceModal data={modal} dismissModal={() => setModal(null)}/>
+      ) : (
+        <ResourceModalFiles data={modal} dismissModal={() => setModal(null)}/>
       )}
 
     </ListResourcesContainer>

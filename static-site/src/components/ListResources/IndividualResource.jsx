@@ -37,7 +37,23 @@ export const ResourceLink = styled.a`
   text-decoration: none !important;
 `;
 
+export const ResourceName = styled.span`
+  font-size: ${resourceFontSize}px;
+  font-family: monospace;
+  cursor: pointer;
+  white-space: pre; /* don't collapse back-to-back spaces */
+  color: ${(props) => props.$hovered ? LINK_HOVER_COLOR : LINK_COLOR} !important;
+  text-decoration: none !important;
+`;
+
 function Name({displayName, $hovered, href, topOfColumn}) {
+  if (!href) {
+    return (
+      <ResourceName $hovered={$hovered}>
+        {'• '}{($hovered||topOfColumn) ? displayName.hovered : displayName.default}
+      </ResourceName>
+    )
+  }
   return (
     <ResourceLink href={href} target="_blank" rel="noreferrer" $hovered={$hovered}>
       {'• '}{($hovered||topOfColumn) ? displayName.hovered : displayName.default}
@@ -106,24 +122,43 @@ export const IndividualResource = ({data, isMobile}) => {
     }
   }, []);
 
+  let summaryText;
+  if (data.versioned && !isMobile) {
+    summaryText = `${data.updateCadence.summary} (n=${data.nVersions})`;
+    if (data.fileCounts) {
+      const {min, max} = data.fileCounts;
+      if (min===max) {
+        summaryText += ` (${data.fileCounts.min} files)`
+      } else {
+        summaryText += ` (${data.fileCounts.min} - ${data.fileCounts.max} files)`
+      }
+    }
+  }
+
   return (
     <Container ref={ref}>
 
       <FlexRow>
 
         <TooltipWrapper description={`Last known update on ${data.lastUpdated}`}>
-          <ResourceLinkWrapper onShiftClick={() => setModal(data)}>
-            <Name displayName={data.displayName} href={data.url} topOfColumn={topOfColumn}/>
-          </ResourceLinkWrapper>
+          { data.url ? (
+            <ResourceLinkWrapper onShiftClick={() => setModal(data)}>
+              <Name displayName={data.displayName} href={data.url} topOfColumn={topOfColumn}/>
+            </ResourceLinkWrapper>
+          ) : (
+            <ResourceLinkWrapper onClick={() => setModal(data)}>
+              <Name displayName={data.displayName} topOfColumn={topOfColumn}/>
+            </ResourceLinkWrapper>
+          )}
         </TooltipWrapper>
 
-        {data.versioned && !isMobile && (
+        {summaryText && (
           <TooltipWrapper description={data.updateCadence.description +
             `<br/>Last known update on ${data.lastUpdated}` +
             `<br/>${data.nVersions} snapshots of this dataset available (click to see them)`}>
             <IconContainer
               Icon={MdHistory}
-              text={`${data.updateCadence.summary} (n=${data.nVersions})`}
+              text={summaryText}
               handleClick={() => setModal(data)}
             />
           </TooltipWrapper>
@@ -140,17 +175,21 @@ export const IndividualResource = ({data, isMobile}) => {
  * Wrapper component which monitors for mouse-over events and injects a
  * `hovered: boolean` prop into the child.
  */
-export const ResourceLinkWrapper = ({children, onShiftClick}) => {
+export const ResourceLinkWrapper = ({children, onClick, onShiftClick}) => {
   const [hovered, setHovered] = useState(false);
-  const onClick = (e) => {
-    if (e.shiftKey) {
+  const _onClick = (e) => {
+    if (e.shiftKey && onShiftClick) {
       onShiftClick();
+      e.preventDefault(); // child elements (e.g. <a>) shouldn't receive the click
+    }
+    if (onClick) {
+      onClick();
       e.preventDefault(); // child elements (e.g. <a>) shouldn't receive the click
     }
   };
   return (
     <div>
-      <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onClick}>
+      <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={_onClick}>
         {React.cloneElement(children, { $hovered: hovered })}
       </div>
     </div>

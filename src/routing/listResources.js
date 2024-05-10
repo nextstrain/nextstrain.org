@@ -15,6 +15,6 @@ import {listResources} from '../endpoints/index.js';
  * for some discussion about route name choices.
  */
 export function setup(app) {
-  app.routeAsync("/list-resources/:sourceName")
+  app.routeAsync("/list-resources/:sourceName/:resourceType")
     .getAsync(listResources.listResources);
 }
