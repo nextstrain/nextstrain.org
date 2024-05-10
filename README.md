@@ -28,7 +28,7 @@ Check [package.json](./package.json) for the supported versions, e.g.
 
 While other versions may build this project successfully, we recommend using the supported versions to align with the Heroku environments.
 
-If you are using another version for other projects, you can switch between different versions using tools such as `nvm` or `conda`.
+If you are using another version for other projects, you can switch between different versions using tools such as `nvm` or `conda`; an `.nvmrc` file targetting the supported Node version is present, so `nvm install` will ensure you're using the correct version.
 
 ### 2. Install prerequisites
 Install the node dependencies by running
