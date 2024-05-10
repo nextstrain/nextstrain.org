@@ -1,0 +1,51 @@
+#!/bin/bash
+# usage: heroku-exec [<docker-run-args>…] [-- [<cmd> [<args>…]]]
+#
+# Run a command inside an ephemeral Heroku runtime container with build/app
+# (i.e. our Heroku app slug) mounted as /app.  If a command is given, it must
+# be preceded by a literal "--".  If no command is given, "bash" is assumed.
+# Any arguments before "--" are passed to the `docker run` invocation.
+#
+# This program is for development and troubleshooting.
+#
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+if [[ ! -d build/app ]]; then
+  echo "error: build/app does not exist; have you run ./scripts/heroku-build?" >&2
+  exit 1
+fi
+
+# Partition arguments before and after any literal "--".  The left-hand side
+# goes to `docker run`; the right-hand to the in-container process.
+docker_args=()
+
+for arg; do
+  shift
+  case "$arg" in
+      --)
+        break;;
+      --help|-h)
+        sed -nEe '1d; /^#/H; /^[^#]/{ x; s/^#( |$)//mg; p; q }' "$0"
+        exit;;
+      *)
+        docker_args+=("$arg");;
+  esac
+done
+
+# Default command to bash.
+if [[ $# -eq 0 ]]; then
+  set -- bash
+fi
+
+docker run \
+  --rm --interactive --tty \
+  --user $(id -u):$(id -g) \
+  --volume "$(realpath build/app):/app:rw" \
+  --workdir /app \
+  --env HOME=/app \
+  --env BASH_ENV=/app/.heroku/BASH_ENV \
+  "${docker_args[@]}" \
+  heroku/heroku:20 \
+    bash -c -- 'exec "$@"' "$1" "$@"
