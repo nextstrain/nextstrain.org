@@ -5,6 +5,11 @@ on:
       - master
   pull_request:
   workflow_dispatch:
+    inputs:
+      heroku-app:
+        description: Deploy to Heroku app (if set)
+        type: string
+        required: false
 defaults:
   run:
     # This is the same as GitHub Action's `bash` keyword as of 20 June 2023:
@@ -93,16 +98,16 @@ jobs:
   deploy:
     if: |2
          github.repository == 'nextstrain/nextstrain.org'
-      && github.event_name == 'push'
-      && github.ref == 'refs/heads/master'
+      && (   (github.event_name == 'push' && github.ref == 'refs/heads/master')
+          || (github.event_name == 'workflow_dispatch' && inputs.heroku-app) )
 
     # Wait for "build" and "test" jobs above to pass.
     needs:
       - build
       - test
 
-    # Only one "deploy" job at a time.
-    concurrency: deploy
+    # Only one "deploy" job per Heroku app at a time.
+    concurrency: deploy:${{ inputs.heroku-app || 'nextstrain-canary' }}
 
     # Name a GitHub environment configuration¹ to auto-create deployment
     # records in GitHub based on this job's progress/status.  Also grants
@@ -113,13 +118,13 @@ jobs:
     #
     # ¹ https://github.com/nextstrain/nextstrain.org/settings/environments
     environment:
-      name: heroku
-      url: https://next.nextstrain.org
+      name: ${{ inputs.heroku-app || 'nextstrain-canary' }}
+      url: ${{ inputs.heroku-app && format('https://{0}.herokuapp.com', inputs.heroku-app) || 'https://next.nextstrain.org' }}
 
     # Deploy steps
     runs-on: ubuntu-latest
     env:
-      HEROKU_APP: nextstrain-canary
+      HEROKU_APP: ${{ inputs.heroku-app || 'nextstrain-canary' }}
     steps:
       - uses: actions/download-artifact@v4
         with:
