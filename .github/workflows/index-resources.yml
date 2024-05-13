@@ -40,17 +40,7 @@ jobs:
         env:
           HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
         run: |
-          if [[ "$GITHUB_EVENT_NAME" == 'workflow_call' || \
-               ("$GITHUB_EVENT_NAME" == 'workflow_dispatch' && "$GITHUB_REF" != 'refs/heads/master') ]]; then
-            # This the commit SHA that triggered the workflow.
-            # For the workflow_call, this is in the context of the calling workflow.
-            # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
-            ref_matrix=$(jq -c --null-input '[ env.GITHUB_SHA ]')
-          else
-            ref_matrix=$(./scripts/get-resource-index-ref-matrix)
-          fi
-
-          echo "ref-matrix=$ref_matrix" | tee -a "$GITHUB_OUTPUT"
+          echo "ref-matrix=$(./scripts/get-resource-index-ref-matrix)" | tee -a "$GITHUB_OUTPUT"
 
   rebuild-index:
     needs: [build-ref-matrix]

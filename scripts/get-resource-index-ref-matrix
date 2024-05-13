@@ -1,17 +1,36 @@
 #!/bin/bash
-# Checks the Nextstrain production and canary Heroku apps to determine
+# Builds a ref matrix of commit hashes for the `index-resources.yml` GH Action workflow
+#
+# Uses the GITHUB_SHA if the workflow was called as a reusable workflow or
+# if the workflow was manually run on a branch that is not the default branch.
+# Otherwise, checks the Nextstrain production and canary Heroku apps to determine
 # if they are using the same `config.RESOURCE_INDEX` and returns a JSON array
 # of the the commit hashes for the different RESOURCE_INDEX.
-#
-# Intended to be used within the `index-resources.yml` GH Action workflow.
 set -euo pipefail
 
 : "${HEROKU_TOKEN:?The HEROKU_TOKEN environment variable is required.}"
+: "${GITHUB_EVENT_NAME:?The GITHUB_EVENT_NAME environment variable is required.}"
+: "${GITHUB_REF:?The GITHUB_REF environment variable is required.}"
+: "${GITHUB_SHA:?The GITHUB_SHA environment variable is required.}"
 
 : "${PROD_APP_NAME:=nextstrain-server}"
 : "${CANARY_APP_NAME:=nextstrain-canary}"
 
 main () {
+    if [[ "$GITHUB_EVENT_NAME" == 'workflow_call' || \
+          ("$GITHUB_EVENT_NAME" == 'workflow_dispatch' && "$GITHUB_REF" != 'refs/heads/master') ]]; then
+        # This the commit SHA that triggered the workflow.
+        # For the workflow_call, this is in the context of the calling workflow.
+        # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
+        ref_matrix=$(jq -c --null-input '[ env.GITHUB_SHA ]')
+    else
+        ref_matrix=$(build_prod_and_canary_ref_matrix)
+    fi
+
+    echo "$ref_matrix"
+}
+
+build_prod_and_canary_ref_matrix() {
     local prod_commit prod_resource_index
     local canary_commit canary_resource_index
     local jq_array
