@@ -46,6 +46,6 @@ docker run \
   --workdir /app \
   --env HOME=/app \
   --env BASH_ENV=/app/.heroku/BASH_ENV \
-  "${docker_args[@]}" \
+  "${docker_args[@]:0}" \
   heroku/heroku:20 \
     bash -c -- 'exec "$@"' "$1" "$@"
