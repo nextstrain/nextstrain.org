@@ -57,7 +57,7 @@ echo "---> Buildpack version is $(git -C build/pack describe --always --dirty)"
 echo
 echo "---> Running buildpack"
 docker run \
-  --rm --interactive $(tty --quiet && echo --tty) \
+  --rm --interactive $(tty -s && echo --tty) \
   --user $(id -u):$(id -g) \
   --volume "$(realpath build/app)":/build/app:rw \
   --volume "$(realpath build/pack)":/build/pack:ro \
@@ -104,7 +104,7 @@ echo
 echo "---> Packing build/app/ into build/slug.tar.gz"
 tar --create --gzip --file build/slug.tar.gz -C build/ ./app/
 sha256sum build/slug.tar.gz > build/slug.tar.gz.sha256sum
-du --human-readable --si --summarize build/app/ build/slug.tar.gz
+du -h --si -s build/app/ build/slug.tar.gz
 
 # <https://devcenter.heroku.com/articles/platform-api-reference#slug-create>
 echo
