@@ -7,7 +7,6 @@
 set -euo pipefail
 
 : "${HEROKU_TOKEN:?The HEROKU_TOKEN environment variable is required.}"
-: "${HEROKU_PIPELINE:=38f67fc7-d93c-40c6-a182-501da2f89d9d}"
 
 : "${PROD_APP_NAME:=nextstrain-server}"
 : "${CANARY_APP_NAME:=nextstrain-canary}"
@@ -40,11 +39,12 @@ main () {
 get_heroku_slug_commit() {
     local app_name="$1"
     local slug_id commit_hash
-    slug_id=$(curl https://api.heroku.com/pipelines/"$HEROKU_PIPELINE"/latest-releases \
+    slug_id=$(curl https://api.heroku.com/apps/"$app_name"/releases \
                 --fail --silent --show-error \
                 -H "Accept: application/vnd.heroku+json; version=3" \
                 -H "Authorization: Bearer $HEROKU_TOKEN" \
-                | jq -r --arg APP_NAME "$app_name" '.[] | select(.app | .name == $APP_NAME) | .slug.id')
+                -H "Range: version ..; order=desc,max=1" \
+                | jq -r '.[0].slug.id')
 
     commit_hash=$(curl https://api.heroku.com/apps/"$app_name"/slugs/"$slug_id" \
                     --fail --silent --show-error \
