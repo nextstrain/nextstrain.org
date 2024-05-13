@@ -2,6 +2,16 @@
 # Build a Heroku app slug using the Heroku (classic) buildpack interface.
 # <https://devcenter.heroku.com/articles/buildpack-api>
 #
+# XXX TODO: Switch to the Heroku Cloud Native buildpacks (CNB) once they're
+# well-supported by Heroku's platform (or if we move off Heroku).  The use of
+# CNB to pack an app into an image is much simpler (and more comprehensive)
+# than Heroku's classic buildpacks: most of this program below would vanish.
+# Supporting CNB has long been on Heroku's roadmap and although it's still in
+# preview¹, it's been getting recent attention.
+#   -trs, 13 May 2024
+#
+# ¹ <https://blog.heroku.com/heroku-cloud-native-buildpacks>
+#
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
