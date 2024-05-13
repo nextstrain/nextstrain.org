@@ -45,7 +45,7 @@ echo "     SOURCE_DESCRIPTION=${SOURCE_DESCRIPTION:=$(git log -1 --format=%s)}"
 if [[ ! -d build/pack ]]; then
   echo
   echo "---> Cloning buildpack into build/pack/"
-  git clone --depth 1 https://github.com/heroku/heroku-buildpack-nodejs build/pack
+  git clone --depth 1 https://github.com/heroku/heroku-buildpack-nodejs build/pack --branch latest
 else
   echo
   echo "---> Using buildpack in build/pack/"
