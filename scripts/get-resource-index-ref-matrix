@@ -1,5 +1,6 @@
 #!/bin/bash
-# Builds a ref matrix of commit hashes for the `index-resources.yml` GH Action workflow
+# Builds a ref matrix of commit hashes and resource index URLs for the
+# `index-resources.yml` GH Action workflow
 #
 # Uses the GITHUB_SHA if the workflow was called as a reusable workflow or
 # if the workflow was manually run on a branch that is not the default branch.
@@ -22,7 +23,10 @@ main () {
         # This the commit SHA that triggered the workflow.
         # For the workflow_call, this is in the context of the calling workflow.
         # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
-        ref_matrix=$(jq -c --null-input '[ env.GITHUB_SHA ]')
+        resource_index=$(get_resource_index_at_commit "$GITHUB_SHA")
+        ref_matrix=$(jq -c --null-input \
+                        --arg RESOURCE_INDEX $(get_resource_index_at_commit "$GITHUB_SHA") \
+                        '[ {"ref": env.GITHUB_SHA, "resource_index": $RESOURCE_INDEX} ]')
     else
         ref_matrix=$(build_prod_and_canary_ref_matrix)
     fi
@@ -42,14 +46,19 @@ build_prod_and_canary_ref_matrix() {
     canary_resource_index=$(get_resource_index_at_commit "$canary_commit")
 
     if [[ "$prod_resource_index" == "$canary_resource_index" ]]; then
-        jq_array='[ $PROD_COMMIT ]'
+        jq_array='[ {"ref": $PROD_COMMIT, "resource_index": $PROD_RESOURCE_INDEX} ]'
     else
-        jq_array='[ $PROD_COMMIT, $CANARY_COMMIT ]'
+        jq_array='[
+            {"ref": $PROD_COMMIT, "resource_index": $PROD_RESOURCE_INDEX},
+            {"ref": $CANARY_COMMIT, "resource_index": $CANARY_RESOURCE_INDEX}
+        ]'
     fi
 
     ref_matrix=$(jq -c --null-input \
                     --arg PROD_COMMIT "$prod_commit" \
+                    --arg PROD_RESOURCE_INDEX "$prod_resource_index" \
                     --arg CANARY_COMMIT "$canary_commit" \
+                    --arg CANARY_RESOURCE_INDEX "$canary_resource_index" \
                     "$jq_array")
 
     echo "$ref_matrix"

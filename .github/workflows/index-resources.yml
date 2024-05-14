@@ -12,9 +12,6 @@ on:
 
   workflow_call:
 
-# Only allow one run of the workflow per branch that triggers the workflow
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
 
 defaults:
   run:
@@ -46,7 +43,12 @@ jobs:
     needs: [build-ref-matrix]
     strategy:
       matrix:
-        ref: ${{ fromJson(needs.build-ref-matrix.outputs.ref-matrix) }}
+        include: ${{ fromJson(needs.build-ref-matrix.outputs.ref-matrix) }}
+    # Only allow one run of the job per resource index
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.resource_index }}
+    env:
+        RESOURCE_INDEX: ${{ matrix.resource_index }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint
@@ -71,20 +73,6 @@ jobs:
           node resourceIndexer/main.js \
             --gzip --output resources.json.gz \
             --resourceTypes dataset --collections core staging
-      - name: Extract RESOURCE_CONFIG from config module
-        run: |
-          # This conditional is to continue to support servers that are still
-          # using versions of this code that do not include the get-resource-index
-          # script. We can remove it once all the servers have been updated.
-          #   -Jover, 01 May 2024
-          if [[ -f ".scripts/get-resource-index.js" ]]; then
-            resource_index=$(node scripts/get-resource-index.js)
-          else
-            resource_index=$(jq -r '.RESOURCE_INDEX' ./env/production/config.json)
-          fi
-
-          echo "RESOURCE_INDEX=$resource_index" | tee -a "$GITHUB_ENV"
-
       - name: Upload the new index, overwriting the existing index
         if: ${{ startsWith(env.RESOURCE_INDEX, 's3://') }}
         run: |
