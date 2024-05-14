@@ -108,7 +108,11 @@ jobs:
 
   deploy:
     if: |2
-         github.repository == 'nextstrain/nextstrain.org'
+         !cancelled()
+      && needs.build.result == 'success'
+      && needs.test.result == 'success'
+      && contains(fromJSON('["success", "skipped"]'), needs.index-resources.result)
+      && github.repository == 'nextstrain/nextstrain.org'
       && (   (github.event_name == 'push' && github.ref == 'refs/heads/master')
           || (github.event_name == 'workflow_dispatch' && inputs.heroku-app) )
 
