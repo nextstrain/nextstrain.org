@@ -77,6 +77,17 @@ const Comma = () => (
   </span>
 )
 
+const MaybeLinked = ({ link, children }) => {
+  if (link) {
+    return (
+      <a href={link}>
+        {children}
+      </a>
+    )
+  }
+  return children
+}
+
 export const TeamPageList = ({membersKey}) => {
 
   const people = teamMembers[membersKey];
@@ -85,9 +96,13 @@ export const TeamPageList = ({membersKey}) => {
     <BodyWrapper>
       {people.map((person) => 
         <Sideways key={person.name} style={{alignItems: person.blurb ? "top" : "center"}}>
-          <a href={person.link}><img alt={person.name} src={require("../../../static/team/"+person.image).default.src}/></a>
+          <MaybeLinked link={person.link}>
+              <img alt={person.name} src={require("../../../static/team/"+person.image).default.src}/>
+            </MaybeLinked>
           <UpDown>
-            <a href={person.link}><Name>{person.name}</Name></a>
+            <MaybeLinked link={person.link}>
+                <Name>{person.name}</Name>
+              </MaybeLinked>
             {person.blurb && (
               <Blurb>{person.blurb}</Blurb>
             )}
@@ -105,10 +120,10 @@ export const FooterList = () => {
     <FooterWrapper>
       {people.map((person, i) => 
         <div key={person.name}>
-          <a href={person.link}>
+          <MaybeLinked link={person.link}>
             <img alt={person.name} src={require("../../../static/team/"+person.image).default.src}/>
             <Name>{person.name}</Name>
-          </a>
+          </MaybeLinked>
           {i+1!==people.length && <Comma/>}
         </div>
       )}
