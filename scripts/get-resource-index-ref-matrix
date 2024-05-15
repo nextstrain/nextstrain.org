@@ -23,7 +23,6 @@ main () {
         # This the commit SHA that triggered the workflow.
         # For the workflow_call, this is in the context of the calling workflow.
         # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
-        resource_index=$(get_resource_index_at_commit "$GITHUB_SHA")
         ref_matrix=$(jq -c --null-input \
                         --arg RESOURCE_INDEX $(get_resource_index_at_commit "$GITHUB_SHA") \
                         '[ {"ref": env.GITHUB_SHA, "resource_index": $RESOURCE_INDEX} ]')
