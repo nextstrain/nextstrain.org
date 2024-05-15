@@ -77,47 +77,56 @@ const Comma = () => (
   </span>
 )
 
-const Avatar = ({name, image, link, blurb, teamPage, comma=false}) => {
-  if (teamPage) {
+const MaybeLinked = ({ link, children }) => {
+  if (link) {
     return (
-      <>
-        <Sideways style={{alignItems: blurb ? "top" : "center"}}>
-          <a href={link}><img alt={name} src={require("../../../static/team/"+image).default.src}/></a>
+      <a href={link}>
+        {children}
+      </a>
+    )
+  }
+  return children
+}
+
+export const TeamPageList = ({membersKey}) => {
+
+  const people = teamMembers[membersKey];
+
+  return (
+    <BodyWrapper>
+      {people.map((person) => 
+        <Sideways key={person.name} style={{alignItems: person.blurb ? "top" : "center"}}>
+          <MaybeLinked link={person.link}>
+              <img alt={person.name} src={require("../../../static/team/"+person.image).default.src}/>
+            </MaybeLinked>
           <UpDown>
-            <a href={link}><Name>{name}</Name></a>
-            {blurb && (
-              <Blurb>{blurb}</Blurb>
+            <MaybeLinked link={person.link}>
+                <Name>{person.name}</Name>
+              </MaybeLinked>
+            {person.blurb && (
+              <Blurb>{person.blurb}</Blurb>
             )}
           </UpDown>
         </Sideways>
-        {comma && <Comma/>}
-      </>
-    );
-  }
-  return (
-    <>
-      <a href={link}>
-        <img alt={name} src={require("../../../static/team/"+image).default.src}/>
-        <Name>{name}</Name>
-      </a>
-      {comma && <Comma/>}
-    </>
-  );
-};
-
-export const ListOfPeople = ({people, teamPage=false}) => {
-
-  const ppl = people==="current" ?
-    [...teamMembers['founders'], ...teamMembers['core']] :
-    teamMembers[people];
-
-  const Wrapper = teamPage ? BodyWrapper : FooterWrapper;
-
-  return (
-    <Wrapper>
-      {ppl.map((p, i) => 
-        <Avatar key={p.name} {...p} teamPage={teamPage} comma={!teamPage && i+1!==ppl.length}/>
       )}
-    </Wrapper>
+    </BodyWrapper>
+  )
+}
+
+export const FooterList = () => {
+  const people = [...teamMembers['founders'], ...teamMembers['core']];
+
+  return (
+    <FooterWrapper>
+      {people.map((person, i) => 
+        <div key={person.name}>
+          <MaybeLinked link={person.link}>
+            <img alt={person.name} src={require("../../../static/team/"+person.image).default.src}/>
+            <Name>{person.name}</Name>
+          </MaybeLinked>
+          {i+1!==people.length && <Comma/>}
+        </div>
+      )}
+    </FooterWrapper>
   )
 }

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
-import { ListOfPeople } from "../People/avatars";
+import { FooterList } from "../People/avatars";
 
 const SplashImagesCredit = () => (
   <div className="row">
@@ -67,7 +67,7 @@ class Footer extends React.Component {
                   <div style={{margin: "10px 0px"}}/>
                   The core Nextstrain team is
                   <div style={{margin: "0px 0px"}}/>
-                  <ListOfPeople people="current" />
+                  <FooterList />
                   {"Please see the "}
                   <Link href="/team">team page</Link>
                   {" for more details."}

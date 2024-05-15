@@ -3,7 +3,7 @@ import styled from "styled-components";
 import GenericPage from "../layouts/generic-page";
 import { BigSpacer, FlexCenter} from "../layouts/generalComponents";
 import { CenteredFocusParagraph } from "../components/splash/styles";
-import { ListOfPeople } from "../components/People/avatars";
+import { TeamPageList } from "../components/People/avatars";
 
 const H1 = styled.div`
   text-align: center;
@@ -28,7 +28,7 @@ const TeamPage = () => {
         </CenteredFocusParagraph>
       </FlexCenter>
 
-      <ListOfPeople people="founders" teamPage />
+      <TeamPageList membersKey="founders" />
 
       <FlexCenter>
         <CenteredFocusParagraph>
@@ -36,7 +36,7 @@ const TeamPage = () => {
         </CenteredFocusParagraph>
       </FlexCenter>
 
-      <ListOfPeople people="core" teamPage />
+      <TeamPageList membersKey="core" />
 
       <H1>Nextstrain Alumni</H1>
       <FlexCenter>
@@ -50,7 +50,7 @@ const TeamPage = () => {
 
       <BigSpacer/>
 
-      <ListOfPeople people="alumni" teamPage />
+      <TeamPageList membersKey="alumni" />
     </div>
   );
 };
