@@ -44,23 +44,16 @@ build_prod_and_canary_ref_matrix() {
     canary_commit=$(get_heroku_slug_commit "$CANARY_APP_NAME")
     canary_resource_index=$(get_resource_index_at_commit "$canary_commit")
 
-    if [[ "$prod_resource_index" == "$canary_resource_index" ]]; then
-        jq_array='[ {"ref": $PROD_COMMIT, "resource_index": $PROD_RESOURCE_INDEX} ]'
-    else
-        jq_array='[
+    jq -c --null-input \
+        --arg PROD_COMMIT "$prod_commit" \
+        --arg PROD_RESOURCE_INDEX "$prod_resource_index" \
+        --arg CANARY_COMMIT "$canary_commit" \
+        --arg CANARY_RESOURCE_INDEX "$canary_resource_index" \
+        '[
             {"ref": $PROD_COMMIT, "resource_index": $PROD_RESOURCE_INDEX},
             {"ref": $CANARY_COMMIT, "resource_index": $CANARY_RESOURCE_INDEX}
-        ]'
-    fi
-
-    ref_matrix=$(jq -c --null-input \
-                    --arg PROD_COMMIT "$prod_commit" \
-                    --arg PROD_RESOURCE_INDEX "$prod_resource_index" \
-                    --arg CANARY_COMMIT "$canary_commit" \
-                    --arg CANARY_RESOURCE_INDEX "$canary_resource_index" \
-                    "$jq_array")
-
-    echo "$ref_matrix"
+         ]
+        | unique_by(.resource_index)'
 }
 
 get_heroku_slug_commit() {
