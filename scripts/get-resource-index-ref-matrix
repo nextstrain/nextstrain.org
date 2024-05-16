@@ -1,0 +1,112 @@
+#!/bin/bash
+# Builds a ref matrix of commit hashes and resource index URLs for the
+# `index-resources.yml` GH Action workflow
+#
+# Uses the GITHUB_SHA if the workflow was called as a reusable workflow or
+# if the workflow was manually run on a branch that is not the default branch.
+# Otherwise, checks the Nextstrain production and canary Heroku apps to determine
+# if they are using the same `config.RESOURCE_INDEX` and returns a JSON array
+# of the the commit hashes for the different RESOURCE_INDEX.
+set -euo pipefail
+
+: "${HEROKU_TOKEN:?The HEROKU_TOKEN environment variable is required.}"
+: "${GITHUB_EVENT_NAME:?The GITHUB_EVENT_NAME environment variable is required.}"
+: "${GITHUB_REF:?The GITHUB_REF environment variable is required.}"
+: "${GITHUB_SHA:?The GITHUB_SHA environment variable is required.}"
+
+: "${PROD_APP_NAME:=nextstrain-server}"
+: "${CANARY_APP_NAME:=nextstrain-canary}"
+
+main () {
+    if [[ "$GITHUB_EVENT_NAME" == 'workflow_call' || \
+          ("$GITHUB_EVENT_NAME" == 'workflow_dispatch' && "$GITHUB_REF" != 'refs/heads/master') ]]; then
+        # This the commit SHA that triggered the workflow.
+        # For the workflow_call, this is in the context of the calling workflow.
+        # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
+        ref_matrix=$(jq -c --null-input \
+                        --arg RESOURCE_INDEX $(get_resource_index_at_commit "$GITHUB_SHA") \
+                        '[ {"ref": env.GITHUB_SHA, "resource_index": $RESOURCE_INDEX} ]')
+    else
+        ref_matrix=$(build_prod_and_canary_ref_matrix)
+    fi
+
+    echo "$ref_matrix"
+}
+
+build_prod_and_canary_ref_matrix() {
+    local prod_commit prod_resource_index
+    local canary_commit canary_resource_index
+    local jq_array
+
+    prod_commit=$(get_heroku_slug_commit "$PROD_APP_NAME")
+    prod_resource_index=$(get_resource_index_at_commit "$prod_commit")
+
+    canary_commit=$(get_heroku_slug_commit "$CANARY_APP_NAME")
+    canary_resource_index=$(get_resource_index_at_commit "$canary_commit")
+
+    jq -c --null-input \
+        --arg PROD_COMMIT "$prod_commit" \
+        --arg PROD_RESOURCE_INDEX "$prod_resource_index" \
+        --arg CANARY_COMMIT "$canary_commit" \
+        --arg CANARY_RESOURCE_INDEX "$canary_resource_index" \
+        '[
+            {"ref": $PROD_COMMIT, "resource_index": $PROD_RESOURCE_INDEX},
+            {"ref": $CANARY_COMMIT, "resource_index": $CANARY_RESOURCE_INDEX}
+         ]
+        | unique_by(.resource_index)'
+}
+
+get_heroku_slug_commit() {
+    local app_name="$1"
+    local slug_id commit_hash
+    slug_id=$(curl https://api.heroku.com/apps/"$app_name"/releases \
+                --fail --silent --show-error \
+                -H "Accept: application/vnd.heroku+json; version=3" \
+                -H "Authorization: Bearer $HEROKU_TOKEN" \
+                -H "Range: version ..; order=desc,max=1" \
+                | jq -r '.[0].slug.id')
+
+    commit_hash=$(curl https://api.heroku.com/apps/"$app_name"/slugs/"$slug_id" \
+                    --fail --silent --show-error \
+                    -H "Accept: application/vnd.heroku+json; version=3" \
+                    -H "Authorization: Bearer $HEROKU_TOKEN" \
+                    | jq -r '.commit')
+
+    echo "$commit_hash"
+}
+
+
+get_resource_index_at_commit() {
+    local commit_hash="$1"
+    local repo repo_archive resource_index
+    repo="$(mktemp -dt nextstrain-dot-org-repo-$commit_hash-XXXXXX)"
+    repo_archive="$repo/nextstrain.org.tar.gz"
+
+    trap "rm -rf '$repo'" EXIT
+
+    curl -fsSL \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        https://api.github.com/repos/nextstrain/nextstrain.org/tarball/"$commit_hash" \
+        > "$repo_archive"
+
+    tar xz --file="$repo_archive" \
+        --strip-components=1 \
+        -C "$repo"
+
+    # This conditional is to continue to support servers that are still
+    # using versions of this code that do not include the get-resource-index
+    # script. We can remove it once all the servers have been updated.
+    #   -Jover, 01 May 2024
+    if [[ -f "$repo/scripts/get-resource-index.js" ]]; then
+        npm ci --silent --prefix "$repo"
+        resource_index=$(node "$repo"/scripts/get-resource-index.js)
+    else
+        resource_index=$(jq -r '.RESOURCE_INDEX' "$repo"/env/production/config.json)
+    fi
+
+    echo "$resource_index"
+}
+
+
+main "$@"

@@ -10,8 +10,45 @@ on:
   # Manually triggered using GitHub's UI
   workflow_dispatch:
 
+  workflow_call:
+
+
+defaults:
+  run:
+    # This is the same as GitHub Action's `bash` keyword as of 20 June 2023:
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+    #
+    # Completely spelling it out here so that GitHub can't change it out from under us
+    # and we don't have to refer to the docs to know the expected behavior.
+    shell: bash --noprofile --norc -eo pipefail {0}
+
 jobs:
+  build-ref-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      ref-matrix: ${{ steps.ref-matrix.outputs.ref-matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+      - id: ref-matrix
+        name: Create ref matrix
+        env:
+          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
+        run: |
+          echo "ref-matrix=$(./scripts/get-resource-index-ref-matrix)" | tee -a "$GITHUB_OUTPUT"
+
   rebuild-index:
+    needs: [build-ref-matrix]
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.build-ref-matrix.outputs.ref-matrix) }}
+    # Only allow one run of the job per resource index
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.resource_index }}
+    env:
+        RESOURCE_INDEX: ${{ matrix.resource_index }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint
@@ -21,6 +58,8 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
@@ -35,5 +74,6 @@ jobs:
             --gzip --output resources.json.gz \
             --resourceTypes dataset --collections core staging
       - name: Upload the new index, overwriting the existing index
+        if: ${{ startsWith(env.RESOURCE_INDEX, 's3://') }}
         run: |
-          aws s3 cp resources.json.gz s3://nextstrain-inventories/resources.json.gz
+          aws s3 cp resources.json.gz "$RESOURCE_INDEX"

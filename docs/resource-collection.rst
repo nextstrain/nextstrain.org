@@ -10,11 +10,42 @@ resources (and their versions) to the user.
 The index location is set by the env/config variable ``RESOURCE_INDEX``. The
 ``RESOURCE_INDEX`` must be either a "s3://" address or a local file path. If the
 file is located on S3 it must be gzipped. The server loads this index at start
-time and refreshes it hourly. The nextstrain.org testing & production configs
-currently set this to ``s3://nextstrain-inventories/resources.json.gz``.
+time and refreshes it hourly. Resource collections can be ignored by the server
+by setting the env variable ``RESOURCE_INDEX="false"`` or by omitting it from
+your configuration JSON.
 
-Resource collections can be ignored by the server by setting the env variable
-``RESOURCE_INDEX="false"`` or by omitting it from your configuration JSON.
+
+Resource index revisions
+========================
+
+The nextstrain.org testing & production configs currently set this to
+``s3://nextstrain-inventories/resources/v<revision_number>.json.gz``.
+
+If you make any updates that changes the structure or the contents of the resource
+index JSON, then bump the ``<revision_number>`` within the configs (``env/production/config.json``)
+so that any uploads to S3 does not disrupt the production server.
+
+These updates include changes to:
+
+* any scripts within ``resourceIndexer/*``
+* ``data/manifest_core.json``
+* ``convertManifestJsonToAvailableDatasetList`` in ``src/endpoints/charon/parseManifest.js``
+* ``datasetRedirectPatterns`` in ``src/redirects.js``
+
+If you are ever unsure, it's better to just bump the revision number!
+
+Testing new revisions
+---------------------
+
+The handling of new revision numbers in Heroku review apps is currently still
+handled manually.
+
+Once you've pushed up the changes to the revision number in the config, run
+the `index-resource.yml workflow <https://github.com/nextstrain/nextstrain.org/actions/workflows/index-resources.yml>__`
+using your branch.
+
+After the new index resources JSON has been uploaded to S3, then open the PR for
+your branch and the Heroku review app should use the new revision.
 
 
 Local index generation
@@ -36,7 +67,7 @@ This will create ``./devData/core.manifest.json`` and
 ``./devData/core.inventory.csv.gz`` for the core (nextstrain-data) source and
 ``./devData/staging.manifest.json`` and ``./devData/staging.inventory.csv.gz``
 for the staging source. Alternately you can manually obtain a suitable manifest
-and inventory from ``s3://nextstrain-inventories`` 
+and inventory from ``s3://nextstrain-inventories``
 
 To generate the index using these local files run the indexer with the ``--local`` flag.
 
@@ -115,7 +146,7 @@ certain prefixes in that bucket - for instance ``nextstrain-data/config-v1`` and
 respectively.
 
 To upload the index you will need write access for
-s3://nextstrain-inventories/resources.json.gz. Note that if your aims are
+``s3://nextstrain-inventories/resources/*.json.gz``. Note that if your aims are
 limited to local development purposes this is not necessary (see `Local development`_).
 
 
@@ -123,7 +154,7 @@ Index backups
 -------------
 
 The ``nextstrain-inventories`` bucket is version enabled so past versions of
-``s3://nextstrain-inventories/resources.json.gz`` are available.
+``s3://nextstrain-inventories/resources/*.json.gz`` are available.
 
 A lifecycle rule on the s3://nextstrain-inventories bucket (`console link
 <https://s3.console.aws.amazon.com/s3/management/nextstrain-inventories/lifecycle/view?region=us-east-1&id=delete+old+versions+of+the+index>`__)
@@ -136,4 +167,4 @@ Index access by the server
 
 IAM users ``nextstrain.org`` and ``nextstrain.org-testing``, which are under
 terraform control, have read access to
-s3://nextstrain-inventories/resources.json.gz via their associated policies.
+``s3://nextstrain-inventories/resources/*.json.gz`` via their associated policies.

@@ -95,16 +95,32 @@ jobs:
           name: test-logs
           path: test/server.log
 
-  deploy:
+  index-resources:
     if: |2
          github.repository == 'nextstrain/nextstrain.org'
+      && github.event_name == 'push'
+      && github.ref == 'refs/heads/master'
+    needs: test
+    permissions:
+      id-token: write # needed to interact with GitHub's OIDC Token endpoint
+      contents: read
+    uses: ./.github/workflows/index-resources.yml
+
+  deploy:
+    if: |2
+         !cancelled()
+      && needs.build.result == 'success'
+      && needs.test.result == 'success'
+      && contains(fromJSON('["success", "skipped"]'), needs.index-resources.result)
+      && github.repository == 'nextstrain/nextstrain.org'
       && (   (github.event_name == 'push' && github.ref == 'refs/heads/master')
           || (github.event_name == 'workflow_dispatch' && inputs.heroku-app) )
 
-    # Wait for "build" and "test" jobs above to pass.
+    # Wait for "build", "test", and "index-resources" jobs above to pass.
     needs:
       - build
       - test
+      - index-resources
 
     # Only one "deploy" job per Heroku app at a time.
     concurrency: deploy:${{ inputs.heroku-app || 'nextstrain-canary' }}
