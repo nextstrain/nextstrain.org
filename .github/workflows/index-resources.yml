@@ -43,7 +43,7 @@ jobs:
         name: Create ref matrix
         env:
           HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
-          IS_WORKFLOW_CALL: ${{ inputs.is-workflow-call }}
+          IS_WORKFLOW_CALL: ${{ inputs.is-workflow-call || false }}
         run: |
           echo "ref-matrix=$(./scripts/get-resource-index-ref-matrix)" | tee -a "$GITHUB_OUTPUT"
 
