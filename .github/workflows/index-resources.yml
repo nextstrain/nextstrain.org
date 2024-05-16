@@ -11,7 +11,14 @@ on:
   workflow_dispatch:
 
   workflow_call:
-
+    inputs:
+      is-workflow-call:
+        description: |
+          To distinguish workflow_call from other events.
+          Unable to use `GITHUB_EVENT_NAME` because it points to the caller workflow's github context
+        type: boolean
+        default: true
+        required: false
 
 defaults:
   run:
@@ -36,6 +43,7 @@ jobs:
         name: Create ref matrix
         env:
           HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
+          IS_WORKFLOW_CALL: ${{ inputs.is-workflow-call }}
         run: |
           echo "ref-matrix=$(./scripts/get-resource-index-ref-matrix)" | tee -a "$GITHUB_OUTPUT"
 

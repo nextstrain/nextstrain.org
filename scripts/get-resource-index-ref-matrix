@@ -13,12 +13,13 @@ set -euo pipefail
 : "${GITHUB_EVENT_NAME:?The GITHUB_EVENT_NAME environment variable is required.}"
 : "${GITHUB_REF:?The GITHUB_REF environment variable is required.}"
 : "${GITHUB_SHA:?The GITHUB_SHA environment variable is required.}"
+: "${IS_WORKFLOW_CALL:?The IS_WORKFLOW_CALL environment variable is required.}"
 
 : "${PROD_APP_NAME:=nextstrain-server}"
 : "${CANARY_APP_NAME:=nextstrain-canary}"
 
 main () {
-    if [[ "$GITHUB_EVENT_NAME" == 'workflow_call' || \
+    if [[ "$IS_WORKFLOW_CALL" == true || \
           ("$GITHUB_EVENT_NAME" == 'workflow_dispatch' && "$GITHUB_REF" != 'refs/heads/master') ]]; then
         # This the commit SHA that triggered the workflow.
         # For the workflow_call, this is in the context of the calling workflow.
