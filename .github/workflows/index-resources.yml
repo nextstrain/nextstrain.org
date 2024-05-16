@@ -45,7 +45,9 @@ jobs:
           HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
           IS_WORKFLOW_CALL: ${{ inputs.is-workflow-call || false }}
         run: |
-          echo "ref-matrix=$(./scripts/get-resource-index-ref-matrix)" | tee -a "$GITHUB_OUTPUT"
+          # Assign to variable before output to ensure error exit code propagates to GH Action job
+          ref_matrix=$(./scripts/get-resource-index-ref-matrix)
+          echo "ref_matrix=$ref_matrix" | tee -a "$GITHUB_OUTPUT"
 
   rebuild-index:
     needs: [build-ref-matrix]
