@@ -39,7 +39,7 @@ git ls-files --cached --others --exclude-standard -z \
 echo
 echo "---> Setting buildpack env vars from source"
 export SOURCE_VERSION SOURCE_DESCRIPTION
-echo "     SOURCE_VERSION=${SOURCE_VERSION:=$(git describe --always --dirty)}"
+echo "     SOURCE_VERSION=${SOURCE_VERSION:=$(git describe --always --dirty --abbrev=40)}"
 echo "     SOURCE_DESCRIPTION=${SOURCE_DESCRIPTION:=$(git log -1 --format=%s)}"
 
 if [[ ! -d build/pack ]]; then
