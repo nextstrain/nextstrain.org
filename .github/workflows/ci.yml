@@ -105,6 +105,7 @@ jobs:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint
       contents: read
     uses: ./.github/workflows/index-resources.yml
+    secrets: inherit
 
   deploy:
     if: |2
