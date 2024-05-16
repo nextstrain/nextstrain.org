@@ -47,7 +47,7 @@ jobs:
         run: |
           # Assign to variable before output to ensure error exit code propagates to GH Action job
           ref_matrix=$(./scripts/get-resource-index-ref-matrix)
-          echo "ref_matrix=$ref_matrix" | tee -a "$GITHUB_OUTPUT"
+          echo "ref-matrix=$ref_matrix" | tee -a "$GITHUB_OUTPUT"
 
   rebuild-index:
     needs: [build-ref-matrix]
