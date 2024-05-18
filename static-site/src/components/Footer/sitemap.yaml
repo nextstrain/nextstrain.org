@@ -33,6 +33,8 @@
   entries:
   - name: Team
     href: /team
+  - name: Philosophy
+    href: /philosophy
   - name: Blog
     href: /blog
   - name: Contact
