@@ -148,5 +148,43 @@ export const teamMembers = {
       image: "moira-zuber.jpg",
       blurb: "Moira was key in running the regular SARS-CoV-2 builds during the early-mid pandemic, and implementing key data-cleaning scripts to standardize incoming sequences."
     }
-  ]
+  ],
+  'board': [
+    {
+      name: "Vítor Borges (chair)",
+      image: "vitor-borges.jpg",
+      link: "https://orcid.org/0000-0003-3767-2209",
+      blurb: "Researcher, National Institute of Health Dr Ricardo Jorge, Portugal"
+    },
+    {
+      name: "Sarah Cobey",
+      image: "sarah-cobey.jpg",
+      link: "https://cobeylab.uchicago.edu/",
+      blurb: "Professor, Department of Ecology and Evolution, University of Chicago, USA"
+    },
+    {
+      name: "Peter van Heusden",
+      image: "peter-van-heusden.jpg",
+      link: "https://orcid.org/0000-0001-6553-5274",
+      blurb: "Researcher, South African National Bioinformatics Institute, South Africa"
+    },
+    {
+      name: "Zamin Iqbal",
+      image: "zamin-iqbal.png",
+      link: null,
+      blurb: "Professor, Milner Centre for Evolution, University of Bath, UK"
+    },
+    {
+      name: "Nicola Lewis",
+      image: "nicola-lewis.jpg",
+      link: "https://www.crick.ac.uk/research/find-a-researcher/nicola-lewis",
+      blurb: "Director, Worldwide Influenza Centre, The Francis Crick Institute, UK"
+    },
+    {
+      name: "Nídia Trovão",
+      image: "nidia-trovao.jpg",
+      link: "https://www.fic.nih.gov/About/Staff/epidemiology-population-studies/Pages/Genomic-Epidemiology-and-Evolution-of-Pathogens-.aspx",
+      blurb: "Section Leader, Fogarty International Center, National Institutes of Health, USA"
+    },
+  ],
 };

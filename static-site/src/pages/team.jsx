@@ -51,6 +51,15 @@ const TeamPage = () => {
       <BigSpacer/>
 
       <TeamPageList membersKey="alumni" />
+
+      <H1>Scientific Advisory Board</H1>
+      <FlexCenter>
+        <CenteredFocusParagraph>
+          {`In Oct 2023, a scientific advisory board was founded to provide guidance on future directions for the Nextstrain project.`}
+        </CenteredFocusParagraph>
+      </FlexCenter>
+
+      <TeamPageList membersKey="board" />
     </div>
   );
 };
