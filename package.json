@@ -78,6 +78,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^5.0.1",
     "react-map-gl": "^7.1.7",
+    "react-multi-carousel": "^2.8.5",
     "react-select": "^5.8.0",
     "react-tooltip": "^4.5.1",
     "react-tooltip-v5": "npm:react-tooltip@^5.26.3",
