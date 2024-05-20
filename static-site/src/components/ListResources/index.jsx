@@ -14,6 +14,8 @@ import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalContext} from "./Modal";
 import { Showcase, useShowcaseCards} from "./Showcase";
 
+export const LIST_ANCHOR = "list";
+
 /**
  * A React component to fetch data and display the available resources,
  * including past versions ("snapshots").
@@ -68,7 +70,7 @@ function ListResources({
       <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
 
       <SetModalContext.Provider value={setModal}>
-        <ScrollableAnchor id={"list"}>
+        <ScrollableAnchor id={LIST_ANCHOR}>
           <div>
             {resourceGroups.map((group) => (
               <ResourceGroup key={group.groupName}

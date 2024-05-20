@@ -5,6 +5,7 @@ import {CardInner, CardImg, CardTitle} from "../Cards/styles";
 import { theme } from "../../layouts/theme";
 import { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
 import { createFilterOption } from "./useFilterOptions";
+import { LIST_ANCHOR } from "./index";
 
 const cardWidthHeight = 160; // pixels
 
@@ -34,7 +35,7 @@ const ShowcaseTile = ({data, setSelectedFilterOptions}) => {
   const filter = useCallback(
     () => {
       setSelectedFilterOptions(data.filters.map(createFilterOption));
-      goToAnchor("list");
+      goToAnchor(LIST_ANCHOR);
     },
     [setSelectedFilterOptions, data]
   )
