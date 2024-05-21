@@ -11,7 +11,7 @@ import {Spinner} from '../Spinner/Spinner';
 import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
-import {ResourceModal, SetModalContext} from "./Modal";
+import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { Showcase, useShowcaseCards} from "./Showcase";
 import { Card, FilterOption, Group, GroupDisplayNames, QuickLink, Resource } from './types';
 
@@ -38,16 +38,16 @@ function ListResources({
   groupDisplayNames,
   showcase,
 }: ListResourcesProps) {
-  const [originalData, dataError] = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
-  const showcaseCards = useShowcaseCards(showcase, originalData);
+  const {groups, dataFetchError} = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
+  const showcaseCards = useShowcaseCards(showcase, groups);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
   const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
-  useSortAndFilter(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
+  useSortAndFilter(sortMethod, selectedFilterOptions, groups, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
-  const [modal, setModal ] = useState<Resource>();
+  const [modalResource, setModalResource ] = useState<Resource>();
 
-  if (dataError) {
+  if (dataFetchError) {
     return (
       <ErrorContainer>  
         {"Whoops - listing resources isn't working!"}
@@ -74,12 +74,12 @@ function ListResources({
 
       <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
 
-      <SetModalContext.Provider value={setModal}>
+      <SetModalResourceContext.Provider value={setModalResource}>
         <ScrollableAnchor id={LIST_ANCHOR}>
           <div>
             {resourceGroups.map((group) => (
               <ResourceGroup key={group.groupName}
-                data={group} quickLinks={quickLinks}
+                group={group} quickLinks={quickLinks}
                 elWidth={elWidth}
                 numGroups={resourceGroups.length}
                 sortMethod={sortMethod}
@@ -87,12 +87,12 @@ function ListResources({
             ))}
           </div>
         </ScrollableAnchor>
-      </SetModalContext.Provider>
+      </SetModalResourceContext.Provider>
 
       <Tooltip style={{fontSize: '1.6rem'}} id="listResourcesTooltip"/>
 
       { versioned && (
-        <ResourceModal data={modal} dismissModal={() => setModal(undefined)}/>
+        <ResourceModal resource={modalResource} dismissModal={() => setModalResource(undefined)}/>
       )}
 
     </ListResourcesContainer>

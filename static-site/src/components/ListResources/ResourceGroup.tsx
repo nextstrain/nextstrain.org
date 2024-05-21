@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { MdHistory, MdFormatListBulleted, MdChevronRight } from "react-icons/md";
 import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
   ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource"
-import { SetModalContext } from "./Modal";
+import { SetModalResourceContext } from "./Modal";
 import { Group, QuickLink, Resource } from './types';
 
 interface ResourceGroupHeaderProps {
-  data: Group
+  group: Group
   isMobile: boolean
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
   collapsible: boolean
@@ -17,11 +17,11 @@ interface ResourceGroupHeaderProps {
   quickLinks: QuickLink[]
 }
 
-const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}: ResourceGroupHeaderProps) => {
-  const setModal = useContext(SetModalContext);
+const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}: ResourceGroupHeaderProps) => {
+  const setModalResource = useContext(SetModalResourceContext);
   /* Filter the known quick links to those which appear in resources of this group */
-  const resourcesByName = Object.fromEntries(data.resources.map((r) => [r.name, r]));
-  const quickLinksToDisplay = (quickLinks || []).filter((ql) => !!resourcesByName[ql.name] || ql.groupName===data.groupName)
+  const resourcesByName = Object.fromEntries(group.resources.map((r) => [r.name, r]));
+  const quickLinksToDisplay = (quickLinks || []).filter((ql) => !!resourcesByName[ql.name] || ql.groupName===group.groupName)
 
   return (
     <HeaderContainer>
@@ -31,38 +31,38 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
       <FlexColumnContainer>
         
         <HeaderRow>
-          {data.groupUrl ? (
-            <TooltipWrapper description={`Click to load the default (and most recent) analysis for ${data.groupDisplayName || data.groupName}`}>
-              <GroupLink style={{ fontSize: '2rem', fontWeight: '500'}} href={data.groupUrl} target="_blank" rel="noreferrer">
-                {data.groupDisplayName || data.groupName}
+          {group.groupUrl ? (
+            <TooltipWrapper description={`Click to load the default (and most recent) analysis for ${group.groupDisplayName || group.groupName}`}>
+              <GroupLink style={{ fontSize: '2rem', fontWeight: '500'}} href={group.groupUrl} target="_blank" rel="noreferrer">
+                {group.groupDisplayName || group.groupName}
               </GroupLink>
             </TooltipWrapper>
           ) : (
             <span style={{ fontSize: '2rem', fontWeight: '500'}}>
-              {data.groupDisplayName || data.groupName}
+              {group.groupDisplayName || group.groupName}
             </span>
           )}
           {/* Currently we hide the byline on mobile, but we could render it as a separate row */}
           {!isMobile && (
-            <TooltipWrapper description={`The most recently updated datasets in this group were last updated on ${data.lastUpdated}` +
+            <TooltipWrapper description={`The most recently updated datasets in this group were last updated on ${group.lastUpdated}` +
                 '<br/>(however there may have been a more recent update since we indexed the data)'}>
               <span>
-                {`Most recent snapshot: ${data.lastUpdated}`}
+                {`Most recent snapshot: ${group.lastUpdated}`}
               </span>
             </TooltipWrapper>
           )}
           <span style={{flexGrow: 100}}/>
-          <TooltipWrapper description={`There are ${data.nResources} datasets in this group`}>
+          <TooltipWrapper description={`There are ${group.nResources} datasets in this group`}>
             <IconContainer
               Icon={MdFormatListBulleted} color={"rgb(79, 75, 80)"}
-              text={`${data.nResources}`}
+              text={`${group.nResources}`}
             />
           </TooltipWrapper>
-          {data.nVersions && !isMobile && (
-            <TooltipWrapper description={`${data.nVersions} snapshots exist across the ${data.nResources} datasets in this group`}>
+          {group.nVersions && !isMobile && (
+            <TooltipWrapper description={`${group.nVersions} snapshots exist across the ${group.nResources} datasets in this group`}>
               <IconContainer
                 Icon={MdHistory}  color={"rgb(79, 75, 80)"}
-                text={`${data.nVersions}`}
+                text={`${group.nVersions}`}
               />
             </TooltipWrapper>
           )}
@@ -77,7 +77,7 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
             )}
             {quickLinksToDisplay.map((ql) => (
               <div style={{paddingLeft: '5px'}} key={ql.name}>
-                <ResourceLinkWrapper onShiftClick={() => {setModal(resourcesByName[ql.name])}}>
+                <ResourceLinkWrapper onShiftClick={() => {setModalResource(resourcesByName[ql.name])}}>
                   <ResourceLink href={`/${ql.name}`} target="_blank" rel="noreferrer">
                     {ql.display}
                   </ResourceLink>
@@ -94,8 +94,8 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
                 <MdChevronRight size="30px"/>
               </Rotate>
               {isCollapsed ? (
-                <TooltipWrapper description={`For brevity we're only showing a subset of ${data.groupName} resources - click to show them all`}>
-                  {` show ${data.resources.length - resourcesToShowWhenCollapsed} more datasets`}
+                <TooltipWrapper description={`For brevity we're only showing a subset of ${group.groupName} resources - click to show them all`}>
+                  {` show ${group.resources.length - resourcesToShowWhenCollapsed} more datasets`}
                 </TooltipWrapper>
               ) : (
                 ' collapse datasets'
@@ -111,7 +111,7 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
 }
 
 interface ResourceGroupProps {
-  data: Group
+  group: Group
   elWidth: number
   numGroups: number
   sortMethod: string
@@ -121,11 +121,11 @@ interface ResourceGroupProps {
 /**
  * Displays a single resource group (e.g. a single pathogen)
  */
-export const ResourceGroup = ({data, elWidth, numGroups, sortMethod, quickLinks}: ResourceGroupProps) => {
+export const ResourceGroup = ({group, elWidth, numGroups, sortMethod, quickLinks}: ResourceGroupProps) => {
   const {collapseThreshold, resourcesToShowWhenCollapsed} = collapseThresolds(numGroups);
-  const collapsible = data.resources.length > collapseThreshold;
+  const collapsible = group.resources.length > collapseThreshold;
   const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
-  const displayResources = isCollapsed ? data.resources.slice(0, resourcesToShowWhenCollapsed) : data.resources;
+  const displayResources = isCollapsed ? group.resources.slice(0, resourcesToShowWhenCollapsed) : group.resources;
   _setDisplayName(displayResources)
 
   /* isMobile: boolean determines whether we expose snapshots, as we hide them on small screens */
@@ -135,7 +135,7 @@ export const ResourceGroup = ({data, elWidth, numGroups, sortMethod, quickLinks}
 
   return (
     <ResourceGroupContainer>
-      <ResourceGroupHeader data={data} quickLinks={quickLinks}
+      <ResourceGroupHeader group={group} quickLinks={quickLinks}
         setCollapsed={setCollapsed} collapsible={collapsible}
         isCollapsed={isCollapsed} resourcesToShowWhenCollapsed={resourcesToShowWhenCollapsed}
         isMobile={isMobile}
@@ -145,7 +145,7 @@ export const ResourceGroup = ({data, elWidth, numGroups, sortMethod, quickLinks}
         {/* what to do when there's only one tile in a group? */}
         {displayResources.map((d) => (
           // We use key changes to re-render the component & thus recompute the DOM position
-          <IndividualResource data={d} key={`${d.name}_${isCollapsed}_${elWidth}_${sortMethod}`} isMobile={isMobile}/>
+          <IndividualResource resource={d} key={`${d.name}_${isCollapsed}_${elWidth}_${sortMethod}`} isMobile={isMobile}/>
         ))}
       </IndividualResourceContainer>
     </ResourceGroupContainer>

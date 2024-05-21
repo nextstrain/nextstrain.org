@@ -2,7 +2,7 @@
 import React, {useState, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory } from "react-icons/md";
-import { SetModalContext } from './Modal';
+import { SetModalResourceContext } from './Modal';
 import { ResourceDisplayName, Resource } from './types';
 import { IconType } from 'react-icons';
 
@@ -107,12 +107,12 @@ export function IconContainer({Icon, text, handleClick, color, hoverColor}: Icon
 
 
 interface IndividualResourceProps {
-  data: Resource
+  resource: Resource
   isMobile: boolean
 }
 
-export const IndividualResource = ({data, isMobile}: IndividualResourceProps) => {
-  const setModal = useContext(SetModalContext);
+export const IndividualResource = ({resource, isMobile}: IndividualResourceProps) => {
+  const setModalResource = useContext(SetModalResourceContext);
   const ref = useRef<HTMLDivElement>(null);
   const [topOfColumn, setTopOfColumn] = useState(false);
   useEffect(() => {
@@ -128,20 +128,20 @@ export const IndividualResource = ({data, isMobile}: IndividualResourceProps) =>
 
       <FlexRow>
 
-        <TooltipWrapper description={`Last known update on ${data.lastUpdated}`}>
-          <ResourceLinkWrapper onShiftClick={() => setModal(data)}>
-            <Name displayName={data.displayName} href={data.url} topOfColumn={topOfColumn}/>
+        <TooltipWrapper description={`Last known update on ${resource.lastUpdated}`}>
+          <ResourceLinkWrapper onShiftClick={() => setModalResource(resource)}>
+            <Name displayName={resource.displayName} href={resource.url} topOfColumn={topOfColumn}/>
           </ResourceLinkWrapper>
         </TooltipWrapper>
 
-        {data.versioned && !isMobile && (
-          <TooltipWrapper description={data.updateCadence.description +
-            `<br/>Last known update on ${data.lastUpdated}` +
-            `<br/>${data.nVersions} snapshots of this dataset available (click to see them)`}>
+        {resource.versioned && !isMobile && (
+          <TooltipWrapper description={resource.updateCadence.description +
+            `<br/>Last known update on ${resource.lastUpdated}` +
+            `<br/>${resource.nVersions} snapshots of this dataset available (click to see them)`}>
             <IconContainer
               Icon={MdHistory}
-              text={`${data.updateCadence.summary} (n=${data.nVersions})`}
-              handleClick={() => setModal(data)}
+              text={`${resource.updateCadence.summary} (n=${resource.nVersions})`}
+              handleClick={() => setModalResource(resource)}
             />
           </TooltipWrapper>
         )}

@@ -6,18 +6,18 @@ import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
 import { Resource } from './types';
 
-export const SetModalContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
+export const SetModalResourceContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
 export const RAINBOW20 =   ["#511EA8", "#4432BD", "#3F4BCA", "#4065CF", "#447ECC", "#4C91BF", "#56A0AE", "#63AC9A", "#71B486", "#81BA72", "#94BD62", "#A7BE54", "#BABC4A", "#CBB742", "#D9AE3E", "#E29E39", "#E68935", "#E56E30", "#E14F2A", "#DC2F24"];
 const lightGrey = 'rgba(0,0,0,0.1)';
 
 
 interface ResourceModalProps {
-  data?: Resource
+  resource?: Resource
   dismissModal: () => void
 }
 
-export const ResourceModal = ({data, dismissModal}: ResourceModalProps) => {  
+export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {  
   const [ref, setRef] = useState(null); 
   const handleRef = useCallback((node) => {setRef(node)}, [])
 
@@ -37,32 +37,32 @@ export const ResourceModal = ({data, dismissModal}: ResourceModalProps) => {
   }, []);
 
   useEffect(() => {
-    if (!ref || !data) return;
-    _draw(ref, data)
-  }, [ref, data])
+    if (!ref || !resource) return;
+    _draw(ref, resource)
+  }, [ref, resource])
 
-  if (!data) return null;
+  if (!resource) return null;
 
-  const summary = _snapshotSummary(data.dates);
+  const summary = _snapshotSummary(resource.dates);
   return (
     <div ref={scrollRef}>
     
       <Background onClick={dismissModal}/>
       <ModalContainer onClick={(e) => {e.stopPropagation()}}>
         <CloseIcon onClick={dismissModal}/>
-        <Title>{data.name.replace(/\//g, "│")}</Title>
+        <Title>{resource.name.replace(/\//g, "│")}</Title>
 
         <div style={{paddingBottom: '5px'}}>
           <Bold>
-            {`${data.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
+            {`${resource.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
           </Bold>
           <a style={{fontSize: '1.8rem', paddingLeft: '10px'}}
-            href={`/${data.name}`}  target="_blank" rel="noreferrer noopener">
+            href={`/${resource.name}`}  target="_blank" rel="noreferrer noopener">
             (click to view the latest available snapshot)
           </a>
         </div>
         <div>
-          {data.updateCadence.description}
+          {resource.updateCadence.description}
         </div>
 
         <div ref={handleRef} /> {/* d3 controlled div */}
@@ -142,11 +142,11 @@ function _snapshotSummary(dates: string[]) {
   return {duration, first: d[0], last:d.at(-1)};
 }
 
-function _draw(ref, data: Resource) {
+function _draw(ref, resource: Resource) {
   /* Note that _page_ resizes by themselves will not result in this function
   rerunning, which isn't great, but for a modal I think it's perfectly
   acceptable */  
-  const sortedDateStrings = [...data.dates].sort();
+  const sortedDateStrings = [...resource.dates].sort();
   const flatData = sortedDateStrings.map((version) => ({version, 'date': new Date(version)}));
 
   const width = ref.clientWidth;
@@ -270,7 +270,7 @@ function _draw(ref, data: Resource) {
           .style("opacity", 0)
       })
       .on("click", function(e, d) {
-        window.open(`/${data.name}@${d.data.version}`,'_blank'); // TEST!
+        window.open(`/${resource.name}@${d.data.version}`,'_blank'); // TEST!
       })
 
   /**
@@ -317,7 +317,7 @@ function _draw(ref, data: Resource) {
       })
       .on("click", function(e) {
         const { datum } = getVersion(e);
-        window.open(`/${data.name}@${datum.data.version}`,'_blank');
+        window.open(`/${resource.name}@${datum.data.version}`,'_blank');
       })
 
   function selectSnapshot(selection, selectedDatum) {
