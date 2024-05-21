@@ -38,16 +38,16 @@ function ListResources({
   groupDisplayNames,
   showcase,
 }: ListResourcesProps) {
-  const [originalData, dataError] = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
-  const showcaseCards = useShowcaseCards(showcase, originalData);
+  const {groups, dataFetchError} = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
+  const showcaseCards = useShowcaseCards(showcase, groups);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
   const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
-  useSortAndFilter(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
+  useSortAndFilter(sortMethod, selectedFilterOptions, groups, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
   const [modal, setModal ] = useState<Resource>();
 
-  if (dataError) {
+  if (dataFetchError) {
     return (
       <ErrorContainer>  
         {"Whoops - listing resources isn't working!"}

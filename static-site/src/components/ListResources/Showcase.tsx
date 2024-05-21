@@ -25,7 +25,7 @@ export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
       <SingleRow>
         <ShowcaseContainer>
           {cards.map((el) => (
-            <ShowcaseTile data={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
+            <ShowcaseTile card={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
             ))}
         </ShowcaseContainer>
       </SingleRow>
@@ -35,20 +35,20 @@ export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
 }
 
 type ShowcaseTileProps = {
-    data: Card
+    card: Card
     setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
 }
 
 /**
  * NOTE: Many of the React components here are taken from the existing Cards UI
  */
-const ShowcaseTile = ({data, setSelectedFilterOptions}: ShowcaseTileProps) => {
+const ShowcaseTile = ({card, setSelectedFilterOptions}: ShowcaseTileProps) => {
   const filter = useCallback(
     () => {
-      setSelectedFilterOptions(data.filters.map(createFilterOption));
+      setSelectedFilterOptions(card.filters.map(createFilterOption));
       goToAnchor(LIST_ANCHOR);
     },
-    [setSelectedFilterOptions, data]
+    [setSelectedFilterOptions, card]
   )
 
   return (
@@ -56,9 +56,9 @@ const ShowcaseTile = ({data, setSelectedFilterOptions}: ShowcaseTileProps) => {
       <CardInner>
         <div onClick={filter}>
           <CardTitle $squashed>
-            {data.name}
+            {card.name}
           </CardTitle>
-          <CardImgWrapper filename={data.img}/>
+          <CardImgWrapper filename={card.img}/>
         </div>
       </CardInner>
     </CardOuter>
@@ -126,11 +126,11 @@ const Byline = styled.div`
  * which the filters are valid given the resources known to the resource listing
  * UI
  */
-export const useShowcaseCards = (cards?: Card[], resources?: Group[]) => {
+export const useShowcaseCards = (cards?: Card[], groups?: Group[]) => {
   const [restrictedCards, setRestrictedCards] = useState<Card[]>([]);
   useEffect(() => {
-    if (!cards || !resources) return;
-    const words = resources.reduce((words, group) => {
+    if (!cards || !groups) return;
+    const words = groups.reduce((words, group) => {
       for (const resource of group.resources) {
         for (const word of resource.nameParts) {
           words.add(word);
@@ -139,6 +139,6 @@ export const useShowcaseCards = (cards?: Card[], resources?: Group[]) => {
       return words;
     }, new Set<string>());
     setRestrictedCards(cards.filter((card) => card.filters.every((word) => words.has(word))));
-  }, [cards, resources]);
+  }, [cards, groups]);
   return restrictedCards;
 }

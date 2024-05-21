@@ -13,8 +13,8 @@ import { Group, GroupDisplayNames, Resource } from './types';
  * may vary across the resources returned.
  */
 export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupLinks: any, groupDisplayNames: GroupDisplayNames) {
-  const [state, setState] = useState<Group[]>();
-  const [error, setError] = useState<boolean>();
+  const [groups, setGroups] = useState<Group[]>();
+  const [dataFetchError, setDataFetchError] = useState<boolean>();
   useEffect(() => {
     const url = `/list-resources/${sourceId}`;
 
@@ -24,13 +24,13 @@ export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupL
         const response = await fetch(url, {headers: {accept: "application/json"}});
         if (response.status !== 200) {
           console.error(`ERROR: fetching data from "${url}" returned status code ${response.status}`);
-          return setError(true);
+          return setDataFetchError(true);
         }
         ({ pathVersions, pathPrefix } = (await response.json()).dataset[sourceId]);
       } catch (err) {
         console.error(`Error while fetching data from "${url}"`);
         console.error(err);
-        return setError(true);
+        return setDataFetchError(true);
       }
 
       /* group/partition the resources by pathogen (the first word of the
@@ -38,17 +38,17 @@ export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupL
       single time following the data fetch */
       try {
         const partitions = partitionByPathogen(pathVersions, pathPrefix, versioned);
-        setState(groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames));
+        setGroups(groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames));
       } catch (err) {
         console.error(`Error while parsing fetched data`);
         console.error(err);
-        return setError(true);
+        return setDataFetchError(true);
       }
     }
 
     fetchAndParse();
   }, [sourceId, versioned, defaultGroupLinks, groupDisplayNames]);
-  return [state, error]
+  return {groups, dataFetchError}
 }
 
 
