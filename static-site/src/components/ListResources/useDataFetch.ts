@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Group, GroupDisplayNames, Resource } from './types';
 
 
 /**
@@ -11,9 +12,9 @@ import { useState, useEffect } from 'react';
  * response, however in the future we may shift this to the API response and it
  * may vary across the resources returned.
  */
-export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames) {
-  const [state, setState] = useState(undefined);
-  const [error, setError] = useState(undefined);
+export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupLinks: any, groupDisplayNames: GroupDisplayNames) {
+  const [state, setState] = useState<Group[]>();
+  const [error, setError] = useState<boolean>();
   useEffect(() => {
     const url = `/list-resources/${sourceId}`;
 
@@ -68,7 +69,7 @@ function partitionByPathogen(pathVersions, pathPrefix, versioned) {
     let groupName = nameParts[0];
 
     if (!store[groupName]) store[groupName] = []
-    const resourceDetails = {
+    const resourceDetails: Resource = {
       name,
       groupName, /* decoupled from nameParts */
       nameParts,
@@ -96,11 +97,11 @@ function partitionByPathogen(pathVersions, pathPrefix, versioned) {
  * Turn the provided partitions (an object mapping groupName to an array of resources)
  * into an array of groups.
  */
-function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames) {
+function groupsFrom(partitions: any, pathPrefix: string, defaultGroupLinks: any, groupDisplayNames: GroupDisplayNames) {
   return Object.entries(partitions).map(makeGroup)
 
   function makeGroup([groupName, resources]) {
-    const groupInfo = {
+    const groupInfo: Group = {
       groupName: groupName,
       nResources: resources.length,
       nVersions: resources.reduce((total, r) => r.nVersions ? total+r.nVersions : total, 0) || undefined,
@@ -166,7 +167,7 @@ function updateCadence(dateObjects) {
   const median = intervals[Math.floor(intervals.length/2)];
   const mad = intervals.map((x) => Math.abs(x-median)).sort((a, b) => a-b)[Math.floor(intervals.length/2)]
 
-  let description;
+  let description: string;
   description = `Over the past two years this dataset's been updated ${mad*2 > median ? 'irregularly' : 'consistently'} every `;
   description += median===1 ? '~day' : `~${median} days`;
   if (lastUpdateDaysAgo > median*3) description+=", however it hasn't been updated for a while";

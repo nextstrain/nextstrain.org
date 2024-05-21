@@ -4,13 +4,20 @@ import styled from 'styled-components';
 import * as d3 from "d3";
 import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
+import { Resource } from './types';
 
-export const SetModalContext = createContext(null);
+export const SetModalContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
 export const RAINBOW20 =   ["#511EA8", "#4432BD", "#3F4BCA", "#4065CF", "#447ECC", "#4C91BF", "#56A0AE", "#63AC9A", "#71B486", "#81BA72", "#94BD62", "#A7BE54", "#BABC4A", "#CBB742", "#D9AE3E", "#E29E39", "#E68935", "#E56E30", "#E14F2A", "#DC2F24"];
 const lightGrey = 'rgba(0,0,0,0.1)';
 
-export const ResourceModal = ({data, dismissModal}) => {  
+
+type ResourceModalProps = {
+  data?: Resource
+  dismissModal: () => void
+}
+
+export const ResourceModal = ({data, dismissModal}: ResourceModalProps) => {  
   const [ref, setRef] = useState(null); 
   const handleRef = useCallback((node) => {setRef(node)}, [])
 
@@ -345,7 +352,7 @@ function _draw(ref, data) {
 
   const dateWithYear = d3.utcFormat("%B %d, %Y");
   const dateSameYear = d3.utcFormat("%B %d");
-  function prettyDate(mainDate, secondDate) {
+  function prettyDate(mainDate: string, secondDate?: string) {
     const d1 = dateWithYear(new Date(mainDate));
     if (!secondDate) return d1;
     const d2 = (mainDate.slice(0,4)===secondDate.slice(0,4) ? dateSameYear : dateWithYear)(new Date(secondDate));

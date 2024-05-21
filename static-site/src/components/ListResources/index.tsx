@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link'
 import styled from 'styled-components';
-import Select from 'react-select';
+import Select, { MultiValue } from 'react-select';
 import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
 import {Tooltip} from 'react-tooltip-v5';
 import { useFilterOptions } from './useFilterOptions';
@@ -13,6 +13,11 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalContext} from "./Modal";
 import { Showcase, useShowcaseCards} from "./Showcase";
+import { Card, FilterOption, Group, GroupDisplayNames, QuickLink, Resource } from './types';
+
+type ListResourcesProps = ListResourcesResponsiveProps & {
+  elWidth: number
+}
 
 export const LIST_ANCHOR = "list";
 
@@ -29,18 +34,18 @@ function ListResources({
   versioned=true,
   elWidth,
   quickLinks,
-  defaultGroupLinks=false, /* should the group name itself be a url? (which we let the server redirect) */
-  groupDisplayNames, /* mapping from group name -> display name */
-  showcase, /* showcase cards */
-}) {
+  defaultGroupLinks=false,
+  groupDisplayNames,
+  showcase,
+}: ListResourcesProps) {
   const [originalData, dataError] = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
   const showcaseCards = useShowcaseCards(showcase, originalData);
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState([]);
+  const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
-  const [resourceGroups, setResourceGroups] = useState([]);
+  const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
   useSortAndFilter(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
-  const [modal, setModal ] = useState(null);
+  const [modal, setModal ] = useState<Resource>();
 
   if (dataError) {
     return (
@@ -87,13 +92,22 @@ function ListResources({
       <Tooltip style={{fontSize: '1.6rem'}} id="listResourcesTooltip"/>
 
       { versioned && (
-        <ResourceModal data={modal} dismissModal={() => setModal(null)}/>
+        <ResourceModal data={modal} dismissModal={() => setModal(undefined)}/>
       )}
 
     </ListResourcesContainer>
   )
 }
 
+
+type ListResourcesResponsiveProps = {
+  sourceId: string
+  versioned: boolean
+  quickLinks: QuickLink[]
+  defaultGroupLinks: boolean /* should the group name itself be a url? (which we let the server redirect) */
+  groupDisplayNames: GroupDisplayNames
+  showcase: Card[]
+}
 
 /**
  * A wrapper element which monitors for resize events affecting the dom element.
@@ -103,9 +117,9 @@ function ListResources({
  * the resizes happen frequently and debouncing would be better. From limited
  * testing it's not too slow and these resizes should be infrequent.
  */
-function ListResourcesResponsive(props) {
+function ListResourcesResponsive(props: ListResourcesResponsiveProps) {
   const ref = useRef(null);
-  const [elWidth, setElWidth] = useState(0);
+  const [elWidth, setElWidth] = useState<number>(0);
   useEffect(() => {
     const observer = new ResizeObserver(([entry]) => {
       setElWidth(entry.contentRect.width);
@@ -154,14 +168,27 @@ function SortOptions({sortMethod, changeSortMethod}) {
   )
 }
 
-function Filter({options, selectedFilterOptions, setSelectedFilterOptions}) {
+type FilterProps = {
+  options: FilterOption[]
+  selectedFilterOptions: readonly FilterOption[]
+  setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
+}
+
+function Filter({options, selectedFilterOptions, setSelectedFilterOptions}: FilterProps) {
+
+  const onChange = (options: MultiValue<FilterOption>) => {
+    if (options) {
+      setSelectedFilterOptions(options)
+    }
+  };
+
   return (
     <div className="filter">
       <Select
         placeholder={"Filter by keywords in dataset names"}
         isMulti options={options}
         value={selectedFilterOptions}
-        onChange={setSelectedFilterOptions}
+        onChange={onChange}
         styles={{
           // https://react-select.com/styles#inner-components
           placeholder: (baseStyles) => ({...baseStyles, fontSize: "1.6rem"}),
