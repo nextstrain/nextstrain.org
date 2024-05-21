@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useCallback, useEffect, useState } from 'react';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import styled from 'styled-components';
 import {CardInner, CardImg, CardTitle} from "../Cards/styles";
 import { theme } from "../../layouts/theme";
@@ -10,18 +12,35 @@ const cardWidthHeight = 160; // pixels
 
 export const Showcase = ({cards, setSelectedFilterOptions}) => {
   if (!cards.length) return null;
+
+  // Generate options for carousel
+  let responsiveOptions = {};
+
+  for (let i = 0; i < cards.length; i++) {
+    const breakpointMin = i * cardWidthHeight;
+    let breakpointMax = (i + 1) * cardWidthHeight;
+
+    // Don't limit max otherwise carousel won't render at all on larger screens
+    if (i == cards.length - 1) {
+      breakpointMax = 999999
+    }
+
+    responsiveOptions[i] = {
+      breakpoint: { max: breakpointMax, min: breakpointMin },
+      items: i
+    };
+  }
+
   return (
     <div>
       <Byline>
         Showcase resources: click to filter the resources to a pathogen
       </Byline>
-      <SingleRow>
-        <ShowcaseContainer>
-          {cards.map((el) => (
-            <ShowcaseTile data={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
-            ))}
-        </ShowcaseContainer>
-      </SingleRow>
+      <Carousel responsive={responsiveOptions} renderButtonGroupOutside={true}>
+        {cards.map((el) => (
+          <ShowcaseTile data={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
+          ))}
+      </Carousel>
       <Spacer/>
     </div>
   )
@@ -52,26 +71,6 @@ const ShowcaseTile = ({data, setSelectedFilterOptions}) => {
     </CardOuter>
   )
 }
-
-
-/* SingleRow only shows a single row of tiles. By using this to wrap a flexbox
-element we can leverage the intelligent wrapping of the flexbox to decide how
-many tiles to show in a single row. The downside is that showcase tiles are
-still in the DOM, and the images are still fetched etc */
-const SingleRow = styled.div`
-  max-height: ${cardWidthHeight}px;
-  overflow-y: clip;
-`
-
-const ShowcaseContainer = styled.div`
-  /* background-color: #ffeab0; */
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  overflow: hidden;
-  overflow: hidden;
-  justify-content: space-between;
-`;
 
 const Spacer = styled.div`
   min-height: 25px;
