@@ -54,7 +54,7 @@ export const ResourceModal = ({data, dismissModal}: ResourceModalProps) => {
 
         <div style={{paddingBottom: '5px'}}>
           <Bold>
-            {`${data.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
+            {`${data.dates?.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
           </Bold>
           <a style={{fontSize: '1.8rem', paddingLeft: '10px'}}
             href={`/${data.name}`}  target="_blank" rel="noreferrer noopener">
@@ -62,7 +62,7 @@ export const ResourceModal = ({data, dismissModal}: ResourceModalProps) => {
           </a>
         </div>
         <div>
-          {data.updateCadence.description}
+          {data.updateCadence?.description}
         </div>
 
         <div ref={handleRef} /> {/* d3 controlled div */}
@@ -132,8 +132,8 @@ const Title = styled.div`
 
 function _snapshotSummary(dates) {
   const d = [...dates].sort()
-  const [d1, d2] = [d[0], d.at(-1)].map((di) => new Date(di));
-  const days = (d2-d1)/1000/60/60/24;
+  const [d1, d2] = [d[0], d.at(-1)].map((di) => new Date(di).getTime());
+  const days = ((d2 as number) - (d1 as number))/1000/60/60/24;
   let duration = '';
   if (days < 100) duration=`${days} days`;
   else if (days < 365*2) duration=`${Math.round(days/(365/12))} months`;
@@ -171,7 +171,7 @@ function _draw(ref, data) {
 
   /* Create the x-scale and draw the x-axis */
   const x = d3.scaleTime()
-    .domain([flatData[0].date, new Date()]) // the domain extends to the present day
+    .domain([flatData[0]?.date, new Date()]) // the domain extends to the present day
     .range([graphIndent, width-graphIndent])
   svg.append('g')
     .attr("transform", `translate(0, ${heights.height - heights.marginBelowAxis})`)

@@ -102,7 +102,7 @@ const CardOuter = styled.div`
 
 const themeColors = [...theme.titleColors];
 const getColor = () => {
-  themeColors.push(themeColors.shift());
+  themeColors.push(themeColors.shift() as string); // this will always be string; type assertion is necessary to appease tsc
   return themeColors.at(-1);
 }
 

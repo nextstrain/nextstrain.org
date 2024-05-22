@@ -163,7 +163,7 @@ function updateCadence(dateObjects) {
     return {summary: "rarely", description: `This dataset has been updated ${intervals.length+1} times in the past 2 years.`};
   }
 
-  const lastUpdateDaysAgo = Math.round(((new Date()) - dateObjects.at(-1))/msInADay);
+  const lastUpdateDaysAgo = Math.round(((new Date()).getTime() - dateObjects.at(-1))/msInADay);
   const median = intervals[Math.floor(intervals.length/2)];
   const mad = intervals.map((x) => Math.abs(x-median)).sort((a, b) => a-b)[Math.floor(intervals.length/2)]
 
