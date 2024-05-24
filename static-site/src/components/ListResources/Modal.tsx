@@ -247,9 +247,11 @@ function _draw(ref, resource: Resource) {
       .attr("cy", (d) => heights.height - heights.marginBelowAxis - heights.marginAboveAxis - radius - padding - d.y)
       .attr("r", radius)
       .attr('fill', color)
+      // @ts-expect-error
       .on("mouseover", function(e, d) {
         /* lower opacity of non-hovered, increase radius of hovered circle */
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => selectSnapshot(update, d)
         )
@@ -269,6 +271,7 @@ function _draw(ref, resource: Resource) {
       })
       .on("mouseleave", function() {
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => resetBeeswarm(update)
         )
@@ -276,6 +279,7 @@ function _draw(ref, resource: Resource) {
         selectedVersionGroup.selectAll("*")
           .style("opacity", 0)
       })
+      // @ts-expect-error
       .on("click", function(e, d) {
         window.open(`/${resource.name}@${d.data.version}`,'_blank'); // TEST!
       })
@@ -296,6 +300,7 @@ function _draw(ref, resource: Resource) {
       .on("mousemove", function(e) {
         const { datum, hoveredDateStr } = getVersion(e);
         beeswarm.join(
+            // @ts-expect-error
             (enter) => {}, /* eslint-disable-line */
             (update) => selectSnapshot(update, datum)
         )
@@ -316,6 +321,7 @@ function _draw(ref, resource: Resource) {
       })
       .on("mouseleave", function() {
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => resetBeeswarm(update)
         )
