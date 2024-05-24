@@ -4,19 +4,22 @@ export type FilterOption = {
     label: string
 }
 
+type GroupName = string
+type GroupDisplayName = string
+
 export type Group = {
-    groupName: string
+    groupName: GroupName
     nResources: number
     nVersions?: number
     lastUpdated: any
     resources: Resource[]
     groupUrl?: string
-    groupDisplayName?: string
+    groupDisplayName?: GroupDisplayName
 }
 
 export type Resource = {
     name: string
-    groupName: string
+    groupName: GroupName
     nameParts: string[]
     sortingName: string
     url: string
@@ -31,7 +34,7 @@ export type Resource = {
 }
 
 export type GroupDisplayNames = {
-    [name: string] : string /* group name -> display name */
+    [groupName: GroupName] : GroupDisplayName
   }
 
 export type UpdateCadence = {
@@ -50,5 +53,5 @@ export type Card = {
 export type QuickLink = {
     name: string
     display: string
-    groupName?: string
+    groupName?: GroupName
 }
