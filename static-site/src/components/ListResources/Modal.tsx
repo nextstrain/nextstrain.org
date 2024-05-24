@@ -239,9 +239,11 @@ function _draw(ref, data) {
       .attr("cy", (d) => heights.height - heights.marginBelowAxis - heights.marginAboveAxis - radius - padding - d.y)
       .attr("r", radius)
       .attr('fill', color)
+      // @ts-expect-error
       .on("mouseover", function(e, d) {
         /* lower opacity of non-hovered, increase radius of hovered circle */
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => selectSnapshot(update, d)
         )
@@ -261,6 +263,7 @@ function _draw(ref, data) {
       })
       .on("mouseleave", function() {
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => resetBeeswarm(update)
         )
@@ -268,6 +271,7 @@ function _draw(ref, data) {
         selectedVersionGroup.selectAll("*")
           .style("opacity", 0)
       })
+      // @ts-expect-error
       .on("click", function(e, d) {
         window.open(`/${data.name}@${d.data.version}`,'_blank'); // TEST!
       })
@@ -288,7 +292,8 @@ function _draw(ref, data) {
       .on("mousemove", function(e) {
         const { datum, hoveredDateStr } = getVersion(e);
         beeswarm.join(
-            (enter) => {}, /* eslint-disable-line */
+            // @ts-expect-error
+            (enter) => {}, /* eslint-disable-line */ 
             (update) => selectSnapshot(update, datum)
         )
         /* update the vertical line + text which appears on hover */
@@ -308,6 +313,7 @@ function _draw(ref, data) {
       })
       .on("mouseleave", function() {
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => resetBeeswarm(update)
         )
