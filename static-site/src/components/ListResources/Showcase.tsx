@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useCallback, useEffect, useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import styled from 'styled-components';
 import {CardInner, CardImg, CardTitle} from "../Cards/styles";
 import { theme } from "../../layouts/theme";
@@ -9,6 +10,7 @@ import { LIST_ANCHOR } from "./index";
 import { Card, FilterOption, Group } from './types';
 
 const cardWidthHeight = 160; // pixels
+const expandPreviewHeight = 50 //pixels
 
 type ShowcaseProps = {
     cards: Card[]
@@ -16,19 +18,58 @@ type ShowcaseProps = {
 }
 
 export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
-  if (!cards.length) return null;
+
+  const [numRows, setNumRows] = useState<number>(0);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  /**
+   * Function that runs on changes to the container.
+   * Used to compute the number of rows of cards upon resize.
+   */
+  function cardsContainerRef(cardsContainer: HTMLDivElement) {
+    if (!cardsContainer) return;
+
+    const cards = cardsContainer.children;
+
+    if (cards && cards.length > 0) {
+      const leftBorder = (cards[0] as HTMLElement).offsetLeft;
+
+      let newNumRows = 0;
+      for (let i = 0; i < cards.length; i++) {
+        if ((cards[i] as HTMLElement).offsetLeft == leftBorder) {
+          newNumRows++;
+        }
+      }
+      if (numRows != newNumRows) {
+        setNumRows(newNumRows);
+      }
+    }
+  }
+
+  const isExpandable = numRows > 1;
+
   return (
     <div>
       <Byline>
         Showcase resources: click to filter the resources to a pathogen
       </Byline>
-      <SingleRow>
-        <ShowcaseContainer>
+      <ShowcaseContainer $isExpanded={isExpanded} $isExpandable={isExpandable}>
+        <CardsContainer ref={cardsContainerRef}>
           {cards.map((el) => (
             <ShowcaseTile card={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
             ))}
-        </ShowcaseContainer>
-      </SingleRow>
+        </CardsContainer>
+        {isExpandable && !isExpanded && <PreviewOverlay onClick={toggleExpand} />}
+      </ShowcaseContainer>
+      {isExpandable && <>
+        <ArrowButton onClick={toggleExpand}>
+          {isExpanded ? <FaChevronUp/> : <FaChevronDown/>}
+        </ArrowButton>
+      </>}
       <Spacer/>
     </div>
   )
@@ -66,16 +107,40 @@ const ShowcaseTile = ({card, setSelectedFilterOptions}: ShowcaseTileProps) => {
 }
 
 
-/* SingleRow only shows a single row of tiles. By using this to wrap a flexbox
-element we can leverage the intelligent wrapping of the flexbox to decide how
-many tiles to show in a single row. The downside is that showcase tiles are
-still in the DOM, and the images are still fetched etc */
-const SingleRow = styled.div`
-  max-height: ${cardWidthHeight}px;
-  overflow-y: clip;
+const ShowcaseContainer = styled.div<{$isExpanded: boolean, $isExpandable: boolean}>`
+  position: relative;
+  height: ${(props) =>
+    props.$isExpandable ? 
+      props.$isExpanded ?
+        "" : `${cardWidthHeight + expandPreviewHeight}px`
+      : `${cardWidthHeight}px`
+
+  };
+  overflow-y: hidden;
 `
 
-const ShowcaseContainer = styled.div`
+const ArrowButton = styled.div`
+  text-align: center;
+  width: 100%;
+  height: 1em;
+  cursor: pointer;
+`
+
+const PreviewOverlay = styled.div`
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) -100%,
+    rgba(255, 255, 255, 1) 100%);
+  width: 100%;
+  height: ${expandPreviewHeight}px;
+  cursor: pointer;
+`;
+
+const CardsContainer = styled.div`
   /* background-color: #ffeab0; */
   display: flex;
   flex-direction: row;
