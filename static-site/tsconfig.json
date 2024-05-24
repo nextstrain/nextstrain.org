@@ -1,18 +1,16 @@
 /*
-Much of Auspice was written in JavaScript. There is an effort to convert
-existing JavaScript files to TypeScript in an iterative, file-by-file approach.
+This TSConfig file aims to keep as much as possible in sync with the same file
+in Auspice¹.
 
-TypeScript is used in this project for type-checking only, not for its compiled
-output files - Babel is used for that. Config options should reflect this usage
-pattern.
+It can't be 100% the same because Next.js requires some configuration options to
+be set and will rewrite this file if they aren't set.²
 
-Visit https://aka.ms/tsconfig.json for a detailed list of options.
+¹ <https://github.com/nextstrain/auspice/blob/-/tsconfig.json>
+² https://github.com/vercel/next.js/discussions/39942
 */
 
 {
   "compilerOptions": {
-    /* Language and Environment */
-    "jsx": "react",                                      /* Specify what JSX code is generated. */
 
     /* Modules */
     "moduleResolution": "node",                          /* Specify how TypeScript looks up a file from a given module specifier. */
@@ -44,6 +42,18 @@ Visit https://aka.ms/tsconfig.json for a detailed list of options.
     /* Completeness */
     "skipDefaultLibCheck": true,                         /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */
+ 
+    /* Other options required by Next.js */
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
   },
   "include": [
     "next-env.d.ts",
