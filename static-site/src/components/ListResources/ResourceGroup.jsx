@@ -3,8 +3,8 @@ import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory, MdFormatListBulleted, MdChevronRight } from "react-icons/md";
 import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
-  ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource.jsx"
-import { SetModalContext } from "./Modal.jsx";
+  ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource"
+import { SetModalContext } from "./Modal";
 
 const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}) => {
   const setModal = useContext(SetModalContext);
