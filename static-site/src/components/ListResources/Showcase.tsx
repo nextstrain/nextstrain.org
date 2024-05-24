@@ -11,6 +11,8 @@ import { Card, FilterOption, Group } from './types';
 
 const cardWidthHeight = 160; // pixels
 const expandPreviewHeight = 50 //pixels
+const transitionDuration = "0.3s"
+const transitionTimingFunction = "ease"
 
 type ShowcaseProps = {
     cards: Card[]
@@ -20,6 +22,7 @@ type ShowcaseProps = {
 export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
 
   const [numRows, setNumRows] = useState<number>(0);
+  const [expandedHeight, setExpandedHeight] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => {
@@ -32,6 +35,10 @@ export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
    */
   function cardsContainerRef(cardsContainer: HTMLDivElement) {
     if (!cardsContainer) return;
+
+    if(expandedHeight != cardsContainer.clientHeight) {
+      setExpandedHeight(cardsContainer.clientHeight)
+    }
 
     const cards = cardsContainer.children;
 
@@ -57,13 +64,13 @@ export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
       <Byline>
         Showcase resources: click to filter the resources to a pathogen
       </Byline>
-      <ShowcaseContainer $isExpanded={isExpanded} $isExpandable={isExpandable}>
+      <ShowcaseContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $expandedHeight={expandedHeight}>
         <CardsContainer ref={cardsContainerRef}>
           {cards.map((el) => (
             <ShowcaseTile card={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
             ))}
         </CardsContainer>
-        {isExpandable && !isExpanded && <PreviewOverlay onClick={toggleExpand} />}
+        <PreviewOverlay onClick={toggleExpand} className={!isExpandable || isExpanded ? "hidden" : "visible"} />
       </ShowcaseContainer>
       {isExpandable && <>
         <ArrowButton onClick={toggleExpand}>
@@ -107,16 +114,19 @@ const ShowcaseTile = ({card, setSelectedFilterOptions}: ShowcaseTileProps) => {
 }
 
 
-const ShowcaseContainer = styled.div<{$isExpanded: boolean, $isExpandable: boolean}>`
+const ShowcaseContainer = styled.div<{$expandedHeight: number}>`
   position: relative;
-  height: ${(props) =>
-    props.$isExpandable ? 
-      props.$isExpanded ?
-        "" : `${cardWidthHeight + expandPreviewHeight}px`
-      : `${cardWidthHeight}px`
-
-  };
   overflow-y: hidden;
+
+  &.collapsed {
+    max-height: ${cardWidthHeight + expandPreviewHeight}px;
+  }
+
+  &.expanded {
+    max-height: ${(props) => `${props.$expandedHeight}px`};
+  }
+
+  transition: max-height ${transitionDuration} ${transitionTimingFunction};
 `
 
 const ArrowButton = styled.div`
@@ -138,6 +148,16 @@ const PreviewOverlay = styled.div`
   width: 100%;
   height: ${expandPreviewHeight}px;
   cursor: pointer;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  &.hidden {
+    opacity: 0;
+  }
+
+  transition: opacity ${transitionDuration} ${transitionTimingFunction};
 `;
 
 const CardsContainer = styled.div`
