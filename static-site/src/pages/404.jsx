@@ -11,6 +11,7 @@ import MainLayout from "../components/layout";
 
 const FourOhFour = () => {
   return (
+      // FIXME: use GenericPage here
       <MainLayout>
         <div className="index-container">
           <Helmet title={siteTitle} />
