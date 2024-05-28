@@ -21,8 +21,7 @@ type ShowcaseProps = {
 
 export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
 
-  const [numRows, setNumRows] = useState<number>(0);
-  const [expandedHeight, setExpandedHeight] = useState<number>(0);
+  const [cardsContainerHeight, setCardsContainerHeight] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => {
@@ -31,40 +30,24 @@ export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
 
   /**
    * Function that runs on changes to the container.
-   * Used to compute the number of rows of cards upon resize.
+   * Used to determine the height upon resize.
    */
   function cardsContainerRef(cardsContainer: HTMLDivElement) {
     if (!cardsContainer) return;
 
-    if(expandedHeight != cardsContainer.clientHeight) {
-      setExpandedHeight(cardsContainer.clientHeight)
-    }
-
-    const cards = cardsContainer.children;
-
-    if (cards && cards.length > 0) {
-      const leftBorder = (cards[0] as HTMLElement).offsetLeft;
-
-      let newNumRows = 0;
-      for (let i = 0; i < cards.length; i++) {
-        if ((cards[i] as HTMLElement).offsetLeft == leftBorder) {
-          newNumRows++;
-        }
-      }
-      if (numRows != newNumRows) {
-        setNumRows(newNumRows);
-      }
+    if(cardsContainerHeight != cardsContainer.clientHeight) {
+      setCardsContainerHeight(cardsContainer.clientHeight)
     }
   }
 
-  const isExpandable = numRows > 1;
+  const isExpandable = cardsContainerHeight > cardWidthHeight;
 
   return (
     <div>
       <Byline>
         Showcase resources: click to filter the resources to a pathogen
       </Byline>
-      <ShowcaseContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $expandedHeight={expandedHeight}>
+      <ShowcaseContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $expandedHeight={cardsContainerHeight}>
         <CardsContainer ref={cardsContainerRef}>
           {cards.map((el) => (
             <ShowcaseTile card={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
