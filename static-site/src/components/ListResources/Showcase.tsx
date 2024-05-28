@@ -166,7 +166,6 @@ const CardsContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   overflow: hidden;
-  overflow: hidden;
   justify-content: space-between;
 `;
 
