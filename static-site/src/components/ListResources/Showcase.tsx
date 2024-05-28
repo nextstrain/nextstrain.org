@@ -145,11 +145,11 @@ const PreviewOverlay = styled.div`
 
 const CardsContainer = styled.div`
   /* background-color: #ffeab0; */
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(${cardWidthHeight}px, max-content));
+  grid-gap: 1%;
   overflow: hidden;
-  justify-content: flex-start;
+  justify-content: center;
 `;
 
 const Spacer = styled.div`
