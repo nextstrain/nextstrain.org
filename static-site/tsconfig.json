@@ -57,6 +57,7 @@ be set and will rewrite this file if they aren't set.²
   },
   "include": [
     "next-env.d.ts",
+    "pages/**/*",
     "src/**/*",
   ],
   "exclude": [
