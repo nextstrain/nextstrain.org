@@ -9,7 +9,10 @@ import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
+import { CardImgWrapper, CardOuter, Showcase } from "../Showcase";
+import { cards } from "./showcase.yaml";
 import { createGroupCards } from "./groupCards";
+import { CardInner, CardTitle } from '../Cards/styles';
 
 const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
   <div id={id} className="col-md-6" style={{paddingBottom: "40px"}}>
@@ -70,6 +73,14 @@ const Splash = () => {
       </FlexCenter>
 
       <HugeSpacer/>
+
+      <Styles.H1>
+        Featured resources
+      </Styles.H1>
+
+      <BigSpacer/>
+      <Showcase cards={cards} CardComponent={UrlShowcaseTile} />
+
       <BigSpacer/>
 
       <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
@@ -206,3 +217,19 @@ const Splash = () => {
 }
 
 export default Splash;
+
+
+const UrlShowcaseTile = ({ card }) => {
+  return (
+    <CardOuter>
+      <CardInner>
+        <a href={card.url}>
+          <CardTitle $squashed>
+            {card.name}
+          </CardTitle>
+          <CardImgWrapper filename={card.img}/>
+        </a>
+      </CardInner>
+    </CardOuter>
+  )
+}
