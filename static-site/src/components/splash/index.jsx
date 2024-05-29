@@ -8,7 +8,7 @@ import communityDatasets from "../../../content/community-datasets.yaml";
 import narrativeCards from "../Cards/narrativeCards";
 import Title from "./title";
 import * as Styles from "./styles";
-import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../../layouts/generalComponents";
+import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 import { createGroupCards } from "./groupCards";
 import { UserContext } from "../../layouts/userDataWrapper";
@@ -204,6 +204,7 @@ class Splash extends React.Component {
           </Styles.Button>
         </FlexCenter>
 
+        <Line style={{ margin: "30px 0px 10px 0px" }} />
         <Footer splashImagesCredit/>
 
       </Styles.Container>

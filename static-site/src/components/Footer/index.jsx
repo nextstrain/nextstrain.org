@@ -4,6 +4,7 @@ import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
 import { FooterList } from "../People/avatars";
+import { SiteMap } from "./sitemap";
 
 const SplashImagesCredit = () => (
   <div className="row">
@@ -55,6 +56,12 @@ class Footer extends React.Component {
   render() {
     return (
       <div>
+        <div className="row">
+          <SiteMap />
+        </div>
+
+        <BigSpacer />
+
         <div className="row">
           <div className="col-md-1"/>
           <div className="col-md-10">
