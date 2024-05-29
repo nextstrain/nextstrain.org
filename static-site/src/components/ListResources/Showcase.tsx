@@ -44,9 +44,6 @@ export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
 
   return (
     <div>
-      <Byline>
-        Showcase resources: click to filter the resources to a pathogen
-      </Byline>
       <ShowcaseContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $expandedHeight={cardsContainerHeight}>
         <CardsContainer ref={cardsContainerRef}>
           {cards.map((el) => (
@@ -186,11 +183,6 @@ const CardImgWrapper = ({filename}) => {
   }
   return <CardImg src={src} alt={""} color={getColor()}/>
 }
-
-const Byline = styled.div`
-  font-size: 1.6rem;
-  border-top: 1px rgb(230, 230, 230) solid;
-`
 
 /**
  * Given a set of user-defined cards, restrict them to the set of cards for

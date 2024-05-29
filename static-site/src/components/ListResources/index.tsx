@@ -67,6 +67,9 @@ function ListResources({
   return (
     <ListResourcesContainer>
 
+      <Byline>
+        Showcase resources: click to filter the resources to a pathogen
+      </Byline>
       <Showcase cards={showcaseCards} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
       <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
@@ -222,4 +225,9 @@ const SortContainer = styled.div`
     margin-left: 20px;
     margin-right: 5px;
   }
+`
+
+const Byline = styled.div`
+  font-size: 1.6rem;
+  border-top: 1px rgb(230, 230, 230) solid;
 `
