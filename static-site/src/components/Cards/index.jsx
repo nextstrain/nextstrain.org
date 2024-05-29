@@ -27,7 +27,9 @@ class Cards extends React.Component {
     ));
   }
   render() {
-    const bootstrapColumnSize = this.props.compactColumns ? 6 : 4;
+    // FIXME: undo this change and make a proper component for splash page card
+    // or reuse ShowcaseTile from ListResources which is doing something similar
+    const bootstrapColumnSize = this.props.compactColumns ? 6 : 3;
     const CARDS = this.cards(bootstrapColumnSize);
     return this.props.compactColumns ? CARDS : (
       <div>
