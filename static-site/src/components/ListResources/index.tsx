@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, createContext, useContext } from 'react';
 import styled from 'styled-components';
 import Select, { MultiValue } from 'react-select';
-import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
+import ScrollableAnchor, { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
 import {Tooltip} from 'react-tooltip-v5';
-import { useFilterOptions } from './useFilterOptions';
+import { createFilterOption, useFilterOptions } from './useFilterOptions';
 import { useSortAndFilter } from "./useSortAndFilter";
 import { useDataFetch } from "./useDataFetch";
 import {Spinner} from '../Spinner/Spinner';
@@ -11,14 +11,17 @@ import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
-import { Showcase, useShowcaseCards} from "./Showcase";
-import { Card, FilterOption, Group, GroupDisplayNames, QuickLink, Resource } from './types';
+import { CardImgWrapper, CardOuter, Showcase } from "../Showcase";
+import { FilterCard, FilterOption, Group, GroupDisplayNames, QuickLink, Resource } from './types';
+import { CardInner, CardTitle } from '../Cards/styles';
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
   elWidth: number
 }
 
-export const LIST_ANCHOR = "list";
+const LIST_ANCHOR = "list";
+
+const SetSelectedFilterOptions = createContext<React.Dispatch<React.SetStateAction<readonly FilterOption[]>> | null>(null);
 
 /**
  * A React component to fetch data and display the available resources,
@@ -70,7 +73,10 @@ function ListResources({
       <Byline>
         Showcase resources: click to filter the resources to a pathogen
       </Byline>
-      <Showcase cards={showcaseCards} setSelectedFilterOptions={setSelectedFilterOptions}/>
+
+      <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
+        <Showcase cards={showcaseCards} CardComponent={FilterShowcaseTile} />
+      </SetSelectedFilterOptions.Provider>
 
       <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
@@ -110,7 +116,7 @@ interface ListResourcesResponsiveProps {
   /** Should the group name itself be a url? (which we let the server redirect) */
   defaultGroupLinks: boolean
   groupDisplayNames: GroupDisplayNames
-  showcase: Card[]
+  showcase: FilterCard[]
 }
 
 /**
@@ -231,3 +237,66 @@ const Byline = styled.div`
   font-size: 1.6rem;
   border-top: 1px rgb(230, 230, 230) solid;
 `
+
+
+/*** SHOWCASE ***/
+
+
+interface FilterShowcaseTileProps {
+  card: FilterCard
+}
+
+
+const FilterShowcaseTile = ({ card }: FilterShowcaseTileProps) => {
+  const setSelectedFilterOptions = useContext(SetSelectedFilterOptions);
+
+  if (!setSelectedFilterOptions) {
+    throw new Error("Usage of this component requires the SetSelectedFilterOptions context to be set.")
+  }
+
+  const filter = useCallback(
+    () => {
+      setSelectedFilterOptions(card.filters.map(createFilterOption));
+      goToAnchor(LIST_ANCHOR);
+    },
+    [setSelectedFilterOptions, card]
+  )
+
+  return (
+    <CardOuter>
+      <CardInner>
+        <div onClick={filter}>
+          <CardTitle $squashed>
+            {card.name}
+          </CardTitle>
+          <CardImgWrapper filename={card.img}/>
+        </div>
+      </CardInner>
+    </CardOuter>
+  )
+}
+
+
+/**
+ * Given a set of user-defined cards, restrict them to the set of cards for
+ * which the filters are valid given the resources known to the resource listing
+ * UI
+ */
+const useShowcaseCards = (cards?: FilterCard[], groups?: Group[]) => {
+  const [restrictedCards, setRestrictedCards] = useState<FilterCard[]>([]);
+  useEffect(() => {
+    if (!cards || !groups) return;
+    const words = groups.reduce((words, group) => {
+      for (const resource of group.resources) {
+        for (const word of resource.nameParts) {
+          words.add(word);
+        }
+      }
+      return words;
+    }, new Set<string>());
+    setRestrictedCards(cards.filter((card) => {
+      return card.filters.every((word) => words.has(word))
+    }));
+  }, [cards, groups]);
+  return restrictedCards;
+}

@@ -1,25 +1,22 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import styled from 'styled-components';
-import {CardInner, CardImg, CardTitle} from "../Cards/styles";
+import { CardImg } from "../Cards/styles";
 import { theme } from "../../layouts/theme";
-import { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
-import { createFilterOption } from "./useFilterOptions";
-import { LIST_ANCHOR } from "./index";
-import { Card, FilterOption, Group } from './types';
+import { Card } from './types';
 
 const cardWidthHeight = 160; // pixels
 const expandPreviewHeight = 50 //pixels
 const transitionDuration = "0.3s"
 const transitionTimingFunction = "ease"
 
-interface ShowcaseProps {
-    cards: Card[]
-    setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
+interface ShowcaseProps<AnyCard extends Card> {
+    cards: AnyCard[]
+    CardComponent: React.FunctionComponent<{ card: AnyCard }>
 }
 
-export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
+export const Showcase = <AnyCard extends Card>({cards, CardComponent}: ShowcaseProps<AnyCard>) => {
 
   const [cardsContainerHeight, setCardsContainerHeight] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -46,9 +43,9 @@ export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
     <div>
       <ShowcaseContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $expandedHeight={cardsContainerHeight}>
         <CardsContainer ref={cardsContainerRef}>
-          {cards.map((el) => (
-            <ShowcaseTile card={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
-            ))}
+          {cards.map((el) => {
+            return <CardComponent card={el} key={el.name} />
+          })}
         </CardsContainer>
         <PreviewOverlay onClick={toggleExpand} className={!isExpandable || isExpanded ? "hidden" : "visible"} />
       </ShowcaseContainer>
@@ -62,37 +59,9 @@ export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
   )
 }
 
-interface ShowcaseTileProps {
-    card: Card
-    setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
-}
-
 /**
  * NOTE: Many of the React components here are taken from the existing Cards UI
  */
-const ShowcaseTile = ({card, setSelectedFilterOptions}: ShowcaseTileProps) => {
-  const filter = useCallback(
-    () => {
-      setSelectedFilterOptions(card.filters.map(createFilterOption));
-      goToAnchor(LIST_ANCHOR);
-    },
-    [setSelectedFilterOptions, card]
-  )
-
-  return (
-    <CardOuter>
-      <CardInner>
-        <div onClick={filter}>
-          <CardTitle $squashed>
-            {card.name}
-          </CardTitle>
-          <CardImgWrapper filename={card.img}/>
-        </div>
-      </CardInner>
-    </CardOuter>
-  )
-}
-
 
 const ShowcaseContainer = styled.div<{$expandedHeight: number}>`
   position: relative;
@@ -153,7 +122,7 @@ const Spacer = styled.div`
   min-height: 25px;
 `
 
-const CardOuter = styled.div`
+export const CardOuter = styled.div`
   background-color: #FFFFFF;
   padding: 0;
   overflow: hidden;
@@ -172,7 +141,7 @@ const getColor = () => {
   return themeColors.at(-1);
 }
 
-const CardImgWrapper = ({filename}) => {
+export const CardImgWrapper = ({filename}) => {
   let src;
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -182,26 +151,4 @@ const CardImgWrapper = ({filename}) => {
     src = require(`../../../static/splash_images/empty.png`).default.src;
   }
   return <CardImg src={src} alt={""} color={getColor()}/>
-}
-
-/**
- * Given a set of user-defined cards, restrict them to the set of cards for
- * which the filters are valid given the resources known to the resource listing
- * UI
- */
-export const useShowcaseCards = (cards?: Card[], groups?: Group[]) => {
-  const [restrictedCards, setRestrictedCards] = useState<Card[]>([]);
-  useEffect(() => {
-    if (!cards || !groups) return;
-    const words = groups.reduce((words, group) => {
-      for (const resource of group.resources) {
-        for (const word of resource.nameParts) {
-          words.add(word);
-        }
-      }
-      return words;
-    }, new Set<string>());
-    setRestrictedCards(cards.filter((card) => card.filters.every((word) => words.has(word))));
-  }, [cards, groups]);
-  return restrictedCards;
 }

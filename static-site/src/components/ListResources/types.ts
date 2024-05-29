@@ -1,3 +1,5 @@
+import { Card } from "../Showcase/types"
+
 export interface FilterOption {
   value: string
   label: string
@@ -45,9 +47,7 @@ export interface UpdateCadence {
 }
 
 // See coreShowcase in static-site/content/resource-listing.yaml
-export interface Card {
-  name: string
-  img: string
+export interface FilterCard extends Card {
   filters: string[]
 }
 
