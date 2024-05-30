@@ -1,10 +1,9 @@
-import { PropsWithChildren } from 'react'
-import Link, { LinkProps } from 'next/link'
+import { PropsWithChildren, AnchorHTMLAttributes } from 'react'
 
-export const InternalLink = (props: PropsWithChildren<LinkProps>) => {
+export const InternalLink = (props: PropsWithChildren<AnchorHTMLAttributes<HTMLAnchorElement>>) => {
   return (
-    <Link {...props}>
+    <a {...props}>
       {props.children}
-    </Link>
+    </a>
   )
 }
