@@ -35,8 +35,8 @@ const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
   </div>
 );
 
-const Button = ({to, children, target, rel}) => (
-  <a href={to} target={target} rel={rel}>
+const Button = ({to, children}) => (
+  <a href={to}>
     <Styles.ButtonContainer>
       {children}
     </Styles.ButtonContainer>
