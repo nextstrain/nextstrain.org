@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'next/link'
+import { InternalLink } from "../Misc/internal-link";
 import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
@@ -76,7 +76,7 @@ class Footer extends React.Component {
                   <div style={{margin: "0px 0px"}}/>
                   <FooterList />
                   {"Please see the "}
-                  <Link href="/team">team page</Link>
+                  <InternalLink href="/team">team page</InternalLink>
                   {" for more details."}
                 </>
                 )}

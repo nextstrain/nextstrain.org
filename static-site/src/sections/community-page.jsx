@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'next/link'
+import { InternalLink } from "../components/Misc/internal-link";
 import {
   SmallSpacer,
   HugeSpacer,
@@ -28,7 +28,7 @@ const abstract = (
     <br/>
     <br/>
     P.S. For an alternative approach to sharing data through nextstrain.org which is allows larger datasets and/or private data sharing, see
-    <Link href="/groups"> Scalable Sharing with Nextstrain Groups</Link>.
+    <InternalLink href="/groups"> Scalable Sharing with Nextstrain Groups</InternalLink>.
   </>
 );
 

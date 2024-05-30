@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Link from 'next/link'
+import { InternalLink } from "../Misc/internal-link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import * as Styles from "../splash/styles";
 import { BigSpacer } from "../../layouts/generalComponents";
@@ -33,13 +33,13 @@ const SectionList = ({ entries }) => {
           <ListItemParagraph>
             <UncoloredLink>
               {entry.href.startsWith('http') ? (
-                <Link href={entry.href}  rel="noopener noreferrer" target="_blank">
+                <InternalLink href={entry.href}  rel="noopener noreferrer" target="_blank">
                   {entry.name} <FooterIcon><FaExternalLinkAlt/></FooterIcon>
-                </Link>
+                </InternalLink>
               ) : (
-                <Link href={entry.href}>
+                <InternalLink href={entry.href}>
                   {entry.name}
-                </Link>
+                </InternalLink>
               )}
             </UncoloredLink>
           </ListItemParagraph>

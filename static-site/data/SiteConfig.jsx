@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'next/link'
+import { InternalLink } from "../src/components/Misc/internal-link";
 import NextstrainFooter from "../src/components/Footer";
 
 export const siteTitle = "Nextstrain";
@@ -20,12 +20,12 @@ export const groupsApp = false;
 export const groupsTitle = "Scalable Sharing with Nextstrain Groups";
 
 export const ErrorBannerInitialMessage = () => (<>
-  Please <Link href="/contact">contact us</Link> if you believe this to be an error.
+  Please <InternalLink href="/contact">contact us</InternalLink> if you believe this to be an error.
 </>);
 
 export const DataFetchError = () => (<>
   Something went wrong getting data.
-  Please <Link href="/contact">contact us</Link> if this continues to happen.
+  Please <InternalLink href="/contact">contact us</InternalLink> if this continues to happen.
 </>);
 
 export const GroupsAbstract = () => (<>
@@ -42,7 +42,7 @@ export const GroupsAbstract = () => (<>
   For more details about Nextstrain Groups,
   <a href="https://docs.nextstrain.org/en/latest/learn/groups/index.html"> please see our documentation</a>.
   For an alternative approach to sharing data through nextstrain.org which leverages GitHub repositories, please see
-  <Link href="/community"> Community data sharing</Link>.
+  <InternalLink href="/community"> Community data sharing</InternalLink>.
   <br />
   <br />
   Nextstrain Groups is still in the early stages and require a Nextstrain team

@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'next/link'
+import { InternalLink } from "../Misc/internal-link";
 import styled, {css} from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { UserContext } from "../../layouts/userDataWrapper";
@@ -51,7 +51,7 @@ const baseLinkCss = css`
 
 /** Next.JS <Link> (will be handled client-side)
 */
-const ClientSideLink = styled((props) => <Link {...props} />)`
+const ClientSideLink = styled((props) => <InternalLink {...props} />)`
   ${baseLinkCss}
   color: ${(props) => props.$minified ? '#000000' : props.theme.darkGrey} !important;
   cursor: pointer;
@@ -82,9 +82,9 @@ class NavBar extends React.Component {
   getLogo() {
     return (
       <NavLogo>
-        <Link href="/">
+        <InternalLink href="/">
           <img alt="Logo" width="40" src={nextstrainLogo.src}/>
-        </Link>
+        </InternalLink>
       </NavLogo>
     );
   }
@@ -101,11 +101,11 @@ class NavBar extends React.Component {
       this.props.minified ?
         <div/>
         :
-        <Link href="/">
+        <InternalLink href="/">
           {rainbowTitle}
           {groupsApp &&
             <SubTitle>Groups Server</SubTitle>}
-        </Link>
+        </InternalLink>
     );
   }
 

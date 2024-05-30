@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Link from 'next/link'
+import { InternalLink } from '../Misc/internal-link';
 import styled from 'styled-components';
 import Select from 'react-select';
 import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
@@ -47,7 +47,7 @@ function ListResources({
       <ErrorContainer>  
         {"Whoops - listing resources isn't working!"}
         <br/>
-        {'Please '}<Link href="/contact" style={{fontWeight: 300}}>get in touch</Link>{" if this keeps happening"}
+        {'Please '}<InternalLink href="/contact" style={{fontWeight: 300}}>get in touch</InternalLink>{" if this keeps happening"}
       </ErrorContainer>
     )
   }

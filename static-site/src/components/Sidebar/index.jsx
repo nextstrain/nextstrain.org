@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'next/link'
+import { InternalLink } from "../Misc/internal-link";
 import styled from 'styled-components';
 
 const Sidebar = ({title, posts}) => {
@@ -19,14 +19,14 @@ const Sidebar = ({title, posts}) => {
 const IndividualPost = ({blogUrlName, sidebarName, selected}) => {
   return (
     <ItemContainer key={sidebarName}>
-      <Link href={`/blog/${blogUrlName}`}>
+      <InternalLink href={`/blog/${blogUrlName}`}>
         <li>
           {selected ?
             (<SelectedPostTitle>{sidebarName}</SelectedPostTitle>) :
             (<UnselectedPostTitle>{sidebarName}</UnselectedPostTitle>)
           }
         </li>
-      </Link>
+      </InternalLink>
     </ItemContainer>
   );
 }
