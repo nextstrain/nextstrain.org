@@ -35,13 +35,26 @@ const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
   </div>
 );
 
-const Button = ({to, children}) => (
-  <a href={to}>
-    <Styles.ButtonContainer>
-      {children}
-    </Styles.ButtonContainer>
-  </a>
-);
+const Button = ({to, children}) => {
+  if (to.startsWith('/')) {
+    return (
+      <InternalLink href={to}>
+        <Styles.ButtonContainer>
+          {children}
+        </Styles.ButtonContainer>
+      </InternalLink>
+    )
+  }
+  else {
+    return (
+      <a href={to}>
+        <Styles.ButtonContainer>
+          {children}
+        </Styles.ButtonContainer>
+      </a>
+    )
+  }
+};
 
 class Splash extends React.Component {
   constructor() {
@@ -183,7 +196,7 @@ class Splash extends React.Component {
             <Styles.FocusParagraph>
               Nextstrain is under active development and we have big plans for its future, including
               visualization, bioinformatics analysis and an increasing number and variety of
-              datasets. If you have any questions or ideas, please <a href="/contact">contact us</a>.
+              datasets. If you have any questions or ideas, please <InternalLink href="/contact">contact us</InternalLink>.
             </Styles.FocusParagraph>
           </div>
         </div>

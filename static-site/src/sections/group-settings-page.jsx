@@ -6,10 +6,11 @@ import GenericPage from "../layouts/generic-page";
 import { FlexGrid, FlexGridRight, HugeSpacer, MediumSpacer } from "../layouts/generalComponents";
 import EditLogoForm from "../components/Groups/edit-logo-form";
 import EditOverviewForm from "../components/Groups/edit-overview-form";
+import { InternalLink } from "../components/Misc/internal-link";
 
 const UNAUTHORIZED_MESSAGE = <>
   You must have the owners role within a group to edit group settings.<br/>
-  If your permissions have changed recently, try <a href="/logout">logging out</a> and logging back in.<br/>
+  If your permissions have changed recently, try <InternalLink href="/logout">logging out</InternalLink> and logging back in.<br/>
 </>;
 
 const EditGroupSettingsPage = ({ location, groupName }) => {

@@ -9,6 +9,7 @@ import GenericPage from "../layouts/generic-page";
 import { UserContext } from "../layouts/userDataWrapper";
 import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
 import { groupsTitle, GroupsAbstract } from "../../data/SiteConfig";
+import { InternalLink } from "../components/Misc/internal-link";
 
 const datasetColumns = ({isNarrative}) => [
   {
@@ -31,7 +32,7 @@ const GroupListingInfo = () => {
         Click on any tile to view the different datasets and narratives available for that group.
         {user ?
           <> A padlock icon indicates a private group which you ({user.username}) have access to.</> :
-          <> These groups are all public, to see private groups please <a href="/login">log in</a>.</>}
+          <> These groups are all public, to see private groups please <InternalLink href="/login">log in</InternalLink>.</>}
       </splashStyles.CenteredFocusParagraph>
     </FlexCenter>
   );

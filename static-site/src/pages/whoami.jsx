@@ -4,6 +4,7 @@ import UserDataWrapper, { UserContext } from "../layouts/userDataWrapper";
 import NavBar from '../components/nav-bar';
 import { Logos } from "../components/logos";
 import MainLayout from "../components/layout";
+import { InternalLink } from "../components/Misc/internal-link";
 
 const UserPage = () => {
   const { user, groupMemberships } = useContext(UserContext);
@@ -21,7 +22,7 @@ const UserPage = () => {
       <UserGroupsList>
         {groupMemberships.filter((group) => group.isPublic).map((group) => (
           <li key={group.name}>
-            <a href={`/groups/${group.name}`}>{group.name}</a>
+            <InternalLink href={`/groups/${group.name}`}>{group.name}</InternalLink>
           </li>
         ))}
       </UserGroupsList>
@@ -31,18 +32,18 @@ const UserPage = () => {
       <UserGroupsList>
         {groupMemberships.filter((group) => !group.isPublic).map((group) => (
           <li key={group.name}>
-            <a href={`/groups/${group.name}`}>{group.name}</a>
+            <InternalLink href={`/groups/${group.name}`}>{group.name}</InternalLink>
           </li>
         ))}
       </UserGroupsList>
-      <a href="/logout">Logout</a>
+      <InternalLink href="/logout">Logout</InternalLink>
     </Fragment>
   );
 
   const LoggedOut = () => (
     <p>
       You are not logged in.<br />
-      <a href="/login">Login</a>
+      <InternalLink href="/login">Login</InternalLink>
     </p>
   );
 
