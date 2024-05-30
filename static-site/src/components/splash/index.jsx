@@ -28,13 +28,20 @@ const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
         />
       </div>
       <BigSpacer/>
-      <Styles.Button to={buttonLink}>
+      <Button to={buttonLink}>
         {buttonText}
-      </Styles.Button>
+      </Button>
     </div>
   </div>
 );
 
+const Button = ({to, children, target, rel}) => (
+  <a href={to} target={target} rel={rel}>
+    <Styles.ButtonContainer>
+      {children}
+    </Styles.ButtonContainer>
+  </a>
+);
 
 class Splash extends React.Component {
   constructor() {
@@ -70,9 +77,9 @@ class Splash extends React.Component {
         <BigSpacer/>
 
         <FlexCenter>
-          <Styles.Button to="#philosophy">
+          <Button to="#philosophy">
             Read More
-          </Styles.Button>
+          </Button>
         </FlexCenter>
 
         <HugeSpacer/>
@@ -199,9 +206,9 @@ class Splash extends React.Component {
         <BigSpacer/>
 
         <FlexCenter>
-          <Styles.Button to="https://docs.nextstrain.org/en/latest/index.html">
+          <Button to="https://docs.nextstrain.org/en/latest/index.html">
             Read the documentation
-          </Styles.Button>
+          </Button>
         </FlexCenter>
 
         <Line style={{ margin: "30px 0px 10px 0px" }} />

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import React from "react";
 
 export const Container = styled.div`
   padding-left: 25px;
@@ -164,7 +163,7 @@ export const FooterParagraph = styled.p`
   line-height: ${(props) => props.theme.tightLineHeight};
 `;
 
-const ButtonContainer = styled.button`
+export const ButtonContainer = styled.button`
   border: 1px solid #CCC;
   background-color: inherit;
   border-radius: 3px;
@@ -186,14 +185,6 @@ const ButtonContainer = styled.button`
 export const StrongerText = styled.span`
   font-weight: 500;
 `;
-
-export const Button = ({to, children, target, rel}) => (
-  <a href={to} target={target} rel={rel}>
-    <ButtonContainer>
-      {children}
-    </ButtonContainer>
-  </a>
-);
 
 export const FixedBanner = styled.div`
   left: 0px;

@@ -41,9 +41,11 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
   return (
     <GenericPage location={location}>
       <FlexGridRight>
-        <splashStyles.Button to={uri`/groups/${groupName}`}>
-          Return to {`"${groupName}"`} Page
-        </splashStyles.Button>
+        <InternalLink href={uri`/groups/${groupName}`}>
+          <splashStyles.ButtonContainer>
+            Return to {`"${groupName}"`} Page
+          </splashStyles.ButtonContainer>
+        </InternalLink>
       </FlexGridRight>
       <MediumSpacer/>
 

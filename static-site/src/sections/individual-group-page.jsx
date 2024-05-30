@@ -107,9 +107,11 @@ class Index extends React.Component {
       <GenericPage location={location} banner={banner}>
         {this.state.editGroupSettingsAllowed && (
           <FlexGridRight>
-            <splashStyles.Button to={`/groups/${this.state.groupName}/settings`}>
-              Edit Group Settings
-            </splashStyles.Button>
+            <InternalLink href={`/groups/${this.state.groupName}/settings`}>
+              <splashStyles.ButtonContainer>
+                Edit Group Settings
+              </splashStyles.ButtonContainer>
+            </InternalLink>
           </FlexGridRight>
         )}
         <SourceInfoHeading sourceInfo={this.state.sourceInfo}/>
