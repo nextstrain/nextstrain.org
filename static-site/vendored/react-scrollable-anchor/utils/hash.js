@@ -9,12 +9,3 @@ export const updateHash = (hash, affectHistory) => {
     window.location.replace(`#${hash}`)
   }
 }
-
-// remove hash in url without affecting history or forcing reload
-export const removeHash = () => {
-  history.replaceState(
-    "",
-    document.title,
-    window.location.pathname + window.location.search
-  )
-}
