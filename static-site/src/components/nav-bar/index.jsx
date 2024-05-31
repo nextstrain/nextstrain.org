@@ -1,5 +1,4 @@
 import React from "react";
-import Link from 'next/link'
 import styled, {css} from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { UserContext } from "../../layouts/userDataWrapper";
@@ -49,14 +48,6 @@ const baseLinkCss = css`
   font-weight: 400;
 `;
 
-/** Next.JS <Link> (will be handled client-side)
-*/
-const ClientSideLink = styled((props) => <Link {...props} />)`
-  ${baseLinkCss}
-  color: ${(props) => props.$minified ? '#000000' : props.theme.darkGrey} !important;
-  cursor: pointer;
-`;
-
 /** HTML anchor (<a>) element. HTML request will be made to server, i.e. won't be handled client-side.
  */
 const ServerSideLink = styled.a`
@@ -82,9 +73,9 @@ class NavBar extends React.Component {
   getLogo() {
     return (
       <NavLogo>
-        <Link href="/">
+        <a href="/">
           <img alt="Logo" width="40" src={nextstrainLogo.src}/>
-        </Link>
+        </a>
       </NavLogo>
     );
   }
@@ -101,11 +92,11 @@ class NavBar extends React.Component {
       this.props.minified ?
         <div/>
         :
-        <Link href="/">
+        <a href="/">
           {rainbowTitle}
           {groupsApp &&
             <SubTitle>Groups Server</SubTitle>}
-        </Link>
+        </a>
     );
   }
 
@@ -119,13 +110,13 @@ class NavBar extends React.Component {
         {!groupsApp &&
           <>
             <ServerSideLink $minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</ServerSideLink>
-            <ClientSideLink $minified={minified} href="/contact">CONTACT</ClientSideLink>
+            <ServerSideLink $minified={minified} href="/contact">CONTACT</ServerSideLink>
             { /* Only display "blog" if we're not minified */
               minified ?
                 null :
                 this.selectedClass("blog") ?
                   <NavLinkInactive $minified={minified}>BLOG</NavLinkInactive> :
-                  <ClientSideLink $minified={minified} href="/blog">BLOG</ClientSideLink>
+                  <ServerSideLink $minified={minified} href="/blog">BLOG</ServerSideLink>
             }
           </>
          }

@@ -1,5 +1,4 @@
 import React from "react";
-import Link from 'next/link'
 import {
   SmallSpacer,
   HugeSpacer,
@@ -13,8 +12,8 @@ import {coreQuickLinks, coreGroupDisplayNames, coreShowcase} from "../../content
 const title = "Nextstrain-maintained pathogen analyses";
 const abstract = (
   <>
-    These data represent analyses and situation-reports produced by the <Link href="/team">core Nextstrain team</Link>.
-    Explore analyses produced by others on the <Link href="/groups">Groups</Link> and <Link href="/community">Community</Link> pages.
+    These data represent analyses and situation-reports produced by the <a href="/team">core Nextstrain team</a>.
+    Explore analyses produced by others on the <a href="/groups">Groups</a> and <a href="/community">Community</a> pages.
     <br/><br/>
     We aim to provide a continually-updated view of publicly available data to show pathogen evolution and epidemic spread.
     The pipeline used to generate each dataset is available on <a href="https://github.com/nextstrain/">our GitHub page</a> or by loading a dataset and

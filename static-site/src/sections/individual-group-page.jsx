@@ -1,5 +1,4 @@
 import React from "react";
-import Link from 'next/link'
 import ScrollableAnchor, { configureAnchors } from '../../vendored/react-scrollable-anchor/index';
 import { uri } from "../../../src/templateLiterals.js";
 import { HugeSpacer, FlexGridRight } from "../layouts/generalComponents";
@@ -73,7 +72,7 @@ class Index extends React.Component {
     // Set up a banner or update the existing one if the group doesn't exist
     if (this.state.groupNotFound) {
       const notFound = `The Nextstrain Group "${groupName}" doesn't exist yet, or there was an error getting data for that group.`;
-      const linkToGroupsPage = <p>For available Nextstrain Groups, check out the <Link href="/groups">Groups page</Link>.</p>;
+      const linkToGroupsPage = <p>For available Nextstrain Groups, check out the <a href="/groups">Groups page</a>.</p>;
       if (!bannerTitle) {
         bannerTitle = notFound;
         bannerContents = linkToGroupsPage;

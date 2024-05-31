@@ -1,5 +1,4 @@
 import React from "react";
-import Link from 'next/link'
 import ScrollableAnchor, { configureAnchors } from '../../vendored/react-scrollable-anchor/index';
 import { HugeSpacer } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
@@ -70,7 +69,7 @@ class Index extends React.Component {
       </>);
       const description = (<>
         <p>If {"you're"} setting up your own Community on GitHub repository, see <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">our documentation</a>.</p>
-        <p>For a list of featured Nextstrain Community datasets, check out the <Link href="/community">Community page</Link>.</p>
+        <p>For a list of featured Nextstrain Community datasets, check out the <a href="/community">Community page</a>.</p>
       </>);
       if (!bannerTitle) {
         bannerTitle = notFound;

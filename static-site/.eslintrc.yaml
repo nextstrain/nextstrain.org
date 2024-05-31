@@ -23,6 +23,7 @@ ignorePatterns:
 rules:
   react/prop-types: off # Remove this override once all props have been typed using PropTypes or TypeScript.
   '@next/next/no-img-element': off # Remove this if we use next.js optimisations for <img>
+  '@next/next/no-html-link-for-pages': off
 
 parserOptions:
   sourceType: module
