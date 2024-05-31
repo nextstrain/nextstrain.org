@@ -18,17 +18,14 @@ class Manager {
     this.forcedHash = false
     this.config = defaultConfig
 
-    this.scrollHandler = debounce(this.handleScroll, 100)
     this.forceHashUpdate = debounce(this.handleHashChange, 1)
   }
 
   addListeners = () => {
-    window.addEventListener('scroll', this.scrollHandler, false)
     window.addEventListener('hashchange', this.handleHashChange)
   }
 
   removeListeners = () => {
-    window.removeEventListener('scroll', this.scrollHandler, false)
     window.removeEventListener('hashchange', this.handleHashChange)
   }
 
@@ -59,18 +56,6 @@ class Manager {
     // if this is the last anchor, remove listeners
     if (Object.keys(this.anchors).length === 0) {
       this.removeListeners()
-    }
-  }
-
-  handleScroll = () => {
-    const {offset, keepLastAnchorHash} = this.config
-    const bestAnchorId = getBestAnchorGivenScrollLocation(this.anchors, offset)
-
-    if (bestAnchorId && getHash() !== bestAnchorId) {
-      this.forcedHash = true
-      updateHash(bestAnchorId, false)
-    } else if (!bestAnchorId && !keepLastAnchorHash) {
-      removeHash()
     }
   }
 
