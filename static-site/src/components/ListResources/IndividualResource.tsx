@@ -184,10 +184,8 @@ export const ResourceLinkWrapper = ({children, onShiftClick}) => {
     }
   };
   return (
-    <div>
-      <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onClick}>
-        {React.cloneElement(children, { $hovered: hovered })}
-      </div>
+    <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onClick}>
+      {React.cloneElement(children, { $hovered: hovered })}
     </div>
   )  
 }
