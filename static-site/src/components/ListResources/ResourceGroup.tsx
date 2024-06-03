@@ -5,8 +5,19 @@ import { MdHistory, MdFormatListBulleted, MdChevronRight } from "react-icons/md"
 import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
   ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource"
 import { SetModalContext } from "./Modal";
+import { Group, QuickLink, Resource } from './types';
 
-const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}) => {
+interface ResourceGroupHeaderProps {
+  data: Group
+  isMobile: boolean
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
+  collapsible: boolean
+  isCollapsed: boolean
+  resourcesToShowWhenCollapsed: number
+  quickLinks: QuickLink[]
+}
+
+const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}: ResourceGroupHeaderProps) => {
   const setModal = useContext(SetModalContext);
   /* Filter the known quick links to those which appear in resources of this group */
   const resourcesByName = Object.fromEntries(data.resources.map((r) => [r.name, r]));
@@ -44,14 +55,14 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
           <TooltipWrapper description={`There are ${data.nResources} datasets in this group`}>
             <IconContainer
               Icon={MdFormatListBulleted} color={"rgb(79, 75, 80)"}
-              text={data.nResources}
+              text={`${data.nResources}`}
             />
           </TooltipWrapper>
           {data.nVersions && !isMobile && (
             <TooltipWrapper description={`${data.nVersions} snapshots exist across the ${data.nResources} datasets in this group`}>
               <IconContainer
                 Icon={MdHistory}  color={"rgb(79, 75, 80)"}
-                text={data.nVersions}
+                text={`${data.nVersions}`}
               />
             </TooltipWrapper>
           )}
@@ -99,15 +110,24 @@ const ResourceGroupHeader = ({data, isMobile, setCollapsed, collapsible, isColla
   )
 }
 
+interface ResourceGroupProps {
+  data: Group
+  elWidth: number
+  numGroups: number
+  sortMethod: string
+  quickLinks: QuickLink[]
+}
+
 /**
  * Displays a single resource group (e.g. a single pathogen)
  */
-export const ResourceGroup = ({data, elWidth, numGroups, sortMethod, quickLinks}) => {
+export const ResourceGroup = ({data, elWidth, numGroups, sortMethod, quickLinks}: ResourceGroupProps) => {
   const {collapseThreshold, resourcesToShowWhenCollapsed} = collapseThresolds(numGroups);
   const collapsible = data.resources.length > collapseThreshold;
   const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
   const displayResources = isCollapsed ? data.resources.slice(0, resourcesToShowWhenCollapsed) : data.resources;
   _setDisplayName(displayResources)
+
   /* isMobile: boolean determines whether we expose snapshots, as we hide them on small screens */
   const isMobile = elWidth < 500;
 
@@ -141,7 +161,7 @@ const ResourceGroupContainer = styled.div`
   border-radius: 5px;
 `;
 
-const IndividualResourceContainer = styled.div`
+const IndividualResourceContainer = styled.div<{$maxResourceWidth: number}>`
   /* Columns are a simple CSS solution which works really well _if_ we can calculate the expected maximum 
   resource width */
   column-width: ${(props) => props.$maxResourceWidth}px;
@@ -188,7 +208,7 @@ const Clickable = styled.div`
   cursor: pointer;
 `;
 
-const Rotate = styled.div`
+const Rotate = styled.div<{rotate: string}>`
   max-width: 30px;
   max-height: 30px;
   /* font-size: 25px; */
@@ -225,7 +245,7 @@ function NextstrainLogo() {
  *      "seasonal-flu | h1n1pdm"
  *      "             | h3n2"
  */
-function _setDisplayName(resources) {
+function _setDisplayName(resources: Resource[]) {
   const sep = "│"; // ASCII 179
   resources.forEach((r, i) => {
     let name;
@@ -242,7 +262,7 @@ function _setDisplayName(resources) {
   })
 }
 
-function collapseThresolds(numGroups) {
+function collapseThresolds(numGroups: number) {
   /* The collapse thresholds are determined by the total number of groups displayed */
   let collapseThreshold = 12; /* if there are more than this many resources then we can collapse */
   let resourcesToShowWhenCollapsed = 8; /* iff collapsed, show this many resources */

@@ -3,6 +3,8 @@ import React, {useState, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory } from "react-icons/md";
 import { SetModalContext } from './Modal';
+import { ResourceDisplayName, Resource } from './types';
+import { IconType } from 'react-icons';
 
 export const LINK_COLOR = '#5097BA'
 export const LINK_HOVER_COLOR = '#31586c'
@@ -17,7 +19,7 @@ export const LINK_HOVER_COLOR = '#31586c'
 const [resourceFontSize, namePxPerChar, summaryPxPerChar] = [16, 10, 9];
 const iconWidth = 20; // not including text
 const gapSize = 10;
-export const getMaxResourceWidth = (displayResources) => {
+export const getMaxResourceWidth = (displayResources: Resource[]) => {
   return displayResources.reduce((w, r) => {
     /* add the pixels for the display name */
     let _w = r.displayName.default.length * namePxPerChar;
@@ -29,7 +31,7 @@ export const getMaxResourceWidth = (displayResources) => {
   }, 200); // 200 (pixels) is the minimum
 }
 
-export const ResourceLink = styled.a`
+export const ResourceLink = styled.a<{$hovered?: boolean}>`
   font-size: ${resourceFontSize}px;
   font-family: monospace;
   white-space: pre; /* don't collapse back-to-back spaces */
@@ -37,7 +39,14 @@ export const ResourceLink = styled.a`
   text-decoration: none !important;
 `;
 
-function Name({displayName, $hovered, href, topOfColumn}) {
+interface NameProps {
+  displayName: ResourceDisplayName
+  $hovered?: boolean
+  href: string
+  topOfColumn: boolean
+}
+
+function Name({displayName, $hovered = false, href, topOfColumn}: NameProps) {
   return (
     <ResourceLink href={href} target="_blank" rel="noreferrer" $hovered={$hovered}>
       {'• '}{($hovered||topOfColumn) ? displayName.hovered : displayName.default}
@@ -70,7 +79,15 @@ export function TooltipWrapper({description, children}) {
   )
 } 
 
-export function IconContainer({Icon, text, handleClick=undefined, color=undefined, hoverColor=undefined}) {
+interface IconContainerProps {
+  Icon: IconType
+  text: string
+  handleClick?: () => void
+  color?: string
+  hoverColor?: string
+}
+
+export function IconContainer({Icon, text, handleClick, color, hoverColor}: IconContainerProps) {
   const [hovered, setHovered] = useState(false);
   const defaultColor = '#aaa';
   const defaultHoverColor = "rgb(79, 75, 80)";
@@ -89,14 +106,14 @@ export function IconContainer({Icon, text, handleClick=undefined, color=undefine
 }
 
 
-/**
- * 
- * @param {*} param0 
- * @returns 
- */
-export const IndividualResource = ({data, isMobile}) => {
+interface IndividualResourceProps {
+  data: Resource
+  isMobile: boolean
+}
+
+export const IndividualResource = ({data, isMobile}: IndividualResourceProps) => {
   const setModal = useContext(SetModalContext);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [topOfColumn, setTopOfColumn] = useState(false);
   useEffect(() => {
     /* The column CSS is great but doesn't allow us to know if an element is at

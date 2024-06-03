@@ -4,13 +4,20 @@ import styled from 'styled-components';
 import * as d3 from "d3";
 import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
+import { Resource } from './types';
 
-export const SetModalContext = createContext(null);
+export const SetModalContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
 export const RAINBOW20 =   ["#511EA8", "#4432BD", "#3F4BCA", "#4065CF", "#447ECC", "#4C91BF", "#56A0AE", "#63AC9A", "#71B486", "#81BA72", "#94BD62", "#A7BE54", "#BABC4A", "#CBB742", "#D9AE3E", "#E29E39", "#E68935", "#E56E30", "#E14F2A", "#DC2F24"];
 const lightGrey = 'rgba(0,0,0,0.1)';
 
-export const ResourceModal = ({data, dismissModal}) => {  
+
+interface ResourceModalProps {
+  data?: Resource
+  dismissModal: () => void
+}
+
+export const ResourceModal = ({data, dismissModal}: ResourceModalProps) => {  
   const [ref, setRef] = useState(null); 
   const handleRef = useCallback((node) => {setRef(node)}, [])
 
@@ -123,10 +130,11 @@ const Title = styled.div`
   padding-bottom: 15px;
 `
 
-function _snapshotSummary(dates) {
+function _snapshotSummary(dates: string[]) {
   const d = [...dates].sort()
-  const [d1, d2] = [d[0], d.at(-1)].map((di) => new Date(di));
-  const days = (d2-d1)/1000/60/60/24;
+  const d1 = new Date(d.at( 0)).getTime();
+  const d2 = new Date(d.at(-1)).getTime();
+  const days = (d2 - d1)/1000/60/60/24;
   let duration = '';
   if (days < 100) duration=`${days} days`;
   else if (days < 365*2) duration=`${Math.round(days/(365/12))} months`;
@@ -134,7 +142,7 @@ function _snapshotSummary(dates) {
   return {duration, first: d[0], last:d.at(-1)};
 }
 
-function _draw(ref, data) {
+function _draw(ref, data: Resource) {
   /* Note that _page_ resizes by themselves will not result in this function
   rerunning, which isn't great, but for a modal I think it's perfectly
   acceptable */  
@@ -345,7 +353,7 @@ function _draw(ref, data) {
 
   const dateWithYear = d3.utcFormat("%B %d, %Y");
   const dateSameYear = d3.utcFormat("%B %d");
-  function prettyDate(mainDate, secondDate) {
+  function prettyDate(mainDate: string, secondDate?: string) {
     const d1 = dateWithYear(new Date(mainDate));
     if (!secondDate) return d1;
     const d2 = (mainDate.slice(0,4)===secondDate.slice(0,4) ? dateSameYear : dateWithYear)(new Date(secondDate));

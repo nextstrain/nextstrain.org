@@ -6,10 +6,16 @@ import { theme } from "../../layouts/theme";
 import { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
 import { createFilterOption } from "./useFilterOptions";
 import { LIST_ANCHOR } from "./index";
+import { Card, FilterOption, Group } from './types';
 
 const cardWidthHeight = 160; // pixels
 
-export const Showcase = ({cards, setSelectedFilterOptions}) => {
+interface ShowcaseProps {
+    cards: Card[]
+    setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
+}
+
+export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
   if (!cards.length) return null;
   return (
     <div>
@@ -28,10 +34,15 @@ export const Showcase = ({cards, setSelectedFilterOptions}) => {
   )
 }
 
+interface ShowcaseTileProps {
+    data: Card
+    setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
+}
+
 /**
  * NOTE: Many of the React components here are taken from the existing Cards UI
  */
-const ShowcaseTile = ({data, setSelectedFilterOptions}) => {
+const ShowcaseTile = ({data, setSelectedFilterOptions}: ShowcaseTileProps) => {
   const filter = useCallback(
     () => {
       setSelectedFilterOptions(data.filters.map(createFilterOption));
@@ -115,8 +126,8 @@ const Byline = styled.div`
  * which the filters are valid given the resources known to the resource listing
  * UI
  */
-export const useShowcaseCards = (cards, resources) => {
-  const [restrictedCards, setRestrictedCards] = useState([]);
+export const useShowcaseCards = (cards?: Card[], resources?: Group[]) => {
+  const [restrictedCards, setRestrictedCards] = useState<Card[]>([]);
   useEffect(() => {
     if (!cards || !resources) return;
     const words = resources.reduce((words, group) => {
@@ -126,7 +137,7 @@ export const useShowcaseCards = (cards, resources) => {
         }
       }
       return words;
-    }, new Set());
+    }, new Set<string>());
     setRestrictedCards(cards.filter((card) => card.filters.every((word) => words.has(word))));
   }, [cards, resources]);
   return restrictedCards;

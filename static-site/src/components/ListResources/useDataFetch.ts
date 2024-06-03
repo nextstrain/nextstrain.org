@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Group, GroupDisplayNames, PathVersions, Resource } from './types';
 
 
 /**
@@ -11,14 +12,14 @@ import { useState, useEffect } from 'react';
  * response, however in the future we may shift this to the API response and it
  * may vary across the resources returned.
  */
-export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames) {
-  const [state, setState] = useState(undefined);
-  const [error, setError] = useState(undefined);
+export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupLinks: boolean, groupDisplayNames: GroupDisplayNames) {
+  const [state, setState] = useState<Group[]>();
+  const [error, setError] = useState<boolean>();
   useEffect(() => {
     const url = `/list-resources/${sourceId}`;
 
     async function fetchAndParse() {
-      let pathVersions, pathPrefix;
+      let pathVersions: PathVersions, pathPrefix: string;
       try {
         const response = await fetch(url, {headers: {accept: "application/json"}});
         if (response.status !== 200) {
@@ -51,20 +52,25 @@ export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDispla
 }
 
 
+interface Partitions {
+  [name: string]: Resource[]
+}
+
+
 /**
  * Groups the provided array of pathVersions into an object with keys
  * representing group names (pathogen names) and values which are arrays of
  * resource objects. 
  */
-function partitionByPathogen(pathVersions, pathPrefix, versioned) {
-  return Object.entries(pathVersions).reduce((store, [name, dates]) => {
+function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, versioned: boolean) {
+  return Object.entries(pathVersions).reduce((store: Partitions, [name, dates]) => {
     const nameParts = name.split('/');
     const sortedDates = [...dates].sort();
 
     let groupName = nameParts[0];
 
     if (!store[groupName]) store[groupName] = []
-    const resourceDetails = {
+    const resourceDetails: Resource = {
       name,
       groupName, /* decoupled from nameParts */
       nameParts,
@@ -92,9 +98,9 @@ function partitionByPathogen(pathVersions, pathPrefix, versioned) {
  * Turn the provided partitions (an object mapping groupName to an array of resources)
  * into an array of groups.
  */
-function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames) {
+function groupsFrom(partitions: Partitions, pathPrefix: string, defaultGroupLinks: boolean, groupDisplayNames: GroupDisplayNames) {
   return Object.entries(partitions).map(([groupName, resources]) => {
-    const groupInfo = {
+    const groupInfo: Group = {
       groupName: groupName,
       nResources: resources.length,
       nVersions: resources.reduce((total, r) => r.nVersions ? total+r.nVersions : total, 0) || undefined,
@@ -118,7 +124,7 @@ function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames
  * however this results in temporal sorting such as [12y 2y 6m 6y] etc. This function
  * produces strings which, when sorted alphabetically, are in a nicer order.
  */
-function _sortableName(words) {
+function _sortableName(words: string[]) {
   const w = words.map((word) => {
     const m = word.match(/^(\d+)([ym])$/);
     if (m) {
@@ -160,7 +166,7 @@ function updateCadence(dateObjects) {
   const median = intervals[Math.floor(intervals.length/2)];
   const mad = intervals.map((x) => Math.abs(x-median)).sort((a, b) => a-b)[Math.floor(intervals.length/2)]
 
-  let description;
+  let description: string;
   description = `Over the past two years this dataset's been updated ${mad*2 > median ? 'irregularly' : 'consistently'} every `;
   description += median===1 ? '~day' : `~${median} days`;
   if (lastUpdateDaysAgo > median*3) description+=", however it hasn't been updated for a while";
