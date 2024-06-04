@@ -124,9 +124,15 @@ function ListResourcesResponsive(props: ListResourcesResponsiveProps) {
   const [elWidth, setElWidth] = useState<number>(0);
   useEffect(() => {
     const observer = new ResizeObserver(([entry]) => {
-      setElWidth(entry.contentRect.width);
+      if (entry) {
+        // don't do anything if entry is undefined
+        setElWidth(entry.contentRect.width);
+      }
     });
-    observer.observe(ref.current);
+    if (ref.current) {
+      // don't do anything if ref is undefined
+      observer.observe(ref.current);
+    }
     return () => {
       observer.disconnect();
     };

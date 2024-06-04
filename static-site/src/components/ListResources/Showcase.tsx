@@ -102,7 +102,9 @@ const CardOuter = styled.div`
 
 const themeColors = [...theme.titleColors];
 const getColor = () => {
-  themeColors.push(themeColors.shift());
+  // rotate colors by moving the first color (which is always defined) to the end
+  themeColors.push(themeColors.shift()!);
+  // return the last color
   return themeColors.at(-1);
 }
 

@@ -19,6 +19,8 @@ interface ResourceGroupHeaderProps {
 
 const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}: ResourceGroupHeaderProps) => {
   const setModalResource = useContext(SetModalResourceContext);
+  if (!setModalResource) throw new Error("Context not provided!")
+
   /* Filter the known quick links to those which appear in resources of this group */
   const resourcesByName = Object.fromEntries(group.resources.map((r) => [r.name, r]));
   const quickLinksToDisplay = (quickLinks || []).filter((ql) => !!resourcesByName[ql.name] || ql.groupName===group.groupName)
@@ -252,7 +254,7 @@ function _setDisplayName(resources: Resource[]) {
     if (i===0) {
       name = r.nameParts.join(sep);
     } else {
-      let matchIdx = r.nameParts.map((word, j) => word === resources[i-1].nameParts[j]).findIndex((v) => !v);
+      let matchIdx = r.nameParts.map((word, j) => word === resources[i-1]?.nameParts[j]).findIndex((v) => !v);
       if (matchIdx===-1) { // -1 means every word is in the preceding name, but we should display the last word anyway 
         matchIdx = r.nameParts.length-2;
       }

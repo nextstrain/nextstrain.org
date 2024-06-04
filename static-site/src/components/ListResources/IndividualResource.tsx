@@ -21,11 +21,13 @@ const iconWidth = 20; // not including text
 const gapSize = 10;
 export const getMaxResourceWidth = (displayResources: Resource[]) => {
   return displayResources.reduce((w, r) => {
+    if (!r.displayName || !r.updateCadence) return w
+
     /* add the pixels for the display name */
     let _w = r.displayName.default.length * namePxPerChar;
     if (r.nVersions) {
       _w += gapSize + iconWidth;
-      _w += ((r?.updateCadence?.summary?.length || 0) + 5 + String(r.nVersions).length)*summaryPxPerChar;
+      _w += ((r.updateCadence.summary.length || 0) + 5 + String(r.nVersions).length)*summaryPxPerChar;
     }
     return _w>w ? _w : w;
   }, 200); // 200 (pixels) is the minimum
@@ -113,15 +115,41 @@ interface IndividualResourceProps {
 
 export const IndividualResource = ({resource, isMobile}: IndividualResourceProps) => {
   const setModalResource = useContext(SetModalResourceContext);
+  if (!setModalResource) throw new Error("Context not provided!")
+
   const ref = useRef<HTMLDivElement>(null);
   const [topOfColumn, setTopOfColumn] = useState(false);
   useEffect(() => {
+    // don't do anything if the ref is undefined or the parent is not a div (IndividualResourceContainer)
+    if (!ref.current
+     || !ref.current.parentNode
+     || ref.current.parentNode.nodeName != 'DIV') return;
+
     /* The column CSS is great but doesn't allow us to know if an element is at
     the top of its column, so we resort to JS */
-    if (ref.current.offsetTop===ref.current.parentNode.offsetTop) {
+    if (ref.current.offsetTop===(ref.current.parentNode as HTMLDivElement).offsetTop) {
       setTopOfColumn(true);
     }
   }, []);
+
+  // don't show anything if display name is unavailable
+  if (!resource.displayName) return null
+
+  // add history if mobile and resource is versioned
+  let history: React.JSX.Element | null = null
+  if (!isMobile && resource.versioned && resource.updateCadence && resource.nVersions) {
+    history = (
+      <TooltipWrapper description={resource.updateCadence.description +
+        `<br/>Last known update on ${resource.lastUpdated}` +
+        `<br/>${resource.nVersions} snapshots of this dataset available (click to see them)`}>
+        <IconContainer
+          Icon={MdHistory}
+          text={`${resource.updateCadence.summary} (n=${resource.nVersions})`}
+          handleClick={() => setModalResource(resource)}
+        />
+      </TooltipWrapper>
+    )
+  }
 
   return (
     <Container ref={ref}>
@@ -134,17 +162,7 @@ export const IndividualResource = ({resource, isMobile}: IndividualResourceProps
           </ResourceLinkWrapper>
         </TooltipWrapper>
 
-        {resource.versioned && !isMobile && (
-          <TooltipWrapper description={resource.updateCadence.description +
-            `<br/>Last known update on ${resource.lastUpdated}` +
-            `<br/>${resource.nVersions} snapshots of this dataset available (click to see them)`}>
-            <IconContainer
-              Icon={MdHistory}
-              text={`${resource.updateCadence.summary} (n=${resource.nVersions})`}
-              handleClick={() => setModalResource(resource)}
-            />
-          </TooltipWrapper>
-        )}
+        {history}
 
       </FlexRow>
 

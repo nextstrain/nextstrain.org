@@ -41,7 +41,8 @@ export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {
     _draw(ref, resource)
   }, [ref, resource])
 
-  if (!resource) return null;
+  // modal is only applicable for versioned resources
+  if (!resource || !resource.dates || !resource.updateCadence) return null;
 
   const summary = _snapshotSummary(resource.dates);
   return (
@@ -132,8 +133,10 @@ const Title = styled.div`
 
 function _snapshotSummary(dates: string[]) {
   const d = [...dates].sort()
-  const d1 = new Date(d.at( 0)).getTime();
-  const d2 = new Date(d.at(-1)).getTime();
+  if (d.length < 1) throw new Error("Missing dates.")
+
+  const d1 = new Date(d.at( 0)!).getTime();
+  const d2 = new Date(d.at(-1)!).getTime();
   const days = (d2 - d1)/1000/60/60/24;
   let duration = '';
   if (days < 100) duration=`${days} days`;
@@ -143,6 +146,9 @@ function _snapshotSummary(dates: string[]) {
 }
 
 function _draw(ref, resource: Resource) {
+  // do nothing if resource has no dates
+  if (!resource.dates) return
+
   /* Note that _page_ resizes by themselves will not result in this function
   rerunning, which isn't great, but for a modal I think it's perfectly
   acceptable */  
@@ -172,7 +178,8 @@ function _draw(ref, resource: Resource) {
 
   /* Create the x-scale and draw the x-axis */
   const x = d3.scaleTime()
-    .domain([flatData[0].date, new Date()]) // the domain extends to the present day
+    // presence of dates on resource has already been checked so this assertion is safe
+    .domain([flatData[0]!.date, new Date()]) // the domain extends to the present day
     .range([graphIndent, width-graphIndent])
   svg.append('g')
     .attr("transform", `translate(0, ${heights.height - heights.marginBelowAxis})`)

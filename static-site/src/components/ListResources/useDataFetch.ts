@@ -64,30 +64,34 @@ interface Partitions {
  */
 function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, versioned: boolean) {
   return Object.entries(pathVersions).reduce((store: Partitions, [name, dates]) => {
-    const nameParts = name.split('/');
     const sortedDates = [...dates].sort();
 
-    let groupName = nameParts[0];
+    // do nothing if resource has no dates
+    if (sortedDates.length < 1) return store
 
-    if (!store[groupName]) store[groupName] = []
+    const nameParts = name.split('/');
+    // split() will always return at least 1 string
+    let groupName = nameParts[0]!;
+
     const resourceDetails: Resource = {
       name,
       groupName, /* decoupled from nameParts */
       nameParts,
       sortingName: _sortableName(nameParts),
       url: `/${pathPrefix}${name}`,
-      lastUpdated: sortedDates.at(-1),
+      lastUpdated: sortedDates.at(-1)!,
       versioned
     };
     if (versioned) {
-      resourceDetails.firstUpdated = sortedDates[0];
-      resourceDetails.lastUpdated = sortedDates.at(-1);
+      resourceDetails.firstUpdated = sortedDates[0]!;
+      resourceDetails.lastUpdated = sortedDates.at(-1)!;
       resourceDetails.dates = sortedDates;
       resourceDetails.nVersions = sortedDates.length;
       resourceDetails.updateCadence = updateCadence(sortedDates.map((date)=> new Date(date)));
     }
 
-    store[groupName].push(resourceDetails)
+    if (!store[groupName]) store[groupName] = [];
+    store[groupName]!.push(resourceDetails)
 
     return store;
   }, {});
@@ -104,7 +108,7 @@ function groupsFrom(partitions: Partitions, pathPrefix: string, defaultGroupLink
       groupName: groupName,
       nResources: resources.length,
       nVersions: resources.reduce((total, r) => r.nVersions ? total+r.nVersions : total, 0) || undefined,
-      lastUpdated: resources.map((r) => r.lastUpdated).sort().at(-1),
+      lastUpdated: resources.map((r) => r.lastUpdated).sort().at(-1)!,
       resources,
     }
     /* add optional properties */
@@ -127,7 +131,7 @@ function groupsFrom(partitions: Partitions, pathPrefix: string, defaultGroupLink
 function _sortableName(words: string[]) {
   const w = words.map((word) => {
     const m = word.match(/^(\d+)([ym])$/);
-    if (m) {
+    if (m && m[1]) {
       if (m[2]==='y') return String(parseInt(m[1])*12).padStart(4,'0')
       return m[1].padStart(4,'0')
     }
@@ -162,7 +166,7 @@ function updateCadence(dateObjects) {
     return {summary: "rarely", description: `This dataset has been updated ${intervals.length+1} times in the past 2 years.`};
   }
 
-  const lastUpdateDaysAgo = Math.round(((new Date()) - dateObjects.at(-1))/msInADay);
+  const lastUpdateDaysAgo = Math.round(((new Date()).getTime() - dateObjects.at(-1))/msInADay);
   const median = intervals[Math.floor(intervals.length/2)];
   const mad = intervals.map((x) => Math.abs(x-median)).sort((a, b) => a-b)[Math.floor(intervals.length/2)]
 
