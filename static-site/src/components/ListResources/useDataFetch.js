@@ -57,13 +57,9 @@ export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDispla
  * resource objects. 
  */
 function partitionByPathogen(pathVersions, pathPrefix, versioned) {
-
-  return Object.entries(pathVersions).reduce(reduceFn, {});
-  
-  function reduceFn(store, datum) {
-    const name = datum[0];
+  return Object.entries(pathVersions).reduce((store, [name, dates]) => {
     const nameParts = name.split('/');
-    const sortedDates = [...datum[1]].sort();
+    const sortedDates = [...dates].sort();
 
     let groupName = nameParts[0];
 
@@ -88,7 +84,7 @@ function partitionByPathogen(pathVersions, pathPrefix, versioned) {
     store[groupName].push(resourceDetails)
 
     return store;
-  }
+  }, {});
 }
 
 
@@ -97,9 +93,7 @@ function partitionByPathogen(pathVersions, pathPrefix, versioned) {
  * into an array of groups.
  */
 function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames) {
-  return Object.entries(partitions).map(makeGroup)
-
-  function makeGroup([groupName, resources]) {
+  return Object.entries(partitions).map(([groupName, resources]) => {
     const groupInfo = {
       groupName: groupName,
       nResources: resources.length,
@@ -115,7 +109,7 @@ function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames
       groupInfo.groupDisplayName = groupDisplayNames[groupName];
     }
     return groupInfo;
-  }
+  })
 }
 
 
