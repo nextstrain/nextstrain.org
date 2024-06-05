@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useCallback, useEffect, useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import styled from 'styled-components';
 import {CardInner, CardImg, CardTitle} from "../Cards/styles";
 import { theme } from "../../layouts/theme";
@@ -9,6 +10,9 @@ import { LIST_ANCHOR } from "./index";
 import { Card, FilterOption, Group } from './types';
 
 const cardWidthHeight = 160; // pixels
+const expandPreviewHeight = 50 //pixels
+const transitionDuration = "0.3s"
+const transitionTimingFunction = "ease"
 
 interface ShowcaseProps {
     cards: Card[]
@@ -16,19 +20,46 @@ interface ShowcaseProps {
 }
 
 export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
-  if (!cards.length) return null;
+
+  const [cardsContainerHeight, setCardsContainerHeight] = useState<number>(0);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  /**
+   * Function that runs on changes to the container.
+   * Used to determine the height upon resize.
+   */
+  function cardsContainerRef(cardsContainer: HTMLDivElement) {
+    if (!cardsContainer) return;
+
+    if(cardsContainerHeight != cardsContainer.clientHeight) {
+      setCardsContainerHeight(cardsContainer.clientHeight)
+    }
+  }
+
+  const isExpandable = cardsContainerHeight > cardWidthHeight;
+
   return (
     <div>
       <Byline>
         Showcase resources: click to filter the resources to a pathogen
       </Byline>
-      <SingleRow>
-        <ShowcaseContainer>
+      <ShowcaseContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $expandedHeight={cardsContainerHeight}>
+        <CardsContainer ref={cardsContainerRef}>
           {cards.map((el) => (
             <ShowcaseTile card={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
             ))}
-        </ShowcaseContainer>
-      </SingleRow>
+        </CardsContainer>
+        <PreviewOverlay onClick={toggleExpand} className={!isExpandable || isExpanded ? "hidden" : "visible"} />
+      </ShowcaseContainer>
+      {isExpandable && <>
+        <ArrowButton onClick={toggleExpand}>
+          {isExpanded ? <FaChevronUp/> : <FaChevronDown/>}
+        </ArrowButton>
+      </>}
       <Spacer/>
     </div>
   )
@@ -66,23 +97,59 @@ const ShowcaseTile = ({card, setSelectedFilterOptions}: ShowcaseTileProps) => {
 }
 
 
-/* SingleRow only shows a single row of tiles. By using this to wrap a flexbox
-element we can leverage the intelligent wrapping of the flexbox to decide how
-many tiles to show in a single row. The downside is that showcase tiles are
-still in the DOM, and the images are still fetched etc */
-const SingleRow = styled.div`
-  max-height: ${cardWidthHeight}px;
-  overflow-y: clip;
+const ShowcaseContainer = styled.div<{$expandedHeight: number}>`
+  position: relative;
+  overflow-y: hidden;
+
+  &.collapsed {
+    max-height: ${cardWidthHeight + expandPreviewHeight}px;
+  }
+
+  &.expanded {
+    max-height: ${(props) => `${props.$expandedHeight}px`};
+  }
+
+  transition: max-height ${transitionDuration} ${transitionTimingFunction};
 `
 
-const ShowcaseContainer = styled.div`
+const ArrowButton = styled.div`
+  text-align: center;
+  width: 100%;
+  height: 1em;
+  cursor: pointer;
+`
+
+const PreviewOverlay = styled.div`
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) -100%,
+    rgba(255, 255, 255, 1) 100%);
+  width: 100%;
+  height: ${expandPreviewHeight}px;
+  cursor: pointer;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  &.hidden {
+    opacity: 0;
+  }
+
+  transition: opacity ${transitionDuration} ${transitionTimingFunction};
+`;
+
+const CardsContainer = styled.div`
   /* background-color: #ffeab0; */
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(${cardWidthHeight}px, max-content));
+  grid-gap: 1%;
   overflow: hidden;
-  overflow: hidden;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const Spacer = styled.div`
