@@ -80,7 +80,6 @@ function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, ver
       sortingName: _sortableName(nameParts),
       url: `/${pathPrefix}${name}`,
       lastUpdated: sortedDates.at(-1)!,
-      versioned
     };
     if (versioned) {
       resourceDetails.firstUpdated = sortedDates[0]!;
