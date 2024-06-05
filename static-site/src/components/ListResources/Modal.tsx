@@ -4,13 +4,20 @@ import styled from 'styled-components';
 import * as d3 from "d3";
 import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
+import { Resource } from './types';
 
-export const SetModalContext = createContext(null);
+export const SetModalResourceContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
 export const RAINBOW20 =   ["#511EA8", "#4432BD", "#3F4BCA", "#4065CF", "#447ECC", "#4C91BF", "#56A0AE", "#63AC9A", "#71B486", "#81BA72", "#94BD62", "#A7BE54", "#BABC4A", "#CBB742", "#D9AE3E", "#E29E39", "#E68935", "#E56E30", "#E14F2A", "#DC2F24"];
 const lightGrey = 'rgba(0,0,0,0.1)';
 
-export const ResourceModal = ({data, dismissModal}) => {  
+
+interface ResourceModalProps {
+  resource?: Resource
+  dismissModal: () => void
+}
+
+export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {  
   const [ref, setRef] = useState(null); 
   const handleRef = useCallback((node) => {setRef(node)}, [])
 
@@ -30,32 +37,33 @@ export const ResourceModal = ({data, dismissModal}) => {
   }, []);
 
   useEffect(() => {
-    if (!ref || !data) return;
-    _draw(ref, data)
-  }, [ref, data])
+    if (!ref || !resource) return;
+    _draw(ref, resource)
+  }, [ref, resource])
 
-  if (!data) return null;
+  // modal is only applicable for versioned resources
+  if (!resource || !resource.dates || !resource.updateCadence) return null;
 
-  const summary = _snapshotSummary(data.dates);
+  const summary = _snapshotSummary(resource.dates);
   return (
     <div ref={scrollRef}>
     
       <Background onClick={dismissModal}/>
       <ModalContainer onClick={(e) => {e.stopPropagation()}}>
         <CloseIcon onClick={dismissModal}/>
-        <Title>{data.name.replace(/\//g, "│")}</Title>
+        <Title>{resource.name.replace(/\//g, "│")}</Title>
 
         <div style={{paddingBottom: '5px'}}>
           <Bold>
-            {`${data.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
+            {`${resource.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
           </Bold>
           <a style={{fontSize: '1.8rem', paddingLeft: '10px'}}
-            href={`/${data.name}`}  target="_blank" rel="noreferrer noopener">
+            href={`/${resource.name}`}  target="_blank" rel="noreferrer noopener">
             (click to view the latest available snapshot)
           </a>
         </div>
         <div>
-          {data.updateCadence.description}
+          {resource.updateCadence.description}
         </div>
 
         <div ref={handleRef} /> {/* d3 controlled div */}
@@ -123,10 +131,13 @@ const Title = styled.div`
   padding-bottom: 15px;
 `
 
-function _snapshotSummary(dates) {
+function _snapshotSummary(dates: string[]) {
   const d = [...dates].sort()
-  const [d1, d2] = [d[0], d.at(-1)].map((di) => new Date(di));
-  const days = (d2-d1)/1000/60/60/24;
+  if (d.length < 1) throw new Error("Missing dates.")
+
+  const d1 = new Date(d.at( 0)!).getTime();
+  const d2 = new Date(d.at(-1)!).getTime();
+  const days = (d2 - d1)/1000/60/60/24;
   let duration = '';
   if (days < 100) duration=`${days} days`;
   else if (days < 365*2) duration=`${Math.round(days/(365/12))} months`;
@@ -134,11 +145,14 @@ function _snapshotSummary(dates) {
   return {duration, first: d[0], last:d.at(-1)};
 }
 
-function _draw(ref, data) {
+function _draw(ref, resource: Resource) {
+  // do nothing if resource has no dates
+  if (!resource.dates) return
+
   /* Note that _page_ resizes by themselves will not result in this function
   rerunning, which isn't great, but for a modal I think it's perfectly
   acceptable */  
-  const sortedDateStrings = [...data.dates].sort();
+  const sortedDateStrings = [...resource.dates].sort();
   const flatData = sortedDateStrings.map((version) => ({version, 'date': new Date(version)}));
 
   const width = ref.clientWidth;
@@ -164,7 +178,8 @@ function _draw(ref, data) {
 
   /* Create the x-scale and draw the x-axis */
   const x = d3.scaleTime()
-    .domain([flatData[0].date, new Date()]) // the domain extends to the present day
+    // presence of dates on resource has already been checked so this assertion is safe
+    .domain([flatData[0]!.date, new Date()]) // the domain extends to the present day
     .range([graphIndent, width-graphIndent])
   svg.append('g')
     .attr("transform", `translate(0, ${heights.height - heights.marginBelowAxis})`)
@@ -232,9 +247,11 @@ function _draw(ref, data) {
       .attr("cy", (d) => heights.height - heights.marginBelowAxis - heights.marginAboveAxis - radius - padding - d.y)
       .attr("r", radius)
       .attr('fill', color)
+      // @ts-expect-error
       .on("mouseover", function(e, d) {
         /* lower opacity of non-hovered, increase radius of hovered circle */
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => selectSnapshot(update, d)
         )
@@ -254,6 +271,7 @@ function _draw(ref, data) {
       })
       .on("mouseleave", function() {
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => resetBeeswarm(update)
         )
@@ -261,8 +279,9 @@ function _draw(ref, data) {
         selectedVersionGroup.selectAll("*")
           .style("opacity", 0)
       })
+      // @ts-expect-error
       .on("click", function(e, d) {
-        window.open(`/${data.name}@${d.data.version}`,'_blank'); // TEST!
+        window.open(`/${resource.name}@${d.data.version}`,'_blank'); // TEST!
       })
 
   /**
@@ -281,6 +300,7 @@ function _draw(ref, data) {
       .on("mousemove", function(e) {
         const { datum, hoveredDateStr } = getVersion(e);
         beeswarm.join(
+            // @ts-expect-error
             (enter) => {}, /* eslint-disable-line */
             (update) => selectSnapshot(update, datum)
         )
@@ -301,6 +321,7 @@ function _draw(ref, data) {
       })
       .on("mouseleave", function() {
         beeswarm.join(
+          // @ts-expect-error
           (enter) => {}, /* eslint-disable-line */
           (update) => resetBeeswarm(update)
         )
@@ -309,7 +330,7 @@ function _draw(ref, data) {
       })
       .on("click", function(e) {
         const { datum } = getVersion(e);
-        window.open(`/${data.name}@${datum.data.version}`,'_blank');
+        window.open(`/${resource.name}@${datum.data.version}`,'_blank');
       })
 
   function selectSnapshot(selection, selectedDatum) {
@@ -345,7 +366,7 @@ function _draw(ref, data) {
 
   const dateWithYear = d3.utcFormat("%B %d, %Y");
   const dateSameYear = d3.utcFormat("%B %d");
-  function prettyDate(mainDate, secondDate) {
+  function prettyDate(mainDate: string, secondDate?: string) {
     const d1 = dateWithYear(new Date(mainDate));
     if (!secondDate) return d1;
     const d2 = (mainDate.slice(0,4)===secondDate.slice(0,4) ? dateSameYear : dateWithYear)(new Date(secondDate));

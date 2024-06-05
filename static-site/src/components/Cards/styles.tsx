@@ -15,7 +15,7 @@ export const CardInner = styled.div`
   cursor: pointer;
 `;
 
-export const CardOuter = styled.div`
+export const CardOuter = styled.div<{$squashed: boolean}>`
   background-color: #FFFFFF;
   padding: 0;
   overflow: hidden;
@@ -38,7 +38,7 @@ export const CardOuter = styled.div`
   }
 `;
 
-export const CardTitle = styled.div`
+export const CardTitle = styled.div<{$squashed: boolean}>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
   font-size: ${(props) => props.$squashed ? "22px" : "26px"};

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link'
 import styled from 'styled-components';
-import Select from 'react-select';
+import Select, { MultiValue } from 'react-select';
 import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
 import {Tooltip} from 'react-tooltip-v5';
 import { useFilterOptions } from './useFilterOptions';
@@ -11,8 +11,13 @@ import {Spinner} from '../Spinner/Spinner';
 import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
-import {ResourceModal, SetModalContext} from "./Modal";
+import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { Showcase, useShowcaseCards} from "./Showcase";
+import { Card, FilterOption, Group, GroupDisplayNames, QuickLink, Resource } from './types';
+
+interface ListResourcesProps extends ListResourcesResponsiveProps {
+  elWidth: number
+}
 
 export const LIST_ANCHOR = "list";
 
@@ -29,20 +34,20 @@ function ListResources({
   versioned=true,
   elWidth,
   quickLinks,
-  defaultGroupLinks=false, /* should the group name itself be a url? (which we let the server redirect) */
-  groupDisplayNames, /* mapping from group name -> display name */
-  showcase, /* showcase cards */
-}) {
-  const [originalData, dataError] = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
-  const showcaseCards = useShowcaseCards(showcase, originalData);
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState([]);
+  defaultGroupLinks=false,
+  groupDisplayNames,
+  showcase,
+}: ListResourcesProps) {
+  const {groups, dataFetchError} = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
+  const showcaseCards = useShowcaseCards(showcase, groups);
+  const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
-  const [resourceGroups, setResourceGroups] = useState([]);
-  useSortAndFilter(sortMethod, selectedFilterOptions, originalData, setResourceGroups)
+  const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
+  useSortAndFilter(sortMethod, selectedFilterOptions, groups, setResourceGroups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
-  const [modal, setModal ] = useState(null);
+  const [modalResource, setModalResource ] = useState<Resource>();
 
-  if (dataError) {
+  if (dataFetchError) {
     return (
       <ErrorContainer>  
         {"Whoops - listing resources isn't working!"}
@@ -69,12 +74,12 @@ function ListResources({
 
       <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
 
-      <SetModalContext.Provider value={setModal}>
+      <SetModalResourceContext.Provider value={setModalResource}>
         <ScrollableAnchor id={LIST_ANCHOR}>
           <div>
             {resourceGroups.map((group) => (
               <ResourceGroup key={group.groupName}
-                data={group} quickLinks={quickLinks}
+                group={group} quickLinks={quickLinks}
                 elWidth={elWidth}
                 numGroups={resourceGroups.length}
                 sortMethod={sortMethod}
@@ -82,18 +87,29 @@ function ListResources({
             ))}
           </div>
         </ScrollableAnchor>
-      </SetModalContext.Provider>
+      </SetModalResourceContext.Provider>
 
       <Tooltip style={{fontSize: '1.6rem'}} id="listResourcesTooltip"/>
 
       { versioned && (
-        <ResourceModal data={modal} dismissModal={() => setModal(null)}/>
+        <ResourceModal resource={modalResource} dismissModal={() => setModalResource(undefined)}/>
       )}
 
     </ListResourcesContainer>
   )
 }
 
+
+interface ListResourcesResponsiveProps {
+  sourceId: string
+  versioned: boolean
+  quickLinks: QuickLink[]
+
+  /** Should the group name itself be a url? (which we let the server redirect) */
+  defaultGroupLinks: boolean
+  groupDisplayNames: GroupDisplayNames
+  showcase: Card[]
+}
 
 /**
  * A wrapper element which monitors for resize events affecting the dom element.
@@ -103,14 +119,20 @@ function ListResources({
  * the resizes happen frequently and debouncing would be better. From limited
  * testing it's not too slow and these resizes should be infrequent.
  */
-function ListResourcesResponsive(props) {
+function ListResourcesResponsive(props: ListResourcesResponsiveProps) {
   const ref = useRef(null);
-  const [elWidth, setElWidth] = useState(0);
+  const [elWidth, setElWidth] = useState<number>(0);
   useEffect(() => {
     const observer = new ResizeObserver(([entry]) => {
-      setElWidth(entry.contentRect.width);
+      if (entry) {
+        // don't do anything if entry is undefined
+        setElWidth(entry.contentRect.width);
+      }
     });
-    observer.observe(ref.current);
+    if (ref.current) {
+      // don't do anything if ref is undefined
+      observer.observe(ref.current);
+    }
     return () => {
       observer.disconnect();
     };
@@ -154,14 +176,27 @@ function SortOptions({sortMethod, changeSortMethod}) {
   )
 }
 
-function Filter({options, selectedFilterOptions, setSelectedFilterOptions}) {
+interface FilterProps {
+  options: FilterOption[]
+  selectedFilterOptions: readonly FilterOption[]
+  setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
+}
+
+function Filter({options, selectedFilterOptions, setSelectedFilterOptions}: FilterProps) {
+
+  const onChange = (options: MultiValue<FilterOption>) => {
+    if (options) {
+      setSelectedFilterOptions(options)
+    }
+  };
+
   return (
     <div className="filter">
       <Select
         placeholder={"Filter by keywords in dataset names"}
         isMulti options={options}
         value={selectedFilterOptions}
-        onChange={setSelectedFilterOptions}
+        onChange={onChange}
         styles={{
           // https://react-select.com/styles#inner-components
           placeholder: (baseStyles) => ({...baseStyles, fontSize: "1.6rem"}),

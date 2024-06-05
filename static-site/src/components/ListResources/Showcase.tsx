@@ -6,10 +6,16 @@ import { theme } from "../../layouts/theme";
 import { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
 import { createFilterOption } from "./useFilterOptions";
 import { LIST_ANCHOR } from "./index";
+import { Card, FilterOption, Group } from './types';
 
 const cardWidthHeight = 160; // pixels
 
-export const Showcase = ({cards, setSelectedFilterOptions}) => {
+interface ShowcaseProps {
+    cards: Card[]
+    setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
+}
+
+export const Showcase = ({cards, setSelectedFilterOptions}: ShowcaseProps) => {
   if (!cards.length) return null;
   return (
     <div>
@@ -19,7 +25,7 @@ export const Showcase = ({cards, setSelectedFilterOptions}) => {
       <SingleRow>
         <ShowcaseContainer>
           {cards.map((el) => (
-            <ShowcaseTile data={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
+            <ShowcaseTile card={el} key={el.name} setSelectedFilterOptions={setSelectedFilterOptions}/>
             ))}
         </ShowcaseContainer>
       </SingleRow>
@@ -28,16 +34,21 @@ export const Showcase = ({cards, setSelectedFilterOptions}) => {
   )
 }
 
+interface ShowcaseTileProps {
+    card: Card
+    setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
+}
+
 /**
  * NOTE: Many of the React components here are taken from the existing Cards UI
  */
-const ShowcaseTile = ({data, setSelectedFilterOptions}) => {
+const ShowcaseTile = ({card, setSelectedFilterOptions}: ShowcaseTileProps) => {
   const filter = useCallback(
     () => {
-      setSelectedFilterOptions(data.filters.map(createFilterOption));
+      setSelectedFilterOptions(card.filters.map(createFilterOption));
       goToAnchor(LIST_ANCHOR);
     },
-    [setSelectedFilterOptions, data]
+    [setSelectedFilterOptions, card]
   )
 
   return (
@@ -45,9 +56,9 @@ const ShowcaseTile = ({data, setSelectedFilterOptions}) => {
       <CardInner>
         <div onClick={filter}>
           <CardTitle $squashed>
-            {data.name}
+            {card.name}
           </CardTitle>
-          <CardImgWrapper filename={data.img}/>
+          <CardImgWrapper filename={card.img}/>
         </div>
       </CardInner>
     </CardOuter>
@@ -91,7 +102,9 @@ const CardOuter = styled.div`
 
 const themeColors = [...theme.titleColors];
 const getColor = () => {
-  themeColors.push(themeColors.shift());
+  // rotate colors by moving the first color (which is always defined) to the end
+  themeColors.push(themeColors.shift()!);
+  // return the last color
   return themeColors.at(-1);
 }
 
@@ -115,19 +128,19 @@ const Byline = styled.div`
  * which the filters are valid given the resources known to the resource listing
  * UI
  */
-export const useShowcaseCards = (cards, resources) => {
-  const [restrictedCards, setRestrictedCards] = useState([]);
+export const useShowcaseCards = (cards?: Card[], groups?: Group[]) => {
+  const [restrictedCards, setRestrictedCards] = useState<Card[]>([]);
   useEffect(() => {
-    if (!cards || !resources) return;
-    const words = resources.reduce((words, group) => {
+    if (!cards || !groups) return;
+    const words = groups.reduce((words, group) => {
       for (const resource of group.resources) {
         for (const word of resource.nameParts) {
           words.add(word);
         }
       }
       return words;
-    }, new Set());
+    }, new Set<string>());
     setRestrictedCards(cards.filter((card) => card.filters.every((word) => words.has(word))));
-  }, [cards, resources]);
+  }, [cards, groups]);
   return restrictedCards;
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Group, GroupDisplayNames, PathVersions, Resource } from './types';
 
 
 /**
@@ -11,25 +12,25 @@ import { useState, useEffect } from 'react';
  * response, however in the future we may shift this to the API response and it
  * may vary across the resources returned.
  */
-export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames) {
-  const [state, setState] = useState(undefined);
-  const [error, setError] = useState(undefined);
+export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupLinks: boolean, groupDisplayNames: GroupDisplayNames) {
+  const [groups, setGroups] = useState<Group[]>();
+  const [dataFetchError, setDataFetchError] = useState<boolean>();
   useEffect(() => {
     const url = `/list-resources/${sourceId}`;
 
     async function fetchAndParse() {
-      let pathVersions, pathPrefix;
+      let pathVersions: PathVersions, pathPrefix: string;
       try {
         const response = await fetch(url, {headers: {accept: "application/json"}});
         if (response.status !== 200) {
           console.error(`ERROR: fetching data from "${url}" returned status code ${response.status}`);
-          return setError(true);
+          return setDataFetchError(true);
         }
         ({ pathVersions, pathPrefix } = (await response.json()).dataset[sourceId]);
       } catch (err) {
         console.error(`Error while fetching data from "${url}"`);
         console.error(err);
-        return setError(true);
+        return setDataFetchError(true);
       }
 
       /* group/partition the resources by pathogen (the first word of the
@@ -37,17 +38,22 @@ export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDispla
       single time following the data fetch */
       try {
         const partitions = partitionByPathogen(pathVersions, pathPrefix, versioned);
-        setState(groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames));
+        setGroups(groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames));
       } catch (err) {
         console.error(`Error while parsing fetched data`);
         console.error(err);
-        return setError(true);
+        return setDataFetchError(true);
       }
     }
 
     fetchAndParse();
   }, [sourceId, versioned, defaultGroupLinks, groupDisplayNames]);
-  return [state, error]
+  return {groups, dataFetchError}
+}
+
+
+interface Partitions {
+  [name: string]: Resource[]
 }
 
 
@@ -56,39 +62,39 @@ export function useDataFetch(sourceId, versioned, defaultGroupLinks, groupDispla
  * representing group names (pathogen names) and values which are arrays of
  * resource objects. 
  */
-function partitionByPathogen(pathVersions, pathPrefix, versioned) {
+function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, versioned: boolean) {
+  return Object.entries(pathVersions).reduce((store: Partitions, [name, dates]) => {
+    const sortedDates = [...dates].sort();
 
-  return Object.entries(pathVersions).reduce(reduceFn, {});
-  
-  function reduceFn(store, datum) {
-    const name = datum[0];
+    // do nothing if resource has no dates
+    if (sortedDates.length < 1) return store
+
     const nameParts = name.split('/');
-    const sortedDates = [...datum[1]].sort();
+    // split() will always return at least 1 string
+    let groupName = nameParts[0]!;
 
-    let groupName = nameParts[0];
-
-    if (!store[groupName]) store[groupName] = []
-    const resourceDetails = {
+    const resourceDetails: Resource = {
       name,
       groupName, /* decoupled from nameParts */
       nameParts,
       sortingName: _sortableName(nameParts),
       url: `/${pathPrefix}${name}`,
-      lastUpdated: sortedDates.at(-1),
+      lastUpdated: sortedDates.at(-1)!,
       versioned
     };
     if (versioned) {
-      resourceDetails.firstUpdated = sortedDates[0];
-      resourceDetails.lastUpdated = sortedDates.at(-1);
+      resourceDetails.firstUpdated = sortedDates[0]!;
+      resourceDetails.lastUpdated = sortedDates.at(-1)!;
       resourceDetails.dates = sortedDates;
       resourceDetails.nVersions = sortedDates.length;
       resourceDetails.updateCadence = updateCadence(sortedDates.map((date)=> new Date(date)));
     }
 
-    store[groupName].push(resourceDetails)
+    if (!store[groupName]) store[groupName] = [];
+    store[groupName]!.push(resourceDetails)
 
     return store;
-  }
+  }, {});
 }
 
 
@@ -96,15 +102,13 @@ function partitionByPathogen(pathVersions, pathPrefix, versioned) {
  * Turn the provided partitions (an object mapping groupName to an array of resources)
  * into an array of groups.
  */
-function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames) {
-  return Object.entries(partitions).map(makeGroup)
-
-  function makeGroup([groupName, resources]) {
-    const groupInfo = {
+function groupsFrom(partitions: Partitions, pathPrefix: string, defaultGroupLinks: boolean, groupDisplayNames: GroupDisplayNames) {
+  return Object.entries(partitions).map(([groupName, resources]) => {
+    const groupInfo: Group = {
       groupName: groupName,
       nResources: resources.length,
       nVersions: resources.reduce((total, r) => r.nVersions ? total+r.nVersions : total, 0) || undefined,
-      lastUpdated: resources.map((r) => r.lastUpdated).sort().at(-1),
+      lastUpdated: resources.map((r) => r.lastUpdated).sort().at(-1)!,
       resources,
     }
     /* add optional properties */
@@ -115,7 +119,7 @@ function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames
       groupInfo.groupDisplayName = groupDisplayNames[groupName];
     }
     return groupInfo;
-  }
+  })
 }
 
 
@@ -124,10 +128,10 @@ function groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames
  * however this results in temporal sorting such as [12y 2y 6m 6y] etc. This function
  * produces strings which, when sorted alphabetically, are in a nicer order.
  */
-function _sortableName(words) {
+function _sortableName(words: string[]) {
   const w = words.map((word) => {
     const m = word.match(/^(\d+)([ym])$/);
-    if (m) {
+    if (m && m[1]) {
       if (m[2]==='y') return String(parseInt(m[1])*12).padStart(4,'0')
       return m[1].padStart(4,'0')
     }
@@ -162,11 +166,11 @@ function updateCadence(dateObjects) {
     return {summary: "rarely", description: `This dataset has been updated ${intervals.length+1} times in the past 2 years.`};
   }
 
-  const lastUpdateDaysAgo = Math.round(((new Date()) - dateObjects.at(-1))/msInADay);
+  const lastUpdateDaysAgo = Math.round(((new Date()).getTime() - dateObjects.at(-1))/msInADay);
   const median = intervals[Math.floor(intervals.length/2)];
   const mad = intervals.map((x) => Math.abs(x-median)).sort((a, b) => a-b)[Math.floor(intervals.length/2)]
 
-  let description;
+  let description: string;
   description = `Over the past two years this dataset's been updated ${mad*2 > median ? 'irregularly' : 'consistently'} every `;
   description += median===1 ? '~day' : `~${median} days`;
   if (lastUpdateDaysAgo > median*3) description+=", however it hasn't been updated for a while";

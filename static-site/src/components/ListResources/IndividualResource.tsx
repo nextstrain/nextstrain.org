@@ -2,7 +2,9 @@
 import React, {useState, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory } from "react-icons/md";
-import { SetModalContext } from './Modal';
+import { SetModalResourceContext } from './Modal';
+import { ResourceDisplayName, Resource } from './types';
+import { IconType } from 'react-icons';
 
 export const LINK_COLOR = '#5097BA'
 export const LINK_HOVER_COLOR = '#31586c'
@@ -17,19 +19,21 @@ export const LINK_HOVER_COLOR = '#31586c'
 const [resourceFontSize, namePxPerChar, summaryPxPerChar] = [16, 10, 9];
 const iconWidth = 20; // not including text
 const gapSize = 10;
-export const getMaxResourceWidth = (displayResources) => {
+export const getMaxResourceWidth = (displayResources: Resource[]) => {
   return displayResources.reduce((w, r) => {
+    if (!r.displayName || !r.updateCadence) return w
+
     /* add the pixels for the display name */
     let _w = r.displayName.default.length * namePxPerChar;
     if (r.nVersions) {
       _w += gapSize + iconWidth;
-      _w += ((r?.updateCadence?.summary?.length || 0) + 5 + String(r.nVersions).length)*summaryPxPerChar;
+      _w += ((r.updateCadence.summary.length || 0) + 5 + String(r.nVersions).length)*summaryPxPerChar;
     }
     return _w>w ? _w : w;
   }, 200); // 200 (pixels) is the minimum
 }
 
-export const ResourceLink = styled.a`
+export const ResourceLink = styled.a<{$hovered?: boolean}>`
   font-size: ${resourceFontSize}px;
   font-family: monospace;
   white-space: pre; /* don't collapse back-to-back spaces */
@@ -37,7 +41,14 @@ export const ResourceLink = styled.a`
   text-decoration: none !important;
 `;
 
-function Name({displayName, $hovered, href, topOfColumn}) {
+interface NameProps {
+  displayName: ResourceDisplayName
+  $hovered?: boolean
+  href: string
+  topOfColumn: boolean
+}
+
+function Name({displayName, $hovered = false, href, topOfColumn}: NameProps) {
   return (
     <ResourceLink href={href} target="_blank" rel="noreferrer" $hovered={$hovered}>
       {'• '}{($hovered||topOfColumn) ? displayName.hovered : displayName.default}
@@ -70,7 +81,15 @@ export function TooltipWrapper({description, children}) {
   )
 } 
 
-export function IconContainer({Icon, text, handleClick=undefined, color=undefined, hoverColor=undefined}) {
+interface IconContainerProps {
+  Icon: IconType
+  text: string
+  handleClick?: () => void
+  color?: string
+  hoverColor?: string
+}
+
+export function IconContainer({Icon, text, handleClick, color, hoverColor}: IconContainerProps) {
   const [hovered, setHovered] = useState(false);
   const defaultColor = '#aaa';
   const defaultHoverColor = "rgb(79, 75, 80)";
@@ -89,45 +108,61 @@ export function IconContainer({Icon, text, handleClick=undefined, color=undefine
 }
 
 
-/**
- * 
- * @param {*} param0 
- * @returns 
- */
-export const IndividualResource = ({data, isMobile}) => {
-  const setModal = useContext(SetModalContext);
-  const ref = useRef(null);
+interface IndividualResourceProps {
+  resource: Resource
+  isMobile: boolean
+}
+
+export const IndividualResource = ({resource, isMobile}: IndividualResourceProps) => {
+  const setModalResource = useContext(SetModalResourceContext);
+  if (!setModalResource) throw new Error("Context not provided!")
+
+  const ref = useRef<HTMLDivElement>(null);
   const [topOfColumn, setTopOfColumn] = useState(false);
   useEffect(() => {
+    // don't do anything if the ref is undefined or the parent is not a div (IndividualResourceContainer)
+    if (!ref.current
+     || !ref.current.parentNode
+     || ref.current.parentNode.nodeName != 'DIV') return;
+
     /* The column CSS is great but doesn't allow us to know if an element is at
     the top of its column, so we resort to JS */
-    if (ref.current.offsetTop===ref.current.parentNode.offsetTop) {
+    if (ref.current.offsetTop===(ref.current.parentNode as HTMLDivElement).offsetTop) {
       setTopOfColumn(true);
     }
   }, []);
+
+  // don't show anything if display name is unavailable
+  if (!resource.displayName) return null
+
+  // add history if mobile and resource is versioned
+  let history: React.JSX.Element | null = null
+  if (!isMobile && resource.versioned && resource.updateCadence && resource.nVersions) {
+    history = (
+      <TooltipWrapper description={resource.updateCadence.description +
+        `<br/>Last known update on ${resource.lastUpdated}` +
+        `<br/>${resource.nVersions} snapshots of this dataset available (click to see them)`}>
+        <IconContainer
+          Icon={MdHistory}
+          text={`${resource.updateCadence.summary} (n=${resource.nVersions})`}
+          handleClick={() => setModalResource(resource)}
+        />
+      </TooltipWrapper>
+    )
+  }
 
   return (
     <Container ref={ref}>
 
       <FlexRow>
 
-        <TooltipWrapper description={`Last known update on ${data.lastUpdated}`}>
-          <ResourceLinkWrapper onShiftClick={() => setModal(data)}>
-            <Name displayName={data.displayName} href={data.url} topOfColumn={topOfColumn}/>
+        <TooltipWrapper description={`Last known update on ${resource.lastUpdated}`}>
+          <ResourceLinkWrapper onShiftClick={() => setModalResource(resource)}>
+            <Name displayName={resource.displayName} href={resource.url} topOfColumn={topOfColumn}/>
           </ResourceLinkWrapper>
         </TooltipWrapper>
 
-        {data.versioned && !isMobile && (
-          <TooltipWrapper description={data.updateCadence.description +
-            `<br/>Last known update on ${data.lastUpdated}` +
-            `<br/>${data.nVersions} snapshots of this dataset available (click to see them)`}>
-            <IconContainer
-              Icon={MdHistory}
-              text={`${data.updateCadence.summary} (n=${data.nVersions})`}
-              handleClick={() => setModal(data)}
-            />
-          </TooltipWrapper>
-        )}
+        {history}
 
       </FlexRow>
 
