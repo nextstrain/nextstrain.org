@@ -21,7 +21,6 @@ export interface Resource {
   sortingName: string
   url: string
   lastUpdated: string  // date
-  versioned: boolean
   firstUpdated?: string  // date
   dates?: string[]
   nVersions?: number

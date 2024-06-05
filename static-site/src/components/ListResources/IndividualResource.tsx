@@ -135,9 +135,9 @@ export const IndividualResource = ({resource, isMobile}: IndividualResourceProps
   // don't show anything if display name is unavailable
   if (!resource.displayName) return null
 
-  // add history if mobile and resource is versioned
+  // add history if mobile and resource has version info
   let history: React.JSX.Element | null = null
-  if (!isMobile && resource.versioned && resource.updateCadence && resource.nVersions) {
+  if (!isMobile && resource.updateCadence && resource.nVersions) {
     history = (
       <TooltipWrapper description={resource.updateCadence.description +
         `<br/>Last known update on ${resource.lastUpdated}` +
