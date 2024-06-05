@@ -21,11 +21,11 @@ const iconWidth = 20; // not including text
 const gapSize = 10;
 export const getMaxResourceWidth = (displayResources: Resource[]) => {
   return displayResources.reduce((w, r) => {
-    if (!r.displayName || !r.updateCadence) return w
+    if (!r.displayName) return w
 
     /* add the pixels for the display name */
     let _w = r.displayName.default.length * namePxPerChar;
-    if (r.nVersions) {
+    if (r.nVersions && r.updateCadence) {
       _w += gapSize + iconWidth;
       _w += ((r.updateCadence.summary.length || 0) + 5 + String(r.nVersions).length)*summaryPxPerChar;
     }
