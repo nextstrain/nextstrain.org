@@ -33,25 +33,32 @@ export const getMaxResourceWidth = (displayResources: Resource[]) => {
   }, 200); // 200 (pixels) is the minimum
 }
 
-export const ResourceLink = styled.a<{$hovered?: boolean}>`
+export const ResourceLink = styled.a`
   font-size: ${resourceFontSize}px;
   font-family: monospace;
   white-space: pre; /* don't collapse back-to-back spaces */
-  color: ${(props) => props.$hovered ? LINK_HOVER_COLOR : LINK_COLOR} !important;
+  color: ${LINK_COLOR} !important;
   text-decoration: none !important;
+
+  &:hover {
+    color: ${LINK_HOVER_COLOR} !important;
+  }
 `;
 
 interface NameProps {
   displayName: ResourceDisplayName
-  $hovered?: boolean
   href: string
   topOfColumn: boolean
 }
 
-function Name({displayName, $hovered = false, href, topOfColumn}: NameProps) {
+function Name({displayName, href, topOfColumn}: NameProps) {
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <ResourceLink href={href} target="_blank" rel="noreferrer" $hovered={$hovered}>
-      {'• '}{($hovered||topOfColumn) ? displayName.hovered : displayName.default}
+    <ResourceLink href={href} target="_blank" rel="noreferrer"
+      onMouseOver={() => setHovered(true)}
+      onMouseOut={() => setHovered(false)}>
+      {'• '}{(hovered||topOfColumn) ? displayName.hovered : displayName.default}
     </ResourceLink>
   )
 }
@@ -172,11 +179,9 @@ export const IndividualResource = ({resource, isMobile}: IndividualResourceProps
 
 
 /**
- * Wrapper component which monitors for mouse-over events and injects a
- * `hovered: boolean` prop into the child.
+ * Wrapper component to add shift-click behavior.
  */
 export const ResourceLinkWrapper = ({children, onShiftClick}) => {
-  const [hovered, setHovered] = useState(false);
   const onClick = (e) => {
     if (e.shiftKey) {
       onShiftClick();
@@ -184,10 +189,8 @@ export const ResourceLinkWrapper = ({children, onShiftClick}) => {
     }
   };
   return (
-    <div>
-      <div onMouseOver={() => setHovered(true)} onMouseOut={() => setHovered(false)} onClick={onClick}>
-        {React.cloneElement(children, { $hovered: hovered })}
-      </div>
+    <div onClick={onClick}>
+      {children}
     </div>
   )  
 }
