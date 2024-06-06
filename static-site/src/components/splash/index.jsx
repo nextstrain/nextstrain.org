@@ -11,7 +11,6 @@ import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 import { createGroupCards } from "./groupCards";
-import { UserContext } from "../../layouts/userDataWrapper";
 
 const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
   <div id={id} className="col-md-6" style={{paddingBottom: "40px"}}>
@@ -41,8 +40,6 @@ class Splash extends React.Component {
     super();
     configureAnchors({ offset: -10 });
   }
-
-  static contextType = UserContext;
 
   render() {
     return (
