@@ -79,6 +79,13 @@ const Splash = () => {
           buttonLink="/sars-cov-2"
         />
         <Section
+          id="nextclade"
+          title="Nextclade"
+          abstract="Nextclade allows you to analyze virus genome sequences in the web browser. It will align your sequence data to a reference genome, call mutations relative to that reference, and place your sequences on a phylogeny. It also reports clade assignments and quality of your sequence data."
+          buttonText="Go to Nextclade"
+          buttonLink="https://clades.nextstrain.org"
+        />
+        <Section
           id="groups"
           title="Nextstrain Groups"
           abstract="We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience."
