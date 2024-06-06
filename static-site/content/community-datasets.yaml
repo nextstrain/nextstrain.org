@@ -23,11 +23,6 @@ data:
     maintainers: E. Kinganda Lusamaki, INRB & C. Pratt
     date: 13 Oct 2021
     title: Genomic epidemiology of the 2018-21 Ebola epidemic
-    card:
-      img: "ebola2.png"
-      url: "/community/inrb-drc/ebola-nord-kivu"
-      title: "DRC Ebola (2018-19)"
-      frontpage: true
   - url: https://nextstrain.org/community/narratives/ESR-NZ/GenomicsNarrativeSARSCoV2/aotearoa-border-incursions
     title: Real-time genomics to track COVID-19 post-elimination border incursions in Aotearoa New Zealand
     maintainers: Jordan Douglas, PhD, Jemma L. Geoghegan, PhD, James Hadfield, PhD, Remco Bouckaert, PhD, Matthew Storey, MSc, Xiaoyun Ren, PhD, Joep de Ligt, PhD, Nigel French, PhD, David Welch, PhD
@@ -43,11 +38,6 @@ data:
     maintainers: Katherine Eaton et al
     date: '2022-06-13'
     title: Yersinia Pestis (multiple datasets)
-    card:
-      img: "yersinia.png"
-      url: "/community/ktmeaton/yersinia-pestis/maximum-likelihood/all?m=div"
-      title: "Yersinia pestis"
-      frontpage: true
   - url: https://nextstrain.org/community/pestdisplace/CMDAFRICA
     maintainers: PestDisPlace
     date: 07 Sep 2019
