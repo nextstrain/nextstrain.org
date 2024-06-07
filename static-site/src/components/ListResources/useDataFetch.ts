@@ -71,7 +71,7 @@ function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, ver
 
     const nameParts = name.split('/');
     // split() will always return at least 1 string
-    let groupName = nameParts[0]!;
+    const groupName = nameParts[0]!;
 
     const resourceDetails: Resource = {
       name,
