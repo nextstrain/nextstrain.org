@@ -63,6 +63,7 @@ docker run \
   --volume "$(realpath build/pack)":/build/pack:ro \
   --volume "$(realpath build/cache)":/build/cache:rw \
   --volume "$(realpath build/env)":/build/env:ro \
+  --env HOME=/tmp \
   --env STACK=heroku-20 \
   --env SOURCE_VERSION \
   --env SOURCE_DESCRIPTION \
