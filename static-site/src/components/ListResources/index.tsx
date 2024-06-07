@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Link from 'next/link'
 import styled from 'styled-components';
 import Select, { MultiValue } from 'react-select';
 import ScrollableAnchor from '../../../vendored/react-scrollable-anchor/index';
@@ -52,7 +51,7 @@ function ListResources({
       <ErrorContainer>  
         {"Whoops - listing resources isn't working!"}
         <br/>
-        {'Please '}<Link href="/contact" style={{fontWeight: 300}}>get in touch</Link>{" if this keeps happening"}
+        {'Please '}<a href="/contact" style={{fontWeight: 300}}>get in touch</a>{" if this keeps happening"}
       </ErrorContainer>
     )
   }
