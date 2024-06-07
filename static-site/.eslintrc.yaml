@@ -1,10 +1,16 @@
 # Prevent parent configuration from being applied.
 root: true
 
+plugins:
+  - "@typescript-eslint"
+
+parser: "@typescript-eslint/parser"
+
 extends:
   - eslint:recommended
   - plugin:react/recommended
   - plugin:react-hooks/recommended
+  - plugin:@typescript-eslint/recommended
   # We use the recommended Next.js eslint configuration `next/core-web-vitals` as per
   # <https://nextjs.org/docs/pages/building-your-application/configuring/eslint#core-web-vitals>
   # As of April 2024, the extension simply adds the `@next/next/core-web-vitals` plugin:

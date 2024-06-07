@@ -15,7 +15,7 @@
     "build": "./build.sh",
     "lint": "npm run lint:server",
     "lint:server": "DEBUG=eslint:cli-engine npx eslint --ext .js,.jsx .",
-    "lint:static-site": "cd static-site && DEBUG=eslint:cli-engine npx eslint --ext .js,.jsx .",
+    "lint:static-site": "cd static-site && DEBUG=eslint:cli-engine npx eslint --ext .js,.jsx,.ts,.tsx .",
     "server": "node server.js",
     "groups": "node server.js --app ./src/groupsApp.js",
     "start": "npm run server",
