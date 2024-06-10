@@ -178,8 +178,10 @@ const getColor = () => {
 const CardImgWrapper = ({filename}) => {
   let src;
   try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     src = require(`../../../static/splash_images/${filename}`).default.src;
   } catch {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     src = require(`../../../static/splash_images/empty.png`).default.src;
   }
   return <CardImg src={src} alt={""} color={getColor()}/>
