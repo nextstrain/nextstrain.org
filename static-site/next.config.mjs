@@ -10,7 +10,12 @@ const nextConfig = {
   },
   transpilePackages: [
     'react-virtualized'
-  ]
+  ],
+  eslint: {
+    // Allow builds to complete regardless of linting results. This is ok since
+    // linting is done explicitly in CI.
+    ignoreDuringBuilds: true
+  }
 };
 
 export default withYaml(nextConfig);
