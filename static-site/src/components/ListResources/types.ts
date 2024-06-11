@@ -58,7 +58,6 @@ export interface QuickLink {
   groupName?: string
 }
 
-// This is what's returned by the API call to `/list-resources/:sourceName`
 export interface PathVersions {
   [name: string]: string[]  // versions
 }
