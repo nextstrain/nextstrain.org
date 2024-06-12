@@ -141,14 +141,14 @@ export const CardInner = styled.div`
 export const CardTitle = styled.div<{$squashed: boolean}>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
-  font-size: ${(props) => props.$squashed ? "22px" : "26px"};
+  font-size: ${(props) => props.$squashed ? "21px" : "25px"};
   @media (max-width: 768px) {
     font-size: 22px;
   }
   position: absolute;
   border-radius: 3px;
-  padding: 10px 20px 10px 20px;
-  top: 40px;
+  padding: 10px 20px 10px 10px;
+  top: 15px;
   left: 20px;
   color: white;
   background: rgba(0, 0, 0, 0.7);

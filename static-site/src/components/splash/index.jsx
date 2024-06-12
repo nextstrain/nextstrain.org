@@ -61,7 +61,7 @@ const Splash = () => {
       <HugeSpacer/>
 
       <Styles.H1>
-        Featured resources
+        Featured analyses
       </Styles.H1>
 
       <BigSpacer/>
