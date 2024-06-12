@@ -20,7 +20,7 @@ export interface Resource {
   nameParts: string[]
   sortingName: string
   url: string
-  lastUpdated: string  // date
+  lastUpdated?: string  // date
   firstUpdated?: string  // date
   dates?: string[]
   nVersions?: number
