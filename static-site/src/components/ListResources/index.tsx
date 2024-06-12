@@ -76,17 +76,25 @@ function ListResources({
   return (
     <ListResourcesContainer>
 
-      <Byline>
-        Showcase resources: click to filter the resources to a pathogen
-      </Byline>
+      { showcaseCards.length > 0 && (
+        <>
+        <Byline>
+          Showcase resources: click to filter the resources to a pathogen
+        </Byline>
 
-      <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
-        <Showcase cards={showcaseCards} CardComponent={FilterShowcaseTile} />
-      </SetSelectedFilterOptions.Provider>
+        <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
+          <Showcase cards={showcaseCards} CardComponent={FilterShowcaseTile} />
+        </SetSelectedFilterOptions.Provider>
+        </>
+      )}
 
       <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
-      <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
+      { groups?.[0]?.lastUpdated && (
+        <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
+      ) || (
+        <HugeSpacer/>
+      )}
 
       <SetModalResourceContext.Provider value={setModalResource}>
         <ScrollableAnchor id={LIST_ANCHOR}>

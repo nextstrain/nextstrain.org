@@ -65,9 +65,6 @@ function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, ver
   return Object.entries(pathVersions).reduce((store: Partitions, [name, dates]) => {
     const sortedDates = [...dates].sort();
 
-    // do nothing if resource has no dates
-    if (sortedDates.length < 1) return store
-
     const nameParts = name.split('/');
     // split() will always return at least 1 string
     const groupName = nameParts[0]!;
@@ -78,11 +75,10 @@ function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, ver
       nameParts,
       sortingName: _sortableName(nameParts),
       url: `/${pathPrefix}${name}`,
-      lastUpdated: sortedDates.at(-1)!,
+      lastUpdated: sortedDates.at(-1),
     };
     if (versioned) {
       resourceDetails.firstUpdated = sortedDates[0]!;
-      resourceDetails.lastUpdated = sortedDates.at(-1)!;
       resourceDetails.dates = sortedDates;
       resourceDetails.nVersions = sortedDates.length;
       resourceDetails.updateCadence = updateCadence(sortedDates.map((date)=> new Date(date)));

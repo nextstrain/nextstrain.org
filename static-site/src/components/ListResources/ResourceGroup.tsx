@@ -49,7 +49,7 @@ const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isColl
             <TooltipWrapper description={`The most recently updated datasets in this group were last updated on ${group.lastUpdated}` +
                 '<br/>(however there may have been a more recent update since we indexed the data)'}>
               <span>
-                {`Most recent snapshot: ${group.lastUpdated}`}
+                {group.lastUpdated && `Most recent snapshot: ${group.lastUpdated}`}
               </span>
             </TooltipWrapper>
           )}
