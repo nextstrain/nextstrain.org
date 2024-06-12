@@ -56,7 +56,7 @@ function ListResources({
 
   if (dataFetchError) {
     return (
-      <ErrorContainer>  
+      <ErrorContainer>
         {"Whoops - listing resources isn't working!"}
         <br/>
         {'Please '}<a href="/contact" style={{fontWeight: 300}}>get in touch</a>{" if this keeps happening"}
@@ -167,7 +167,7 @@ function SortOptions({sortMethod, changeSortMethod}) {
   }
   return (
     <SortContainer>
-      Sort pathogens by: 
+      Sort pathogens by:
       <input id="alphabetical" type="radio" onChange={onChangeValue} value="alphabetical"
         checked={"alphabetical"===sortMethod} style={{cursor: "alphabetical"===sortMethod ? 'default' : 'pointer'}}/>
       <TooltipWrapper description={'Pathogen groups ordered alphabetically. ' +
