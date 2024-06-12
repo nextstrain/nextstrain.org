@@ -86,7 +86,7 @@ export function TooltipWrapper({description, children}) {
       {children}
     </div>
   )
-} 
+}
 
 interface IconContainerProps {
   Icon: IconType
@@ -194,5 +194,5 @@ export const ResourceLinkWrapper = ({children, onShiftClick}) => {
     <div onClick={onClick}>
       {children}
     </div>
-  )  
+  )
 }

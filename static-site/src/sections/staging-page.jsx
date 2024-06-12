@@ -42,7 +42,7 @@ class Index extends React.Component {
     We update state which results in an error banner being shown. */
     if (!this.state.resourcePath && this.props.router.query?.staging) {
       this.setState({resourcePath: "staging/"+this.props.router.query.staging.join("/")})
-    }    
+    }
   }
 
   componentDidMount() {this.checkRouterParams()}

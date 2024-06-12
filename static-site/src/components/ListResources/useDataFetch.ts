@@ -59,7 +59,7 @@ interface Partitions {
 /**
  * Groups the provided array of pathVersions into an object with keys
  * representing group names (pathogen names) and values which are arrays of
- * resource objects. 
+ * resource objects.
  */
 function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, versioned: boolean) {
   return Object.entries(pathVersions).reduce((store: Partitions, [name, dates]) => {
