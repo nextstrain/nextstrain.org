@@ -75,11 +75,17 @@ function ListResources({
   return (
     <ListResourcesContainer>
 
-      <Showcase cards={showcaseCards} setSelectedFilterOptions={setSelectedFilterOptions}/>
+      { showcaseCards && (
+        <Showcase cards={showcaseCards} setSelectedFilterOptions={setSelectedFilterOptions}/>
+      )}
 
       <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
-      <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
+      { groups && groups[0]?.lastUpdated !== "" && (
+        <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
+      ) || (
+        <HugeSpacer/>
+      )}
 
       <SetModalResourceContext.Provider value={setModalResource}>
         <ScrollableAnchor id={LIST_ANCHOR}>

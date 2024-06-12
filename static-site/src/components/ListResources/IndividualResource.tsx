@@ -158,12 +158,14 @@ export const IndividualResource = ({resource, isMobile}: IndividualResourceProps
     )
   }
 
+  const description = resource.lastUpdated ? `Last known update on ${resource.lastUpdated}` : "";
+
   return (
     <Container ref={ref}>
 
       <FlexRow>
 
-        <TooltipWrapper description={`Last known update on ${resource.lastUpdated}`}>
+        <TooltipWrapper description={description}>
           <ResourceLinkWrapper onShiftClick={() => setModalResource(resource)}>
             <Name displayName={resource.displayName} href={resource.url} topOfColumn={topOfColumn}/>
           </ResourceLinkWrapper>

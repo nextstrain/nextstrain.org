@@ -76,9 +76,6 @@ function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, ver
   return Object.entries(pathVersions).reduce((store: Partitions, [name, dates]) => {
     const sortedDates = [...dates].sort();
 
-    // do nothing if resource has no dates
-    if (sortedDates.length < 1) return store
-
     const nameParts = name.split('/');
     // split() will always return at least 1 string
     const groupName = nameParts[0]!;
