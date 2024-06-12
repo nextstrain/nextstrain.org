@@ -21,6 +21,18 @@ const abstract = (
   </>
 );
 
+const resourceListingCallback = async () => {
+  const sourceId = "core"
+  const sourceUrl = `list-resources/${sourceId}`;
+
+  const response = await fetch(sourceUrl, {headers: {accept: "application/json"}});
+  if (response.status !== 200) {
+    throw new Error(`fetching data from "${sourceUrl}" returned status code ${response.status}`);
+  }
+
+  return (await response.json()).dataset[sourceId];
+};
+
 class Index extends React.Component {
   render() {
     return (
@@ -35,9 +47,13 @@ class Index extends React.Component {
         </FlexCenter>
 
         <HugeSpacer/>
-        <ListResources sourceId="core" resourceType="dataset"
+
+        <ListResources resourceType="dataset"
           showcase={coreShowcase}
-          quickLinks={coreQuickLinks} defaultGroupLinks groupDisplayNames={coreGroupDisplayNames}/>
+          quickLinks={coreQuickLinks} defaultGroupLinks
+          groupDisplayNames={coreGroupDisplayNames}
+          resourceListingCallback={resourceListingCallback}/>
+
         <HugeSpacer/>
       </GenericPage>
     );

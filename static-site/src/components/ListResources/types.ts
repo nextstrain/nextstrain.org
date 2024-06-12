@@ -34,6 +34,11 @@ export interface ResourceDisplayName {
   default: string
 }
 
+export interface ResourceListingInfo {
+  pathPrefix: string
+  pathVersions: PathVersions
+}
+
 /**
  * Mapping from group name -> display name
  */
