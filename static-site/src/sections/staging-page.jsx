@@ -18,6 +18,10 @@ const abstract = (
   </>
 );
 
+const sourceId = "staging";
+const sourceUrl = `list-resources/${sourceId}`;
+const parseResourceListingCallback = async (response) => (await response.json()).dataset[sourceId];
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -62,7 +66,8 @@ class Index extends React.Component {
         </FlexCenter>
         <HugeSpacer />
 
-        <ListResources sourceId="staging" resourceType="dataset" versioned={false}/>
+        <ListResources sourceUrl={sourceUrl} resourceType="dataset" versioned={false}
+          parseResourceListingCallback={parseResourceListingCallback}/>
 
         <HugeSpacer />
 

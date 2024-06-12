@@ -1,34 +1,44 @@
 import { useState, useEffect } from 'react';
-import { Group, GroupDisplayNames, PathVersions, Resource } from './types';
+import { Group, GroupDisplayNames, PathVersions, Resource, ResourceListingInfo } from './types';
 
 
 /**
- * Fetches the datasets for the provided `sourceId` and parses the data into an
- * array of groups, each representing a "pathogen" and detailing the available
- * resources for each, and the available versions (snapshots) for each of those
- * resources.
+ * Fetches the resources from the provided `sourceUrl` and uses the
+ * provided `parseResourceListingCallback` function to parse those
+ * resources into the `pathVersions` and `pathPrefix` values.
  *
- * The current implementation defines `versioned: boolean` for the entire API
- * response, however in the future we may shift this to the API response and it
- * may vary across the resources returned.
+ * Continues on to parse the `pathVersions`/`pathPrefix` data
+ * structures into an array of groups, each representing a "pathogen"
+ * and detailing the available resources for each, and the available
+ * versions (snapshots) for each of those resources. In the case of
+ * un-versioned resources, versions will be a zero-length array (i.e.,
+ * `[]`)
+ *
+ * The current implementation defines `versioned: boolean` for the
+ * entire API response, however in the future we may shift this to the
+ * API response and it may vary across the resources returned.
  */
-export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupLinks: boolean, groupDisplayNames: GroupDisplayNames) {
+export function useDataFetch(
+  sourceUrl: string,
+  versioned: boolean,
+  defaultGroupLinks: boolean,
+  groupDisplayNames: GroupDisplayNames,
+  parseResourceListingCallback: (response: Response) => Promise<ResourceListingInfo>,
+) : {groups: Group[] | undefined, dataFetchError: boolean | undefined} {
   const [groups, setGroups] = useState<Group[]>();
   const [dataFetchError, setDataFetchError] = useState<boolean>();
-  useEffect(() => {
-    const url = `/list-resources/${sourceId}`;
-
-    async function fetchAndParse() {
+  useEffect((): void => {
+    async function fetchAndParse(): Promise<void> {
       let pathVersions: PathVersions, pathPrefix: string;
       try {
-        const response = await fetch(url, {headers: {accept: "application/json"}});
+        const response = await fetch(sourceUrl, {headers: {accept: "application/json"}});
         if (response.status !== 200) {
-          console.error(`ERROR: fetching data from "${url}" returned status code ${response.status}`);
+          console.error(`ERROR: fetching data from "${sourceUrl}" returned status code ${response.status}`);
           return setDataFetchError(true);
         }
-        ({ pathVersions, pathPrefix } = (await response.json()).dataset[sourceId]);
+        ({ pathVersions, pathPrefix } = await parseResourceListingCallback(response));
       } catch (err) {
-        console.error(`Error while fetching data from "${url}"`);
+        console.error(`Error while fetching data from "${sourceUrl}"`);
         console.error(err);
         return setDataFetchError(true);
       }
@@ -47,7 +57,7 @@ export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupL
     }
 
     fetchAndParse();
-  }, [sourceId, versioned, defaultGroupLinks, groupDisplayNames]);
+  }, [sourceUrl, versioned, defaultGroupLinks, groupDisplayNames, parseResourceListingCallback]);
   return {groups, dataFetchError}
 }
 

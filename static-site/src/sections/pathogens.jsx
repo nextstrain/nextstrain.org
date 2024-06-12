@@ -21,6 +21,10 @@ const abstract = (
   </>
 );
 
+const sourceId = "core"
+const sourceUrl = `list-resources/${sourceId}`;
+const parseResourceListingCallback = async (response) => (await response.json()).dataset[sourceId];
+
 class Index extends React.Component {
   render() {
     return (
@@ -35,9 +39,12 @@ class Index extends React.Component {
         </FlexCenter>
 
         <HugeSpacer/>
-        <ListResources sourceId="core" resourceType="dataset"
+
+        <ListResources sourceUrl={sourceUrl} resourceType="dataset"
           showcase={coreShowcase}
-          quickLinks={coreQuickLinks} defaultGroupLinks groupDisplayNames={coreGroupDisplayNames}/>
+          quickLinks={coreQuickLinks} defaultGroupLinks groupDisplayNames={coreGroupDisplayNames}
+          parseResourceListingCallback={parseResourceListingCallback}/>
+
         <HugeSpacer/>
       </GenericPage>
     );

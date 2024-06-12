@@ -12,7 +12,8 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { Showcase, useShowcaseCards} from "./Showcase";
-import { Card, FilterOption, Group, GroupDisplayNames, QuickLink, Resource } from './types';
+import { Card, FilterOption, Group, GroupDisplayNames, QuickLink, Resource, ResourceListingInfo } from './types';
+import { HugeSpacer } from "../../layouts/generalComponents";
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
   elWidth: number
@@ -29,15 +30,22 @@ export const LIST_ANCHOR = "list";
  * this may be better expressed as a property of the API response.
  */
 function ListResources({
-  sourceId,
+  sourceUrl,
   versioned=true,
   elWidth,
   quickLinks,
   defaultGroupLinks=false,
   groupDisplayNames,
   showcase,
+  parseResourceListingCallback: parseResourceListingCallback,
 }: ListResourcesProps) {
-  const {groups, dataFetchError} = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
+  const {groups, dataFetchError} = useDataFetch(
+    sourceUrl,
+    versioned,
+    defaultGroupLinks,
+    groupDisplayNames,
+    parseResourceListingCallback,
+  );
   const showcaseCards = useShowcaseCards(showcase, groups);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
@@ -100,7 +108,7 @@ function ListResources({
 
 
 interface ListResourcesResponsiveProps {
-  sourceId: string
+  sourceUrl: string
   versioned: boolean
   quickLinks: QuickLink[]
 
@@ -108,6 +116,7 @@ interface ListResourcesResponsiveProps {
   defaultGroupLinks: boolean
   groupDisplayNames: GroupDisplayNames
   showcase: Card[]
+  parseResourceListingCallback: (response: Response) => Promise<ResourceListingInfo>;
 }
 
 /**
