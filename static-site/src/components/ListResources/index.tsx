@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, createContext, useContext } from 'react';
+import React, { FormEvent, useState, useRef, useEffect, useCallback, createContext, useContext } from 'react';
 import styled from 'styled-components';
 import Select, { MultiValue } from 'react-select';
 import ScrollableAnchor, { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
@@ -170,8 +170,8 @@ export default ListResourcesResponsive
 
 
 function SortOptions({sortMethod, changeSortMethod}) {
-  function onChangeValue(event) {
-    changeSortMethod(event.target.value);
+  function onChangeValue(event:FormEvent<HTMLInputElement>): void {
+    changeSortMethod(event.currentTarget.value);
   }
   return (
     <SortContainer>
