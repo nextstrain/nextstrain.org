@@ -11,9 +11,8 @@ import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
-import { CardImgWrapper, CardOuter, Showcase } from "../Showcase";
+import { CardImgWrapper, CardInner, CardOuter, CardTitle, Showcase } from "../Showcase";
 import { FilterCard, FilterOption, Group, GroupDisplayNames, QuickLink, Resource } from './types';
-import { CardInner, CardTitle } from '../Cards/styles';
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
   elWidth: number

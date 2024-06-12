@@ -4,9 +4,8 @@ import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
-import { CardImgWrapper, CardOuter, Showcase } from "../Showcase";
+import { CardImgWrapper, CardInner, CardOuter, CardTitle, Showcase } from "../Showcase";
 import { cards } from "./showcase.yaml";
-import { CardInner, CardTitle } from '../Cards/styles';
 
 const Section = ({id, title, abstract, buttonText, buttonLink}) => (
   <div id={id} className="col-md-6" style={{paddingBottom: "40px"}}>

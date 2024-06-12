@@ -133,6 +133,27 @@ export const CardOuter = styled.div`
   max-height: ${cardWidthHeight}px;
 `
 
+export const CardInner = styled.div`
+  margin: 5px 10px 5px 10px;
+  cursor: pointer;
+`;
+
+export const CardTitle = styled.div<{$squashed: boolean}>`
+  font-family: ${(props) => props.theme.generalFont};
+  font-weight: 500;
+  font-size: ${(props) => props.$squashed ? "22px" : "26px"};
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+  position: absolute;
+  border-radius: 3px;
+  padding: 10px 20px 10px 20px;
+  top: 40px;
+  left: 20px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+`;
+
 const themeColors = [...theme.titleColors];
 const getColor = () => {
   // rotate colors by moving the first color (which is always defined) to the end
