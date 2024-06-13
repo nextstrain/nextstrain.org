@@ -3,7 +3,7 @@ import Cards from "../Cards";
 import { theme } from "../../layouts/theme";
 import { UserContext } from "../../layouts/userDataWrapper";
 
-export const createGroupCards = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
+const createGroupCards = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
   const groupColor = colors[0];
   colors.push(colors.shift());
 

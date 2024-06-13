@@ -1,30 +1,19 @@
 import React, { useEffect } from "react";
 import ScrollableAnchor, { configureAnchors } from '../../../vendored/react-scrollable-anchor/index';
-import Cards from "../Cards";
-import nCoVCards from "../Cards/nCoVCards";
-import coreCards from "../Cards/coreCards";
-import communityDatasets from "../../../content/community-datasets.yaml";
-import narrativeCards from "../Cards/narrativeCards";
 import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
-import { createGroupCards } from "./groupCards";
+import { CardImgWrapper, CardInner, CardOuter, CardTitle, Showcase } from "../Showcase";
+import { cards } from "./showcase.yaml";
 
-const Section = ({id, title, abstract, cards, buttonText, buttonLink}) => (
+const Section = ({id, title, abstract, buttonText, buttonLink}) => (
   <div id={id} className="col-md-6" style={{paddingBottom: "40px"}}>
     <div style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100%"}}>
       <Styles.H1>{title}</Styles.H1>
       <Styles.CenteredFocusParagraph style={{flexGrow: 1}}>
         {abstract}
       </Styles.CenteredFocusParagraph>
-      <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
-        <Cards
-          squashed
-          compactColumns
-          cards={cards}
-        />
-      </div>
       <BigSpacer/>
       <Styles.Button to={buttonLink}>
         {buttonText}
@@ -70,6 +59,14 @@ const Splash = () => {
       </FlexCenter>
 
       <HugeSpacer/>
+
+      <Styles.H1>
+        Featured analyses
+      </Styles.H1>
+
+      <BigSpacer/>
+      <Showcase cards={cards} CardComponent={UrlShowcaseTile} />
+
       <BigSpacer/>
 
       <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
@@ -78,7 +75,6 @@ const Splash = () => {
           title="SARS-CoV-2 (COVID-19)"
           abstract="We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
           In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses."
-          cards={nCoVCards}
           buttonText="See all resources"
           buttonLink="/sars-cov-2"
         />
@@ -86,7 +82,6 @@ const Splash = () => {
           id="groups"
           title="Nextstrain Groups"
           abstract="We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience."
-          cards={createGroupCards([{name: "neherlab"}, {name: "spheres"}])}
           buttonText="See all groups"
           buttonLink="/groups"
         />
@@ -94,7 +89,6 @@ const Splash = () => {
           id="pathogens"
           title="Explore pathogens"
           abstract="Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team."
-          cards={coreCards}
           buttonText="See all pathogens"
           buttonLink="/pathogens"
         />
@@ -105,7 +99,6 @@ const Splash = () => {
             Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
             accessed via public GitHub repos</a>
           </>)}
-          cards={communityDatasets.data.filter((c) => c?.card?.frontpage).map((e) => e.card).slice(0, 2)}
           buttonText="Learn more"
           buttonLink="/community"
         />
@@ -113,7 +106,6 @@ const Splash = () => {
           id="narratives"
           title="Narratives"
           abstract="Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data."
-          cards={narrativeCards}
           buttonText="Find out more"
           buttonLink="https://docs.nextstrain.org/en/latest/guides/communicate/narratives-intro.html"
         />
@@ -206,3 +198,19 @@ const Splash = () => {
 }
 
 export default Splash;
+
+
+const UrlShowcaseTile = ({ card }) => {
+  return (
+    <CardOuter>
+      <CardInner>
+        <a href={card.url}>
+          <CardTitle $squashed>
+            {card.name}
+          </CardTitle>
+          <CardImgWrapper filename={card.img}/>
+        </a>
+      </CardInner>
+    </CardOuter>
+  )
+}

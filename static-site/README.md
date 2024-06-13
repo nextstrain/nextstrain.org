@@ -81,7 +81,7 @@ We may wish to rename this directory to avoid any doubt.
     * "Edit" -> "Scale Image" to 250 x 250px
     * "File" -> "Save Image" & use PNG
 3. Save the file in `./static/splash_images`
-4. Edit `./src/components/Cards/coreCards.js`, `./content/community-datasets.yaml` or `./src/components/Cards/narrativeCards.js` to include the card & title.
+4. Edit `./src/components/splash/showcase.yaml` to include the card & title.
 5. Edit `./src/components/Footer/index.jsx` to provide credit for the photo.
 
 ### Adding new team members
