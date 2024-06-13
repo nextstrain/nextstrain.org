@@ -80,6 +80,7 @@ const ShowcaseContainer = styled.div<{$expandedHeight: number}>`
 
 const ArrowButton = styled.div`
   text-align: center;
+  font-size: 1.8rem;
   width: 100%;
   height: 1em;
   cursor: pointer;
