@@ -258,5 +258,9 @@
   {
     "name": "hodcroftlab",
     "isPublic": true
+  },
+  {
+    "name": "inrb-mpox-private",
+    "isPublic": false
   }
 ]
