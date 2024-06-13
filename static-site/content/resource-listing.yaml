@@ -62,15 +62,15 @@ coreShowcase:
     img: ncov.png
     filters:
       - ncov
-  - name: Seasonal Flu
+  - name: Seasonal influenza
     img: seasonalinfluenza.png
     filters:
       - seasonal-flu
-  - name: Avian Flu
+  - name: Avian influenza
     img: avianinfluenza.png
     filters:
       - avian-flu
-  - name: mpox
+  - name: Mpox
     img: mpox.png
     filters:
       - mpox
@@ -78,11 +78,11 @@ coreShowcase:
     img: rsv1.png
     filters:
       - rsv
-  - name: dengue
+  - name: Dengue
     img: dengue.png
     filters:
       - dengue
-  - name: Ebola (West Africa)
+  - name: Ebola in West Africa
     img: ebola.png
     filters:
       - ebola
