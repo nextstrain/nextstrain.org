@@ -58,12 +58,39 @@ coreGroupDisplayNames:
 # showcase tiles which will be shown is decided by the UI and changes with
 # screen size.
 coreShowcase:
-  - {name: "SARS-CoV-2",        img: "ncov.png",              filters: ["ncov"]}
-  - {name: "Seasonal Flu",      img: "seasonalinfluenza.png", filters: ["seasonal-flu"]}
-  - {name: "Avian Flu",         img: "avianinfluenza.png",    filters: ["avian-flu"]}
-  - {name: "mpox",              img: "mpox.png",              filters: ["mpox"]}
-  - {name: "RSV",               img: "rsv1.png",              filters: ["rsv"]}
-  - {name: "dengue",            img: "dengue.png",            filters: ["dengue"]}
-  - {name: "Ebola (West Africa)", img: "ebola.png",           filters: ["ebola"]}
-  - {name: "Measles",           img: "measles.jpg",           filters: ["measles"]}
-  - {name: "Zika",              img: "zika.png",              filters: ["zika"]}
+  - name: SARS-CoV-2
+    img: ncov.png
+    filters:
+      - ncov
+  - name: Seasonal Flu
+    img: seasonalinfluenza.png
+    filters:
+      - seasonal-flu
+  - name: Avian Flu
+    img: avianinfluenza.png
+    filters:
+      - avian-flu
+  - name: mpox
+    img: mpox.png
+    filters:
+      - mpox
+  - name: RSV
+    img: rsv1.png
+    filters:
+      - rsv
+  - name: dengue
+    img: dengue.png
+    filters:
+      - dengue
+  - name: Ebola (West Africa)
+    img: ebola.png
+    filters:
+      - ebola
+  - name: Measles
+    img: measles.jpg
+    filters:
+      - measles
+  - name: Zika
+    img: zika.png
+    filters:
+      - zika
