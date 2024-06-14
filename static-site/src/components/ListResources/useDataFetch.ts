@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Group, PathVersions, Resource, ResourceListingInfo } from './types';
+import { Group, Resource, ResourceListingInfo } from './types';
 
 
 /**
@@ -52,11 +52,11 @@ export function useDataFetch(
 
 
 /**
- * Groups the provided array of pathVersions into an object with keys
+ * Groups the provided array mapping from path to dates into an object with keys
  * representing group names (pathogen names) and values which are arrays of
  * resource objects.
  */
-function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, versioned: boolean) {
+function partitionByPathogen(pathVersions: Record<string, string[]>, pathPrefix: string, versioned: boolean) {
   return Object.entries(pathVersions).reduce((store: Record<string, Resource[]>, [name, dates]) => {
     const sortedDates = [...dates].sort();
 

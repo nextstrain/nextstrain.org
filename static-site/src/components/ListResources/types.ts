@@ -36,7 +36,7 @@ export interface ResourceDisplayName {
 
 export interface ResourceListingInfo {
   pathPrefix: string
-  pathVersions: PathVersions
+  pathVersions: Record<string, string[]>
 }
 
 export interface UpdateCadence {
@@ -54,8 +54,4 @@ export interface QuickLink {
   name: string
   display: string
   groupName?: string
-}
-
-export interface PathVersions {
-  [name: string]: string[]  // versions
 }
