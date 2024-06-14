@@ -5,19 +5,19 @@ cards:
 - name: H5N1 cattle outbreak
   img: avianinfluenza.png
   url: /avian-flu/h5n1-cattle-outbreak/genome
-- name: avian influenza
+- name: Avian influenza
   img: avianinfluenza.png
   url: /avian-flu/h5n1/ha/2y
-- name: mpox
+- name: Mpox
   img: mpox.png
   url: /mpox/clade-IIb
 - name: Ebola in the DRC
   img: ebola2.png
   url: /community/inrb-drc/ebola-nord-kivu
-- name: measles
+- name: Measles
   img: measles.jpg
   url: /measles/N450
-- name: seasonal influenza
+- name: Seasonal influenza
   img: seasonalinfluenza.png
   url: /seasonal-flu
 - name: RSV
