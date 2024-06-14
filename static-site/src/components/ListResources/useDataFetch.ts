@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Group, GroupDisplayNames, PathVersions, Resource, ResourceListingInfo } from './types';
+import { Group, PathVersions, Resource, ResourceListingInfo } from './types';
 
 
 /**
@@ -21,7 +21,7 @@ import { Group, GroupDisplayNames, PathVersions, Resource, ResourceListingInfo }
 export function useDataFetch(
   versioned: boolean,
   defaultGroupLinks: boolean,
-  groupDisplayNames: GroupDisplayNames,
+  groupDisplayNames: Record<string, string>,
   resourceListingCallback: () => Promise<ResourceListingInfo>,
 ) : {groups: Group[] | undefined, dataFetchError: boolean} {
   const [groups, setGroups] = useState<Group[]>();
@@ -91,7 +91,7 @@ function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, ver
  * Turn the provided partitions (an object mapping groupName to an array of resources)
  * into an array of groups.
  */
-function groupsFrom(partitions: Record<string, Resource[]>, pathPrefix: string, defaultGroupLinks: boolean, groupDisplayNames: GroupDisplayNames) {
+function groupsFrom(partitions: Record<string, Resource[]>, pathPrefix: string, defaultGroupLinks: boolean, groupDisplayNames: Record<string, string>) {
   return Object.entries(partitions).map(([groupName, resources]) => {
     const groupInfo: Group = {
       groupName: groupName,

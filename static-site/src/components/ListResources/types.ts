@@ -39,13 +39,6 @@ export interface ResourceListingInfo {
   pathVersions: PathVersions
 }
 
-/**
- * Mapping from group name -> display name
- */
-export interface GroupDisplayNames {
-  [name: string]: string
-}
-
 export interface UpdateCadence {
   summary: string
   description: string
