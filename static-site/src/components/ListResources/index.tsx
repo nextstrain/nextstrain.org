@@ -257,13 +257,7 @@ const Byline = styled.div`
 
 /*** SHOWCASE ***/
 
-
-interface FilterShowcaseTileProps {
-  card: FilterCard
-}
-
-
-const FilterShowcaseTile = ({ card }: FilterShowcaseTileProps) => {
+const FilterShowcaseTile = ({ card }: { card: FilterCard }) => {
   const setSelectedFilterOptions = useContext(SetSelectedFilterOptions);
 
   if (!setSelectedFilterOptions) {
