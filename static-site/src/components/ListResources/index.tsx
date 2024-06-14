@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, createContext, useContext } from 'react';
+import React, { FormEvent, useState, useRef, useEffect, useCallback, createContext, useContext } from 'react';
 import styled from 'styled-components';
 import Select, { MultiValue } from 'react-select';
 import ScrollableAnchor, { goToAnchor } from '../../../vendored/react-scrollable-anchor/index';
@@ -12,7 +12,8 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { CardImgWrapper, CardInner, CardOuter, CardTitle, Showcase } from "../Showcase";
-import { FilterCard, FilterOption, Group, GroupDisplayNames, QuickLink, Resource } from './types';
+import { FilterCard, FilterOption, Group, GroupDisplayNames, QuickLink, Resource, ResourceListingInfo } from './types';
+import { HugeSpacer } from "../../layouts/generalComponents";
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
   elWidth: number
@@ -23,23 +24,29 @@ const LIST_ANCHOR = "list";
 const SetSelectedFilterOptions = createContext<React.Dispatch<React.SetStateAction<readonly FilterOption[]>> | null>(null);
 
 /**
- * A React component to fetch data and display the available resources,
- * including past versions ("snapshots").
+ * A React component that uses a callback to fetch data about
+ * available resources, and then display them, including past versions
+ * ("snapshots"), if those exist.
  *
  * Note that currently this only uses 'dataset' resources. In the future this
  * will be expanded. Similarly, we define versioned: boolean here in the UI whereas
  * this may be better expressed as a property of the API response.
  */
 function ListResources({
-  sourceId,
   versioned=true,
   elWidth,
   quickLinks,
   defaultGroupLinks=false,
   groupDisplayNames,
   showcase,
+  resourceListingCallback: resourceListingCallback,
 }: ListResourcesProps) {
-  const {groups, dataFetchError} = useDataFetch(sourceId, versioned, defaultGroupLinks, groupDisplayNames);
+  const {groups, dataFetchError} = useDataFetch(
+    versioned,
+    defaultGroupLinks,
+    groupDisplayNames,
+    resourceListingCallback,
+  );
   const showcaseCards = useShowcaseCards(showcase, groups);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
@@ -50,7 +57,7 @@ function ListResources({
 
   if (dataFetchError) {
     return (
-      <ErrorContainer>  
+      <ErrorContainer>
         {"Whoops - listing resources isn't working!"}
         <br/>
         {'Please '}<a href="/contact" style={{fontWeight: 300}}>get in touch</a>{" if this keeps happening"}
@@ -69,17 +76,25 @@ function ListResources({
   return (
     <ListResourcesContainer>
 
-      <Byline>
-        Showcase resources: click to filter the resources to a pathogen
-      </Byline>
+      { showcaseCards.length > 0 && (
+        <>
+        <Byline>
+          Showcase resources: click to filter the resources to a pathogen
+        </Byline>
 
-      <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
-        <Showcase cards={showcaseCards} CardComponent={FilterShowcaseTile} />
-      </SetSelectedFilterOptions.Provider>
+        <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
+          <Showcase cards={showcaseCards} CardComponent={FilterShowcaseTile} />
+        </SetSelectedFilterOptions.Provider>
+        </>
+      )}
 
       <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
-      <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
+      { groups?.[0]?.lastUpdated && (
+        <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
+      ) || (
+        <HugeSpacer/>
+      )}
 
       <SetModalResourceContext.Provider value={setModalResource}>
         <ScrollableAnchor id={LIST_ANCHOR}>
@@ -108,7 +123,6 @@ function ListResources({
 
 
 interface ListResourcesResponsiveProps {
-  sourceId: string
   versioned: boolean
   quickLinks: QuickLink[]
 
@@ -116,6 +130,7 @@ interface ListResourcesResponsiveProps {
   defaultGroupLinks: boolean
   groupDisplayNames: GroupDisplayNames
   showcase: FilterCard[]
+  resourceListingCallback: () => Promise<ResourceListingInfo>;
 }
 
 /**
@@ -155,12 +170,12 @@ export default ListResourcesResponsive
 
 
 function SortOptions({sortMethod, changeSortMethod}) {
-  function onChangeValue(event) {
-    changeSortMethod(event.target.value);
+  function onChangeValue(event:FormEvent<HTMLInputElement>): void {
+    changeSortMethod(event.currentTarget.value);
   }
   return (
     <SortContainer>
-      Sort pathogens by: 
+      Sort pathogens by:
       <input id="alphabetical" type="radio" onChange={onChangeValue} value="alphabetical"
         checked={"alphabetical"===sortMethod} style={{cursor: "alphabetical"===sortMethod ? 'default' : 'pointer'}}/>
       <TooltipWrapper description={'Pathogen groups ordered alphabetically. ' +

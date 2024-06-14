@@ -1,53 +1,52 @@
 import { useState, useEffect } from 'react';
-import { Group, GroupDisplayNames, PathVersions, Resource } from './types';
+import { Group, GroupDisplayNames, PathVersions, Resource, ResourceListingInfo } from './types';
 
 
 /**
- * Fetches the datasets for the provided `sourceId` and parses the data into an
- * array of groups, each representing a "pathogen" and detailing the available
- * resources for each, and the available versions (snapshots) for each of those
- * resources.
+ * Uses the provided callback to fetch resources and parse those
+ * resources into the `pathVersions` and `pathPrefix` values. The
+ * callback is expected (and encouraged!) to throw() on any errors.
  *
- * The current implementation defines `versioned: boolean` for the entire API
- * response, however in the future we may shift this to the API response and it
- * may vary across the resources returned.
+ * Continues on to parse the `pathVersions`/`pathPrefix` data
+ * structures into an array of groups, each representing a "pathogen"
+ * and detailing the available resources for each, and the available
+ * versions (snapshots) for each of those resources. In the case of
+ * un-versioned resources, versions will be a zero-length array (i.e.,
+ * `[]`)
+ *
+ * The current implementation defines `versioned: boolean` for the
+ * entire API response, however in the future we may shift this to the
+ * API response and it may vary across the resources returned.
  */
-export function useDataFetch(sourceId: string, versioned: boolean, defaultGroupLinks: boolean, groupDisplayNames: GroupDisplayNames) {
+export function useDataFetch(
+  versioned: boolean,
+  defaultGroupLinks: boolean,
+  groupDisplayNames: GroupDisplayNames,
+  resourceListingCallback: () => Promise<ResourceListingInfo>,
+) : {groups: Group[] | undefined, dataFetchError: boolean} {
   const [groups, setGroups] = useState<Group[]>();
-  const [dataFetchError, setDataFetchError] = useState<boolean>();
-  useEffect(() => {
-    const url = `/list-resources/${sourceId}`;
+  const [dataFetchError, setDataFetchError] = useState<boolean>(false);
 
-    async function fetchAndParse() {
-      let pathVersions: PathVersions, pathPrefix: string;
+  useEffect((): void => {
+    async function fetchAndParse(): Promise<void> {
       try {
-        const response = await fetch(url, {headers: {accept: "application/json"}});
-        if (response.status !== 200) {
-          console.error(`ERROR: fetching data from "${url}" returned status code ${response.status}`);
-          return setDataFetchError(true);
-        }
-        ({ pathVersions, pathPrefix } = (await response.json()).dataset[sourceId]);
-      } catch (err) {
-        console.error(`Error while fetching data from "${url}"`);
-        console.error(err);
-        return setDataFetchError(true);
-      }
+        const { pathPrefix, pathVersions } = await resourceListingCallback();
 
-      /* group/partition the resources by pathogen (the first word of the
-      resource path). This grouping is constant for all UI options so we do it a
-      single time following the data fetch */
-      try {
+        /* group/partition the resources by pathogen (the first word
+        of the resource path). This grouping is constant for all UI
+        options so we do it a single time following the data fetch */
         const partitions = partitionByPathogen(pathVersions, pathPrefix, versioned);
         setGroups(groupsFrom(partitions, pathPrefix, defaultGroupLinks, groupDisplayNames));
       } catch (err) {
-        console.error(`Error while parsing fetched data`);
+        console.error(`Error while fetching and/or parsing data`);
         console.error(err);
         return setDataFetchError(true);
       }
     }
 
     fetchAndParse();
-  }, [sourceId, versioned, defaultGroupLinks, groupDisplayNames]);
+  }, [versioned, defaultGroupLinks, groupDisplayNames, resourceListingCallback]);
+
   return {groups, dataFetchError}
 }
 
@@ -60,14 +59,11 @@ interface Partitions {
 /**
  * Groups the provided array of pathVersions into an object with keys
  * representing group names (pathogen names) and values which are arrays of
- * resource objects. 
+ * resource objects.
  */
 function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, versioned: boolean) {
   return Object.entries(pathVersions).reduce((store: Partitions, [name, dates]) => {
     const sortedDates = [...dates].sort();
-
-    // do nothing if resource has no dates
-    if (sortedDates.length < 1) return store
 
     const nameParts = name.split('/');
     // split() will always return at least 1 string
@@ -79,11 +75,10 @@ function partitionByPathogen(pathVersions: PathVersions, pathPrefix: string, ver
       nameParts,
       sortingName: _sortableName(nameParts),
       url: `/${pathPrefix}${name}`,
-      lastUpdated: sortedDates.at(-1)!,
+      lastUpdated: sortedDates.at(-1),
     };
     if (versioned) {
       resourceDetails.firstUpdated = sortedDates[0]!;
-      resourceDetails.lastUpdated = sortedDates.at(-1)!;
       resourceDetails.dates = sortedDates;
       resourceDetails.nVersions = sortedDates.length;
       resourceDetails.updateCadence = updateCadence(sortedDates.map((date)=> new Date(date)));

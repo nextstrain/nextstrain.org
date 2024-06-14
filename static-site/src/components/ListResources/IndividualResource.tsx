@@ -86,7 +86,7 @@ export function TooltipWrapper({description, children}) {
       {children}
     </div>
   )
-} 
+}
 
 interface IconContainerProps {
   Icon: IconType
@@ -144,7 +144,7 @@ export const IndividualResource = ({resource, isMobile}: IndividualResourceProps
 
   // add history if mobile and resource has version info
   let history: React.JSX.Element | null = null
-  if (!isMobile && resource.updateCadence && resource.nVersions) {
+  if (!isMobile && resource.updateCadence && resource.nVersions && resource.lastUpdated) {
     history = (
       <TooltipWrapper description={resource.updateCadence.description +
         `<br/>Last known update on ${resource.lastUpdated}` +
@@ -158,12 +158,14 @@ export const IndividualResource = ({resource, isMobile}: IndividualResourceProps
     )
   }
 
+  const description = resource.lastUpdated ? `Last known update on ${resource.lastUpdated}` : "";
+
   return (
     <Container ref={ref}>
 
       <FlexRow>
 
-        <TooltipWrapper description={`Last known update on ${resource.lastUpdated}`}>
+        <TooltipWrapper description={description}>
           <ResourceLinkWrapper onShiftClick={() => setModalResource(resource)}>
             <Name displayName={resource.displayName} href={resource.url} topOfColumn={topOfColumn}/>
           </ResourceLinkWrapper>
@@ -192,5 +194,5 @@ export const ResourceLinkWrapper = ({children, onShiftClick}) => {
     <div onClick={onClick}>
       {children}
     </div>
-  )  
+  )
 }

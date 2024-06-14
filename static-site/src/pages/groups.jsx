@@ -4,23 +4,44 @@ import { SmallSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponent
 import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import DatasetSelect from "../components/Datasets/dataset-select";
+import ListResources from "../components/ListResources/index";
 import { GroupCards } from "../components/splash/groupCards";
 import GenericPage from "../layouts/generic-page";
 import { UserContext } from "../layouts/userDataWrapper";
 import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
 import { groupsTitle, GroupsAbstract } from "../../data/SiteConfig";
 
-const datasetColumns = ({isNarrative}) => [
+const resourceListingCallback = async () => {
+  const sourceUrl = "/charon/getAvailable?prefix=/groups/";
+
+  const response = await fetch(sourceUrl);
+  if (response.status !== 200) {
+    throw new Error(`fetching data from "${sourceUrl}" returned status code ${response.status}`);
+  }
+
+  const datasets = (await response.json()).datasets;
+  // Use an empty array as the value side, to indicate that there are
+  // no dated versions associated with this data
+  const pathVersions = Object.assign(
+    ...datasets.map((ds) => ({
+      [ds.request.replace(/^\/groups\//, "")]: []
+    })),
+  );
+
+  return { pathPrefix: "groups/", pathVersions };
+};
+
+const datasetColumns = [
   {
-    name: isNarrative ? "Narrative" : "Dataset",
+    name: "Narrative",
     value: (d) => d.request.replace("/groups/", "").replace(/\//g, " / "),
-    url: (d) => d.url
+    url: (d) => d.url,
   },
   {
     name: "Group Name",
     value: (d) => d.request.split("/")[2],
-    url: (d) => `/groups/${d.request.split("/")[2]}`
-  }
+    url: (d) => `/groups/${d.request.split("/")[2]}`,
+  },
 ];
 
 const GroupListingInfo = () => {
@@ -92,31 +113,21 @@ class GroupsPage extends React.Component {
         <GroupCards squashed/>
         <HugeSpacer />
 
-        <ScrollableAnchor id={'datasets'}>
-          <splashStyles.H2>Available Datasets</splashStyles.H2>
-        </ScrollableAnchor>
-        <FlexCenter>
-          <splashStyles.CenteredFocusParagraph>
-            {`Note that this listing is refreshed every ~6 hours.
-            To see a current listing, visit the page for that group by clicking on that group's tile, above.`}
-          </splashStyles.CenteredFocusParagraph>
-        </FlexCenter>
+        <ListResources
+          resourceType="dataset"
+          versioned={false}
+          resourceListingCallback={resourceListingCallback}/>
+
         <HugeSpacer />
-        {this.state.dataLoaded && (
-          <DatasetSelect
-            datasets={this.state.datasets}
-            columns={datasetColumns({isNarrative: false})}
-          />
-        )}
-        <HugeSpacer />
+
         <ScrollableAnchor id={'narratives'}>
           <splashStyles.H2>Available Narratives</splashStyles.H2>
         </ScrollableAnchor>
+
         {this.state.dataLoaded && (
           <DatasetSelect
             datasets={this.state.narratives}
-            columns={datasetColumns({isNarrative: true})}
-          />
+            columns={datasetColumns}/>
         )}
         { this.state.errorFetchingData && <DataFetchErrorParagraph />}
 

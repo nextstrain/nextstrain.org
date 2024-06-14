@@ -22,7 +22,7 @@ export interface Resource {
   nameParts: string[]
   sortingName: string
   url: string
-  lastUpdated: string  // date
+  lastUpdated?: string  // date
   firstUpdated?: string  // date
   dates?: string[]
   nVersions?: number
@@ -32,6 +32,11 @@ export interface Resource {
 export interface ResourceDisplayName {
   hovered: string
   default: string
+}
+
+export interface ResourceListingInfo {
+  pathPrefix: string
+  pathVersions: PathVersions
 }
 
 /**

@@ -31,7 +31,7 @@ const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isColl
       <NextstrainLogo/>
 
       <FlexColumnContainer>
-        
+
         <HeaderRow>
           {group.groupUrl ? (
             <TooltipWrapper description={`Click to load the default (and most recent) analysis for ${group.groupDisplayName || group.groupName}`}>
@@ -49,7 +49,7 @@ const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isColl
             <TooltipWrapper description={`The most recently updated datasets in this group were last updated on ${group.lastUpdated}` +
                 '<br/>(however there may have been a more recent update since we indexed the data)'}>
               <span>
-                {`Most recent snapshot: ${group.lastUpdated}`}
+                {group.lastUpdated && `Most recent snapshot: ${group.lastUpdated}`}
               </span>
             </TooltipWrapper>
           )}
@@ -164,7 +164,7 @@ const ResourceGroupContainer = styled.div`
 `;
 
 const IndividualResourceContainer = styled.div<{$maxResourceWidth: number}>`
-  /* Columns are a simple CSS solution which works really well _if_ we can calculate the expected maximum 
+  /* Columns are a simple CSS solution which works really well _if_ we can calculate the expected maximum
   resource width */
   column-width: ${(props) => props.$maxResourceWidth}px;
   column-gap: 20px;
@@ -239,7 +239,7 @@ function NextstrainLogo() {
 /**
  * Adds the `displayName` property to each resource.
  * Given successive nameParts:
- *      [ seasonal-flu, h1n1pdm]   
+ *      [ seasonal-flu, h1n1pdm]
  *      [ seasonal-flu, h3n2]
  * We want to produce two names: a default name, which contains all parts,
  * and a displayName which hides the fields that match the preceding name.
@@ -255,7 +255,7 @@ function _setDisplayName(resources: Resource[]) {
       name = r.nameParts.join(sep);
     } else {
       let matchIdx = r.nameParts.map((word, j) => word === resources[i-1]?.nameParts[j]).findIndex((v) => !v);
-      if (matchIdx===-1) { // -1 means every word is in the preceding name, but we should display the last word anyway 
+      if (matchIdx===-1) { // -1 means every word is in the preceding name, but we should display the last word anyway
         matchIdx = r.nameParts.length-2;
       }
       name = r.nameParts.map((word, j) => j < matchIdx ? ' '.repeat(word.length) : word).join(sep);
