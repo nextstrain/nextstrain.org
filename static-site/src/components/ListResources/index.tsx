@@ -12,7 +12,7 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { CardImgWrapper, CardInner, CardOuter, CardTitle, Showcase } from "../Showcase";
-import { FilterCard, FilterOption, Group, GroupDisplayNames, QuickLink, Resource, ResourceListingInfo } from './types';
+import { FilterCard, FilterOption, Group, QuickLink, Resource, ResourceListingInfo } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
@@ -128,7 +128,9 @@ interface ListResourcesResponsiveProps {
 
   /** Should the group name itself be a url? (which we let the server redirect) */
   defaultGroupLinks: boolean
-  groupDisplayNames: GroupDisplayNames
+
+  /** Mapping from group name -> display name */
+  groupDisplayNames: Record<string, string>
   showcase: FilterCard[]
   resourceListingCallback: () => Promise<ResourceListingInfo>;
 }
@@ -255,13 +257,7 @@ const Byline = styled.div`
 
 /*** SHOWCASE ***/
 
-
-interface FilterShowcaseTileProps {
-  card: FilterCard
-}
-
-
-const FilterShowcaseTile = ({ card }: FilterShowcaseTileProps) => {
+const FilterShowcaseTile = ({ card }: { card: FilterCard }) => {
   const setSelectedFilterOptions = useContext(SetSelectedFilterOptions);
 
   if (!setSelectedFilterOptions) {
