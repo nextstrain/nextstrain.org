@@ -17,7 +17,7 @@ Available as [nextstrain.org/avian-flu/h5n1/ha/all-time](https://nextstrain.org/
 More recently, this clade of H5N1 was discovered circulating in dairy cows in the US with cases [first reported in Texas in March 25, 2024](https://www.aphis.usda.gov/news/agency-announcements/federal-state-veterinary-public-health-agencies-share-update-hpai).
 Consensus genomes from infected dairy cattle have been shared to GenBank primarily by the [National Veterinary Services Laboratories (NVSL)](https://www.aphis.usda.gov/labs/about-nvsl) of the [Animal and Plant Health Inspection Service (APHIS)](https://www.aphis.usda.gov/) of the U.S. Department of Agriculture (USDA).
 We find, in accordance to results by [Nguyen et al](https://www.biorxiv.org/content/10.1101/2024.05.01.591751v1) and by [Worobey et al](https://virological.org/t/preliminary-report-on-genomic-epidemiology-of-the-2024-h5n1-influenza-a-virus-outbreak-in-u-s-cattle-part-1-of-2/970), that cattle-associated viruses form a distinct monophyletic clade across all 8 segments (**Fig. 2**).
-Comparing phylogenetic structure across segments shows reassortment in birds prior to cattle spillover, but that the [cattle clade appears be non-reassorting](https://nextstrain.org/avian-flu/h5n1/ha/2y@2024-06-18:avian-flu/h5n1/pb2/2y@2024-06-18?c=host&m=div).
+Comparing phylogenetic structure across segments shows reassortment in birds prior to cattle spillover, but that the [cattle clade appears to be non-reassorting](https://nextstrain.org/avian-flu/h5n1/ha/2y@2024-06-18:avian-flu/h5n1/pb2/2y@2024-06-18?c=host&m=div).
 
 [![fig2](img/h5n1_cattle_outbreak_fig2_across_segments_2y_host.png)](https://nextstrain.org/avian-flu/h5n1/ha/2y@2024-06-18?c=host)
 **Figure 2. Cattle infections form a distinct clade across segments indicative of single spillover and cow-to-cow spread.**
@@ -88,7 +88,12 @@ However, sharing to the SRA has continued with 393 submissions since May 3.
 This [ingest pipeline](https://github.com/nextstrain/avian-flu/tree/master/ingest) is [run daily](https://github.com/nextstrain/avian-flu/actions/workflows/ingest-ncbi.yaml) and resulting sequences files are available as:
 - [data.nextstrain.org/files/workflows/avian-flu/h5n1/ha/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/ha/sequences.fasta.zst)
 - [data.nextstrain.org/files/workflows/avian-flu/h5n1/na/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/na/sequences.fasta.zst)
-- etc...
+- [data.nextstrain.org/files/workflows/avian-flu/h5n1/pb2/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/pb2/sequences.fasta.zst)
+- [data.nextstrain.org/files/workflows/avian-flu/h5n1/pb1/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/pb1/sequences.fasta.zst)
+- [data.nextstrain.org/files/workflows/avian-flu/h5n1/pa/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/pa/sequences.fasta.zst)
+- [data.nextstrain.org/files/workflows/avian-flu/h5n1/np/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/np/sequences.fasta.zst)
+- [data.nextstrain.org/files/workflows/avian-flu/h5n1/ns/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/ns/sequences.fasta.zst)
+- [data.nextstrain.org/files/workflows/avian-flu/h5n1/mp/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/mp/sequences.fasta.zst)
 
 and metadata available as:
 - [data.nextstrain.org/files/workflows/avian-flu/h5n1/metadata.tsv.zst](https://data.nextstrain.org/files/workflows/avian-flu/h5n1/metadata.tsv.zst)
