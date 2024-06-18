@@ -10,7 +10,7 @@ We now provide regularly updated phylogenetic monitoring of measles virus at [ne
 1. Full genome sequences
 1. 450bp region of the N gene ("N450")
 
-In both phylogenies, sequences are classified to genotype using the [nomenclature system established by the World Health Organization](https://www.who.int/publications/i/item/WER8709).
+In both phylogenies, sequences are classified to genotype using the [nomenclature system established by the World Health Organization](https://iris.who.int/bitstream/handle/10665/241889/WER8709_73-80.PDF?sequence=1).
 
 As part of this work, we developed an [open-source tool for classifying measles genotypes](https://clades.nextstrain.org/?dataset-name=nextstrain/measles/N450/WHO-2012). This tool is a [Nextclade dataset](https://docs.nextstrain.org/projects/nextclade/en/stable/user/datasets.html), which allows users to drag-and-drop sequences onto a web browser to obtain genotype classifications. It also outputs sequence quality control metrics and displays user sequences on a phylogenetic tree.
 
