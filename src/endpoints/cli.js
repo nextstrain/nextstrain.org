@@ -181,9 +181,10 @@ function assertStatusOk(response) {
 
 function installer (req, res) {
   const os = req.params.os;
-  switch (os) {
+  switch (os.toLowerCase()) {
     case "linux":
     case "mac":
+    case "darwin": // `uname -s` on macOS
       return res.redirect("https://raw.githubusercontent.com/nextstrain/cli/HEAD/bin/standalone-installer-unix");
 
     case "windows":
