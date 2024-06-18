@@ -1,9 +1,9 @@
 ---
-author: "Trevor Bedford, Louise Moncla, Jover Lee, James Hadfield, John Huddleston"
+author: "Trevor Bedford, Jover Lee, James Hadfield, John Huddleston, Louise Moncla"
 date: "2024-06-18"
 title: "Phylogenetic analysis of H5N1 cattle outbreak and curated genomic data"
 ---
-**Trevor Bedford**, **Louise Moncla**, **Jover Lee**, **James Hadfield**, **John Huddleston**
+**Trevor Bedford**, **Jover Lee**, **James Hadfield**, **John Huddleston**, **Louise Moncla**
 
 # Phylogenetic analysis
 
