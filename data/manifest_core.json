@@ -417,6 +417,7 @@
       "mpox": {
         "resolution": {
           "all-clades": "",
+          "clade-I": "",
           "clade-IIb": "",
           "lineage-B.1": "",
           "default": "clade-IIb"
