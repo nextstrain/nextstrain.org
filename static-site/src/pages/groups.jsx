@@ -117,7 +117,10 @@ class GroupsPage extends React.Component {
           resourceType="dataset"
           defaultGroupLinks={true}
           versioned={false}
-          resourceListingCallback={resourceListingCallback}/>
+          resourceListingCallback={resourceListingCallback}
+          // FIXME I do not love this text string; suggestions welcome
+          tooltipText="Click to load the group page"
+        />
 
         <HugeSpacer />
 

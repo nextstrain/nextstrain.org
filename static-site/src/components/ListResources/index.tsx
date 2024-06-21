@@ -40,6 +40,7 @@ function ListResources({
   groupDisplayNames,
   showcase,
   resourceListingCallback: resourceListingCallback,
+  tooltipText,
 }: ListResourcesProps) {
   const {groups, dataFetchError} = useDataFetch(
     versioned,
@@ -105,6 +106,7 @@ function ListResources({
                 elWidth={elWidth}
                 numGroups={resourceGroups.length}
                 sortMethod={sortMethod}
+                tooltipText={tooltipText}
               />
             ))}
           </div>
@@ -133,6 +135,7 @@ interface ListResourcesResponsiveProps {
   groupDisplayNames: Record<string, string>
   showcase: FilterCard[]
   resourceListingCallback: () => Promise<ResourceListingInfo>;
+  tooltipText: string
 }
 
 /**
