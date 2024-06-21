@@ -19,13 +19,13 @@ cards:
   img: ebola_drc_map.png
   url: /community/inrb-drc/ebola-nord-kivu
 
-- name: Measles
-  img: measles_tree.png
-  url: /measles/N450
-
 - name: Seasonal influenza
   img: seasonal_flu_freq.png
   url: /seasonal-flu
+
+- name: Measles
+  img: measles_tree.png
+  url: /measles/N450
 
 - name: RSV
   img: rsv_tree.png
