@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import styled from 'styled-components';
 import { CardImg } from "../Cards/styles";
-import { theme } from "../../layouts/theme";
 import { Card } from './types';
 
 const cardWidthHeight = 160; // pixels
@@ -155,14 +154,6 @@ export const CardTitle = styled.div<{$squashed: boolean}>`
   background: rgba(0, 0, 0, 0.7);
 `;
 
-const themeColors = [...theme.titleColors];
-const getColor = () => {
-  // rotate colors by moving the first color (which is always defined) to the end
-  themeColors.push(themeColors.shift()!);
-  // return the last color
-  return themeColors.at(-1);
-}
-
 export const CardImgWrapper = ({filename}) => {
   let src;
   try {
@@ -172,5 +163,5 @@ export const CardImgWrapper = ({filename}) => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     src = require(`../../../static/splash_images/empty.png`).default.src;
   }
-  return <CardImg src={src} alt={""} color={getColor()}/>
+  return <CardImg src={src} alt={""} />
 }
