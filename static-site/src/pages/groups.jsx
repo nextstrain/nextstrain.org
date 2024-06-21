@@ -115,6 +115,7 @@ class GroupsPage extends React.Component {
 
         <ListResources
           resourceType="dataset"
+          defaultGroupLinks={true}
           versioned={false}
           resourceListingCallback={resourceListingCallback}/>
 
