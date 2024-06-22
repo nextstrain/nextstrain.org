@@ -94,3 +94,11 @@ coreShowcase:
     img: zika.png
     filters:
       - zika
+  - name: Mumps
+    img: mumps.jpg
+    filters:
+      - mumps
+  - name: Enterovirus
+    img: enterovirus.jpg
+    filters:
+      - enterovirus
