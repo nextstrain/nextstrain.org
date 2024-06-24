@@ -59,46 +59,46 @@ coreGroupDisplayNames:
 # screen size.
 coreShowcase:
   - name: SARS-CoV-2
-    img: ncov.png
+    img: ncov_freq.png
     filters:
       - ncov
   - name: Seasonal influenza
-    img: seasonalinfluenza.png
+    img: seasonal_flu_freq.png
     filters:
       - seasonal-flu
   - name: Avian influenza
-    img: avianinfluenza.png
+    img: h5n1_map.png
     filters:
       - avian-flu
   - name: Mpox
-    img: mpox.png
+    img: mpox_tree.png
     filters:
       - mpox
   - name: RSV
-    img: rsv1.png
+    img: rsv_tree.png
     filters:
       - rsv
   - name: Dengue
-    img: dengue.png
+    img: dengue_tree.png
     filters:
       - dengue
   - name: Ebola in West Africa
-    img: ebola.png
+    img: ebola_map.png
     filters:
       - ebola
   - name: Measles
-    img: measles.jpg
+    img: measles_tree.png
     filters:
       - measles
   - name: Zika
-    img: zika.png
+    img: zika_tree.png
     filters:
       - zika
   - name: Mumps
-    img: mumps.jpg
+    img: mumps_tree.png
     filters:
       - mumps
   - name: Enterovirus
-    img: enterovirus.jpg
+    img: enterovirus_d68_tree.png
     filters:
       - enterovirus
