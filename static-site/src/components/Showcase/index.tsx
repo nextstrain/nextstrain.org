@@ -6,7 +6,7 @@ import { CardImg } from "../Cards/styles";
 import { Card } from './types';
 
 const cardWidthHeight = 160; // pixels
-const expandPreviewHeight = 50 //pixels
+const expandPreviewHeight = 60 //pixels
 const transitionDuration = "0.3s"
 const transitionTimingFunction = "ease"
 
@@ -112,7 +112,7 @@ const PreviewOverlay = styled.div`
 const CardsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, ${cardWidthHeight}px);
-  gap: 1%;
+  gap: 10px;
   overflow: hidden;
   justify-content: center;
 `;
