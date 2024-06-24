@@ -33,6 +33,7 @@ const resourceListingCallback = async () => {
   return (await response.json()).dataset[sourceId];
 };
 
+// TODO: add splash image credit
 class Index extends React.Component {
   render() {
     return (
