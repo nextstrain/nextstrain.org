@@ -213,6 +213,16 @@ export default Splash;
 /*** SHOWCASE ***/
 
 const UrlShowcaseTile = ({ card }) => {
+
+  /* Narrative detection works for all three sources:
+  1. Core: /narratives/<narrative path>
+  2. Community: /community/narratives/<owner>/<narrative path>
+  3. Groups: /groups/<group>/narratives/<narrative path>
+
+  Including slashes in the check prevents false positives.
+  */
+  const isNarrative = card.url.includes('/narratives/');
+
   return (
     <CardOuter>
       <CardInner>
@@ -223,8 +233,8 @@ const UrlShowcaseTile = ({ card }) => {
           <CardImgContainer>
             <CardImgWrapper filename={card.img}/>
             <InfoIcons>
-              <CardSourceIcon url={card.url} />
-              {card.type == 'narrative' && <NarrativeIcon />}
+              <CardSourceIcon url={card.url} isNarrative={isNarrative} />
+              {isNarrative && <NarrativeIcon />}
             </InfoIcons>
           </CardImgContainer>
         </a>
@@ -239,7 +249,7 @@ const UrlShowcaseTile = ({ card }) => {
 const cardWidth = 220; // pixels
 const cardHeight = 285; // pixels
 
-function CardSourceIcon({ url }) {
+function CardSourceIcon({ url, isNarrative }) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const gitHubLogo = require(`../../../static/logos/github-mark.png`).default.src;
 
@@ -249,13 +259,7 @@ function CardSourceIcon({ url }) {
   let maintainers, image;
 
   if (url.startsWith('/community')) {
-    let owner;
-    if (url.startsWith('/community/narratives')) {
-      owner = url.split('/')[3];
-    }
-    else {
-      owner = url.split('/')[2];
-    }
+    const owner = isNarrative ? url.split('/')[3] : url.split('/')[2];
     maintainers = `${owner} on GitHub`;
     image = <InfoIconImg src={gitHubLogo} alt={maintainers} />;
   }

@@ -5,70 +5,58 @@ cards:
   description: Ongoing evolution and spread of SARS-CoV-2
   img: ncov_freq.png
   url: /ncov/gisaid/global/6m
-  type: dataset
 
 - name: H5N1 cattle outbreak
   description: Analysis of the ongoing influenza A/H5N1 cattle outbreak
   img: h5n1_cattle_outbreak_tree.png
   url: /avian-flu/h5n1-cattle-outbreak/genome
-  type: dataset
 
 - name: Avian influenza
   description: Avian influenza A/H5N1 evolution and spread
   img: h5n1_map.png
   url: /avian-flu/h5n1/ha/2y
-  type: dataset
 
 - name: Mpox
   description: Evolution and spread mpox virus
   img: mpox_tree.png
   url: /mpox/clade-IIb
-  type: dataset
 
 - name: Ebola in the DRC
   description: Genomic epidemiology of the 2018-20 Ebola epidemic in DRC
   img: ebola_drc_map.png
   url: /community/inrb-drc/ebola-nord-kivu
-  type: dataset
 
 - name: Seasonal influenza
   description: Seasonal influenza evolution and antigenic drift
   img: seasonal_flu_freq.png
   url: /seasonal-flu/h3n2/ha/2y
-  type: dataset
 
 - name: Measles
   description: Measles virus evolution and spread
   img: measles_tree.png
   url: /measles/N450
-  type: dataset
 
 - name: RSV
   description: RSV evolution and spread
   img: rsv_tree.png
   url: /rsv/a/genome
-  type: dataset
 
 - name: Yersinia pestis
   description: Historical analysis of geographic spread of plague
   img: yersinia_tree.png
   url: /community/ktmeaton/yersinia-pestis/maximum-likelihood/all?m=div
-  type: dataset
 
 - name: WNV in the Americas
   description: Analysis of twenty years of West Nile virus spread in the Americas
   img: wnv_map.png
   url: /narratives/twenty-years-of-WNV
-  type: narrative
 
 - name: Chikungunya
   description: Molecular epidemiology of Chikungunya virus
   img: chikv_map.png
   url: /groups/ViennaRNA/CHIKVnext
-  type: dataset
 
 - name: HIV
   description: Genetic diversity of HIV Env
   img: hiv_tree.png
   url: /groups/LANL-HIV-DB/HIV/env
-  type: dataset
