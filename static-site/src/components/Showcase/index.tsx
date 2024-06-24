@@ -112,7 +112,7 @@ const PreviewOverlay = styled.div`
 const CardsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, ${cardWidthHeight}px);
-  grid-gap: 1%;
+  gap: 1%;
   overflow: hidden;
   justify-content: center;
 `;
