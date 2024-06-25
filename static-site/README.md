@@ -73,16 +73,11 @@ We may wish to rename this directory to avoid any doubt.
 * [See this page in the docs](https://nextstrain.org/docs/contributing/documentation)
 
 ### Adding new cards / tiles for the splash page
-1. Find an image with appropriate rights for us to use. Generally, anything on Wikimedia Commons is fair game with proper attribution. Please consult the licensing section of individual files to be sure.
-2. Edit the picture in [LunaPic](https://www110.lunapic.com/editor/)
-    * upload picture
-    * Style the picture via the "art" menu. Choose "grey" for core cards, "floating" for community cards or "sadness" for narrative cards. Adjust slider as you see fit.
-    * "Edit" -> "Simple Crop Tool" & crop to a square.
-    * "Edit" -> "Scale Image" to 250 x 250px
-    * "File" -> "Save Image" & use PNG
-3. Save the file in `./static/splash_images`
-4. Edit `./src/components/splash/showcase.yaml` to include the card & title.
-5. Edit `./src/components/Footer/index.jsx` to provide credit for the photo.
+1. Navigate to the Auspice view and take a square screenshot of a panel that is representative of the data.
+2. If using a tree, make sure branch labels are turned off.
+3. Downsize the image to 250px by 250px.
+4. Save the file in `./static/splash_images`
+5. Edit `./src/components/splash/showcase.yaml` to include the card & title.
 
 ### Adding new team members
 
