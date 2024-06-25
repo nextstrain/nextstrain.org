@@ -10,7 +10,7 @@ import { cards } from "./showcase.yaml";
 const Section = ({id, title, abstract, buttonText, buttonLink}) => (
   <div id={id} className="col-md-6" style={{paddingBottom: "40px"}}>
     <div style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100%"}}>
-      <Styles.H1>{title}</Styles.H1>
+      <Styles.H1Small>{title}</Styles.H1Small>
       <Styles.CenteredFocusParagraph style={{flexGrow: 1}}>
         {abstract}
       </Styles.CenteredFocusParagraph>
@@ -37,7 +37,7 @@ const Splash = () => {
       </FlexCenter>
 
       <HugeSpacer />
-      <Styles.H1> Real-time tracking of pathogen evolution </Styles.H1>
+      <Styles.H1Small> Real-time tracking of pathogen evolution </Styles.H1Small>
       <SmallSpacer />
 
       <FlexCenter>
@@ -60,9 +60,9 @@ const Splash = () => {
 
       <HugeSpacer/>
 
-      <Styles.H1>
+      <Styles.H1Small>
         Featured analyses
-      </Styles.H1>
+      </Styles.H1Small>
 
       <BigSpacer/>
       <Showcase cards={cards} CardComponent={UrlShowcaseTile} />
@@ -122,7 +122,7 @@ const Splash = () => {
 
       {/* PHILOSOPHY */}
       <ScrollableAnchor id={'philosophy'}>
-        <Styles.H1>Philosophy</Styles.H1>
+        <Styles.H1Small>Philosophy</Styles.H1Small>
       </ScrollableAnchor>
       <div className="row">
         <div className="col-md-6">
@@ -178,7 +178,7 @@ const Splash = () => {
       <HugeSpacer/>
 
       <ScrollableAnchor id={'tools'}>
-        <Styles.H1>A bioinformatics and data viz toolkit</Styles.H1>
+        <Styles.H1Small>A bioinformatics and data viz toolkit</Styles.H1Small>
       </ScrollableAnchor>
 
       <FlexCenter>

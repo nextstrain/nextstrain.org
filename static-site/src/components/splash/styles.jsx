@@ -33,6 +33,10 @@ export const H1 = styled.div`
   margin-bottom: 0px;
 `;
 
+export const H1Small = styled(H1)`
+  font-size: 32px;
+`;
+
 export const H2 = styled.div`
   text-align: ${(props) => props.$left ? "left" : "center"};
   font-size: 24px;
