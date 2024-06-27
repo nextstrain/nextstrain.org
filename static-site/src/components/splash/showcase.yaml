@@ -1,5 +1,9 @@
-# When adding or modifying descriptions, ensure it takes up at most two lines
-# when rendered on the splash page.
+# Notes:
+# - When adding or modifying names, ensure it takes up at most one line when
+#   rendered on the splash page.
+# - When adding or modifying descriptions, ensure it takes up at most two lines
+#   when rendered on the splash page.
+# - Ensure URLs start with `/`.
 cards:
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
