@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import ScrollableAnchor, { configureAnchors } from '../../../vendored/react-scrollable-anchor/index';
 import Title from "./title";
 import * as Styles from "./styles";
+import { Tooltip } from 'react-tooltip-v5';
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 import { Showcase } from "../Showcase";
@@ -66,7 +67,8 @@ const Splash = () => {
       </Styles.H1Small>
 
       <BigSpacer/>
-      <Showcase cards={cards} cardWidth={cardWidthHeight} cardHeight={cardWidthHeight} CardComponent={UrlShowcaseTile} />
+      <Showcase cards={cards} cardWidth={cardWidth} cardHeight={cardHeight} CardComponent={UrlShowcaseTile} />
+      <Tooltip style={{fontSize: '1.6rem'}} id="showcaseTooltip" />
 
       <BigSpacer/>
 
@@ -211,61 +213,179 @@ export default Splash;
 /*** SHOWCASE ***/
 
 const UrlShowcaseTile = ({ card }) => {
+
+  /* Narrative detection works for all three sources:
+  1. Core: /narratives/<narrative path>
+  2. Community: /community/narratives/<owner>/<narrative path>
+  3. Groups: /groups/<group>/narratives/<narrative path>
+
+  Including slashes in the check prevents false positives.
+  */
+  const isNarrative = card.url.includes('/narratives/');
+
   return (
     <CardOuter>
       <CardInner>
         <a href={card.url}>
-          <CardTitle $squashed>
+          <CardTitle>
             {card.name}
           </CardTitle>
-          <CardImgWrapper filename={card.img}/>
+          <CardImgContainer>
+            <CardImgWrapper filename={card.img}/>
+            <InfoIcons>
+              <CardSourceIcon url={card.url} isNarrative={isNarrative} />
+              {isNarrative && <NarrativeIcon />}
+            </InfoIcons>
+          </CardImgContainer>
         </a>
+        <CardDescription>
+          {card.description}
+        </CardDescription>
       </CardInner>
     </CardOuter>
   )
 }
 
-const cardWidthHeight = 160; // pixels
+const cardWidth = 220; // pixels
+const cardHeight = 285; // pixels
+
+function CardSourceIcon({ url, isNarrative }) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const gitHubLogo = require(`../../../static/logos/github-mark.png`).default.src;
+
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const nextstrainLogo = require(`../../../static/logos/nextstrain-logo-tiny.png`).default.src;
+
+  let maintainers, image;
+
+  if (url.startsWith('/community')) {
+    const owner = isNarrative ? url.split('/')[3] : url.split('/')[2];
+    maintainers = `${owner} on GitHub`;
+    image = <InfoIconImg src={gitHubLogo} alt={maintainers} />;
+  }
+  else if (url.startsWith('/groups')) {
+    const group = url.split('/')[2];
+    maintainers = `the ${group} group`;
+    // Ideally just the image src is parameterized, but the async call to get
+    // the group logo must be done within useEffect in a functional component.
+    image = <GroupImage group={group} />;
+  }
+  // Assume everything else is Nextstrain
+  else {
+    maintainers = 'the Nextstrain team';
+    image = <InfoIconImg src={nextstrainLogo} alt={maintainers} />;
+  }
+
+  return (
+    <TooltipWrapper description={`Maintained by ${maintainers}`}>
+      {image}
+    </TooltipWrapper>
+  );
+}
+
+function GroupImage({ group }) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const faUsers = require(`../../../static/logos/fa-users-solid.svg`).default.src;
+  const [groupLogo, setGroupLogo] = useState(faUsers);
+
+  useEffect(() => {
+    async function getGroupLogo(group) {
+      const response = await fetch(`/charon/getSourceInfo?prefix=/groups/${group}`);
+      const data = await response.json();
+      if (data.avatar) {
+        setGroupLogo(data.avatar);
+      }
+    }
+
+    getGroupLogo(group);
+  }, [group]);
+
+  return (
+    <InfoIconImg src={groupLogo} alt={group} />
+  );
+}
+
+function NarrativeIcon() {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const faBookOpen = require(`../../../static/logos/fa-book-open-solid.svg`).default.src;
+
+  return (
+    <TooltipWrapper description='Analysis in the form of a narrative'>
+      <InfoIconImg src={faBookOpen} alt='narrative' />
+    </TooltipWrapper>
+
+  )
+}
+
+function TooltipWrapper({description, children}) {
+  return (
+    <span
+      data-tooltip-id="showcaseTooltip"
+      data-tooltip-html={description}
+      data-tooltip-place="top">
+      {children}
+    </span>
+  )
+}
+
+const InfoIcons = styled.div`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 1px;
+  padding-right: 1px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 0 0 6px 0;
+  border: 0px;
+`;
+
+const InfoIconImg = styled.img`
+  width: 20px;
+  margin: 0 3px;
+`;
 
 const CardOuter = styled.div`
   background-color: #FFFFFF;
   padding: 0;
   overflow: hidden;
   position: relative;
-  min-width: ${cardWidthHeight}px;
-  min-height: ${cardWidthHeight}px;
-  max-width: ${cardWidthHeight}px;
-  max-height: ${cardWidthHeight}px;
-`
+  width: ${cardWidth}px;
+  height: ${cardHeight}px;
+  border-radius: 10px;
+  border: 1px solid #AAA;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
 
 const CardInner = styled.div`
   margin: 5px 10px 5px 10px;
-  cursor: pointer;
 `;
 
 const CardTitle = styled.div`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
-  font-size: ${(props) => props.$squashed ? "21px" : "25px"};
-  @media (max-width: 768px) {
-    font-size: 22px;
-  }
-  position: absolute;
-  border-radius: 3px;
-  padding: 10px 20px 10px 10px;
-  top: 15px;
-  left: 20px;
-  color: white;
-  background: rgba(0, 0, 0, 0.7);
+  font-size: 20px;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 5px;
+`;
+
+const CardDescription = styled.div`
+  font-family: ${(props) => props.theme.generalFont};
+  font-size: 14px;
+  margin-top: 4px;
+  text-align: center;
+`;
+
+const CardImgContainer = styled.div`
+  position: relative;
 `;
 
 const CardImg = styled.img`
   object-fit: contain;
-  border-radius: 6px;
-  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
   max-height: 100%;
   width: 100%;
-  float: right;
 `;
 
 const CardImgWrapper = ({filename}) => {
