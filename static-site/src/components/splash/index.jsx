@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
+import styled from 'styled-components';
 import ScrollableAnchor, { configureAnchors } from '../../../vendored/react-scrollable-anchor/index';
 import Title from "./title";
 import * as Styles from "./styles";
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
-import { CardImgWrapper, CardInner, CardOuter, CardTitle, Showcase } from "../Showcase";
+import { Showcase } from "../Showcase";
 import { cards } from "./showcase.yaml";
 
 const Section = ({id, title, abstract, buttonText, buttonLink}) => (
@@ -65,7 +66,7 @@ const Splash = () => {
       </Styles.H1Small>
 
       <BigSpacer/>
-      <Showcase cards={cards} CardComponent={UrlShowcaseTile} />
+      <Showcase cards={cards} cardWidth={cardWidthHeight} cardHeight={cardWidthHeight} CardComponent={UrlShowcaseTile} />
 
       <BigSpacer/>
 
@@ -207,6 +208,8 @@ const Splash = () => {
 export default Splash;
 
 
+/*** SHOWCASE ***/
+
 const UrlShowcaseTile = ({ card }) => {
   return (
     <CardOuter>
@@ -220,4 +223,59 @@ const UrlShowcaseTile = ({ card }) => {
       </CardInner>
     </CardOuter>
   )
+}
+
+const cardWidthHeight = 160; // pixels
+
+const CardOuter = styled.div`
+  background-color: #FFFFFF;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  min-width: ${cardWidthHeight}px;
+  min-height: ${cardWidthHeight}px;
+  max-width: ${cardWidthHeight}px;
+  max-height: ${cardWidthHeight}px;
+`
+
+const CardInner = styled.div`
+  margin: 5px 10px 5px 10px;
+  cursor: pointer;
+`;
+
+const CardTitle = styled.div`
+  font-family: ${(props) => props.theme.generalFont};
+  font-weight: 500;
+  font-size: ${(props) => props.$squashed ? "21px" : "25px"};
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+  position: absolute;
+  border-radius: 3px;
+  padding: 10px 20px 10px 10px;
+  top: 15px;
+  left: 20px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+`;
+
+const CardImg = styled.img`
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
+  max-height: 100%;
+  width: 100%;
+  float: right;
+`;
+
+const CardImgWrapper = ({filename}) => {
+  let src;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    src = require(`../../../static/splash_images/${filename}`).default.src;
+  } catch {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    src = require(`../../../static/splash_images/empty.png`).default.src;
+  }
+  return <CardImg src={src} alt={""} />
 }

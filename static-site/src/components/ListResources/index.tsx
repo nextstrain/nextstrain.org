@@ -11,7 +11,7 @@ import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
-import { CardImgWrapper, CardInner, CardOuter, CardTitle, Showcase } from "../Showcase";
+import { Showcase } from "../Showcase";
 import { FilterCard, FilterOption, Group, QuickLink, Resource, ResourceListingInfo } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 
@@ -83,7 +83,7 @@ function ListResources({
         </Byline>
 
         <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
-          <Showcase cards={showcaseCards} CardComponent={FilterShowcaseTile} />
+          <Showcase cards={showcaseCards} cardWidth={cardWidthHeight} cardHeight={cardWidthHeight} CardComponent={FilterShowcaseTile} />
         </SetSelectedFilterOptions.Provider>
         </>
       )}
@@ -309,4 +309,59 @@ const useShowcaseCards = (cards?: FilterCard[], groups?: Group[]) => {
     }));
   }, [cards, groups]);
   return restrictedCards;
+}
+
+const cardWidthHeight = 160; // pixels
+
+const CardOuter = styled.div`
+  background-color: #FFFFFF;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  min-width: ${cardWidthHeight}px;
+  min-height: ${cardWidthHeight}px;
+  max-width: ${cardWidthHeight}px;
+  max-height: ${cardWidthHeight}px;
+`
+
+const CardInner = styled.div`
+  margin: 5px 10px 5px 10px;
+  cursor: pointer;
+`;
+
+const CardTitle = styled.div<{$squashed: boolean}>`
+  font-family: ${(props) => props.theme.generalFont};
+  font-weight: 500;
+  font-size: ${(props) => props.$squashed ? "21px" : "25px"};
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+  position: absolute;
+  border-radius: 3px;
+  padding: 10px 20px 10px 10px;
+  top: 15px;
+  left: 20px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+`;
+
+const CardImg = styled.img`
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
+  max-height: 100%;
+  width: 100%;
+  float: right;
+`;
+
+const CardImgWrapper = ({filename}) => {
+  let src;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    src = require(`../../../static/splash_images/${filename}`).default.src;
+  } catch {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    src = require(`../../../static/splash_images/empty.png`).default.src;
+  }
+  return <CardImg src={src} alt={""} />
 }
