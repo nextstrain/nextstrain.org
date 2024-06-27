@@ -347,8 +347,7 @@ const CardTitle = styled.div<{$squashed: boolean}>`
 
 const CardImg = styled.img`
   object-fit: contain;
-  border-radius: 6px;
-  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
   max-height: 100%;
   width: 100%;
   float: right;

@@ -199,7 +199,7 @@ const Splash = () => {
       </FlexCenter>
 
       <Line style={{ margin: "30px 0px 10px 0px" }} />
-      <Footer splashImagesCredit/>
+      <Footer />
 
     </Styles.Container>
   );
