@@ -15,9 +15,11 @@ interface ResourceGroupHeaderProps {
   isCollapsed: boolean
   resourcesToShowWhenCollapsed: number
   quickLinks: QuickLink[]
+  tooltipText: string
 }
 
-const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}: ResourceGroupHeaderProps) => {
+const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks, tooltipText}: ResourceGroupHeaderProps) => {
+  if (!tooltipText) tooltipText="Click to load the default (and most recent) analysis";
   const setModalResource = useContext(SetModalResourceContext);
   if (!setModalResource) throw new Error("Context not provided!")
 
@@ -34,7 +36,7 @@ const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isColl
 
         <HeaderRow>
           {group.groupUrl ? (
-            <TooltipWrapper description={`Click to load the default (and most recent) analysis for ${group.groupDisplayName || group.groupName}`}>
+            <TooltipWrapper description={`${tooltipText} for ${group.groupDisplayName || group.groupName}`}>
               <GroupLink style={{ fontSize: '2rem', fontWeight: '500'}} href={group.groupUrl} target="_blank" rel="noreferrer">
                 {group.groupDisplayName || group.groupName}
               </GroupLink>
@@ -118,12 +120,13 @@ interface ResourceGroupProps {
   numGroups: number
   sortMethod: string
   quickLinks: QuickLink[]
+  tooltipText: string
 }
 
 /**
  * Displays a single resource group (e.g. a single pathogen)
  */
-export const ResourceGroup = ({group, elWidth, numGroups, sortMethod, quickLinks}: ResourceGroupProps) => {
+export const ResourceGroup = ({group, elWidth, numGroups, sortMethod, quickLinks, tooltipText}: ResourceGroupProps) => {
   const {collapseThreshold, resourcesToShowWhenCollapsed} = collapseThresolds(numGroups);
   const collapsible = group.resources.length > collapseThreshold;
   const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
@@ -140,7 +143,7 @@ export const ResourceGroup = ({group, elWidth, numGroups, sortMethod, quickLinks
       <ResourceGroupHeader group={group} quickLinks={quickLinks}
         setCollapsed={setCollapsed} collapsible={collapsible}
         isCollapsed={isCollapsed} resourcesToShowWhenCollapsed={resourcesToShowWhenCollapsed}
-        isMobile={isMobile}
+        isMobile={isMobile} tooltipText={tooltipText}
       />
 
       <IndividualResourceContainer $maxResourceWidth={maxResourceWidth}>
