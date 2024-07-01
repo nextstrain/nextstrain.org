@@ -666,6 +666,15 @@
           "default": "a"
         }
       },
+      "seasonal-cov": {
+        "resolution": {
+          "229e": "",
+          "hku1": "",
+          "nl63": "",
+          "oc43": "",
+          "default": "229e"
+        }
+      },
       "tb": {
         "resolution": {
           "global": "",
