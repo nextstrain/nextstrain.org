@@ -43,6 +43,7 @@ const coreBuildPaths = [
   "/ncov",
   "/nextclade",
   "/rsv",
+  "/seasonal-cov",
   "/seasonal-flu",
   "/tb",
   "/WNV",
