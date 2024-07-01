@@ -4,7 +4,7 @@
 # - When adding or modifying descriptions, ensure it takes up at most two lines
 #   when rendered on the splash page.
 # - Ensure URLs start with `/`.
-cards:
+
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
   img: ncov_freq.png

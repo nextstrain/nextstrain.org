@@ -7,7 +7,7 @@ import { Tooltip } from 'react-tooltip-v5';
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 import { Showcase } from "../Showcase";
-import { cards } from "./showcase.yaml";
+import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
 
 const Section = ({id, title, abstract, buttonText, buttonLink}) => (
   <div id={id} className="col-md-6" style={{paddingBottom: "40px"}}>
@@ -67,7 +67,7 @@ const Splash = () => {
       </Styles.H1Small>
 
       <BigSpacer/>
-      <Showcase cards={cards} cardWidth={cardWidth} cardHeight={cardHeight} CardComponent={UrlShowcaseTile} />
+      <Showcase cards={featuredAnalyses} cardWidth={cardWidth} cardHeight={cardHeight} CardComponent={UrlShowcaseTile} />
       <Tooltip style={{fontSize: '1.6rem'}} id="showcaseTooltip" />
 
       <BigSpacer/>
