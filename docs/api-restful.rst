@@ -33,16 +33,16 @@ Synopsis
 .. code-block:: bash
 
     # Download a main dataset JSON file…
-    curl https://nextstrain.org/seasonal-flu/h3n2/ha/2y                         \
+    curl https://nextstrain.org/zika                         \
         --header 'Accept: application/vnd.nextstrain.dataset.main+json'         \
         --compressed                                                            \
-            > seasonal-flu_h3n2_ha_2y.json
+            > zika.json
 
     # …and re-upload it another location.
-    curl https://nextstrain.org/groups/blab/flu/latest                          \
+    curl https://nextstrain.org/groups/blab/zika/latest                          \
         --header 'Authorization: Bearer eyJraWQiOiJyM3…'                        \
         --header 'Content-Type: application/vnd.nextstrain.dataset.main+json'   \
-        --upload-file seasonal-flu_h3n2_ha_2y.json
+        --upload-file zika.json
 
 
     # Download a narrative Markdown file…
