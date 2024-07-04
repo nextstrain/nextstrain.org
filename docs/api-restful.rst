@@ -33,13 +33,13 @@ Synopsis
 .. code-block:: bash
 
     # Download a main dataset JSON file…
-    curl https://nextstrain.org/zika                         \
+    curl https://nextstrain.org/zika                                            \
         --header 'Accept: application/vnd.nextstrain.dataset.main+json'         \
         --compressed                                                            \
             > zika.json
 
     # …and re-upload it another location.
-    curl https://nextstrain.org/groups/blab/zika/latest                          \
+    curl https://nextstrain.org/groups/blab/zika/latest                         \
         --header 'Authorization: Bearer eyJraWQiOiJyM3…'                        \
         --header 'Content-Type: application/vnd.nextstrain.dataset.main+json'   \
         --upload-file zika.json
