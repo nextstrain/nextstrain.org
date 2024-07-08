@@ -33,16 +33,16 @@ Synopsis
 .. code-block:: bash
 
     # Download a main dataset JSON file…
-    curl https://nextstrain.org/zika                                            \
+    curl https://nextstrain.org/ncov/open/global/all-time                       \
         --header 'Accept: application/vnd.nextstrain.dataset.main+json'         \
         --compressed                                                            \
-            > zika.json
+            > ncov_open_global_all-time.json
 
     # …and re-upload it another location.
-    curl https://nextstrain.org/groups/blab/zika/latest                         \
+    curl https://nextstrain.org/groups/blab/ncov/latest                         \
         --header 'Authorization: Bearer eyJraWQiOiJyM3…'                        \
         --header 'Content-Type: application/vnd.nextstrain.dataset.main+json'   \
-        --upload-file zika.json
+        --upload-file ncov_open_global_all-time.json
 
 
     # Download a narrative Markdown file…
