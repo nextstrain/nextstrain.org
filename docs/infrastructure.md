@@ -142,8 +142,8 @@ To recreate an inactivated app, or create one for a PR from a fork, you can use 
 
 ### Rolling back deployments
 
-Normal Heroku deployments, performed by our GitHub Actions CI workflow, take about 6 minutes.
-Heroku allows us to immediately return to a previous version using rollbacks.
+In case of issues with a deployment, Heroku allows us to immediately return to a previous version using rollbacks, which take only several seconds to take effect.
+Normal Heroku deployments, performed by our GitHub Actions CI workflow, take about 6 minutes, and so, for time-sensitive issues, "failing forward" with a reversion in Git and new deploy, if appropriate, should be done after a rollback.
 Rollbacks can be performed via the Heroku dashboard or with `heroku rollback --app=nextstrain-server vX`, where _X_ is the version number (available via `heroku releases --app=nextstrain-server`).
 
 ## AWS
