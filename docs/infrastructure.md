@@ -24,7 +24,7 @@ We use a [Heroku pipeline named `nextstrain-server`](https://dashboard.heroku.co
 The production app serving **nextstrain.org** is [`nextstrain-server`](https://dashboard.heroku.com/apps/nextstrain-server).
 The canary app serving **next.nextstrain.org** is [`nextstrain-canary`](https://dashboard.heroku.com/apps/nextstrain-canary).
 Deploys of `master` to the canary app happen automatically after [GitHub Actions CI tests](https://github.com/nextstrain/nextstrain.org/actions/workflows/ci.yml) are successful.
-Deploys to the production app are performed by manually [promoting](https://devcenter.heroku.com/articles/pipelines#promoting) the canary's current release to production.
+Deploys to the production app are performed by manually [promoting](https://devcenter.heroku.com/articles/pipelines#promoting) the canary's current release to production (see also more about promoting below).
 
 ### Environment (or config) variables
 
@@ -139,6 +139,19 @@ To recreate an inactivated app, or create one for a PR from a fork, you can use 
 (Make sure to review code for security purposes before creating such an app.)
 
 > It is not currently possible to login/logout of these apps due to our AWS Cognito setup; thus private datasets cannot be accessed.
+
+### Promoting changes
+
+Promoting changes from canary to production can be done freely at any time, however it's worth reviewing the changes you're promoting to make sure they are what you expect them to be.
+
+We have a linear deploy path from git → canary → production, so if your commit Y in git comes after commit X, then deploying/promoting commit Y also deploys/promotes commit X.
+(Any out-of-order alternatives, though possible, are considered unnecessary complication for our team for now.)
+If you're promoting someone else's prior changes along with your own, it doesn't hurt to give a heads up in the `#nextstrain-dev` channel.
+That said, if someone leaves changes lying around on the canary for any length of time, that someone should expect the changes might be promoted to prod by someone else.
+So if you don't want that for your own changes, then make sure to promote them yourself sooner than later or ask folks to hold off while you let your changes bake off for a bit.
+
+It's worth noting that it is possible to promote previous releases to the canary to prod using the Heroku API (and maybe CLI?) but not the web UI.
+This might be useful if there are some lower stakes prior changes you want to promote before some higher stakes later changes but you didn't get a chance to before the latter deployed to the canary.
 
 ### Rolling back deployments
 
