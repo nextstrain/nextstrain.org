@@ -11,7 +11,7 @@ import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
-import { Showcase } from "../Showcase";
+import { ExpandableTiles } from "../ExpandableTiles";
 import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 
@@ -83,7 +83,7 @@ function ListResources({
         </Byline>
 
         <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
-          <Showcase tiles={showcaseTiles} tileWidth={tileWidthHeight} tileHeight={tileWidthHeight} TileComponent={FilterShowcaseTile} />
+          <ExpandableTiles tiles={showcaseTiles} tileWidth={tileWidthHeight} tileHeight={tileWidthHeight} TileComponent={FilterShowcaseTile} />
         </SetSelectedFilterOptions.Provider>
         </>
       )}

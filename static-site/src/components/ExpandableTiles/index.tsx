@@ -8,14 +8,14 @@ const expandPreviewHeight = 60 //pixels
 const transitionDuration = "0.3s"
 const transitionTimingFunction = "ease"
 
-interface ShowcaseProps<AnyTile extends Tile> {
+interface ExpandableTilesProps<AnyTile extends Tile> {
     tiles: AnyTile[]
     tileWidth: number
     tileHeight: number
     TileComponent: React.FunctionComponent<{ tile: AnyTile }>
 }
 
-export const Showcase = <AnyTile extends Tile>({tiles, tileWidth, tileHeight, TileComponent}: ShowcaseProps<AnyTile>) => {
+export const ExpandableTiles = <AnyTile extends Tile>({tiles, tileWidth, tileHeight, TileComponent}: ExpandableTilesProps<AnyTile>) => {
 
   const [tilesContainerHeight, setTilesContainerHeight] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -40,14 +40,14 @@ export const Showcase = <AnyTile extends Tile>({tiles, tileWidth, tileHeight, Ti
 
   return (
     <div>
-      <ShowcaseContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $tileHeight={tileHeight} $expandedHeight={tilesContainerHeight}>
+      <ExpandableContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $tileHeight={tileHeight} $expandedHeight={tilesContainerHeight}>
         <TilesContainer ref={tilesContainerRef} $tileWidth={tileWidth}>
           {tiles.map((el) => {
             return <TileComponent tile={el} key={el.name} />
           })}
         </TilesContainer>
         <PreviewOverlay onClick={toggleExpand} className={!isExpandable || isExpanded ? "hidden" : "visible"} />
-      </ShowcaseContainer>
+      </ExpandableContainer>
       {isExpandable && <>
         <ArrowButton onClick={toggleExpand}>
           {isExpanded ? <FaChevronUp/> : <FaChevronDown/>}
@@ -62,7 +62,7 @@ export const Showcase = <AnyTile extends Tile>({tiles, tileWidth, tileHeight, Ti
  * NOTE: Many of the React components here are taken from the existing GroupTiles UI
  */
 
-const ShowcaseContainer = styled.div<{$tileHeight: number, $expandedHeight: number}>`
+const ExpandableContainer = styled.div<{$tileHeight: number, $expandedHeight: number}>`
   position: relative;
   overflow-y: hidden;
 

@@ -1,4 +1,4 @@
-import { Tile } from "../Showcase/types"
+import { Tile } from "../ExpandableTiles/types"
 
 export interface FilterOption {
   value: string

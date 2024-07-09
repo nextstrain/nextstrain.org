@@ -6,7 +6,7 @@ import * as Styles from "./styles";
 import { Tooltip } from 'react-tooltip-v5';
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
-import { Showcase } from "../Showcase";
+import { ExpandableTiles } from "../ExpandableTiles";
 import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
 
 const Section = ({id, title, abstract, buttonText, buttonLink}) => (
@@ -67,7 +67,7 @@ const Splash = () => {
       </Styles.H1Small>
 
       <BigSpacer/>
-      <Showcase tiles={featuredAnalyses} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={UrlShowcaseTile} />
+      <ExpandableTiles tiles={featuredAnalyses} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={UrlTile} />
       <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
 
       <BigSpacer/>
@@ -210,9 +210,9 @@ const Splash = () => {
 export default Splash;
 
 
-/*** SHOWCASE ***/
+/*** FEATURED ANALYSES ***/
 
-const UrlShowcaseTile = ({ tile }) => {
+const UrlTile = ({ tile }) => {
 
   /* Narrative detection works for all three sources:
   1. Core: /narratives/<narrative path>
@@ -317,7 +317,7 @@ function NarrativeIcon() {
   )
 }
 
-const tooltipId = "showcaseTooltip";
+const tooltipId = "featuredAnalysesTooltip";
 
 function TooltipWrapper({description, children}) {
   return (
