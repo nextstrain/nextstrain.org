@@ -5,34 +5,46 @@ import { MediumSpacer } from "../../../layouts/generalComponents";
 import Padlock from "./padlock";
 import { theme } from "../../../layouts/theme";
 import { UserContext } from "../../../layouts/userDataWrapper";
+import { GroupTile } from "./types";
+import { Group } from "../types";
 
 
-export const GroupTiles = ({squashed}) => {
+export const GroupTiles = ({squashed}: { squashed: boolean }) => {
   const { visibleGroups } = useContext(UserContext);
   return (
-    <Tiles tiles={createGroupTiles(visibleGroups || [])} squashed={squashed}/>
+    <Tiles
+      compactColumns={false}
+      title={""}
+      tiles={createGroupTiles(visibleGroups || [])}
+      squashed={squashed}/>
   );
 };
 
 
-const createGroupTiles = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
-  const groupColor = colors[0];
-  colors.push(colors.shift());
+const createGroupTiles = (groups: Group[], colors = [...theme.titleColors]): GroupTile[] => groups.map((group) => {
+  const groupColor = colors[0]!;
+  colors.push(colors.shift()!);
 
-  return (
-    {
-      img: "empty.png",
-      url: `/groups/${group.name}`,
-      name: group.name,
-      color: groupColor,
-      private: group.private
-    }
-  );
+  const tile: GroupTile = {
+    img: "empty.png",
+    url: `/groups/${group.name}`,
+    name: group.name,
+    color: groupColor,
+    private: group.private
+  };
+
+  return tile;
 });
 
 
-const Tiles = ({ compactColumns, title, subtext, tiles, squashed }) => {
-  function getTiles(bootstrapColumnSize) {
+const Tiles = ({ compactColumns, title, subtext, tiles, squashed }: {
+  compactColumns: boolean
+  title: string
+  subtext?: string
+  tiles: GroupTile[]
+  squashed: boolean
+}) => {
+  function getTiles(bootstrapColumnSize: number) {
     return tiles.map((d) => (
       <div className={`col-sm-${bootstrapColumnSize}`} key={d.name}>
         <Styles.TileOuter $squashed={squashed}>
