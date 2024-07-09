@@ -68,7 +68,7 @@ const Splash = () => {
 
       <BigSpacer/>
       <Showcase tiles={featuredAnalyses} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={UrlShowcaseTile} />
-      <Tooltip style={{fontSize: '1.6rem'}} id="showcaseTooltip" />
+      <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
 
       <BigSpacer/>
 
@@ -317,10 +317,12 @@ function NarrativeIcon() {
   )
 }
 
+const tooltipId = "showcaseTooltip";
+
 function TooltipWrapper({description, children}) {
   return (
     <span
-      data-tooltip-id="showcaseTooltip"
+      data-tooltip-id={tooltipId}
       data-tooltip-html={description}
       data-tooltip-place="top">
       {children}
