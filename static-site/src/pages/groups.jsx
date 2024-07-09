@@ -110,7 +110,7 @@ class GroupsPage extends React.Component {
         <splashStyles.H2>Available groups</splashStyles.H2>
         <GroupListingInfo/>
         {/* These tiles dont go nicely into FlexCenter as they manage their own spacing */}
-        <GroupTiles squashed/>
+        <GroupTiles />
         <HugeSpacer />
 
         <ListResources

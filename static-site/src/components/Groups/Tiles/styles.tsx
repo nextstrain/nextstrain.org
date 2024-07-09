@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+export const width = 250;
+export const height = 150;
+
 export const TileImg = styled.img`
   object-fit: contain;
   border-radius: 6px;
@@ -15,36 +18,20 @@ export const TileInner = styled.div`
   cursor: pointer;
 `;
 
-export const TileOuter = styled.div<{$squashed: boolean}>`
+export const TileOuter = styled.div`
   background-color: #FFFFFF;
   padding: 0;
   overflow: hidden;
   position: relative;
   padding: 15px 0px 15px 0px;
-  height: ${(props) => props.$squashed ? "150px" : "250px"};
-  width: 250px;
-  @media (max-width: 1200px) {
-    height: ${(props) => props.$squashed ? "150px" : "200px"};
-    width: 200px;
-  }
-  @media (max-width: 768px) {
-    height: 150px;
-    width: 200px;
-  }
-  @media (max-width: 680px) {
-    height: 120px;
-    width: 100%;
-    padding: 20px 0px 20px 0px;
-  }
+  height: ${height}px;
+  width: ${width}px;
 `;
 
-export const TileName = styled.div<{$squashed: boolean}>`
+export const TileName = styled.div`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
-  font-size: ${(props) => props.$squashed ? "22px" : "26px"};
-  @media (max-width: 768px) {
-    font-size: 22px;
-  }
+  font-size: 22px;
   position: absolute;
   border-radius: 3px;
   padding: 10px 20px 10px 20px;
