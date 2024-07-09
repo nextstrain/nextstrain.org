@@ -1,4 +1,4 @@
-export interface Card {
+export interface Tile {
   name: string
   img: string
 }

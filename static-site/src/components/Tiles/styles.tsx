@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const CardImg = styled.img`
+export const TileImg = styled.img`
   object-fit: contain;
   border-radius: 6px;
   box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
@@ -10,12 +10,12 @@ export const CardImg = styled.img`
   float: right;
 `;
 
-export const CardInner = styled.div`
+export const TileInner = styled.div`
   margin: 5px 10px 5px 10px;
   cursor: pointer;
 `;
 
-export const CardOuter = styled.div<{$squashed: boolean}>`
+export const TileOuter = styled.div<{$squashed: boolean}>`
   background-color: #FFFFFF;
   padding: 0;
   overflow: hidden;
@@ -38,7 +38,7 @@ export const CardOuter = styled.div<{$squashed: boolean}>`
   }
 `;
 
-export const CardTitle = styled.div<{$squashed: boolean}>`
+export const TileTitle = styled.div<{$squashed: boolean}>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
   font-size: ${(props) => props.$squashed ? "22px" : "26px"};

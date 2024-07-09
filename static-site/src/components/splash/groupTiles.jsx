@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import Cards from "../Cards";
+import Tiles from "../Tiles";
 import { theme } from "../../layouts/theme";
 import { UserContext } from "../../layouts/userDataWrapper";
 
-const createGroupCards = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
+const createGroupTiles = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
   const groupColor = colors[0];
   colors.push(colors.shift());
 
@@ -18,9 +18,9 @@ const createGroupCards = (groups, colors = [...theme.titleColors]) => groups.map
   );
 });
 
-export const GroupCards = ({squashed}) => {
+export const GroupTiles = ({squashed}) => {
   const { visibleGroups } = useContext(UserContext);
   return (
-    <Cards cards={createGroupCards(visibleGroups || [])} squashed={squashed}/>
+    <Tiles tiles={createGroupTiles(visibleGroups || [])} squashed={squashed}/>
   );
 };
