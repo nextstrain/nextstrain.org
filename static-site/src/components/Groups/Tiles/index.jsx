@@ -4,14 +4,14 @@ import { H1 } from "../../splash/styles";
 import { MediumSpacer } from "../../../layouts/generalComponents";
 import Padlock from "./padlock";
 
-class Tiles extends React.Component {
-  tiles(bootstrapColumnSize) {
-    return this.props.tiles.map((d) => (
+const Tiles = ({ compactColumns, title, subtext, tiles, squashed }) => {
+  function getTiles(bootstrapColumnSize) {
+    return tiles.map((d) => (
       <div className={`col-sm-${bootstrapColumnSize}`} key={d.name}>
-        <Styles.TileOuter $squashed={this.props.squashed}>
+        <Styles.TileOuter $squashed={squashed}>
           <Styles.TileInner>
             <a href={`${d.url}`}>
-              <Styles.TileName $squashed={this.props.squashed}>
+              <Styles.TileName $squashed={squashed}>
                 {d.name}
               </Styles.TileName>
               {d.private ? (
@@ -27,33 +27,33 @@ class Tiles extends React.Component {
       </div>
     ));
   }
-  render() {
-    const bootstrapColumnSize = this.props.compactColumns ? 6 : 4;
-    const TILES = this.tiles(bootstrapColumnSize);
-    return this.props.compactColumns ? TILES : (
-      <div>
-        <div className="row">
-          <div className="col-md-1" />
-          <div className="col-md-10">
-            <H1>{this.props.title}</H1>
-            {this.props.subtext ?
-              (
-                <Styles.SubText>
-                  {this.props.subtext}
-                </Styles.SubText>
-              ) :
-              null
-            }
-            <MediumSpacer />
-            <div className="row">
-              {TILES}
-            </div>
+
+  const bootstrapColumnSize = compactColumns ? 6 : 4;
+  const TILES = getTiles(bootstrapColumnSize);
+
+  return compactColumns ? TILES : (
+    <div>
+      <div className="row">
+        <div className="col-md-1" />
+        <div className="col-md-10">
+          <H1>{title}</H1>
+          {subtext ?
+            (
+              <Styles.SubText>
+                {subtext}
+              </Styles.SubText>
+            ) :
+            null
+          }
+          <MediumSpacer />
+          <div className="row">
+            {TILES}
           </div>
         </div>
-        <div className="col-md-1" />
       </div>
-    );
-  }
+      <div className="col-md-1" />
+    </div>
+  );
 }
 
 export default Tiles;
