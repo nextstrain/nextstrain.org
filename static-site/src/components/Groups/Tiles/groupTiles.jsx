@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import Tiles from "../Tiles";
-import { theme } from "../../layouts/theme";
-import { UserContext } from "../../layouts/userDataWrapper";
+import Tiles from ".";
+import { theme } from "../../../layouts/theme";
+import { UserContext } from "../../../layouts/userDataWrapper";
 
 const createGroupTiles = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
   const groupColor = colors[0];

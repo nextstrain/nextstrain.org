@@ -5,7 +5,7 @@ import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import ListResources from "../components/ListResources/index";
-import { GroupTiles } from "../components/splash/groupTiles";
+import { GroupTiles } from "../components/Groups/Tiles/groupTiles";
 import GenericPage from "../layouts/generic-page";
 import { UserContext } from "../layouts/userDataWrapper";
 import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
