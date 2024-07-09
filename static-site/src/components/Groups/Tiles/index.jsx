@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import * as Styles from "./styles";
 import { H1 } from "../../splash/styles";
 import { MediumSpacer } from "../../../layouts/generalComponents";
 import Padlock from "./padlock";
+import { theme } from "../../../layouts/theme";
+import { UserContext } from "../../../layouts/userDataWrapper";
+
+
+export const GroupTiles = ({squashed}) => {
+  const { visibleGroups } = useContext(UserContext);
+  return (
+    <Tiles tiles={createGroupTiles(visibleGroups || [])} squashed={squashed}/>
+  );
+};
+
+
+const createGroupTiles = (groups, colors = [...theme.titleColors]) => groups.map((group) => {
+  const groupColor = colors[0];
+  colors.push(colors.shift());
+
+  return (
+    {
+      img: "empty.png",
+      url: `/groups/${group.name}`,
+      name: group.name,
+      color: groupColor,
+      private: group.private
+    }
+  );
+});
+
 
 const Tiles = ({ compactColumns, title, subtext, tiles, squashed }) => {
   function getTiles(bootstrapColumnSize) {
@@ -55,5 +82,3 @@ const Tiles = ({ compactColumns, title, subtext, tiles, squashed }) => {
     </div>
   );
 }
-
-export default Tiles;
