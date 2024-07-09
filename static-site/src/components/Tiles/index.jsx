@@ -7,13 +7,13 @@ import Padlock from "./padlock";
 class Tiles extends React.Component {
   tiles(bootstrapColumnSize) {
     return this.props.tiles.map((d) => (
-      <div className={`col-sm-${bootstrapColumnSize}`} key={d.title}>
+      <div className={`col-sm-${bootstrapColumnSize}`} key={d.name}>
         <Styles.TileOuter $squashed={this.props.squashed}>
           <Styles.TileInner>
             <a href={`${d.url}`}>
-              <Styles.TileTitle $squashed={this.props.squashed}>
-                {d.title}
-              </Styles.TileTitle>
+              <Styles.TileName $squashed={this.props.squashed}>
+                {d.name}
+              </Styles.TileName>
               {d.private ? (
                 <Styles.BottomRightLabel>
                   <Padlock/>

@@ -227,9 +227,9 @@ const UrlShowcaseTile = ({ tile }) => {
     <TileOuter>
       <TileInner>
         <a href={tile.url}>
-          <TileTitle>
+          <TileName>
             {tile.name}
-          </TileTitle>
+          </TileName>
           <TileImgContainer>
             <TileImgWrapper filename={tile.img}/>
             <InfoIcons>
@@ -362,7 +362,7 @@ const TileInner = styled.div`
   margin: 5px 10px 5px 10px;
 `;
 
-const TileTitle = styled.div`
+const TileName = styled.div`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
   font-size: 20px;

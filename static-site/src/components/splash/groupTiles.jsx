@@ -11,7 +11,7 @@ const createGroupTiles = (groups, colors = [...theme.titleColors]) => groups.map
     {
       img: "empty.png",
       url: `/groups/${group.name}`,
-      title: group.name,
+      name: group.name,
       color: groupColor,
       private: group.private
     }

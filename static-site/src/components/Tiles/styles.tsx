@@ -38,7 +38,7 @@ export const TileOuter = styled.div<{$squashed: boolean}>`
   }
 `;
 
-export const TileTitle = styled.div<{$squashed: boolean}>`
+export const TileName = styled.div<{$squashed: boolean}>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
   font-size: ${(props) => props.$squashed ? "22px" : "26px"};

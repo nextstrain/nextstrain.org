@@ -276,9 +276,9 @@ const FilterShowcaseTile = ({ tile }: { tile: FilterTile }) => {
     <TileOuter>
       <TileInner>
         <div onClick={filter}>
-          <TileTitle $squashed>
+          <TileName $squashed>
             {tile.name}
-          </TileTitle>
+          </TileName>
           <TileImgWrapper filename={tile.img}/>
         </div>
       </TileInner>
@@ -329,7 +329,7 @@ const TileInner = styled.div`
   cursor: pointer;
 `;
 
-const TileTitle = styled.div<{$squashed: boolean}>`
+const TileName = styled.div<{$squashed: boolean}>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
   font-size: ${(props) => props.$squashed ? "21px" : "25px"};
