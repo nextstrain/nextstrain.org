@@ -77,7 +77,7 @@ We may wish to rename this directory to avoid any doubt.
 2. If using a tree, make sure branch labels are turned off.
 3. Downsize the image to 250px by 250px.
 4. Save the file in `./static/splash_images`
-5. Edit `./src/components/splash/showcase.yaml` to include the card & title.
+5. Add a new entry to [./content/featured-analyses.yaml](./content/featured-analyses.yaml).
 
 ### Adding new team members
 
