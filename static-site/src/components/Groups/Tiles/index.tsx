@@ -59,7 +59,7 @@ const Tiles = ({ compactColumns, title, subtext, tiles, squashed }: {
                 </Styles.BottomRightLabel>
               ) : null}
               {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
-              {d.img ? <Styles.TileImg src={require(`../../../../static/splash_images/${d.img}`).default.src} alt={""} color={d.color}/> : null}
+              {d.img ? <Styles.TileImg src={require(`../../../../static/pathogen_images/${d.img}`).default.src} alt={""} color={d.color}/> : null}
             </a>
           </Styles.TileInner>
         </Styles.TileOuter>

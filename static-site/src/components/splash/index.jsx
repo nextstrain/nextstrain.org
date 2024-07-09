@@ -394,10 +394,10 @@ const TileImgWrapper = ({filename}) => {
   let src;
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    src = require(`../../../static/splash_images/${filename}`).default.src;
+    src = require(`../../../static/pathogen_images/${filename}`).default.src;
   } catch {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    src = require(`../../../static/splash_images/empty.png`).default.src;
+    src = require(`../../../static/pathogen_images/empty.png`).default.src;
   }
   return <TileImg src={src} alt={""} />
 }

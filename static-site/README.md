@@ -72,11 +72,11 @@ We may wish to rename this directory to avoid any doubt.
 # Adding content
 * [See this page in the docs](https://nextstrain.org/docs/contributing/documentation)
 
-### Adding new tiles for the splash page
+### Adding new pathogen images for tiles
 1. Navigate to the Auspice view and take a square screenshot of a panel that is representative of the data.
 2. If using a tree, make sure branch labels are turned off.
 3. Downsize the image to 250px by 250px.
-4. Save the file in `./static/splash_images`
+4. Save the file in `./static/pathogen_images`
 5. Add a new entry to [./content/featured-analyses.yaml](./content/featured-analyses.yaml).
 
 ### Adding new team members

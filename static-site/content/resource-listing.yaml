@@ -54,7 +54,7 @@ coreGroupDisplayNames:
 
 # Showcase tiles must define a filter query which is a list of dataset name
 # "words" (where words are joined by "/" to form the URL path) as well as a PNG
-# image which is relative to static-site/static/splash_images. The number of
+# image which is relative to static-site/static/pathogen_images. The number of
 # showcase tiles which will be shown is decided by the UI and changes with
 # screen size.
 coreShowcase:
