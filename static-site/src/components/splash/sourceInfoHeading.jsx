@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 import { StyledLink } from "../Datasets/list-datasets";
 import { FlexCenter } from "../../layouts/generalComponents";
-import MarkdownDisplay from "./markdownDisplay";
+import { parseMarkdown } from "../../util/parseMarkdown";
 
 const OverviewContainer = styled.div`
   text-align: justify;
@@ -67,6 +67,23 @@ function Byline({children}) {
     color: #A9ADB1;
   `;
   return (<Div>{children}</Div>);
+}
+
+// copied from Auspice: <https://github.com/nextstrain/auspice/blob/835fbb23d61549da81fde3725b031ad8a24c74cf/src/components/markdownDisplay/index.js>
+function MarkdownDisplay({ mdstring, ...props }) {
+  let cleanDescription;
+  try {
+    cleanDescription = parseMarkdown(mdstring);
+  } catch (error) {
+    console.error(`Error parsing markdown: ${error}`);
+    cleanDescription = '<p>There was an error parsing markdown content.</p>';
+  }
+  return (
+    <div
+      {...props}
+      dangerouslySetInnerHTML={{ __html: cleanDescription }}
+    />
+  );
 }
 
 export default function SourceInfoHeading({sourceInfo}) {
