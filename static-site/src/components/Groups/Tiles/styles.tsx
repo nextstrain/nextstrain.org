@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const width = 250;
-export const height = 150;
+export const width = 160;
+export const height = 160;
 
 export const TileImg = styled.img`
   object-fit: contain;
@@ -23,7 +23,6 @@ export const TileOuter = styled.div`
   padding: 0;
   overflow: hidden;
   position: relative;
-  padding: 15px 0px 15px 0px;
   height: ${height}px;
   width: ${width}px;
 `;
@@ -34,8 +33,8 @@ export const TileName = styled.div`
   font-size: 22px;
   position: absolute;
   border-radius: 3px;
-  padding: 10px 20px 10px 20px;
-  top: 40px;
+  padding: 10px 20px 10px 10px;
+  top: 20px;
   left: 20px;
   color: white;
   background: rgba(0, 0, 0, 0.7);
