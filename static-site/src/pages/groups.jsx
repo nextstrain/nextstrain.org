@@ -5,7 +5,7 @@ import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import ListResources from "../components/ListResources/index";
-import { GroupCards } from "../components/splash/groupCards";
+import { GroupTiles } from "../components/Groups/Tiles";
 import GenericPage from "../layouts/generic-page";
 import { UserContext } from "../layouts/userDataWrapper";
 import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
@@ -109,8 +109,8 @@ class GroupsPage extends React.Component {
 
         <splashStyles.H2>Available groups</splashStyles.H2>
         <GroupListingInfo/>
-        {/* These cards dont go nicely into FlexCenter as they manage their own spacing */}
-        <GroupCards squashed/>
+        {/* These tiles dont go nicely into FlexCenter as they manage their own spacing */}
+        <GroupTiles squashed/>
         <HugeSpacer />
 
         <ListResources

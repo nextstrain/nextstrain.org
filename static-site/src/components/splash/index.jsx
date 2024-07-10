@@ -6,7 +6,7 @@ import * as Styles from "./styles";
 import { Tooltip } from 'react-tooltip-v5';
 import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
-import { Showcase } from "../Showcase";
+import { ExpandableTiles } from "../ExpandableTiles";
 import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
 
 const Section = ({id, title, abstract, buttonText, buttonLink}) => (
@@ -67,8 +67,8 @@ const Splash = () => {
       </Styles.H1Small>
 
       <BigSpacer/>
-      <Showcase cards={featuredAnalyses} cardWidth={cardWidth} cardHeight={cardHeight} CardComponent={UrlShowcaseTile} />
-      <Tooltip style={{fontSize: '1.6rem'}} id="showcaseTooltip" />
+      <ExpandableTiles tiles={featuredAnalyses} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={UrlTile} />
+      <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
 
       <BigSpacer/>
 
@@ -210,9 +210,9 @@ const Splash = () => {
 export default Splash;
 
 
-/*** SHOWCASE ***/
+/*** FEATURED ANALYSES ***/
 
-const UrlShowcaseTile = ({ card }) => {
+const UrlTile = ({ tile }) => {
 
   /* Narrative detection works for all three sources:
   1. Core: /narratives/<narrative path>
@@ -221,35 +221,35 @@ const UrlShowcaseTile = ({ card }) => {
 
   Including slashes in the check prevents false positives.
   */
-  const isNarrative = card.url.includes('/narratives/');
+  const isNarrative = tile.url.includes('/narratives/');
 
   return (
-    <CardOuter>
-      <CardInner>
-        <a href={card.url}>
-          <CardTitle>
-            {card.name}
-          </CardTitle>
-          <CardImgContainer>
-            <CardImgWrapper filename={card.img}/>
+    <TileOuter>
+      <TileInner>
+        <a href={tile.url}>
+          <TileName>
+            {tile.name}
+          </TileName>
+          <TileImgContainer>
+            <TileImgWrapper filename={tile.img}/>
             <InfoIcons>
-              <CardSourceIcon url={card.url} isNarrative={isNarrative} />
+              <TileSourceIcon url={tile.url} isNarrative={isNarrative} />
               {isNarrative && <NarrativeIcon />}
             </InfoIcons>
-          </CardImgContainer>
+          </TileImgContainer>
         </a>
-        <CardDescription>
-          {card.description}
-        </CardDescription>
-      </CardInner>
-    </CardOuter>
+        <TileDescription>
+          {tile.description}
+        </TileDescription>
+      </TileInner>
+    </TileOuter>
   )
 }
 
-const cardWidth = 220; // pixels
-const cardHeight = 285; // pixels
+const tileWidth = 220; // pixels
+const tileHeight = 285; // pixels
 
-function CardSourceIcon({ url, isNarrative }) {
+function TileSourceIcon({ url, isNarrative }) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const gitHubLogo = require(`../../../static/logos/github-mark.png`).default.src;
 
@@ -317,10 +317,12 @@ function NarrativeIcon() {
   )
 }
 
+const tooltipId = "featuredAnalysesTooltip";
+
 function TooltipWrapper({description, children}) {
   return (
     <span
-      data-tooltip-id="showcaseTooltip"
+      data-tooltip-id={tooltipId}
       data-tooltip-html={description}
       data-tooltip-place="top">
       {children}
@@ -346,23 +348,23 @@ const InfoIconImg = styled.img`
   margin: 0 3px;
 `;
 
-const CardOuter = styled.div`
+const TileOuter = styled.div`
   background-color: #FFFFFF;
   padding: 0;
   overflow: hidden;
   position: relative;
-  width: ${cardWidth}px;
-  height: ${cardHeight}px;
+  width: ${tileWidth}px;
+  height: ${tileHeight}px;
   border-radius: 10px;
   border: 1px solid #AAA;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const CardInner = styled.div`
+const TileInner = styled.div`
   margin: 5px 10px 5px 10px;
 `;
 
-const CardTitle = styled.div`
+const TileName = styled.div`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
   font-size: 20px;
@@ -371,31 +373,31 @@ const CardTitle = styled.div`
   margin-bottom: 5px;
 `;
 
-const CardDescription = styled.div`
+const TileDescription = styled.div`
   font-family: ${(props) => props.theme.generalFont};
   font-size: 14px;
   margin-top: 4px;
   text-align: center;
 `;
 
-const CardImgContainer = styled.div`
+const TileImgContainer = styled.div`
   position: relative;
 `;
 
-const CardImg = styled.img`
+const TileImg = styled.img`
   object-fit: contain;
   max-height: 100%;
   width: 100%;
 `;
 
-const CardImgWrapper = ({filename}) => {
+const TileImgWrapper = ({filename}) => {
   let src;
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    src = require(`../../../static/splash_images/${filename}`).default.src;
+    src = require(`../../../static/pathogen_images/${filename}`).default.src;
   } catch {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    src = require(`../../../static/splash_images/empty.png`).default.src;
+    src = require(`../../../static/pathogen_images/empty.png`).default.src;
   }
-  return <CardImg src={src} alt={""} />
+  return <TileImg src={src} alt={""} />
 }

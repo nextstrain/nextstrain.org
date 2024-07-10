@@ -1,4 +1,4 @@
-import { Card } from "../Showcase/types"
+import { Tile } from "../ExpandableTiles/types"
 
 export interface FilterOption {
   value: string
@@ -45,7 +45,7 @@ export interface UpdateCadence {
 }
 
 // See coreShowcase in static-site/content/resource-listing.yaml
-export interface FilterCard extends Card {
+export interface FilterTile extends Tile {
   filters: string[]
 }
 

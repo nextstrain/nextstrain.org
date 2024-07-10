@@ -11,8 +11,8 @@ import { ResourceGroup } from './ResourceGroup';
 import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
-import { Showcase } from "../Showcase";
-import { FilterCard, FilterOption, Group, QuickLink, Resource, ResourceListingInfo } from './types';
+import { ExpandableTiles } from "../ExpandableTiles";
+import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
@@ -47,7 +47,7 @@ function ListResources({
     groupDisplayNames,
     resourceListingCallback,
   );
-  const showcaseCards = useShowcaseCards(showcase, groups);
+  const showcaseTiles = useShowcaseTiles(showcase, groups);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState("alphabetical");
   const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
@@ -76,14 +76,14 @@ function ListResources({
   return (
     <ListResourcesContainer>
 
-      { showcaseCards.length > 0 && (
+      { showcaseTiles.length > 0 && (
         <>
         <Byline>
           Showcase resources: click to filter the resources to a pathogen
         </Byline>
 
         <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
-          <Showcase cards={showcaseCards} cardWidth={cardWidthHeight} cardHeight={cardWidthHeight} CardComponent={FilterShowcaseTile} />
+          <ExpandableTiles tiles={showcaseTiles} tileWidth={tileWidthHeight} tileHeight={tileWidthHeight} TileComponent={FilterShowcaseTile} />
         </SetSelectedFilterOptions.Provider>
         </>
       )}
@@ -131,7 +131,7 @@ interface ListResourcesResponsiveProps {
 
   /** Mapping from group name -> display name */
   groupDisplayNames: Record<string, string>
-  showcase: FilterCard[]
+  showcase: FilterTile[]
   resourceListingCallback: () => Promise<ResourceListingInfo>;
 }
 
@@ -257,7 +257,7 @@ const Byline = styled.div`
 
 /*** SHOWCASE ***/
 
-const FilterShowcaseTile = ({ card }: { card: FilterCard }) => {
+const FilterShowcaseTile = ({ tile }: { tile: FilterTile }) => {
   const setSelectedFilterOptions = useContext(SetSelectedFilterOptions);
 
   if (!setSelectedFilterOptions) {
@@ -266,36 +266,36 @@ const FilterShowcaseTile = ({ card }: { card: FilterCard }) => {
 
   const filter = useCallback(
     () => {
-      setSelectedFilterOptions(card.filters.map(createFilterOption));
+      setSelectedFilterOptions(tile.filters.map(createFilterOption));
       goToAnchor(LIST_ANCHOR);
     },
-    [setSelectedFilterOptions, card]
+    [setSelectedFilterOptions, tile]
   )
 
   return (
-    <CardOuter>
-      <CardInner>
+    <TileOuter>
+      <TileInner>
         <div onClick={filter}>
-          <CardTitle $squashed>
-            {card.name}
-          </CardTitle>
-          <CardImgWrapper filename={card.img}/>
+          <TileName $squashed>
+            {tile.name}
+          </TileName>
+          <TileImgWrapper filename={tile.img}/>
         </div>
-      </CardInner>
-    </CardOuter>
+      </TileInner>
+    </TileOuter>
   )
 }
 
 
 /**
- * Given a set of user-defined cards, restrict them to the set of cards for
+ * Given a set of user-defined tiles, restrict them to the set of tiles for
  * which the filters are valid given the resources known to the resource listing
  * UI
  */
-const useShowcaseCards = (cards?: FilterCard[], groups?: Group[]) => {
-  const [restrictedCards, setRestrictedCards] = useState<FilterCard[]>([]);
+const useShowcaseTiles = (tiles?: FilterTile[], groups?: Group[]) => {
+  const [restrictedTiles, setRestrictedTiles] = useState<FilterTile[]>([]);
   useEffect(() => {
-    if (!cards || !groups) return;
+    if (!tiles || !groups) return;
     const words = groups.reduce((words, group) => {
       for (const resource of group.resources) {
         for (const word of resource.nameParts) {
@@ -304,32 +304,32 @@ const useShowcaseCards = (cards?: FilterCard[], groups?: Group[]) => {
       }
       return words;
     }, new Set<string>());
-    setRestrictedCards(cards.filter((card) => {
-      return card.filters.every((word) => words.has(word))
+    setRestrictedTiles(tiles.filter((tile) => {
+      return tile.filters.every((word) => words.has(word))
     }));
-  }, [cards, groups]);
-  return restrictedCards;
+  }, [tiles, groups]);
+  return restrictedTiles;
 }
 
-const cardWidthHeight = 160; // pixels
+const tileWidthHeight = 160; // pixels
 
-const CardOuter = styled.div`
+const TileOuter = styled.div`
   background-color: #FFFFFF;
   padding: 0;
   overflow: hidden;
   position: relative;
-  min-width: ${cardWidthHeight}px;
-  min-height: ${cardWidthHeight}px;
-  max-width: ${cardWidthHeight}px;
-  max-height: ${cardWidthHeight}px;
+  min-width: ${tileWidthHeight}px;
+  min-height: ${tileWidthHeight}px;
+  max-width: ${tileWidthHeight}px;
+  max-height: ${tileWidthHeight}px;
 `
 
-const CardInner = styled.div`
+const TileInner = styled.div`
   margin: 5px 10px 5px 10px;
   cursor: pointer;
 `;
 
-const CardTitle = styled.div<{$squashed: boolean}>`
+const TileName = styled.div<{$squashed: boolean}>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
   font-size: ${(props) => props.$squashed ? "21px" : "25px"};
@@ -345,7 +345,7 @@ const CardTitle = styled.div<{$squashed: boolean}>`
   background: rgba(0, 0, 0, 0.7);
 `;
 
-const CardImg = styled.img`
+const TileImg = styled.img`
   object-fit: contain;
   border-radius: 2px;
   max-height: 100%;
@@ -353,14 +353,14 @@ const CardImg = styled.img`
   float: right;
 `;
 
-const CardImgWrapper = ({filename}) => {
+const TileImgWrapper = ({filename}) => {
   let src;
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    src = require(`../../../static/splash_images/${filename}`).default.src;
+    src = require(`../../../static/pathogen_images/${filename}`).default.src;
   } catch {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    src = require(`../../../static/splash_images/empty.png`).default.src;
+    src = require(`../../../static/pathogen_images/empty.png`).default.src;
   }
-  return <CardImg src={src} alt={""} />
+  return <TileImg src={src} alt={""} />
 }

@@ -2,22 +2,22 @@
 import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import styled from 'styled-components';
-import { Card } from './types';
+import { Tile } from './types';
 
 const expandPreviewHeight = 60 //pixels
 const transitionDuration = "0.3s"
 const transitionTimingFunction = "ease"
 
-interface ShowcaseProps<AnyCard extends Card> {
-    cards: AnyCard[]
-    cardWidth: number
-    cardHeight: number
-    CardComponent: React.FunctionComponent<{ card: AnyCard }>
+interface ExpandableTilesProps<AnyTile extends Tile> {
+    tiles: AnyTile[]
+    tileWidth: number
+    tileHeight: number
+    TileComponent: React.FunctionComponent<{ tile: AnyTile }>
 }
 
-export const Showcase = <AnyCard extends Card>({cards, cardWidth, cardHeight, CardComponent}: ShowcaseProps<AnyCard>) => {
+export const ExpandableTiles = <AnyTile extends Tile>({tiles, tileWidth, tileHeight, TileComponent}: ExpandableTilesProps<AnyTile>) => {
 
-  const [cardsContainerHeight, setCardsContainerHeight] = useState<number>(0);
+  const [tilesContainerHeight, setTilesContainerHeight] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => {
@@ -28,26 +28,26 @@ export const Showcase = <AnyCard extends Card>({cards, cardWidth, cardHeight, Ca
    * Function that runs on changes to the container.
    * Used to determine the height upon resize.
    */
-  function cardsContainerRef(cardsContainer: HTMLDivElement) {
-    if (!cardsContainer) return;
+  function tilesContainerRef(tilesContainer: HTMLDivElement) {
+    if (!tilesContainer) return;
 
-    if(cardsContainerHeight != cardsContainer.clientHeight) {
-      setCardsContainerHeight(cardsContainer.clientHeight)
+    if(tilesContainerHeight != tilesContainer.clientHeight) {
+      setTilesContainerHeight(tilesContainer.clientHeight)
     }
   }
 
-  const isExpandable = cardsContainerHeight > cardHeight;
+  const isExpandable = tilesContainerHeight > tileHeight;
 
   return (
     <div>
-      <ShowcaseContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $cardHeight={cardHeight} $expandedHeight={cardsContainerHeight}>
-        <CardsContainer ref={cardsContainerRef} $cardWidth={cardWidth}>
-          {cards.map((el) => {
-            return <CardComponent card={el} key={el.name} />
+      <ExpandableContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $tileHeight={tileHeight} $expandedHeight={tilesContainerHeight}>
+        <TilesContainer ref={tilesContainerRef} $tileWidth={tileWidth}>
+          {tiles.map((el) => {
+            return <TileComponent tile={el} key={el.name} />
           })}
-        </CardsContainer>
+        </TilesContainer>
         <PreviewOverlay onClick={toggleExpand} className={!isExpandable || isExpanded ? "hidden" : "visible"} />
-      </ShowcaseContainer>
+      </ExpandableContainer>
       {isExpandable && <>
         <ArrowButton onClick={toggleExpand}>
           {isExpanded ? <FaChevronUp/> : <FaChevronDown/>}
@@ -59,15 +59,15 @@ export const Showcase = <AnyCard extends Card>({cards, cardWidth, cardHeight, Ca
 }
 
 /**
- * NOTE: Many of the React components here are taken from the existing Cards UI
+ * NOTE: Many of the React components here are taken from the existing GroupTiles UI
  */
 
-const ShowcaseContainer = styled.div<{$cardHeight: number, $expandedHeight: number}>`
+const ExpandableContainer = styled.div<{$tileHeight: number, $expandedHeight: number}>`
   position: relative;
   overflow-y: hidden;
 
   &.collapsed {
-    max-height: ${(props) => props.$cardHeight + expandPreviewHeight}px;
+    max-height: ${(props) => props.$tileHeight + expandPreviewHeight}px;
   }
 
   &.expanded {
@@ -109,9 +109,9 @@ const PreviewOverlay = styled.div`
   transition: opacity ${transitionDuration} ${transitionTimingFunction};
 `;
 
-const CardsContainer = styled.div<{$cardWidth: number}>`
+const TilesContainer = styled.div<{$tileWidth: number}>`
   display: grid;
-  grid-template-columns: repeat(auto-fit, ${(props) => `${props.$cardWidth}px`});
+  grid-template-columns: repeat(auto-fit, ${(props) => `${props.$tileWidth}px`});
   gap: 10px;
   overflow: hidden;
   justify-content: center;
