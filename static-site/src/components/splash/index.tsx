@@ -10,21 +10,31 @@ import { ExpandableTiles } from "../ExpandableTiles";
 import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
 import { SplashTile } from "./types";
 
-const Section = ({id, title, abstract, buttonText, buttonLink}) => (
-  <div id={id} className="col-lg-6" style={{paddingBottom: "40px"}}>
-    <div style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100%"}}>
-      <Styles.H1Small>{title}</Styles.H1Small>
-      <Styles.CenteredFocusParagraph style={{flexGrow: 1}}>
+const Section = ({id, title, abstract, link}) => (
+  <div id={id} className="col-12 col-sm-6 col-md-4" style={{paddingBottom: "20px"}}>
+    <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
+      <a href={link}>
+        <SectionHeader>{title}</SectionHeader>
+      </a>
+      <SectionAbstract style={{flexGrow: 1}}>
         {abstract}
-      </Styles.CenteredFocusParagraph>
+      </SectionAbstract>
       <BigSpacer/>
-      <Styles.Button to={buttonLink}>
-        {buttonText}
-      </Styles.Button>
     </div>
   </div>
 );
 
+const SectionHeader = styled.div`
+  font-size: 25px;
+  font-weight: 400;
+`;
+
+const SectionAbstract = styled.div`
+  font-size: ${(props) => props.theme.niceFontSize};
+  font-weight: 300;
+  line-height: ${(props) => props.theme.tightLineHeight};
+  margin-top: 5px;
+`
 
 const Splash = () => {
   useEffect(() => {
@@ -63,45 +73,31 @@ const Splash = () => {
 
       <HugeSpacer/>
 
-      <Styles.H1Small>
-        Featured analyses
-      </Styles.H1Small>
-
-      <BigSpacer/>
-      <ExpandableTiles tiles={featuredAnalyses as unknown as SplashTile[]} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={Tile} />
-      <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
-
-      <BigSpacer/>
-
-      <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
+      <div style={{display: "flex", flexWrap: "wrap"}}>
         <Section
           id="sars-cov-2"
           title="SARS-CoV-2 (COVID-19)"
           abstract="We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
           In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses."
-          buttonText="See all resources"
-          buttonLink="/sars-cov-2"
+          link="/sars-cov-2"
         />
         <Section
           id="nextclade"
           title="Nextclade"
           abstract="Nextclade allows you to analyze virus genome sequences in the web browser. It will align your sequence data to a reference genome, call mutations relative to that reference, and place your sequences on a phylogeny. It also reports clade assignments and quality of your sequence data."
-          buttonText="Go to Nextclade"
-          buttonLink="https://clades.nextstrain.org"
+          link="https://clades.nextstrain.org"
         />
         <Section
           id="groups"
           title="Nextstrain Groups"
           abstract="We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience."
-          buttonText="See all groups"
-          buttonLink="/groups"
+          link="/groups"
         />
         <Section
           id="pathogens"
           title="Explore pathogens"
           abstract="Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team."
-          buttonText="See all pathogens"
-          buttonLink="/pathogens"
+          link="/pathogens"
         />
         <Section
           id="community"
@@ -110,19 +106,23 @@ const Splash = () => {
             Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
             accessed via public GitHub repos</a>
           </>)}
-          buttonText="Learn more"
-          buttonLink="/community"
+          link="/community"
         />
         <Section
           id="narratives"
           title="Narratives"
           abstract="Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data."
-          buttonText="Find out more"
-          buttonLink="https://docs.nextstrain.org/en/latest/guides/communicate/narratives-intro.html"
+          link="https://docs.nextstrain.org/en/latest/guides/communicate/narratives-intro.html"
         />
       </div>
 
-      <HugeSpacer/>
+      <Styles.H1Small>
+        Featured analyses
+      </Styles.H1Small>
+
+      <BigSpacer/>
+      <ExpandableTiles tiles={featuredAnalyses as unknown as SplashTile[]} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={Tile} />
+      <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
 
       {/* PHILOSOPHY */}
       <ScrollableAnchor id={'philosophy'}>
