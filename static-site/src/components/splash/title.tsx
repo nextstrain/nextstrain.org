@@ -19,7 +19,7 @@ const TitleContainer = styled.div`
     font-size: 82px;
   }
 `;
-const LetterSpan = styled.span`
+const LetterSpan = styled.span<{ pos: number }>`
   color: ${(props) => titleColors[props.pos]};
 `;
 

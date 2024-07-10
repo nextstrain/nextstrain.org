@@ -47,7 +47,7 @@ export const H1Small = styled(H1)`
   font-size: 32px;
 `;
 
-export const H2 = styled.div`
+export const H2 = styled.div<{ $left?: boolean }>`
   text-align: ${(props) => props.$left ? "left" : "center"};
   font-size: 24px;
   line-height: 32px;
@@ -58,7 +58,7 @@ export const H2 = styled.div`
   margin-bottom: 0px;
 `;
 
-export const H3 = styled.div`
+export const H3 = styled.div<{ $left?: boolean }>`
   text-align: ${(props) => props.$left ? "left" : "center"};
   font-size: 20px;
   line-height: 32px;
@@ -69,7 +69,7 @@ export const H3 = styled.div`
   margin-bottom: 0px;
 `;
 
-export const H4 = styled.div`
+export const H4 = styled.div<{ $left?: boolean }>`
   text-align: ${(props) => props.$left ? "left" : "center"};
   font-size: 18px;
   line-height: 32px;
@@ -80,7 +80,7 @@ export const H4 = styled.div`
   margin-bottom: 0px;
 `;
 
-export const Heading = styled.div`
+export const Heading = styled.div<{ fontSize: number, attn?: boolean }>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: ${(props) => props.attn ? "600": "500"};
   font-size: ${(props) => `${props.fontSize}px`};
@@ -93,7 +93,7 @@ export const Heading = styled.div`
   left: 20px;
 `;
 
-export const SitRepTitle = styled.div`
+export const SitRepTitle = styled.div<{ $attn?: boolean }>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: ${(props) => props.$attn ? "600": "500"};
   font-size: 16px;
@@ -197,7 +197,12 @@ const ButtonContainer = styled.button`
   }
 `;
 
-export const Button = ({to, children, target, rel}) => (
+export const Button = ({to, children, target, rel}: {
+  to: string
+  children: React.ReactNode
+  target?: string
+  rel?: string
+}) => (
   <a href={to} target={target} rel={rel}>
     <ButtonContainer>
       {children}
