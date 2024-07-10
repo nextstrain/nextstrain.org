@@ -119,8 +119,10 @@ const NavBar = ({ minified }: {
 
   return (
     <NavContainer>
-      <Logo />
-      <LogoType />
+      {Router.pathname != "/" && <>
+        <Logo />
+        <LogoType />
+      </>}
       <div style={{flex: 5}}/>
       {!groupsApp &&
         <>
