@@ -35,7 +35,7 @@ const NavContainer = styled.div`
   }
 `;
 
-const NavLogo = styled.div`
+const NavLogo = styled.div<{ $minified?: boolean }>`
   padding-left: 8px;
   padding-right: 2px;
   padding-top: 0px;
@@ -44,7 +44,7 @@ const NavLogo = styled.div`
   font-size: ${(props) => props.$minified ? '12px' : '16px'};
 `;
 
-const NavLogoCharacter = styled.span`
+const NavLogoCharacter = styled.span<{ $colorIndex: number }>`
   padding: 0px;
   text-decoration: none;
   font-size: 20px;
@@ -53,7 +53,7 @@ const NavLogoCharacter = styled.span`
   color: ${(props) => props.theme.titleColors?.[props.$colorIndex]};
 `;
 
-const baseLinkCss = css`
+const baseLinkCss = css<{ $minified?: boolean }>`
   padding-left: ${(props) => props.$minified ? '6px' : '12px'};
   padding-right: ${(props) => props.$minified ? '6px' : '12px'};
   padding-top: 20px;
@@ -65,22 +65,24 @@ const baseLinkCss = css`
 
 /** HTML anchor (<a>) element. HTML request will be made to server, i.e. won't be handled client-side.
  */
-const ServerSideLink = styled.a`
+const ServerSideLink = styled.a<{ $minified?: boolean }>`
   ${baseLinkCss}
   color: ${(props) => props.$minified ? '#000000' : props.theme.darkGrey} !important;
   cursor: pointer;
 `;
 
 /* Looks like a nav link but can't be clicked */
-const NavLinkInactive = styled.div`
+const NavLinkInactive = styled.div<{ $minified?: boolean }>`
   ${baseLinkCss}
   color: ${(props) => props.theme.brandColor};
 `;
 
-const NavBar = ({ minified }) => {
+const NavBar = ({ minified }: {
+  minified?: boolean
+}) => {
   const { user } = useContext(UserContext);
 
-  function selectedClass(name) {
+  function selectedClass(name: string) {
     if (!Router.pathname) return "";
     return String(Router.pathname).startsWith(`/${name}`);
   }
