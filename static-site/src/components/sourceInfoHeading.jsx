@@ -1,8 +1,8 @@
 import React from "react";
 import styled from 'styled-components';
-import { StyledLink } from "../Datasets/list-datasets";
-import { FlexCenter } from "../../layouts/generalComponents";
-import { parseMarkdown } from "../../util/parseMarkdown";
+import { StyledLink } from "./Datasets/list-datasets";
+import { FlexCenter } from "../layouts/generalComponents";
+import { parseMarkdown } from "../util/parseMarkdown";
 
 const OverviewContainer = styled.div`
   text-align: justify;
