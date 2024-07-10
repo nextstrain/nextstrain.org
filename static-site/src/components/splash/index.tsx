@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import ScrollableAnchor, { configureAnchors } from '../../../vendored/react-scrollable-anchor/index';
-import Title from "./title";
+import { Heading } from "./heading";
 import * as Styles from "./styles";
 import { Tooltip } from 'react-tooltip-v5';
-import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
+import { BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 import { ExpandableTiles } from "../ExpandableTiles";
 import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
@@ -45,13 +45,8 @@ const Splash = () => {
     <Styles.Container>
 
       <BigSpacer />
-      <FlexCenter>
-        <Title />
-      </FlexCenter>
 
-      <HugeSpacer />
-      <Styles.H1Small> Real-time tracking of pathogen evolution </Styles.H1Small>
-      <SmallSpacer />
+      <Heading />
 
       <HugeSpacer/>
 
