@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { uri } from "../../../src/templateLiterals.js";
 import * as splashStyles from "../components/splash/styles";
-import { ErrorBanner } from "../components/splash/errorMessages";
+import { ErrorBanner } from "../components/errorMessages";
 import GenericPage from "../layouts/generic-page";
 import { FlexGrid, FlexGridRight, HugeSpacer, MediumSpacer } from "../layouts/generalComponents";
 import EditLogoForm from "../components/Groups/edit-logo-form";

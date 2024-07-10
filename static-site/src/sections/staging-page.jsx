@@ -6,7 +6,7 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
-import { ErrorBanner } from "../components/splash/errorMessages";
+import { ErrorBanner } from "../components/errorMessages";
 import ListResources from "../components/ListResources/index";
 import { withRouter } from 'next/router'
 
