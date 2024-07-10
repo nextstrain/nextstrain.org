@@ -68,7 +68,7 @@ const Splash = () => {
       </Styles.H1Small>
 
       <BigSpacer/>
-      <ExpandableTiles tiles={featuredAnalyses as unknown as SplashTile[]} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={UrlTile} />
+      <ExpandableTiles tiles={featuredAnalyses as unknown as SplashTile[]} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={Tile} />
       <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
 
       <BigSpacer/>
@@ -213,7 +213,7 @@ export default Splash;
 
 /*** FEATURED ANALYSES ***/
 
-const UrlTile = ({ tile }: {
+const Tile = ({ tile }: {
   tile: SplashTile
 }) => {
 

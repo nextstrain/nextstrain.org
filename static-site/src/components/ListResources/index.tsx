@@ -12,7 +12,7 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
-import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo } from './types';
+import { ShowcaseTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
@@ -83,7 +83,7 @@ function ListResources({
         </Byline>
 
         <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
-          <ExpandableTiles tiles={showcaseTiles} tileWidth={tileWidthHeight} tileHeight={tileWidthHeight} TileComponent={FilterShowcaseTile} />
+          <ExpandableTiles tiles={showcaseTiles} tileWidth={tileWidthHeight} tileHeight={tileWidthHeight} TileComponent={Tile} />
         </SetSelectedFilterOptions.Provider>
         </>
       )}
@@ -131,7 +131,7 @@ interface ListResourcesResponsiveProps {
 
   /** Mapping from group name -> display name */
   groupDisplayNames: Record<string, string>
-  showcase: FilterTile[]
+  showcase: ShowcaseTile[]
   resourceListingCallback: () => Promise<ResourceListingInfo>;
 }
 
@@ -257,7 +257,7 @@ const Byline = styled.div`
 
 /*** SHOWCASE ***/
 
-const FilterShowcaseTile = ({ tile }: { tile: FilterTile }) => {
+const Tile = ({ tile }: { tile: ShowcaseTile }) => {
   const setSelectedFilterOptions = useContext(SetSelectedFilterOptions);
 
   if (!setSelectedFilterOptions) {
@@ -292,8 +292,8 @@ const FilterShowcaseTile = ({ tile }: { tile: FilterTile }) => {
  * which the filters are valid given the resources known to the resource listing
  * UI
  */
-const useShowcaseTiles = (tiles?: FilterTile[], groups?: Group[]) => {
-  const [restrictedTiles, setRestrictedTiles] = useState<FilterTile[]>([]);
+const useShowcaseTiles = (tiles?: ShowcaseTile[], groups?: Group[]) => {
+  const [restrictedTiles, setRestrictedTiles] = useState<ShowcaseTile[]>([]);
   useEffect(() => {
     if (!tiles || !groups) return;
     const words = groups.reduce((words, group) => {
