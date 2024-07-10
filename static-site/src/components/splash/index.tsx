@@ -53,66 +53,44 @@ const Splash = () => {
       <Styles.H1Small> Real-time tracking of pathogen evolution </Styles.H1Small>
       <SmallSpacer />
 
-      <FlexCenter>
-        <Styles.CenteredFocusParagraph>
-          Nextstrain is an open-source project to harness the scientific and public health
-          potential of pathogen genome data. We provide a continually-updated view of publicly
-          available data alongside powerful analytic and visualization tools for use by the
-          community. Our goal is to aid epidemiological understanding and improve outbreak
-          response. If you have any questions, please <a href="/contact">contact us</a>.
-        </Styles.CenteredFocusParagraph>
-      </FlexCenter>
-
-      <BigSpacer/>
-
-      <FlexCenter>
-        <Styles.Button to="#philosophy">
-          Read More
-        </Styles.Button>
-      </FlexCenter>
-
       <HugeSpacer/>
 
       <div style={{display: "flex", flexWrap: "wrap"}}>
         <Section
+          id="about"
+          title="About us"
+          abstract="An open-source project to harness the scientific and public health potential of pathogen genome data"
+          link="https://docs.nextstrain.org/en/latest/learn/about.html"
+        />
+        <Section
+          id="pathogens"
+          title="Core pathogens"
+          abstract="Continually updated views of a range of pathogens maintained by the Nextstrain team"
+          link="/pathogens"
+        />
+        <Section
           id="sars-cov-2"
-          title="SARS-CoV-2 (COVID-19)"
-          abstract="We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
-          In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses."
+          title="SARS-CoV-2"
+          abstract="Up-to-date analyses and a range of resources for SARS-CoV-2, the virus responsible for COVID-19 disease"
           link="/sars-cov-2"
+        />
+        <Section
+          id="tooling"
+          title="Open source tooling"
+          abstract="Bioinformatic workflows, analysis tools and visualization apps for use by the community"
+          link="https://docs.nextstrain.org/en/latest/install.html"
         />
         <Section
           id="nextclade"
           title="Nextclade"
-          abstract="Nextclade allows you to analyze virus genome sequences in the web browser. It will align your sequence data to a reference genome, call mutations relative to that reference, and place your sequences on a phylogeny. It also reports clade assignments and quality of your sequence data."
+          abstract="In-browser phylogenetic placement, clade assignment, mutation calling and sequence quality checks"
           link="https://clades.nextstrain.org"
         />
         <Section
           id="groups"
           title="Nextstrain Groups"
-          abstract="We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience."
+          abstract="Datasets and narratives shared by research labs, public health entities and others"
           link="/groups"
-        />
-        <Section
-          id="pathogens"
-          title="Explore pathogens"
-          abstract="Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team."
-          link="/pathogens"
-        />
-        <Section
-          id="community"
-          title="From the community"
-          abstract={(<>
-            Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
-            accessed via public GitHub repos</a>
-          </>)}
-          link="/community"
-        />
-        <Section
-          id="narratives"
-          title="Narratives"
-          abstract="Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data."
-          link="https://docs.nextstrain.org/en/latest/guides/communicate/narratives-intro.html"
         />
       </div>
 
