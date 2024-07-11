@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import ScrollableAnchor from '../../vendored/react-scrollable-anchor/index';
-import { SmallSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
+import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import DatasetSelect from "../components/Datasets/dataset-select";
@@ -110,8 +110,12 @@ class GroupsPage extends React.Component {
         <splashStyles.H2>Available groups</splashStyles.H2>
         <GroupListingInfo/>
         {/* These tiles dont go nicely into FlexCenter as they manage their own spacing */}
-        <GroupTiles squashed/>
+        <GroupTiles />
         <HugeSpacer />
+
+        <splashStyles.H2>Available Datasets</splashStyles.H2>
+
+        <BigSpacer />
 
         <ListResources
           resourceType="dataset"
