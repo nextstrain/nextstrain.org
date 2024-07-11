@@ -12,6 +12,11 @@ on:
         type: string
         required: false
 
+# Only one run per branch at a time.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     # This is the same as GitHub Action's `bash` keyword as of 20 June 2023:
@@ -125,9 +130,6 @@ jobs:
       - build
       - test
       - index-resources
-
-    # Only one "deploy" job per Heroku app at a time.
-    concurrency: deploy:${{ inputs.heroku-app || 'nextstrain-canary' }}
 
     # Name a GitHub environment configuration¹ to auto-create deployment
     # records in GitHub based on this job's progress/status.  Also grants
