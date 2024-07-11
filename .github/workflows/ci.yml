@@ -1,4 +1,5 @@
 name: CI
+
 on:
   push:
     branches:
@@ -10,6 +11,12 @@ on:
         description: Deploy to Heroku app (if set)
         type: string
         required: false
+
+# Only one run per branch at a time.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     # This is the same as GitHub Action's `bash` keyword as of 20 June 2023:
@@ -18,6 +25,7 @@ defaults:
     # Completely spelling it out here so that GitHub can't change it out from under us
     # and we don't have to refer to the docs to know the expected behavior.
     shell: bash --noprofile --norc -eo pipefail {0}
+
 jobs:
   # Lint regardless of build or test status and lint early.
   lint:
@@ -122,9 +130,6 @@ jobs:
       - build
       - test
       - index-resources
-
-    # Only one "deploy" job per Heroku app at a time.
-    concurrency: deploy:${{ inputs.heroku-app || 'nextstrain-canary' }}
 
     # Name a GitHub environment configuration¹ to auto-create deployment
     # records in GitHub based on this job's progress/status.  Also grants
