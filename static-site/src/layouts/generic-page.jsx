@@ -7,7 +7,7 @@ import UserDataWrapper from "../layouts/userDataWrapper";
 import { BigSpacer, HugeSpacer, Line } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 
-const GenericPage = ({location, children, banner}) => (
+const GenericPage = ({ children, banner}) => (
   <MainLayout>
     <div className="index-container">
       <Helmet title={siteTitle} />

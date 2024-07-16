@@ -65,8 +65,8 @@ const TeamPage = () => {
 };
 
 
-const Team = props => (
-  <GenericPage location={props.location}>
+const Team = () => (
+  <GenericPage>
     <TeamPage/>
   </GenericPage>
 );
