@@ -8,7 +8,6 @@ const NavContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 960px;
   height: 50px;
   margin-top: auto;
   margin-right: auto;
@@ -18,6 +17,21 @@ const NavContainer = styled.div`
   left: 0px;
   z-index: 1001;
   transition: left .3s ease-out;
+
+  // TODO: Put this component in a container which sets these styles for all pages.
+  // This isn't trivial with the current split in page-level components.
+  @media (min-width: 768px) {
+    width: 728px;
+  }
+  @media (min-width: 992px) {
+    width: 952px;
+  }
+  @media (min-width: 1200px) {
+    width: 1150px;
+  }
+  @media (min-width: 1550px) {
+    width: 1500px;
+  }
 `;
 
 const NavLogo = styled.div`
