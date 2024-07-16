@@ -31,7 +31,7 @@ const Splash = () => {
   }, [])
 
   return (
-    <Styles.Container className="container">
+    <Styles.Container>
 
       <BigSpacer />
       <FlexCenter>
