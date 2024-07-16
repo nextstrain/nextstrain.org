@@ -23,7 +23,7 @@ class Index extends React.Component {
           <SEO/>
           <main>
             <UserDataWrapper>
-              <NavBar location={this.props.location} />
+              <NavBar />
               <Splash/>
             </UserDataWrapper>
           </main>

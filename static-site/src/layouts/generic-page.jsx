@@ -13,7 +13,7 @@ const GenericPage = ({location, children, banner}) => (
       <Helmet title={siteTitle} />
       <main>
         <UserDataWrapper>
-          <NavBar location={location} />
+          <NavBar />
           {banner}
           <splashStyles.Container className="container">
             <HugeSpacer /><HugeSpacer />
