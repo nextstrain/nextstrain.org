@@ -649,17 +649,59 @@
         "type": {
           "a": {
             "region":{
-              "genome":"",
-              "G":"",
-              "F":"",
+              "genome": {
+                "resolution":{
+                  "all-time":"",
+                  "6y":"",
+                  "3y":"",
+                  "default":"6y"
+                }
+              },
+              "G": {
+                "resolution":{
+                  "all-time":"",
+                  "6y":"",
+                  "3y":"",
+                  "default":"6y"
+                }
+              },
+              "F": {
+                "resolution":{
+                  "all-time":"",
+                  "6y":"",
+                  "3y":"",
+                  "default":"6y"
+                }
+              },
               "default":"genome"
             }
           },
           "b": {
             "region":{
-              "genome":"",
-              "G":"",
-              "F":"",
+              "genome": {
+                "resolution":{
+                  "all-time":"",
+                  "6y":"",
+                  "3y":"",
+                  "default":"6y"
+                }
+              },
+              "G": {
+                "resolution":{
+                  "all-time":"",
+                  "6y":"",
+                  "3y":"",
+                  "default":"6y"
+                }
+              },
+              "F": {
+                "resolution":{
+                  "all-time":"",
+                  "6y":"",
+                  "3y":"",
+                  "default":"6y"
+                }
+              },
               "default":"genome"
             }
           },
