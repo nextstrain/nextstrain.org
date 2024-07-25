@@ -6,6 +6,14 @@
           "h5n1-cattle-outbreak": {
               "segment": {
                   "genome": "",
+                  "ha": "",
+                  "mp": "",
+                  "na": "",
+                  "ns": "",
+                  "np": "",
+                  "ps": "",
+                  "pb1": "",
+                  "pb2": "",
                   "default": "genome"
               }
           },
