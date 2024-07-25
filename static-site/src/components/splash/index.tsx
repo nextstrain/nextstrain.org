@@ -10,10 +10,11 @@ import { ExpandableTiles } from "../ExpandableTiles";
 import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
 import { SplashTile } from "./types";
 
-const Section = ({id, title, abstract, link}) => (
+const Section = ({id, imgSrc, title, abstract, link}) => (
   <div id={id} className="col-12 col-sm-6 col-md-4" style={{paddingBottom: "20px"}}>
     <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
       <a href={link}>
+        <SectionImage src={imgSrc} />
         <SectionHeader>{title}</SectionHeader>
       </a>
       <SectionAbstract style={{flexGrow: 1}}>
@@ -24,9 +25,15 @@ const Section = ({id, title, abstract, link}) => (
   </div>
 );
 
-const SectionHeader = styled.div`
+const SectionHeader = styled.span`
   font-size: 25px;
   font-weight: 400;
+`;
+
+const SectionImage = styled.img`
+  height: 20px;
+  padding-right: 5px;
+  vertical-align: baseline;
 `;
 
 const SectionAbstract = styled.div`
@@ -53,36 +60,48 @@ const Splash = () => {
       <div style={{display: "flex", flexWrap: "wrap"}}>
         <Section
           id="about"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/nextstrain-logo-tiny.png").default.src}
           title="About us"
           abstract="An open-source project to harness the scientific and public health potential of pathogen genome data"
           link="https://docs.nextstrain.org/en/latest/learn/about.html"
         />
         <Section
           id="pathogens"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/fa-viruses-solid.svg").default.src}
           title="Core pathogens"
           abstract="Continually updated views of a range of pathogens maintained by the Nextstrain team"
           link="/pathogens"
         />
         <Section
           id="sars-cov-2"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/fa-virus-covid-solid.svg").default.src}
           title="SARS-CoV-2"
           abstract="Up-to-date analyses and a range of resources for SARS-CoV-2, the virus responsible for COVID-19 disease"
           link="/sars-cov-2"
         />
         <Section
           id="tooling"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/fa-screwdriver-wrench-solid.svg").default.src}
           title="Open source tooling"
           abstract="Bioinformatic workflows, analysis tools and visualization apps for use by the community"
           link="https://docs.nextstrain.org/en/latest/install.html"
         />
         <Section
           id="nextclade"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/nextclade-logo.svg").default.src}
           title="Nextclade"
           abstract="In-browser phylogenetic placement, clade assignment, mutation calling and sequence quality checks"
           link="https://clades.nextstrain.org"
         />
         <Section
           id="groups"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/fa-users-solid.svg").default.src}
           title="Nextstrain Groups"
           abstract="Datasets and narratives shared by research labs, public health entities and others"
           link="/groups"
