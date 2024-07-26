@@ -10,7 +10,7 @@ export const SiteMap = () => {
   return  (
     <SiteMapContainer className="row">
       {sections.map((section) => (
-        <SectionWrapper className="col-sm-3 col-xs-6" key={section.title}>
+        <SectionWrapper className="col-md-3 col-sm-6" key={section.title}>
           <Section>
             <BigSpacer />
             <SectionTitle $left>{section.title}</SectionTitle>

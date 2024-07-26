@@ -54,11 +54,11 @@ export const Line = styled.div`
 
 export const CenteredContainer = (props) => (
   <div className="row">
-    <div className="col-md-2" />
-    <div className="col-md-8">
+    <div className="col-lg-2" />
+    <div className="col-lg-8">
       {props.children}
     </div>
-    <div className="col-md-2" />
+    <div className="col-lg-2" />
   </div>
 );
 

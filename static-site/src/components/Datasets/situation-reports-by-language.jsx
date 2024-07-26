@@ -88,7 +88,7 @@ export class SituationReportsByLanguage extends React.Component {
                 {/* Begin collapsible content */}
                 <div className="row">
                   {Array.from(language.narratives.entries()).map(([index, narrative]) => (
-                    <div key={narrative.url} className="col-sm-4">
+                    <div key={narrative.url} className="col-md-4">
                       <FlexCenter>
                         <a href={narrative.url}>
                           <splashStyles.SitRepTitle $attn={index === 0}>

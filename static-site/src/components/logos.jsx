@@ -45,7 +45,7 @@ const Logo = ({href, imgSrc, width=50}) => (
 
 export const Logos = () => (
   <div className="row">
-    <div className="col-md-12">
+    <div className="col-lg-12">
 
       <Styles.FooterParagraph>
         Nextstrain is supported by
