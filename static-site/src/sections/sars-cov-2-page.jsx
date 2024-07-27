@@ -247,7 +247,7 @@ class Index extends React.Component {
               and Google-provided translators — click on any language below to see the list of situation reports available.
             </splashStyles.FocusParagraph>
             <div className="row">
-              <MediumSpacer />
+              <MediumSpacer className="col-xs-12" />
               <div className="col-md-1"/>
               <div className="col-md-10">
                 <SituationReportsByLanguage parseSitRepInfo={parseNcovSitRepInfo}/>

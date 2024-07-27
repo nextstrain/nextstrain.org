@@ -8,7 +8,7 @@ import sections from "./sitemap.yaml";
 
 export const SiteMap = () => {
   return  (
-    <SiteMapContainer>
+    <SiteMapContainer className="row">
       {sections.map((section) => (
         <SectionWrapper className="col-sm-3 col-xs-6" key={section.title}>
           <Section>

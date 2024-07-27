@@ -9,9 +9,7 @@ class Footer extends React.Component {
   render() {
     return (
       <div>
-        <div className="row">
-          <SiteMap />
-        </div>
+        <SiteMap />
 
         <BigSpacer />
 
