@@ -87,10 +87,7 @@ const UnstyledList = styled.ul`
 
 const ListItemParagraph = styled(Styles.FocusParagraph)`
   line-height: 0.5;
-  font-weight: 300;
-  a {
-    font-weight: 300;
-  }
+  font-weight: 500;
 `
 
 const UncoloredLink = styled.span`
