@@ -1,30 +1,47 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import ScrollableAnchor, { configureAnchors } from '../../../vendored/react-scrollable-anchor/index';
-import Title from "./title";
+import { Heading } from "./heading";
 import * as Styles from "./styles";
 import { Tooltip } from 'react-tooltip-v5';
-import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
+import { BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layouts/generalComponents";
 import Footer from "../Footer";
 import { ExpandableTiles } from "../ExpandableTiles";
 import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
 import { SplashTile } from "./types";
 
-const Section = ({id, title, abstract, buttonText, buttonLink}) => (
-  <div id={id} className="col-lg-6" style={{paddingBottom: "40px"}}>
-    <div style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100%"}}>
-      <Styles.H1Small>{title}</Styles.H1Small>
-      <Styles.CenteredFocusParagraph style={{flexGrow: 1}}>
+const Section = ({id, imgSrc, title, abstract, link}) => (
+  <div id={id} className="col-12 col-sm-6 col-md-4" style={{paddingBottom: "20px"}}>
+    <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
+      <a href={link}>
+        <SectionImage src={imgSrc} />
+        <SectionHeader>{title}</SectionHeader>
+      </a>
+      <SectionAbstract style={{flexGrow: 1}}>
         {abstract}
-      </Styles.CenteredFocusParagraph>
+      </SectionAbstract>
       <BigSpacer/>
-      <Styles.Button to={buttonLink}>
-        {buttonText}
-      </Styles.Button>
     </div>
   </div>
 );
 
+const SectionHeader = styled.span`
+  font-size: 25px;
+  font-weight: 400;
+`;
+
+const SectionImage = styled.img`
+  height: 20px;
+  padding-right: 5px;
+  vertical-align: baseline;
+`;
+
+const SectionAbstract = styled.div`
+  font-size: ${(props) => props.theme.niceFontSize};
+  font-weight: 300;
+  line-height: ${(props) => props.theme.tightLineHeight};
+  margin-top: 5px;
+`
 
 const Splash = () => {
   useEffect(() => {
@@ -35,33 +52,61 @@ const Splash = () => {
     <Styles.Container>
 
       <BigSpacer />
-      <FlexCenter>
-        <Title />
-      </FlexCenter>
 
-      <HugeSpacer />
-      <Styles.H1Small> Real-time tracking of pathogen evolution </Styles.H1Small>
-      <SmallSpacer />
-
-      <FlexCenter>
-        <Styles.CenteredFocusParagraph>
-          Nextstrain is an open-source project to harness the scientific and public health
-          potential of pathogen genome data. We provide a continually-updated view of publicly
-          available data alongside powerful analytic and visualization tools for use by the
-          community. Our goal is to aid epidemiological understanding and improve outbreak
-          response. If you have any questions, please <a href="/contact">contact us</a>.
-        </Styles.CenteredFocusParagraph>
-      </FlexCenter>
-
-      <BigSpacer/>
-
-      <FlexCenter>
-        <Styles.Button to="#philosophy">
-          Read More
-        </Styles.Button>
-      </FlexCenter>
+      <Heading />
 
       <HugeSpacer/>
+
+      <div style={{display: "flex", flexWrap: "wrap"}}>
+        <Section
+          id="about"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/nextstrain-logo-tiny.png").default.src}
+          title="About us"
+          abstract="An open-source project to harness the scientific and public health potential of pathogen genome data"
+          link="https://docs.nextstrain.org/en/latest/learn/about.html"
+        />
+        <Section
+          id="pathogens"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/fa-viruses-solid.svg").default.src}
+          title="Core pathogens"
+          abstract="Continually updated views of a range of pathogens maintained by the Nextstrain team"
+          link="/pathogens"
+        />
+        <Section
+          id="sars-cov-2"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/fa-virus-covid-solid.svg").default.src}
+          title="SARS-CoV-2"
+          abstract="Up-to-date analyses and a range of resources for SARS-CoV-2, the virus responsible for COVID-19 disease"
+          link="/sars-cov-2"
+        />
+        <Section
+          id="tooling"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/fa-screwdriver-wrench-solid.svg").default.src}
+          title="Open source tooling"
+          abstract="Bioinformatic workflows, analysis tools and visualization apps for use by the community"
+          link="https://docs.nextstrain.org/en/latest/install.html"
+        />
+        <Section
+          id="nextclade"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/nextclade-logo.svg").default.src}
+          title="Nextclade"
+          abstract="In-browser phylogenetic placement, clade assignment, mutation calling and sequence quality checks"
+          link="https://clades.nextstrain.org"
+        />
+        <Section
+          id="groups"
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          imgSrc={require("../../../static/logos/fa-users-solid.svg").default.src}
+          title="Nextstrain Groups"
+          abstract="Datasets and narratives shared by research labs, public health entities and others"
+          link="/groups"
+        />
+      </div>
 
       <Styles.H1Small>
         Featured analyses
@@ -70,59 +115,6 @@ const Splash = () => {
       <BigSpacer/>
       <ExpandableTiles tiles={featuredAnalyses as unknown as SplashTile[]} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={Tile} />
       <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
-
-      <BigSpacer/>
-
-      <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
-        <Section
-          id="sars-cov-2"
-          title="SARS-CoV-2 (COVID-19)"
-          abstract="We are incorporating SARS-CoV-2 genomes as soon as they are shared and providing analyses and situation reports.
-          In addition we have developed a number of resources and tools, and are facilitating independent groups to run their own analyses."
-          buttonText="See all resources"
-          buttonLink="/sars-cov-2"
-        />
-        <Section
-          id="nextclade"
-          title="Nextclade"
-          abstract="Nextclade allows you to analyze virus genome sequences in the web browser. It will align your sequence data to a reference genome, call mutations relative to that reference, and place your sequences on a phylogeny. It also reports clade assignments and quality of your sequence data."
-          buttonText="Go to Nextclade"
-          buttonLink="https://clades.nextstrain.org"
-        />
-        <Section
-          id="groups"
-          title="Nextstrain Groups"
-          abstract="We want to enable research labs, public health entities and others to share their datasets and narratives through Nextstrain with complete control of their data and audience."
-          buttonText="See all groups"
-          buttonLink="/groups"
-        />
-        <Section
-          id="pathogens"
-          title="Explore pathogens"
-          abstract="Genomic analyses of specific pathogens kept up-to-date by the Nextstrain team."
-          buttonText="See all pathogens"
-          buttonLink="/pathogens"
-        />
-        <Section
-          id="community"
-          title="From the community"
-          abstract={(<>
-            Analyses by independent groups <a href="https://docs.nextstrain.org/en/latest/guides/share/community-builds.html">stored and
-            accessed via public GitHub repos</a>
-          </>)}
-          buttonText="Learn more"
-          buttonLink="/community"
-        />
-        <Section
-          id="narratives"
-          title="Narratives"
-          abstract="Narratives are a method of data-driven storytelling. They allow authoring of content which is displayed alongside a view into the data."
-          buttonText="Find out more"
-          buttonLink="https://docs.nextstrain.org/en/latest/guides/communicate/narratives-intro.html"
-        />
-      </div>
-
-      <HugeSpacer/>
 
       {/* PHILOSOPHY */}
       <ScrollableAnchor id={'philosophy'}>

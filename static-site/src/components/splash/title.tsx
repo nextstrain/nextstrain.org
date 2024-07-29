@@ -18,6 +18,9 @@ const TitleContainer = styled.div`
   @media (max-width: 780px) {
     font-size: 82px;
   }
+  @media (max-width: 576px) {
+    font-size: 64px;
+  }
 `;
 const LetterSpan = styled.span<{ pos: number }>`
   color: ${(props) => titleColors[props.pos]};
