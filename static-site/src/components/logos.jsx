@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import * as Styles from "./splash/styles";
 
-/* eslint-disable @typescript-eslint/no-var-requires */
 const fredHutchLogo = require("../../static/logos/fred-hutch-logo-small.png");
 const uniBasLogo = require("../../static/logos/unibas-logo.svg");
 const nihLogo = require("../../static/logos/nih-logo.jpg");
@@ -11,7 +10,6 @@ const mapBoxLogo = require("../../static/logos/mapbox-logo-black.svg");
 const sibLogo = require("../../static/logos/sib-logo.png");
 const ospLogo = require("../../static/logos/osp-logo-small.png");
 const bzLogo = require("../../static/logos/bz_logo.png");
-/* eslint-enable @typescript-eslint/no-var-requires */
 
 const AllLogosContainer = styled.div`
   display: flex;

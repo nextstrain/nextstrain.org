@@ -50,7 +50,6 @@ const Tile = ({ tile }: { tile: GroupTile }) => {
               <Padlock/>
             </Styles.BottomRightLabel>
           ) : null}
-          {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
           {tile.img ? <Styles.TileImg src={require(`../../../../static/pathogen_images/${tile.img}`).default.src} alt={""} color={tile.color}/> : null}
         </a>
       </Styles.TileInner>

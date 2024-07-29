@@ -356,10 +356,8 @@ const TileImg = styled.img`
 const TileImgWrapper = ({filename}) => {
   let src;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     src = require(`../../../static/pathogen_images/${filename}`).default.src;
   } catch {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     src = require(`../../../static/pathogen_images/empty.png`).default.src;
   }
   return <TileImg src={src} alt={""} />

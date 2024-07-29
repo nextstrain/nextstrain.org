@@ -31,6 +31,13 @@ rules:
   '@next/next/no-img-element': off # Remove this if we use next.js optimisations for <img>
   '@next/next/no-html-link-for-pages': off
 
+overrides:
+  # require() is used for images that are not under static-site/public
+  - files:
+      - '**.[jt]sx'
+    rules:
+      '@typescript-eslint/no-var-requires': off
+
 parserOptions:
   sourceType: module
   ecmaVersion: 2022
