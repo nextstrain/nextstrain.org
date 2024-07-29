@@ -9,15 +9,13 @@ class Footer extends React.Component {
   render() {
     return (
       <div>
-        <div className="row">
-          <SiteMap />
-        </div>
+        <SiteMap />
 
         <BigSpacer />
 
         <div className="row">
-          <div className="col-md-1"/>
-          <div className="col-md-10">
+          <div className="col-lg-1"/>
+          <div className="col-lg-10">
             <Styles.IconParagraph>
               {"Hadfield "}<i>{"et al., "}</i>
               <a href="https://doi.org/10.1093/bioinformatics/bty407" target="_blank" rel="noreferrer noopener">Nextstrain: real-time tracking of pathogen evolution</a>
@@ -35,13 +33,13 @@ class Footer extends React.Component {
                 )}
             </Styles.IconParagraph>
           </div>
-          <div className="col-md-1"/>
+          <div className="col-lg-1"/>
         </div>
 
         <BigSpacer/>
 
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-lg-12">
             <Styles.WideParagraph>
               All <a href="https://github.com/nextstrain">source code</a> is freely available under the terms of the <a href="https://github.com/nextstrain/auspice/blob/master/LICENSE.txt">GNU Affero General Public License</a>. Screenshots may be used under a <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0 license</a> and attribution to nextstrain.org must be provided.
             </Styles.WideParagraph>
@@ -72,7 +70,7 @@ class Footer extends React.Component {
         <SmallSpacer/>
 
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-lg-12">
             <Styles.FooterParagraph>
               © 2015–2023 Trevor Bedford and Richard Neher
             </Styles.FooterParagraph>

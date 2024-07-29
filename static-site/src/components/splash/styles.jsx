@@ -5,12 +5,22 @@ export const Container = styled.div`
   padding-left: 25px;
   padding-right: 25px;
   display: block;
+  margin-right: auto;
+  margin-left: auto;
+
+  @media (min-width: 768px) {
+    width: 728px;
+  }
+  @media (min-width: 992px) {
+    width: 952px;
+  }
+  @media (min-width: 1200px) {
+    width: 1150px;
+  }
+  @media (min-width: 1550px) {
+    width: 1500px;
+  }
 `;
-/* for some reason, this doesn't work (it should)
-@media (max-width: 1200px) {
-  width: 1150px;
-}
-*/
 
 export const StyledDiv = styled.div`
   text-align: justify;

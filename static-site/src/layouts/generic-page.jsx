@@ -15,7 +15,7 @@ const GenericPage = ({location, children, banner}) => (
         <UserDataWrapper>
           <NavBar location={location} />
           {banner}
-          <splashStyles.Container className="container">
+          <splashStyles.Container>
             <HugeSpacer /><HugeSpacer />
             {children}
             <Line style={{ margin: "30px 0px 10px 0px" }} />

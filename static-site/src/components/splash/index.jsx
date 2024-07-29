@@ -10,7 +10,7 @@ import { ExpandableTiles } from "../ExpandableTiles";
 import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
 
 const Section = ({id, title, abstract, buttonText, buttonLink}) => (
-  <div id={id} className="col-md-6" style={{paddingBottom: "40px"}}>
+  <div id={id} className="col-lg-6" style={{paddingBottom: "40px"}}>
     <div style={{display: "flex", flexDirection: "column", alignItems: "center", height: "100%"}}>
       <Styles.H1Small>{title}</Styles.H1Small>
       <Styles.CenteredFocusParagraph style={{flexGrow: 1}}>
@@ -31,7 +31,7 @@ const Splash = () => {
   }, [])
 
   return (
-    <Styles.Container className="container">
+    <Styles.Container>
 
       <BigSpacer />
       <FlexCenter>
@@ -128,7 +128,7 @@ const Splash = () => {
         <Styles.H1Small>Philosophy</Styles.H1Small>
       </ScrollableAnchor>
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-lg-6">
           <BigSpacer/>
           <Styles.H2>Pathogen Phylogenies</Styles.H2>
           <Styles.FocusParagraph>
@@ -141,7 +141,7 @@ const Splash = () => {
             and epidemic growth rate.
           </Styles.FocusParagraph>
         </div>
-        <div className="col-md-6">
+        <div className="col-lg-6">
           <BigSpacer/>
           <Styles.H2>Actionable Inferences</Styles.H2>
           <Styles.FocusParagraph>
@@ -155,7 +155,7 @@ const Splash = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-lg-6">
           <BigSpacer/>
           <Styles.H2>This Website</Styles.H2>
           <Styles.FocusParagraph>
@@ -166,7 +166,7 @@ const Splash = () => {
             providing a novel surveillance tool to the scientific and public health communities.
           </Styles.FocusParagraph>
         </div>
-        <div className="col-md-6">
+        <div className="col-lg-6">
           <BigSpacer/>
           <Styles.H2>Future Directions</Styles.H2>
           <Styles.FocusParagraph>

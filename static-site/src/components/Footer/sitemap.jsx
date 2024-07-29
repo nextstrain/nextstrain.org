@@ -8,9 +8,9 @@ import sections from "./sitemap.yaml";
 
 export const SiteMap = () => {
   return  (
-    <SiteMapContainer>
+    <SiteMapContainer className="row">
       {sections.map((section) => (
-        <SectionWrapper className="col-sm-3 col-xs-6" key={section.title}>
+        <SectionWrapper className="col-md-3 col-sm-6" key={section.title}>
           <Section>
             <BigSpacer />
             <SectionTitle $left>{section.title}</SectionTitle>
@@ -87,10 +87,7 @@ const UnstyledList = styled.ul`
 
 const ListItemParagraph = styled(Styles.FocusParagraph)`
   line-height: 0.5;
-  font-weight: 300;
-  a {
-    font-weight: 300;
-  }
+  font-weight: 500;
 `
 
 const UncoloredLink = styled.span`
