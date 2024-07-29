@@ -8,7 +8,6 @@ import {
 import GenericPage from "../layouts/generic-page";
 import * as splashStyles from "../components/splash/styles";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const gisaidLogo = require("../../static/logos/gisaid.png");
 
 // Hard-coded content

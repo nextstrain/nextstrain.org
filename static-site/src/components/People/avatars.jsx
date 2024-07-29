@@ -97,7 +97,6 @@ export const TeamPageList = ({membersKey}) => {
       {people.map((person) => 
         <Sideways key={person.name} style={{alignItems: person.blurb ? "top" : "center"}}>
           <MaybeLinked link={person.link}>
-              {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
               <img alt={person.name} src={require("../../../static/team/"+person.image).default.src}/>
             </MaybeLinked>
           <UpDown>
@@ -122,7 +121,6 @@ export const FooterList = () => {
       {people.map((person, i) => 
         <div key={person.name}>
           <MaybeLinked link={person.link}>
-            {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
             <img alt={person.name} src={require("../../../static/team/"+person.image).default.src}/>
             <Name>{person.name}</Name>
           </MaybeLinked>

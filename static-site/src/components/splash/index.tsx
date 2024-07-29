@@ -248,10 +248,8 @@ function TileSourceIcon({ url, isNarrative }: {
   url: string
   isNarrative: boolean
 }) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const gitHubLogo = require(`../../../static/logos/github-mark.png`).default.src;
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const nextstrainLogo = require(`../../../static/logos/nextstrain-logo-tiny.png`).default.src;
 
   let maintainers: string, image: React.JSX.Element;
@@ -282,7 +280,6 @@ function TileSourceIcon({ url, isNarrative }: {
 }
 
 function GroupImage({ group }) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const faUsers = require(`../../../static/logos/fa-users-solid.svg`).default.src;
   const [groupLogo, setGroupLogo] = useState(faUsers);
 
@@ -304,7 +301,6 @@ function GroupImage({ group }) {
 }
 
 function NarrativeIcon() {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const faBookOpen = require(`../../../static/logos/fa-book-open-solid.svg`).default.src;
 
   return (
@@ -396,10 +392,8 @@ const TileImgWrapper = ({filename}: {
 }) => {
   let src;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     src = require(`../../../static/pathogen_images/${filename}`).default.src;
   } catch {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     src = require(`../../../static/pathogen_images/empty.png`).default.src;
   }
   return <TileImg src={src} alt={""} />
