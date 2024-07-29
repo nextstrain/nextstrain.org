@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { AvatarImg } from "../splash/sourceInfoHeading";
+import { AvatarImg } from "../sourceInfoHeading";
 
 export const CenteredForm = styled.form`
   display: flex;

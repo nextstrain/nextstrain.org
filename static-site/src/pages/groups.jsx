@@ -8,7 +8,7 @@ import ListResources from "../components/ListResources/index";
 import { GroupTiles } from "../components/Groups/Tiles";
 import GenericPage from "../layouts/generic-page";
 import { UserContext } from "../layouts/userDataWrapper";
-import { DataFetchErrorParagraph } from "../components/splash/errorMessages";
+import { DataFetchErrorParagraph } from "../components/errorMessages";
 import { groupsTitle, GroupsAbstract } from "../../data/SiteConfig";
 
 const resourceListingCallback = async () => {

@@ -5,7 +5,7 @@ import {FaFile} from "react-icons/fa";
 import { FlexCenter } from "../../layouts/generalComponents";
 import * as splashStyles from "../splash/styles";
 import CollapseTitle from "../Misc/collapse-title";
-import { DataFetchErrorParagraph } from "../splash/errorMessages";
+import { DataFetchErrorParagraph } from "../errorMessages";
 
 const charonGetAvailableAddress = "/charon/getAvailable";
 

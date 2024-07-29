@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import Router from 'next/router';
 import styled, {css} from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { UserContext } from "../../layouts/userDataWrapper";
@@ -34,7 +35,7 @@ const NavContainer = styled.div`
   }
 `;
 
-const NavLogo = styled.div`
+const NavLogo = styled.div<{ $minified?: boolean }>`
   padding-left: 8px;
   padding-right: 2px;
   padding-top: 0px;
@@ -43,7 +44,7 @@ const NavLogo = styled.div`
   font-size: ${(props) => props.$minified ? '12px' : '16px'};
 `;
 
-const NavLogoCharacter = styled.span`
+const NavLogoCharacter = styled.span<{ $colorIndex: number }>`
   padding: 0px;
   text-decoration: none;
   font-size: 20px;
@@ -52,7 +53,7 @@ const NavLogoCharacter = styled.span`
   color: ${(props) => props.theme.titleColors?.[props.$colorIndex]};
 `;
 
-const baseLinkCss = css`
+const baseLinkCss = css<{ $minified?: boolean }>`
   padding-left: ${(props) => props.$minified ? '6px' : '12px'};
   padding-right: ${(props) => props.$minified ? '6px' : '12px'};
   padding-top: 20px;
@@ -64,37 +65,39 @@ const baseLinkCss = css`
 
 /** HTML anchor (<a>) element. HTML request will be made to server, i.e. won't be handled client-side.
  */
-const ServerSideLink = styled.a`
+const ServerSideLink = styled.a<{ $minified?: boolean }>`
   ${baseLinkCss}
   color: ${(props) => props.$minified ? '#000000' : props.theme.darkGrey} !important;
   cursor: pointer;
 `;
 
 /* Looks like a nav link but can't be clicked */
-const NavLinkInactive = styled.div`
+const NavLinkInactive = styled.div<{ $minified?: boolean }>`
   ${baseLinkCss}
   color: ${(props) => props.theme.brandColor};
 `;
 
-class NavBar extends React.Component {
-  static contextType = UserContext;
+const NavBar = ({ minified }: {
+  minified?: boolean
+}) => {
+  const { user } = useContext(UserContext);
 
-  selectedClass(name) {
-    if (!this.props.location || !this.props.location.pathname) return "";
-    return String(this.props.location.pathname).startsWith(`/${name}`);
+  function selectedClass(name: string) {
+    if (!Router.pathname) return "";
+    return String(Router.pathname).startsWith(`/${name}`);
   }
 
-  getLogo() {
+  const Logo = () => {
     return (
       <NavLogo>
         <a href="/">
           <img alt="Logo" width="40" src={nextstrainLogo.src}/>
         </a>
       </NavLogo>
-    );
+    )
   }
 
-  getLogoType() {
+  const LogoType = () => {
     const title = "Nextstrain";
     const rainbowTitle = title.split("").map((letter, i) =>
       <NavLogoCharacter key={i} $colorIndex={i}>{letter}</NavLogoCharacter>
@@ -103,7 +106,7 @@ class NavBar extends React.Component {
       color: black;
     `;
     return (
-      this.props.minified ?
+      minified ?
         <div/>
         :
         <a href="/">
@@ -114,38 +117,35 @@ class NavBar extends React.Component {
     );
   }
 
-  render() {
-    const minified = this.props.minified ? 1 : 0;
-    return (
-      <NavContainer>
-        {this.getLogo()}
-        {this.getLogoType()}
-        <div style={{flex: 5}}/>
-        {!groupsApp &&
-          <>
-            <ServerSideLink $minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</ServerSideLink>
-            <ServerSideLink $minified={minified} href="/contact">CONTACT</ServerSideLink>
-            { /* Only display "blog" if we're not minified */
-              minified ?
-                null :
-                this.selectedClass("blog") ?
-                  <NavLinkInactive $minified={minified}>BLOG</NavLinkInactive> :
-                  <ServerSideLink $minified={minified} href="/blog">BLOG</ServerSideLink>
-            }
-          </>
-         }
-        {this.context.user ? (
-          <ServerSideLink $minified={minified} href="/whoami">
-            <span role="img" aria-labelledby="userIcon">👤</span>
-            {` ${this.context.user.username}`}
-          </ServerSideLink>
-        ) :
-          <ServerSideLink $minified={minified} href="/login">LOGIN</ServerSideLink>
-        }
-        <div style={{width: this.props.minified ? 12 : 0 }}/>
-      </NavContainer>
-    );
-  }
+  return (
+    <NavContainer>
+      <Logo />
+      <LogoType />
+      <div style={{flex: 5}}/>
+      {!groupsApp &&
+        <>
+          <ServerSideLink $minified={minified} href="https://docs.nextstrain.org/en/latest/index.html" >DOCS</ServerSideLink>
+          <ServerSideLink $minified={minified} href="/contact">CONTACT</ServerSideLink>
+          { /* Only display "blog" if we're not minified */
+            minified ?
+              null :
+              selectedClass("blog") ?
+                <NavLinkInactive $minified={minified}>BLOG</NavLinkInactive> :
+                <ServerSideLink $minified={minified} href="/blog">BLOG</ServerSideLink>
+          }
+        </>
+       }
+      {user ? (
+        <ServerSideLink $minified={minified} href="/whoami">
+          <span role="img" aria-labelledby="userIcon">👤</span>
+          {` ${user.username}`}
+        </ServerSideLink>
+      ) :
+        <ServerSideLink $minified={minified} href="/login">LOGIN</ServerSideLink>
+      }
+      <div style={{width: minified ? 12 : 0 }}/>
+    </NavContainer>
+  );
 }
 
 // include this as part of navbar when help page is complete on static

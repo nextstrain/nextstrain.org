@@ -6,8 +6,8 @@ import * as splashStyles from "../components/splash/styles";
 import DatasetSelect from "../components/Datasets/dataset-select";
 import GenericPage from "../layouts/generic-page";
 import { fetchAndParseJSON } from "../util/datasetsHelpers";
-import SourceInfoHeading from "../components/splash/sourceInfoHeading";
-import { ErrorBanner } from "../components/splash/errorMessages";
+import SourceInfoHeading from "../components/sourceInfoHeading";
+import { ErrorBanner } from "../components/errorMessages";
 import { canUserEditGroupSettings } from "./group-settings-page";
 
 class Index extends React.Component {

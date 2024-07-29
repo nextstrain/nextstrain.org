@@ -18,7 +18,7 @@ import { PathogenPageIntroduction } from "../components/Datasets/pathogen-page-i
 import {parseNcovSitRepInfo} from "../../../auspice-client/customisations/languageSelector";
 import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 import GenericPage from "../layouts/generic-page";
-import { ErrorBanner } from "../components/splash/errorMessages";
+import { ErrorBanner } from "../components/errorMessages";
 import { withRouter } from 'next/router'
 
 const title = "Nextstrain SARS-CoV-2 resources";

@@ -59,6 +59,7 @@ be set and will rewrite this file if they aren't set.²
     "next-env.d.ts",
     "pages/**/*",
     "src/**/*",
+    "types.d.ts",
   ],
   "exclude": [
     "node_modules"

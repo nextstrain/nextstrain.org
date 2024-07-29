@@ -8,6 +8,7 @@ import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter, Line } from "../../layo
 import Footer from "../Footer";
 import { ExpandableTiles } from "../ExpandableTiles";
 import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
+import { SplashTile } from "./types";
 
 const Section = ({id, title, abstract, buttonText, buttonLink}) => (
   <div id={id} className="col-lg-6" style={{paddingBottom: "40px"}}>
@@ -67,7 +68,7 @@ const Splash = () => {
       </Styles.H1Small>
 
       <BigSpacer/>
-      <ExpandableTiles tiles={featuredAnalyses} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={UrlTile} />
+      <ExpandableTiles tiles={featuredAnalyses as unknown as SplashTile[]} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={Tile} />
       <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
 
       <BigSpacer/>
@@ -212,7 +213,9 @@ export default Splash;
 
 /*** FEATURED ANALYSES ***/
 
-const UrlTile = ({ tile }) => {
+const Tile = ({ tile }: {
+  tile: SplashTile
+}) => {
 
   /* Narrative detection works for all three sources:
   1. Core: /narratives/<narrative path>
@@ -249,14 +252,17 @@ const UrlTile = ({ tile }) => {
 const tileWidth = 220; // pixels
 const tileHeight = 285; // pixels
 
-function TileSourceIcon({ url, isNarrative }) {
+function TileSourceIcon({ url, isNarrative }: {
+  url: string
+  isNarrative: boolean
+}) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const gitHubLogo = require(`../../../static/logos/github-mark.png`).default.src;
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const nextstrainLogo = require(`../../../static/logos/nextstrain-logo-tiny.png`).default.src;
 
-  let maintainers, image;
+  let maintainers: string, image: React.JSX.Element;
 
   if (url.startsWith('/community')) {
     const owner = isNarrative ? url.split('/')[3] : url.split('/')[2];
@@ -319,7 +325,10 @@ function NarrativeIcon() {
 
 const tooltipId = "featuredAnalysesTooltip";
 
-function TooltipWrapper({description, children}) {
+function TooltipWrapper({description, children}: {
+  description: string
+  children: React.ReactNode
+}) {
   return (
     <span
       data-tooltip-id={tooltipId}
@@ -390,7 +399,9 @@ const TileImg = styled.img`
   width: 100%;
 `;
 
-const TileImgWrapper = ({filename}) => {
+const TileImgWrapper = ({filename}: {
+  filename: string
+}) => {
   let src;
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires

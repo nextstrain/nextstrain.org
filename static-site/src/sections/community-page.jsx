@@ -6,7 +6,7 @@ import {
 } from "../layouts/generalComponents";
 import * as splashStyles from "../components/splash/styles";
 import GenericPage from "../layouts/generic-page";
-import { ErrorBanner } from "../components/splash/errorMessages";
+import { ErrorBanner } from "../components/errorMessages";
 import hardcodedData from "../../content/community-datasets.yaml";
 import DatasetSelect from "../components/Datasets/dataset-select";
 
