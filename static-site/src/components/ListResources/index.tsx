@@ -332,9 +332,9 @@ const TileInner = styled.div`
 const TileName = styled.div<{$squashed: boolean}>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: 500;
-  font-size: ${(props) => props.$squashed ? "21px" : "25px"};
-  @media (max-width: 768px) {
-    font-size: 22px;
+  font-size: 22px;
+  @media (min-width: 768px) {
+    font-size: ${(props) => props.$squashed ? "21px" : "25px"};
   }
   position: absolute;
   border-radius: 3px;

@@ -28,9 +28,9 @@ export const StyledTooltip = styled(ReactTooltip)`
 const Flex = styled.div`
   display: flex;
   justify-content: space-around;
-  margin: 0em 1em 3em 1em;
-  @media (max-width: 720px) {
-    margin: 1em 0 3em;
+  margin: 1em 0 3em;
+  @media (min-width: 768px) {
+    margin: 0em 1em 3em 1em;
   }
 `;
 

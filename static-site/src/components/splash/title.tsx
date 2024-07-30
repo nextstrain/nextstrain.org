@@ -14,12 +14,12 @@ const TitleContainer = styled.div`
   margin-bottom: 0px;
   font-weight: 300;
   letter-spacing: -1px;
-  font-size: 106px;
-  @media (max-width: 780px) {
+  font-size: 64px;
+  @media (min-width: 576px) {
     font-size: 82px;
   }
-  @media (max-width: 576px) {
-    font-size: 64px;
+  @media (min-width: 768px) {
+    font-size: 106px;
   }
 `;
 const LetterSpan = styled.span<{ pos: number }>`

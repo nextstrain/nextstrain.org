@@ -62,9 +62,9 @@ export const H4 = styled.div<{ $left?: boolean }>`
 export const Heading = styled.div<{ fontSize: number, attn?: boolean }>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: ${(props) => props.attn ? "600": "500"};
-  font-size: ${(props) => `${props.fontSize}px`};
-  @media (max-width: 768px) {
-    font-size: 18px;
+  font-size: 18px;
+  @media (min-width: 768px) {
+    font-size: ${(props) => `${props.fontSize}px`};
   }
   border-radius: 3px;
   padding: 10px 20px 10px 20px;
@@ -75,9 +75,9 @@ export const Heading = styled.div<{ fontSize: number, attn?: boolean }>`
 export const SitRepTitle = styled.div<{ $attn?: boolean }>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: ${(props) => props.$attn ? "600": "500"};
-  font-size: 16px;
-  @media (max-width: 768px) {
-    font-size: 18px;
+  font-size: 18px;
+  @media (min-width: 768px) {
+    font-size: 16px;
   }
   border-radius: 3px;
   padding: 5px 20px 10px 20px;
