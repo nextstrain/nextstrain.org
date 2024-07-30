@@ -60,11 +60,8 @@ const SiteMapContainer = styled.div`
 // Wrapper is used to center the actual Section while allowing it to be
 // left-aligned.
 const SectionWrapper = styled.div`
-  // Ensure the longest entry (Discussion forum ↗️) still fits on a single line
-  min-width: 170px;
-
   // Center section contents when all sections are displayed in a single row
-  @media (min-width: 680px) {
+  @media (min-width: 768px) {
     text-align: center;
   }
 
