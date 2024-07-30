@@ -52,7 +52,7 @@ const Splash = () => {
   }, [])
 
   return (
-    <Styles.Container>
+    <div className="container">
 
       <BigSpacer />
 
@@ -199,7 +199,7 @@ const Splash = () => {
       <Line style={{ margin: "30px 0px 10px 0px" }} />
       <Footer />
 
-    </Styles.Container>
+    </div>
   );
 }
 

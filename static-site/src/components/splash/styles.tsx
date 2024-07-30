@@ -1,27 +1,6 @@
 import styled from "styled-components";
 import React from "react";
 
-export const Container = styled.div`
-  padding-left: 25px;
-  padding-right: 25px;
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
-
-  @media (min-width: 768px) {
-    width: 728px;
-  }
-  @media (min-width: 992px) {
-    width: 952px;
-  }
-  @media (min-width: 1200px) {
-    width: 1150px;
-  }
-  @media (min-width: 1550px) {
-    width: 1500px;
-  }
-`;
-
 export const StyledDiv = styled.div`
   text-align: justify;
   font-size: ${(props) => props.theme.niceFontSize};
