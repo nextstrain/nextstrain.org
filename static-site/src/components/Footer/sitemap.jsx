@@ -61,7 +61,7 @@ const SiteMapContainer = styled.div`
 // left-aligned.
 const SectionWrapper = styled.div`
   // Center section contents when all sections are displayed in a single row
-  @media (min-width: 680px) {
+  @media (min-width: 768px) {
     text-align: center;
   }
 
