@@ -31,9 +31,12 @@ const SectionHeader = styled.span`
 `;
 
 const SectionImage = styled.img`
-  height: 20px;
   padding-right: 5px;
+
+  // Vertically align with SectionHeader's font-size
+  height: 20px;
   vertical-align: baseline;
+  margin-bottom: -1px;
 `;
 
 const SectionAbstract = styled.div`
