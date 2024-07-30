@@ -64,7 +64,7 @@ const Splash = () => {
         <Section
           id="about"
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          imgSrc={require("../../../static/logos/nextstrain-logo-tiny.png").default.src}
+          imgSrc={require("../../../static/logos/fa-circle-info-solid.svg").default.src}
           title="About us"
           abstract="An open-source project to harness the scientific and public health potential of pathogen genome data"
           link="https://docs.nextstrain.org/en/latest/learn/about.html"
