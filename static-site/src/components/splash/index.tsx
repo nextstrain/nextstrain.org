@@ -248,8 +248,6 @@ function TileSourceIcon({ url, isNarrative }: {
   url: string
   isNarrative: boolean
 }) {
-  const gitHubLogo = require(`../../../static/logos/github-mark.png`).default.src;
-
   const nextstrainLogo = require(`../../../static/logos/nextstrain-logo-tiny.png`).default.src;
 
   let maintainers: string, image: React.JSX.Element;
@@ -257,7 +255,7 @@ function TileSourceIcon({ url, isNarrative }: {
   if (url.startsWith('/community')) {
     const owner = isNarrative ? url.split('/')[3] : url.split('/')[2];
     maintainers = `${owner} on GitHub`;
-    image = <InfoIconImg src={gitHubLogo} alt={maintainers} />;
+    image = <InfoIconImg src={`https://github.com/${owner}.png?size=40`} alt={maintainers} />;
   }
   else if (url.startsWith('/groups')) {
     const group = url.split('/')[2];
@@ -343,6 +341,7 @@ const InfoIcons = styled.div`
 const InfoIconImg = styled.img`
   width: 20px;
   margin: 0 3px;
+  border-radius: 3px;
 `;
 
 const TileOuter = styled.div`
