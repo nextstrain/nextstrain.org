@@ -11,7 +11,7 @@ import * as featuredAnalyses from "../../../content/featured-analyses.yaml";
 import { SplashTile } from "./types";
 
 const Section = ({id, imgSrc, title, abstract, link}) => (
-  <div id={id} className="col-12 col-sm-6 col-md-4" style={{paddingBottom: "20px"}}>
+  <div id={id} className="col-12 col-md-6 col-lg-4" style={{paddingBottom: "20px"}}>
     <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
       <a href={link}>
         <SectionImage src={imgSrc} />
