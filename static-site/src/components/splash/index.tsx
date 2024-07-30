@@ -341,6 +341,7 @@ const InfoIcons = styled.div`
 const InfoIconImg = styled.img`
   width: 20px;
   margin: 0 3px;
+  border-radius: 3px;
 `;
 
 const TileOuter = styled.div`
