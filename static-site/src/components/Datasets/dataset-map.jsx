@@ -30,7 +30,6 @@ const Flex = styled.div`
   justify-content: space-around;
   margin: 0em 1em 3em 1em;
   @media (max-width: 720px) {
-    flex-direction: column;
     margin: 1em 0 3em;
   }
 `;
