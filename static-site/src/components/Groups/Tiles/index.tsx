@@ -21,20 +21,22 @@ export const GroupTiles = () => {
 };
 
 
-const createGroupTiles = (groups: Group[], colors = [...theme.titleColors]): GroupTile[] => groups.map((group) => {
-  const groupColor = colors[0]!;
-  colors.push(colors.shift()!);
+function createGroupTiles(groups: Group[], colors = [...theme.titleColors]): GroupTile[] {
+  return groups.map((group) => {
+    const groupColor = colors[0]!;
+    colors.push(colors.shift()!);
 
-  const tile: GroupTile = {
-    img: "empty.png",
-    url: `/groups/${group.name}`,
-    name: group.name,
-    color: groupColor,
-    private: group.private
-  };
+    const tile: GroupTile = {
+      img: "empty.png",
+      url: `/groups/${group.name}`,
+      name: group.name,
+      color: groupColor,
+      private: group.private
+    };
 
-  return tile;
-});
+    return tile;
+  });
+}
 
 
 const Tile = ({ tile }: { tile: GroupTile }) => {
