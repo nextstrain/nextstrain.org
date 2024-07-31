@@ -22,20 +22,22 @@ export const GroupTiles = () => {
 
 
 function createGroupTiles(groups: Group[], colors = [...theme.titleColors]): GroupTile[] {
-  return groups.map((group) => {
-    const groupColor = colors[0]!;
-    colors.push(colors.shift()!);
+  return groups
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((group) => {
+      const groupColor = colors[0]!;
+      colors.push(colors.shift()!);
 
-    const tile: GroupTile = {
-      img: "empty.png",
-      url: `/groups/${group.name}`,
-      name: group.name,
-      color: groupColor,
-      private: group.private
-    };
+      const tile: GroupTile = {
+        img: "empty.png",
+        url: `/groups/${group.name}`,
+        name: group.name,
+        color: groupColor,
+        private: group.private
+      };
 
-    return tile;
-  });
+      return tile;
+    });
 }
 
 
