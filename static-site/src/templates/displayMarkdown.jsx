@@ -69,7 +69,7 @@ export default class GenericTemplate extends React.Component {
           <title>{title}</title>
         </Helmet>
         <SEO title={title} description={description} blogUrlName={blogUrlName} />
-        <SidebarBodyFlexContainer className="container">
+        <SidebarBodyFlexContainer>
           <SidebarContainer $sidebarOpen={this.state.sidebarOpen}>
             <UserDataWrapper>
               <NavBar minified location={this.props.location} />
@@ -104,7 +104,6 @@ const SidebarBodyFlexContainer = styled.div`
   overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
   display: flex;  /*enables flex content for its children*/
   flex-direction: row;
-  width: 100% !important;
 `;
 const SidebarContainer = styled.div`
   flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
