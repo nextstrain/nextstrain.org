@@ -22,16 +22,16 @@ const NavContainer = styled.div`
   // TODO: Put this component in a container which sets these styles for all pages.
   // This isn't trivial with the current split in page-level components.
   @media (min-width: 768px) {
-    width: 728px;
+    max-width: 728px;
   }
   @media (min-width: 992px) {
-    width: 952px;
+    max-width: 952px;
   }
   @media (min-width: 1200px) {
-    width: 1150px;
+    max-width: 1150px;
   }
   @media (min-width: 1550px) {
-    width: 1500px;
+    max-width: 1500px;
   }
 `;
 
