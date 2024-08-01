@@ -1,27 +1,6 @@
 import styled from "styled-components";
 import React from "react";
 
-export const Container = styled.div`
-  padding-left: 25px;
-  padding-right: 25px;
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
-
-  @media (min-width: 768px) {
-    width: 728px;
-  }
-  @media (min-width: 992px) {
-    width: 952px;
-  }
-  @media (min-width: 1200px) {
-    width: 1150px;
-  }
-  @media (min-width: 1550px) {
-    width: 1500px;
-  }
-`;
-
 export const StyledDiv = styled.div`
   text-align: justify;
   font-size: ${(props) => props.theme.niceFontSize};
@@ -83,9 +62,9 @@ export const H4 = styled.div<{ $left?: boolean }>`
 export const Heading = styled.div<{ fontSize: number, attn?: boolean }>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: ${(props) => props.attn ? "600": "500"};
-  font-size: ${(props) => `${props.fontSize}px`};
-  @media (max-width: 768px) {
-    font-size: 18px;
+  font-size: 18px;
+  @media (min-width: 768px) {
+    font-size: ${(props) => `${props.fontSize}px`};
   }
   border-radius: 3px;
   padding: 10px 20px 10px 20px;
@@ -96,9 +75,9 @@ export const Heading = styled.div<{ fontSize: number, attn?: boolean }>`
 export const SitRepTitle = styled.div<{ $attn?: boolean }>`
   font-family: ${(props) => props.theme.generalFont};
   font-weight: ${(props) => props.$attn ? "600": "500"};
-  font-size: 16px;
-  @media (max-width: 768px) {
-    font-size: 18px;
+  font-size: 18px;
+  @media (min-width: 768px) {
+    font-size: 16px;
   }
   border-radius: 3px;
   padding: 5px 20px 10px 20px;

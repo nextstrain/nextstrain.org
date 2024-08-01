@@ -13,3 +13,11 @@ html {
     font-family: var(--lato), 'Helvetica Neue', sans-serif;
     font-weight: 300;
 }
+
+.container {
+  padding-left: 25px;
+  padding-right: 25px;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
