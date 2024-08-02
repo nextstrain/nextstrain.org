@@ -62,7 +62,7 @@ const GroupListingInfo = () => {
 // UserContext, specifically for class functions to be able to use `this.context`.
 // We `export default Index` below.
 const Index = props => (
-  <GenericPage location={props.location}>
+  <GenericPage>
     <GroupsPage/>
   </GenericPage>
 );

@@ -66,10 +66,9 @@ const TeamPage = () => {
 
 
 const Team = props => (
-  <GenericPage location={props.location}>
+  <GenericPage>
     <TeamPage/>
   </GenericPage>
 );
 
 export default Team;
-

@@ -5,7 +5,7 @@ import { H1, NarrowFocusParagraph } from "../components/splash/styles";
 
 
 const Contact = props => (
-  <GenericPage location={props.location}>
+  <GenericPage>
       <H1>Contact Us</H1>
 
       <FlexCenter>

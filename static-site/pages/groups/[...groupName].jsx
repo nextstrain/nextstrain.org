@@ -19,7 +19,6 @@ const Index = () => {
   const resourcePath = query.groupName.slice(1).join("/")
 
   if (resourcePath === 'settings') {
-    // param location TODO!!!
     return <GroupSettingsPage groupName={groupName}/>
   }
 

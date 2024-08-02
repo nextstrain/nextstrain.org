@@ -36,7 +36,7 @@ const resourceListingCallback = async () => {
 class Index extends React.Component {
   render() {
     return (
-      <GenericPage location={this.props.location}>
+      <GenericPage>
         <splashStyles.H1>{title}</splashStyles.H1>
         <SmallSpacer />
 

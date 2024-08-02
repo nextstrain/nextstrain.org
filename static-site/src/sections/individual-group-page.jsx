@@ -88,22 +88,21 @@ class Index extends React.Component {
   }
 
   render() {
-    const location = this.props.location;
     const banner = this.banner();
     if (this.state.groupNotFound) {
       return (
-        <GenericPage location={location} banner={banner} />
+        <GenericPage banner={banner} />
       );
     }
     if (!this.state.sourceInfo) {
       return (
-        <GenericPage location={location} banner={banner}>
+        <GenericPage banner={banner}>
           <splashStyles.H2>Data loading...</splashStyles.H2>
         </GenericPage>
       );
     }
     return (
-      <GenericPage location={location} banner={banner}>
+      <GenericPage banner={banner}>
         {this.state.editGroupSettingsAllowed && (
           <FlexGridRight>
             <splashStyles.Button to={`/groups/${this.state.groupName}/settings`}>
