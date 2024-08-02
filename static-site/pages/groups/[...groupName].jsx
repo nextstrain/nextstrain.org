@@ -14,19 +14,17 @@ const Index = () => {
   const {query} = useRouter();
   if (!query.groupName) return null; // wait until query ready
 
-
-
-
   /* nextJs dynamic routing will set the part parts _beyond_ "groups/" as query.groupName */
-  if (query.groupName.length===2 && query.groupName[1]==='settings') {
+  const groupName = query.groupName[0]
+  const resourcePath = query.groupName.slice(1).join("/")
+
+  if (resourcePath === 'settings') {
     // param location TODO!!!
-    return <GroupSettingsPage groupName={query.groupName[0]}/>
+    return <GroupSettingsPage groupName={groupName}/>
   }
 
-  const resourcePath = query.groupName.slice(1);
-
   return (
-    <IndividualGroupPage groupName={query.groupName[0]} resourcePath={resourcePath.length ? resourcePath : undefined}/>
+    <IndividualGroupPage groupName={groupName} resourcePath={resourcePath.length ? resourcePath : undefined}/>
   );
 
 }
