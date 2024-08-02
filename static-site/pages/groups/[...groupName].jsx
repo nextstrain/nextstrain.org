@@ -1,12 +1,14 @@
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 const IndividualGroupPage = dynamic(() => import("../../src/sections/individual-group-page"), {ssr: false})
+const GroupMembersPage = dynamic(() => import("../../src/sections/group-members-page.tsx"), {ssr: false})
 const GroupSettingsPage = dynamic(() => import("../../src/sections/group-settings-page"), {ssr: false})
 
 
 /**
  * NextJS dynamic routing doesn't allow us to set up routes where we have (e.g.)
  * groups/:groupName/settings -> <GroupSettingsPage>
+ * groups/:groupName/settings/members -> <GroupMembersPage>
  * groups/:groupName[/*] -> <IndividualGroupPage>
  * so we use some JS routing here to serve the right component
  */
@@ -20,6 +22,10 @@ const Index = () => {
 
   if (resourcePath === 'settings') {
     return <GroupSettingsPage groupName={groupName}/>
+  }
+
+  if (resourcePath === 'settings/members') {
+    return <GroupMembersPage groupName={groupName}/>
   }
 
   return (

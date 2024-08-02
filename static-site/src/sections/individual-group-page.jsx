@@ -9,6 +9,7 @@ import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import SourceInfoHeading from "../components/sourceInfoHeading";
 import { ErrorBanner } from "../components/errorMessages";
 import { canUserEditGroupSettings } from "./group-settings-page";
+import { canViewGroupMembers } from "./group-members-page";
 
 class Index extends React.Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class Index extends React.Component {
     this.state = {
       groupNotFound: false,
       nonExistentPath: this.props.resourcePath,
-      editGroupSettingsAllowed: false
+      editGroupSettingsAllowed: false,
+      viewGroupMembersAllowed: false,
     };
   }
 
@@ -44,6 +46,7 @@ class Index extends React.Component {
         sourceInfo,
         groupName,
         editGroupSettingsAllowed: await canUserEditGroupSettings(groupName),
+        viewGroupMembersAllowed: await canViewGroupMembers(groupName),
         datasets: this.createDatasetListing(availableData.datasets, groupName),
         narratives: this.createDatasetListing(availableData.narratives, groupName),
       });
@@ -103,13 +106,23 @@ class Index extends React.Component {
     }
     return (
       <GenericPage banner={banner}>
-        {this.state.editGroupSettingsAllowed && (
-          <FlexGridRight>
-            <splashStyles.Button to={`/groups/${this.state.groupName}/settings`}>
-              Edit Group Settings
-            </splashStyles.Button>
-          </FlexGridRight>
-        )}
+        <FlexGridRight>
+          {this.state.viewGroupMembersAllowed && (
+            <div style={{ margin: "10px" }}>
+              <splashStyles.Button to={`/groups/${this.state.groupName}/settings/members`}>
+                Group Members
+              </splashStyles.Button>
+            </div>
+          )}
+          {this.state.editGroupSettingsAllowed && (
+            <div style={{ margin: "10px" }}>
+              <splashStyles.Button to={`/groups/${this.state.groupName}/settings`}>
+                Edit Group Settings
+              </splashStyles.Button>
+            </div>
+          )}
+        </FlexGridRight>
+
         <SourceInfoHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (
