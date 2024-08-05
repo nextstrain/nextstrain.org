@@ -71,18 +71,25 @@ export function setup(app) {
     ;
 
   app.routeAsync("/groups/:groupName/settings/members")
-    .getAsync(endpoints.groups.listMembers);
+    .getAsync(endpoints.groups.listMembers)
+    .optionsAsync(optionsGroup)
+    ;
 
   app.routeAsync("/groups/:groupName/settings/roles")
-    .getAsync(endpoints.groups.listRoles);
+    .getAsync(endpoints.groups.listRoles)
+    .optionsAsync(optionsGroup)
+    ;
 
   app.routeAsync("/groups/:groupName/settings/roles/:roleName/members")
-    .getAsync(endpoints.groups.listRoleMembers);
+    .getAsync(endpoints.groups.listRoleMembers)
+    .optionsAsync(optionsGroup)
+    ;
 
   app.routeAsync("/groups/:groupName/settings/roles/:roleName/members/:username")
     .getAsync(endpoints.groups.getRoleMember)
     .putAsync(endpoints.groups.putRoleMember)
     .deleteAsync(endpoints.groups.deleteRoleMember)
+    .optionsAsync(optionsGroup)
     ;
 
   app.route("/groups/:groupName/settings/*")
