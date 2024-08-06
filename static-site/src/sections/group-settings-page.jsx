@@ -12,7 +12,7 @@ const UNAUTHORIZED_MESSAGE = <>
   If your permissions have changed recently, try <a href="/logout">logging out</a> and logging back in.<br/>
 </>;
 
-const EditGroupSettingsPage = ({ location, groupName }) => {
+const EditGroupSettingsPage = ({ groupName }) => {
   const [ userAuthorized, setUserAuthorized ] = useState(null);
   const [ errorMessage, setErrorMessage ] = useState();
 
@@ -39,7 +39,7 @@ const EditGroupSettingsPage = ({ location, groupName }) => {
   };
 
   return (
-    <GenericPage location={location}>
+    <GenericPage>
       <FlexGridRight>
         <splashStyles.Button to={uri`/groups/${groupName}`}>
           Return to {`"${groupName}"`} Page

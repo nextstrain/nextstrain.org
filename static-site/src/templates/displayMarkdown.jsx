@@ -72,7 +72,7 @@ export default class GenericTemplate extends React.Component {
         <SidebarBodyFlexContainer>
           <SidebarContainer $sidebarOpen={this.state.sidebarOpen}>
             <UserDataWrapper>
-              <NavBar minified location={this.props.location} />
+              <NavBar minified/>
             </UserDataWrapper>
             <Sidebar
               title="BLOG"

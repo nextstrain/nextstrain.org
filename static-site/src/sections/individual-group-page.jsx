@@ -9,6 +9,7 @@ import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import SourceInfoHeading from "../components/sourceInfoHeading";
 import { ErrorBanner } from "../components/errorMessages";
 import { canUserEditGroupSettings } from "./group-settings-page";
+import { canViewGroupMembers } from "./group-members-page";
 
 class Index extends React.Component {
   constructor(props) {
@@ -16,8 +17,9 @@ class Index extends React.Component {
     configureAnchors({ offset: -10 });
     this.state = {
       groupNotFound: false,
-      nonExistentPath: this.props.resourcePath?.join("/"),
-      editGroupSettingsAllowed: false
+      nonExistentPath: this.props.resourcePath,
+      editGroupSettingsAllowed: false,
+      viewGroupMembersAllowed: false,
     };
   }
 
@@ -44,6 +46,7 @@ class Index extends React.Component {
         sourceInfo,
         groupName,
         editGroupSettingsAllowed: await canUserEditGroupSettings(groupName),
+        viewGroupMembersAllowed: await canViewGroupMembers(groupName),
         datasets: this.createDatasetListing(availableData.datasets, groupName),
         narratives: this.createDatasetListing(availableData.narratives, groupName),
       });
@@ -88,29 +91,38 @@ class Index extends React.Component {
   }
 
   render() {
-    const location = this.props.location;
     const banner = this.banner();
     if (this.state.groupNotFound) {
       return (
-        <GenericPage location={location} banner={banner} />
+        <GenericPage banner={banner} />
       );
     }
     if (!this.state.sourceInfo) {
       return (
-        <GenericPage location={location} banner={banner}>
+        <GenericPage banner={banner}>
           <splashStyles.H2>Data loading...</splashStyles.H2>
         </GenericPage>
       );
     }
     return (
-      <GenericPage location={location} banner={banner}>
-        {this.state.editGroupSettingsAllowed && (
-          <FlexGridRight>
-            <splashStyles.Button to={`/groups/${this.state.groupName}/settings`}>
-              Edit Group Settings
-            </splashStyles.Button>
-          </FlexGridRight>
-        )}
+      <GenericPage banner={banner}>
+        <FlexGridRight>
+          {this.state.viewGroupMembersAllowed && (
+            <div style={{ margin: "10px" }}>
+              <splashStyles.Button to={`/groups/${this.state.groupName}/settings/members`}>
+                Group Members
+              </splashStyles.Button>
+            </div>
+          )}
+          {this.state.editGroupSettingsAllowed && (
+            <div style={{ margin: "10px" }}>
+              <splashStyles.Button to={`/groups/${this.state.groupName}/settings`}>
+                Edit Group Settings
+              </splashStyles.Button>
+            </div>
+          )}
+        </FlexGridRight>
+
         <SourceInfoHeading sourceInfo={this.state.sourceInfo}/>
         <HugeSpacer />
         {this.state.sourceInfo.showDatasets && (

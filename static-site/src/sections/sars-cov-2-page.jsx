@@ -188,7 +188,7 @@ class Index extends React.Component {
   render() {
     const banner = this.banner();
     return (
-      <GenericPage location={this.props.location} banner={banner}>
+      <GenericPage banner={banner}>
         <splashStyles.H1>{title}</splashStyles.H1>
         <SmallSpacer />
 

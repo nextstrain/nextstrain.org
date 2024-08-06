@@ -46,9 +46,9 @@ const acknowledgement = (
   </>
 )
 
-function Index(props) {
+function Index() {
   return (
-    <GenericPage location={props.location}>
+    <GenericPage>
       <splashStyles.H1>{title}</splashStyles.H1>
       <SmallSpacer />
 
