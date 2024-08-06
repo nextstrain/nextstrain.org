@@ -46,7 +46,7 @@ const acknowledgement = (
   </>
 )
 
-function Index(props) {
+function Index() {
   return (
     <GenericPage>
       <splashStyles.H1>{title}</splashStyles.H1>

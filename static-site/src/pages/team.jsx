@@ -65,7 +65,7 @@ const TeamPage = () => {
 };
 
 
-const Team = props => (
+const Team = () => (
   <GenericPage>
     <TeamPage/>
   </GenericPage>

@@ -46,7 +46,7 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
         }
       }
       return {roles, members};
-    };
+    }
 
     let ignore = false;
     getGroupMembership(groupName).then(result => {
@@ -86,7 +86,7 @@ const MembersTable = ({ roles, members }: { roles: string[], members: GroupMembe
   function mostPrivilegedRole(memberRoles: string[]) {
     // Assumes that the provided roles are listed in order of least to most privileged
     return memberRoles.reduce((a, b) => roles.indexOf(a) > roles.indexOf(b) ? a : b);
-  };
+  }
 
   return (
     <CenteredContainer>
@@ -134,6 +134,6 @@ export async function canViewGroupMembers(groupName: string) {
     console.error("Cannot check user permissions to view group members", errorMessage);
   }
   return false
-};
+}
 
 export default GroupMembersPage;

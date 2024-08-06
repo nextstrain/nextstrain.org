@@ -4,7 +4,7 @@ import { BigSpacer, FlexCenter} from "../layouts/generalComponents";
 import { H1, NarrowFocusParagraph } from "../components/splash/styles";
 
 
-const Contact = props => (
+const Contact = () => (
   <GenericPage>
       <H1>Contact Us</H1>
 

@@ -61,7 +61,7 @@ const GroupListingInfo = () => {
 // GenericPage needs to be a parent of GroupsPage for the latter to know about
 // UserContext, specifically for class functions to be able to use `this.context`.
 // We `export default Index` below.
-const Index = props => (
+const Index = () => (
   <GenericPage>
     <GroupsPage/>
   </GenericPage>
