@@ -16,6 +16,7 @@ interface ErrorMessage {
 }
 
 const GroupMembersPage = ({ groupName }: {groupName: string}) => {
+  const [ canEditMembers, setCanEditMembers ] = useState<boolean>(false);
   const [ errorMessage, setErrorMessage ] = useState<ErrorMessage>({title: "", contents: ""});
   const [ roles, setRoles ] = useState<string[]>([]);
   const [ members, setMembers ] = useState<GroupMember[]>([]);
@@ -23,6 +24,7 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
   useEffect(() => {
     async function getGroupMembership(groupName: string) {
       const headers = { headers: {"Accept": "application/json"}};
+      const canEditMembers = await canEditGroupMembers(groupName);
       let roles, members = [];
       try {
         const [ rolesResponse, membersResponse ] = await Promise.all([
@@ -45,12 +47,13 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
             contents: errorMessage})
         }
       }
-      return {roles, members};
-    }
+      return {canEditMembers, roles, members};
+    };
 
     let ignore = false;
     getGroupMembership(groupName).then(result => {
       if (!ignore) {
+        setCanEditMembers(result.canEditMembers);
         setRoles(result.roles);
         setMembers(result.members);
       }
@@ -132,6 +135,24 @@ export async function canViewGroupMembers(groupName: string) {
   } catch (err) {
     const errorMessage = (err as Error).message
     console.error("Cannot check user permissions to view group members", errorMessage);
+  }
+  return false
+}
+
+async function canEditGroupMembers(groupName: string) {
+  // Use placeholder string for role + username in request since this is only checking user permissions
+  const placeholder: string = "PLACEHOLDER";
+  try {
+    const groupMemberOptions = await fetch(uri`/groups/${groupName}/settings/roles/${placeholder}/members/${placeholder}`, { method: "OPTIONS" });
+    if ([401, 403].includes(groupMemberOptions.status)) {
+      console.log("You can ignore the console error above; it is used to determine whether the user can edit members is shown.");
+    }
+    const allowedMethods = new Set(groupMemberOptions.headers.get("Allow")?.split(/\s*,\s*/));
+    const editMethods = ["PUT", "DELETE"];
+    return editMethods.every((method) => allowedMethods.has(method));
+  } catch (err) {
+    const errorMessage = (err as Error).message
+    console.error("Cannot check user permissions to edit group members", errorMessage);
   }
   return false
 }
