@@ -35,6 +35,7 @@
     "@keyv/sqlite": "^3.6.6",
     "@renovatebot/pep440": "^2.1.20",
     "@smithy/node-http-handler": "^2.1.8",
+    "@tanstack/react-query": "^5.51.21",
     "argparse": "^1.0.10",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
