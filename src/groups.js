@@ -129,9 +129,10 @@ class Group {
     const members = new Map();
 
     for (const role of this.membershipRoles.keys()) {
-      for await (const {username} of this.membersWithRole(role)) {
+      for await (const {username, name} of this.membersWithRole(role)) {
         const member = members.get(username) ?? {
           username,
+          name,
           roles: new Set([]),
         };
 
@@ -156,6 +157,7 @@ class Group {
     for await (const user of cognito.listUsersInGroup(cognitoGroup)) {
       yield {
         username: user.Username,
+        name: user.Attributes.find(attribute => attribute.Name == "name")?.Value
       };
     }
   }

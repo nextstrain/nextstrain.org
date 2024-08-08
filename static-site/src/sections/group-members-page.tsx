@@ -7,6 +7,7 @@ import { ErrorBanner } from "../components/errorMessages.jsx";
 
 interface GroupMember {
   username: string,
+  name: string,
   roles: string[]
 }
 
@@ -92,28 +93,28 @@ const MembersTable = ({ roles, members }: { roles: string[], members: GroupMembe
     <CenteredContainer>
       <div className="row">
         <div className="col-6">
-          <splashStyles.CenteredFocusParagraph>
-            <strong>Username</strong>
-          </splashStyles.CenteredFocusParagraph>
+          <splashStyles.FocusParagraph>
+            <strong>Member</strong>
+          </splashStyles.FocusParagraph>
         </div>
         <div className="col-6">
-          <splashStyles.CenteredFocusParagraph>
+          <splashStyles.FocusParagraph>
             <strong>Roles</strong>
-          </splashStyles.CenteredFocusParagraph>
+          </splashStyles.FocusParagraph>
         </div>
       </div>
 
     {sortedMembers.map((member) =>
       <div className="row" key={member.username}>
         <div className="col-6">
-          <splashStyles.CenteredFocusParagraph>
-            {member.username}
-          </splashStyles.CenteredFocusParagraph>
+          <splashStyles.FocusParagraph>
+            <strong>{member.name}</strong> {member.username}
+          </splashStyles.FocusParagraph>
         </div>
         <div className="col-6">
-          <splashStyles.CenteredFocusParagraph>
+          <splashStyles.FocusParagraph>
             {mostPrivilegedRole(member.roles)}
-          </splashStyles.CenteredFocusParagraph>
+          </splashStyles.FocusParagraph>
         </div>
       </div>
       )}
