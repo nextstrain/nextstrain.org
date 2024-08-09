@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { startCase } from "lodash"
 import { uri } from "../../../src/templateLiterals.js";
 import GenericPage from "../layouts/generic-page.jsx";
@@ -82,6 +83,22 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
   )
 };
 
+const MembersTableContainer = styled.div`
+  border: 1px solid #CCC;
+  .row {
+    border-bottom: 1px solid #CCC;
+  }
+  .row:last-child {
+    border-bottom: 0;
+  }
+  .row:nth-child(even) {
+    background-color: #F1F1F1;
+  }
+  p {
+    margin: 10px;
+  }
+`;
+
 const MembersTable = ({ roles, members }: { roles: string[], members: GroupMember[]}) => {
   const sortedMembers = members.toSorted((a, b) => a.username.localeCompare(b.username));
   function mostPrivilegedRole(memberRoles: string[]) {
@@ -93,33 +110,35 @@ const MembersTable = ({ roles, members }: { roles: string[], members: GroupMembe
 
   return (
     <CenteredContainer>
-      <div className="row">
-        <div className="col-6">
-          <splashStyles.CenteredFocusParagraph>
-            <strong>Username</strong>
-          </splashStyles.CenteredFocusParagraph>
+      <MembersTableContainer>
+        <div className="row no-gutters">
+          <div className="col">
+            <splashStyles.CenteredFocusParagraph>
+              <strong>Username</strong>
+            </splashStyles.CenteredFocusParagraph>
+          </div>
+          <div className="col">
+            <splashStyles.CenteredFocusParagraph>
+              <strong>Role</strong>
+            </splashStyles.CenteredFocusParagraph>
+          </div>
         </div>
-        <div className="col-6">
-          <splashStyles.CenteredFocusParagraph>
-            <strong>Role</strong>
-          </splashStyles.CenteredFocusParagraph>
-        </div>
-      </div>
 
-    {sortedMembers.map((member) =>
-      <div className="row" key={member.username}>
-        <div className="col-6">
-          <splashStyles.CenteredFocusParagraph>
-            {member.username}
-          </splashStyles.CenteredFocusParagraph>
-        </div>
-        <div className="col-6">
-          <splashStyles.CenteredFocusParagraph>
-            {mostPrivilegedRole(member.roles)}
-          </splashStyles.CenteredFocusParagraph>
-        </div>
-      </div>
-      )}
+        {sortedMembers.map((member) =>
+          <div className="row no-gutters" key={member.username}>
+            <div className="col">
+              <splashStyles.CenteredFocusParagraph>
+                {member.username}
+              </splashStyles.CenteredFocusParagraph>
+            </div>
+            <div className="col">
+              <splashStyles.CenteredFocusParagraph>
+                {mostPrivilegedRole(member.roles)}
+              </splashStyles.CenteredFocusParagraph>
+            </div>
+          </div>
+        )}
+      </MembersTableContainer>
     </CenteredContainer>
   )
 };
