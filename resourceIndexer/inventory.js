@@ -61,10 +61,11 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
   console.log(`inventory for ${name} - fetched ${inventory.length} rows`)
 
   if (save) {
-    const fnames = _localPaths(name);
-    console.log(`Saving data to ${fnames.manifest} and ${fnames.inventory}`);
-    writeFileSync(fnames.manifest, JSON.stringify(manifest, null, 2));
-    writeFileSync(fnames.inventory, inventoryGzipped);
+    const manifestPath = _localManifestPath(name);
+    const inventoryPath = _localInventoryPath({ name, key: inventoryKey });
+    console.log(`Saving data to ${manifestPath} and ${inventoryPath}`);
+    writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+    writeFileSync(inventoryPath, inventoryGzipped);
   }
 
   return {inventory, versionsExist};
@@ -80,10 +81,11 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
  * - versionsExist: boolean   are key versions present within the bucket?
  */
 const fetchInventoryLocal = async ({name}) => {
-  const {manifest: manifestPath, inventory: inventoryPath} = _localPaths(name)
-  console.log(`inventory for ${name} -- reading S3 inventories from ${manifestPath} and ${inventoryPath}`);
+  const manifestPath = _localManifestPath(name);
   const manifest = JSON.parse(await fs.readFile(manifestPath));
-  const {schema, versionsExist} = _parseManifest(manifest);
+  const {schema, inventoryKey, versionsExist} = _parseManifest(manifest);
+  const inventoryPath = _localInventoryPath({ name, key: inventoryKey });
+  console.log(`inventory for ${name} -- reading S3 inventories from ${manifestPath} and ${inventoryPath}`);
   const decompress = inventoryPath.toLowerCase().endsWith('.gz') ? gunzip : (x) => x;
   const inventory = await neatCsv(await decompress(await fs.readFile(inventoryPath)), schema);
   console.log(`inventory for ${name} - read ${inventory.length} rows from the local file`)
@@ -271,14 +273,21 @@ function _parseManifest(manifest) {
 }
 
 /**
- * Returns the local filepaths for the manifest and inventories associated
- * with this collection
+ * Returns the local filepath for the manifest associated with this collection
  * @param {string} name Collection name
- * @returns {object} keys 'manifest' and 'inventory'
+ * @returns {string} manifest path name
  */
-function _localPaths(name) {
-  return {
-    manifest: `./devData/${name}.manifest.json`,
-    inventory: `./devData/${name}.inventory.csv.gz`,
-  }
+function _localManifestPath(name) {
+  return `./devData/${name}.manifest.json`;
+}
+
+/**
+ * Returns the local filepath for the inventory associated with this collection
+ * @param {string} name Collection name
+ * @param {string} key Inventory key from the manifest
+ * @returns {string} inventory path name
+ */
+function _localInventoryPath({ name, key }) {
+  const fileName = `${name}-${key.substring(key.lastIndexOf('/') + 1)}`;
+  return `./devData/${fileName}`;
 }
