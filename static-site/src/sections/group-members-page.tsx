@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { startCase } from "lodash"
 import { uri } from "../../../src/templateLiterals.js";
 import GenericPage from "../layouts/generic-page.jsx";
 import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../layouts/generalComponents.jsx";
@@ -85,7 +86,9 @@ const MembersTable = ({ roles, members }: { roles: string[], members: GroupMembe
   const sortedMembers = members.toSorted((a, b) => a.username.localeCompare(b.username));
   function mostPrivilegedRole(memberRoles: string[]) {
     // Assumes that the provided roles are listed in order of least to most privileged
-    return memberRoles.reduce((a, b) => roles.indexOf(a) > roles.indexOf(b) ? a : b);
+    const roleName = memberRoles.reduce((a, b) => roles.indexOf(a) > roles.indexOf(b) ? a : b);
+    // Prettify the role name by making it singular and capitalized
+    return startCase(roleName.replace(/s$/, ''));
   }
 
   return (
@@ -98,7 +101,7 @@ const MembersTable = ({ roles, members }: { roles: string[], members: GroupMembe
         </div>
         <div className="col-6">
           <splashStyles.CenteredFocusParagraph>
-            <strong>Roles</strong>
+            <strong>Role</strong>
           </splashStyles.CenteredFocusParagraph>
         </div>
       </div>
