@@ -115,12 +115,14 @@ jobs:
     uses: ./.github/workflows/index-resources.yml
     secrets: inherit
 
+  # TODO: remove resource-indexer failure bypass once it is fixed:
+  # <https://github.com/nextstrain/nextstrain.org/issues/975>
   deploy:
     if: |2
          !cancelled()
       && needs.build.result == 'success'
       && needs.test.result == 'success'
-      && contains(fromJSON('["success", "skipped"]'), needs.index-resources.result)
+      && contains(fromJSON('["success", "skipped", "failure"]'), needs.index-resources.result)
       && github.repository == 'nextstrain/nextstrain.org'
       && (   (github.event_name == 'push' && github.ref == 'refs/heads/master')
           || (github.event_name == 'workflow_dispatch' && inputs.heroku-app) )
