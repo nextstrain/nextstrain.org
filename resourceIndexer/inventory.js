@@ -51,6 +51,12 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
 
   console.log(`inventory for ${name} - parsed manifest JSON`)
 
+  const manifestPath = _localManifestPath(name);
+  if (save) {
+    console.log(`Saving manifest to ${manifestPath}`);
+    writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+  }
+
   const inventoryGzipped = await S3.getObject({Bucket: bucket, Key: inventoryKey})
     .promise()
     .then((response) => response.Body)
@@ -61,10 +67,8 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
   console.log(`inventory for ${name} - fetched ${inventory.length} rows`)
 
   if (save) {
-    const manifestPath = _localManifestPath(name);
     const inventoryPath = _localInventoryPath({ name, key: inventoryKey });
-    console.log(`Saving data to ${manifestPath} and ${inventoryPath}`);
-    writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+    console.log(`Saving inventory to ${inventoryPath}`);
     writeFileSync(inventoryPath, inventoryGzipped);
   }
 
@@ -82,10 +86,11 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
  */
 const fetchInventoryLocal = async ({name}) => {
   const manifestPath = _localManifestPath(name);
+  console.log(`inventory for ${name} -- reading manifest from ${manifestPath}`);
   const manifest = JSON.parse(await fs.readFile(manifestPath));
   const {schema, inventoryKey, versionsExist} = _parseManifest(manifest);
   const inventoryPath = _localInventoryPath({ name, key: inventoryKey });
-  console.log(`inventory for ${name} -- reading S3 inventories from ${manifestPath} and ${inventoryPath}`);
+  console.log(`inventory for ${name} -- reading S3 inventory ${inventoryPath}`);
   const decompress = inventoryPath.toLowerCase().endsWith('.gz') ? gunzip : (x) => x;
   const inventory = await neatCsv(await decompress(await fs.readFile(inventoryPath)), schema);
   console.log(`inventory for ${name} - read ${inventory.length} rows from the local file`)
