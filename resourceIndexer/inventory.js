@@ -106,9 +106,15 @@ const fetchInventoryLocal = async ({name}) => {
     const inventoryChunkPath = _localInventoryPath({ name, key: inventoryKey });
     console.log(`inventory for ${name} -- reading S3 inventory ${inventoryChunkPath}`);
     const decompress = inventoryChunkPath.toLowerCase().endsWith('.gz') ? gunzip : (x) => x;
-    const inventoryChunk = await neatCsv(await decompress(await fs.readFile(inventoryChunkPath)), schema);
-
-    inventory = [...inventory, ...inventoryChunk];
+    try {
+      const inventoryChunk = await neatCsv(await decompress(await fs.readFile(inventoryChunkPath)), schema);
+      inventory = [...inventory, ...inventoryChunk];
+    } catch (e) {
+      if (e.code === 'ENOENT') {
+        console.error(`ERROR: File ${inventoryChunkPath} not found. Re-run with --save-inventories to fetch latest inventory files from S3.`);
+      }
+      throw e;
+    }
   }
 
   console.log(`inventory for ${name} - read ${inventory.length} rows from the local file`)
