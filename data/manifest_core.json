@@ -653,6 +653,7 @@
           "default": "sars-cov-2"
         }
       },
+      "rabies": "",
       "rsv": {
         "type": {
           "a": {
