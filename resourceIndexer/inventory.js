@@ -47,25 +47,38 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
   const manifest = await S3.getObject({Bucket: bucket, Key: manifestKey})
     .promise()
     .then((response) => JSON.parse(response.Body.toString('utf-8')));
-  const {schema, inventoryKey, versionsExist} = _parseManifest(manifest);
+  const {schema, inventoryKeys, versionsExist} = _parseManifest(manifest);
 
   console.log(`inventory for ${name} - parsed manifest JSON`)
 
-  const inventoryGzipped = await S3.getObject({Bucket: bucket, Key: inventoryKey})
-    .promise()
-    .then((response) => response.Body)
+  const manifestPath = _localManifestPath(name);
+  if (save) {
+    console.log(`Saving manifest to ${manifestPath}`);
+    writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+  }
 
-  const inventory = await gunzip(inventoryGzipped)
-    .then((data) => neatCsv(data, schema));
+  // There can be more than one inventory file. Treat them as chunks and load
+  // everything into this variable.
+  let inventory = [];
+
+  for (const inventoryKey of inventoryKeys) {
+    const inventoryGzipped = await S3.getObject({Bucket: bucket, Key: inventoryKey})
+      .promise()
+      .then((response) => response.Body)
+
+    const inventoryChunk = await gunzip(inventoryGzipped)
+      .then((data) => neatCsv(data, schema));
+
+    inventory = [...inventory, ...inventoryChunk];
+
+    if (save) {
+      const inventoryChunkPath = _localInventoryPath({ name, key: inventoryKey });
+      console.log(`Saving inventory chunk to ${inventoryChunkPath}`);
+      writeFileSync(inventoryChunkPath, inventoryGzipped);
+    }
+  }
 
   console.log(`inventory for ${name} - fetched ${inventory.length} rows`)
-
-  if (save) {
-    const fnames = _localPaths(name);
-    console.log(`Saving data to ${fnames.manifest} and ${fnames.inventory}`);
-    writeFileSync(fnames.manifest, JSON.stringify(manifest, null, 2));
-    writeFileSync(fnames.inventory, inventoryGzipped);
-  }
 
   return {inventory, versionsExist};
 }
@@ -80,12 +93,30 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
  * - versionsExist: boolean   are key versions present within the bucket?
  */
 const fetchInventoryLocal = async ({name}) => {
-  const {manifest: manifestPath, inventory: inventoryPath} = _localPaths(name)
-  console.log(`inventory for ${name} -- reading S3 inventories from ${manifestPath} and ${inventoryPath}`);
+  const manifestPath = _localManifestPath(name);
+  console.log(`inventory for ${name} -- reading manifest from ${manifestPath}`);
   const manifest = JSON.parse(await fs.readFile(manifestPath));
-  const {schema, versionsExist} = _parseManifest(manifest);
-  const decompress = inventoryPath.toLowerCase().endsWith('.gz') ? gunzip : (x) => x;
-  const inventory = await neatCsv(await decompress(await fs.readFile(inventoryPath)), schema);
+  const {schema, inventoryKeys, versionsExist} = _parseManifest(manifest);
+
+  // There can be more than one inventory file. Treat them as chunks and load
+  // everything into this variable.
+  let inventory = [];
+
+  for (const inventoryKey of inventoryKeys) {
+    const inventoryChunkPath = _localInventoryPath({ name, key: inventoryKey });
+    console.log(`inventory for ${name} -- reading S3 inventory ${inventoryChunkPath}`);
+    const decompress = inventoryChunkPath.toLowerCase().endsWith('.gz') ? gunzip : (x) => x;
+    try {
+      const inventoryChunk = await neatCsv(await decompress(await fs.readFile(inventoryChunkPath)), schema);
+      inventory = [...inventory, ...inventoryChunk];
+    } catch (e) {
+      if (e.code === 'ENOENT') {
+        console.error(`ERROR: File ${inventoryChunkPath} not found. Re-run with --save-inventories to fetch latest inventory files from S3.`);
+      }
+      throw e;
+    }
+  }
+
   console.log(`inventory for ${name} - read ${inventory.length} rows from the local file`)
   return {inventory, versionsExist};
 }
@@ -249,19 +280,10 @@ function _removeDeletedObjects(objects) {
  *                   object.inventoryKey = string
 */
 function _parseManifest(manifest) {
-  if (manifest.files.length>1) {
-    throw new ResourceIndexerError(`
-      The manifest file for the S3 inventory for bucket ${manifest.sourceBucket}
-      includes more than one inventory file. This situation was not encountered
-      during development, but this is presumably caused by the inventory size
-      exceeding some threshold and being chunked into multiple files. Please check
-      this is indeed the case and, if so, amend the code to parse and join each file.
-    `.replace(/\s+/g, ' '))
-  }
   const schema = manifest.fileSchema.split(",").map((f) => f.trim());
   return {
     schema,
-    inventoryKey: manifest.files[0].key,
+    inventoryKeys: manifest.files.map((file) => file.key),
     // If a schema uses 'VersionId' then versions may exist in the inventory, so
     // we want to check for them. It may be possible to produce manifests of
     // versioned buckets but not include this in the manifest, and if so we'll
@@ -271,14 +293,21 @@ function _parseManifest(manifest) {
 }
 
 /**
- * Returns the local filepaths for the manifest and inventories associated
- * with this collection
+ * Returns the local filepath for the manifest associated with this collection
  * @param {string} name Collection name
- * @returns {object} keys 'manifest' and 'inventory'
+ * @returns {string} manifest path name
  */
-function _localPaths(name) {
-  return {
-    manifest: `./devData/${name}.manifest.json`,
-    inventory: `./devData/${name}.inventory.csv.gz`,
-  }
+function _localManifestPath(name) {
+  return `./devData/${name}.manifest.json`;
+}
+
+/**
+ * Returns the local filepath for the inventory associated with this collection
+ * @param {string} name Collection name
+ * @param {string} key Inventory key from the manifest
+ * @returns {string} inventory path name
+ */
+function _localInventoryPath({ name, key }) {
+  const fileName = `${name}-${key.substring(key.lastIndexOf('/') + 1)}`;
+  return `./devData/${fileName}`;
 }
