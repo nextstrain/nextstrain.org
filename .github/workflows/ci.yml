@@ -63,7 +63,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: heroku/heroku:20
+      image: heroku/heroku:22
     env:
       # Override NODE_ENV=production default in production build (slug)
       NODE_ENV: development
