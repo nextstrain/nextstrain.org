@@ -20,18 +20,17 @@ const Index = () => {
   const groupName = query.groupName[0]
   const resourcePath = query.groupName.slice(1).join("/")
 
-  if (resourcePath === 'settings') {
-    return <GroupSettingsPage groupName={groupName}/>
+  switch(resourcePath) {
+    case 'settings':
+      return <GroupSettingsPage groupName={groupName}/>
+    case 'settings/members':
+      return <GroupMembersPage groupName={groupName}/>
+    default:
+      return <IndividualGroupPage
+                groupName={groupName}
+                resourcePath={resourcePath.length ? resourcePath : undefined}
+             />
   }
-
-  if (resourcePath === 'settings/members') {
-    return <GroupMembersPage groupName={groupName}/>
-  }
-
-  return (
-    <IndividualGroupPage groupName={groupName} resourcePath={resourcePath.length ? resourcePath : undefined}/>
-  );
-
 }
 
 export default Index;
