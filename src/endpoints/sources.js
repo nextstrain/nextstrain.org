@@ -1,3 +1,5 @@
+import contentDisposition from 'content-disposition';
+
 import { NotFound } from '../httpErrors.js';
 
 import * as authz from '../authz/index.js';
@@ -301,6 +303,8 @@ function sendSubresource(subresourceExtractor) {
     const subresource = subresourceExtractor(req);
 
     authz.assertAuthorized(req.user, authz.actions.Read, subresource.resource);
+
+    res.set("Content-Disposition", contentDisposition(subresource.conventionalFilename));
 
     return await proxyFromUpstream(req, res,
       await subresource.url(),

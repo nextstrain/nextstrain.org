@@ -39,6 +39,7 @@
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
     "connect-redis": "^4.0.3",
+    "content-disposition": "^0.5.4",
     "content-type": "^1.0.4",
     "d3": "^7.9.0",
     "debug": "^4.3.4",
