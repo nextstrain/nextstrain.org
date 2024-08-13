@@ -39,6 +39,7 @@ jobs:
       - run: npm ci
       - run: npm run lint:server
       - run: npm run lint:static-site
+      - run: node ./scripts/check-resource-index-match.js
 
   # Build into Heroku slug so we can deploy the same build that we test.
   build:
