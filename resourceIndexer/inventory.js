@@ -303,8 +303,9 @@ function _localManifestPath(name) {
 
 /**
  * Returns the local filepath for the inventory associated with this collection
- * @param {string} name Collection name
- * @param {string} key Inventory key from the manifest
+ * @param {Object} param
+ * @param {string} param.name Collection name
+ * @param {string} param.key Inventory key from the manifest
  * @returns {string} inventory path name
  */
 function _localInventoryPath({ name, key }) {
