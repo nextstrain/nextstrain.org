@@ -77,7 +77,7 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
       <BigSpacer/>
 
       {roles && members
-        ? <MembersTable roles={roles as string[]} members={members as GroupMember[]} />
+        ? <MembersTable members={members as GroupMember[]} />
         : <splashStyles.H4>Fetching group members...</splashStyles.H4>}
     </GenericPage>
   )
@@ -99,13 +99,11 @@ const MembersTableContainer = styled.div`
   }
 `;
 
-const MembersTable = ({ roles, members }: { roles: string[], members: GroupMember[]}) => {
+const MembersTable = ({ members }: { members: GroupMember[]}) => {
   const sortedMembers = members.toSorted((a, b) => a.username.localeCompare(b.username));
-  function mostPrivilegedRole(memberRoles: string[]) {
-    // Assumes that the provided roles are listed in order of least to most privileged
-    const roleName = memberRoles.reduce((a, b) => roles.indexOf(a) > roles.indexOf(b) ? a : b);
-    // Prettify the role name by making it singular and capitalized
-    return startCase(roleName.replace(/s$/, ''));
+  function prettifyRoles(memberRoles: string[]) {
+    // Prettify the role names by making them singular and capitalized
+    return memberRoles.map((roleName) => startCase(roleName.replace(/s$/, ''))).join(", ");
   }
 
   return (
@@ -119,7 +117,7 @@ const MembersTable = ({ roles, members }: { roles: string[], members: GroupMembe
           </div>
           <div className="col">
             <splashStyles.CenteredFocusParagraph>
-              <strong>Role</strong>
+              <strong>Roles</strong>
             </splashStyles.CenteredFocusParagraph>
           </div>
         </div>
@@ -133,7 +131,7 @@ const MembersTable = ({ roles, members }: { roles: string[], members: GroupMembe
             </div>
             <div className="col">
               <splashStyles.CenteredFocusParagraph>
-                {mostPrivilegedRole(member.roles)}
+                {prettifyRoles(member.roles)}
               </splashStyles.CenteredFocusParagraph>
             </div>
           </div>
