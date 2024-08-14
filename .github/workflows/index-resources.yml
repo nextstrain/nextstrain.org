@@ -44,6 +44,8 @@ jobs:
         env:
           HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
           IS_WORKFLOW_CALL: ${{ inputs.is-workflow-call || false }}
+          # Ensure that we are using the production configs to match Heroku apps
+          CONFIG_FILE: ./env/production/config.json
         run: |
           # Assign to variable before output to ensure error exit code propagates to GH Action job
           ref_matrix=$(./scripts/get-resource-index-ref-matrix)

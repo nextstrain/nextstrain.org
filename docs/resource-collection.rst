@@ -22,7 +22,8 @@ The nextstrain.org testing & production configs currently set this to
 ``s3://nextstrain-inventories/resources/v<revision_number>.json.gz``.
 
 If you make any updates that changes the structure or the contents of the resource
-index JSON, then bump the ``<revision_number>`` within the configs (``env/production/config.json``)
+index JSON, then bump the ``<revision_number>`` within the configs
+(``env/testing/config.json`` and ``env/production/config.json``)
 so that any uploads to S3 does not disrupt the production server.
 
 These updates include changes to:
