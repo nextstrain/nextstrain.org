@@ -64,11 +64,11 @@ docker run \
   --volume "$(realpath build/cache)":/build/cache:rw \
   --volume "$(realpath build/env)":/build/env:ro \
   --env HOME=/tmp \
-  --env STACK=heroku-20 \
+  --env STACK=heroku-22 \
   --env SOURCE_VERSION \
   --env SOURCE_DESCRIPTION \
   --env NODE_MODULES_CACHE=false \
-  heroku/heroku:20-build bash -c '
+  heroku/heroku:22-build bash -c '
        /build/pack/bin/detect  /build/app \
     && /build/pack/bin/compile /build/app /build/cache /build/env
   '
@@ -115,7 +115,7 @@ jq \
   --argjson procfile "$(<build/app/Procfile.json)" \
   --arg checksum "$(awk '{print "SHA256:" $1}' build/slug.tar.gz.sha256sum)" \
   '{
-    "stack": "heroku-20",
+    "stack": "heroku-22",
     "commit": $ENV.SOURCE_VERSION,
     "commit_description": $ENV.SOURCE_DESCRIPTION,
     "process_types": $procfile,
