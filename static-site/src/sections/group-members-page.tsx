@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useQueries } from "@tanstack/react-query";
 import styled from "styled-components";
 import { startCase } from "lodash"
 import { uri } from "../../../src/templateLiterals.js";
@@ -12,58 +13,34 @@ interface GroupMember {
   roles: string[]
 }
 
-interface ErrorMessage {
-  title: string,
-  contents: string
-}
-
 const GroupMembersPage = ({ groupName }: {groupName: string}) => {
-  const [ errorMessage, setErrorMessage ] = useState<ErrorMessage>({title: "", contents: ""});
-  const [ roles, setRoles ] = useState<string[]>([]);
-  const [ members, setMembers ] = useState<GroupMember[]>([]);
-
-  useEffect(() => {
-    async function getGroupMembership(groupName: string) {
-      const headers = { headers: {"Accept": "application/json"}};
-      let roles, members = [];
-      try {
-        const [ rolesResponse, membersResponse ] = await Promise.all([
-          fetch(uri`/groups/${groupName}/settings/roles`, headers),
-          fetch(uri`/groups/${groupName}/settings/members`, headers)
-        ]);
-        if (!rolesResponse.ok) {
-          throw new Error(`Fetching group roles failed: ${rolesResponse.status} ${rolesResponse.statusText}`)
-        }
-        if (!membersResponse.ok) {
-          throw new Error(`Fetching group members failed: ${membersResponse.status} ${membersResponse.statusText}`)
-        }
-        roles = await rolesResponse.json();
-        members = await membersResponse.json();
-      } catch (err) {
-        const errorMessage = (err as Error).message
-        if(!ignore) {
-          setErrorMessage({
-            title: "An error occurred when trying to fetch group membership data",
-            contents: errorMessage})
-        }
+  const [roles, members] = useQueries({
+    queries: [
+      {
+        queryKey: ['roles', groupName],
+        queryFn: async () => {
+          const rolesResponse = await fetch(uri`/groups/${groupName}/settings/roles`, {headers: {"Accept": "application/json"}})
+          if (!rolesResponse.ok) {
+            throw new Error(`Fetching group roles failed: ${rolesResponse.status} ${rolesResponse.statusText}`)
+          }
+          return rolesResponse.json();
+        },
+      },
+      {
+        queryKey: ['members', groupName],
+        queryFn: async () => {
+          const membersResponse = await fetch(uri`/groups/${groupName}/settings/members`, {headers: {"Accept": "application/json"}})
+          if (!membersResponse.ok) {
+            throw new Error(`Fetching group members failed: ${membersResponse.status} ${membersResponse.statusText}`)
+          }
+          return membersResponse.json();
+        },
       }
-      return {roles, members};
-    }
-
-    let ignore = false;
-    getGroupMembership(groupName).then(result => {
-      if (!ignore) {
-        setRoles(result.roles);
-        setMembers(result.members);
-      }
-    })
-    return () => {
-      ignore = true;
-    };
-  }, [groupName]);
+    ]
+  })
 
   return (
-    <GenericPage banner={errorMessage.title ? <ErrorBanner {...errorMessage} /> : undefined}>
+    <GenericPage banner={null}>
       <FlexGridRight>
         <splashStyles.Button to={uri`/groups/${groupName}`}>
           Return to {`"${groupName}"`} Page
@@ -76,9 +53,16 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
       </splashStyles.H2>
       <BigSpacer/>
 
-      {roles && members
-        ? <MembersTable members={members as GroupMember[]} />
-        : <splashStyles.H4>Fetching group members...</splashStyles.H4>}
+      {(members.isError || roles.isError)
+        ? <ErrorBanner
+            title="An error occurred when trying to fetch group membership data"
+            contents={members.error?.message || roles.error?.message}
+           />
+        : (members.isLoading || roles.isLoading)
+          ? <splashStyles.H4>Fetching group members...</splashStyles.H4>
+          : <MembersTable members={members.data as GroupMember[]} />
+      }
+
     </GenericPage>
   )
 };
