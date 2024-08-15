@@ -5,6 +5,7 @@ import {contentTypesProvided, contentTypesConsumed} from "../negotiate.js";
 import {deleteByUrls, proxyFromUpstream, proxyToUpstream} from "../upstream.js";
 import { slurp } from "../utils/iterators.js";
 import * as options from "./options.js";
+import * as nextJsApp from "./nextjs.js";
 
 
 const setGroup = (nameExtractor) => (req, res, next) => {
@@ -156,13 +157,16 @@ async function receiveGroupLogo(req, res) {
 
 /* Members and roles
  */
-const listMembers = async (req, res) => {
-  const group = req.context.group;
+const listMembers = contentTypesProvided([
+  ["html", nextJsApp.handleRequest],
+  ["json", async (req, res) => {
+    const group = req.context.group;
+    authz.assertAuthorized(req.user, authz.actions.Read, group);
 
-  authz.assertAuthorized(req.user, authz.actions.Read, group);
-
-  return res.json(await group.members());
-};
+    return res.json(await group.members());
+    }
+  ],
+]);
 
 
 const listRoles = (req, res) => {

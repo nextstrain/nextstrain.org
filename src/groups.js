@@ -69,7 +69,7 @@ class Group {
 
     /**
      * Map of generic roles a member of this Group can hold to fully-qualified
-     * authz roles.
+     * authz roles. The roles should be listed in order from least to most privileged.
      *
      * The fully-qualified names are used in authz policies, and a user's authz
      * roles are stored using membership in AWS Cognito groups of the same
