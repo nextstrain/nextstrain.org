@@ -2,9 +2,9 @@
 import React, {useEffect, useState, useCallback, createContext} from 'react';
 import styled from 'styled-components';
 import * as d3 from "d3";
-import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
 import { Resource } from './types';
+import Modal from '../modal';
 
 export const SetModalResourceContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
@@ -17,24 +17,9 @@ interface ResourceModalProps {
   dismissModal: () => void
 }
 
-export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {  
-  const [ref, setRef] = useState(null); 
+export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {
+  const [ref, setRef] = useState(null);
   const handleRef = useCallback((node) => {setRef(node)}, [])
-
-  useEffect(() => {
-    const handleEsc = (event) => {
-       if (event.key === 'Escape') {dismissModal()}
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => {window.removeEventListener('keydown', handleEsc);};
-  }, [dismissModal]);
-
-  const scrollRef = useCallback((node) => {
-    /* A CSS-only solution would be to set 'overflow: hidden' on <body>. This
-    solution works well, but there are still ways to scroll (e.g. via down/up
-    arrows) */
-    node?.addEventListener('wheel', (event) => {event.preventDefault();}, false);
-  }, []);
 
   useEffect(() => {
     if (!ref || !resource) return;
@@ -46,25 +31,19 @@ export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {
 
   const summary = _snapshotSummary(resource.dates);
   return (
-    <div ref={scrollRef}>
-    
-      <Background onClick={dismissModal}/>
-      <ModalContainer onClick={(e) => {e.stopPropagation()}}>
-        <CloseIcon onClick={dismissModal}/>
-        <Title>{resource.name.replace(/\//g, "│")}</Title>
-
-        <div style={{paddingBottom: '5px'}}>
-          <Bold>
-            {`${resource.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
-          </Bold>
-          <a style={{fontSize: '1.8rem', paddingLeft: '10px'}}
-            href={`/${resource.name}`}  target="_blank" rel="noreferrer noopener">
-            (click to view the latest available snapshot)
-          </a>
-        </div>
-        <div>
-          {resource.updateCadence.description}
-        </div>
+    <Modal title={resource.name.replace(/\//g, "│")} isOpen={!!resource} onClose={dismissModal}>
+      <div style={{paddingBottom: '5px'}}>
+        <Bold>
+          {`${resource.dates.length} snapshots spanning ${summary.duration}: ${summary.first} - ${summary.last}`}
+        </Bold>
+        <a style={{fontSize: '1.8rem', paddingLeft: '10px'}}
+          href={`/${resource.name}`}  target="_blank" rel="noreferrer noopener">
+          (click to view the latest available snapshot)
+        </a>
+      </div>
+      <div>
+        {resource.updateCadence.description}
+      </div>
 
         <div ref={handleRef} /> {/* d3 controlled div */}
 
@@ -79,56 +58,12 @@ export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {
           {` Finally, there may be a very recent upload which is newer than ${summary.last} which is not shown on this page (loading the "latest available snapshot" will always fetch the latest version).`}
 
         </div>
-      </ModalContainer>
-
-    </div>
+    </Modal>
   )
 }
 
 const Bold = styled.span`
   font-weight: 500;
-`
-
-const ModalContainer = styled.div`
-  position: fixed;
-  min-width: 80%;
-  max-width: 80%;
-  min-height: 80%;
-  left: 10%;
-  top: 10%;
-  background-color: #fff;
-  border: 2px solid black;
-  font-size: 18px;
-  padding: 20px;
-  z-index: 100;
-`;
-
-const Background = styled.div`
-  position: fixed;
-  min-width: 100%;
-  min-height: 100%;
-  overflow: hidden;
-  left: 0;
-  top: 0;
-  background-color: ${lightGrey};
-`
-
-const CloseIcon = ({onClick}) => {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div
-      style={{position: 'absolute', top: '15px', right: '15px', cursor: 'pointer' }}
-      onClick={onClick} onMouseOver={() => {setHovered(true)}} onMouseOut={() => setHovered(false)}
-    >
-      <MdClose size='1.5em' color={hovered ? '#333' : '#999'}/>
-    </div>
-  )
-}
-
-const Title = styled.div`
-  font-size: 20px;
-  font-weight: 500;
-  padding-bottom: 15px;
 `
 
 function _snapshotSummary(dates: string[]) {
@@ -151,7 +86,7 @@ function _draw(ref, resource: Resource) {
 
   /* Note that _page_ resizes by themselves will not result in this function
   rerunning, which isn't great, but for a modal I think it's perfectly
-  acceptable */  
+  acceptable */
   const sortedDateStrings = [...resource.dates].sort();
   const flatData = sortedDateStrings.map((version) => ({version, 'date': new Date(version)}));
 
@@ -174,7 +109,7 @@ function _draw(ref, resource: Resource) {
     .append('svg')
     .attr('width', width)
     .attr('height', heights.height)
-  
+
 
   /* Create the x-scale and draw the x-axis */
   const x = d3.scaleTime()
@@ -222,7 +157,7 @@ function _draw(ref, resource: Resource) {
   const radiusJump = 2;
   while (iterCount++<maxIter && spareHeight > 50) {
     const nextBeeswarmData = dodge(flatData, {
-      radius: nextRadius * 2 + padding, 
+      radius: nextRadius * 2 + padding,
       x: (d) => x(d['date'])
     });
     const nextBeeswarmHeight = d3.max(nextBeeswarmData.map((d) => d.y));
@@ -267,7 +202,7 @@ function _draw(ref, resource: Resource) {
           .attr("x", selectedCircleX + (textR ? 5 : -5))
           .style("opacity", 1)
           .style("text-anchor", textR ? "start" : "end")
-          .text(`Snapshot from ${prettyDate(d.data.version)} (click to load)`)        
+          .text(`Snapshot from ${prettyDate(d.data.version)} (click to load)`)
       })
       .on("mouseleave", function() {
         beeswarm.join(
@@ -341,7 +276,7 @@ function _draw(ref, resource: Resource) {
         .attr("r", (d) => d===selectedDatum ? radius*2 : radius)
       )
   }
-  
+
   function resetBeeswarm(selection) {
     selection
       .attr("opacity", 1)
@@ -371,7 +306,7 @@ function _draw(ref, resource: Resource) {
     if (!secondDate) return d1;
     const d2 = (mainDate.slice(0,4)===secondDate.slice(0,4) ? dateSameYear : dateWithYear)(new Date(secondDate));
     return [d1, d2];
-  } 
+  }
 
 
   /* Return the appropriate nextstrain rainbow colour of a circle via it's d.x
@@ -386,5 +321,5 @@ function _draw(ref, resource: Resource) {
   function _toDateString(d) {
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
   }
-  
+
 }
