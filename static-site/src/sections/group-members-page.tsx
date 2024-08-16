@@ -1,5 +1,5 @@
 import React from "react";
-import { useQueries } from "@tanstack/react-query";
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
 import { startCase } from "lodash"
 import { uri } from "../../../src/templateLiterals.js";
@@ -7,6 +7,7 @@ import GenericPage from "../layouts/generic-page.jsx";
 import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../layouts/generalComponents.jsx";
 import * as splashStyles from "../components/splash/styles";
 import { ErrorBanner } from "../components/errorMessages.jsx";
+import { InputButton } from "../components/Groups/styles.jsx";
 
 interface GroupMember {
   username: string,
@@ -14,7 +15,7 @@ interface GroupMember {
 }
 
 const GroupMembersPage = ({ groupName }: {groupName: string}) => {
-  const [roles, members] = useQueries({
+  const [roles, members, canEditMembers] = useQueries({
     queries: [
       {
         queryKey: ['roles', groupName],
@@ -35,9 +36,27 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
           }
           return membersResponse.json();
         },
+      },
+      {
+        queryKey: ['canEditMembers', groupName],
+        queryFn: async () => canEditGroupMembers(groupName),
+        initialData: false,
       }
     ]
   })
+
+  const queryClient = useQueryClient();
+  // TODO: Trigger confirmation modal before removing member
+  // TODO: Trigger error modal if an error occurs during removal
+  const { mutate: removeMember } = useMutation({
+    mutationFn: (member: GroupMember) => Promise.all(
+        member.roles.map((role) => fetch(uri`/groups/${groupName}/settings/roles/${role}/members/${member.username}`, {method: "DELETE"}))
+      ),
+    // Invalidate the query cache for members so that it automatically re-fetches latest members
+    // For a smoother transition, we can do an optimistic update
+    // https://tanstack.com/query/v5/docs/framework/react/guides/optimistic-updates#via-the-cache
+    onSettled: async () => await queryClient.invalidateQueries({ queryKey: ['members', groupName]})
+  });
 
   return (
     <GenericPage banner={null}>
@@ -60,7 +79,11 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
            />
         : (members.isLoading || roles.isLoading)
           ? <splashStyles.H4>Fetching group members...</splashStyles.H4>
-          : <MembersTable members={members.data as GroupMember[]} />
+          : <MembersTable
+              members={members.data as GroupMember[]}
+              canEditMembers={canEditMembers.data}
+              removeMember={removeMember}
+            />
       }
 
     </GenericPage>
@@ -83,7 +106,11 @@ const MembersTableContainer = styled.div`
   }
 `;
 
-const MembersTable = ({ members }: { members: GroupMember[]}) => {
+const MembersTable = ({ members, canEditMembers, removeMember }: {
+  members: GroupMember[],
+  canEditMembers: boolean,
+  removeMember: (member: GroupMember) => void
+}) => {
   const sortedMembers = members.toSorted((a, b) => a.username.localeCompare(b.username));
   function prettifyRoles(memberRoles: string[]) {
     // Prettify the role names by making them singular and capitalized
@@ -104,6 +131,12 @@ const MembersTable = ({ members }: { members: GroupMember[]}) => {
               <strong>Roles</strong>
             </splashStyles.CenteredFocusParagraph>
           </div>
+          {canEditMembers &&
+            <div className="col">
+              <splashStyles.CenteredFocusParagraph>
+                <strong>Remove Member</strong>
+              </splashStyles.CenteredFocusParagraph>
+            </div>}
         </div>
 
         {sortedMembers.map((member) =>
@@ -118,6 +151,12 @@ const MembersTable = ({ members }: { members: GroupMember[]}) => {
                 {prettifyRoles(member.roles)}
               </splashStyles.CenteredFocusParagraph>
             </div>
+            {canEditMembers &&
+              <div className="col d-flex justify-content-center">
+                <InputButton onClick={() => removeMember(member)}>
+                  <strong>X</strong>
+                </InputButton>
+              </div>}
           </div>
         )}
       </MembersTableContainer>
@@ -136,6 +175,24 @@ export async function canViewGroupMembers(groupName: string) {
   } catch (err) {
     const errorMessage = (err as Error).message
     console.error("Cannot check user permissions to view group members", errorMessage);
+  }
+  return false
+}
+
+async function canEditGroupMembers(groupName: string) {
+  // Use placeholder string for role + username in request since this is only checking user permissions
+  const placeholder: string = "PLACEHOLDER";
+  try {
+    const groupMemberOptions = await fetch(uri`/groups/${groupName}/settings/roles/${placeholder}/members/${placeholder}`, { method: "OPTIONS" });
+    if ([401, 403].includes(groupMemberOptions.status)) {
+      console.log("You can ignore the console error above; it is used to determine whether the user can edit members is shown.");
+    }
+    const allowedMethods = new Set(groupMemberOptions.headers.get("Allow")?.split(/\s*,\s*/));
+    const editMethods = ["PUT", "DELETE"];
+    return editMethods.every((method) => allowedMethods.has(method));
+  } catch (err) {
+    const errorMessage = (err as Error).message
+    console.error("Cannot check user permissions to edit group members", errorMessage);
   }
   return false
 }
