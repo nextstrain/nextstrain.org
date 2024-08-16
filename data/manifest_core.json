@@ -409,10 +409,10 @@
         }
       },
       "lassa": {
-        "resolution": {
+        "segment": {
           "l": "",
           "s": "",
-          "default": "s"
+          "default": "l"
         }
       },
       "measles": {
