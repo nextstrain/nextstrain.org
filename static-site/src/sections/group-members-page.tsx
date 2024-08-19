@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
 import { startCase } from "lodash"
@@ -8,13 +8,27 @@ import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../la
 import * as splashStyles from "../components/splash/styles";
 import { ErrorBanner } from "../components/errorMessages.jsx";
 import { InputButton } from "../components/Groups/styles.jsx";
+import Modal from "../components/modal";
 
 interface GroupMember {
   username: string,
   roles: string[]
 }
 
+interface RemoveMemberModalProps {
+  groupName: string,
+  member: GroupMember,
+  isOpen: boolean,
+  onClose: () => void,
+}
+
 const GroupMembersPage = ({ groupName }: {groupName: string}) => {
+  const [confirmationModalProps, setRemoveMemberModalProps] = useState<RemoveMemberModalProps>({
+    groupName: groupName,
+    member: {username: "", roles: []},
+    isOpen: false,
+    onClose: closeConfirmationModal,
+  });
   const [roles, members, canEditMembers] = useQueries({
     queries: [
       {
@@ -45,18 +59,21 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
     ]
   })
 
-  const queryClient = useQueryClient();
-  // TODO: Trigger confirmation modal before removing member
-  // TODO: Trigger error modal if an error occurs during removal
-  const { mutate: removeMember } = useMutation({
-    mutationFn: (member: GroupMember) => Promise.all(
-        member.roles.map((role) => fetch(uri`/groups/${groupName}/settings/roles/${role}/members/${member.username}`, {method: "DELETE"}))
-      ),
-    // Invalidate the query cache for members so that it automatically re-fetches latest members
-    // For a smoother transition, we can do an optimistic update
-    // https://tanstack.com/query/v5/docs/framework/react/guides/optimistic-updates#via-the-cache
-    onSettled: async () => await queryClient.invalidateQueries({ queryKey: ['members', groupName]})
-  });
+  function closeConfirmationModal() {
+    setRemoveMemberModalProps((prevProps) => ({
+      ...prevProps,
+      isOpen: false
+    }))
+  }
+
+  function confirmRemoveMember(member: GroupMember) {
+    setRemoveMemberModalProps({
+      groupName: groupName,
+      member: member,
+      isOpen: true,
+      onClose: closeConfirmationModal
+    })
+  }
 
   return (
     <GenericPage banner={null}>
@@ -72,6 +89,8 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
       </splashStyles.H2>
       <BigSpacer/>
 
+      <RemoveMemberModal {...confirmationModalProps} />
+
       {(members.isError || roles.isError)
         ? <ErrorBanner
             title="An error occurred when trying to fetch group membership data"
@@ -82,7 +101,7 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
           : <MembersTable
               members={members.data as GroupMember[]}
               canEditMembers={canEditMembers.data}
-              removeMember={removeMember}
+              confirmRemoveMember={confirmRemoveMember}
             />
       }
 
@@ -106,10 +125,10 @@ const MembersTableContainer = styled.div`
   }
 `;
 
-const MembersTable = ({ members, canEditMembers, removeMember }: {
+const MembersTable = ({ members, canEditMembers, confirmRemoveMember }: {
   members: GroupMember[],
   canEditMembers: boolean,
-  removeMember: (member: GroupMember) => void
+  confirmRemoveMember: (member: GroupMember) => void,
 }) => {
   const sortedMembers = members.toSorted((a, b) => a.username.localeCompare(b.username));
   function prettifyRoles(memberRoles: string[]) {
@@ -153,7 +172,7 @@ const MembersTable = ({ members, canEditMembers, removeMember }: {
             </div>
             {canEditMembers &&
               <div className="col d-flex justify-content-center">
-                <InputButton onClick={() => removeMember(member)}>
+                <InputButton onClick={() => confirmRemoveMember(member)}>
                   <strong>X</strong>
                 </InputButton>
               </div>}
@@ -163,6 +182,79 @@ const MembersTable = ({ members, canEditMembers, removeMember }: {
     </CenteredContainer>
   )
 };
+
+const RemoveMemberModal = ({ groupName, member, isOpen, onClose}: RemoveMemberModalProps) => {
+  const [statusText, setStatusText] = useState<string>("");
+  const [hideConfirmationButton, setHideConfirmationButton] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const removeMember = useMutation({
+    mutationFn: (member: GroupMember) => Promise.all(
+        member.roles.map((role) => fetch(uri`/groups/${groupName}/settings/roles/${role}/members/${member.username}`, {method: "DELETE"}))
+      ),
+    // Invalidate the query cache for members so that it automatically re-fetches latest members
+    // For a smoother transition, we can do an optimistic update
+    // https://tanstack.com/query/v5/docs/framework/react/guides/optimistic-updates#via-the-cache
+    onSettled: async () => await queryClient.invalidateQueries({ queryKey: ['members', groupName]})
+  });
+
+  function onClickConfirm() {
+    // TODO: Check that the user being removed is not the sole owner of the Group!
+    // If the sole owner of a Group is trying to remove themselves, they should promote someone else to owner before
+    // removing themselves OR they should email hello@nextstrain.org to remove the Group completely.
+    setHideConfirmationButton(true);
+    setStatusText(`Removing ${member.username}...`);
+    removeMember.mutate(member, {
+      onSuccess: () => {
+        setStatusText("");
+        setHideConfirmationButton(false);
+        onClose();
+      },
+      onError: (err) => {
+        setStatusText(`An error occurred when removing "${member.username}": ${err}. Please try again.`);
+        setHideConfirmationButton(false);
+      }
+    });
+  }
+
+  return (
+    <Modal
+      title="Please confirm you want to remove this member" isOpen={isOpen} onClose={onClose}>
+      <div className="row">
+        <div className="col d-flex justify-content-center">
+          <splashStyles.CenteredFocusParagraph>
+            Once removed, "{member.username}" will no longer have a role in the "{groupName}" Group. {<br/>}
+            However, they may still have read access if the group is public.
+          </splashStyles.CenteredFocusParagraph>
+        </div>
+      </div>
+
+      {/* TODO: Remove this paragraph once owners can add existing users to a Group */}
+      <div className="row">
+        <div className="col d-flex justify-content-center">
+          <splashStyles.CenteredFocusParagraph>
+            Note: You will have to email hello@nextstrain.org to add a member back to the Group.
+          </splashStyles.CenteredFocusParagraph>
+        </div>
+      </div>
+
+      <BigSpacer/>
+
+      <div className="row">
+        <div className="col d-flex justify-content-center">
+          <splashStyles.CenteredFocusParagraph>{statusText}</splashStyles.CenteredFocusParagraph>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col d-flex justify-content-center">
+          <InputButton onClick={onClickConfirm} hidden={hideConfirmationButton}>
+            Confirm
+          </InputButton>
+        </div>
+      </div>
+    </Modal>
+  )
+}
 
 export async function canViewGroupMembers(groupName: string) {
   try {
