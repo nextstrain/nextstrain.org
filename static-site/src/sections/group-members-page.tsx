@@ -170,6 +170,9 @@ const MembersTable = ({ groupName, roles, members, canEditMembers, confirmRemove
   }
 
   function selectRolesToUpdate(selectedOptions: MultiValue<SelectOption>, member: GroupMember) {
+    // If removing all roles for a member, then confirm that the user intends to remove member from Group
+    if (selectedOptions.length === 0) return confirmRemoveMember(member);
+
     const selectedValues = selectedOptions.map((selectedOption) => selectedOption.value);
     const rolesToRemove = member.roles.filter((roleName) => !selectedValues.includes(roleName));
     const rolesToAdd = selectedValues.filter((selectedValue) => !member.roles.includes(selectedValue));
@@ -195,12 +198,6 @@ const MembersTable = ({ groupName, roles, members, canEditMembers, confirmRemove
               <strong>Roles</strong>
             </splashStyles.CenteredFocusParagraph>
           </div>
-          {canEditMembers &&
-            <div className="col">
-              <splashStyles.CenteredFocusParagraph>
-                <strong>Remove Member</strong>
-              </splashStyles.CenteredFocusParagraph>
-            </div>}
         </div>
 
         {sortedMembers.map((member) =>
@@ -211,21 +208,14 @@ const MembersTable = ({ groupName, roles, members, canEditMembers, confirmRemove
               </splashStyles.CenteredFocusParagraph>
             </div>
             {canEditMembers
-              ? <>
-                  <div className="col d-flex justify-content-center">
-                    <Select
-                      isMulti
-                      options={roleOptions}
-                      value={currentRoles(member)}
-                      onChange={(selectedOptions) => selectRolesToUpdate(selectedOptions, member)}
-                    />
-                  </div>
-                  <div className="col d-flex justify-content-center">
-                    <InputButton onClick={() => confirmRemoveMember(member)}>
-                      <strong>X</strong>
-                    </InputButton>
-                  </div>
-                </>
+              ? <div className="col d-flex justify-content-center">
+                  <Select
+                    isMulti
+                    options={roleOptions}
+                    value={currentRoles(member)}
+                    onChange={(selectedOptions) => selectRolesToUpdate(selectedOptions, member)}
+                  />
+                </div>
               : <div className="col">
                   <splashStyles.CenteredFocusParagraph>
                     {prettifyRoles(member.roles)}
