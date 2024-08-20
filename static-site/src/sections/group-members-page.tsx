@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import Select, { MultiValue } from 'react-select';
 import styled from "styled-components";
 import { startCase } from "lodash"
 import { uri } from "../../../src/templateLiterals.js";
@@ -20,6 +21,11 @@ interface RemoveMemberModalProps {
   member: GroupMember,
   isOpen: boolean,
   onClose: () => void,
+}
+
+interface SelectOption {
+  value: string,
+  label: string
 }
 
 const GroupMembersPage = ({ groupName }: {groupName: string}) => {
@@ -99,6 +105,8 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
         : (members.isLoading || roles.isLoading)
           ? <splashStyles.H4>Fetching group members...</splashStyles.H4>
           : <MembersTable
+              groupName={groupName}
+              roles={roles.data}
               members={members.data as GroupMember[]}
               canEditMembers={canEditMembers.data}
               confirmRemoveMember={confirmRemoveMember}
@@ -125,15 +133,52 @@ const MembersTableContainer = styled.div`
   }
 `;
 
-const MembersTable = ({ members, canEditMembers, confirmRemoveMember }: {
+const MembersTable = ({ groupName, roles, members, canEditMembers, confirmRemoveMember }: {
+  groupName: string,
+  roles: {name: string}[],
   members: GroupMember[],
   canEditMembers: boolean,
   confirmRemoveMember: (member: GroupMember) => void,
 }) => {
   const sortedMembers = members.toSorted((a, b) => a.username.localeCompare(b.username));
+  // Prettify the role names by making them singular and capitalized
+  const roleNameMap = new Map(roles.map((role) => {
+    return [role.name, startCase(role.name.replace(/s$/, ''))]
+  }));
+  // Convert role names into options for the Select dropdown
+  const roleOptions = Array.from(roleNameMap, ([roleName, prettyRoleName]) => ({ value: roleName, label: prettyRoleName}));
+
+  const queryClient = useQueryClient();
+  const updateMemberRoles = useMutation({
+    mutationFn: (memberData: {member: GroupMember, rolesToRemove: string[], rolesToAdd: string[]}) => {
+      const {member, rolesToRemove, rolesToAdd} = memberData;
+      const rolesURL = (roleName) => uri`/groups/${groupName}/settings/roles/${roleName}/members/${member.username}`;
+      return Promise.all([
+        rolesToRemove.map((roleName) => fetch(rolesURL(roleName), {method: "DELETE"})),
+        rolesToAdd.map((roleName) => fetch(rolesURL(roleName), {method: "PUT"}))
+      ]);
+    },
+    onSettled: async () => await queryClient.invalidateQueries({ queryKey: ['members', groupName]})
+  })
+
   function prettifyRoles(memberRoles: string[]) {
-    // Prettify the role names by making them singular and capitalized
-    return memberRoles.map((roleName) => startCase(roleName.replace(/s$/, ''))).join(", ");
+    return memberRoles.map((roleName) => roleNameMap.get(roleName)).join(", ");
+  }
+
+  function currentRoles(member: GroupMember) {
+    return roleOptions.filter((roleOption) => member.roles.includes(roleOption.value));
+  }
+
+  function selectRolesToUpdate(selectedOptions: MultiValue<SelectOption>, member: GroupMember) {
+    const selectedValues = selectedOptions.map((selectedOption) => selectedOption.value);
+    const rolesToRemove = member.roles.filter((roleName) => !selectedValues.includes(roleName));
+    const rolesToAdd = selectedValues.filter((selectedValue) => !member.roles.includes(selectedValue));
+
+    updateMemberRoles.mutate({
+      member: member,
+      rolesToRemove: rolesToRemove,
+      rolesToAdd: rolesToAdd
+    })
   }
 
   return (
@@ -165,17 +210,28 @@ const MembersTable = ({ members, canEditMembers, confirmRemoveMember }: {
                 {member.username}
               </splashStyles.CenteredFocusParagraph>
             </div>
-            <div className="col">
-              <splashStyles.CenteredFocusParagraph>
-                {prettifyRoles(member.roles)}
-              </splashStyles.CenteredFocusParagraph>
-            </div>
-            {canEditMembers &&
-              <div className="col d-flex justify-content-center">
-                <InputButton onClick={() => confirmRemoveMember(member)}>
-                  <strong>X</strong>
-                </InputButton>
-              </div>}
+            {canEditMembers
+              ? <>
+                  <div className="col d-flex justify-content-center">
+                    <Select
+                      isMulti
+                      options={roleOptions}
+                      value={currentRoles(member)}
+                      onChange={(selectedOptions) => selectRolesToUpdate(selectedOptions, member)}
+                    />
+                  </div>
+                  <div className="col d-flex justify-content-center">
+                    <InputButton onClick={() => confirmRemoveMember(member)}>
+                      <strong>X</strong>
+                    </InputButton>
+                  </div>
+                </>
+              : <div className="col">
+                  <splashStyles.CenteredFocusParagraph>
+                    {prettifyRoles(member.roles)}
+                  </splashStyles.CenteredFocusParagraph>
+                </div>
+              }
           </div>
         )}
       </MembersTableContainer>
