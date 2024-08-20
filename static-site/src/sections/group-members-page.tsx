@@ -6,6 +6,7 @@ import { startCase } from "lodash"
 import { uri } from "../../../src/templateLiterals.js";
 import GenericPage from "../layouts/generic-page.jsx";
 import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../layouts/generalComponents.jsx";
+import { theme } from "../layouts/theme";
 import * as splashStyles from "../components/splash/styles";
 import { ErrorBanner } from "../components/errorMessages.jsx";
 import { InputButton } from "../components/Groups/styles.jsx";
@@ -133,6 +134,17 @@ const MembersTableContainer = styled.div`
   }
 `;
 
+const RolesSelectStyles = {
+  container: (styles) => ({
+    ...styles,
+    display: "flex",
+  }),
+  multiValueLabel: (styles) => ({
+    ...styles,
+    fontSize: theme.niceFontSize,
+  }),
+}
+
 const MembersTable = ({ groupName, roles, members, canEditMembers, confirmRemoveMember }: {
   groupName: string,
   roles: {name: string}[],
@@ -211,6 +223,7 @@ const MembersTable = ({ groupName, roles, members, canEditMembers, confirmRemove
               ? <div className="col d-flex justify-content-center">
                   <Select
                     isMulti
+                    styles={RolesSelectStyles}
                     options={roleOptions}
                     value={currentRoles(member)}
                     onChange={(selectedOptions) => selectRolesToUpdate(selectedOptions, member)}
