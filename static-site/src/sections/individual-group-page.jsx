@@ -17,7 +17,7 @@ class Index extends React.Component {
     configureAnchors({ offset: -10 });
     this.state = {
       groupNotFound: false,
-      nonExistentPath: this.props.resourcePath,
+      nonExistentPath: this.props.resourcePath?.join("/"),
       editGroupSettingsAllowed: false,
       viewGroupMembersAllowed: false,
     };
