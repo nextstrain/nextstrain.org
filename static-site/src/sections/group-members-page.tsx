@@ -100,7 +100,7 @@ const MembersTableContainer = styled.div`
 `;
 
 const MembersTable = ({ members }: { members: GroupMember[]}) => {
-  const sortedMembers = members.toSorted((a, b) => a.username.localeCompare(b.username));
+  const sortedMembers = [...members].sort((a, b) => a.username.localeCompare(b.username));
   function prettifyRoles(memberRoles: string[]) {
     // Prettify the role names by making them singular and capitalized
     return memberRoles.map((roleName) => startCase(roleName.replace(/s$/, ''))).join(", ");
