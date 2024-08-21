@@ -170,7 +170,10 @@ const MembersTable = ({ groupName, roles, members, canEditMembers, confirmRemove
         rolesToAdd.map((roleName) => fetch(rolesURL(roleName), {method: "PUT"}))
       ]);
     },
-    onSettled: async () => await queryClient.invalidateQueries({ queryKey: ['members', groupName]})
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['members', groupName]});
+      await queryClient.invalidateQueries({ queryKey: ['canEditMembers', groupName]});
+    }
   })
 
   function prettifyRoles(memberRoles: string[]) {
@@ -253,7 +256,10 @@ const RemoveMemberModal = ({ groupName, member, isOpen, onClose}: RemoveMemberMo
     // Invalidate the query cache for members so that it automatically re-fetches latest members
     // For a smoother transition, we can do an optimistic update
     // https://tanstack.com/query/v5/docs/framework/react/guides/optimistic-updates#via-the-cache
-    onSettled: async () => await queryClient.invalidateQueries({ queryKey: ['members', groupName]})
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['members', groupName]});
+      await queryClient.invalidateQueries({ queryKey: ['canEditMembers', groupName]});
+    }
   });
 
   function onClickConfirm() {
