@@ -5,6 +5,11 @@
 #   when rendered on the splash page.
 # - Ensure URLs start with `/`.
 
+- name: Mpox DRC Clade-I
+  description: INRB (DRC) analysis of ongoing mpox clade-I outbreak (PHEIC)
+  img: mpox_drc.png
+  url: /groups/inrb-mpox/clade-I
+
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
   img: ncov_freq.png
@@ -21,7 +26,7 @@
   url: /avian-flu/h5n1/ha/2y
 
 - name: Mpox
-  description: Evolution and spread mpox virus
+  description: Evolution and spread of mpox virus
   img: mpox_tree.png
   url: /mpox/clade-IIb
 
