@@ -98,6 +98,6 @@ The static documentation is automatically rebuilt every time the (parent) repo i
 
 ## License and copyright
 
-Copyright 2014-2023 Trevor Bedford and Richard Neher.
+Copyright Trevor Bedford and Richard Neher.
 
 Source code to Nextstrain is made available under the terms of the [GNU Affero General Public License 3.0](../LICENSE) (AGPL-3.0). Nextstrain is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.
