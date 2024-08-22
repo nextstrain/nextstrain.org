@@ -1,69 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { startCase } from "lodash"
 import { uri } from "../../../src/templateLiterals.js";
-import GenericPage from "../layouts/generic-page.jsx";
 import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../layouts/generalComponents.jsx";
 import * as splashStyles from "../components/splash/styles";
-import { ErrorBanner } from "../components/errorMessages.jsx";
 
 interface GroupMember {
   username: string,
   roles: string[]
 }
 
-interface ErrorMessage {
-  title: string,
-  contents: string
-}
-
-const GroupMembersPage = ({ groupName }: {groupName: string}) => {
-  const [ errorMessage, setErrorMessage ] = useState<ErrorMessage>({title: "", contents: ""});
-  const [ roles, setRoles ] = useState<string[]>([]);
-  const [ members, setMembers ] = useState<GroupMember[]>([]);
-
-  useEffect(() => {
-    async function getGroupMembership(groupName: string) {
-      const headers = { headers: {"Accept": "application/json"}};
-      let roles, members = [];
-      try {
-        const [ rolesResponse, membersResponse ] = await Promise.all([
-          fetch(uri`/groups/${groupName}/settings/roles`, headers),
-          fetch(uri`/groups/${groupName}/settings/members`, headers)
-        ]);
-        if (!rolesResponse.ok) {
-          throw new Error(`Fetching group roles failed: ${rolesResponse.status} ${rolesResponse.statusText}`)
-        }
-        if (!membersResponse.ok) {
-          throw new Error(`Fetching group members failed: ${membersResponse.status} ${membersResponse.statusText}`)
-        }
-        roles = await rolesResponse.json();
-        members = await membersResponse.json();
-      } catch (err) {
-        const errorMessage = (err as Error).message
-        if(!ignore) {
-          setErrorMessage({
-            title: "An error occurred when trying to fetch group membership data",
-            contents: errorMessage})
-        }
-      }
-      return {roles, members};
-    }
-
-    let ignore = false;
-    getGroupMembership(groupName).then(result => {
-      if (!ignore) {
-        setRoles(result.roles);
-        setMembers(result.members);
-      }
-    })
-    return () => {
-      ignore = true;
-    };
-  }, [groupName]);
+const GroupMembersPage = ({ groupName, roles, members}: {
+  groupName: string,
+  roles: string[],
+  members: GroupMember[],
+}) => {
 
   return (
-    <GenericPage banner={errorMessage.title ? <ErrorBanner {...errorMessage} /> : undefined}>
+    <>
       <FlexGridRight>
         <splashStyles.Button to={uri`/groups/${groupName}`}>
           Return to {`"${groupName}"`} Page
@@ -76,10 +30,8 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
       </splashStyles.H2>
       <BigSpacer/>
 
-      {roles && members
-        ? <MembersTable members={members as GroupMember[]} />
-        : <splashStyles.H4>Fetching group members...</splashStyles.H4>}
-    </GenericPage>
+      <MembersTable members={members as GroupMember[]} />
+    </>
   )
 };
 
@@ -94,8 +46,11 @@ const MembersTableContainer = styled.div`
   .row:nth-child(even) {
     background-color: #F1F1F1;
   }
+  // Adding !important to enforce this styling override.
+  // It's unclear why this styling override no longer worked when I switched to SSR
+  // Maybe related to https://github.com/styled-components/styled-components/issues/3411
   p {
-    margin: 10px;
+    margin: 10px !important;
   }
 `;
 
