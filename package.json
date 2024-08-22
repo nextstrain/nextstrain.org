@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "./build.sh",
+    "build:feeds": "node scripts/generate-blog-feeds.js",
     "lint": "npm run lint:server",
     "lint:server": "DEBUG=eslint:cli-engine npx eslint --ext .js,.jsx .",
     "lint:static-site": "cd static-site && DEBUG=eslint:cli-engine npx eslint --ext .js,.jsx,.ts,.tsx .",

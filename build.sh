@@ -33,6 +33,7 @@ main() {
 
 build-static() {
     echo "Building the static Next.JS app (pages defined in static-site/pages, assets written to static-site/.next)"
+    npm run build:feeds
     ./node_modules/.bin/next build static-site
 }
 

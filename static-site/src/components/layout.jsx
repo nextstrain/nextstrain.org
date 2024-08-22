@@ -1,7 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import styled, {ThemeProvider} from "styled-components";
-import { siteTitle, siteDescription } from "../../data/SiteConfig";
+import { blogFeedUrls, groupsApp, siteTitle, siteDescription } from "../../data/SiteConfig";
 import {theme} from '../layouts/theme';
 
 /**
@@ -22,7 +22,23 @@ export default class MainLayout extends React.Component {
         <Helmet>
           <title>{`${siteTitle}`}</title>
           <meta name="description" content={siteDescription} />
-          <link rel="me" href="https://mstdn.science/@nextstrain" />
+          {
+            // react-helmet doesn't support React fragments, so we have to do this
+            // in a maximally silly way; see https://github.com/nfl/react-helmet/issues/342
+            // for details
+          }
+          {!groupsApp &&
+            <link rel="me" href="https://mstdn.science/@nextstrain" />
+          }
+          {!groupsApp &&
+            <link href={`${blogFeedUrls.atom}`} rel="alternate" title="Atom feed for nextstrain.org/blog" type="application/atom+xml" />
+          }
+          {!groupsApp &&
+            <link href={`${blogFeedUrls.json}`} rel="alternate" title="JSON feed for nextstrain.org/blog" type="application/json" />
+          }
+          {!groupsApp &&
+            <link href={`${blogFeedUrls.rss2}`} rel="alternate" title="RSS2 feed for nextstrain.org/blog" type="application/rss+xml" />
+          }
         </Helmet>
         <ThemeProvider theme={theme}>
           <GlobalStyles>
