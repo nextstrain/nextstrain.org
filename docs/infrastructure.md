@@ -143,6 +143,7 @@ To recreate an inactivated app, or create one for a PR from a fork, you can use 
 ### Promoting changes
 
 Promoting changes from canary to production can be done freely at any time, however it's worth reviewing the changes you're promoting to make sure they are what you expect them to be.
+To inspect the differences between canary (next.nextstrain.org) and production (nextstrain.org), [login to Heroku](https://dashboard.heroku.com/teams/nextstrain/apps) and click "nextstrain-server", "nextstrain-canary", "Promote to production" (this just opens a popup), and "Compare on GitHub".
 
 We have a linear deploy path from git → canary → production, so if your commit Y in git comes after commit X, then deploying/promoting commit Y also deploys/promotes commit X.
 (Any out-of-order alternatives, though possible, are considered unnecessary complication for our team for now.)
