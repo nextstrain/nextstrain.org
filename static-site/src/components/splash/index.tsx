@@ -255,6 +255,10 @@ function TileSourceIcon({ url, isNarrative }: {
 
   let maintainers: string, image: React.JSX.Element;
 
+  if (!url.startsWith('/')) {
+    url = '/' + url;
+  }
+
   if (url.startsWith('/community')) {
     const owner = isNarrative ? url.split('/')[3] : url.split('/')[2];
     maintainers = `${owner} on GitHub`;
