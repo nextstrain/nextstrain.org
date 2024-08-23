@@ -164,9 +164,7 @@ const RemoveMemberModal = ({ groupName, member, isOpen, onClose}: RemoveMemberMo
       setStatusText(`An error occurred when removing "${member.username}". Please try again.`);
       setHideConfirmationButton(false);
     } else {
-      setStatusText("");
-      setHideConfirmationButton(false);
-      onClose();
+      setStatusText(`Removal of ${member.username} succeeded. Page will refresh shortly`);
       router.refresh();
     }
   }
