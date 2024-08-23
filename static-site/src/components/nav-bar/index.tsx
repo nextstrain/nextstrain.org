@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Router from 'next/router';
+import {usePathname} from 'next/navigation';
 import styled, {css} from 'styled-components';
 import nextstrainLogo from "../../../static/logos/nextstrain-logo-small.png";
 import { UserContext } from "../../layouts/userDataWrapper";
@@ -83,8 +83,8 @@ const NavBar = ({ minified }: {
   const { user } = useContext(UserContext);
 
   function selectedClass(name: string) {
-    if (!Router.pathname) return "";
-    return String(Router.pathname).startsWith(`/${name}`);
+    if (!usePathname()) return "";
+    return String(usePathname()).startsWith(`/${name}`);
   }
 
   const Logo = () => {
@@ -119,7 +119,7 @@ const NavBar = ({ minified }: {
 
   return (
     <NavContainer>
-      {Router.pathname != "/" && <>
+      {usePathname() != "/" && <>
         <Logo />
         <LogoType />
       </>}
