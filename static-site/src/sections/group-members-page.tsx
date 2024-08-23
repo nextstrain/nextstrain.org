@@ -1,20 +1,54 @@
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { startCase } from "lodash"
 import { uri } from "../../../src/templateLiterals.js";
 import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../layouts/generalComponents.jsx";
 import * as splashStyles from "../components/splash/styles";
+import Modal from "../components/modal";
+import { InputButton } from "../components/Groups/styles";
 
 interface GroupMember {
   username: string,
   roles: string[]
 }
 
-const GroupMembersPage = ({ groupName, roles, members}: {
+interface RemoveMemberModalProps {
+  groupName: string,
+  member: GroupMember,
+  isOpen: boolean,
+  onClose: () => void,
+}
+
+const GroupMembersPage = ({ groupName, roles, members, canEditGroupMembers }: {
   groupName: string,
   roles: string[],
   members: GroupMember[],
+  canEditGroupMembers: boolean,
 }) => {
+  const [confirmationModalProps, setRemoveMemberModalProps] = useState<RemoveMemberModalProps>({
+    groupName: groupName,
+    member: {username: "", roles: []},
+    isOpen: false,
+    onClose: closeConfirmationModal,
+  });
+
+  function closeConfirmationModal() {
+    setRemoveMemberModalProps((prevProps) => ({
+      ...prevProps,
+      isOpen: false
+    }))
+  }
+
+  function confirmRemoveMember(member: GroupMember) {
+    setRemoveMemberModalProps({
+      groupName: groupName,
+      member: member,
+      isOpen: true,
+      onClose: closeConfirmationModal
+    })
+  }
+
 
   return (
     <>
@@ -30,7 +64,12 @@ const GroupMembersPage = ({ groupName, roles, members}: {
       </splashStyles.H2>
       <BigSpacer/>
 
-      <MembersTable members={members as GroupMember[]} />
+      <RemoveMemberModal {...confirmationModalProps} />
+
+      <MembersTable
+        members={members as GroupMember[]}
+        canEditMembers={canEditGroupMembers}
+        confirmRemoveMember={confirmRemoveMember} />
     </>
   )
 };
@@ -54,7 +93,11 @@ const MembersTableContainer = styled.div`
   }
 `;
 
-const MembersTable = ({ members }: { members: GroupMember[]}) => {
+const MembersTable = ({ members, canEditMembers, confirmRemoveMember }: {
+  members: GroupMember[],
+  canEditMembers: boolean,
+  confirmRemoveMember: (member: GroupMember) => void,
+}) => {
   const sortedMembers = [...members].sort((a, b) => a.username.localeCompare(b.username));
   function prettifyRoles(memberRoles: string[]) {
     // Prettify the role names by making them singular and capitalized
@@ -75,6 +118,12 @@ const MembersTable = ({ members }: { members: GroupMember[]}) => {
               <strong>Roles</strong>
             </splashStyles.CenteredFocusParagraph>
           </div>
+          {canEditMembers &&
+            <div className="col">
+              <splashStyles.CenteredFocusParagraph>
+                <strong>Remove Member</strong>
+              </splashStyles.CenteredFocusParagraph>
+            </div>}
         </div>
 
         {sortedMembers.map((member) =>
@@ -89,12 +138,87 @@ const MembersTable = ({ members }: { members: GroupMember[]}) => {
                 {prettifyRoles(member.roles)}
               </splashStyles.CenteredFocusParagraph>
             </div>
+            {canEditMembers &&
+              <div className="col d-flex justify-content-center">
+                <InputButton onClick={() => confirmRemoveMember(member)}>
+                  <strong>X</strong>
+                </InputButton>
+              </div>}
           </div>
         )}
       </MembersTableContainer>
     </CenteredContainer>
   )
 };
+
+const RemoveMemberModal = ({ groupName, member, isOpen, onClose}: RemoveMemberModalProps) => {
+  const [statusText, setStatusText] = useState<string>("");
+  const [hideConfirmationButton, setHideConfirmationButton] = useState<boolean>(false);
+  const router = useRouter();
+  async function removeMember(member: GroupMember){
+
+    const responses = await Promise.all(
+      member.roles.map((role) => fetch(uri`/groups/${groupName}/settings/roles/${role}/members/${member.username}`, {method: "DELETE"}))
+    )
+    if (!responses.every((response) => response.ok)) {
+      setStatusText(`An error occurred when removing "${member.username}". Please try again.`);
+      setHideConfirmationButton(false);
+    } else {
+      setStatusText("");
+      setHideConfirmationButton(false);
+      onClose();
+      router.refresh();
+    }
+  }
+
+  function onClickConfirm() {
+    // TODO: Check that the user being removed is not the sole owner of the Group!
+    // If the sole owner of a Group is trying to remove themselves, they should promote someone else to owner before
+    // removing themselves OR they should email hello@nextstrain.org to remove the Group completely.
+    setHideConfirmationButton(true);
+    setStatusText(`Removing ${member.username}...`);
+    removeMember(member);
+  }
+
+  return (
+    <Modal
+      title="Please confirm you want to remove this member" isOpen={isOpen} onClose={onClose}>
+      <div className="row">
+        <div className="col d-flex justify-content-center">
+          <splashStyles.CenteredFocusParagraph>
+            Once removed, "{member.username}" will no longer have a role in the "{groupName}" Group. {<br/>}
+            However, they may still have read access if the group is public.
+          </splashStyles.CenteredFocusParagraph>
+        </div>
+      </div>
+
+      {/* TODO: Remove this paragraph once owners can add existing users to a Group */}
+      <div className="row">
+        <div className="col d-flex justify-content-center">
+          <splashStyles.CenteredFocusParagraph>
+            Note: You will have to email hello@nextstrain.org to add a member back to the Group.
+          </splashStyles.CenteredFocusParagraph>
+        </div>
+      </div>
+
+      <BigSpacer/>
+
+      <div className="row">
+        <div className="col d-flex justify-content-center">
+          <splashStyles.CenteredFocusParagraph>{statusText}</splashStyles.CenteredFocusParagraph>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col d-flex justify-content-center">
+          <InputButton onClick={onClickConfirm} hidden={hideConfirmationButton}>
+            Confirm
+          </InputButton>
+        </div>
+      </div>
+    </Modal>
+  )
+}
 
 export async function canViewGroupMembers(groupName: string) {
   try {

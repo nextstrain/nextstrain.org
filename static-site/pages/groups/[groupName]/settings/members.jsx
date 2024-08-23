@@ -4,10 +4,10 @@ import GroupMembersPage from "../../../../src/sections/group-members-page";
 // GenericPage needs to be loaded client-side because NavBar uses Router
 const GenericPage = dynamic(() => import('../../../../src/layouts/generic-page'), {ssr: false});
 
-const Index = ({ groupName, roles, members }) => {
+const Index = ({ groupName, roles, members, canEditGroupMembers }) => {
   return (
   <GenericPage>
-    <GroupMembersPage groupName={groupName} roles={roles} members={members} />
+    <GroupMembersPage groupName={groupName} roles={roles} members={members} canEditGroupMembers={canEditGroupMembers} />
   </GenericPage>
   )
 }
@@ -30,7 +30,12 @@ export const getServerSideProps = async ({ params, req, res, query}) => {
    * https://github.com/nextstrain/nextstrain.org/blob/175171e0e1c1b331538729a1168598227d08698d/src/routing/setup.js#L20
    */
   members.forEach(member => member.roles = Array.from(member.roles));
-  return { props: { groupName: params.groupName, roles, members} };
+
+  let canEditGroupMembers = false;
+  if (req.authz.authorized(req.user, req.authz.actions.Write, group)) {
+    canEditGroupMembers = true;
+  }
+  return { props: { groupName: params.groupName, roles, members, canEditGroupMembers} };
 }
 
 export default Index;
