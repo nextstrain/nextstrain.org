@@ -3,7 +3,6 @@ author: "Kim Andrews, Jover Lee, James Hadfield, Jennifer Chang, Trevor Bedford"
 date: "2024-06-12"
 title: "New Resources for Measles Virus"
 ---
-**Kim Andrews**, **Jover Lee**, **James Hadfield**, **Jennifer Chang**, **Trevor Bedford**
 
 We now provide regularly updated phylogenetic monitoring of measles virus at [nextstrain.org/measles](https://nextstrain.org/measles). This site displays phylogenies generated using genomic data from NCBI GenBank, and is updated daily when new sequences are uploaded to NCBI. You can choose to display one of two different phylogenies based on the following data types:
 
