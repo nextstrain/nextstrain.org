@@ -38,7 +38,7 @@
 - name: Yersinia pestis
   description: Historical analysis of geographic spread of plague
   img: yersinia_tree.png
-  url: community/ktmeaton/yersinia-pestis/maximum-likelihood/all?m=num_date
+  url: /community/ktmeaton/yersinia-pestis/maximum-likelihood/all?m=num_date
 
 - name: Measles
   description: Measles virus evolution and spread
