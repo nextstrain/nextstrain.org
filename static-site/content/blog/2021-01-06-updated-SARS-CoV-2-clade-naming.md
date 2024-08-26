@@ -4,8 +4,6 @@ date: "2021-01-06"
 title: "Updated Nextstrain SARS-CoV-2 clade naming strategy"
 ---
 
-**Trevor Bedford**, **Emma B Hodcroft**, **Richard A Neher**
-
 The emerging 501Y.V1 and 501Y.V2 variants have pushed the Nextstrain team to revise our strategy for Nextstrain clade labels. Here, we propose a backwards-compatible update to make clades more adaptable to the continuing pandemic situation, and more useful to people working on the pandemic today.
 
 In June we put forth an [initial Nextstrain clade naming strategy](/blog/2020-06-02-SARSCoV2-clade-naming/). This basic strategy of flat "year-letter" names was borne out of work with seasonal influenza, where the nested names of 3c2.A1b (etc...) can become unwieldy. In the “year-letter” scheme, years are there to make it easy to know what's being discussed in ~5 years when, for example, clade `20A` is referenced. Our June strategy called for naming of a clade when it reached >20% global frequency for more than 2 months.

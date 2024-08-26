@@ -81,11 +81,9 @@ export default class GenericTemplate extends React.Component {
           </SidebarContainer>
           <ContentContainer>
             <CenteredContainer>
-              <PostAuthorSurrounds>
-                <PostAuthor>{author}</PostAuthor>
-                <PostDate>{date}</PostDate>
-              </PostAuthorSurrounds>
+              <PostDate>{date}</PostDate>
               <PostTitle>{title}</PostTitle>
+              <PostAuthor>{author}</PostAuthor>
               <MarkdownContent dangerouslySetInnerHTML={{ __html: markdownHtml(mdstring) }} />
             </CenteredContainer>
 
@@ -132,16 +130,16 @@ const PostTitle = styled.h1`
   font-weight: 500 !important;
   font-size: 38px !important;
 `;
-const PostAuthorSurrounds = styled.div`
-  min-height: 2rem;
+const PostAuthor = styled.div`
   font-size: ${(props) => props.theme.niceFontSize};
-  color: ${(props) => props.theme.medGrey};
-`;
-const PostAuthor = styled.span`
-  float: left;
+  font-weight: bold;
+  margin: 2rem 0;
 `;
 const PostDate = styled.span`
+  color: ${(props) => props.theme.medGrey};
   float: right;
+  font-size: ${(props) => props.theme.niceFontSize};
+  min-height: 2rem;
 `;
 const GreyOverlay = styled.div`
   position: absolute;

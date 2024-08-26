@@ -4,8 +4,6 @@ date: "2022-04-29"
 title: "SARS-CoV-2 clade naming strategy for 2022"
 ---
 
-**Cornelius Roemer**, **Emma B Hodcroft**, **Richard A Neher**, **Trevor Bedford**
-
 The rapid dominance and increased diversity of the Omicron variant and its constituent sub-lineages has triggered another update of the Nextstrain clade naming guidelines and labels. Once again, we propose a backwards-compatible update, this time to allow more flexible and faster designation of clades as new variants appear and spread.
 
 Our initial strategy of the 'year-letter' naming has been successful in keeping Nextstrain clade names short, clear, and easy to pronounce, and over two years into the pandemic, is accomplishing our original goal of remaining a long-term solution for distinct clade naming where the aim is to have a level of granularity that matches significant differences in biological impact or circulation patterns among viruses Nextstrain clades are coarser than the fine grained [Pango lineages](https://cov-lineages.org/).

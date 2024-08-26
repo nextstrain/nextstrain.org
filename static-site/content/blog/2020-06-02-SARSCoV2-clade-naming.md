@@ -4,8 +4,6 @@ date: "2020-06-02"
 title: "Year-letter Genetic Clade Naming for SARS-CoV-2 on Nextstrain.org"
 ---
 
-**Emma B Hodcroft, James Hadfield, Richard A Neher, Trevor Bedford**
-
 Nextstrain provides clade or lineage information for a number of pathogens it already tracks, including influenza and enterovirus D68. Nextstrain also introduced informal clade designations for SARS-CoV-2 on 4 March 2020, largely to aid internal discussions and to create URL links allowing ‘automatic zoom’ to an area of the tree that was of interest. These clades names were ad-hoc letter-number combinations (e.g. A2a) and were never intended to be a permanent naming system (and never visible by default). Nevertheless, these clades have been used by some to discuss different aspects of the phylogeny on Nextstrain, underscoring the need for a more long-term, formal proposal to designate SARS-CoV-2 clades.
 
 Our objective here is to introduce a naming system that facilitates discussion of large scale diversity patterns of SARS-CoV-2 and label clades that persist for at least several months and have significant geographic spread. This objective is distinct from and complementary to Rambaut et al. 2020 (1), who proposed a dynamic system for labeling transient lineages that have local epidemiological significance. Their proposal results in a large number of short lived labels that maintain some information on the hierarchical structure and facilitate discussion of local short term dynamics, but are not intended to provide large scale structure.
