@@ -3,7 +3,6 @@
 #   rendered on the splash page.
 # - When adding or modifying descriptions, ensure it takes up at most two lines
 #   when rendered on the splash page.
-# - Ensure URLs start with `/`.
 
 - name: Mpox in the DRC
   description: INRB analysis of ongoing mpox clade I outbreak in the DRC
