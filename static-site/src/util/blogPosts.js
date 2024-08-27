@@ -2,7 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import matter from 'gray-matter';
-import { startCase } from "lodash"
+import lodash from "lodash";
+
+const { startCase } = lodash;
 
 /**
  * Scans the ./static-site/content/blog directory for .md files
