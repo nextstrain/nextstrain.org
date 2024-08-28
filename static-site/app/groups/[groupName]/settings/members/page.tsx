@@ -1,11 +1,12 @@
+'use client'
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { startCase } from "lodash"
-import { uri } from "../../../src/templateLiterals.js";
-import GenericPage from "../layouts/generic-page.jsx";
-import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../layouts/generalComponents.jsx";
-import * as splashStyles from "../components/splash/styles";
-import { ErrorBanner } from "../components/errorMessages.jsx";
+import { uri } from "../../../../../../src/templateLiterals";
+import GenericPage from "../../../../../src/layouts/generic-page.jsx";
+import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../../../../../src/layouts/generalComponents";
+import * as splashStyles from "../../../../../src/components/splash/styles";
+import { ErrorBanner } from "../../../../../src/components/errorMessages";
 
 interface GroupMember {
   username: string,
@@ -17,7 +18,8 @@ interface ErrorMessage {
   contents: string
 }
 
-const GroupMembersPage = ({ groupName }: {groupName: string}) => {
+export default function GroupMembersPage({ params }: { params: { groupName: string }}) {
+  const groupName = params.groupName;
   const [ errorMessage, setErrorMessage ] = useState<ErrorMessage>({title: "", contents: ""});
   const [ roles, setRoles ] = useState<string[]>([]);
   const [ members, setMembers ] = useState<GroupMember[]>([]);
@@ -140,20 +142,3 @@ const MembersTable = ({ members }: { members: GroupMember[]}) => {
     </CenteredContainer>
   )
 };
-
-export async function canViewGroupMembers(groupName: string) {
-  try {
-    const groupMemberOptions = await fetch(uri`/groups/${groupName}/settings/members`, { method: "OPTIONS"});
-      if ([401, 403].includes(groupMemberOptions.status)) {
-        console.log("You can ignore the console error above; it is used to determine whether the members can be shown.");
-      }
-      const allowedMethods = new Set(groupMemberOptions.headers.get("Allow")?.split(/\s*,\s*/));
-      return allowedMethods.has("GET");
-  } catch (err) {
-    const errorMessage = (err as Error).message
-    console.error("Cannot check user permissions to view group members", errorMessage);
-  }
-  return false
-}
-
-export default GroupMembersPage;

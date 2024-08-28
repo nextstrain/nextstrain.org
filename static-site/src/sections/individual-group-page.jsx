@@ -9,7 +9,6 @@ import { fetchAndParseJSON } from "../util/datasetsHelpers";
 import SourceInfoHeading from "../components/sourceInfoHeading";
 import { ErrorBanner } from "../components/errorMessages";
 import { canUserEditGroupSettings } from "./group-settings-page";
-import { canViewGroupMembers } from "./group-members-page";
 
 class Index extends React.Component {
   constructor(props) {
@@ -170,6 +169,21 @@ class Index extends React.Component {
       </GenericPage>
     );
   }
+}
+
+async function canViewGroupMembers(groupName) {
+  try {
+    const groupMemberOptions = await fetch(uri`/groups/${groupName}/settings/members`, { method: "OPTIONS"});
+      if ([401, 403].includes(groupMemberOptions.status)) {
+        console.log("You can ignore the console error above; it is used to determine whether the members can be shown.");
+      }
+      const allowedMethods = new Set(groupMemberOptions.headers.get("Allow")?.split(/\s*,\s*/));
+      return allowedMethods.has("GET");
+  } catch (err) {
+    const errorMessage = err.message
+    console.error("Cannot check user permissions to view group members", errorMessage);
+  }
+  return false
 }
 
 export default Index;
