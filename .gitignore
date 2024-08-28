@@ -53,3 +53,8 @@ static-site/.next
 
 # TypeScript
 static-site/tsconfig.tsbuildinfo
+
+# Blog feeds
+static-site/public/blog/atom.xml
+static-site/public/blog/feed.json
+static-site/public/blog/rss2.xml

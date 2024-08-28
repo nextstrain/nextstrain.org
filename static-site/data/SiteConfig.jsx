@@ -1,22 +1,7 @@
 import React from "react";
 import NextstrainFooter from "../src/components/Footer";
 
-export const siteTitle = "Nextstrain";
-
-// Alternative site title for SEO.
-export const siteTitleAlt = "Real-time tracking of pathogen evolution";
-
-// Logo used for SEO
-export const siteLogo = "/nextstrain-logo-small.png";
-
-export const siteUrl = "https://nextstrain.org";
-
-// Website description used for RSS feeds/meta description tag.
-export const siteDescription = "Real-time tracking of pathogen evolution";
-
-export const groupsApp = false;
-
-export const groupsTitle = "Scalable Sharing with Nextstrain Groups";
+export * from "./BaseConfig";
 
 export const ErrorBannerInitialMessage = () => (<>
   Please <a href="/contact">contact us</a> if you believe this to be an error.

@@ -19,8 +19,8 @@ alternative application entrypoint to run just the Groups parts of the website.
 2. Configure the server's environment: modify files in `env/testing/` and/or
    `env/production/`, specifically the `config.json` and `groups.json` files.
 3. Customize the `static-site`:
-    1. Set `groupsApp` to `true` in `static-site/data/SiteConfig.jsx`.
-    2. Change other values in that file.
+    1. Set `groupsApp` to `true` in `static-site/data/BaseConfig.js`.
+    2. Change other values in that file and in `static-site/data/SiteConfig.jsx`.
 4. Customize the `auspice-client`:
     1. Change the title in `auspice-client/customisations/config.json`.
     2. Change the `NavBar` component's links in `auspice-client/customisations/navbar.js`.
