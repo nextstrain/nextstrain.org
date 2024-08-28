@@ -46,7 +46,7 @@ export const ExpandableTiles = <AnyTile extends Tile>({tiles, tileWidth, tileHei
             return <TileComponent tile={el} key={el.name} />
           })}
         </TilesContainer>
-        <PreviewOverlay onClick={toggleExpand} className={!isExpandable || isExpanded ? "hidden" : "visible"} />
+        {isExpandable && !isExpanded && <PreviewOverlay onClick={toggleExpand} />}
       </ExpandableContainer>
       {isExpandable && <>
         <ArrowButton onClick={toggleExpand}>
@@ -97,16 +97,6 @@ const PreviewOverlay = styled.div`
   width: 100%;
   height: ${expandPreviewHeight}px;
   cursor: pointer;
-
-  &.visible {
-    opacity: 1;
-  }
-
-  &.hidden {
-    opacity: 0;
-  }
-
-  transition: opacity ${transitionDuration} ${transitionTimingFunction};
 `;
 
 const TilesContainer = styled.div<{$tileWidth: number}>`
