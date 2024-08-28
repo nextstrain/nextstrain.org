@@ -81,10 +81,11 @@ const NavBar = ({ minified }: {
   minified?: boolean
 }) => {
   const { user } = useContext(UserContext);
+  const pathName = usePathname();
 
   function selectedClass(name: string) {
-    if (!usePathname()) return "";
-    return String(usePathname()).startsWith(`/${name}`);
+    if (!pathName) return "";
+    return String(pathName).startsWith(`/${name}`);
   }
 
   const Logo = () => {
@@ -119,7 +120,7 @@ const NavBar = ({ minified }: {
 
   return (
     <NavContainer>
-      {usePathname() != "/" && <>
+      {pathName != "/" && <>
         <Logo />
         <LogoType />
       </>}
