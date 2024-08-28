@@ -1,4 +1,5 @@
 import React from "react";
+import { usePathname } from "next/navigation";
 import * as Styles from "../splash/styles";
 import { SmallSpacer, BigSpacer } from "../../layouts/generalComponents";
 import { Logos } from "../../components/logos";
@@ -19,7 +20,7 @@ const Footer = () => {
             {"Hadfield "}<i>{"et al., "}</i>
             <a href="https://doi.org/10.1093/bioinformatics/bty407" target="_blank" rel="noreferrer noopener">Nextstrain: real-time tracking of pathogen evolution</a>
             <i>, Bioinformatics</i> (2018)
-            {(typeof window !== 'undefined' && window.location.pathname.replace(/\//g, "")!=="team") && (
+            {usePathname().replace(/\//g, "")!=="team" && (
               <>
                 <div style={{margin: "10px 0px"}}/>
                 The core Nextstrain team is
