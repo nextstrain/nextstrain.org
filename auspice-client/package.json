@@ -1,7 +1,7 @@
 {
   "private": true,
   "dependencies": {
-    "auspice": "^2.56.1",
+    "auspice": "github:nextstrain/auspice#a734471ed4fde9c83eef201891b12450dea94c23",
     "iso-639-1": "^2.1.15"
   }
 }
