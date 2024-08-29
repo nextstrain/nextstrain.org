@@ -3,6 +3,7 @@ export * as canary from './canary.js';
 export * as charon from './charon.js';
 export * as cli from './cli.js';
 export * as community from './community.js';
+export * as counter from './counter.js';
 export * as core from './core.js';
 export * as errors from "./errors.js";
 export * as fetch from './fetch.js';

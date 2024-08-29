@@ -31,6 +31,9 @@ export function setupApp() {
   app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
   app.use(middleware.rejectParentTraversals);
 
+  // Parse req.body from application/x-www-form-urlencoded to an object
+  app.use(express.urlencoded({ extended: false }));
+
   /* Parse queries with `querystring` so that we can roundtrip queries using
    * `querystring.stringify` or the single-argument form of `url.format` (which
    * uses `querystring.stringify`)

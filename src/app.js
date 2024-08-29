@@ -10,6 +10,7 @@ const {
   charon,
   cli,
   community,
+  counter,
   core,
   errors,
   fetch,
@@ -183,6 +184,10 @@ auspice.setup(app);
  * catch all routes
  */
 listResources.setup(app);
+
+
+// XXX DEMO
+counter.setup(app);
 
 
 /* static-site (Next.js).
