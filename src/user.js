@@ -5,6 +5,7 @@
  */
 
 import { KvNamespace } from "./kv.js";
+import { getRequestContext } from './requestContext.js';
 
 
 const staleBefore = new KvNamespace("userStaleBefore");
@@ -67,6 +68,13 @@ async function markUserStaleBeforeNow(username) {
   const ttl = 25 * 60 * 60 * 1000; // milliseconds
 
   return await staleBefore.set(username, now, ttl);
+}
+
+/**
+ * XXX FIXME
+ */
+export function getCurrentUser() {
+  return getRequestContext().user;
 }
 
 

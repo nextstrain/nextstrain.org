@@ -9,6 +9,7 @@ import { addAsync } from '../async.js';
 import * as authn from '../authn/index.js';
 import { replacer as jsonReplacer } from '../json.js';
 import * as middleware from '../middleware.js';
+import { getRequestContext } from '../requestContext.js';
 
 
 export function setupApp() {
@@ -38,12 +39,13 @@ export function setupApp() {
   app.set("query parser", "simple")
 
 
-  /* Setup a request-scoped context object for passing arbitrary request-local
-   * data between route and param middleware and route handlers.  Akin to
-   * app.locals or res.locals.
+
+  /* Make the request-scoped context object available as req.context for passing
+   * arbitrary request-local data between route and param middleware and route
+   * handlers.  Akin to app.locals or res.locals.
    */
   app.use((req, res, next) => {
-    req.context = {};
+    req.context = getRequestContext();
 
     // Set the app's origin centrally so other handlers can use it
     //

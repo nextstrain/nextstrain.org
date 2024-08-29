@@ -1,6 +1,7 @@
 import argparse from 'argparse';
 import http from 'http';
 import * as utils from './src/utils/index.js';
+import { bindRequestContext } from './src/requestContext.js';
 import { nextstrainAbout, startupMessage } from './src/startupMessage.js';
 
 const parser = new argparse.ArgumentParser({
@@ -36,7 +37,7 @@ const server = http
       }
     },
   })
-  .on("request", app)
+  .on("request", (req, res) => bindRequestContext({}, app)(req, res))
   .on("checkContinue", (req, res) => {
     /* When this event fires, the normal "request" event that calls app is not
      * fired.
@@ -46,7 +47,7 @@ const server = http
      * res.writeContinue() at an appropriate point.
      */
     req.expectsContinue = true;
-    return app(req, res);
+    return bindRequestContext({}, app)(req, res);
   })
   .on("listening", () => {
     utils.log(`Server now listening on port ${server.address().port} (startup message will appear shortly)`);

@@ -250,6 +250,14 @@ function setup(app) {
   app.use(authnWithToken);
   app.use(authnWithSession);
 
+  /* Copy req.user into the request context for use in places which don't have
+   * direct access to req.  They'll be able to call getCurrentUser() instead.
+   */
+  app.use((req, res, next) => {
+    req.context.user = req.user;
+    return next();
+  });
+
   // Routes
   //
   // Authenticate with Cognito IdP on /login and establish a local session
