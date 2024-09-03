@@ -11,6 +11,12 @@ const nextConfig = {
   transpilePackages: [
     'react-virtualized'
   ],
+  experimental: {
+    serverComponentsExternalPackages: [
+      'keyv',
+      'yaml-front-matter'
+    ]
+  },
   eslint: {
     // Allow builds to complete regardless of linting results. This is ok since
     // linting is done explicitly in CI.
