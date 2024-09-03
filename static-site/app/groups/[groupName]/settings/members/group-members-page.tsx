@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { startCase } from "lodash"
 import { uri } from "../../../../../../src/templateLiterals";
@@ -7,61 +7,14 @@ import GenericPage from "../../../../../src/layouts/generic-page.jsx";
 import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../../../../../src/layouts/generalComponents";
 import * as splashStyles from "../../../../../src/components/splash/styles";
 import { ErrorBanner } from "../../../../../src/components/errorMessages";
+import { GroupMember, ErrorMessage } from "./types";
 
-interface GroupMember {
-  username: string,
-  roles: string[]
-}
-
-interface ErrorMessage {
-  title: string,
-  contents: string
-}
-
-export default function GroupMembersPage({ groupName }: { groupName: string }) {
-  const [ errorMessage, setErrorMessage ] = useState<ErrorMessage>({title: "", contents: ""});
-  const [ roles, setRoles ] = useState<string[]>([]);
-  const [ members, setMembers ] = useState<GroupMember[]>([]);
-
-  useEffect(() => {
-    async function getGroupMembership(groupName: string) {
-      const headers = { headers: {"Accept": "application/json"}};
-      let roles, members = [];
-      try {
-        const [ rolesResponse, membersResponse ] = await Promise.all([
-          fetch(uri`/groups/${groupName}/settings/roles`, headers),
-          fetch(uri`/groups/${groupName}/settings/members`, headers)
-        ]);
-        if (!rolesResponse.ok) {
-          throw new Error(`Fetching group roles failed: ${rolesResponse.status} ${rolesResponse.statusText}`)
-        }
-        if (!membersResponse.ok) {
-          throw new Error(`Fetching group members failed: ${membersResponse.status} ${membersResponse.statusText}`)
-        }
-        roles = await rolesResponse.json();
-        members = await membersResponse.json();
-      } catch (err) {
-        const errorMessage = (err as Error).message
-        if(!ignore) {
-          setErrorMessage({
-            title: "An error occurred when trying to fetch group membership data",
-            contents: errorMessage})
-        }
-      }
-      return {roles, members};
-    }
-
-    let ignore = false;
-    getGroupMembership(groupName).then(result => {
-      if (!ignore) {
-        setRoles(result.roles);
-        setMembers(result.members);
-      }
-    })
-    return () => {
-      ignore = true;
-    };
-  }, [groupName]);
+export default function GroupMembersPage({ groupName, roles, members, errorMessage }: {
+  groupName: string,
+  roles: string[],
+  members: GroupMember[],
+  errorMessage: ErrorMessage,
+}) {
 
   return (
     <GenericPage banner={errorMessage.title ? <ErrorBanner {...errorMessage} /> : undefined}>
