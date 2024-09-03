@@ -7,3 +7,10 @@ export interface ErrorMessage {
   title: string,
   contents: string
 }
+
+export interface RemoveMemberModalProps {
+  groupName: string,
+  member: GroupMember,
+  isOpen: boolean,
+  onClose: () => void,
+}

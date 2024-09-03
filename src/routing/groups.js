@@ -72,6 +72,7 @@ export function setup(app) {
 
   app.routeAsync("/groups/:groupName/settings/members")
     .getAsync(endpoints.groups.listMembers)
+    .postAsync(endpoints.nextJsApp.handleRequest) // Handled by NextJS server actions
     .optionsAsync(optionsGroup)
     ;
 
