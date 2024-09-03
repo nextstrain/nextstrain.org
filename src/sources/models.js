@@ -227,7 +227,7 @@ class Subresource {
     this.resource = resource;
     this.type = type;
   }
-  static get validTypes() {
+  get validTypes() {
     throw new Error("validTypes() must be implemented by Subresource subclasses");
   }
   async url(method = 'GET', headers = {}) {
