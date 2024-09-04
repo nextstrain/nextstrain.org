@@ -23,11 +23,11 @@ export const getStaticPaths = (async () => {
     fallback: false // any paths not defined will result in a 404 page
   }
 })
- 
+
 /**
  * For a given id (matching the route /blog/id via the dynamic routing filename `blog/[id].jsx`)
  * return the params to be parsed to the rendering component.
- * 
+ *
  * Note: The context.params.id is set to one of the entries in the array returned from
  * `getStaticPaths`. See <https://nextjs.org/docs/pages/api-reference/functions/get-static-props>
  */

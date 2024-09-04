@@ -13,7 +13,7 @@ export function getBlogPosts() {
   const postsDirectory = path.join(__dirname, "..", "..", "content", "blog")
   const markdownFiles = fs.readdirSync(postsDirectory)
     .filter((fileName) => fileName.endsWith(".md"));
-  
+
   const blogPosts = markdownFiles.map((fileName) => {
     const {data: frontmatter, content: mdstring, isEmpty} = matter(
       fs.readFileSync(path.join(postsDirectory, fileName), 'utf8')
@@ -37,4 +37,3 @@ export function getBlogPosts() {
 
   return blogPosts;
 }
-

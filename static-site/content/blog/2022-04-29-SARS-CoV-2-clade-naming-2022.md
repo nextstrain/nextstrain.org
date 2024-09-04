@@ -18,7 +18,7 @@ Our revised set of guidelines will therefore now be to designate a clade when an
   2. A clade reaches >20% global frequency for 2 or more months
   3. A clade reaches >30% regional frequency for 2 or more months
   4. A clade shows consistent >0.05 per day growth in frequency where it's circulating and has reached >5% regional frequency
-  
+
 Additionally, for points 2, 3, and 4, we require the clade to show multiple mutations in S1 or particular mutations of known biological relevance.
 
 As a result of this, we are designating 3 new Nextstrain clades:
