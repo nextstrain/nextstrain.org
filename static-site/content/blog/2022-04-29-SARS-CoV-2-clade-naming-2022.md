@@ -2,6 +2,7 @@
 author: "Cornelius Roemer, Emma B Hodcroft, Richard A Neher, Trevor Bedford"
 date: "2022-04-29"
 title: "SARS-CoV-2 clade naming strategy for 2022"
+sidebarTitle: "SARS-CoV-2 clade naming 2022"
 ---
 
 The rapid dominance and increased diversity of the Omicron variant and its constituent sub-lineages has triggered another update of the Nextstrain clade naming guidelines and labels. Once again, we propose a backwards-compatible update, this time to allow more flexible and faster designation of clades as new variants appear and spread.
