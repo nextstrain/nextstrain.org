@@ -1,5 +1,6 @@
 'use server'
-import { revalidatePath } from 'next/cache'
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { getRequestContext } from "../../../../../../src/requestContext";
 import { actions, authorized, assertAuthorized } from "../../../../../../src/authz/index.js";
 import { Group } from "../../../../../../src/groups.js";
@@ -28,7 +29,16 @@ export async function removeMember(member: GroupMember) {
     await group.revokeRole(role, member.username);
   }
 
-  revalidatePath(`/groups/${group.name}/settings/members`);
+  /**
+   * If the user is removing themselves from the group, they no longer have
+   * permissions to view this page, so just redirect them to the Group's individual page.
+   * Otherwise, just update the data for the page with `revalidatePath`.
+   */
+  if (user.username === member.username) {
+    redirect(`/groups/${group.name}`);
+  } else {
+    revalidatePath(`/groups/${group.name}/settings/members`);
+  }
 }
 
 export async function updateMemberRoles(member: GroupMember, rolesToRemove: string[], rolesToAdd: string[] ) {
@@ -43,7 +53,16 @@ export async function updateMemberRoles(member: GroupMember, rolesToRemove: stri
     await group.grantRole(role, member.username);
   }
 
-  revalidatePath(`/groups/${group.name}/settings/members`);
+  /**
+   * If user is updating their own role, redirect to the page to refresh the
+   * user context and respect their new roles
+   * Otherwise, just update the data for the page with `revalidatePath`.
+   */
+  if (user.username === member.username) {
+    redirect(`/groups/${group.name}/settings/members`);
+  } else {
+    revalidatePath(`/groups/${group.name}/settings/members`);
+  }
 }
 
 
