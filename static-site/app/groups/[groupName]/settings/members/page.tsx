@@ -31,6 +31,21 @@ export async function removeMember(member: GroupMember) {
   revalidatePath(`/groups/${group.name}/settings/members`);
 }
 
+export async function updateMemberRoles(member: GroupMember, rolesToRemove: string[], rolesToAdd: string[] ) {
+  const { user, group } = getNextRequestContext();
+
+  assertAuthorized(user, actions.Write, group);
+  for (let role of rolesToRemove) {
+    await group.revokeRole(role, member.username);
+  }
+
+  for (let role of rolesToAdd) {
+    await group.grantRole(role, member.username);
+  }
+
+  revalidatePath(`/groups/${group.name}/settings/members`);
+}
+
 
 export default async function Page({ params }: { params: { groupName: string }}) {
 

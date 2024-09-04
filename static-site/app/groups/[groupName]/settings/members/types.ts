@@ -14,3 +14,8 @@ export interface RemoveMemberModalProps {
   isOpen: boolean,
   onClose: () => void,
 }
+
+export interface SelectOption {
+  value: string,
+  label: string
+}

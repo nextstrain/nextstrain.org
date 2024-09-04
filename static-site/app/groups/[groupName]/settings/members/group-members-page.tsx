@@ -1,15 +1,17 @@
 'use client'
 import React, { useState } from "react";
+import Select, { MultiValue } from 'react-select';
 import styled from "styled-components";
 import { startCase } from "lodash"
 import { uri } from "../../../../../../src/templateLiterals";
 import GenericPage from "../../../../../src/layouts/generic-page.jsx";
+import { theme } from "../../../../../src/layouts/theme";
 import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../../../../../src/layouts/generalComponents";
 import * as splashStyles from "../../../../../src/components/splash/styles";
 import { ErrorBanner } from "../../../../../src/components/errorMessages";
-import { InputButton } from "../../../../../src/components/Groups/styles";
 import { RemoveMemberModal } from "./modal";
-import { GroupMember, ErrorMessage, RemoveMemberModalProps } from "./types";
+import { GroupMember, ErrorMessage, RemoveMemberModalProps, SelectOption } from "./types";
+import { updateMemberRoles } from "./page";
 
 export default function GroupMembersPage({ groupName, roles, members, canEditGroupMembers, errorMessage }: {
   groupName: string,
@@ -59,6 +61,8 @@ export default function GroupMembersPage({ groupName, roles, members, canEditGro
 
       {roles && members
         ? <MembersTable
+            groupName={groupName}
+            roles={roles}
             members={members as GroupMember[]}
             canEditGroupMembers={canEditGroupMembers}
             confirmRemoveMember={confirmRemoveMember}
@@ -84,16 +88,50 @@ const MembersTableContainer = styled.div`
   }
 `;
 
-const MembersTable = ({ members, canEditGroupMembers, confirmRemoveMember }: {
+const RolesSelectStyles = {
+  container: (styles) => ({
+    ...styles,
+    display: "flex",
+  }),
+  multiValueLabel: (styles) => ({
+    ...styles,
+    fontSize: theme.niceFontSize,
+  }),
+}
+
+const MembersTable = ({ groupName, roles, members, canEditGroupMembers, confirmRemoveMember }: {
+  groupName: string,
+  roles: string[],
   members: GroupMember[],
   canEditGroupMembers: boolean,
   confirmRemoveMember: (member: GroupMember) => void,
 }) => {
-  const sortedMembers = [...members].sort((a, b) => a.username.localeCompare(b.username));
+  const sortedMembers = members.toSorted((a, b) => a.username.localeCompare(b.username));
+  // Prettify the role names by making them singular and capitalized
+  const roleNameMap = new Map(roles.map((role) => {
+    return [role, startCase(role.replace(/s$/, ''))]
+  }));
+  // Convert role names into options for the Select dropdown
+  const roleOptions = Array.from(roleNameMap, ([roleName, prettyRoleName]) => ({ value: roleName, label: prettyRoleName}));
   function prettifyRoles(memberRoles: string[]) {
-    // Prettify the role names by making them singular and capitalized
-    return memberRoles.map((roleName) => startCase(roleName.replace(/s$/, ''))).join(", ");
+    return memberRoles.map((roleName) => roleNameMap.get(roleName)).join(", ");
   }
+
+  function currentRoles(member: GroupMember) {
+    return roleOptions.filter((roleOption) => member.roles.includes(roleOption.value));
+  }
+
+  function selectRolesToUpdate(selectedOptions: MultiValue<SelectOption>, member: GroupMember) {
+    // If removing all roles for a member, then confirm that the user intends to remove member from Group
+    if (selectedOptions.length === 0) return confirmRemoveMember(member);
+
+    const selectedValues = selectedOptions.map((selectedOption) => selectedOption.value);
+    const rolesToRemove = member.roles.filter((roleName) => !selectedValues.includes(roleName));
+    const rolesToAdd = selectedValues.filter((selectedValue) => !member.roles.includes(selectedValue));
+
+    updateMemberRoles(member, rolesToRemove, rolesToAdd);
+  }
+
 
   return (
     <CenteredContainer>
@@ -109,12 +147,6 @@ const MembersTable = ({ members, canEditGroupMembers, confirmRemoveMember }: {
               <strong>Roles</strong>
             </splashStyles.CenteredFocusParagraph>
           </div>
-          {canEditGroupMembers &&
-            <div className="col">
-              <splashStyles.CenteredFocusParagraph>
-                <strong>Remove Member</strong>
-              </splashStyles.CenteredFocusParagraph>
-            </div>}
         </div>
 
         {sortedMembers.map((member) =>
@@ -124,17 +156,22 @@ const MembersTable = ({ members, canEditGroupMembers, confirmRemoveMember }: {
                 {member.username}
               </splashStyles.CenteredFocusParagraph>
             </div>
-            <div className="col">
-              <splashStyles.CenteredFocusParagraph>
-                {prettifyRoles(member.roles)}
-              </splashStyles.CenteredFocusParagraph>
-            </div>
-            {canEditGroupMembers &&
-              <div className="col d-flex justify-content-center">
-                <InputButton onClick={() => confirmRemoveMember(member)}>
-                  <strong>X</strong>
-                </InputButton>
-              </div>}
+            {canEditGroupMembers
+              ? <div className="col d-flex justify-content-center">
+                  <Select
+                    isMulti
+                    styles={RolesSelectStyles}
+                    options={roleOptions}
+                    value={currentRoles(member)}
+                    onChange={(selectedOptions) => selectRolesToUpdate(selectedOptions, member)}
+                  />
+                </div>
+              : <div className="col">
+                  <splashStyles.CenteredFocusParagraph>
+                    {prettifyRoles(member.roles)}
+                  </splashStyles.CenteredFocusParagraph>
+                </div>
+              }
           </div>
         )}
       </MembersTableContainer>
