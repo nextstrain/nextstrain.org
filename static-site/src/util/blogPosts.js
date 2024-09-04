@@ -2,9 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import matter from 'gray-matter';
-import lodash from "lodash";
-
-const { startCase } = lodash;
 
 /**
  * Scans the ./static-site/content/blog directory for .md files
@@ -21,7 +18,10 @@ export function getBlogPosts() {
     const {data: frontmatter, content: mdstring, isEmpty} = matter(
       fs.readFileSync(path.join(postsDirectory, fileName), 'utf8')
     );
-    // Our blog posts have frontmatter which includes author, date (YYYY-MM-DD format) and title
+    // Our blog posts have frontmatter which includes author, date
+    // (YYYY-MM-DD format), post title, and an optional sidebar title.
+    // If the sidebar title isn't provided, the post title will be
+    // used for the sidebar title.
     const {author, date, title} = frontmatter;
     if (isEmpty || !author || !date || !title) {
       // console warning printed server-side
@@ -29,8 +29,8 @@ export function getBlogPosts() {
       return false;
     }
     const blogUrlName = fileName.replace(/\.md$/, '');
-    const sidebarName = formatFileName(blogUrlName);
-    return {author, date, title, blogUrlName, sidebarName, mdstring};
+    const sidebarTitle = frontmatter.sidebarTitle || title;
+    return {author, date, title, blogUrlName, sidebarTitle, mdstring};
   })
     .filter((data) => !!data)
     .sort((a, b) => a.date > b.date ? -1 : 1); // YYYY-MM-DD strings sort alphabetically
@@ -38,15 +38,3 @@ export function getBlogPosts() {
   return blogPosts;
 }
 
-/**
- * strip out the YYYY-MM-DD- leading string from blog-post filenames and return
- * the rest of the filename converted to start case (first letter of each word
- * capitalized). The returned name is indented to be used for sidebar display.
- */
-function formatFileName (name) {
-  const parts = /^\d{4}-\d{2}-\d{2}-(.*)/.exec(name);
-  if (parts) {
-    return startCase(parts[1]);
-  }
-  return startCase(name);
-}

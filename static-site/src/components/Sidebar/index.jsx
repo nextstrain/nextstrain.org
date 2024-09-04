@@ -7,7 +7,7 @@ const Sidebar = ({title, posts}) => {
       <SectionTitle>{title.toUpperCase()}</SectionTitle>
       <ul>
         {posts.map((post) => (
-          <IndividualPost {...post} key={post.sidebarName}/>
+          <IndividualPost {...post} key={post.sidebarTitle}/>
         ))}
       </ul>
       <div style={{paddingBottom: "30px"}}/>
@@ -15,14 +15,14 @@ const Sidebar = ({title, posts}) => {
   );
 }
 
-const IndividualPost = ({blogUrlName, sidebarName, selected}) => {
+const IndividualPost = ({blogUrlName, sidebarTitle, selected}) => {
   return (
-    <ItemContainer key={sidebarName}>
+    <ItemContainer key={sidebarTitle}>
       <a href={`/blog/${blogUrlName}`}>
         <li>
           {selected ?
-            (<SelectedPostTitle>{sidebarName}</SelectedPostTitle>) :
-            (<UnselectedPostTitle>{sidebarName}</UnselectedPostTitle>)
+            (<SelectedPostTitle>{sidebarTitle}</SelectedPostTitle>) :
+            (<UnselectedPostTitle>{sidebarTitle}</UnselectedPostTitle>)
           }
         </li>
       </a>

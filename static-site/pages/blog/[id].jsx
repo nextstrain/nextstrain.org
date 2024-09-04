@@ -35,7 +35,7 @@ export const getStaticProps = (async (context) => {
   const posts = getBlogPosts();
   const thisPost = posts.find((post) => post.blogUrlName===context.params.id);
   const sidebarData = posts.map((post) => {
-    return {date: post.date, blogUrlName: post.blogUrlName, sidebarName: post.sidebarName, selected: post===thisPost};
+    return {date: post.date, blogUrlName: post.blogUrlName, sidebarTitle: post.sidebarTitle, selected: post===thisPost};
   })
   return {
     props: {...thisPost, sidebarData}
