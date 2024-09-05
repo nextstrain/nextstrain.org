@@ -1,6 +1,6 @@
 # Redis
 
-The [Heroku Data for Redis](https://elements.heroku.com/addons/heroku-redis) add-on is attached to our `nextstrain-server` and `nextstrain-dev` apps.
+The [Heroku Data for Redis](https://elements.heroku.com/addons/heroku-redis) add-on is attached to our `nextstrain-server`, `nextstrain-canary`, and `nextstrain-dev` apps.
 Redis is used to persistently store login sessions after authentication via [AWS Cognito](#cognito).
 A persistent data store is important for preserving sessions across deploys and regular dyno restarts.
 
