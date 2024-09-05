@@ -15,6 +15,96 @@ Heroku will automatically perform minor maintenance tasks such as patching the o
 Email notifications will be sent for these, typically with a subject line of **Maintenance required on your Redis add-on (REDIS on nextstrain-server)**.
 These are expected to just work. In case any issues arise, the scheduled maintenance window (Friday at 22:00 UTC to Saturday at 02:00 UTC) tries to optimize for being [outside/on the fringes of business hours](https://www.timeanddate.com/worldclock/meetingdetails.html?year=2020&month=1&day=24&hour=22&min=0&sec=0&p1=1229&p2=136&p3=179&p4=234&p5=22&p6=33&p7=121) in relevant places around the world while being in US/Pacific business hours so the Seattle team can respond.
 
+### Upgrading the add-on version
+
+Heroku occasionally releases a new major version of the add-on. When this happens, the oldest supported version is deprecated.
+Based on previous upgrades and [projected end-of-life dates](https://devcenter.heroku.com/articles/heroku-redis#version-support-and-legacy-infrastructure), this happens about once every 1.5-2 years.
+
+When this happens, Heroku begins sending deprecation notices via email. Steps to ensure a smooth upgrade are detailed below.
+They have been adapted from @tsibley's [notes on the 5 → 6 upgrade](https://github.com/tsibley/blab-standup/blob/17eb1690b70ca25aa7be7526b7e140e43cf0a1e6/2023-02-17.md),
+which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/articles/heroku-redis-version-upgrade#upgrade-using-a-fork) described in Heroku's own documentation.
+
+ 0. Gather information.
+
+        heroku redis:info redis-infinite-42947 -a nextstrain-server | tee redis-info
+        heroku addons:info redis-infinite-42947 | tee redis-addon-info
+
+ 1. Disabling writes to Redis by changing its attachment from `REDIS` to
+    `OLD_REDIS` on the apps:
+
+        for app in nextstrain-{dev,canary,server}; do
+            heroku addons:attach --as OLD_REDIS redis-infinite-42947 -a "$app"
+            heroku addons:detach REDIS -a "$app"
+        done
+
+    Instead of entering maintenance mode for the whole site (as suggested by
+    Heroku's docs), we'll instead put it into a slightly degraded state by
+    removing (read/write) access to Redis.
+
+    This won't affect access to public resources, but will affect anyone with
+    an existing login session or establishing a new login session during the
+    very brief switchover window:
+
+      - Existing login sessions will be temporarily "forgotten".  They'll be
+        "remembered" again after the upgrade.
+
+      - New login sessions established during the upgrade will be permanently
+        forgotten after the upgrade.  Anyone unfortunate enough to encounter
+        this will need to log in again, although I expect it to affect
+        approximately zero people.
+
+    This tradeoff for the majority of the site staying up and available seems
+    acceptable to me.
+
+ 2. Create the new, upgraded Redis instance as a fork (snapshot copy) of the old:
+
+        heroku addons:create heroku-redis:premium-0 \
+            --as NEW_REDIS \
+            -a nextstrain-server \
+            --fork "$(heroku config:get REDIS_URL -a nextstrain-server)"
+
+ 3. Wait for it to be ready:
+
+        heroku addons:info redis-X-N
+
+    Its `State` will change from `creating` to `created`.
+
+    Check that the fork is done:
+
+        heroku redis:info redis-X-N
+
+    This starts at `fork in progress` and is supposed to change once completed
+    (forks start as replicas and then switch to primaries), but it never seemed
+    to complete for me.  All data looked transferred by inspection of `info
+    keyspace`, a couple pages of `scan`, and a manually issued `sync` jumping
+    over bulk sync and right to live monitor mode, so I moved on to promoting
+    it.
+
+ 4. Compare settings to the previous instance and adjust as necessary:
+
+        heroku redis:info redis-X-N | tee redis-new-info
+        git diff redis{,-new}-info
+        # make adjustments with other `heroku redis:…` commands
+
+    I only had to adjust `maxmemory` with:
+
+        heroku redis:maxmemory redis-X-N -a nextstrain-server -p volatile-ttl
+
+ 5. Replace the old Redis instance with the new one:
+ 
+        for app in nextstrain-{dev,canary,server}; do
+            heroku redis:promote redis-X-N -a "$app" # attaches as REDIS
+            heroku addons:detach NEW_REDIS -a "$app" # removes old NEW_REDIS attachment
+        done
+
+ 6. Test that your login session is now "remembered" again.
+
+ 7. Remove the old Redis instance:
+
+        heroku addons:detach OLD_REDIS -a nextstrain-dev
+        heroku addons:detach OLD_REDIS -a nextstrain-canary
+        heroku addons:destroy redis-infinite-42947
+
 ## Limitations
 
 If our Redis instance reaches its maximum memory limit, existing keys will be evicted using the [`volatile-ttl` policy](https://devcenter.heroku.com/articles/heroku-redis#maxmemory-policy) to make space for new keys.
