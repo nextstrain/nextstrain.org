@@ -80,12 +80,14 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
     This starts at `fork in progress` and is supposed to change once completed
     (forks start as replicas and then switch to primaries), but it may appear
     stuck in that state. If that happens, it should be safe to continue as long
-    as all data looks to be transferred. Do this by inspection of:
+    as all data looks to be transferred. Do this by entering Redis CLI (`heroku
+    redis:cli`) on both instances and comparing the output of:
 
     - `info keyspace`
-    - a couple pages of `scan`
-    - a manually issued `sync` jumping over bulk sync and right to live monitor
-      mode
+    - [`scan`](https://valkey.io/commands/scan/) (start with `scan 0`
+      and follow the cursor a couple times)
+    - a manually issued [`sync`](https://valkey.io/commands/sync/) jumping over
+      bulk sync and right to live monitor mode
 
  4. Compare settings to the previous instance and adjust as necessary:
 
