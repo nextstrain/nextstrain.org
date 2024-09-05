@@ -1,0 +1,12 @@
+# Redis
+
+The [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) add-on is attached to our `nextstrain-server` and `nextstrain-dev` apps.
+Redis is used to persistently store login sessions after authentication via [AWS Cognito](#cognito).
+A persistent data store is important for preserving sessions across deploys and regular dyno restarts.
+
+The [maintenance window](https://devcenter.heroku.com/articles/heroku-redis-maintenance) is set to Friday at 22:00 UTC to Saturday at 02:00 UTC.
+This tries to optimize for being [outside/on the fringes of business hours](https://www.timeanddate.com/worldclock/meetingdetails.html?year=2020&month=1&day=24&hour=22&min=0&sec=0&p1=1229&p2=136&p3=179&p4=234&p5=22&p6=33&p7=121) in relevant places around the world while being in US/Pacific business hours so the Seattle team can respond to any issues arising.
+
+If our Redis instance reaches its maximum memory limit, existing keys will be evicted using the [`volatile-ttl` policy](https://devcenter.heroku.com/articles/heroku-redis#maxmemory-policy) to make space for new keys.
+This should preserve the most active logged in sessions and avoid throwing errors if we hit the limit.
+If we regularly start hitting the memory limit, we should bump up to the next add-on plan, but I don't expect this to happen anytime soon with current usage.
