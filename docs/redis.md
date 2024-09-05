@@ -31,7 +31,9 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
         heroku redis:info "$old_instance" -a nextstrain-server | tee redis-info
         heroku addons:info "$old_instance" | tee redis-addon-info
 
- 1. Disabling writes to Redis by changing its attachment from `REDIS` to
+ 1. Log in to one of the instances (dev,canary,server) if you are not already.
+
+ 2. Disabling writes to Redis by changing its attachment from `REDIS` to
     `OLD_REDIS` on the apps:
 
         for app in nextstrain-{dev,canary,server}; do
@@ -58,7 +60,7 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
     This extra step comes with the benefit of allowing the majority of the site
     to remain usable.
 
- 2. Create the new, upgraded Redis instance as a fork (snapshot copy) of the old:
+ 3. Create the new, upgraded Redis instance as a fork (snapshot copy) of the old:
 
         heroku addons:create heroku-redis:premium-0 \
             --as NEW_REDIS \
@@ -67,7 +69,7 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
 
     <!-- TODO: put new instance name in a variable -->
 
- 3. Wait for it to be ready:
+ 4. Wait for it to be ready:
 
         heroku addons:info redis-X-N
 
@@ -89,7 +91,7 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
     - a manually issued [`sync`](https://valkey.io/commands/sync/) jumping over
       bulk sync and right to live monitor mode
 
- 4. Compare settings to the previous instance and adjust as necessary:
+ 5. Compare settings to the previous instance and adjust as necessary:
 
         heroku redis:info redis-X-N | tee redis-new-info
         git diff redis{,-new}-info
@@ -99,16 +101,16 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
 
         heroku redis:maxmemory redis-X-N -a nextstrain-server -p volatile-ttl
 
- 5. Replace the old Redis instance with the new one:
+ 6. Replace the old Redis instance with the new one:
  
         for app in nextstrain-{dev,canary,server}; do
             heroku redis:promote redis-X-N -a "$app" # attaches as REDIS
             heroku addons:detach NEW_REDIS -a "$app" # removes old NEW_REDIS attachment
         done
 
- 6. Test that your login session is now "remembered" again.
+ 7. Test that your login session is now "remembered" again.
 
- 7. Remove the old Redis instance:
+ 8. Remove the old Redis instance:
 
         for app in nextstrain-{dev,canary,server}; do
             heroku addons:detach OLD_REDIS -a "$app"
