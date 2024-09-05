@@ -110,8 +110,9 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
 
  7. Remove the old Redis instance:
 
-        heroku addons:detach OLD_REDIS -a nextstrain-dev
-        heroku addons:detach OLD_REDIS -a nextstrain-canary
+        for app in nextstrain-{dev,canary,server}; do
+            heroku addons:detach OLD_REDIS -a "$app"
+        done
         heroku addons:destroy "$old_instance"
 
 ## Limitations
