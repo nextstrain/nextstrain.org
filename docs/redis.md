@@ -9,8 +9,11 @@ A persistent data store is important for preserving sessions across deploys and 
 
 ## Maintenance
 
-The [maintenance window](https://devcenter.heroku.com/articles/heroku-redis-maintenance) is set to Friday at 22:00 UTC to Saturday at 02:00 UTC.
-This tries to optimize for being [outside/on the fringes of business hours](https://www.timeanddate.com/worldclock/meetingdetails.html?year=2020&month=1&day=24&hour=22&min=0&sec=0&p1=1229&p2=136&p3=179&p4=234&p5=22&p6=33&p7=121) in relevant places around the world while being in US/Pacific business hours so the Seattle team can respond to any issues arising.
+[Heroku docs](https://devcenter.heroku.com/articles/heroku-redis-maintenance)
+
+Heroku will automatically perform minor maintenance tasks such as patching the operating system or required libraries.
+Email notifications will be sent for these, typically with a subject line of **Maintenance required on your Redis add-on (REDIS on nextstrain-server)**.
+These are expected to just work. In case any issues arise, the scheduled maintenance window (Friday at 22:00 UTC to Saturday at 02:00 UTC) tries to optimize for being [outside/on the fringes of business hours](https://www.timeanddate.com/worldclock/meetingdetails.html?year=2020&month=1&day=24&hour=22&min=0&sec=0&p1=1229&p2=136&p3=179&p4=234&p5=22&p6=33&p7=121) in relevant places around the world while being in US/Pacific business hours so the Seattle team can respond.
 
 ## Limitations
 
