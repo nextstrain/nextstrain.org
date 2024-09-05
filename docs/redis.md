@@ -50,11 +50,11 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
 
       - New login sessions established during the upgrade will be permanently
         forgotten after the upgrade.  Anyone unfortunate enough to encounter
-        this will need to log in again, although I expect it to affect
-        approximately zero people.
+        this will need to log in again, although based on current usage, it can
+        be expected to affect approximately zero people.
 
-    This tradeoff for the majority of the site staying up and available seems
-    acceptable to me.
+    This extra step comes with the benefit of allowing the majority of the site
+    to remain usable.
 
  2. Create the new, upgraded Redis instance as a fork (snapshot copy) of the old:
 
@@ -74,11 +74,14 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
         heroku redis:info redis-X-N
 
     This starts at `fork in progress` and is supposed to change once completed
-    (forks start as replicas and then switch to primaries), but it never seemed
-    to complete for me.  All data looked transferred by inspection of `info
-    keyspace`, a couple pages of `scan`, and a manually issued `sync` jumping
-    over bulk sync and right to live monitor mode, so I moved on to promoting
-    it.
+    (forks start as replicas and then switch to primaries), but it may appear
+    stuck in that state. If that happens, it should be safe to continue as long
+    as all data looks to be transferred. Do this by inspection of:
+
+    - `info keyspace`
+    - a couple pages of `scan`
+    - a manually issued `sync` jumping over bulk sync and right to live monitor
+      mode
 
  4. Compare settings to the previous instance and adjust as necessary:
 
@@ -86,7 +89,7 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
         git diff redis{,-new}-info
         # make adjustments with other `heroku redis:…` commands
 
-    I only had to adjust `maxmemory` with:
+    During the 5 → 6 upgrade, `maxmemory` had to be adjusted:
 
         heroku redis:maxmemory redis-X-N -a nextstrain-server -p volatile-ttl
 
