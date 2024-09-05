@@ -26,14 +26,16 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
 
  0. Gather information.
 
-        heroku redis:info redis-infinite-42947 -a nextstrain-server | tee redis-info
-        heroku addons:info redis-infinite-42947 | tee redis-addon-info
+        # This assumes there is only one instance.
+        old_instance=$(heroku addons --app nextstrain-server --json | jq -r '.[] | select(.addon_service.name == "heroku-redis") | .name')
+        heroku redis:info "$old_instance" -a nextstrain-server | tee redis-info
+        heroku addons:info "$old_instance" | tee redis-addon-info
 
  1. Disabling writes to Redis by changing its attachment from `REDIS` to
     `OLD_REDIS` on the apps:
 
         for app in nextstrain-{dev,canary,server}; do
-            heroku addons:attach --as OLD_REDIS redis-infinite-42947 -a "$app"
+            heroku addons:attach --as OLD_REDIS "$old_instance" -a "$app"
             heroku addons:detach REDIS -a "$app"
         done
 
@@ -62,6 +64,8 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
             --as NEW_REDIS \
             -a nextstrain-server \
             --fork "$(heroku config:get REDIS_URL -a nextstrain-server)"
+
+    <!-- TODO: put new instance name in a variable -->
 
  3. Wait for it to be ready:
 
@@ -106,7 +110,7 @@ which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/art
 
         heroku addons:detach OLD_REDIS -a nextstrain-dev
         heroku addons:detach OLD_REDIS -a nextstrain-canary
-        heroku addons:destroy redis-infinite-42947
+        heroku addons:destroy "$old_instance"
 
 ## Limitations
 
