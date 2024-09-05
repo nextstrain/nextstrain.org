@@ -24,6 +24,18 @@ When this happens, Heroku begins sending deprecation notices via email. Steps to
 They have been adapted from @tsibley's [notes on the 5 → 6 upgrade](https://github.com/tsibley/blab-standup/blob/17eb1690b70ca25aa7be7526b7e140e43cf0a1e6/2023-02-17.md),
 which is based on the [`--fork` upgrade method](https://devcenter.heroku.com/articles/heroku-redis-version-upgrade#upgrade-using-a-fork) described in Heroku's own documentation.
 
+> [!NOTE]
+> Heroku provides an [in-place upgrade
+> method](https://devcenter.heroku.com/articles/heroku-redis-version-upgrade#upgrade-using-redis-upgrade)
+> that is much simpler than the steps below. However, there is no option to roll
+> back in case anything unexpected happens. If we find ourselves going through
+> this process more often without any failures and this becomes too tedious, it
+> may be worth switching to use the in-place upgrade method.
+>
+> See [previous
+> discussion](https://github.com/nextstrain/private/issues/121#issuecomment-2330682764)
+> for tradeoffs between the approaches.
+
  0. Gather information.
 
         # This assumes there is only one instance.
