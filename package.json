@@ -76,7 +76,6 @@
     "proxy-agent": "^6.3.1",
     "raw-body": "^2.4.2",
     "react-collapsible": "^2.10.0",
-    "react-helmet": "^6.1.0",
     "react-icons": "^5.0.1",
     "react-map-gl": "^7.1.7",
     "react-select": "^5.8.0",

@@ -1,5 +1,5 @@
 import React from "react";
-import Helmet from "react-helmet";
+import Head from "next/head";
 import styled from "styled-components";
 import SEO from "../components/SEO/SEO";
 import NavBar from '../components/nav-bar';
@@ -65,9 +65,9 @@ export default class GenericTemplate extends React.Component {
     const description = `Nextstrain blog post from ${date}; author(s): ${author}`
     return (
       <MainLayout>
-        <Helmet>
+        <Head description={description}>
           <title>{title}</title>
-        </Helmet>
+        </Head>
         <SEO title={title} description={description} blogUrlName={blogUrlName} />
         <SidebarBodyFlexContainer>
           <SidebarContainer $sidebarOpen={this.state.sidebarOpen}>

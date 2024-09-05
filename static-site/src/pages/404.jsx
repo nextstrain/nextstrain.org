@@ -1,5 +1,5 @@
 import React from "react";
-import Helmet from "react-helmet";
+import Head from "next/head";
 import styled from "styled-components";
 // import SEO from "../components/SEO/SEO";
 import { siteTitle } from "../../data/SiteConfig";
@@ -13,7 +13,9 @@ const FourOhFour = () => {
   return (
       <MainLayout>
         <div className="index-container">
-          <Helmet title={siteTitle} />
+          <Head>
+            <title>{siteTitle}</title>
+          </Head>
           <main>
             <UserDataWrapper>
               <NavBar minified/>
