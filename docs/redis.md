@@ -4,6 +4,9 @@ The [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) add-on is at
 Redis is used to persistently store login sessions after authentication via [AWS Cognito](#cognito).
 A persistent data store is important for preserving sessions across deploys and regular dyno restarts.
 
+> [!NOTE]
+> This amounts to using Redis as a database rather the more common approach of using it as a cache.
+
 ## Maintenance
 
 The [maintenance window](https://devcenter.heroku.com/articles/heroku-redis-maintenance) is set to Friday at 22:00 UTC to Saturday at 02:00 UTC.
