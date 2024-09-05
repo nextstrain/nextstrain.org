@@ -2,6 +2,7 @@
 author: "Trevor Bedford, Emma B Hodcroft, Richard A Neher"
 date: "2021-01-06"
 title: "Updated Nextstrain SARS-CoV-2 clade naming strategy"
+sidebarTitle: "Updated SARS-CoV-2 Clade Naming"
 ---
 
 The emerging 501Y.V1 and 501Y.V2 variants have pushed the Nextstrain team to revise our strategy for Nextstrain clade labels. Here, we propose a backwards-compatible update to make clades more adaptable to the continuing pandemic situation, and more useful to people working on the pandemic today.

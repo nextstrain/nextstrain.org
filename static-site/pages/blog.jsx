@@ -19,7 +19,7 @@ export default function Index({redirectTo}) {
 
 /**
  * Return the URL for the latest blog post
- * 
+ *
  * Note that we cannot return a redirect property here as that's not
  * useable for statically generated sites. See
  * <https://nextjs.org/docs/pages/api-reference/functions/get-static-props#redirect>

@@ -2,6 +2,7 @@
 author: "Nextstrain team"
 date: "2024-03-27"
 title: "Nextstrain Annual Update March 2024"
+sidebarTitle: "Annual Update March 2024"
 ---
 
 _The nextstrain.org blog has not seen a lot of use lately. Here we're piloting an effort to post annual updates._

@@ -2,6 +2,7 @@
 author: "The Nextstrain team"
 date: "2024-09-03"
 title: "Notable changes in Augur v25"
+sidebarTitle: "Augur v25 features"
 ---
 
 The Nextstrain team has released several new versions of Augur – our

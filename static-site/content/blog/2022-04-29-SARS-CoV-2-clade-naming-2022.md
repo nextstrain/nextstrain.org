@@ -2,6 +2,7 @@
 author: "Cornelius Roemer, Emma B Hodcroft, Richard A Neher, Trevor Bedford"
 date: "2022-04-29"
 title: "SARS-CoV-2 clade naming strategy for 2022"
+sidebarTitle: "SARS-CoV-2 clade naming 2022"
 ---
 
 The rapid dominance and increased diversity of the Omicron variant and its constituent sub-lineages has triggered another update of the Nextstrain clade naming guidelines and labels. Once again, we propose a backwards-compatible update, this time to allow more flexible and faster designation of clades as new variants appear and spread.
@@ -17,7 +18,7 @@ Our revised set of guidelines will therefore now be to designate a clade when an
   2. A clade reaches >20% global frequency for 2 or more months
   3. A clade reaches >30% regional frequency for 2 or more months
   4. A clade shows consistent >0.05 per day growth in frequency where it's circulating and has reached >5% regional frequency
-  
+
 Additionally, for points 2, 3, and 4, we require the clade to show multiple mutations in S1 or particular mutations of known biological relevance.
 
 As a result of this, we are designating 3 new Nextstrain clades:

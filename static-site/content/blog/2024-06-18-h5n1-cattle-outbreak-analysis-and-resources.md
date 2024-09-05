@@ -2,6 +2,7 @@
 author: "Trevor Bedford, Jover Lee, James Hadfield, John Huddleston, Louise Moncla"
 date: "2024-06-18"
 title: "Phylogenetic analysis of H5N1 cattle outbreak and curated genomic data"
+sidebarTitle: "H5N1 Cattle Outbreak Analysis and Resources"
 ---
 
 # Phylogenetic analysis

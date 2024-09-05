@@ -1,5 +1,6 @@
 ---
 title: Using Nextstrain narratives to explain WNV spread and evolution
+sidebarTitle: Using Narratives To Explain West Nile Virus Spread
 date: "2019-10-31"
 author: James Hadfield
 ---
