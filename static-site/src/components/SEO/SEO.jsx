@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Helmet from "react-helmet";
+import Head from "next/head";
 import { siteLogo, siteUrl, siteDescription, siteTitle, siteTitleAlt } from "../../../data/SiteConfig";
 
 const pathPrefix = "/"
@@ -58,7 +58,7 @@ class SEO extends Component {
       ]);
     }
     return (
-      <Helmet>
+      <Head>
         {/* General tags */}
         <meta name="description" content={description} />
         <meta name="image" content={image} />
@@ -74,7 +74,7 @@ class SEO extends Component {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={image} />
-      </Helmet>
+      </Head>
     );
   }
 }

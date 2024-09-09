@@ -1,5 +1,5 @@
 import React from "react";
-import Helmet from "react-helmet";
+import Head from "next/head";
 import { withRouter } from 'next/router'
 import SEO from "../components/SEO/SEO";
 import { siteTitle, groupsApp } from "../../data/SiteConfig";
@@ -19,7 +19,9 @@ class Index extends React.Component {
     return (
       <MainLayout>
         <div className="index-container">
-          <Helmet title={siteTitle} />
+          <Head>
+            <title>{siteTitle}</title>
+          </Head>
           <SEO/>
           <main>
             <UserDataWrapper>

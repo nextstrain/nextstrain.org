@@ -1,5 +1,5 @@
 import React from "react";
-import Helmet from "react-helmet";
+import Head from "next/head";
 import { siteTitle, Footer } from "../../data/SiteConfig";
 import NavBar from "../components/nav-bar";
 import MainLayout from "../components/layout";
@@ -10,7 +10,9 @@ import * as splashStyles from "../components/splash/styles";
 const GenericPage = ({children, banner}) => (
   <MainLayout>
     <div className="index-container">
-      <Helmet title={siteTitle} />
+      <Head>
+        <title>{siteTitle}</title>
+      </Head>
       <main>
         <UserDataWrapper>
           <NavBar/>
