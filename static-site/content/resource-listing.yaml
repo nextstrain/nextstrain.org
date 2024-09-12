@@ -102,3 +102,7 @@ coreShowcase:
     img: enterovirus_d68_tree.png
     filters:
       - enterovirus
+  - name: Rabies
+    img: rabies_tree.png
+    filters:
+      - rabies
