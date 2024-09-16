@@ -68,3 +68,8 @@
   description: Genetic diversity of HIV Env
   img: hiv_tree.png
   url: /groups/LANL-HIV-DB/HIV/env
+
+- name: Rabies
+  description: Rabies virus evolution and spread
+  img: rabies_tree.png
+  url: /rabies
