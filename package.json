@@ -27,7 +27,7 @@
     "dev:ssg": "NODE_ENV=development USE_PREBUILT_STATIC_SITE=1 nodemon --verbose -- server.js --verbose \"$@\""
   },
   "dependencies": {
-    "@aws-crypto/client-node": "^3.1.1",
+    "@aws-crypto/client-node": "^4.0.1",
     "@aws-sdk/client-cognito-identity-provider": "^3.53.0",
     "@aws-sdk/client-s3": "^3.431.0",
     "@aws-sdk/client-sts": "^3.552.0",
