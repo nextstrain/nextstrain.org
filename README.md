@@ -21,7 +21,7 @@ Check [package.json](./package.json) for the supported versions, e.g.
 
 ```json
 "engines": {
-  "node": "20.9.0",
+  "node": "^20",
   "npm": "^10"
 }
 ```
