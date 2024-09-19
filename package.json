@@ -8,7 +8,7 @@
   "repository": "github:nextstrain/nextstrain.org",
   "homepage": "https://nextstrain.org",
   "engines": {
-    "node": "20.9.0",
+    "node": "^20",
     "npm": "^10"
   },
   "scripts": {
@@ -27,7 +27,7 @@
     "dev:ssg": "NODE_ENV=development USE_PREBUILT_STATIC_SITE=1 nodemon --verbose -- server.js --verbose \"$@\""
   },
   "dependencies": {
-    "@aws-crypto/client-node": "^3.1.1",
+    "@aws-crypto/client-node": "^4.0.1",
     "@aws-sdk/client-cognito-identity-provider": "^3.53.0",
     "@aws-sdk/client-s3": "^3.431.0",
     "@aws-sdk/client-sts": "^3.552.0",
@@ -37,6 +37,7 @@
     "@renovatebot/pep440": "^2.1.20",
     "@smithy/node-http-handler": "^2.1.8",
     "argparse": "^1.0.10",
+    "aws-sdk": "^2.908.0",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
     "connect-redis": "^4.0.3",
@@ -60,7 +61,7 @@
     "keyv": "^4.5.4",
     "lodash.partition": "^4.6.0",
     "luxon": "^3.4.4",
-    "make-fetch-happen": "^10.0.0",
+    "make-fetch-happen": "^11.1.1",
     "mapbox-gl": "^3.2.0",
     "marked": "^0.7.0",
     "mime": "^2.5.2",
