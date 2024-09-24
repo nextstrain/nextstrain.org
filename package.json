@@ -108,6 +108,7 @@
     "jest-extended": "^1.1.0",
     "nodemon": "^2.0.22",
     "request": "^2.88.2",
+    "sass": "^1.79.3",
     "start-server-and-test": "^1.11.4",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.12.0"
