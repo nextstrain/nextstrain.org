@@ -42,6 +42,7 @@ const coreBuildPaths = [
   "/mpox",      // monkeypox URLs will redirect to /mpox (except for datestamped URLs)
   "/ncov",
   "/nextclade",
+  "/oropouche",
   "/rabies",
   "/rsv",
   "/seasonal-cov",

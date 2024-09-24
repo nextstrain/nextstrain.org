@@ -653,6 +653,14 @@
           "default": "sars-cov-2"
         }
       },
+      "oropouche": {
+        "segment": {
+          "L": "",
+          "M": "",
+          "S": "",
+          "default": "L"
+        }
+      },
       "rabies": "",
       "rsv": {
         "type": {
