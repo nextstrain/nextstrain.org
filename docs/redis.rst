@@ -49,6 +49,35 @@ which is based on the ``--fork`` `upgrade method
 <https://devcenter.heroku.com/articles/heroku-redis-version-upgrade#upgrade-using-a-fork>`__
 described in Heroku's own documentation.
 
+.. warning::
+
+   Instead of entering maintenance mode for the whole site (as suggested
+   by Heroku's docs), we'll instead put it into a slightly degraded
+   state by removing (read/write) access to Redis.
+
+   This won't affect access to public resources, but will affect anyone
+   with an existing login session or establishing a new login session
+   during the very brief switchover window:
+
+   - Any group member change made via the RESTful API (`{PUT, DELETE}
+     /groups/{name}/settings/roles/{role}/members/{username}`) during the period
+     will lose the "userStaleBefore" mark for the changed member. Users will
+     have to manually log out then back in or wait `up to an hour
+     <https://github.com/nextstrain/nextstrain.org/blob/88bc40e4115a930b8ead823f48528144cfd35fbc/aws/cognito/clients.tf#L48-L56>`__
+     for those changes to take effect.
+
+   -  Existing login sessions will be temporarily "forgotten". They'll
+      be "remembered" again after the upgrade.
+
+   -  New login sessions established during the upgrade will be
+      permanently forgotten after the upgrade. Anyone unfortunate enough
+      to encounter this will need to log in again, although based on
+      current usage, it can be expected to affect approximately zero
+      people.
+
+   The manual steps come with the benefit of allowing the majority of the site
+   to remain usable.
+
 .. note::
 
    Heroku provides an `in-place upgrade method
@@ -91,33 +120,6 @@ described in Heroku's own documentation.
           heroku addons:attach --as OLD_REDIS "$old_instance" -a "$app"
           heroku addons:detach REDIS -a "$app"
       done
-
-   Instead of entering maintenance mode for the whole site (as suggested
-   by Heroku's docs), we'll instead put it into a slightly degraded
-   state by removing (read/write) access to Redis.
-
-   This won't affect access to public resources, but will affect anyone
-   with an existing login session or establishing a new login session
-   during the very brief switchover window:
-
-   - Any group member change made via the RESTful API (`{PUT, DELETE}
-     /groups/{name}/settings/roles/{role}/members/{username}`) during the period
-     will lose the "userStaleBefore" mark for the changed member. Users will
-     have to manually log out then back in or wait `up to an hour
-     <https://github.com/nextstrain/nextstrain.org/blob/88bc40e4115a930b8ead823f48528144cfd35fbc/aws/cognito/clients.tf#L48-L56>`__
-     for those changes to take effect.
-
-   -  Existing login sessions will be temporarily "forgotten". They'll
-      be "remembered" again after the upgrade.
-
-   -  New login sessions established during the upgrade will be
-      permanently forgotten after the upgrade. Anyone unfortunate enough
-      to encounter this will need to log in again, although based on
-      current usage, it can be expected to affect approximately zero
-      people.
-
-   This extra step comes with the benefit of allowing the majority of
-   the site to remain usable.
 
 4. Create the new, upgraded Redis instance as a fork (snapshot copy) of
    the old:
