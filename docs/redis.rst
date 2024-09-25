@@ -107,10 +107,27 @@ described in Heroku's own documentation.
       heroku redis:info "$old_instance" -a nextstrain-server | tee redis-info
       heroku addons:info "$old_instance" | tee redis-addon-info
 
-1. Log in to one of the instances (dev,canary,server) if you are not
+1. Start a watch session on logs for ``nextstrain-server``:
+
+   .. code-block:: bash
+
+      heroku logs --app nextstrain-server --tail
+
+   .. tip::
+
+      These logs show console output from the server as well as every incoming
+      HTTP request. This is inherently noisy, but any messages with
+      ``status=5xx`` should be investigated.
+
+      Keep the logs streaming until the update is completed, since ``heroku logs`` is only able to provide the last 1500 messages retrospectively.
+
+      It can also be useful to refresh https://nextstrain.org after every step
+      that updates the app to ensure the app is still running as expected.
+
+2. Log in to one of the instances (dev,canary,server) if you are not
    already.
 
-2. Disable the Redis requirement across apps:
+3. Disable the Redis requirement across apps:
 
    .. code-block:: bash
 
@@ -118,7 +135,7 @@ described in Heroku's own documentation.
           heroku config:set REDIS_REQUIRED=false -a "$app"
       done
 
-3. Disabling writes to Redis by changing its attachment from ``REDIS``
+4. Disabling writes to Redis by changing its attachment from ``REDIS``
    to ``OLD_REDIS`` on the apps:
 
    .. code-block:: bash
@@ -128,7 +145,7 @@ described in Heroku's own documentation.
           heroku addons:detach REDIS -a "$app"
       done
 
-4. Create the new, upgraded Redis instance on `nextstrain-server` as a fork
+5. Create the new, upgraded Redis instance on `nextstrain-server` as a fork
    (snapshot copy) of the old:
 
    .. code-block:: bash
@@ -138,14 +155,14 @@ described in Heroku's own documentation.
           -a nextstrain-server \
           --fork "$(heroku config:get OLD_REDIS_URL -a nextstrain-server)"
 
-5. Set a variable for the new instance name to be used in subsequent steps:
+6. Set a variable for the new instance name to be used in subsequent steps:
 
    .. code-block:: bash
 
       # Replace value with name from output of previous step
       new_instance="redis-X-N"
 
-6. Wait for it to be ready:
+7. Wait for it to be ready:
 
    .. code-block:: bash
 
@@ -172,7 +189,7 @@ described in Heroku's own documentation.
    -  a manually issued ``sync`` (`doc <https://valkey.io/commands/sync/>`__)
       jumping over bulk sync and right to live monitor mode
 
-7. Compare settings to the previous instance and adjust as necessary:
+8. Compare settings to the previous instance and adjust as necessary:
 
    .. code-block:: bash
 
@@ -190,7 +207,7 @@ described in Heroku's own documentation.
       heroku redis:maxmemory "$new_instance" -a nextstrain-server -p volatile-ttl
       heroku data:maintenances:window:update "$new_instance" Friday 22:00 -a nextstrain-server
 
-8. Use the new Redis instance on across apps:
+9. Use the new Redis instance on across apps:
 
    .. code-block:: bash
 
@@ -201,9 +218,9 @@ described in Heroku's own documentation.
           heroku addons:attach --as REDIS "$new_instance" -a "$app"
       done
 
-9. Test that your login session is now "remembered" again.
+10. Test that your login session is now "remembered" again.
 
-10. Remove the old Redis instance:
+11. Remove the old Redis instance:
 
    .. code-block:: bash
 
@@ -212,7 +229,7 @@ described in Heroku's own documentation.
       done
       heroku addons:destroy "$old_instance"
 
-11. Reinstate the Redis requirement across apps:
+12. Reinstate the Redis requirement across apps:
 
    .. code-block:: bash
 
