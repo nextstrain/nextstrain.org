@@ -121,8 +121,8 @@ described in Heroku's own documentation.
           heroku addons:detach REDIS -a "$app"
       done
 
-4. Create the new, upgraded Redis instance as a fork (snapshot copy) of
-   the old:
+4. Create the new, upgraded Redis instance on `nextstrain-server` as a fork
+   (snapshot copy) of the old:
 
    .. code-block:: bash
 
@@ -179,13 +179,15 @@ described in Heroku's own documentation.
 
       heroku redis:maxmemory "$new_instance" -a nextstrain-server -p volatile-ttl
 
-8. Replace the old Redis instance with the new one:
+8. Use the new Redis instance on across apps:
 
    .. code-block:: bash
 
-      for app in nextstrain-{dev,canary,server}; do
-          heroku redis:promote "$new_instance" -a "$app" # attaches as REDIS
-          heroku addons:detach NEW_REDIS -a "$app" # removes old NEW_REDIS attachment
+      heroku redis:promote "$new_instance" -a nextstrain-server # attaches as REDIS
+      heroku addons:detach NEW_REDIS -a nextstrain-server # removes old NEW_REDIS attachment
+
+      for app in nextstrain-{dev,canary}; do
+          heroku addons:attach --as REDIS "$new_instance" -a "$app"
       done
 
 9. Test that your login session is now "remembered" again.
