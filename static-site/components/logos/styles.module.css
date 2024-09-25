@@ -1,0 +1,26 @@
+.allLogosContainer {
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 0px;
+  padding: 10px 0px 0px 0px;
+  display: flex;
+}
+
+.logoLink {
+  /* Using flex here (to vertically align the child img) causes aspect-ratio issues */
+  flex-basis: 120px;
+  margin: 10px auto 10px auto;
+  text-align: center;
+}
+
+.logoImageSpan {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.logoImage {
+  display: inline-block;
+  height: auto;
+  vertical-align: middle;
+}

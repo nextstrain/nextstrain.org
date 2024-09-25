@@ -1,0 +1,30 @@
+.nav {
+  align-items: center;
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  left: 0px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.nav a {
+  color: var(--darkGrey);
+  font-size: var(--niceFontSize);
+  font-weight: 400;
+  padding: 20px 12px;
+  text-decoration: none;
+}
+
+.nav .logo {
+  padding: 0 2px 0 8px;
+}
+
+.nav .wordmark {
+  padding: 0px;
+}
+
+.nav .wordmark > span {
+  font-size: 20px;
+  font-weight: 400;
+}

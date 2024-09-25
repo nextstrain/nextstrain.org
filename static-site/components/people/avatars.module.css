@@ -1,0 +1,30 @@
+.commonWrapper {
+  & a {
+    font-weight: 500 !important;
+    color: #333 !important;
+  }
+  & img {
+    margin-left: 5px;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+}
+
+.footerWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  & a {
+    font-weight: 500 !important;
+    color: #333 !important;
+  }
+  & img {
+    border-radius: 50%;
+    height: 32px;
+    margin-left: 5px;
+    margin-right: 8px;
+    vertical-align: middle;
+    width: 32px;
+  }
+}
