@@ -78,6 +78,13 @@ described in Heroku's own documentation.
    The manual steps come with the benefit of allowing the majority of the site
    to remain usable.
 
+.. warning::
+
+   During each step that causes a restart of the app, web requests may need to
+   wait ~30 seconds for a response. There is an `open issue
+   <https://github.com/nextstrain/nextstrain.org/issues/768>`__ tracking this
+   behavior.
+
 .. note::
 
    Heroku provides an `in-place upgrade method
