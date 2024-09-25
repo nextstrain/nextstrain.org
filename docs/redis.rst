@@ -173,11 +173,15 @@ described in Heroku's own documentation.
       git diff redis{,-new}-info
       # make adjustments with other `heroku redis:…` commands
 
-   During the 5 → 6 upgrade, ``maxmemory`` had to be adjusted:
+   These adjustments have been necessary during previous upgrades
+   (``data:maintenances:window:update`` requires the `Data Maintenance CLI
+   Plugin
+   <https://devcenter.heroku.com/articles/data-maintenance-cli-commands>`__):
 
    .. code-block:: bash
 
       heroku redis:maxmemory "$new_instance" -a nextstrain-server -p volatile-ttl
+      heroku data:maintenances:window:update "$new_instance" Friday 22:00 -a nextstrain-server
 
 8. Use the new Redis instance on across apps:
 
