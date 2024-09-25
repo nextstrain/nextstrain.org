@@ -131,13 +131,18 @@ described in Heroku's own documentation.
           -a nextstrain-server \
           --fork "$(heroku config:get OLD_REDIS_URL -a nextstrain-server)"
 
-   .. TODO: put new instance name in a variable
-
-5. Wait for it to be ready:
+5. Set a variable for the new instance name to be used in subsequent steps:
 
    .. code-block:: bash
 
-      heroku addons:info redis-X-N
+      # Replace value with name from output of previous step
+      new_instance="redis-X-N"
+
+6. Wait for it to be ready:
+
+   .. code-block:: bash
+
+      heroku addons:info "$new_instance"
 
    Its ``State`` will change from ``creating`` to ``created``.
 
@@ -145,7 +150,7 @@ described in Heroku's own documentation.
 
    .. code-block:: bash
 
-      heroku redis:info redis-X-N
+      heroku redis:info "$new_instance"
 
    This starts at ``fork in progress`` and is supposed to change once
    completed (forks start as replicas and then switch to primaries), but
@@ -160,11 +165,11 @@ described in Heroku's own documentation.
    -  a manually issued ``sync`` (`doc <https://valkey.io/commands/sync/>`__)
       jumping over bulk sync and right to live monitor mode
 
-6. Compare settings to the previous instance and adjust as necessary:
+7. Compare settings to the previous instance and adjust as necessary:
 
    .. code-block:: bash
 
-      heroku redis:info redis-X-N | tee redis-new-info
+      heroku redis:info "$new_instance" | tee redis-new-info
       git diff redis{,-new}-info
       # make adjustments with other `heroku redis:…` commands
 
@@ -172,20 +177,20 @@ described in Heroku's own documentation.
 
    .. code-block:: bash
 
-      heroku redis:maxmemory redis-X-N -a nextstrain-server -p volatile-ttl
+      heroku redis:maxmemory "$new_instance" -a nextstrain-server -p volatile-ttl
 
-7. Replace the old Redis instance with the new one:
+8. Replace the old Redis instance with the new one:
 
    .. code-block:: bash
 
       for app in nextstrain-{dev,canary,server}; do
-          heroku redis:promote redis-X-N -a "$app" # attaches as REDIS
+          heroku redis:promote "$new_instance" -a "$app" # attaches as REDIS
           heroku addons:detach NEW_REDIS -a "$app" # removes old NEW_REDIS attachment
       done
 
-8. Test that your login session is now "remembered" again.
+9. Test that your login session is now "remembered" again.
 
-9. Remove the old Redis instance:
+10. Remove the old Redis instance:
 
    .. code-block:: bash
 
@@ -194,7 +199,7 @@ described in Heroku's own documentation.
       done
       heroku addons:destroy "$old_instance"
 
-10. Reinstate the Redis requirement across apps:
+11. Reinstate the Redis requirement across apps:
 
    .. code-block:: bash
 
