@@ -150,7 +150,7 @@ described in Heroku's own documentation.
 
    .. code-block:: bash
 
-      heroku redis:info "$new_instance"
+      heroku redis:info "$new_instance" -a nextstrain-server
 
    This starts at ``fork in progress`` and is supposed to change once
    completed (forks start as replicas and then switch to primaries), but
@@ -169,7 +169,7 @@ described in Heroku's own documentation.
 
    .. code-block:: bash
 
-      heroku redis:info "$new_instance" | tee redis-new-info
+      heroku redis:info "$new_instance" -a nextstrain-server | tee redis-new-info
       git diff redis{,-new}-info
       # make adjustments with other `heroku redis:…` commands
 
