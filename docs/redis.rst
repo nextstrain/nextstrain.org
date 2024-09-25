@@ -120,7 +120,7 @@ described in Heroku's own documentation.
       heroku addons:create heroku-redis:premium-0 \
           --as NEW_REDIS \
           -a nextstrain-server \
-          --fork "$(heroku config:get REDIS_URL -a nextstrain-server)"
+          --fork "$(heroku config:get OLD_REDIS_URL -a nextstrain-server)"
 
    .. TODO: put new instance name in a variable
 
