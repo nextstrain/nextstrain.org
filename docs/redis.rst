@@ -100,6 +100,13 @@ described in Heroku's own documentation.
    with an existing login session or establishing a new login session
    during the very brief switchover window:
 
+   - Any group member change made via the RESTful API (`{PUT, DELETE}
+     /groups/{name}/settings/roles/{role}/members/{username}`) during the period
+     will lose the "userStaleBefore" mark for the changed member. Users will
+     have to manually log out then back in or wait `up to an hour
+     <https://github.com/nextstrain/nextstrain.org/blob/88bc40e4115a930b8ead823f48528144cfd35fbc/aws/cognito/clients.tf#L48-L56>`__
+     for those changes to take effect.
+
    -  Existing login sessions will be temporarily "forgotten". They'll
       be "remembered" again after the upgrade.
 
