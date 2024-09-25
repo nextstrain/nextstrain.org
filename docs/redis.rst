@@ -74,7 +74,15 @@ described in Heroku's own documentation.
 1. Log in to one of the instances (dev,canary,server) if you are not
    already.
 
-2. Disabling writes to Redis by changing its attachment from ``REDIS``
+2. Disable the Redis requirement across apps:
+
+   .. code-block:: bash
+
+      for app in nextstrain-{dev,canary,server}; do
+          heroku config:set REDIS_REQUIRED=false -a "$app"
+      done
+
+3. Disabling writes to Redis by changing its attachment from ``REDIS``
    to ``OLD_REDIS`` on the apps:
 
    .. code-block:: bash
@@ -104,7 +112,7 @@ described in Heroku's own documentation.
    This extra step comes with the benefit of allowing the majority of
    the site to remain usable.
 
-3. Create the new, upgraded Redis instance as a fork (snapshot copy) of
+4. Create the new, upgraded Redis instance as a fork (snapshot copy) of
    the old:
 
    .. code-block:: bash
@@ -116,7 +124,7 @@ described in Heroku's own documentation.
 
    .. TODO: put new instance name in a variable
 
-4. Wait for it to be ready:
+5. Wait for it to be ready:
 
    .. code-block:: bash
 
@@ -143,7 +151,7 @@ described in Heroku's own documentation.
    -  a manually issued ``sync`` (`doc <https://valkey.io/commands/sync/>`__)
       jumping over bulk sync and right to live monitor mode
 
-5. Compare settings to the previous instance and adjust as necessary:
+6. Compare settings to the previous instance and adjust as necessary:
 
    .. code-block:: bash
 
@@ -157,7 +165,7 @@ described in Heroku's own documentation.
 
       heroku redis:maxmemory redis-X-N -a nextstrain-server -p volatile-ttl
 
-6. Replace the old Redis instance with the new one:
+7. Replace the old Redis instance with the new one:
 
    .. code-block:: bash
 
@@ -166,9 +174,9 @@ described in Heroku's own documentation.
           heroku addons:detach NEW_REDIS -a "$app" # removes old NEW_REDIS attachment
       done
 
-7. Test that your login session is now "remembered" again.
+8. Test that your login session is now "remembered" again.
 
-8. Remove the old Redis instance:
+9. Remove the old Redis instance:
 
    .. code-block:: bash
 
@@ -176,6 +184,14 @@ described in Heroku's own documentation.
           heroku addons:detach OLD_REDIS -a "$app"
       done
       heroku addons:destroy "$old_instance"
+
+10. Reinstate the Redis requirement across apps:
+
+   .. code-block:: bash
+
+      for app in nextstrain-{dev,canary,server}; do
+          heroku config:unset REDIS_REQUIRED -a "$app"
+      done
 
 Limitations
 ===========
