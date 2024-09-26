@@ -145,6 +145,19 @@ described in Heroku's own documentation.
           heroku addons:detach REDIS -a "$app"
       done
 
+   .. warning::
+
+      This step causes the site to enter the degraded state described earlier.
+      If the need arises, you can roll back to the old instance:
+
+      .. code-block:: bash
+
+         for app in nextstrain-{dev,canary,server}; do
+             heroku addons:attach --as REDIS "$old_instance" -a "$app"
+             heroku addons:detach OLD_REDIS -a "$app"
+         done
+
+
 5. Create the new, upgraded Redis instance on `nextstrain-server` as a fork
    (snapshot copy) of the old:
 
