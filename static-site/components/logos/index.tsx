@@ -10,7 +10,6 @@ import ospLogo from "../../static/logos/osp-logo-small.png";
 import bzLogo from "../../static/logos/bz_logo.png";
 
 import styles from "./styles.module.css";
-import { width } from "../../src/components/Groups/Tiles/styles";
 
 type Logo = {
   imgSrc: string;
@@ -69,7 +68,7 @@ export default function Logos(): React.ReactElement {
 
         <div className={styles.allLogosContainer}>
           {logos.map((logo: Logo) => (
-            <Logo href={logo.href} imgSrc={logo.imgSrc} width={logo.width} />
+            <Logo key={logo.href} href={logo.href} imgSrc={logo.imgSrc} width={logo.width} />
           ))}
         </div>
       </div>
@@ -104,25 +103,3 @@ function Logo({
     </a>
   );
 }
-
-// export const Logos = () => (
-//   <div className="row">
-//     <div className="col-lg-12">
-
-//       <Styles.FooterParagraph>
-//         Nextstrain is supported by
-//       </Styles.FooterParagraph>
-
-//       <AllLogosContainer>
-//         <Logo href="http://www.fredhutch.org/" imgSrc={fredHutchLogo.default.src} width={90}/>
-//         <Logo href="http://www.unibas.ch/" imgSrc={uniBasLogo.default.src} width={110}/>
-//         <Logo href="https://www.nih.gov/" imgSrc={nihLogo.default.src} width={60}/>
-//         <Logo href="https://www.gatesfoundation.org/" imgSrc={bmgfLogo.default.src} width={130}/>
-//         <Logo href="https://www.sib.swiss/" imgSrc={sibLogo.default.src} width={80}/>
-//         <Logo href="https://www.mapbox.com" imgSrc={mapBoxLogo.default.src} width={110}/>
-//         <Logo href="https://www.nih.gov/news-events/news-releases/open-science-prize-announces-epidemic-tracking-tool-grand-prize-winner" imgSrc={ospLogo.default.src} width={100}/>
-//         <Logo href="http://biozentrum.org/" imgSrc={bzLogo.default.src} width={115}/>
-//       </AllLogosContainer>
-//     </div>
-//   </div>
-// );
