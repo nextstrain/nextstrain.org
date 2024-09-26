@@ -30,6 +30,7 @@ nextstrain.org
     sessions
     routing
     infrastructure
+    redis
     terraform
     resource-collection
     glossary
