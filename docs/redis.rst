@@ -218,7 +218,11 @@ described in Heroku's own documentation.
           heroku addons:attach --as REDIS "$new_instance" -a "$app"
       done
 
-10. Test that your login session is now "remembered" again.
+10. Test that the new instance works:
+
+   1. Load the website and check that your login session is now "remembered" again.
+   2. Check that you can successfully log out and log back in.
+   3. Check that you can remove/add a member from a group.
 
 11. Remove the old Redis instance:
 
