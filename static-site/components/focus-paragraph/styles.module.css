@@ -1,0 +1,7 @@
+.focus {
+  font-size: var(--niceFontSize);
+  line-height: var(--tightLineHight);
+  margin: 20px 0px 0px;
+  max-width: 640px;
+  text-align: left;
+}
