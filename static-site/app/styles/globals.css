@@ -18,7 +18,10 @@
   --mediumGrey: #888;
   --lightGrey: #ccc;
 
+  --niceFontSize: 16px;
   --niceLineHeight: 1.6;
+
+  --tightLineHight: 1.4;
 }
 
 * {

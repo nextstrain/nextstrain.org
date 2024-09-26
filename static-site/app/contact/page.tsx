@@ -1,15 +1,15 @@
-import React from "react";
-import GenericPage from "../layouts/generic-page";
-import { BigSpacer, FlexCenter} from "../layouts/generalComponents";
-import { H1, NarrowFocusParagraph } from "../components/splash/styles";
+import { ReactElement } from "react";
 
+import { BigSpacer } from "../../components/spacers";
+import FlexCenter from "../../components/flex-center";
+import FocusParagraphNarrow from "../../components/focus-paragraph";
 
-const Contact = () => (
-  <GenericPage>
-      <H1>Contact Us</H1>
+const Contact = (): ReactElement => (
+  <>
+      <h1>Contact Us</h1>
 
       <FlexCenter>
-        <NarrowFocusParagraph>
+        <FocusParagraphNarrow>
           We are a small team, but connecting with users is important to us.
           <br/>
           <br/>
@@ -31,11 +31,11 @@ const Contact = () => (
           <br/>
           We also host office hours via Zoom every week on Thursdays at 10AM US Pacific time.
           Email us for the meeting link.
-        </NarrowFocusParagraph>
+        </FocusParagraphNarrow>
       </FlexCenter>
 
       <BigSpacer/>
-  </GenericPage>
+  </>
 );
 
 export default Contact;
