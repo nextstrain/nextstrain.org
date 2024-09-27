@@ -106,3 +106,7 @@ coreShowcase:
     img: rabies_tree.png
     filters:
       - rabies
+  - name: Oropouche
+    img: oropouche_map.png
+    filters:
+      - oropouche
