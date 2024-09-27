@@ -54,8 +54,16 @@ be set and will rewrite this file if they aren't set.²
     "esModuleInterop": true,
     "module": "esnext",
     "resolveJsonModule": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
+    ".next/types/**/*.ts",
+    "app/**/*",
+    "components/**/*",
     "next-env.d.ts",
     "pages/**/*",
     "src/**/*",
