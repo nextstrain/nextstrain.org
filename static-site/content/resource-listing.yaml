@@ -110,3 +110,23 @@ coreShowcase:
     img: oropouche_map.png
     filters:
       - oropouche
+  - name: Lassa
+    img: lassa_map.png
+    filters:
+      - lassa
+  - name: Seasonal cov
+    img: seasonal_cov_tree.png
+    filters:
+      - seasonal-cov
+  - name: Tuberculosis
+    img: tb_tree.png
+    filters:
+      - tb
+  - name: West Nile Virus
+    img: wnv_map.png
+    filters:
+      - WNV
+  - name: SARS-CoV-2 (Nextclade)
+    img: nextclade_sars_cov_2_tree.png
+    filters:
+      - nextclade
