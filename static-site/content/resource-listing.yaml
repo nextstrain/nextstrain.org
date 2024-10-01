@@ -55,6 +55,7 @@ coreGroupDisplayNames:
 # Tiles must define a filter query which is a list of dataset name "words"
 # (where words are joined by "/" to form the URL path) as well as a PNG image
 # which is relative to static-site/static/pathogen_images.
+# These will be displayed in alphabetical order by name.
 coreTiles:
   - name: SARS-CoV-2
     img: ncov_freq.png

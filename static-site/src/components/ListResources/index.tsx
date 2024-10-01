@@ -83,7 +83,12 @@ function ListResources({
         </Byline>
 
         <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
-          <ExpandableTiles tiles={tiles} tileWidth={tileWidthHeight} tileHeight={tileWidthHeight} TileComponent={Tile} />
+          <ExpandableTiles
+            tiles={tiles.sort((a, b) => a.name.localeCompare(b.name))}
+            tileWidth={tileWidthHeight}
+            tileHeight={tileWidthHeight}
+            TileComponent={Tile}
+          />
         </SetSelectedFilterOptions.Provider>
         </>
       )}
