@@ -46,8 +46,8 @@ export interface UpdateCadence {
   description: string
 }
 
-// See coreShowcase in static-site/content/resource-listing.yaml
-export interface ShowcaseTile extends Tile {
+// See coreTiles in static-site/content/resource-listing.yaml
+export interface FilterTile extends Tile {
   filters: string[]
 }
 
