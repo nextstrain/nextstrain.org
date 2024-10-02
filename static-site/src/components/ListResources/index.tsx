@@ -12,7 +12,7 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
-import { ShowcaseTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo } from './types';
+import { ShowcaseTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
@@ -49,9 +49,9 @@ function ListResources({
   );
   const showcaseTiles = useShowcaseTiles(showcase, groups);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
-  const [sortMethod, changeSortMethod] = useState("alphabetical");
+  const [sortMethod, changeSortMethod] = useState<SortMethod>("alphabetical");
   const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
-  useSortAndFilter(sortMethod, selectedFilterOptions, groups, setResourceGroups)
+  useSortAndFilter(sortMethod, selectedFilterOptions, setResourceGroups, groups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
   const [modalResource, setModalResource ] = useState<Resource>();
 
@@ -171,9 +171,12 @@ function ListResourcesResponsive(props: ListResourcesResponsiveProps) {
 export default ListResourcesResponsive
 
 
-function SortOptions({sortMethod, changeSortMethod}) {
+function SortOptions({sortMethod, changeSortMethod}: {
+  sortMethod: SortMethod,
+  changeSortMethod: React.Dispatch<React.SetStateAction<SortMethod>>
+}) {
   function onChangeValue(event:FormEvent<HTMLInputElement>): void {
-    changeSortMethod(event.currentTarget.value);
+    changeSortMethod(event.currentTarget.value as SortMethod);
   }
   return (
     <SortContainer>

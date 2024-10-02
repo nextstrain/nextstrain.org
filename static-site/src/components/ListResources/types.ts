@@ -5,6 +5,8 @@ export interface FilterOption {
   label: string
 }
 
+export type SortMethod = "lastUpdated" | "alphabetical";
+
 export interface Group {
   groupName: string
   nResources: number
