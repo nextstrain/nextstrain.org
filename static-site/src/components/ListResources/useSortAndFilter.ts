@@ -1,30 +1,42 @@
 import { useMemo } from 'react';
+import { FilterOption, Group, Resource, SortMethod } from './types';
 
 
-export const useSortAndFilter = (sortMethod, selectedFilterOptions, originalData, setState) => {
+export const useSortAndFilter = (
+    sortMethod: SortMethod,
+    selectedFilterOptions: readonly FilterOption[],
+    setState: React.Dispatch<React.SetStateAction<Group[]>>,
+    originalData?: Group[],
+  ) => {
   useMemo(() => {
     if (!originalData) return;
     /* Following console log is really useful for development */
     // console.log(`useSortAndFilter() sortMethod "${sortMethod}" ` + (selectedFilterOptions.length ? `filtering to ${selectedFilterOptions.map((el) => el.value).join(", ")}` : '(no filtering)'))
 
-    let _sortGroups, _sortResources;
+    let _sortGroups: (groupA: Group, groupB: Group) => 1 | -1 | 0,
+        _sortResources: (a: Resource, b: Resource) => 1 | -1 | 0;
     switch (sortMethod) {
       case "lastUpdated":
-        _sortGroups = (groupA, groupB) => _newestFirstSort(groupA.lastUpdated, groupB.lastUpdated);
-        _sortResources = (a, b) => a.lastUpdated === b.lastUpdated ?
-          _lexicographicSort(a.name, b.name) : // resources updated on the same day sort alphabetically
-          _newestFirstSort(a.lastUpdated, b.lastUpdated); // newest updated resources first
+        _sortGroups = (groupA: Group, groupB: Group) => _newestFirstSort(groupA.lastUpdated, groupB.lastUpdated);
+        _sortResources = (a: Resource, b: Resource) => {
+          if (!a.lastUpdated || !b.lastUpdated || a.lastUpdated === b.lastUpdated) {
+            // resources updated on the same day or without a last updated date
+            // sort alphabetically
+            return _lexicographicSort(a.name, b.name)
+          }
+          else {
+            return _newestFirstSort(a.lastUpdated, b.lastUpdated);
+          }
+        }
         break;
       case "alphabetical":
-        _sortGroups = (groupA, groupB) => _lexicographicSort(groupA.groupName.toLowerCase(), groupB.groupName.toLowerCase()),
-        _sortResources = (a, b) => _lexicographicSort(a.name, b.name)
+        _sortGroups = (groupA: Group, groupB: Group) => _lexicographicSort(groupA.groupName.toLowerCase(), groupB.groupName.toLowerCase()),
+        _sortResources = (a: Resource, b: Resource) => _lexicographicSort(a.name, b.name)
         break;
-      default:
-        throw new Error(`Unknown sorting method "${sortMethod}"`)
     }
 
     const searchValues = selectedFilterOptions.map((o) => o.value);
-    function _filterResources(resource) {
+    function _filterResources(resource: Resource) {
       if (searchValues.length===0) return true;
       return searchValues
         .map((searchString) => resource.nameParts.includes(searchString))
@@ -49,13 +61,13 @@ export const useSortAndFilter = (sortMethod, selectedFilterOptions, originalData
 /* helper function to sort alphabetically. If provided with YYYY-MM-DD strings
  * this is the same as a chronological sort (oldest to newest)
  */
-function _lexicographicSort(a,b) {
+function _lexicographicSort(a: string, b: string): 1 | -1 | 0 {
   return a<b ? -1 : a>b ? 1 : 0;
 }
 
 /* If provided with YYYY-MM-DD strings this sorts chronologically with newest
  * first (this is just reverse lexicographic sort)
  */
-function _newestFirstSort(a,b) {
+function _newestFirstSort(a: string, b: string): 1 | -1 | 0 {
   return a<b ? 1 : a>b ? -1 : 0;
 }

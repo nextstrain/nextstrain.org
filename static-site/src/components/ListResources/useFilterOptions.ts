@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { FilterOption, Group } from './types';
 
 /**
  * React hook which recomputes the available search/filtering options (i.e.
@@ -11,12 +12,12 @@ import { useMemo, useState } from 'react';
  * filter) but we don't include the count in the label because the React select
  * component doesn't update already-set options and thus we get out-of-sync.
  */
-export function useFilterOptions(resourceGroups) {
-  const [state, setState] = useState([]);
+export function useFilterOptions(resourceGroups: Group[]): FilterOption[] {
+  const [state, setState] = useState<FilterOption[]>([]);
 
   useMemo(() => {
-    const counts = {};
-    const increment = (key) => {
+    const counts: { [key: string]: number } = {};
+    const increment = (key: string) => {
       if (!counts[key]) counts[key] = 0;
       counts[key]++
     }
@@ -40,7 +41,7 @@ export function useFilterOptions(resourceGroups) {
   return state
 }
 
-export function createFilterOption(word) {
+export function createFilterOption(word: string): FilterOption {
   return {value: word, label: word};
 }
 
