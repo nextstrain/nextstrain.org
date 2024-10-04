@@ -12,7 +12,7 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
-import { ShowcaseTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod } from './types';
+import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 
 interface ListResourcesProps extends ListResourcesResponsiveProps {
@@ -38,7 +38,7 @@ function ListResources({
   quickLinks,
   defaultGroupLinks=false,
   groupDisplayNames,
-  showcase,
+  tileData,
   resourceListingCallback: resourceListingCallback,
 }: ListResourcesProps) {
   const {groups, dataFetchError} = useDataFetch(
@@ -47,7 +47,7 @@ function ListResources({
     groupDisplayNames,
     resourceListingCallback,
   );
-  const showcaseTiles = useShowcaseTiles(showcase, groups);
+  const tiles = useTiles(tileData, groups);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState<SortMethod>("alphabetical");
   const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
@@ -76,14 +76,19 @@ function ListResources({
   return (
     <ListResourcesContainer>
 
-      { showcaseTiles.length > 0 && (
+      { tiles.length > 0 && (
         <>
         <Byline>
-          Showcase resources: click to filter the resources to a pathogen
+          All pathogens: click a pathogen to filter
         </Byline>
 
         <SetSelectedFilterOptions.Provider value={setSelectedFilterOptions}>
-          <ExpandableTiles tiles={showcaseTiles} tileWidth={tileWidthHeight} tileHeight={tileWidthHeight} TileComponent={Tile} />
+          <ExpandableTiles
+            tiles={tiles.sort((a, b) => a.name.localeCompare(b.name))}
+            tileWidth={tileWidthHeight}
+            tileHeight={tileWidthHeight}
+            TileComponent={Tile}
+          />
         </SetSelectedFilterOptions.Provider>
         </>
       )}
@@ -131,7 +136,7 @@ interface ListResourcesResponsiveProps {
 
   /** Mapping from group name -> display name */
   groupDisplayNames: Record<string, string>
-  showcase: ShowcaseTile[]
+  tileData: FilterTile[]
   resourceListingCallback: () => Promise<ResourceListingInfo>;
 }
 
@@ -258,9 +263,9 @@ const Byline = styled.div`
 `
 
 
-/*** SHOWCASE ***/
+/*** TILES ***/
 
-const Tile = ({ tile }: { tile: ShowcaseTile }) => {
+const Tile = ({ tile }: { tile: FilterTile }) => {
   const setSelectedFilterOptions = useContext(SetSelectedFilterOptions);
 
   if (!setSelectedFilterOptions) {
@@ -295,8 +300,8 @@ const Tile = ({ tile }: { tile: ShowcaseTile }) => {
  * which the filters are valid given the resources known to the resource listing
  * UI
  */
-const useShowcaseTiles = (tiles?: ShowcaseTile[], groups?: Group[]) => {
-  const [restrictedTiles, setRestrictedTiles] = useState<ShowcaseTile[]>([]);
+const useTiles = (tiles?: FilterTile[], groups?: Group[]) => {
+  const [restrictedTiles, setRestrictedTiles] = useState<FilterTile[]>([]);
   useEffect(() => {
     if (!tiles || !groups) return;
     const words = groups.reduce((words, group) => {

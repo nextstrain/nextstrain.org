@@ -1,9 +1,9 @@
 # The following data is used to provide hardcoded data for the resource-listing
-# UI such as the "showcase" tiles, quicklinks etc. This data isn't automatically
-# derived and is only (currently) used for the static-site UI. For sources
-# beyond "core" (e.g. groups, community), if we want to customise the display it
-# makes more sense to store this information in the bucket or repo,
-# respectively, and then send it in the API response from the server. 
+# UI such as the tiles, quicklinks etc. This data isn't automatically derived
+# and is only (currently) used for the static-site UI. For sources beyond "core"
+# (e.g. groups, community), if we want to customise the display it makes more
+# sense to store this information in the bucket or repo, respectively, and then
+# send it in the API response from the server. 
 
 
 # Quick links are displayed in the header part of a pathogen group (e.g. "flu"
@@ -52,12 +52,11 @@ coreGroupDisplayNames:
   mpox: mpox
 
 
-# Showcase tiles must define a filter query which is a list of dataset name
-# "words" (where words are joined by "/" to form the URL path) as well as a PNG
-# image which is relative to static-site/static/pathogen_images. The number of
-# showcase tiles which will be shown is decided by the UI and changes with
-# screen size.
-coreShowcase:
+# Tiles must define a filter query which is a list of dataset name "words"
+# (where words are joined by "/" to form the URL path) as well as a PNG image
+# which is relative to static-site/static/pathogen_images.
+# These will be displayed in alphabetical order by name.
+coreTiles:
   - name: SARS-CoV-2
     img: ncov_freq.png
     filters:
@@ -110,3 +109,23 @@ coreShowcase:
     img: oropouche_map.png
     filters:
       - oropouche
+  - name: Lassa
+    img: lassa_map.png
+    filters:
+      - lassa
+  - name: Seasonal cov
+    img: seasonal_cov_tree.png
+    filters:
+      - seasonal-cov
+  - name: Tuberculosis
+    img: tb_tree.png
+    filters:
+      - tb
+  - name: West Nile Virus
+    img: wnv_map.png
+    filters:
+      - WNV
+  - name: SARS-CoV-2 (Nextclade)
+    img: nextclade_sars_cov_2_tree.png
+    filters:
+      - nextclade
