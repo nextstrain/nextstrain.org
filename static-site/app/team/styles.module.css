@@ -1,0 +1,10 @@
+.teamPage h1 {
+    color: var(--darkGrey);
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 32px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+    min-width: 240px;
+    text-align: center;
+}
