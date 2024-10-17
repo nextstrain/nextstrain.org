@@ -3,7 +3,7 @@ import React from "react";
 
 import { BigSpacer } from "../../components/spacers";
 import FlexCenter from "../../components/flex-center";
-import FocusParagraphNarrow from "../../components/focus-paragraph";
+import { FocusParagraphNarrow } from "../../components/focus-paragraph";
 
 export const metadata: Metadata = {
   title: "Contact",
