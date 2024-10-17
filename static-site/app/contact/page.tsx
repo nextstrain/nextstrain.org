@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 
 import { BigSpacer } from "../../components/spacers";
 import FlexCenter from "../../components/flex-center";
-import FocusParagraphNarrow from "../../components/focus-paragraph";
+import { FocusParagraphNarrow } from "../../components/focus-paragraph";
 
 export default function ContactPage(): ReactElement {
   return (
