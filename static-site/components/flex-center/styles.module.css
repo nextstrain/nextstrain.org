@@ -1,0 +1,7 @@
+.flexCenter {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+}
