@@ -1,7 +1,0 @@
-{
-  "env": {
-    "NPM_CONFIG_LOGLEVEL": {
-      "value": "verbose"
-    }
-  }
-}
