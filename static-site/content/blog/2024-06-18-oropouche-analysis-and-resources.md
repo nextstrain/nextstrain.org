@@ -27,7 +27,7 @@ Since late 2023, however, there has been a documented increase in local cases no
 Oropouche virus has a segmented genome made up of the L (Large), M (Medium), and S (Small) segments; phylogenetic trees for these segments are constructed independently: 
 - [https://nextstrain.org/oropouche/L](https://nextstrain.org/oropouche/L) 
 - [https://nextstrain.org/oropouche/M](https://nextstrain.org/oropouche/M) 
-- [https://nextstrain.org/oropouche/S] (https://nextstrain.org/oropouche/S)
+- [https://nextstrain.org/oropouche/S](https://nextstrain.org/oropouche/S)
 
 The segmented nature of Oropouche virus allows for genetic reassortment events. Similarly to [Gutierrez et al.](https://pmc.ncbi.nlm.nih.gov/articles/PMC7022353/), all three phylogenies display topographical differences, suggesting the presence of reassortment events on the genome. For example, while the phylogenies of the L and M segments show more robust clustering of the sequences from Brazil throughout time, the S segment phylogeny shows the Brazil sequences scattered throughout the tree  (**Fig. 4**). If we focus on the most recent sequences from 2022-2024, however, we do find more robust clustering of the sequences from Brazil, similar to the results presented by [Naveca et al](https://www.nature.com/articles/s41591-024-03300-3). 
 
