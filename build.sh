@@ -41,7 +41,7 @@ build-auspice() {
     echo "Building a customised version of auspice"
     git config --global url."ssh://git@".insteadOf git://
     cd auspice-client
-    npm ci
+    npm ci --loglevel verbose
     ./node_modules/.bin/auspice build --verbose --extend ./customisations/config.json
     cd ..
 }
