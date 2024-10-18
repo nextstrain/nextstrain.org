@@ -33,7 +33,7 @@ The segmented nature of Oropouche virus allows for genetic reassortment events. 
 
 
 [![fig4](img/oropouche_s_and_m_segment.png)](https://nextstrain.org/oropouche/M:oropouche/S)
-**Figure 4. Comparison of the M and S segment trees shows distinct topographical differences, suggesting the presence of reassortment events.**
+**Figure 4. Comparison of the M (top) and S (bottom) segment trees shows distinct topographical differences, suggesting the presence of reassortment events.**
 
 
 We can track the co-evolution of the Oropouche segments via tanglegrams. For example, if we focus on the L and M segments (**Fig. 5**), we can see evidence of at least two recombination events.
