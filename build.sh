@@ -40,7 +40,7 @@ build-static() {
 build-auspice() {
     echo "Building a customised version of auspice"
     cd auspice-client
-    npm ci
+    npm ci --ignore-scripts
     ./node_modules/.bin/auspice build --verbose --extend ./customisations/config.json
     cd ..
 }
