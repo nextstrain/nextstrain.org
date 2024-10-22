@@ -1,6 +1,6 @@
 ---
 author: "Miguel Paredes, James Hadfield, John SJ Anderson, Jover Lee, Trevor Bedford"
-date: "2024-10-18"
+date: "2024-10-22"
 title: "Phylogenetic analysis of Oropouche virus"
 sidebarTitle: "Oropouche Phylogenetic Analysis and Resources"
 ---
