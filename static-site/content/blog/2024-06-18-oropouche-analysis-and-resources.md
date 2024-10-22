@@ -7,7 +7,7 @@ sidebarTitle: "Oropouche Phylogenetic Analysis and Resources"
 
 # Phylogenetic analysis
 
-[Oropouche virus](https://www.sciencedirect.com/science/article/pii/S016817022400011X#sec0003) is a segmented, negative-sense, single-stranded RNA virus from the Orthobunyavirus genus. It is the causative agent of Oropouche fever: an often self-limited, non-specific disease characterized by headache, arthralgia, myalgia, nausea, vomiting, chills, and/or photophobia. Oropouche virus is maintained primarily through an enzootic cycle between pale-throated sloths (Bradypus tridactylus), non-human primates and other wild mammals via transmission through Culicoides paraensis midges, with urbanization contributing to the rise of human cases acquired through the same arthropod vector (**Fig. 1**).
+[Oropouche virus](https://www.sciencedirect.com/science/article/pii/S016817022400011X#sec0003) is a segmented, negative-sense, single-stranded RNA virus from the Orthobunyavirus genus. It is the causative agent of Oropouche fever: an often self-limited, non-specific disease characterized by headache, arthralgia, myalgia, nausea, vomiting, chills, and/or photophobia. Oropouche virus is maintained primarily through an enzootic cycle between pale-throated sloths (_Bradypus tridactylus_), non-human primates and other wild mammals via transmission through _Culicoides paraensis_ midges, with urbanization contributing to the rise of human cases acquired through the same arthropod vector (**Fig. 1**).
 
 
 [![fig1](img/oropouche_host_view.png)](https://nextstrain.org/oropouche/L?c=host)
