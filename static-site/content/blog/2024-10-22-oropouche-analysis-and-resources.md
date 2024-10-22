@@ -1,9 +1,11 @@
 ---
 author: "Miguel Paredes, James Hadfield, John SJ Anderson, Jover Lee, Trevor Bedford"
 date: "2024-10-18"
-title: "Phylogenetic analysis of Oropuche Virus"
+title: "Phylogenetic analysis of Oropouche virus"
 sidebarTitle: "Oropouche Phylogenetic Analysis and Resources"
 ---
+
+We are pleased to announce the availability of an Oropouche phylogenetic analysis and dataset on Nextstrain.org, which is possible thanks to the rapid public sharing of sequences and metadata. Below describes an overview of Oropouche virus and a description of the phylogenetic analysis. We welcome feedback from Oropouche researchers about any aspects of this analysis and dataset. 
 
 # Phylogenetic analysis
 
