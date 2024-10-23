@@ -45,21 +45,11 @@ We can track the co-evolution of the Oropouche segments via tanglegrams. For exa
 
 We curate sequence data and metadata from NCBI as the starting point for our analyses. Curated sequences and metadata are available as flat files at:
 
-L segment
+* [data.nextstrain.org/files/workflows/oropouche/metadata.tsv.zst](https://data.nextstrain.org/files/workflows/oropouche/metadata.tsv.zst)
+* [data.nextstrain.org/files/workflows/oropouche/L/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/oropouche/L/sequences.fasta.zst)
+* [data.nextstrain.org/files/workflows/oropouche/M/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/oropouche/M/sequences.fasta.zst)
+* [data.nextstrain.org/files/workflows/oropouche/S/sequences.fasta.zst](https://data.nextstrain.org/files/workflows/oropouche/S/sequences.fasta.zst)
 
-- [data.nextstrain.org/files/workflows/oropouche/L/sequences.fasta.zst](data.nextstrain.org/files/workflows/oropouche/L/sequences.fasta.zst)
-- [data.nextstrain.org/files/workflows/oropouche/L/metadata.tsv.zst](data.nextstrain.org/files/workflows/oropouche/L/metadata.tsv.zst)
-
-M segment
-
-- [data.nextstrain.org/files/workflows/oropouche/M/sequences.fasta.zst](data.nextstrain.org/files/workflows/oropouche/M/sequences.fasta.zst)
-- [data.nextstrain.org/files/workflows/oropouche/M/metadata.tsv.zst](data.nextstrain.org/files/workflows/oropouche/M/metadata.tsv.zst)
-
-S segment
-
-- [data.nextstrain.org/files/workflows/oropouche/S/sequences.fasta.zst](data.nextstrain.org/files/workflows/oropouche/S/sequences.fasta.zst)
-- [data.nextstrain.org/files/workflows/oropouche/S/metadata.tsv.zst](data.nextstrain.org/files/workflows/oropouche/S/metadata.tsv.zst
-)
 
 # Acknowledgements
 
