@@ -1,0 +1,15 @@
+.errorContainer {
+  color: var(--errorRed);
+  font-size: 28px;
+  font-weight: 300;
+  line-height: calc(1.4 * var(--niceLineHeight));
+  margin: 0 auto;
+  max-width: 640px;
+  padding: 130px 0 80px;
+  text-align: center;
+}
+
+.errorContainer a {
+  color: var(--errorRed);
+  text-decoration: underline;
+}
