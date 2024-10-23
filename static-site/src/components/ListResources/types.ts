@@ -46,7 +46,13 @@ export interface UpdateCadence {
   description: string
 }
 
-// See coreTiles in static-site/content/resource-listing.yaml
+// See corePathogens in static-site/content/resource-listing.yaml
+export interface Pathogen {
+  name: string
+  id: string
+  img: string
+}
+
 export interface FilterTile extends Tile {
   filters: string[]
 }
