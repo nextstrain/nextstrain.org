@@ -3,6 +3,7 @@ import React from "react";
 import { groupsApp } from "../../data/BaseConfig";
 
 import NavLogo from "./nav-logo";
+import UserOrLoginLink from "./user-or-login-link";
 
 import styles from "./styles.module.css";
 
@@ -21,9 +22,7 @@ export default function Nav(): React.ReactElement {
           <a href="https://docs.nextstrain.org">DOCS</a>
           <a href="/contact">CONTACT</a>
           <a href="/blog/">BLOG</a>
-          {/* because we need access to the current context, this also
-          needs to be an encapsulated client component */}
-          {/* FIXME <UserOrLoginLink> */}
+          <UserOrLoginLink />
         </>
       )}
     </nav>
