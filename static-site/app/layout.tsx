@@ -13,6 +13,7 @@ import {
   siteTitle,
   siteTitleAlt,
 } from "../data/BaseConfig";
+import UserDataWrapper from "../components/user-data-wrapper";
 
 import "./styles/browserCompatability.css";
 import "./styles/bootstrap.css";
@@ -68,17 +69,19 @@ export default function RootLayout({
         )}
       </head>
       <body className={lato.variable}>
-        <Nav />
-        <main>
-          {children}
+        <UserDataWrapper>
+          <Nav />
+          <main>
+            {children}
 
-          <Line />
+            <Line />
 
-          <Footer />
+            <Footer />
 
-          <BigSpacer />
-        </main>
-        <PlausibleAnalytics />
+            <BigSpacer />
+          </main>
+          <PlausibleAnalytics />
+        </UserDataWrapper>
       </body>
     </html>
   );
