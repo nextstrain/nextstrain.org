@@ -328,7 +328,7 @@ function testBase404Page(path) {
     the 404 page, but nextstrain.org without JS is not feasible */
     test("body looks like 404 page", async () => {
       const res = await req;
-      expect((await res.text()).includes('"page":"/404"')).toBe(true)
+      expect((await res.text()).includes("Oops - that page doesn’t exist!")).toBe(true)
     });
   });
 }
