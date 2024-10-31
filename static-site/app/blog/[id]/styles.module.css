@@ -1,0 +1,71 @@
+.blogPostTitle {
+  clear: both; /* this is to let the title fall under the floated date, not under it */
+  color: black;
+  font-size: 3.5rem;
+  font-weight: 400;
+  line-height: 40px;
+  text-align: left;
+  width: 100%;
+}
+
+.blogPostAuthor {
+  color: black;
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 1rem 0 2rem;
+}
+
+.blogPostDate {
+  color: black;
+  float: right;
+  font-size: 1.4rem;
+  font-weight: 300;
+  min-height: 2rem;
+}
+
+.blogPostBody {
+  color: black;
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: var(--niceLineHeight);
+  margin-top: 0px;
+  padding-bottom: 25px;
+  width: 100%;
+}
+
+.blogPostBody img {
+  max-width: 100%;
+}
+
+.blogPostBody h1 {
+  color: black;
+  font-size: 3rem;
+  margin-top: 20px;
+  text-align: left;
+}
+.blogPostBody h2 {
+  font-size: 2.4rem;
+  font-weight: 300;
+  margin-top: 10px;
+}
+.blogPostBody h3 {
+  font-size: 1.8rem;
+  font-weight: 300;
+  margin-top: 10px;
+}
+.blogPostBody p {
+  margin-top: 10px;
+}
+.blogPostBody li {
+  margin-left: 3rem;
+}
+
+.blogSidebar {
+  font-size: 14px;
+}
+.blogSidebar ul {
+  list-style: none;
+}
+.blogSidebar ul li {
+  margin: 1.2rem 0;
+}

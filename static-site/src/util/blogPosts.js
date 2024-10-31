@@ -1,3 +1,12 @@
+// DEPRECATED
+
+// `getBlogPosts` in this file has been moved to
+// `/static-site/app/blog/utils.ts`; this version is still here
+// because it is used by `/static-site/src/util/blogFeeds.js`, which
+// still needs to be ported over.
+
+// DO NOT ADD NEW USES OF THE METHOD IN THIS FILE
+
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';

@@ -1,15 +1,50 @@
-// DEPRECATED
-
-// `parseMarkdown` in this file has been moved to
-// `/static-site/app/blog/parseMarkdown.ts`; this version is still
-// here because it is used by `/static-site/src/util/blogFeeds.js' and
-// `/static-site/src/components/sourceInfoHeading.jsx` which still
-// need to be ported over.
-
-// DO NOT ADD NEW USES OF THE METHOD IN THIS FILE
-
 import { marked } from "marked";
-import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml, { Attributes, IOptions, Tag } from "sanitize-html";
+
+import { siteUrl } from "../../data/BaseConfig";
+
+export default async function parseMarkdown(mdString: string): Promise<string> {
+  const rawDescription = await marked.parse(mdString);
+
+  const sanitizerConfig: IOptions = {
+    allowedTags, // see below
+    allowedAttributes: { "*": allowedAttributes }, // see below
+    nonTextTags: ["style", "script", "textarea", "option"],
+    transformTags: {
+      a: transformA, // see below
+    },
+  };
+
+  const cleanDescription: string = sanitizeHtml(
+    rawDescription,
+    sanitizerConfig,
+  );
+
+  return cleanDescription;
+}
+
+function transformA(tagName: string, attribs: Attributes): Tag {
+  // small helper to keep things dry
+  const _setAttribs: (attribs: Attributes) => void = (attribs) => {
+    attribs.target = "_blank";
+    attribs.rel = "noreferrer nofollow";
+  };
+
+  const href = attribs.href;
+  if (href) {
+    const baseUrl = new URL(siteUrl);
+    try { // sometimes the `href` isn't a valid URL…
+      const linkUrl = new URL(href);
+      if (linkUrl.hostname !== baseUrl.hostname) {
+        _setAttribs(attribs);
+      }
+    } catch {
+      _setAttribs(attribs);
+    }
+  }
+
+  return { tagName, attribs };
+}
 
 // All of these tags may not be necessary, this list was adopted from https://github.com/nextstrain/auspice/blob/master/src/util/parseMarkdown.js
 const allowedTags = ['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'em', 'strong', 'del', 'ol', 'ul', 'li', 'a', 'img'];
@@ -52,31 +87,3 @@ allowedAttributes.push("width", "widths", "word-spacing", "writing-mode");
 allowedAttributes.push("x", "x-height", "x1", "x2", "xChannelSelector");
 allowedAttributes.push("y", "y1", "y2", "yChannelSelector");
 allowedAttributes.push("z", "zoomAndPan");
-
-export const parseMarkdown = (mdString) => {
-  const sanitizerConfig = {
-    allowedTags,
-    allowedAttributes: {"*": allowedAttributes},
-    nonTextTags: ['style', 'script', 'textarea', 'option'],
-    transformTags: {
-      'a': function(tagName, attribs) {
-        try {
-          const url = new URL(attribs.href); // URL is not supported on Internet Explorer
-          if (url.hostname !== location.hostname) {
-            attribs.target = '_blank';
-            attribs.rel = 'noreferrer nofollow';
-          }
-        } catch (err) {
-          // some valid-looking (and commonly used) URLs will cause `new URL` to
-          // throw a TypeError
-          attribs.target = '_blank';
-          attribs.rel = 'noreferrer nofollow';
-        }
-        return {tagName, attribs};
-      }
-    }
-  };
-  const rawDescription = marked(mdString);
-  const cleanDescription = sanitizeHtml(rawDescription, sanitizerConfig);
-  return cleanDescription;
-};
