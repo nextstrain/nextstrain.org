@@ -1,4 +1,4 @@
-import marked from "marked";
+import { marked } from "marked";
 import sanitizeHtml from 'sanitize-html';
 
 // All of these tags may not be necessary, this list was adopted from https://github.com/nextstrain/auspice/blob/master/src/util/parseMarkdown.js
