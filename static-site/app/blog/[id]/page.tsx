@@ -1,7 +1,14 @@
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
 
 import { BigSpacer } from "../../../components/spacers";
+import {
+  siteLogo,
+  siteTitle,
+  siteTitleAlt,
+  siteUrl,
+} from "../../../data/BaseConfig";
 
 import { getBlogPosts, markdownToHtml } from "../utils";
 
@@ -18,6 +25,48 @@ export function generateStaticParams(): BlogPostParams[] {
   return getBlogPosts().map((post) => {
     return { id: post.blogUrlName };
   });
+}
+
+// generate opengraph and other metadata tags
+export async function generateMetadata({
+  params,
+}: {
+  params: BlogPostParams;
+}): Promise<Metadata> {
+  const { id } = params;
+
+  // set up some defaults that are independent of the specific blog post
+  const baseUrl = new URL(siteUrl);
+  const metadata: Metadata = {
+    metadataBase: baseUrl,
+    openGraph: {
+      description: siteTitleAlt,
+      images: [
+        {
+          url: `${siteUrl}${siteLogo}`,
+        },
+      ],
+      siteName: siteTitle,
+      title: siteTitle,
+      type: "website",
+      url: baseUrl,
+    },
+  };
+
+  // this is the specific post we're rendering
+  const blogPost = getBlogPosts().find((post) => post.blogUrlName === id);
+
+  if (blogPost) {
+    const description = `Nextstrain blog post from ${blogPost.date}; author(s): ${blogPost.author}`;
+
+    metadata.title = blogPost.title;
+    metadata.description = description;
+    metadata.openGraph!.description = description;
+    metadata.openGraph!.title = `${siteTitle}: ${blogPost.title}`;
+    metadata.openGraph!.url = `/blog/${blogPost.blogUrlName}`;
+  }
+
+  return metadata;
 }
 
 export default async function BlogPost({
