@@ -132,16 +132,17 @@ const Title = styled.div`
 
 function _snapshotSummary(dates: string[]) {
   const d = [...dates].sort()
-  if (d.length < 1) throw new InternalError("Missing dates.")
-
-  const d1 = new Date(d.at( 0)!).getTime();
-  const d2 = new Date(d.at(-1)!).getTime();
-  const days = (d2 - d1)/1000/60/60/24;
+  const d1 = d[0];
+  const d2 = d.at(-1);
+  if (d1 === undefined || d2 === undefined) {
+    throw new InternalError("Missing dates.");
+  }
+  const days = (new Date(d2).getTime() - new Date(d1).getTime())/1000/60/60/24;
   let duration = '';
   if (days < 100) duration=`${days} days`;
   else if (days < 365*2) duration=`${Math.round(days/(365/12))} months`;
   else duration=`${Math.round(days/365)} years`;
-  return {duration, first: d[0], last:d.at(-1)};
+  return {duration, first: d1, last: d2};
 }
 
 function _draw(ref, resource: VersionedResource) {
