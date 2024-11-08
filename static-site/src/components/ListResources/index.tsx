@@ -94,7 +94,7 @@ function ListResources({
 
       <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
-      { groups?.[0]?.lastUpdated && (
+      { versioned && (
         <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
       ) || (
         <HugeSpacer/>
