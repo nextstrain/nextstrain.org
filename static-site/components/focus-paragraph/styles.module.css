@@ -1,0 +1,21 @@
+/* this is the basic style for all FocusParagraph */
+.focus {
+  font-size: var(--niceFontSize);
+  line-height: var(--tightLineHight);
+  max-width: 640px;
+}
+
+/* this is specifically *added* to the base style for FocusParagraphCentered */
+.centered {
+  margin: 20px 0 0;
+  text-align: center;
+}
+.centered > strong {
+  font-weight: 400;
+}
+
+/* this is specifically *added* to the base style for FocusParagraphNarrow */
+.narrow {
+  margin: 20px 0px 0px;
+  text-align: left;
+}

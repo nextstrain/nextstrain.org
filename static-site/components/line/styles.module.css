@@ -1,0 +1,5 @@
+.line {
+    border-bottom: 1px solid var(--lightGrey);
+    margin-bottom: 30px;
+    margin-top: 30px;
+}

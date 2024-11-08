@@ -1,0 +1,23 @@
+.userContainer {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: calc(1.4 * var(--niceLineHeight));
+  margin: 0 auto;
+  max-width: 640px;
+  padding: 130px 0px 80px;
+  text-align: center;
+}
+
+.userContainer p {
+  padding-top: 20px;
+}
+
+.subText {
+  font-size: 18px;
+  line-height: var(--niceLineHeight);
+}
+
+.userGroupList {
+  display: table;
+  margin: 0 auto;
+}

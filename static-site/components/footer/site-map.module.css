@@ -1,0 +1,49 @@
+.siteMap {
+  /* Center contents */
+  /* this has `!important` because otherwise the margin-(left|right)
+     styles from `.row` from bootstrap override the `auto` here */
+  margin: 0 auto !important;
+
+  /* Ensure that, on wide screens, 4 sections renders to roughly align
+  with the width of IconParagraph (rendered below this element) */
+  max-width: 680px;
+}
+
+/* Wrapper is used to center the actual Section while allowing it to be left-aligned. */
+.sectionWrapper {
+  /* When there are multiple rows, left-align so columns are aligned */
+  text-align: left;
+
+  /* Center section contents when all sections are displayed in a single row */
+  @media (min-width: 768px) {
+    text-align: center;
+  }
+
+}
+
+.section {
+  display: inline-block;
+  text-align: left;
+}
+
+.sectionEntry {
+  font-size: var(--niceFontSize);
+  font-weight: 400;
+  line-height: 0.5;
+  margin: 20px 0px 0px;
+  max-width: 640px;
+  text-align: left;
+}
+
+.sectionEntry a {
+  color: #000 !important;
+}
+
+.unstyled {
+  list-style: none;
+}
+
+.footerIcon {
+  margin-left: 2px;
+  font-size: 12px;
+}

@@ -1,0 +1,71 @@
+.commonWrapper a {
+  color: #333 !important;
+  font-weight: 400 !important;
+}
+.commonWrapper img {
+  border-radius: 50%;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.footerWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.footerWrapper a {
+  color: #333 !important;
+  font-weight: 400 !important;
+}
+.footerWrapper img {
+  border-radius: 50%;
+  height: 32px;
+  margin-left: 5px;
+  margin-right: 8px;
+  vertical-align: middle;
+  width: 32px;
+}
+
+.teamPageWrapper {
+  display: grid;
+  font-size: 18px;
+  justify-content: center;
+  grid-template-columns: minmax(min-content, 500px);
+  padding: 20px 0px;
+
+  /* Bootstrap's .container applies 25px left and right margins.  Account for */
+  /* that when computing the minimum width to support two 333px columns. */
+  @media (min-width: calc(333px*2 + 25px*2)) {
+    grid-template-columns: repeat(auto-fit, 333px);
+  }
+}
+.teamPageWrapper a {
+  color: var(--darkGrey);
+}
+.teamPageWrapper img {
+  border-radius: 50%;
+  height: 60px;
+  margin-left: 5px;
+  margin-right: 20px;
+  vertical-align: middle;
+  width: 60px;
+}
+
+.sideways {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  padding: 10px 15px;
+}
+
+.updown {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.blurb {
+  font-size: 14px;
+  text-align: left;
+}

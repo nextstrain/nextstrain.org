@@ -1,0 +1,141 @@
+/* for debugging: add a border to all other elements on the page */
+/* body * { border: 1px solid red; } */
+
+:root {
+  --titleColor0: #4377cd; /* N */
+  --titleColor1: #5097ba; /* E */
+  --titleColor2: #63ac9a; /* X */
+  --titleColor3: #7cb879; /* T */
+  --titleColor4: #9abe5c; /* S */
+  --titleColor5: #b9bc4a; /* T */
+  --titleColor6: #d4b13f; /* R */
+  --titleColor7: #e49938; /* A */
+  --titleColor8: #e67030; /* I */
+  --titleColor9: #de3c26; /* N */
+
+  --blue: #5097ba;
+  --darkGrey: #333;
+  --errorRed: #DE3C26;
+  --mediumGrey: #888;
+  --lightGrey: #ccc;
+
+  --niceFontSize: 16px;
+  --niceLineHeight: 1.6;
+
+  --tightLineHight: 1.4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  /* We use nextjs' next/font to manage our primary font (Lato). `var(--lato)` is defined in app/layout.tsx */
+  font-family: var(--lato), "Helvetica Neue", sans-serif;
+  font-weight: 300;
+}
+
+html {
+  font-size: 62.5%;
+  margin: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* these rules are a tweaked version of what's in bootstrap */
+@media (min-width: 768px) {
+  html {
+    max-width: 728px;
+  }
+}
+@media (min-width: 992px) {
+  html {
+    max-width: 952px;
+  }
+}
+@media (min-width: 1200px) {
+  html {
+    max-width: 1150px;
+  }
+}
+@media (min-width: 1550px) {
+  html {
+    max-width: 1500px;
+  }
+}
+
+main {
+  padding: 0 25px;
+}
+
+a {
+  background-color: transparent;
+  color: var(--blue);
+  font-weight: 400;
+  text-decoration: none;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+a:focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+h1 {
+  color: var(--darkGrey);
+  font-size: 38px;
+  font-weight: 300;
+  line-height: 32px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  min-width: 240px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: 400;
+}
+h3 {
+  font-size: 2rem;
+  font-weight: 400;
+}
+h4 {
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+h5 {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+h6 {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+div.iconParagraph {
+  font-size: var(--niceFontSize);
+  font-weight: 300;
+  line-height: 2.5;
+  margin: 0 auto;
+  text-align: center;
+}
+
+p.footerParagraph {
+  color: var(--mediumGrey);
+  font-size: 12px !important;
+  font-weight: 300;
+  line-height: var(--tightLineHight);
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+p.wideParagraph {
+  font-size: 14px !important;
+  font-weight: 300;
+  line-height: var(--tightLineHight);
+  margin: 20px 0 0;
+}
