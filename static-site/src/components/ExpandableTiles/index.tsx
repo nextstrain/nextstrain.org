@@ -8,14 +8,17 @@ const expandPreviewHeight = 60 //pixels
 const transitionDuration = "0.3s"
 const transitionTimingFunction = "ease"
 
-interface ExpandableTilesProps<AnyTile extends Tile> {
-    tiles: AnyTile[]
-    tileWidth: number
-    tileHeight: number
-    TileComponent: React.FunctionComponent<{ tile: AnyTile }>
-}
-
-export const ExpandableTiles = <AnyTile extends Tile>({tiles, tileWidth, tileHeight, TileComponent}: ExpandableTilesProps<AnyTile>) => {
+export const ExpandableTiles = <AnyTile extends Tile>({
+  tiles,
+  tileWidth,
+  tileHeight,
+  TileComponent,
+}: {
+  tiles: AnyTile[]
+  tileWidth: number
+  tileHeight: number
+  TileComponent: React.FunctionComponent<{ tile: AnyTile }>
+}) => {
 
   const [tilesContainerHeight, setTilesContainerHeight] = useState<number>(0);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);

@@ -45,13 +45,15 @@ export const ResourceLink = styled.a`
   }
 `;
 
-interface NameProps {
+function Name({
+  displayName,
+  href,
+  topOfColumn,
+}: {
   displayName: ResourceDisplayName
   href: string
   topOfColumn: boolean
-}
-
-function Name({displayName, href, topOfColumn}: NameProps) {
+}) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -88,15 +90,19 @@ export function TooltipWrapper({description, children}) {
   )
 }
 
-interface IconContainerProps {
+export function IconContainer({
+  Icon,
+  text,
+  handleClick,
+  color,
+  hoverColor,
+}: {
   Icon: IconType
   text: string
   handleClick?: () => void
   color?: string
   hoverColor?: string
-}
-
-export function IconContainer({Icon, text, handleClick, color, hoverColor}: IconContainerProps) {
+}) {
   const [hovered, setHovered] = useState(false);
   const defaultColor = '#aaa';
   const defaultHoverColor = "rgb(79, 75, 80)";
@@ -115,12 +121,13 @@ export function IconContainer({Icon, text, handleClick, color, hoverColor}: Icon
 }
 
 
-interface IndividualResourceProps {
+export const IndividualResource = ({
+  resource,
+  isMobile,
+}: {
   resource: Resource
   isMobile: boolean
-}
-
-export const IndividualResource = ({resource, isMobile}: IndividualResourceProps) => {
+}) => {
   const setModalResource = useContext(SetModalResourceContext);
   if (!setModalResource) throw new Error("Context not provided!")
 

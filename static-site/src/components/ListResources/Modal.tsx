@@ -12,12 +12,13 @@ export const RAINBOW20 =   ["#511EA8", "#4432BD", "#3F4BCA", "#4065CF", "#447ECC
 const lightGrey = 'rgba(0,0,0,0.1)';
 
 
-interface ResourceModalProps {
+export const ResourceModal = ({
+  resource,
+  dismissModal,
+}: {
   resource?: Resource
   dismissModal: () => void
-}
-
-export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {  
+}) => {  
   const [ref, setRef] = useState(null); 
   const handleRef = useCallback((node) => {setRef(node)}, [])
 
