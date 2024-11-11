@@ -278,5 +278,9 @@
   {
     "name": "wadoh",
     "isPublic": true
+  },
+  {
+    "name": "ppx-private",
+    "isPublic": false
   }
 ]
