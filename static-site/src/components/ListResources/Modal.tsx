@@ -146,14 +146,15 @@ function _snapshotSummary(dates: string[]) {
 }
 
 function _draw(ref, resource: VersionedResource) {
-  // do nothing if resource has no dates
-  if (!resource.dates) return
-
   /* Note that _page_ resizes by themselves will not result in this function
   rerunning, which isn't great, but for a modal I think it's perfectly
   acceptable */  
   const sortedDateStrings = [...resource.dates].sort();
   const flatData = sortedDateStrings.map((version) => ({version, 'date': new Date(version)}));
+
+  if (flatData[0] === undefined) {
+    throw new InternalError("Resource does not have any dates.");
+  }
 
   const width = ref.clientWidth;
   const graphIndent = 20;
@@ -178,8 +179,7 @@ function _draw(ref, resource: VersionedResource) {
 
   /* Create the x-scale and draw the x-axis */
   const x = d3.scaleTime()
-    // presence of dates on resource has already been checked so this assertion is safe
-    .domain([flatData[0]!.date, new Date()]) // the domain extends to the present day
+    .domain([flatData[0].date, new Date()]) // the domain extends to the present day
     .range([graphIndent, width-graphIndent])
   svg.append('g')
     .attr("transform", `translate(0, ${heights.height - heights.marginBelowAxis})`)
