@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as d3 from "d3";
 import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
-import { Resource } from './types';
+import { Resource, VersionedResource } from './types';
 
 export const SetModalResourceContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
@@ -13,7 +13,7 @@ const lightGrey = 'rgba(0,0,0,0.1)';
 
 
 interface ResourceModalProps {
-  resource?: Resource
+  resource: VersionedResource
   dismissModal: () => void
 }
 
@@ -40,9 +40,6 @@ export const ResourceModal = ({resource, dismissModal}: ResourceModalProps) => {
     if (!ref || !resource) return;
     _draw(ref, resource)
   }, [ref, resource])
-
-  // modal is only applicable for versioned resources
-  if (!resource || !resource.dates || !resource.updateCadence) return null;
 
   const summary = _snapshotSummary(resource.dates);
   return (

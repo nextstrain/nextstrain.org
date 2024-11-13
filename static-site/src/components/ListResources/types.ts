@@ -1,3 +1,4 @@
+import { InternalError } from "../../util/errors";
 import { Tile } from "../ExpandableTiles/types"
 
 export interface FilterOption {
@@ -29,6 +30,32 @@ export interface Resource {
   dates?: string[]
   nVersions?: number
   updateCadence?: UpdateCadence
+}
+
+export interface VersionedResource extends Resource {
+  lastUpdated: string  // date
+  firstUpdated: string  // date
+  dates: string[]
+  nVersions: number
+  updateCadence: UpdateCadence
+}
+
+export function convertVersionedResource(resource: Resource): VersionedResource {
+  if (resource.lastUpdated !== undefined &&
+      resource.firstUpdated !== undefined &&
+      resource.dates !== undefined &&
+      resource.nVersions !== undefined &&
+      resource.updateCadence !== undefined) {
+    return {
+      ...resource,
+      lastUpdated: resource.lastUpdated,
+      firstUpdated: resource.firstUpdated,
+      dates: resource.dates,
+      nVersions: resource.nVersions,
+      updateCadence: resource.updateCadence
+    }
+  }
+  throw new InternalError("Resource is not versioned.");
 }
 
 export interface ResourceDisplayName {
