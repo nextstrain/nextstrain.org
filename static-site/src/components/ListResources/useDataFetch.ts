@@ -97,7 +97,7 @@ function groupsFrom(partitions: Record<string, Resource[]>, pathPrefix: string, 
       groupName: groupName,
       nResources: resources.length,
       nVersions: resources.reduce((total, r) => r.nVersions ? total+r.nVersions : total, 0) || undefined,
-      lastUpdated: resources.map((r) => r.lastUpdated).sort().at(-1)!,
+      lastUpdated: resources.map((r) => r.lastUpdated).sort().at(-1),
       resources,
     }
     /* add optional properties */
