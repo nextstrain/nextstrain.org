@@ -17,6 +17,23 @@ export interface Group {
   groupDisplayName?: string
 }
 
+export interface VersionedGroup extends Group {
+  nVersions: number
+  lastUpdated: string
+}
+
+export function convertVersionedGroup(group: Group): VersionedGroup {
+  if (group.nVersions !== undefined &&
+      group.lastUpdated !== undefined) {
+      return {
+        ...group,
+        nVersions: group.nVersions,
+        lastUpdated: group.lastUpdated,
+      }
+  }
+  throw new InternalError("Group is not versioned.");
+}
+
 export interface Resource {
   name: string
   displayName?: ResourceDisplayName
