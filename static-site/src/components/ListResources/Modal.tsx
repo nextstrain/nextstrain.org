@@ -5,6 +5,7 @@ import * as d3 from "d3";
 import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
 import { Resource, VersionedResource } from './types';
+import { InternalError } from '../../util/errors';
 
 export const SetModalResourceContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
@@ -130,7 +131,7 @@ const Title = styled.div`
 
 function _snapshotSummary(dates: string[]) {
   const d = [...dates].sort()
-  if (d.length < 1) throw new Error("Missing dates.")
+  if (d.length < 1) throw new InternalError("Missing dates.")
 
   const d1 = new Date(d.at( 0)!).getTime();
   const d2 = new Date(d.at(-1)!).getTime();

@@ -5,6 +5,7 @@ import { MdHistory } from "react-icons/md";
 import { SetModalResourceContext } from './Modal';
 import { ResourceDisplayName, Resource } from './types';
 import { IconType } from 'react-icons';
+import { InternalError } from '../../util/errors';
 
 export const LINK_COLOR = '#5097BA'
 export const LINK_HOVER_COLOR = '#31586c'
@@ -122,7 +123,7 @@ interface IndividualResourceProps {
 
 export const IndividualResource = ({resource, isMobile}: IndividualResourceProps) => {
   const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) throw new Error("Context not provided!")
+  if (!setModalResource) throw new InternalError("Context not provided!")
 
   const ref = useRef<HTMLDivElement>(null);
   const [topOfColumn, setTopOfColumn] = useState(false);
