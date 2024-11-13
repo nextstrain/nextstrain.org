@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as d3 from "d3";
 import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
-import { Resource } from './types';
+import { Resource, VersionedResource } from './types';
 import { InternalError } from './errors';
 
 export const SetModalResourceContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
@@ -17,7 +17,7 @@ export const ResourceModal = ({
   resource,
   dismissModal,
 }: {
-  resource?: Resource
+  resource: VersionedResource
   dismissModal: () => void
 }) => {  
   const [ref, setRef] = useState(null); 
@@ -42,9 +42,6 @@ export const ResourceModal = ({
     if (!ref || !resource) return;
     _draw(ref, resource)
   }, [ref, resource])
-
-  // modal is only applicable for versioned resources
-  if (!resource || !resource.dates || !resource.updateCadence) return null;
 
   const summary = _snapshotSummary(resource.dates);
   return (
@@ -147,7 +144,7 @@ function _snapshotSummary(dates: string[]) {
   return {duration, first: d[0], last:d.at(-1)};
 }
 
-function _draw(ref, resource: Resource) {
+function _draw(ref, resource: VersionedResource) {
   // do nothing if resource has no dates
   if (!resource.dates) return
 

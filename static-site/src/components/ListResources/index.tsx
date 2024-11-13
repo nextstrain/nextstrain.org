@@ -12,7 +12,7 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
-import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod } from './types';
+import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod, convertVersionedResource } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 import { ErrorBoundary } from './errors';
 
@@ -117,8 +117,8 @@ function ListResources({
 
       <Tooltip style={{fontSize: '1.6rem'}} id="listResourcesTooltip"/>
 
-      { versioned && (
-        <ResourceModal resource={modalResource} dismissModal={() => setModalResource(undefined)}/>
+      { versioned && modalResource && (
+        <ResourceModal resource={convertVersionedResource(modalResource)} dismissModal={() => setModalResource(undefined)}/>
       )}
 
     </ListResourcesContainer>
