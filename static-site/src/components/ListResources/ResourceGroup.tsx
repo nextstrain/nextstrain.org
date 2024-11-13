@@ -6,6 +6,7 @@ import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
   ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource"
 import { SetModalResourceContext } from "./Modal";
 import { Group, QuickLink, Resource } from './types';
+import { InternalError } from './errors';
 
 const ResourceGroupHeader = ({
   group,
@@ -25,7 +26,7 @@ const ResourceGroupHeader = ({
   quickLinks: QuickLink[]
 }) => {
   const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) throw new Error("Context not provided!")
+  if (!setModalResource) throw new InternalError("Context not provided!")
 
   /* Filter the known quick links to those which appear in resources of this group */
   const resourcesByName = Object.fromEntries(group.resources.map((r) => [r.name, r]));

@@ -14,6 +14,7 @@ import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
 import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
+import { ErrorBoundary } from './errors';
 
 const LIST_ANCHOR = "list";
 
@@ -165,9 +166,11 @@ function ListResourcesResponsive(props: ListResourcesResponsiveProps) {
     };
   }, []);
   return (
-    <div ref={ref}>
-      <ListResources {...props} elWidth={elWidth}/>
-    </div>
+    <ErrorBoundary>
+      <div ref={ref}>
+        <ListResources {...props} elWidth={elWidth}/>
+      </div>
+    </ErrorBoundary>
   )
 }
 
