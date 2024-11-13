@@ -265,7 +265,11 @@ function _setDisplayName(resources: Resource[]): DisplayNamedResource[] {
     if (i===0) {
       name = r.nameParts.join(sep);
     } else {
-      let matchIdx = r.nameParts.map((word, j) => word === resources[i-1]?.nameParts[j]).findIndex((v) => !v);
+      const previousResource = resources[i-1];
+      if (previousResource === undefined) {
+        throw new InternalError("Previous resource is undefined. Check that this is not run on i===0.");
+      }
+      let matchIdx = r.nameParts.map((word, j) => word === previousResource.nameParts[j]).findIndex((v) => !v);
       if (matchIdx===-1) { // -1 means every word is in the preceding name, but we should display the last word anyway
         matchIdx = r.nameParts.length-2;
       }
