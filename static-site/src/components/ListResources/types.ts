@@ -11,11 +11,16 @@ export type SortMethod = "lastUpdated" | "alphabetical";
 export interface Group {
   groupName: string
   nResources: number
-  nVersions?: number
-  lastUpdated: string  // date
+  nVersions: number | undefined
+  lastUpdated: string | undefined
   resources: Resource[]
   groupUrl?: string
   groupDisplayName?: string
+}
+
+export interface VersionedGroup extends Group {
+  nVersions: number
+  lastUpdated: string
 }
 
 export interface Resource {

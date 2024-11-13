@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { FilterOption, Group, Resource, SortMethod } from './types';
+import { FilterOption, Group, Resource, SortMethod, VersionedGroup } from './types';
 
 
 export const useSortAndFilter = (
@@ -10,15 +10,16 @@ export const useSortAndFilter = (
     originalData?: Group[],
   ) => {
   useMemo(() => {
-    if (!originalData) return;
+    // Cast originalData to VersionedGroup if versioned is true
+    if (!versioned || !originalData) return;
     /* Following console log is really useful for development */
     // console.log(`useSortAndFilter() sortMethod "${sortMethod}" ` + (selectedFilterOptions.length ? `filtering to ${selectedFilterOptions.map((el) => el.value).join(", ")}` : '(no filtering)'))
 
-    let _sortGroups: (groupA: Group, groupB: Group) => 1 | -1 | 0,
+    let _sortGroups: (groupA: VersionedGroup, groupB: VersionedGroup) => 1 | -1 | 0,
         _sortResources: (a: Resource, b: Resource) => 1 | -1 | 0;
     switch (sortMethod) {
       case "lastUpdated":
-        _sortGroups = (groupA: Group, groupB: Group) => _newestFirstSort(groupA.lastUpdated, groupB.lastUpdated);
+        _sortGroups = (groupA: VersionedGroup, groupB: VersionedGroup) => _newestFirstSort(groupA.lastUpdated, groupB.lastUpdated);
         _sortResources = (a: Resource, b: Resource) => {
           if (!a.lastUpdated || !b.lastUpdated || a.lastUpdated === b.lastUpdated) {
             // resources updated on the same day or without a last updated date
@@ -31,7 +32,7 @@ export const useSortAndFilter = (
         }
         break;
       case "alphabetical":
-        _sortGroups = (groupA: Group, groupB: Group) => _lexicographicSort(groupA.groupName.toLowerCase(), groupB.groupName.toLowerCase()),
+        _sortGroups = (groupA: VersionedGroup, groupB: VersionedGroup) => _lexicographicSort(groupA.groupName.toLowerCase(), groupB.groupName.toLowerCase()),
         _sortResources = (a: Resource, b: Resource) => _lexicographicSort(a.name, b.name)
         break;
     }
@@ -55,7 +56,7 @@ export const useSortAndFilter = (
       .sort(_sortGroups);
 
     setState(resourceGroups);
-  }, [sortMethod, selectedFilterOptions, originalData, setState])
+  }, [sortMethod, selectedFilterOptions, originalData, setState, versioned])
 }
 
 
