@@ -3,7 +3,7 @@ import React, {useState, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory } from "react-icons/md";
 import { SetModalResourceContext } from './Modal';
-import { ResourceDisplayName, Resource } from './types';
+import { ResourceDisplayName, Resource, DisplayNamedResource } from './types';
 import { IconType } from 'react-icons';
 import { InternalError } from './errors';
 
@@ -20,10 +20,8 @@ export const LINK_HOVER_COLOR = '#31586c'
 const [resourceFontSize, namePxPerChar, summaryPxPerChar] = [16, 10, 9];
 const iconWidth = 20; // not including text
 const gapSize = 10;
-export const getMaxResourceWidth = (displayResources: Resource[]) => {
+export const getMaxResourceWidth = (displayResources: DisplayNamedResource[]) => {
   return displayResources.reduce((w, r) => {
-    if (!r.displayName) return w
-
     /* add the pixels for the display name */
     let _w = r.displayName.default.length * namePxPerChar;
     if (r.nVersions && r.updateCadence) {

@@ -5,7 +5,7 @@ import { MdHistory, MdFormatListBulleted, MdChevronRight } from "react-icons/md"
 import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
   ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource"
 import { SetModalResourceContext } from "./Modal";
-import { Group, QuickLink, Resource } from './types';
+import { DisplayNamedResource, Group, QuickLink, Resource } from './types';
 import { InternalError } from './errors';
 
 const ResourceGroupHeader = ({
@@ -138,8 +138,8 @@ export const ResourceGroup = ({
   const {collapseThreshold, resourcesToShowWhenCollapsed} = collapseThresolds(numGroups);
   const collapsible = group.resources.length > collapseThreshold;
   const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
-  const displayResources = isCollapsed ? group.resources.slice(0, resourcesToShowWhenCollapsed) : group.resources;
-  _setDisplayName(displayResources)
+  const resources = isCollapsed ? group.resources.slice(0, resourcesToShowWhenCollapsed) : group.resources;
+  const displayResources = _setDisplayName(resources)
 
   /* isMobile: boolean determines whether we expose snapshots, as we hide them on small screens */
   const isMobile = elWidth < 500;
@@ -258,9 +258,9 @@ function NextstrainLogo() {
  *      "seasonal-flu | h1n1pdm"
  *      "             | h3n2"
  */
-function _setDisplayName(resources: Resource[]) {
+function _setDisplayName(resources: Resource[]): DisplayNamedResource[] {
   const sep = "│"; // ASCII 179
-  resources.forEach((r, i) => {
+  return resources.map((r, i) => {
     let name;
     if (i===0) {
       name = r.nameParts.join(sep);
@@ -271,7 +271,11 @@ function _setDisplayName(resources: Resource[]) {
       }
       name = r.nameParts.map((word, j) => j < matchIdx ? ' '.repeat(word.length) : word).join(sep);
     }
-    r.displayName = {hovered: r.nameParts.join(sep), default: name}
+
+    return {
+      ...r,
+      displayName: {hovered: r.nameParts.join(sep), default: name}
+    }
   })
 }
 

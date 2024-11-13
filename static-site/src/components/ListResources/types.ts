@@ -49,6 +49,10 @@ export interface Resource {
   updateCadence?: UpdateCadence
 }
 
+export interface DisplayNamedResource extends Resource {
+  displayName: ResourceDisplayName
+}
+
 export interface VersionedResource extends Resource {
   lastUpdated: string  // date
   firstUpdated: string  // date
