@@ -3,6 +3,7 @@ import { FilterOption, Group, Resource, SortMethod } from './types';
 
 
 export const useSortAndFilter = (
+    versioned: boolean,
     sortMethod: SortMethod,
     selectedFilterOptions: readonly FilterOption[],
     setState: React.Dispatch<React.SetStateAction<Group[]>>,

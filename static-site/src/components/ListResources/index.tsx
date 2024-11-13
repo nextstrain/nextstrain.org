@@ -51,7 +51,7 @@ function ListResources({
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState<SortMethod>("alphabetical");
   const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
-  useSortAndFilter(sortMethod, selectedFilterOptions, setResourceGroups, groups)
+  useSortAndFilter(versioned, sortMethod, selectedFilterOptions, setResourceGroups, groups)
   const availableFilterOptions = useFilterOptions(resourceGroups);
   const [modalResource, setModalResource ] = useState<Resource>();
 
