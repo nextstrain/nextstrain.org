@@ -176,9 +176,9 @@ export default ListResourcesResponsive
 
 function SortOptions({sortMethod, changeSortMethod}: {
   sortMethod: SortMethod,
-  changeSortMethod: React.Dispatch<React.SetStateAction<SortMethod>>
+  changeSortMethod: React.Dispatch<React.SetStateAction<SortMethod>>,
 }) {
-  function onChangeValue(event:FormEvent<HTMLInputElement>): void {
+  function onChangeValue(event: FormEvent<HTMLInputElement>): void {
     changeSortMethod(event.currentTarget.value as SortMethod);
   }
   return (
