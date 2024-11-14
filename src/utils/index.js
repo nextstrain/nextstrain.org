@@ -109,7 +109,7 @@ const parseNarrativeLanguage = (narrative) => {
 const normalizeHeaders = (headers) => {
   const withValues =
     Object.entries(headers)
-      .filter(([, value]) => value != null && value !== "");
+      .filter(([, value]) => value !== null && value !== undefined && value !== "");
 
   /* Use the WHATWG Headers object to do most of the normalization, including
    * lowercasing and combining duplicate headers as appropriate.
