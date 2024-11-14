@@ -14,7 +14,6 @@ ignorePatterns:
   - auspice-client/
   - docs/
   - node_modules/
-  - static-site/
 
 rules:
   # Code quality rules
