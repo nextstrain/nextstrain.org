@@ -37,8 +37,7 @@ jobs:
           node-version-file: 'package.json'
       - run: node --version
       - run: npm ci
-      - run: npm run lint:server
-      - run: npm run lint:static-site
+      - run: npm run lint
       - run: node ./scripts/check-resource-index-match.js
 
   type-check:
