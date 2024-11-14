@@ -14,8 +14,8 @@
   "scripts": {
     "build": "./build.sh",
     "build:feeds": "node scripts/generate-blog-feeds.js",
-    "lint": "npm run lint:server && npm run lint:static-site",
-    "lint:server": "DEBUG=eslint:cli-engine npx eslint --max-warnings=0 .",
+    "lint": "DEBUG=eslint:cli-engine npx eslint --max-warnings=0 .",
+    "lint:server": "DEBUG=eslint:cli-engine npx eslint --max-warnings=0 --ignore-pattern static-site .",
     "lint:static-site": "cd static-site && DEBUG=eslint:cli-engine npx eslint --max-warnings=0 .",
     "type-check": "cd static-site && tsc",
     "type-check:ci": "npm run build && cd static-site && tsc",

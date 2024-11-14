@@ -19,6 +19,10 @@ ignorePatterns:
   - "!/src"
   - "!/test"
 
+  # NOTE: static-site has another configuration file with additional rules to
+  # cover React and TypeScript usage.
+  - "!/static-site"
+
 rules:
   # Code quality rules
   no-unused-vars: error

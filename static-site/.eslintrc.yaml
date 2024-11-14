@@ -1,6 +1,3 @@
-# Prevent parent configuration from being applied.
-root: true
-
 plugins:
   - "@typescript-eslint"
 
