@@ -31,7 +31,7 @@ export const ExpandableTiles = <AnyTile extends Tile>({tiles, tileWidth, tileHei
   function tilesContainerRef(tilesContainer: HTMLDivElement) {
     if (!tilesContainer) return;
 
-    if(tilesContainerHeight != tilesContainer.clientHeight) {
+    if(tilesContainerHeight !== tilesContainer.clientHeight) {
       setTilesContainerHeight(tilesContainer.clientHeight)
     }
   }

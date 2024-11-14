@@ -91,7 +91,7 @@ async function run(argv) {
     proc.stderr.on("data", data => console.error(data.toString().replace(/\n$/, "")));
 
     proc.on("close", (code, signal) => {
-      const result = code !== 0 || signal != null
+      const result = code !== 0 || signal !== null
         ? reject
         : resolve;
       return result({code, signal, argv});
