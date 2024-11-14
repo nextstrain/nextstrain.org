@@ -56,7 +56,11 @@ export function useDataFetch(
  * representing group names (pathogen names) and values which are arrays of
  * resource objects.
  */
-function partitionByPathogen(pathVersions: Record<string, string[]>, pathPrefix: string, versioned: boolean) {
+function partitionByPathogen(
+  pathVersions: Record<string, string[]>,
+  pathPrefix: string,
+  versioned: boolean,
+) {
   return Object.entries(pathVersions).reduce((store: Record<string, Resource[]>, [name, dates]) => {
     const sortedDates = [...dates].sort();
 
@@ -91,7 +95,12 @@ function partitionByPathogen(pathVersions: Record<string, string[]>, pathPrefix:
  * Turn the provided partitions (an object mapping groupName to an array of resources)
  * into an array of groups.
  */
-function groupsFrom(partitions: Record<string, Resource[]>, pathPrefix: string, defaultGroupLinks: boolean, groupDisplayNames: Record<string, string>) {
+function groupsFrom(
+  partitions: Record<string, Resource[]>,
+  pathPrefix: string,
+  defaultGroupLinks: boolean,
+  groupDisplayNames: Record<string, string>,
+) {
   return Object.entries(partitions).map(([groupName, resources]) => {
     const groupInfo: Group = {
       groupName: groupName,

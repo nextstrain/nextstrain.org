@@ -15,10 +15,6 @@ import { ExpandableTiles } from "../ExpandableTiles";
 import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 
-interface ListResourcesProps extends ListResourcesResponsiveProps {
-  elWidth: number
-}
-
 const LIST_ANCHOR = "list";
 
 const SetSelectedFilterOptions = createContext<React.Dispatch<React.SetStateAction<readonly FilterOption[]>> | null>(null);
@@ -40,7 +36,9 @@ function ListResources({
   groupDisplayNames,
   tileData,
   resourceListingCallback: resourceListingCallback,
-}: ListResourcesProps) {
+}: ListResourcesResponsiveProps & {
+  elWidth: number
+}) {
   const {groups, dataFetchError} = useDataFetch(
     versioned,
     defaultGroupLinks,
@@ -178,9 +176,9 @@ export default ListResourcesResponsive
 
 function SortOptions({sortMethod, changeSortMethod}: {
   sortMethod: SortMethod,
-  changeSortMethod: React.Dispatch<React.SetStateAction<SortMethod>>
+  changeSortMethod: React.Dispatch<React.SetStateAction<SortMethod>>,
 }) {
-  function onChangeValue(event:FormEvent<HTMLInputElement>): void {
+  function onChangeValue(event: FormEvent<HTMLInputElement>): void {
     changeSortMethod(event.currentTarget.value as SortMethod);
   }
   return (
@@ -208,13 +206,15 @@ function SortOptions({sortMethod, changeSortMethod}: {
   )
 }
 
-interface FilterProps {
+function Filter({
+  options,
+  selectedFilterOptions,
+  setSelectedFilterOptions,
+}: {
   options: FilterOption[]
   selectedFilterOptions: readonly FilterOption[]
   setSelectedFilterOptions: React.Dispatch<React.SetStateAction<readonly FilterOption[]>>
-}
-
-function Filter({options, selectedFilterOptions, setSelectedFilterOptions}: FilterProps) {
+}) {
 
   const onChange = (options: MultiValue<FilterOption>) => {
     if (options) {

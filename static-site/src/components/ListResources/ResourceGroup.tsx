@@ -7,7 +7,15 @@ import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
 import { SetModalResourceContext } from "./Modal";
 import { Group, QuickLink, Resource } from './types';
 
-interface ResourceGroupHeaderProps {
+const ResourceGroupHeader = ({
+  group,
+  isMobile,
+  setCollapsed,
+  collapsible,
+  isCollapsed,
+  resourcesToShowWhenCollapsed,
+  quickLinks,
+}: {
   group: Group
   isMobile: boolean
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
@@ -15,9 +23,7 @@ interface ResourceGroupHeaderProps {
   isCollapsed: boolean
   resourcesToShowWhenCollapsed: number
   quickLinks: QuickLink[]
-}
-
-const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isCollapsed, resourcesToShowWhenCollapsed, quickLinks}: ResourceGroupHeaderProps) => {
+}) => {
   const setModalResource = useContext(SetModalResourceContext);
   if (!setModalResource) throw new Error("Context not provided!")
 
@@ -112,18 +118,22 @@ const ResourceGroupHeader = ({group, isMobile, setCollapsed, collapsible, isColl
   )
 }
 
-interface ResourceGroupProps {
+/**
+ * Displays a single resource group (e.g. a single pathogen)
+ */
+export const ResourceGroup = ({
+  group,
+  elWidth,
+  numGroups,
+  sortMethod,
+  quickLinks,
+}: {
   group: Group
   elWidth: number
   numGroups: number
   sortMethod: string
   quickLinks: QuickLink[]
-}
-
-/**
- * Displays a single resource group (e.g. a single pathogen)
- */
-export const ResourceGroup = ({group, elWidth, numGroups, sortMethod, quickLinks}: ResourceGroupProps) => {
+}) => {
   const {collapseThreshold, resourcesToShowWhenCollapsed} = collapseThresolds(numGroups);
   const collapsible = group.resources.length > collapseThreshold;
   const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
