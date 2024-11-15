@@ -38,7 +38,9 @@ function createGroupTiles(groups: Group[], colors = [...theme.titleColors]): Gro
         throw new InternalError("Colors are missing.");
       }
       const groupColor = colors[0];
-      colors.push(colors.shift()!);
+
+      // Rotate the colors
+      colors.push(colors.shift()!);  // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
       const tile: GroupTile = {
         img: "empty.png",
