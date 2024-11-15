@@ -1,11 +1,7 @@
 import React, { ErrorInfo, ReactNode } from "react";
 import { ErrorContainer } from "../pages/404";
 
-export class InternalError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
+export class InternalError extends Error {}
 
 interface Props {
   children: ReactNode;
