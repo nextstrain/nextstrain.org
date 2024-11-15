@@ -22,7 +22,7 @@ Within these major clades, we will monitor potential ‘emerging clades', which 
 ### Definition of major clades
 We propose to name a new major clade when it reaches a frequency of 20% globally. When calculating these frequencies, care has to be taken to achieve approximately even sampling of sequences in time and space since sequencing effort varies strongly between countries. A clade name consists of the year it emerged and the next available letter in the alphabet. A new clade should be at least 2 mutations away from its parent major clade.
 
-![nextstrain-global-ncov-clades](img/clades-2June.PNG)
+![nextstrain-global-ncov-clades](/blog/img/clades-2June.PNG)
 **Fig 1.** Nextstrain ‘global’ run with the new Nextstrain major clades labelled.
 
 By these criteria, the first two clades are 19A and 19B which correspond to the split marked by mutations C8782T and T28144C. These clades were both prevalent in Asia during the first months of the outbreak. The next clade that was named is 20A corresponding to the clade that dominated large European outbreak in early 2020. It is distinguished from its parent 19A by the mutations C3037T, C14408T and A23403G.
@@ -34,13 +34,13 @@ The clade definitions are coded in as a tabular file that defines a genotypic si
 Additionally, definitions of the clades, as well as a table of the current clades, with some detail on their characteristics and definition, is available on the ‘ncov’ github repository documentation (github.com/nextstrain/ncov) [here](https://github.com/nextstrain/ncov/blob/master/docs/clades.md). In parallel to the large-scale clade annotation, Nextstrain will support the Pangolin lineage nomenclature developed by Rambaut et al. 2020 (1), and continue to offer color-by for the ‘old’ Nextstrain clades so that exiting references to these clades are still identifiable.
 
 ### Using Nextstrain Clade Definitions
-To make it easy for users to identify the Nextstrain clade of their own sequences, we provide a [simple python script](https://github.com/nextstrain/ncov/blob/master/assign_clades.py) that can be run on any Fasta file to assign appropriate clades. This script is part of the ‘ncov’ github repository, but does not require running any other part of the pipeline. However ‘augur’ must be installed to run the script. This can be done [a number of different ways](https://nextstrain.org/docs/getting-started/local-installation#install-augur-with-python), but is often most easily done [using ‘pip’](https://nextstrain-augur.readthedocs.io/en/stable/installation/installation.html#using-pip-from-pypi).
+To make it easy for users to identify the Nextstrain clade of their own sequences, we provide a [simple python script](https://github.com/nextstrain/ncov/blob/master/assign_clades.py) that can be run on any Fasta file to assign appropriate clades. This script is part of the ‘ncov’ github repository, but does not require running any other part of the pipeline. However ‘augur’ must be installed to run the script. This can be done [a number of different ways](/docs/getting-started/local-installation#install-augur-with-python), but is often most easily done [using ‘pip’](https://nextstrain-augur.readthedocs.io/en/stable/installation/installation.html#using-pip-from-pypi).
 
 **Links:**
 * An up-to-date description of our approach to clade names and the current clades can be found on the Nextstrain ‘ncov’ github [here](https://github.com/nextstrain/ncov/blob/master/docs/clades.md).
-* Clades show on the current Nextstrain 'Global' SARS-CoV-2 tree can be viewed [here](https://nextstrain.org/ncov/global?branchLabel=clade&c=clade_membership).
-* Pangolin clades can be displayed on the Nextstrain runs, as demonstrated [here](https://nextstrain.org/ncov/global?branchLabel=none&c=pangolin_lineage).
-* The ‘old’ Nextstrain clades can still be viewed [here](https://nextstrain.org/ncov/global?branchLabel=none&c=legacy_clade_membership) as a color-by for those papers/references that have used them
+* Clades show on the current Nextstrain 'Global' SARS-CoV-2 tree can be viewed [here](/ncov/global?branchLabel=clade&c=clade_membership).
+* Pangolin clades can be displayed on the Nextstrain runs, as demonstrated [here](/ncov/global?branchLabel=none&c=pangolin_lineage).
+* The ‘old’ Nextstrain clades can still be viewed [here](/ncov/global?branchLabel=none&c=legacy_clade_membership) as a color-by for those papers/references that have used them
 
 References:
 

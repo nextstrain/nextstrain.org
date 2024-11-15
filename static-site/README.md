@@ -91,6 +91,26 @@ After the above PR is merged, the new team member can then be added to the [docs
 2. Merge the PR and follow [instructions to release a new version of the theme on PyPI](https://github.com/nextstrain/sphinx-theme#releasing).
 3. Once the new version is available on PyPI, trigger RTD rebuilds for the latest/stable doc versions to update the footer.
 
+### Writing blog posts
+
+To author a new blog post, create a new file under `/static-site/content/blog/` following the existing file naming convention (`YYYY-MM-DD-the-title-here.md`, e.g., `2024-11-14-blog-posts-are-awesome.md`). The file should start with a block of YAML front matter, such as:
+
+``` yaml
+---
+author: "James Hadfield"
+date: "2018-05-14"
+title: "New nextstrain.org website"
+sidebarTitle: "New Nextstrain Website"
+---
+```
+
+followed by the content of the blog post, marked up using [Markdown](https://en.wikipedia.org/wiki/Markdown). Please observe the following conventions:
+
+* Images associated with blog posts should be placed in [`/static-site/public/blog/img/`](./public/blog/img)
+* All images associated with a given blog post should start with a common filename prefix, which should be clearly related to the blog post; see the existing files in the directory for examples
+* Image URLs in the post should be given in an origin-relative format; i.e., they should start with `/blog/img/`
+* Links to other pages and resources on `nextstrain.org` should also be given in origin-relative form; i.e., they should NOT start with `https://nextstraing.org`, only with a `/`
+
 
 ## Deploying
 The static documentation is automatically rebuilt every time the (parent) repo is pushed to master.
