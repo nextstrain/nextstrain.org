@@ -40,7 +40,7 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
         roles = await rolesResponse.json();
         members = await membersResponse.json();
       } catch (err) {
-        const errorMessage = (err as Error).message
+        const errorMessage = err instanceof Error ? err.message : String(err)
         if(!ignore) {
           setErrorMessage({
             title: "An error occurred when trying to fetch group membership data",
@@ -150,7 +150,7 @@ export async function canViewGroupMembers(groupName: string) {
       const allowedMethods = new Set(groupMemberOptions.headers.get("Allow")?.split(/\s*,\s*/));
       return allowedMethods.has("GET");
   } catch (err) {
-    const errorMessage = (err as Error).message
+    const errorMessage = err instanceof Error ? err.message : String(err)
     console.error("Cannot check user permissions to view group members", errorMessage);
   }
   return false
