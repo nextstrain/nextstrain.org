@@ -92,8 +92,7 @@ function partitionByPathogen(
       resourceDetails.updateCadence = updateCadence(sortedDates.map((date)=> new Date(date)));
     }
 
-    if (!store[groupName]) store[groupName] = [];
-    store[groupName]!.push(resourceDetails)
+    (store[groupName] ??= []).push(resourceDetails)
 
     return store;
   }, {});
