@@ -22,7 +22,7 @@ This comprises the splash page and documentation (docs, about, blogs etc) all bu
 
 
 **Auspice:** is the visualisation app, build as a single page javascript application ([github](https://github.com/nextstrain/auspice)).
-This is what used to be nextstrain.org, but is now only used to visualise datasets (e.g. [nextstrain.org/WNV](https://www.nextstrain.org/WNV)).
+This is what used to be nextstrain.org, but is now only used to visualise datasets (e.g. [nextstrain.org/WNV](/WNV)).
 Removing the splash & about pages from auspice allows for easier development of auspice, and makes adding static content a matter of writing markdown rather than modifying the JavaScript of auspice.
 
 

@@ -28,9 +28,9 @@ As a result of this, we are designating 3 new Nextstrain clades:
 
 As all of these variants are part of the Omicron family and the Omicron group is designated a VOC according to WHO, they will retain the parenthetical "(Omicron)" designation. Note that the topology at the base of clade `21L` that contains Pango lineages BA.2, BA.4 and BA.5 is not completely certain. BA.2, BA.4 and BA.5 are designated as sister lineages. Here, we’ve placed clade `21L` along with `22A` and `22B` within `21L` to be robust to noise in phylogenetic reconstruction.
 
-You can view updated clade definitions and detailed rationale behind elevating the new clades in this [GitHub PR](https://github.com/nextstrain/ncov/pull/933), and the resulting Nextstrain outputs can be seen at [nextstrain.org/ncov/](https://nextstrain.org/ncov/).
+You can view updated clade definitions and detailed rationale behind elevating the new clades in this [GitHub PR](https://github.com/nextstrain/ncov/pull/933), and the resulting Nextstrain outputs can be seen at [nextstrain.org/ncov/](/ncov/).
 
 An updated version of our clade schema diagram is now:
 
-![ncov-clades-schematic-apr-2022](img/ncov_clades_schematic_2022_04_29.png)
+![ncov-clades-schematic-apr-2022](/blog/img/ncov_clades_schematic_2022_04_29.png)
 **Fig 1.** Schematic showing hierarchical relationships among clades. The code behind this diagram is available [here](https://github.com/nextstrain/ncov-clades-schema).
