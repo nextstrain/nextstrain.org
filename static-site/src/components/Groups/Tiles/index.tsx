@@ -7,9 +7,18 @@ import { UserContext } from "../../../layouts/userDataWrapper";
 import { GroupTile } from "./types";
 import { Group } from "../types";
 import { ExpandableTiles } from "../../ExpandableTiles";
+import { ErrorBoundary, InternalError } from "../../ErrorBoundary";
 
 
 export const GroupTiles = () => {
+  return (
+    <ErrorBoundary>
+      <GroupTilesUnhandled />
+    </ErrorBoundary>
+  );
+};
+
+const GroupTilesUnhandled = () => {
   const { visibleGroups } = useContext(UserContext);
   return (
     <ExpandableTiles
@@ -25,7 +34,10 @@ function createGroupTiles(groups: Group[], colors = [...theme.titleColors]): Gro
   return groups
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((group) => {
-      const groupColor = colors[0]!;
+      if (colors[0] === undefined) {
+        throw new InternalError("Colors are missing.");
+      }
+      const groupColor = colors[0];
       colors.push(colors.shift()!);
 
       const tile: GroupTile = {
