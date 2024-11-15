@@ -77,7 +77,7 @@ const GroupMembersPage = ({ groupName }: {groupName: string}) => {
       <BigSpacer/>
 
       {roles && members
-        ? <MembersTable members={members as GroupMember[]} />
+        ? <MembersTable members={members} />
         : <splashStyles.H4>Fetching group members...</splashStyles.H4>}
     </GenericPage>
   )
