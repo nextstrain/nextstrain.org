@@ -58,7 +58,7 @@ function ListResources({
       <ErrorContainer>
         {"Whoops - listing resources isn't working!"}
         <br/>
-        {'Please '}<a href="/contact" style={{fontWeight: 300}}>get in touch</a>{" if this keeps happening"}
+        {"Please "}<a href="/contact" style={{fontWeight: 300}}>get in touch</a>{" if this keeps happening"}
       </ErrorContainer>
     )
   }
