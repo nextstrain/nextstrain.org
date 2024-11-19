@@ -14,7 +14,7 @@ import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
 import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod, convertVersionedResource } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
-import { ErrorBoundary } from './errors';
+import { ErrorBoundary } from '../ErrorBoundary';
 
 const LIST_ANCHOR = "list";
 

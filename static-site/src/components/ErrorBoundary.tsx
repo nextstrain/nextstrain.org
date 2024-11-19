@@ -1,5 +1,5 @@
 import React, { ErrorInfo, ReactNode } from "react";
-import { ErrorContainer } from "../../pages/404";
+import { ErrorContainer } from "../pages/404";
 
 export class InternalError extends Error {
   constructor(message: string) {

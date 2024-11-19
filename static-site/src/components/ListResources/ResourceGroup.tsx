@@ -6,7 +6,7 @@ import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
   ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource"
 import { SetModalResourceContext } from "./Modal";
 import { DisplayNamedResource, Group, QuickLink, Resource } from './types';
-import { InternalError } from './errors';
+import { InternalError } from '../ErrorBoundary';
 
 const ResourceGroupHeader = ({
   group,

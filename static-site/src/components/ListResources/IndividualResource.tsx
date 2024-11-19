@@ -5,7 +5,7 @@ import { MdHistory } from "react-icons/md";
 import { SetModalResourceContext } from './Modal';
 import { ResourceDisplayName, Resource, DisplayNamedResource } from './types';
 import { IconType } from 'react-icons';
-import { InternalError } from './errors';
+import { InternalError } from '../ErrorBoundary';
 
 export const LINK_COLOR = '#5097BA'
 export const LINK_HOVER_COLOR = '#31586c'

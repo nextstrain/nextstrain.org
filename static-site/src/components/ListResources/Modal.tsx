@@ -5,7 +5,7 @@ import * as d3 from "d3";
 import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
 import { Resource, VersionedResource } from './types';
-import { InternalError } from './errors';
+import { InternalError } from '../ErrorBoundary';
 
 export const SetModalResourceContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
