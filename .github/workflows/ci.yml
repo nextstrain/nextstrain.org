@@ -50,6 +50,7 @@ jobs:
           node-version-file: 'package.json'
       - run: npm ci
       - run: npx tsc --version
+      - run: cat node_modules/next/dist/shared/lib/get-img-props.d.ts
       - run: npm run type-check
 
   # Build into Heroku slug so we can deploy the same build that we test.
