@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import * as d3 from "d3";
 import { MdClose } from "react-icons/md";
 import { dodge } from "./dodge";
-import { Resource } from './types';
+import { Resource, VersionedResource } from './types';
+import { InternalError } from './errors';
 
 export const SetModalResourceContext = createContext<React.Dispatch<React.SetStateAction<Resource | undefined>> | null>(null);
 
@@ -16,7 +17,7 @@ export const ResourceModal = ({
   resource,
   dismissModal,
 }: {
-  resource?: Resource
+  resource: VersionedResource
   dismissModal: () => void
 }) => {  
   const [ref, setRef] = useState(null); 
@@ -41,9 +42,6 @@ export const ResourceModal = ({
     if (!ref || !resource) return;
     _draw(ref, resource)
   }, [ref, resource])
-
-  // modal is only applicable for versioned resources
-  if (!resource || !resource.dates || !resource.updateCadence) return null;
 
   const summary = _snapshotSummary(resource.dates);
   return (
@@ -134,27 +132,29 @@ const Title = styled.div`
 
 function _snapshotSummary(dates: string[]) {
   const d = [...dates].sort()
-  if (d.length < 1) throw new Error("Missing dates.")
-
-  const d1 = new Date(d.at( 0)!).getTime();
-  const d2 = new Date(d.at(-1)!).getTime();
-  const days = (d2 - d1)/1000/60/60/24;
+  const d1 = d[0];
+  const d2 = d.at(-1);
+  if (d1 === undefined || d2 === undefined) {
+    throw new InternalError("Missing dates.");
+  }
+  const days = (new Date(d2).getTime() - new Date(d1).getTime())/1000/60/60/24;
   let duration = '';
   if (days < 100) duration=`${days} days`;
   else if (days < 365*2) duration=`${Math.round(days/(365/12))} months`;
   else duration=`${Math.round(days/365)} years`;
-  return {duration, first: d[0], last:d.at(-1)};
+  return {duration, first: d1, last: d2};
 }
 
-function _draw(ref, resource: Resource) {
-  // do nothing if resource has no dates
-  if (!resource.dates) return
-
+function _draw(ref, resource: VersionedResource) {
   /* Note that _page_ resizes by themselves will not result in this function
   rerunning, which isn't great, but for a modal I think it's perfectly
   acceptable */  
   const sortedDateStrings = [...resource.dates].sort();
   const flatData = sortedDateStrings.map((version) => ({version, 'date': new Date(version)}));
+
+  if (flatData[0] === undefined) {
+    throw new InternalError("Resource does not have any dates.");
+  }
 
   const width = ref.clientWidth;
   const graphIndent = 20;
@@ -179,8 +179,7 @@ function _draw(ref, resource: Resource) {
 
   /* Create the x-scale and draw the x-axis */
   const x = d3.scaleTime()
-    // presence of dates on resource has already been checked so this assertion is safe
-    .domain([flatData[0]!.date, new Date()]) // the domain extends to the present day
+    .domain([flatData[0].date, new Date()]) // the domain extends to the present day
     .range([graphIndent, width-graphIndent])
   svg.append('g')
     .attr("transform", `translate(0, ${heights.height - heights.marginBelowAxis})`)

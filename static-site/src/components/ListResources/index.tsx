@@ -12,8 +12,9 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
-import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod } from './types';
+import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod, convertVersionedResource } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
+import { ErrorBoundary } from './errors';
 
 const LIST_ANCHOR = "list";
 
@@ -93,7 +94,7 @@ function ListResources({
 
       <Filter options={availableFilterOptions} selectedFilterOptions={selectedFilterOptions} setSelectedFilterOptions={setSelectedFilterOptions}/>
 
-      { groups?.[0]?.lastUpdated && (
+      { versioned && (
         <SortOptions sortMethod={sortMethod} changeSortMethod={changeSortMethod}/>
       ) || (
         <HugeSpacer/>
@@ -116,8 +117,8 @@ function ListResources({
 
       <Tooltip style={{fontSize: '1.6rem'}} id="listResourcesTooltip"/>
 
-      { versioned && (
-        <ResourceModal resource={modalResource} dismissModal={() => setModalResource(undefined)}/>
+      { versioned && modalResource && (
+        <ResourceModal resource={convertVersionedResource(modalResource)} dismissModal={() => setModalResource(undefined)}/>
       )}
 
     </ListResourcesContainer>
@@ -165,9 +166,11 @@ function ListResourcesResponsive(props: ListResourcesResponsiveProps) {
     };
   }, []);
   return (
-    <div ref={ref}>
-      <ListResources {...props} elWidth={elWidth}/>
-    </div>
+    <ErrorBoundary>
+      <div ref={ref}>
+        <ListResources {...props} elWidth={elWidth}/>
+      </div>
+    </ErrorBoundary>
   )
 }
 

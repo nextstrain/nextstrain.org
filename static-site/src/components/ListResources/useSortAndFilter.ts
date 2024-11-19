@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { FilterOption, Group, Resource, SortMethod } from './types';
+import { convertVersionedGroup, FilterOption, Group, Resource, SortMethod, VersionedGroup } from './types';
 
 
 export const useSortAndFilter = (
@@ -13,28 +13,6 @@ export const useSortAndFilter = (
     /* Following console log is really useful for development */
     // console.log(`useSortAndFilter() sortMethod "${sortMethod}" ` + (selectedFilterOptions.length ? `filtering to ${selectedFilterOptions.map((el) => el.value).join(", ")}` : '(no filtering)'))
 
-    let _sortGroups: (groupA: Group, groupB: Group) => 1 | -1 | 0,
-        _sortResources: (a: Resource, b: Resource) => 1 | -1 | 0;
-    switch (sortMethod) {
-      case "lastUpdated":
-        _sortGroups = (groupA: Group, groupB: Group) => _newestFirstSort(groupA.lastUpdated, groupB.lastUpdated);
-        _sortResources = (a: Resource, b: Resource) => {
-          if (!a.lastUpdated || !b.lastUpdated || a.lastUpdated === b.lastUpdated) {
-            // resources updated on the same day or without a last updated date
-            // sort alphabetically
-            return _lexicographicSort(a.name, b.name)
-          }
-          else {
-            return _newestFirstSort(a.lastUpdated, b.lastUpdated);
-          }
-        }
-        break;
-      case "alphabetical":
-        _sortGroups = (groupA: Group, groupB: Group) => _lexicographicSort(groupA.groupName.toLowerCase(), groupB.groupName.toLowerCase()),
-        _sortResources = (a: Resource, b: Resource) => _lexicographicSort(a.name, b.name)
-        break;
-    }
-
     const searchValues = selectedFilterOptions.map((o) => o.value);
     function _filterResources(resource: Resource) {
       if (searchValues.length===0) return true;
@@ -43,17 +21,44 @@ export const useSortAndFilter = (
         .every((x) => x);
     }
 
-    const resourceGroups = originalData
-      .map((group) => ({
-        ...group,
-        resources: group.resources
-          .filter(_filterResources)
-          .sort(_sortResources)
-      }))
-      .filter((group) => !!group.resources.length)
-      .sort(_sortGroups);
+    function sortAndFilter<T extends Group>(
+      groups: T[],
+      sortGroups: (a: T, b: T) => number,
+      sortResources: (a: Resource, b: Resource) => number,
+    ): T[] {
+      return groups
+        .map((group) => ({
+          ...group,
+          resources: group.resources
+            .filter(_filterResources)
+            .sort(sortResources)
+        }))
+        .filter((group) => !!group.resources.length)
+        .sort(sortGroups);
+    }
 
-    setState(resourceGroups);
+    if (sortMethod === "lastUpdated") {
+      const groups = originalData.map((group: Group) => convertVersionedGroup(group))
+      const _sortGroups = (groupA: VersionedGroup, groupB: VersionedGroup) => _newestFirstSort(groupA.lastUpdated, groupB.lastUpdated)
+      const _sortResources = (a: Resource, b: Resource) => {
+        if (!a.lastUpdated || !b.lastUpdated || a.lastUpdated === b.lastUpdated) {
+          // resources updated on the same day or without a last updated date
+          // sort alphabetically
+          return _lexicographicSort(a.name, b.name)
+        }
+        else {
+          return _newestFirstSort(a.lastUpdated, b.lastUpdated);
+        }
+      }
+      const resourceGroups = sortAndFilter(groups, _sortGroups, _sortResources)
+      setState(resourceGroups)
+    } else if (sortMethod === "alphabetical") {
+      const groups = originalData;
+      const _sortGroups = (groupA: Group, groupB: Group) => _lexicographicSort(groupA.groupName.toLowerCase(), groupB.groupName.toLowerCase())
+      const _sortResources = (a: Resource, b: Resource) => _lexicographicSort(a.name, b.name)
+      const resourceGroups = sortAndFilter(groups, _sortGroups, _sortResources)
+      setState(resourceGroups)
+    }
   }, [sortMethod, selectedFilterOptions, originalData, setState])
 }
 

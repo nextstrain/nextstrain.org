@@ -5,7 +5,8 @@ import { MdHistory, MdFormatListBulleted, MdChevronRight } from "react-icons/md"
 import { IndividualResource, getMaxResourceWidth, TooltipWrapper, IconContainer,
   ResourceLinkWrapper, ResourceLink, LINK_COLOR, LINK_HOVER_COLOR } from "./IndividualResource"
 import { SetModalResourceContext } from "./Modal";
-import { Group, QuickLink, Resource } from './types';
+import { DisplayNamedResource, Group, QuickLink, Resource } from './types';
+import { InternalError } from './errors';
 
 const ResourceGroupHeader = ({
   group,
@@ -25,7 +26,7 @@ const ResourceGroupHeader = ({
   quickLinks: QuickLink[]
 }) => {
   const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) throw new Error("Context not provided!")
+  if (!setModalResource) throw new InternalError("Context not provided!")
 
   /* Filter the known quick links to those which appear in resources of this group */
   const resourcesByName = Object.fromEntries(group.resources.map((r) => [r.name, r]));
@@ -137,8 +138,8 @@ export const ResourceGroup = ({
   const {collapseThreshold, resourcesToShowWhenCollapsed} = collapseThresolds(numGroups);
   const collapsible = group.resources.length > collapseThreshold;
   const [isCollapsed, setCollapsed] = useState(collapsible); // if it is collapsible, start collapsed
-  const displayResources = isCollapsed ? group.resources.slice(0, resourcesToShowWhenCollapsed) : group.resources;
-  _setDisplayName(displayResources)
+  const resources = isCollapsed ? group.resources.slice(0, resourcesToShowWhenCollapsed) : group.resources;
+  const displayResources = _setDisplayName(resources)
 
   /* isMobile: boolean determines whether we expose snapshots, as we hide them on small screens */
   const isMobile = elWidth < 500;
@@ -257,20 +258,28 @@ function NextstrainLogo() {
  *      "seasonal-flu | h1n1pdm"
  *      "             | h3n2"
  */
-function _setDisplayName(resources: Resource[]) {
+function _setDisplayName(resources: Resource[]): DisplayNamedResource[] {
   const sep = "│"; // ASCII 179
-  resources.forEach((r, i) => {
+  return resources.map((r, i) => {
     let name;
     if (i===0) {
       name = r.nameParts.join(sep);
     } else {
-      let matchIdx = r.nameParts.map((word, j) => word === resources[i-1]?.nameParts[j]).findIndex((v) => !v);
+      const previousResource = resources[i-1];
+      if (previousResource === undefined) {
+        throw new InternalError("Previous resource is undefined. Check that this is not run on i===0.");
+      }
+      let matchIdx = r.nameParts.map((word, j) => word === previousResource.nameParts[j]).findIndex((v) => !v);
       if (matchIdx===-1) { // -1 means every word is in the preceding name, but we should display the last word anyway
         matchIdx = r.nameParts.length-2;
       }
       name = r.nameParts.map((word, j) => j < matchIdx ? ' '.repeat(word.length) : word).join(sep);
     }
-    r.displayName = {hovered: r.nameParts.join(sep), default: name}
+
+    return {
+      ...r,
+      displayName: {hovered: r.nameParts.join(sep), default: name}
+    }
   })
 }
 

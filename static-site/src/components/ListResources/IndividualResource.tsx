@@ -3,8 +3,9 @@ import React, {useState, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import { MdHistory } from "react-icons/md";
 import { SetModalResourceContext } from './Modal';
-import { ResourceDisplayName, Resource } from './types';
+import { ResourceDisplayName, Resource, DisplayNamedResource } from './types';
 import { IconType } from 'react-icons';
+import { InternalError } from './errors';
 
 export const LINK_COLOR = '#5097BA'
 export const LINK_HOVER_COLOR = '#31586c'
@@ -19,10 +20,8 @@ export const LINK_HOVER_COLOR = '#31586c'
 const [resourceFontSize, namePxPerChar, summaryPxPerChar] = [16, 10, 9];
 const iconWidth = 20; // not including text
 const gapSize = 10;
-export const getMaxResourceWidth = (displayResources: Resource[]) => {
+export const getMaxResourceWidth = (displayResources: DisplayNamedResource[]) => {
   return displayResources.reduce((w, r) => {
-    if (!r.displayName) return w
-
     /* add the pixels for the display name */
     let _w = r.displayName.default.length * namePxPerChar;
     if (r.nVersions && r.updateCadence) {
@@ -129,15 +128,16 @@ export const IndividualResource = ({
   isMobile: boolean
 }) => {
   const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) throw new Error("Context not provided!")
+  if (!setModalResource) throw new InternalError("Context not provided!")
 
   const ref = useRef<HTMLDivElement>(null);
   const [topOfColumn, setTopOfColumn] = useState(false);
   useEffect(() => {
-    // don't do anything if the ref is undefined or the parent is not a div (IndividualResourceContainer)
-    if (!ref.current
-     || !ref.current.parentNode
-     || ref.current.parentNode.nodeName != 'DIV') return;
+    if (ref.current === null ||
+        ref.current.parentNode === null ||
+        ref.current.parentNode.nodeName != 'DIV') {
+      throw new InternalError("ref must be defined and the parent must be a div (IndividualResourceContainer).");
+     }
 
     /* The column CSS is great but doesn't allow us to know if an element is at
     the top of its column, so we resort to JS */

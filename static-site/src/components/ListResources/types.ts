@@ -1,3 +1,4 @@
+import { InternalError } from "./errors";
 import { Tile } from "../ExpandableTiles/types"
 
 export interface FilterOption {
@@ -10,11 +11,28 @@ export type SortMethod = "lastUpdated" | "alphabetical";
 export interface Group {
   groupName: string
   nResources: number
-  nVersions?: number
-  lastUpdated: string  // date
+  nVersions: number | undefined
+  lastUpdated: string | undefined
   resources: Resource[]
   groupUrl?: string
   groupDisplayName?: string
+}
+
+export interface VersionedGroup extends Group {
+  nVersions: number
+  lastUpdated: string
+}
+
+export function convertVersionedGroup(group: Group): VersionedGroup {
+  if (group.nVersions !== undefined &&
+      group.lastUpdated !== undefined) {
+      return {
+        ...group,
+        nVersions: group.nVersions,
+        lastUpdated: group.lastUpdated,
+      }
+  }
+  throw new InternalError("Group is not versioned.");
 }
 
 export interface Resource {
@@ -29,6 +47,36 @@ export interface Resource {
   dates?: string[]
   nVersions?: number
   updateCadence?: UpdateCadence
+}
+
+export interface DisplayNamedResource extends Resource {
+  displayName: ResourceDisplayName
+}
+
+export interface VersionedResource extends Resource {
+  lastUpdated: string  // date
+  firstUpdated: string  // date
+  dates: string[]
+  nVersions: number
+  updateCadence: UpdateCadence
+}
+
+export function convertVersionedResource(resource: Resource): VersionedResource {
+  if (resource.lastUpdated !== undefined &&
+      resource.firstUpdated !== undefined &&
+      resource.dates !== undefined &&
+      resource.nVersions !== undefined &&
+      resource.updateCadence !== undefined) {
+    return {
+      ...resource,
+      lastUpdated: resource.lastUpdated,
+      firstUpdated: resource.firstUpdated,
+      dates: resource.dates,
+      nVersions: resource.nVersions,
+      updateCadence: resource.updateCadence
+    }
+  }
+  throw new InternalError("Resource is not versioned.");
 }
 
 export interface ResourceDisplayName {
