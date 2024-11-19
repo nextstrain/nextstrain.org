@@ -14,10 +14,10 @@ ignorePatterns:
   - auspice-client/
   - docs/
   - node_modules/
-  - static-site/
 
 rules:
   # Code quality rules
+  eqeqeq: error
   no-unused-vars: error
   no-use-before-define: ["error", { "functions": false, "classes": false }]
   prefer-const: ["error", {"destructuring": "all"}]

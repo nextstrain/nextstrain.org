@@ -137,7 +137,7 @@ export const IndividualResource = ({
     // don't do anything if the ref is undefined or the parent is not a div (IndividualResourceContainer)
     if (!ref.current
      || !ref.current.parentNode
-     || ref.current.parentNode.nodeName != 'DIV') return;
+     || ref.current.parentNode.nodeName !== 'DIV') return;
 
     /* The column CSS is great but doesn't allow us to know if an element is at
     the top of its column, so we resort to JS */

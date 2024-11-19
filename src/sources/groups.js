@@ -112,7 +112,7 @@ class GroupSource extends Source {
     let {title, byline, website, showDatasets, showNarratives} = frontMatter;
 
     // Must be an allowed protocol
-    if (website != null) {
+    if (website !== null) {
       const {protocol} = parseUrl(website) ?? {};
       const allowedProtocols = new Set(["https:", "http:", "ftp:", "ftps:", "mailto:"]);
       if (!allowedProtocols.has(protocol)) {

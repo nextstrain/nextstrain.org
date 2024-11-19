@@ -119,7 +119,7 @@ const NavBar = ({ minified }: {
 
   return (
     <NavContainer>
-      {Router.pathname != "/" && <>
+      {Router.pathname !== "/" && <>
         <Logo />
         <LogoType />
       </>}
