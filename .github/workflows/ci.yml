@@ -49,6 +49,7 @@ jobs:
         with:
           node-version-file: 'package.json'
       - run: npm ci
+      - run: npx tsc --version
       - run: npm run type-check
 
   # Build into Heroku slug so we can deploy the same build that we test.
