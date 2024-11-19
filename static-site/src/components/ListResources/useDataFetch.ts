@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Group, Resource, ResourceListingInfo } from './types';
+import { Group, Pathogen, Resource, ResourceListingInfo } from './types';
 
 
 /**
@@ -21,7 +21,7 @@ import { Group, Resource, ResourceListingInfo } from './types';
 export function useDataFetch(
   versioned: boolean,
   defaultGroupLinks: boolean,
-  groupDisplayNames: Record<string, string>,
+  pathogens: Pathogen[],
   resourceListingCallback: () => Promise<ResourceListingInfo>,
 ) : {groups: Group[] | undefined, dataFetchError: boolean} {
   const [groups, setGroups] = useState<Group[]>();
@@ -31,6 +31,10 @@ export function useDataFetch(
     async function fetchAndParse(): Promise<void> {
       try {
         const { pathPrefix, pathVersions } = await resourceListingCallback();
+        
+        const groupDisplayNames = Object.fromEntries(
+          pathogens.map(({ id, name }) => [id, name])
+        );
 
         /* group/partition the resources by pathogen (the first word
         of the resource path). This grouping is constant for all UI
@@ -45,7 +49,7 @@ export function useDataFetch(
     }
 
     fetchAndParse();
-  }, [versioned, defaultGroupLinks, groupDisplayNames, resourceListingCallback]);
+  }, [versioned, defaultGroupLinks, pathogens, resourceListingCallback]);
 
   return {groups, dataFetchError}
 }
