@@ -290,5 +290,9 @@
   {
     "name": "SentinelWildBirds-private",
     "isPublic": false
+  },
+  {
+    "name": "jbloomlab",
+    "isPublic": true
   }
 ]
