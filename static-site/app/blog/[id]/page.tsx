@@ -27,6 +27,18 @@ export function generateStaticParams(): BlogPostParams[] {
   });
 }
 
+type PopulatedMetadata = Metadata & {
+  metadataBase: URL
+  openGraph: {
+    description: string
+    images: { url: string}[]
+    siteName: string
+    title: string
+    type: "website"
+    url: URL | string
+  }
+}
+
 // generate opengraph and other metadata tags
 export async function generateMetadata({
   params,
@@ -37,7 +49,7 @@ export async function generateMetadata({
 
   // set up some defaults that are independent of the specific blog post
   const baseUrl = new URL(siteUrl);
-  const metadata: Metadata = {
+  const metadata: PopulatedMetadata = {
     metadataBase: baseUrl,
     openGraph: {
       description: siteTitleAlt,
@@ -61,9 +73,9 @@ export async function generateMetadata({
 
     metadata.title = blogPost.title;
     metadata.description = description;
-    metadata.openGraph!.description = description;
-    metadata.openGraph!.title = `${siteTitle}: ${blogPost.title}`;
-    metadata.openGraph!.url = `/blog/${blogPost.blogUrlName}`;
+    metadata.openGraph.description = description;
+    metadata.openGraph.title = `${siteTitle}: ${blogPost.title}`;
+    metadata.openGraph.url = `/blog/${blogPost.blogUrlName}`;
   }
 
   return metadata;

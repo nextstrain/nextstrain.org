@@ -116,6 +116,7 @@ const Splash = () => {
       </Styles.H1Small>
 
       <BigSpacer/>
+      {/* eslint-disable-next-line @typescript-eslint/consistent-type-assertions */}
       <ExpandableTiles tiles={featuredAnalyses as unknown as SplashTile[]} tileWidth={tileWidth} tileHeight={tileHeight} TileComponent={Tile} />
       <Tooltip style={{fontSize: '1.6rem'}} id={tooltipId} />
 

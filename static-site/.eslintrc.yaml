@@ -10,7 +10,7 @@ extends:
   - eslint:recommended
   - plugin:react/recommended
   - plugin:react-hooks/recommended
-  - plugin:@typescript-eslint/recommended
+  - plugin:@typescript-eslint/strict
   # We use the recommended Next.js eslint configuration `next/core-web-vitals` as per
   # <https://nextjs.org/docs/pages/building-your-application/configuring/eslint#core-web-vitals>
   # As of April 2024, the extension simply adds the `@next/next/core-web-vitals` plugin:
@@ -27,6 +27,7 @@ ignorePatterns:
   - public/
 
 rules:
+  "@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: 'never' }]
   react/prop-types: off # Remove this override once all props have been typed using PropTypes or TypeScript.
   '@next/next/no-img-element': off # Remove this if we use next.js optimisations for <img>
   '@next/next/no-html-link-for-pages': off

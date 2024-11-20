@@ -14,7 +14,7 @@ import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
 import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod, convertVersionedResource } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
-import { ErrorBoundary } from './errors';
+import { ErrorBoundary, InternalError } from '../ErrorBoundary';
 
 const LIST_ANCHOR = "list";
 
@@ -182,7 +182,12 @@ function SortOptions({sortMethod, changeSortMethod}: {
   changeSortMethod: React.Dispatch<React.SetStateAction<SortMethod>>,
 }) {
   function onChangeValue(event: FormEvent<HTMLInputElement>): void {
-    changeSortMethod(event.currentTarget.value as SortMethod);
+    const sortMethod = event.currentTarget.value;
+    if (sortMethod !== "alphabetical" &&
+        sortMethod !== "lastUpdated") {
+      throw new InternalError(`Unhandled sort method: '${sortMethod}'`);
+    }
+    changeSortMethod(sortMethod);
   }
   return (
     <SortContainer>

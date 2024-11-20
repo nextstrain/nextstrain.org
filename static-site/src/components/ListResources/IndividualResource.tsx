@@ -5,7 +5,7 @@ import { MdHistory } from "react-icons/md";
 import { SetModalResourceContext } from './Modal';
 import { ResourceDisplayName, Resource, DisplayNamedResource } from './types';
 import { IconType } from 'react-icons';
-import { InternalError } from './errors';
+import { InternalError } from '../ErrorBoundary';
 
 export const LINK_COLOR = '#5097BA'
 export const LINK_HOVER_COLOR = '#31586c'
@@ -139,9 +139,17 @@ export const IndividualResource = ({
       throw new InternalError("ref must be defined and the parent must be a div (IndividualResourceContainer).");
      }
 
+     // The type of ref.current.parentNode is ParentNode which does not have an
+     // offsetTop property. I don't think there is a way to appease the
+     // TypeScript compiler other than a type assertion. It is loosely coupled
+     // to the check above for parentNode.nodeName.
+     // Note: this doesn't strictly have to be a div, but that's what it is in
+     // current usage of the component at the time of writing.
+     const parentNode = ref.current.parentNode as HTMLDivElement  // eslint-disable-line @typescript-eslint/consistent-type-assertions
+
     /* The column CSS is great but doesn't allow us to know if an element is at
     the top of its column, so we resort to JS */
-    if (ref.current.offsetTop===(ref.current.parentNode as HTMLDivElement).offsetTop) {
+    if (ref.current.offsetTop===parentNode.offsetTop) {
       setTopOfColumn(true);
     }
   }, []);

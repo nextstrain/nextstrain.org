@@ -1,4 +1,4 @@
-import { InternalError } from "./errors";
+import { InternalError } from "../ErrorBoundary";
 import { Tile } from "../ExpandableTiles/types"
 
 export interface FilterOption {

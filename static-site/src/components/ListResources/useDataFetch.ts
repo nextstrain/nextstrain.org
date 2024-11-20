@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Group, Resource, ResourceListingInfo } from './types';
+import { InternalError } from '../ErrorBoundary';
 
 
 /**
@@ -65,8 +66,16 @@ function partitionByPathogen(
     const sortedDates = [...dates].sort();
 
     const nameParts = name.split('/');
-    // split() will always return at least 1 string
-    const groupName = nameParts[0]!;
+
+    if (nameParts[0] === undefined) {
+      throw new InternalError(`Name is not properly formatted: '${name}'`);
+    }
+
+    if (sortedDates[0] === undefined) {
+      throw new InternalError("Resource does not have any dates.");
+    }
+
+    const groupName = nameParts[0];
 
     const resourceDetails: Resource = {
       name,
@@ -77,14 +86,13 @@ function partitionByPathogen(
       lastUpdated: sortedDates.at(-1),
     };
     if (versioned) {
-      resourceDetails.firstUpdated = sortedDates[0]!;
+      resourceDetails.firstUpdated = sortedDates[0];
       resourceDetails.dates = sortedDates;
       resourceDetails.nVersions = sortedDates.length;
       resourceDetails.updateCadence = updateCadence(sortedDates.map((date)=> new Date(date)));
     }
 
-    if (!store[groupName]) store[groupName] = [];
-    store[groupName]!.push(resourceDetails)
+    (store[groupName] ??= []).push(resourceDetails)
 
     return store;
   }, {});
