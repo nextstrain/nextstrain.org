@@ -282,5 +282,13 @@
   {
     "name": "ppx-private",
     "isPublic": false
+  },
+  {
+    "name": "SentinelWildBirds",
+    "isPublic": true
+  },
+  {
+    "name": "SentinelWildBirds-private",
+    "isPublic": false
   }
 ]
