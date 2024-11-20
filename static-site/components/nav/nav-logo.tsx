@@ -22,7 +22,7 @@ export default function NavLogo(): React.ReactElement | null {
 
 const Logo = (): React.ReactElement => (
   <a href="/" className={styles.logo}>
-    <Image src={logo} alt="Nextstrain (logo)" width="40" />
+    <Image src={logo} alt="Nextstrain (logo)" width="40" height="40" />
   </a>
 );
 
