@@ -24,9 +24,6 @@ const OverviewContainer = styled.div`
     width: 200px;
     padding: 0;
   }
-  a, p {
-    font-size: 94%;
-  }
 `;
 
 export const AvatarImg = styled.img`
