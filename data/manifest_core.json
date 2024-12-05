@@ -746,6 +746,13 @@
           "default": "NA"
         }
       },
+      "yellow-fever": {
+        "resolution":{
+          "genome": "",
+          "prM-E": "",
+          "default": "genome"
+        }
+      },
       "zika": "",
       "default": "zika"
     }
