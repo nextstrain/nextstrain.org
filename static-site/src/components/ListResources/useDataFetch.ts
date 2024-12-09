@@ -83,9 +83,9 @@ function partitionByPathogen(
       nameParts,
       sortingName: _sortableName(nameParts),
       url: `/${pathPrefix}${name}`,
-      lastUpdated: sortedDates.at(-1),
     };
     if (versioned) {
+      resourceDetails.lastUpdated = sortedDates.at(-1);
       resourceDetails.firstUpdated = sortedDates[0];
       resourceDetails.dates = sortedDates;
       resourceDetails.nVersions = sortedDates.length;
