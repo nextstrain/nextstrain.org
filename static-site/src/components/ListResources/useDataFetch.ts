@@ -63,16 +63,10 @@ function partitionByPathogen(
   versioned: boolean,
 ) {
   return Object.entries(pathVersions).reduce((store: Record<string, Resource[]>, [name, dates]) => {
-    const sortedDates = [...dates].sort();
-
     const nameParts = name.split('/');
 
     if (nameParts[0] === undefined) {
       throw new InternalError(`Name is not properly formatted: '${name}'`);
-    }
-
-    if (sortedDates[0] === undefined) {
-      throw new InternalError("Resource does not have any dates.");
     }
 
     const groupName = nameParts[0];
@@ -85,6 +79,11 @@ function partitionByPathogen(
       url: `/${pathPrefix}${name}`,
     };
     if (versioned) {
+      const sortedDates = [...dates].sort();
+      if (sortedDates[0] === undefined) {
+        throw new InternalError("Resource does not have any dates.");
+      }
+
       resourceDetails.lastUpdated = sortedDates.at(-1);
       resourceDetails.firstUpdated = sortedDates[0];
       resourceDetails.dates = sortedDates;
