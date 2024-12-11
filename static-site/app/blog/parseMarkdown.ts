@@ -7,11 +7,11 @@ export default async function parseMarkdown(mdString: string): Promise<string> {
   const rawDescription = await marked.parse(mdString);
 
   const sanitizerConfig: IOptions = {
-    allowedTags, // see below
-    allowedAttributes: { "*": allowedAttributes }, // see below
+    allowedTags,
+    allowedAttributes: { "*": allowedAttributes },
     nonTextTags: ["style", "script", "textarea", "option"],
     transformTags: {
-      a: transformA, // see below
+      a: transformA,
     },
   };
 
