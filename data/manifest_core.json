@@ -412,7 +412,8 @@
         "segment": {
           "l": "",
           "s": "",
-          "default": "l"
+          "gpc": "",
+          "default": "gpc"
         }
       },
       "measles": {
