@@ -31,7 +31,7 @@ function transformA(tagName: string, attribs: Attributes): Tag {
   };
 
   const href = attribs.href;
-  if (href) {
+  if (href && !href.startsWith("#")) {
     const baseUrl = new URL(siteUrl);
     try { // sometimes the `href` isn't a valid URL…
       const linkUrl = new URL(href);
