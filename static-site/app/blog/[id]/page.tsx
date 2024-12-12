@@ -99,7 +99,10 @@ export default async function BlogPost({
     redirect("/404");
   }
 
-  const html = await markdownToHtml(blogPost.mdstring);
+  const html = await markdownToHtml({
+    mdString: blogPost.mdstring,
+    headingAnchorClass: styles.blogPostAnchor,
+  });
 
   return (
     <>
