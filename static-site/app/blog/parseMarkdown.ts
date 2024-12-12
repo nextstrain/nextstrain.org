@@ -6,11 +6,15 @@ import { siteUrl } from "../../data/BaseConfig";
 export default async function parseMarkdown({
   mdString,
   addHeadingAnchors = false,
+  headingAnchorClass = "",
 }: {
   mdString: string
 
   /** Should `<a>` tags be added to headings? */
   addHeadingAnchors?: boolean
+
+  /** Class name for heading anchors (from page-specific CSS Module) */
+  headingAnchorClass?: string
 }): Promise<string> {
   if (addHeadingAnchors) {
     marked.use({
@@ -20,7 +24,7 @@ export default async function parseMarkdown({
           const anchor = text.toLowerCase().replace(/[^\w]+/g, '-');
           return `
             <h${depth}>
-              <a name="${anchor}" class="anchor" href="#${anchor}">#</a>
+              <a name="${anchor}" class="${headingAnchorClass}" href="#${anchor}">#</a>
               ${text}
             </h${depth}>
           `;
@@ -86,7 +90,8 @@ allowedTags.push("pattern", "polygon", "polyline", "radialGradient", "rect", "se
 allowedTags.push("text", "textPath", "title", "tref", "tspan", "use", "view", "vkern");
 
 const allowedAttributes = ['href', 'src', 'width', 'height', 'alt'];
-/* "style" is not safe for untrusted code.¹ Styles should be defined in globals.css.
+/* "style" is not safe for untrusted code.¹ Styles should be defined through
+ * parameterized CSS Module selectors if possible, otherwise globals.css.
  * ¹ https://stackoverflow.com/a/4547037/4410590
  */
 

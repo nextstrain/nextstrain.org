@@ -61,11 +61,18 @@ export function getBlogPosts(): BlogPost[] {
   return blogPosts;
 }
 
-export async function markdownToHtml(mdString:string): Promise<string> {
+export async function markdownToHtml({
+  mdString,
+  headingAnchorClass,
+}: {
+  mdString: string
+  headingAnchorClass?: string
+}): Promise<string> {
   try {
     return await parseMarkdown({
       mdString,
       addHeadingAnchors: true,
+      headingAnchorClass,
     })
   }
   catch(error) {

@@ -60,6 +60,15 @@
   margin-left: 3rem;
 }
 
+.blogPostAnchor {
+  position: absolute;
+  left: -3px;
+  opacity: 0;
+}
+.blogPostAnchor:hover {
+  opacity: 100;
+}
+
 .blogSidebar {
   font-size: 14px;
 }
