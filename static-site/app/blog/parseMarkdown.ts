@@ -3,7 +3,32 @@ import sanitizeHtml, { Attributes, IOptions, Tag } from "sanitize-html";
 
 import { siteUrl } from "../../data/BaseConfig";
 
-export default async function parseMarkdown(mdString: string): Promise<string> {
+export default async function parseMarkdown({
+  mdString,
+  addHeadingAnchors = false,
+}: {
+  mdString: string
+
+  /** Should `<a>` tags be added to headings? */
+  addHeadingAnchors?: boolean
+}): Promise<string> {
+  if (addHeadingAnchors) {
+    marked.use({
+      renderer: {
+        heading({ tokens, depth }) {
+          const text = this.parser.parseInline(tokens);
+          const anchor = text.toLowerCase().replace(/[^\w]+/g, '-');
+          return `
+            <h${depth}>
+              <a name="${anchor}" class="anchor" href="#${anchor}">#</a>
+              ${text}
+            </h${depth}>
+          `;
+        }
+      }
+    });
+  }
+
   const rawDescription = await marked.parse(mdString);
 
   const sanitizerConfig: IOptions = {
