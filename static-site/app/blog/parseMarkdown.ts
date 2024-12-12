@@ -3,15 +3,40 @@ import sanitizeHtml, { Attributes, IOptions, Tag } from "sanitize-html";
 
 import { siteUrl } from "../../data/BaseConfig";
 
-export default async function parseMarkdown(mdString: string): Promise<string> {
+export default async function parseMarkdown({
+  mdString,
+  addHeadingAnchors = false,
+}: {
+  mdString: string
+
+  /** Should `<a>` tags be added to headings? */
+  addHeadingAnchors?: boolean
+}): Promise<string> {
+  if (addHeadingAnchors) {
+    marked.use({
+      renderer: {
+        heading({ tokens, depth }) {
+          const text = this.parser.parseInline(tokens);
+          const anchor = text.toLowerCase().replace(/[^\w]+/g, '-');
+          return `
+            <h${depth}>
+              <a name="${anchor}" class="anchor" href="#${anchor}">#</a>
+              ${text}
+            </h${depth}>
+          `;
+        }
+      }
+    });
+  }
+
   const rawDescription = await marked.parse(mdString);
 
   const sanitizerConfig: IOptions = {
-    allowedTags, // see below
-    allowedAttributes: { "*": allowedAttributes }, // see below
+    allowedTags,
+    allowedAttributes: { "*": allowedAttributes },
     nonTextTags: ["style", "script", "textarea", "option"],
     transformTags: {
-      a: transformA, // see below
+      a: transformA,
     },
   };
 
@@ -31,7 +56,7 @@ function transformA(tagName: string, attribs: Attributes): Tag {
   };
 
   const href = attribs.href;
-  if (href) {
+  if (href && !href.startsWith("#")) {
     const baseUrl = new URL(siteUrl);
     try { // sometimes the `href` isn't a valid URL…
       const linkUrl = new URL(href);
@@ -61,8 +86,11 @@ allowedTags.push("pattern", "polygon", "polyline", "radialGradient", "rect", "se
 allowedTags.push("text", "textPath", "title", "tref", "tspan", "use", "view", "vkern");
 
 const allowedAttributes = ['href', 'src', 'width', 'height', 'alt'];
+/* "style" is not safe for untrusted code.¹ Styles should be defined in globals.css.
+ * ¹ https://stackoverflow.com/a/4547037/4410590
+ */
+
 // We add the following Attributes for SVG via https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
-// Certain values have been excluded here, e.g. "style"
 allowedAttributes.push("accent-height", "accumulate", "additive", "alignment-baseline", "allowReorder", "alphabetic", "amplitude", "arabic-form", "ascent", "attributeName", "attributeType", "autoReverse", "azimuth");
 allowedAttributes.push("baseFrequency", "baseline-shift", "baseProfile", "bbox", "begin", "bias", "by");
 allowedAttributes.push("calcMode", "cap-height", "class", "clip", "clipPathUnits", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "cursor", "cx", "cy");

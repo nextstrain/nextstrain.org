@@ -63,7 +63,10 @@ export function getBlogPosts(): BlogPost[] {
 
 export async function markdownToHtml(mdString:string): Promise<string> {
   try {
-    return await parseMarkdown(mdString)
+    return await parseMarkdown({
+      mdString,
+      addHeadingAnchors: true,
+    })
   }
   catch(error) {
     console.error(`Error parsing markdown: ${error}`);
