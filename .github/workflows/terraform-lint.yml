@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 jobs:
   fmt:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - run: scripts/terraform-fmt -check
@@ -28,7 +28,7 @@ jobs:
         env:
           - env/production
           - env/testing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 

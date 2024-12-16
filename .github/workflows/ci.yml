@@ -29,7 +29,7 @@ defaults:
 jobs:
   # Lint regardless of build or test status and lint early.
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -42,7 +42,7 @@ jobs:
       - run: node ./scripts/check-resource-index-match.js
 
   type-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -53,7 +53,7 @@ jobs:
 
   # Build into Heroku slug so we can deploy the same build that we test.
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -72,7 +72,7 @@ jobs:
   test:
     if: github.repository == 'nextstrain/nextstrain.org'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: heroku/heroku:22
     env:
@@ -155,7 +155,7 @@ jobs:
       url: ${{ inputs.heroku-app && format('https://{0}.herokuapp.com', inputs.heroku-app) || 'https://next.nextstrain.org' }}
 
     # Deploy steps
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       HEROKU_APP: ${{ inputs.heroku-app || 'nextstrain-canary' }}
     steps:
