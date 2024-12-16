@@ -6,6 +6,7 @@ on:
     tags-ignore:
       - '**'
     paths:
+      - '.github/workflows/terraform-lint.yml'
       - '**.tf'
       - '**.tfvars'
       - '**.tf.json'
