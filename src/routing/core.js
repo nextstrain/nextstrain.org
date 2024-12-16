@@ -27,8 +27,8 @@ const coreBuildPaths = [
    * The data here is a superset of the pathogen keys in `manifest_guest.json`
    * and we could (should) reduce the duplication.
    *
-   * As of 2024-03 this list includes 3 paths not in the manifest: 'monkeypox',
-   * 'yellow-fever' and 'mers'
+   * As of 2024-12 this list includes 2 paths not in the manifest: 'monkeypox',
+   * and 'mers'
    */
   "/avian-flu",
   "/dengue",
