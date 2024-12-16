@@ -294,5 +294,9 @@
   {
     "name": "jbloomlab",
     "isPublic": true
+  },
+  {
+    "name": "stadlerLab",
+    "isPublic": true
   }
 ]
