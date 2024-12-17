@@ -6,7 +6,7 @@ import { siteUrl } from "../../data/BaseConfig";
 export default async function parseMarkdown({
   mdString,
   addHeadingAnchors = false,
-  headingAnchorClass = "",
+  headingAnchorClass = undefined,
 }: {
   mdString: string
 
@@ -17,6 +17,9 @@ export default async function parseMarkdown({
   headingAnchorClass?: string
 }): Promise<string> {
   if (addHeadingAnchors) {
+    if (headingAnchorClass === undefined) {
+      throw Error("parseMarkdown: headingAnchorClass must be defined when addHeadingAnchors is true.")
+    }
     marked.use({
       renderer: {
         heading({ tokens, depth }) {
