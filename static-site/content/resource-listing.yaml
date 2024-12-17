@@ -113,7 +113,7 @@ coreTiles:
     img: lassa_map.png
     filters:
       - lassa
-  - name: Seasonal cov
+  - name: Seasonal CoV
     img: seasonal_cov_tree.png
     filters:
       - seasonal-cov
