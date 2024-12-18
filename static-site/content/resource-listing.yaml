@@ -5,6 +5,83 @@
 # sense to store this information in the bucket or repo, respectively, and then
 # send it in the API response from the server. 
 
+# Order in this file is unused. Sorting methods are applied on the page.
+# name: Display name
+# id  : string used in URL
+# img : a file in static-site/static/pathogen_images
+corePathogens:
+  - name: SARS-CoV-2
+    id: ncov
+    img: ncov_freq.png
+
+  - name: Seasonal influenza
+    id: seasonal-flu
+    img: seasonal_flu_freq.png
+
+  - name: Avian influenza
+    id: avian-flu
+    img: h5n1_map.png
+
+  - name: Mpox
+    id: mpox
+    img: mpox_tree.png
+
+  - name: RSV
+    id: rsv
+    img: rsv_tree.png
+
+  - name: Dengue
+    id: dengue
+    img: dengue_tree.png
+
+  - name: Ebola in West Africa
+    id: ebola
+    img: ebola_map.png
+
+  - name: Measles
+    id: measles
+    img: measles_tree.png
+
+  - name: Zika
+    id: zika
+    img: zika_tree.png
+
+  - name: Mumps
+    id: mumps
+    img: mumps_tree.png
+
+  - name: Enterovirus
+    id: enterovirus
+    img: enterovirus_d68_tree.png
+
+  - name: Rabies
+    id: rabies
+    img: rabies_tree.png
+
+  - name: Oropouche
+    id: oropouche
+    img: oropouche_map.png
+
+  - name: Lassa
+    id: lassa
+    img: lassa_map.png
+
+  - name: Seasonal CoV
+    id: seasonal-cov
+    img: seasonal_cov_tree.png
+
+  - name: Tuberculosis
+    id: tb
+    img: tb_tree.png
+
+  - name: West Nile Virus
+    id: WNV
+    img: wnv_map.png
+
+  - name: SARS-CoV-2 (Nextclade)
+    id: nextclade
+    img: nextclade_sars_cov_2_tree.png
+
 
 # Quick links are displayed in the header part of a pathogen group (e.g. "flu"
 # or "dengue"). They are displayed in order, as space allows. They act as a
@@ -43,89 +120,3 @@ coreQuickLinks:
     display: 'global/6m (GISAID)'
   - name: 'ncov/open/global/6m'
     display: 'global/6m (open data)'
-
-coreGroupDisplayNames:
-  "avian-flu": avian-flu (influenza)
-  "seasonal-flu": seasonal-flu (influenza)
-  WNV: WNV (West Nile Virus)
-  ncov: ncov (SARS-CoV-2)
-  mpox: mpox
-
-
-# Tiles must define a filter query which is a list of dataset name "words"
-# (where words are joined by "/" to form the URL path) as well as a PNG image
-# which is relative to static-site/static/pathogen_images.
-# These will be displayed in alphabetical order by name.
-coreTiles:
-  - name: SARS-CoV-2
-    img: ncov_freq.png
-    filters:
-      - ncov
-  - name: Seasonal influenza
-    img: seasonal_flu_freq.png
-    filters:
-      - seasonal-flu
-  - name: Avian influenza
-    img: h5n1_map.png
-    filters:
-      - avian-flu
-  - name: Mpox
-    img: mpox_tree.png
-    filters:
-      - mpox
-  - name: RSV
-    img: rsv_tree.png
-    filters:
-      - rsv
-  - name: Dengue
-    img: dengue_tree.png
-    filters:
-      - dengue
-  - name: Ebola in West Africa
-    img: ebola_map.png
-    filters:
-      - ebola
-  - name: Measles
-    img: measles_tree.png
-    filters:
-      - measles
-  - name: Zika
-    img: zika_tree.png
-    filters:
-      - zika
-  - name: Mumps
-    img: mumps_tree.png
-    filters:
-      - mumps
-  - name: Enterovirus
-    img: enterovirus_d68_tree.png
-    filters:
-      - enterovirus
-  - name: Rabies
-    img: rabies_tree.png
-    filters:
-      - rabies
-  - name: Oropouche
-    img: oropouche_map.png
-    filters:
-      - oropouche
-  - name: Lassa
-    img: lassa_map.png
-    filters:
-      - lassa
-  - name: Seasonal CoV
-    img: seasonal_cov_tree.png
-    filters:
-      - seasonal-cov
-  - name: Tuberculosis
-    img: tb_tree.png
-    filters:
-      - tb
-  - name: West Nile Virus
-    img: wnv_map.png
-    filters:
-      - WNV
-  - name: SARS-CoV-2 (Nextclade)
-    img: nextclade_sars_cov_2_tree.png
-    filters:
-      - nextclade

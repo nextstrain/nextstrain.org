@@ -12,7 +12,7 @@ import { ErrorContainer } from "../../pages/404";
 import { TooltipWrapper } from "./IndividualResource";
 import {ResourceModal, SetModalResourceContext} from "./Modal";
 import { ExpandableTiles } from "../ExpandableTiles";
-import { FilterTile, FilterOption, Group, QuickLink, Resource, ResourceListingInfo, SortMethod, convertVersionedResource } from './types';
+import { FilterTile, FilterOption, Group, Pathogen, QuickLink, Resource, ResourceListingInfo, SortMethod, convertVersionedResource } from './types';
 import { HugeSpacer } from "../../layouts/generalComponents";
 import { ErrorBoundary, InternalError } from '../ErrorBoundary';
 
@@ -34,8 +34,7 @@ function ListResources({
   elWidth,
   quickLinks,
   defaultGroupLinks=false,
-  groupDisplayNames,
-  tileData,
+  pathogenInfo,
   resourceListingCallback: resourceListingCallback,
 }: ListResourcesResponsiveProps & {
   elWidth: number
@@ -43,10 +42,10 @@ function ListResources({
   const {groups, dataFetchError} = useDataFetch(
     versioned,
     defaultGroupLinks,
-    groupDisplayNames,
+    pathogenInfo,
     resourceListingCallback,
   );
-  const tiles = useTiles(tileData, groups);
+  const pathogens = usePathogens(pathogenInfo, groups);
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<readonly FilterOption[]>([]);
   const [sortMethod, changeSortMethod] = useState<SortMethod>("alphabetical");
   const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
@@ -71,6 +70,12 @@ function ListResources({
       </div>
     )
   }
+
+  const tiles: FilterTile[] = pathogens.map((p) => ({
+    name: p.name,
+    img: p.img,
+    filters: [p.id],
+  }));
 
   return (
     <ListResourcesContainer>
@@ -133,9 +138,7 @@ interface ListResourcesResponsiveProps {
   /** Should the group name itself be a url? (which we let the server redirect) */
   defaultGroupLinks: boolean
 
-  /** Mapping from group name -> display name */
-  groupDisplayNames: Record<string, string>
-  tileData: FilterTile[]
+  pathogenInfo: Pathogen[]
   resourceListingCallback: () => Promise<ResourceListingInfo>;
 }
 
@@ -304,14 +307,14 @@ const Tile = ({ tile }: { tile: FilterTile }) => {
 
 
 /**
- * Given a set of user-defined tiles, restrict them to the set of tiles for
- * which the filters are valid given the resources known to the resource listing
- * UI
+ * Given a set of user-defined pathogens, restrict them to the set of pathogens
+ * for which the filters are valid given the resources known to the resource
+ * listing UI
  */
-const useTiles = (tiles?: FilterTile[], groups?: Group[]) => {
-  const [restrictedTiles, setRestrictedTiles] = useState<FilterTile[]>([]);
+const usePathogens = (pathogens?: Pathogen[], groups?: Group[]) => {
+  const [restrictedTiles, setRestrictedTiles] = useState<Pathogen[]>([]);
   useEffect(() => {
-    if (!tiles || !groups) return;
+    if (!pathogens || !groups) return;
     const words = groups.reduce((words, group) => {
       for (const resource of group.resources) {
         for (const word of resource.nameParts) {
@@ -320,10 +323,10 @@ const useTiles = (tiles?: FilterTile[], groups?: Group[]) => {
       }
       return words;
     }, new Set<string>());
-    setRestrictedTiles(tiles.filter((tile) => {
-      return tile.filters.every((word) => words.has(word))
+    setRestrictedTiles(pathogens.filter((pathogen) => {
+      return words.has(pathogen.id)
     }));
-  }, [tiles, groups]);
+  }, [pathogens, groups]);
   return restrictedTiles;
 }
 
