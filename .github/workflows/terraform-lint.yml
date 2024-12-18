@@ -6,6 +6,7 @@ on:
     tags-ignore:
       - '**'
     paths:
+      - '.github/workflows/terraform-lint.yml'
       - '**.tf'
       - '**.tfvars'
       - '**.tf.json'
@@ -15,8 +16,14 @@ on:
   workflow_dispatch:
 jobs:
   fmt:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
+      - name: Install Terraform
+        run: |
+          wget -O terraform.zip https://releases.hashicorp.com/terraform/1.10.2/terraform_1.10.2_linux_amd64.zip
+          unzip terraform.zip -d "$HOME/terraform"
+          echo "$HOME/terraform" >> "$GITHUB_PATH"
+
       - uses: actions/checkout@v4
       - run: scripts/terraform-fmt -check
 
@@ -27,8 +34,14 @@ jobs:
         env:
           - env/production
           - env/testing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
+      - name: Install Terraform
+        run: |
+          wget -O terraform.zip https://releases.hashicorp.com/terraform/1.10.2/terraform_1.10.2_linux_amd64.zip
+          unzip terraform.zip -d "$HOME/terraform"
+          echo "$HOME/terraform" >> "$GITHUB_PATH"
+
       - uses: actions/checkout@v4
 
       - run: terraform init -backend=false
