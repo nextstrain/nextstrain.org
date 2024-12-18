@@ -129,3 +129,7 @@ coreTiles:
     img: nextclade_sars_cov_2_tree.png
     filters:
       - nextclade
+  - name: Yellow Fever Virus
+    img: yellow_fever_tree.png
+    filters:
+      - yellow-fever

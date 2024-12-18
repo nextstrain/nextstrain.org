@@ -78,3 +78,8 @@
   description: Rabies virus evolution and spread
   img: rabies_tree.png
   url: /rabies
+
+- name: Yellow Fever
+  description: Yellow fever virus evolution and spread
+  img: yellow_fever_tree.png
+  url: /yellow-fever
