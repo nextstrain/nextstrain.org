@@ -141,14 +141,3 @@ p.wideParagraph {
 }
 
 
-/* For blog posts */
-
-.anchor {
-  position: absolute;
-  left: -3px;
-  opacity: 0;
-}
-
-.anchor:hover {
-  opacity: 100;
-}
