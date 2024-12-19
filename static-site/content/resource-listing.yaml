@@ -133,3 +133,7 @@ coreTiles:
     img: yellow_fever_tree.png
     filters:
       - yellow-fever
+  - name: HMPV
+    img: hmpv_tree.png
+    filters:
+      - hmpv
