@@ -25,7 +25,7 @@ The hMPV genome consists of 8 different genes, the most commonly sequenced ones 
 2. Gene G
 3. Gene F
 
-The phylogenies are generated using genomic data from [NCBI GenBank](https://www.ncbi.nlm.nih.gov/), and are updated weekly when new sequences are uploaded to NCBI. Currently, over 11,000 sequences are available, over 800 sequences for the entire genome, 1800 sequences for gene F and 3200 sequences for gene G. We curate sequence data and metadata from NCBI as the starting point for our analyses. 
+The phylogenies are generated using genomic data from [NCBI GenBank](https://www.ncbi.nlm.nih.gov/), and are updated when new sequences are uploaded to NCBI. Currently, over 11,000 sequences are available, over 800 sequences for the entire genome, 1800 sequences for gene F and 3200 sequences for gene G. We curate sequence data and metadata from NCBI as the starting point for our analyses. 
 
 ![fig2](/blog/img/hmpv_a_G.png)
 **Figure 2. Global distribution and time resolved phylogeny of clade A using sequences from gene G.** More extensive and representative phylogenies for gene G and gene F are possible, as more genetic data is available for these genes. Recently, we have seen a global increase in prevalence of clade A2b2 (in orange).
