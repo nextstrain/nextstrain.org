@@ -728,6 +728,14 @@
       },
       "hmpv": {
         "type": {
+          "all": {
+            "region":{
+              "genome": "",
+              "G": "",
+              "F": "",
+              "default":"genome"
+            }
+          },
           "a": {
             "region":{
               "genome": "",
@@ -744,7 +752,7 @@
               "default":"genome"
             }
           },
-          "default": "a"
+          "default": "all"
         }
       },
       "seasonal-cov": {
