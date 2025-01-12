@@ -107,6 +107,8 @@ const NavBar = ({ minified }: {
 		const SubTitle = styled.div`
 			color: black;
 		`;
+		/* Hide the title on mobile so the LOGIN link is visible */
+		/* https://github.com/nextstrain/nextstrain.org/issues/962 */
 		const ResponsiveTitle = styled.span`
 			@media (max-width: 768px) {
 				display: none;
