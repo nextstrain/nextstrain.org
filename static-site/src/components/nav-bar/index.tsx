@@ -98,23 +98,28 @@ const NavBar = ({ minified }: {
   }
 
   const LogoType = () => {
-    const title = "Nextstrain";
-    const rainbowTitle = title.split("").map((letter, i) =>
-      <NavLogoCharacter key={i} $colorIndex={i}>{letter}</NavLogoCharacter>
-    );
-    const SubTitle = styled.div`
-      color: black;
-    `;
-    return (
-      minified ?
-        <div/>
-        :
-        <a href="/">
-          {rainbowTitle}
-          {groupsApp &&
-            <SubTitle>Groups Server</SubTitle>}
-        </a>
-    );
+		const title = "Nextstrain";
+		const rainbowTitle = title.split("").map((letter, i) => (
+			<NavLogoCharacter key={i} $colorIndex={i}>
+				{letter}
+			</NavLogoCharacter>
+		));
+		const SubTitle = styled.div`
+			color: black;
+		`;
+		const ResponsiveTitle = styled.span`
+			@media (max-width: 768px) {
+				display: none;
+			}
+		`;
+		return minified ? (
+			<div />
+		) : (
+			<a href="/">
+				<ResponsiveTitle>{rainbowTitle}</ResponsiveTitle>
+				{groupsApp && <SubTitle>Groups Server</SubTitle>}
+			</a>
+		);
   }
 
   return (
