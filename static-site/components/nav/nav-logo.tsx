@@ -27,11 +27,15 @@ const Logo = (): React.ReactElement => (
 );
 
 const LogoType = (): React.ReactElement => {
-  const rainbowTitle = siteTitle
-    .split("")
-    .map((letter, i) => (
-      <span key={i} style={{ color: `var(--titleColor${i})` }}>{letter}</span>
-    ));
+  const rainbowTitle = siteTitle.split("").map((letter, i) => (
+		<span
+			key={i}
+			style={{ color: `var(--titleColor${i})` }}
+			className={styles.rainbowTitle}
+		>
+			{letter}
+		</span>
+  ));
   const SubTitle = (): React.ReactElement => (
     <div>Groups Server</div>
   );
