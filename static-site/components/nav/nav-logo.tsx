@@ -41,9 +41,11 @@ const LogoType = (): React.ReactElement => {
   );
 
   return (
-    <a href="/" className={styles.wordmark}>
-      {rainbowTitle}
-      {groupsApp && <SubTitle />}
-    </a>
+    <div className={styles.rainbowTitle}>
+      <a href="/" className={styles.wordmark}>
+        {rainbowTitle}
+        {groupsApp && <SubTitle />}
+      </a>
+    </div>
   );
 };
