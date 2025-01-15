@@ -1,3 +1,9 @@
+@media (max-width: 768px) {
+  .responsiveTitle {
+    display: none;
+  }
+}
+
 .nav {
   align-items: center;
   display: flex;

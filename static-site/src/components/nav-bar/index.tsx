@@ -105,14 +105,21 @@ const NavBar = ({ minified }: {
     const SubTitle = styled.div`
       color: black;
     `;
+    const ResponsiveTitle = styled.div`
+      @media (max-width: 768px) {
+        display: none;
+      }
+    `;
+
     return (
       minified ?
         <div/>
         :
         <a href="/">
-          {rainbowTitle}
-          {groupsApp &&
-            <SubTitle>Groups Server</SubTitle>}
+          <ResponsiveTitle>
+            {rainbowTitle}
+            {groupsApp && <SubTitle>Groups Server</SubTitle>}
+          </ResponsiveTitle>
         </a>
     );
   }
