@@ -117,7 +117,8 @@ const NavBar = ({ minified }: {
         :
         <a href="/">
           <ResponsiveTitle>{rainbowTitle}
-          {groupsApp && <SubTitle>Groups Server</SubTitle>}
+          {groupsApp &&
+            <SubTitle>Groups Server</SubTitle>}
           </ResponsiveTitle>
         </a>
     );
