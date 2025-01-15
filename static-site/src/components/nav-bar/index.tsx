@@ -98,30 +98,29 @@ const NavBar = ({ minified }: {
   }
 
   const LogoType = () => {
-		const title = "Nextstrain";
-		const rainbowTitle = title.split("").map((letter, i) => (
-			<NavLogoCharacter key={i} $colorIndex={i}>
-				{letter}
-			</NavLogoCharacter>
-		));
-		const SubTitle = styled.div`
-			color: black;
-		`;
-		/* Hide the title on mobile so the LOGIN link is visible */
-		/* https://github.com/nextstrain/nextstrain.org/issues/962 */
-		const ResponsiveTitle = styled.span`
-			@media (max-width: 768px) {
-				display: none;
-			}
-		`;
-		return minified ? (
-			<div />
-		) : (
-			<a href="/">
-				<ResponsiveTitle>{rainbowTitle}</ResponsiveTitle>
-				{groupsApp && <SubTitle>Groups Server</SubTitle>}
-			</a>
-		);
+    const title = "Nextstrain";
+    const rainbowTitle = title.split("").map((letter, i) =>
+      <NavLogoCharacter key={i} $colorIndex={i}>{letter}</NavLogoCharacter>
+    );
+    const SubTitle = styled.div`
+      color: black;
+    `;
+    const ResponsiveTitle = styled.div`
+      @media (max-width: 768px) {
+        display: none;
+      }
+    `;
+
+    return (
+      minified ?
+        <div/>
+        :
+        <a href="/">
+          <ResponsiveTitle>{rainbowTitle}
+          {groupsApp && <SubTitle>Groups Server</SubTitle>}
+          </ResponsiveTitle>
+        </a>
+    );
   }
 
   return (
