@@ -1,5 +1,5 @@
 import React from "react";
-import LanguageSelector from "./languageSelector.js";
+import LanguageSelector from "./languageSelector";
 
 import logoPNG from "./nextstrain-logo-small.png";
 

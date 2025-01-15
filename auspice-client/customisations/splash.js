@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import styled from 'styled-components';
-import MarkdownDisplay from "auspice/src/components/markdownDisplay/index.js";
-import NavBar from "./navbar.js";
+import MarkdownDisplay from "auspice/src/components/markdownDisplay";
+import NavBar from "./navbar";
 
 
 /**
