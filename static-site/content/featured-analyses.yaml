@@ -4,6 +4,11 @@
 # - When adding or modifying descriptions, ensure it takes up at most two lines
 #   when rendered on the splash page.
 
+- name: HPAI outbreak
+  description: "Highly pathogenic avian influenza in North America"
+  img: hpai_in_na.png
+  url: /community/narratives/moncla-lab/nextstrain-narrative-hpai-north-america@main/HPAI-in-North-America
+
 - name: Mpox in the DRC
   description: INRB analysis of ongoing mpox clade I outbreak in the DRC
   img: mpox_drc.png
