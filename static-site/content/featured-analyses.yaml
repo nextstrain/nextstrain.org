@@ -4,30 +4,35 @@
 # - When adding or modifying descriptions, ensure it takes up at most two lines
 #   when rendered on the splash page.
 
-- name: Mpox in the DRC
-  description: INRB analysis of ongoing mpox clade I outbreak in the DRC
-  img: mpox_drc.png
-  url: /groups/inrb-mpox/clade-I
-
-- name: Mpox
-  description: Evolution and spread of mpox clades I and II
-  img: mpox_tree.png
-  url: /mpox/all-clades
-
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
   img: ncov_freq.png
   url: /ncov/gisaid/global/6m
+
+- name: Mpox in the DRC
+  description: INRB analysis of ongoing mpox clade I outbreak in the DRC
+  img: mpox_drc.png
+  url: /groups/inrb-mpox/clade-I
 
 - name: H5N1 cattle outbreak
   description: Analysis of the ongoing influenza A/H5N1 cattle outbreak
   img: h5n1_cattle_outbreak_tree.png
   url: /avian-flu/h5n1-cattle-outbreak/genome
 
+- name: HPAI outbreak
+  description: "Highly pathogenic avian influenza in North America"
+  img: hpai_in_na.png
+  url: /community/narratives/moncla-lab/nextstrain-narrative-hpai-north-america@main/HPAI-in-North-America
+
 - name: Seasonal influenza
   description: Seasonal influenza evolution and antigenic drift
   img: seasonal_flu_freq.png
   url: /seasonal-flu/h3n2/ha/2y
+
+- name: Mpox
+  description: Evolution and spread of mpox clades I and II
+  img: mpox_tree.png
+  url: /mpox/all-clades
 
 - name: Oropouche
   description: Oropouche virus evolution and spread
