@@ -145,6 +145,19 @@ described in Heroku's own documentation.
           heroku addons:detach REDIS -a "$app"
       done
 
+   .. warning::
+
+      This step causes the site to enter the degraded state described earlier.
+      If the need arises, you can roll back to the old instance:
+
+      .. code-block:: bash
+
+         for app in nextstrain-{dev,canary,server}; do
+             heroku addons:attach --as REDIS "$old_instance" -a "$app"
+             heroku addons:detach OLD_REDIS -a "$app"
+         done
+
+
 5. Create the new, upgraded Redis instance on `nextstrain-server` as a fork
    (snapshot copy) of the old:
 
@@ -218,7 +231,11 @@ described in Heroku's own documentation.
           heroku addons:attach --as REDIS "$new_instance" -a "$app"
       done
 
-10. Test that your login session is now "remembered" again.
+10. Test that the new instance works:
+
+   1. Load the website and check that your login session is now "remembered" again.
+   2. Check that you can successfully log out and log back in.
+   3. Check that you can remove/add a member from a group.
 
 11. Remove the old Redis instance:
 
