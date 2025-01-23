@@ -298,5 +298,13 @@
   {
     "name": "stadlerLab",
     "isPublic": true
+  },
+  {
+    "name": "ceri-private",
+    "isPublic": false
+  },
+  {
+    "name": "ceri-public",
+    "isPublic": true
   }
 ]
