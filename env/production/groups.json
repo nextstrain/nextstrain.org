@@ -306,5 +306,9 @@
   {
     "name": "ceri-public",
     "isPublic": true
+  },
+  {
+    "name": "PichuginLab-Private",
+    "isPublic": false
   }
 ]
