@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import React from "react";
 
 import { BigSpacer } from "../../../components/spacers";
@@ -96,7 +96,7 @@ export default async function BlogPost({
 
   // if for some reason we didn't find the post, 404 on out
   if (!blogPost) {
-    redirect("/404");
+    notFound();
   }
 
   const html = await markdownToHtml({

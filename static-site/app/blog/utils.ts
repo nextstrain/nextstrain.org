@@ -22,6 +22,27 @@ export function getBlogPosts(): BlogPost[] {
 
   const postsDirectory = path.join(__dirname, "..", "..", "content", "blog");
 
+  // if this code is running in production, it won't have access to
+  // the postsDirectory, because it doesn't exist there — so check to
+  // see if we can `stat()` that path, and if we get an error, if it's
+  // a "file not found" error, just return an empty list; otherwise,
+  // something else weird is going on, and the best we can do is
+  // re-throw the error
+  try {
+    fs.statSync(postsDirectory);
+  }
+  catch (err: unknown) {
+    if (
+      err instanceof Error &&
+      'code' in err &&
+      err["code"] === "ENOENT"
+    ) {
+      return [];
+    } else {
+      throw err;
+    }
+  }
+
   const markdownFiles = fs
     .readdirSync(postsDirectory)
     .filter((fileName) => fileName.endsWith(".md"));
