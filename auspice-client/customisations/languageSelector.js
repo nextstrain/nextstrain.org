@@ -1,5 +1,5 @@
 import React from "react";
-import ISO6391 from "iso-639-1/build/index.js";
+import ISO6391 from "iso-639-1/build/index";
 
 /* This and some of the following functions are reused
 in the static site (specifically ../../static-site/src/pages/ncov-sit-reps.jsx)
