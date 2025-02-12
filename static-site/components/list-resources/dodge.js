@@ -1,4 +1,3 @@
-
 /*
 This function is copied without modification from
 https://observablehq.com/@d3/beeswarm/2
