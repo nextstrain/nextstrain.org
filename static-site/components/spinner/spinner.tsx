@@ -7,12 +7,16 @@
  */
 
 import React from "react";
+
 import styles from "./spinner.module.css";
 
-const nextstrainLogoPath = '/nextstrain-logo-small.png'; // next.js surfaced from /static-site/public
+// next.js surfaced from /static-site/public
+const nextstrainLogoPath = '/nextstrain-logo-small.png';
 
-export const Spinner = () => (
-  <div className={styles.spinnerContainer}>
-    <img className={styles.spinner} src={nextstrainLogoPath} alt="loading"/>
-  </div>
-)
+export default function Spinner(): React.ReactElement {
+  return (
+    <div className={styles.spinnerContainer}>
+      <img className={styles.spinner} src={nextstrainLogoPath} alt="loading"/>
+    </div>
+  )
+}
