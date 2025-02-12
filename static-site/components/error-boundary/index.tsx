@@ -1,5 +1,4 @@
 import React, { ErrorInfo, ReactNode } from "react";
-import { ErrorContainer } from "../pages/404";
 
 export class InternalError extends Error {}
 
@@ -8,23 +7,26 @@ interface Props {
 }
 
 interface State {
-  hasError: boolean;
   errorMessage: string;
+  hasError: boolean;
 }
 
 export class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      errorMessage: "",
       hasError: false,
-      errorMessage:"",
     };
   }
 
   static getDerivedStateFromError(error: Error): State {
     return {
+      errorMessage:
+        error instanceof InternalError
+          ? error.message
+          : "Unknown error (thrown value was not an InternalError)",
       hasError: true,
-      errorMessage: error instanceof InternalError ? error.message : "Unknown error (thrown value was not an InternalError)",
     };
   }
 
@@ -36,15 +38,19 @@ export class ErrorBoundary extends React.Component<Props, State> {
   override render() {
     if (this.state.hasError) {
       return (
-        <ErrorContainer>
-          {"Something isn't working!"}
-          <br/>
-          {`Error: ${this.state.errorMessage}`}
-          <br/>
-          {"Please "}<a href="/contact" style={{fontWeight: 300}}>get in touch</a>{" if this keeps happening"}
-        </ErrorContainer>
-      )
+        <div className="errorContainer">
+          Something isn't working!
+          <br />
+          Error: `${this.state.errorMessage}`
+          <br />
+          Please{" "}
+          <a href="/contact" style={{ fontWeight: 300 }}>
+            get in touch
+          </a>{" "}
+          if this keeps happening
+        </div>
+      );
     }
-    return this.props.children; 
+    return this.props.children;
   }
 }
