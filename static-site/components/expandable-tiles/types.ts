@@ -1,4 +1,4 @@
-export interface Tile {
-  name: string
-  img: string
+export interface GenericTileBase {
+  img: string;
+  name: string;
 }

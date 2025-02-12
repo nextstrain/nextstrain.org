@@ -1,41 +1,51 @@
-/* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import styled from 'styled-components';
-import { Tile } from './types';
+"use client";
 
-const expandPreviewHeight = 60 //pixels
-const transitionDuration = "0.3s"
-const transitionTimingFunction = "ease"
+import React, { useState } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-export const ExpandableTiles = <AnyTile extends Tile>({
+import { GenericTileBase } from "./types";
+
+import styles from "./styles.module.css";
+
+/**
+ * Number of pixels by which to pad out the container height when the
+ * container is collapsed
+ */
+const expandPreviewHeight = 60;
+
+/**
+ * React Client Component to display an expandable div with a list of tiles.
+ *
+ * @param tiles - the list of tiles to display
+ * @param tileWidth - width of an individual tile in pixels
+ * @param tileHeight - height of an individual tile in pixels
+ * @param TileComponent - React Functional Component to render an individual tile
+ */
+export default function ExpandableTiles<Tile extends GenericTileBase>({
   tiles,
   tileWidth,
   tileHeight,
   TileComponent,
 }: {
-  tiles: AnyTile[]
-  tileWidth: number
-  tileHeight: number
-  TileComponent: React.FunctionComponent<{ tile: AnyTile }>
-}) => {
-
-  const [tilesContainerHeight, setTilesContainerHeight] = useState<number>(0);
+  tiles: Tile[];
+  tileWidth: number;
+  tileHeight: number;
+  TileComponent: React.FunctionComponent<{ tile: Tile }>;
+}): React.ReactElement {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  const toggleExpand = () => {
+  function _toggleExpand(): void {
     setIsExpanded(!isExpanded);
-  };
+  }
 
-  /**
-   * Function that runs on changes to the container.
-   * Used to determine the height upon resize.
-   */
-  function tilesContainerRef(tilesContainer: HTMLDivElement) {
-    if (!tilesContainer) return;
+  const [tilesContainerHeight, setTilesContainerHeight] = useState<number>(0);
 
-    if(tilesContainerHeight != tilesContainer.clientHeight) {
-      setTilesContainerHeight(tilesContainer.clientHeight)
+  function tilesContainerRef(tilesContainer: HTMLDivElement): void {
+    if (
+      tilesContainer &&
+      tilesContainerHeight !== tilesContainer.clientHeight
+    ) {
+      setTilesContainerHeight(tilesContainer.clientHeight);
     }
   }
 
@@ -43,73 +53,39 @@ export const ExpandableTiles = <AnyTile extends Tile>({
 
   return (
     <div>
-      <ExpandableContainer className={!isExpandable ? "" : isExpanded ? "expanded" : "collapsed"} $tileHeight={tileHeight} $expandedHeight={tilesContainerHeight}>
-        <TilesContainer ref={tilesContainerRef} $tileWidth={tileWidth}>
+      <div
+        className={styles.expandableContainer}
+        style={{
+          maxHeight: isExpanded
+            ? `${tilesContainerHeight}px`
+            : `${tileHeight + expandPreviewHeight}px`,
+        }}
+      >
+        <div
+          ref={tilesContainerRef}
+          className={styles.tilesContainer}
+          style={{ gridTemplateColumns: `repeat(auto-fit, ${tileWidth}px)` }}
+        >
           {tiles.map((el) => {
-            return <TileComponent tile={el} key={el.name} />
+            return <TileComponent tile={el} key={el.name} />;
           })}
-        </TilesContainer>
-        {isExpandable && !isExpanded && <PreviewOverlay onClick={toggleExpand} />}
-      </ExpandableContainer>
-      {isExpandable && <>
-        <ArrowButton onClick={toggleExpand}>
-          {isExpanded ? <FaChevronUp/> : <FaChevronDown/>}
-        </ArrowButton>
-      </>}
-      <Spacer/>
+        </div>
+
+        {isExpandable && !isExpanded && (
+          <div
+            onClick={_toggleExpand}
+            className={styles.previewOverlay}
+            style={{ height: `${expandPreviewHeight}px` }}
+          />
+        )}
+      </div>
+
+      {isExpandable && (
+        <div className={styles.arrowButton} onClick={_toggleExpand}>
+          {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
+        </div>
+      )}
+      <div className={styles.spacer} />
     </div>
-  )
+  );
 }
-
-/**
- * NOTE: Many of the React components here are taken from the existing GroupTiles UI
- */
-
-const ExpandableContainer = styled.div<{$tileHeight: number, $expandedHeight: number}>`
-  position: relative;
-  overflow-y: hidden;
-
-  &.collapsed {
-    max-height: ${(props) => props.$tileHeight + expandPreviewHeight}px;
-  }
-
-  &.expanded {
-    max-height: ${(props) => `${props.$expandedHeight}px`};
-  }
-
-  transition: max-height ${transitionDuration} ${transitionTimingFunction};
-`
-
-const ArrowButton = styled.div`
-  text-align: center;
-  font-size: 1.8rem;
-  width: 100%;
-  height: 1em;
-  cursor: pointer;
-`
-
-const PreviewOverlay = styled.div`
-  position: absolute;
-  z-index: 1;
-  bottom: 0;
-  left: 0;
-  background-image: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0) -100%,
-    rgba(255, 255, 255, 1) 100%);
-  width: 100%;
-  height: ${expandPreviewHeight}px;
-  cursor: pointer;
-`;
-
-const TilesContainer = styled.div<{$tileWidth: number}>`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, ${(props) => `${props.$tileWidth}px`});
-  gap: 10px;
-  overflow: hidden;
-  justify-content: center;
-`;
-
-const Spacer = styled.div`
-  min-height: 25px;
-`
