@@ -1,0 +1,51 @@
+.background {
+  left: 0;
+  min-height: 100%;
+  min-width: 100%;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+}
+
+.closeIconWrapper {
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.modalContainer {
+  background-color: #fff;
+  border: 2px solid black;
+  font-size: 18px;
+  left: 10%;
+  max-width: 80%;
+  min-height: 80%;
+  min-width: 80%;
+  padding: 20px;
+  position: fixed;
+  top: 10%;
+  z-index: 100;
+}
+.modalContainer strong {
+  font-weight: 500;
+}
+
+.snapshotLink {
+  font-size: 1.8rem;
+  padding-left: 10px;
+}
+
+.snapshotWrapper {
+  padding-bottom: 5px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  padding-bottom: 15px;
+}
