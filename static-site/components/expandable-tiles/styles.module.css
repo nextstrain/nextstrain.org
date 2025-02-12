@@ -1,0 +1,38 @@
+.arrowButton {
+  cursor: pointer;
+  font-size: 1.8rem;
+  height: 1em;
+  text-align: center;
+  width: 100%;
+}
+
+.expandableContainer {
+  overflow-y: hidden;
+  position: relative;
+  transition: max-height 0.3s ease;
+}
+
+.previewOverlay {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) -100%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.spacer {
+  min-height: 25px;
+}
+
+.tilesContainer {
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+  overflow: hidden;
+}
