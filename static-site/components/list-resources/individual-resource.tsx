@@ -1,213 +1,116 @@
-/* eslint-disable react/prop-types */
-import React, {useState, useRef, useEffect, useContext} from 'react';
-import styled from 'styled-components';
-import { MdHistory } from "react-icons/md";
-import { SetModalResourceContext } from './Modal';
-import { ResourceDisplayName, Resource, DisplayNamedResource } from './types';
-import { IconType } from 'react-icons';
-import { InternalError } from '../ErrorBoundary';
+"use client";
 
-export const LINK_COLOR = '#5097BA'
-export const LINK_HOVER_COLOR = '#31586c'
+import React, { useContext, useEffect, useRef, useState } from "react";
 
+import { InternalError } from "../error-boundary";
+
+import { IndividualResourceLink } from "./group-and-resource-links";
+import IconContainer from "./icon-container";
+import { SetModalResourceContext } from "./modal";
+import TooltipWrapper from "./tooltip-wrapper";
+
+import { Resource } from "./types";
+
+import styles from "./individual-resource.module.css";
 
 /**
- * These variables allow calculation of the width of <IndividualResource>,
- * which we use for the column layout so that every <IndividualResource>
- * is nicely aligned. There are other ways (e.g. querying the DOM) but
- * this is simpler and seems to be working well.
+ * React Client Component to display an individual resource as part of
+ * a resource listing.
+ *
+ * @param gapWidth - the value for the CSS `gap` property in the
+ * `<div>` containing the resource
+ * @param isMobile - boolean for whether the display is a mobile one
+ * @param resource - the resource to display
  */
-const [resourceFontSize, namePxPerChar, summaryPxPerChar] = [16, 10, 9];
-const iconWidth = 20; // not including text
-const gapSize = 10;
-export const getMaxResourceWidth = (displayResources: DisplayNamedResource[]) => {
-  return displayResources.reduce((w, r) => {
-    /* add the pixels for the display name */
-    let _w = r.displayName.default.length * namePxPerChar;
-    if (r.nVersions && r.updateCadence) {
-      _w += gapSize + iconWidth;
-      _w += ((r.updateCadence.summary.length || 0) + 5 + String(r.nVersions).length)*summaryPxPerChar;
-    }
-    return _w>w ? _w : w;
-  }, 200); // 200 (pixels) is the minimum
-}
-
-export const ResourceLink = styled.a`
-  font-size: ${resourceFontSize}px;
-  font-family: monospace;
-  white-space: pre; /* don't collapse back-to-back spaces */
-  color: ${LINK_COLOR} !important;
-  text-decoration: none !important;
-
-  &:hover {
-    color: ${LINK_HOVER_COLOR} !important;
-  }
-`;
-
-function Name({
-  displayName,
-  href,
-  topOfColumn,
-}: {
-  displayName: ResourceDisplayName
-  href: string
-  topOfColumn: boolean
-}) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <ResourceLink href={href} target="_blank" rel="noreferrer"
-      onMouseOver={() => setHovered(true)}
-      onMouseOut={() => setHovered(false)}>
-      {'• '}{(hovered||topOfColumn) ? displayName.hovered : displayName.default}
-    </ResourceLink>
-  )
-}
-
-const Container = styled.div`
-  padding: 3px;
-  overflow: hidden;
-  color: #4F4B50;
-`;
-
-const FlexRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: ${gapSize}px;
-  align-items: center;
-`;
-
-export function TooltipWrapper({description, children}) {
-  return (
-    <div
-      data-tooltip-id="listResourcesTooltip"
-      data-tooltip-html={description}
-      data-tooltip-place="top">
-      {children}
-    </div>
-  )
-}
-
-export function IconContainer({
-  Icon,
-  text,
-  handleClick,
-  color,
-  hoverColor,
-}: {
-  Icon: IconType
-  text: string
-  handleClick?: () => void
-  color?: string
-  hoverColor?: string
-}) {
-  const [hovered, setHovered] = useState(false);
-  const defaultColor = '#aaa';
-  const defaultHoverColor = "rgb(79, 75, 80)";
-  const col = hovered ? (hoverColor || defaultHoverColor) : (color || defaultColor);
-  const iconProps = {size: "1.2em", color: col};
-  const hasOnClick = typeof handleClick === 'function';
-  const cursor = hasOnClick ? 'pointer' : 'auto';
-  const style = {display: 'flex', color: col, alignItems: 'center', gap: '3px', cursor};
-
-  return (
-    <div style={style} onClick={hasOnClick ? handleClick : undefined} onMouseOver={() => {setHovered(true)}} onMouseOut={() => setHovered(false)}>
-      <Icon {...iconProps}/>
-      {text}
-    </div>
-  )
-}
-
-
-export const IndividualResource = ({
-  resource,
+export function IndividualResource({
+  gapWidth,
   isMobile,
+  resource,
 }: {
-  resource: Resource
-  isMobile: boolean
-}) => {
+  gapWidth: number;
+  isMobile: boolean;
+  resource: Resource;
+}): React.ReactElement | null {
   const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) throw new InternalError("Context not provided!")
+  if (!setModalResource) {
+    throw new InternalError("Context not provided!");
+  }
+
+  const [topOfColumn, setTopOfColumn] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
-  const [topOfColumn, setTopOfColumn] = useState(false);
   useEffect(() => {
-    if (ref.current === null ||
-        ref.current.parentNode === null ||
-        ref.current.parentNode.nodeName != 'DIV') {
-      throw new InternalError("ref must be defined and the parent must be a div (IndividualResourceContainer).");
-     }
+    if (
+      ref.current === null ||
+      ref.current.parentNode === null ||
+      ref.current.parentNode.nodeName != "DIV"
+    ) {
+      throw new InternalError(
+        "ref must be defined and the parent must be a div (i.e., IndividualResourceContainer).",
+      );
+    }
 
-     // The type of ref.current.parentNode is ParentNode which does not have an
-     // offsetTop property. I don't think there is a way to appease the
-     // TypeScript compiler other than a type assertion. It is loosely coupled
-     // to the check above for parentNode.nodeName.
-     // Note: this doesn't strictly have to be a div, but that's what it is in
-     // current usage of the component at the time of writing.
-     const parentNode = ref.current.parentNode as HTMLDivElement  // eslint-disable-line @typescript-eslint/consistent-type-assertions
+    // The type of ref.current.parentNode is ParentNode which does not have an
+    // offsetTop property. I don't think there is a way to appease the
+    // TypeScript compiler other than a type assertion. It is loosely coupled
+    // to the check above for parentNode.nodeName.
+    // Note: this doesn't strictly have to be a div, but that's what it is in
+    // current usage of the component at the time of writing.
+    const parentNode = ref.current.parentNode as HTMLDivElement; // eslint-disable-line @typescript-eslint/consistent-type-assertions
 
-    /* The column CSS is great but doesn't allow us to know if an element is at
-    the top of its column, so we resort to JS */
-    if (ref.current.offsetTop===parentNode.offsetTop) {
+    // The column CSS is great but doesn't allow us to know if an
+    // element is at the top of its column, so we resort to JS
+    if (ref.current.offsetTop === parentNode.offsetTop) {
       setTopOfColumn(true);
     }
   }, []);
 
   // don't show anything if display name is unavailable
-  if (!resource.displayName) return null
-
-  // add history if mobile and resource has version info
-  let history: React.JSX.Element | null = null
-  if (!isMobile && resource.updateCadence && resource.nVersions && resource.lastUpdated) {
-    history = (
-      <TooltipWrapper description={resource.updateCadence.description +
-        `<br/>Last known update on ${resource.lastUpdated}` +
-        `<br/>${resource.nVersions} snapshots of this dataset available (click to see them)`}>
-        <IconContainer
-          Icon={MdHistory}
-          text={`${resource.updateCadence.summary} (n=${resource.nVersions})`}
-          handleClick={() => setModalResource(resource)}
-        />
-      </TooltipWrapper>
-    )
+  if (!resource.displayName) {
+    return null;
   }
 
-  const description = resource.lastUpdated ? `Last known update on ${resource.lastUpdated}` : "";
+  // add history if not mobile and resource has version info
+  let history: React.JSX.Element | null = null;
+  if (
+    !isMobile &&
+    resource.updateCadence &&
+    resource.nVersions &&
+    resource.lastUpdated
+  ) {
+    history = (
+      <TooltipWrapper
+        description={
+          resource.updateCadence.description +
+          `<br/>Last known update on ${resource.lastUpdated}` +
+          `<br/>${resource.nVersions} snapshots of this dataset available (click to see them)`
+        }
+      >
+        <IconContainer
+          handleClick={() => setModalResource(resource)}
+          iconName="history"
+          text={`${resource.updateCadence.summary} (n=${resource.nVersions})`}
+        />
+      </TooltipWrapper>
+    );
+  }
+
+  const description = resource.lastUpdated
+    ? `Last known update on ${resource.lastUpdated}`
+    : "";
 
   return (
-    <Container ref={ref}>
-
-      <FlexRow>
-
+    <div className={styles.individualResourceContainer} ref={ref}>
+      <div className={styles.flexRow} style={{ gap: `${gapWidth}px` }}>
         <TooltipWrapper description={description}>
-          <ResourceLinkWrapper onShiftClick={() => setModalResource(resource)}>
-            <Name displayName={resource.displayName} href={resource.url} topOfColumn={topOfColumn}/>
-          </ResourceLinkWrapper>
+          <IndividualResourceLink
+            resource={resource}
+            topOfColumn={topOfColumn}
+          />
         </TooltipWrapper>
 
         {history}
-
-      </FlexRow>
-
-    </Container>
-  )
-}
-
-
-/**
- * Wrapper component to add shift-click behavior.
- */
-export const ResourceLinkWrapper = ({children, onShiftClick}) => {
-  const onClick = (e) => {
-    if (e.shiftKey) {
-      onShiftClick();
-      e.preventDefault(); // child elements (e.g. <a>) shouldn't receive the click
-    }
-  };
-  return (
-    <div onClick={onClick}>
-      {children}
+      </div>
     </div>
-  )
+  );
 }
