@@ -6,6 +6,11 @@
   color: #31586c;
 }
 
+.groupLink {
+  font-size: 2rem;
+  font-weight: 500
+}
+
 .resourceLink {
    font-size: 16px;
    font-family: monospace;

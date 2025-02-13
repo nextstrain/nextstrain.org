@@ -10,6 +10,61 @@ import { Resource } from "./types";
 
 import styles from "./group-and-resource-links.module.css";
 
+export function GroupLink({
+  displayName,
+  href,
+}: {
+  displayName: string;
+  href: string;
+}): React.ReactElement {
+  return (
+    <a
+      className={`${styles.baseLink} ${styles.groupLink}`}
+      href={href}
+      rel="noreferrer"
+      target="_blank"
+    >
+      {displayName}
+    </a>
+  );
+}
+
+export function IndividualQuickLink({
+  displayName,
+  href,
+  resource,
+}: {
+  displayName: string;
+  href: string;
+  resource: Resource | undefined;
+}): React.ReactElement | null {
+  if (!resource) {
+    return null;
+  }
+
+  const setModalResource = useContext(SetModalResourceContext);
+  if (!setModalResource) {
+    throw new InternalError("Context not provided!");
+  }
+
+  function onClick(): void {
+    setModalResource && setModalResource(resource);
+  }
+
+  return (
+    <div onClick={onClick}>
+      <a
+        className={`${styles.baseLink} ${styles.resourceLink}`}
+        href={href}
+        rel="noreferrer"
+        target="_blank"
+      >
+        {displayName}
+      </a>
+    </div>
+  );
+}
+
 export function IndividualResourceLink({
   resource,
   topOfColumn,
