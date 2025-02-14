@@ -1,63 +1,54 @@
 import React from "react";
-import {
-  SmallSpacer,
-  HugeSpacer,
-  FlexCenter,
-} from "../layouts/generalComponents";
-import ListResources from "../components/ListResources/index";
-import * as splashStyles from "../components/splash/styles";
-import GenericPage from "../layouts/generic-page";
-import {coreQuickLinks, coreGroupDisplayNames, coreTiles} from "../../content/resource-listing.yaml";
 
-const title = "Nextstrain-maintained pathogen analyses";
-const abstract = (
-  <>
-    These data represent analyses and situation-reports produced by the <a href="/team">core Nextstrain team</a>.
-    Explore analyses produced by others on the <a href="/groups">Groups</a> and <a href="/community">Community</a> pages.
-    <br/><br/>
-    We aim to provide a continually-updated view of publicly available data to show pathogen evolution and epidemic spread.
-    The pipeline used to generate each dataset is available on <a href="https://github.com/nextstrain/">our GitHub page</a> or by loading a dataset and
-    clicking the &ldquo;built with&rdquo; link at the top of the page.
-  </>
-);
+import FlexCenter from "../../components/flex-center";
+import { FocusParagraphCentered } from "../../components/focus-paragraph";
+import ListResources from "../../components/list-resources";
+import { SmallSpacer, HugeSpacer } from "../../components/spacers";
+import * as coreResources from "../../content/resource-listing.yaml";
 
-const resourceListingCallback = async () => {
-  const sourceId = "core"
-  const sourceUrl = `list-resources/${sourceId}`;
+/**
+ * React Server Component that generates and presents a list of
+ * pathogen resources.
+ */
+export default function Pathogens(): React.ReactElement {
+  return (
+    <>
+      <HugeSpacer />
+      <HugeSpacer />
 
-  const response = await fetch(sourceUrl, {headers: {accept: "application/json"}});
-  if (response.status !== 200) {
-    throw new Error(`fetching data from "${sourceUrl}" returned status code ${response.status}`);
-  }
+      <h1>Nextstrain-maintained pathogen analyses</h1>
 
-  return (await response.json()).dataset[sourceId];
-};
+      <SmallSpacer />
 
-class Index extends React.Component {
-  render() {
-    return (
-      <GenericPage>
-        <splashStyles.H1>{title}</splashStyles.H1>
-        <SmallSpacer />
+      <FlexCenter>
+        <FocusParagraphCentered>
+          These data represent analyses and situation-reports produced by the{" "}
+          <a href="/team">core Nextstrain team</a>. Explore analyses produced by
+          others on the <a href="/groups">Groups</a> and{" "}
+          <a href="/community">Community</a> pages.
+          <br />
+          <br />
+          We aim to provide a continually-updated view of publicly available
+          data to show pathogen evolution and epidemic spread. The pipeline used
+          to generate each dataset is available on{" "}
+          <a href="https://github.com/nextstrain/">our GitHub page</a> or by
+          loading a dataset and clicking the &ldquo;built with&rdquo; link at
+          the top of the page.
+        </FocusParagraphCentered>
+      </FlexCenter>
 
-        <FlexCenter>
-          <splashStyles.CenteredFocusParagraph>
-            {abstract}
-          </splashStyles.CenteredFocusParagraph>
-        </FlexCenter>
+      <HugeSpacer />
 
-        <HugeSpacer/>
+      <ListResources
+        defaultGroupLinks
+        groupDisplayNames={coreResources["coreGroupDisplayNames"]}
+        quickLinks={coreResources["coreQuickLinks"]}
+        resourceType="dataset"
+        tileData={coreResources["coreTiles"]}
+        versioned
+      />
 
-        <ListResources resourceType="dataset"
-          tileData={coreTiles}
-          quickLinks={coreQuickLinks} defaultGroupLinks
-          groupDisplayNames={coreGroupDisplayNames}
-          resourceListingCallback={resourceListingCallback}/>
-
-        <HugeSpacer/>
-      </GenericPage>
-    );
-  }
+      <HugeSpacer />
+    </>
+  );
 }
-
-export default Index;
