@@ -1,0 +1,64 @@
+.byline {
+  border-top: 1px rgb(230, 230, 230) solid;
+  font-size: 1.6rem;
+}
+
+.listResourcesContainer {
+  color: #4f4b50;
+  font-size: 1.8rem;
+}
+
+.relativePos {
+  position: relative;
+}
+
+.resourceTooltip {
+  font-size: 1.6rem;
+}
+
+.sortContainer {
+  display: flex;
+  padding-top: 20px;
+  padding-bottom: 30px;
+}
+.sortContainer input {
+  margin-left: 20px;
+  margin-right: 5px;
+}
+
+.tileImg {
+  border-radius: 2px;
+  float: right;
+  max-height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.tileInner {
+  cursor: pointer;
+  margin: 5px 10px 5px 10px;
+}
+
+.tileName {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 3px;
+  color: white;
+  font-size: 21px;
+  font-weight: 500;
+  left: 20px;
+  padding: 10px 20px 10px 10px;
+  position: absolute;
+  top: 15px;
+}
+@media (max-width: 768px) {
+  .tileName {
+    font-size: 22px;
+  }
+}
+
+.tileOuter {
+  background-color: #ffffff;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
