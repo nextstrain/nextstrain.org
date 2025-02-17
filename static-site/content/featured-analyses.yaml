@@ -34,6 +34,16 @@
   img: mpox_tree.png
   url: /mpox/all-clades
 
+- name: SARS-CoV-2 lineages
+  description: Nextclade reference tree of SARS-CoV-2 Pango lineages
+  img: ncov_lineages.png
+  url: /nextclade/sars-cov-2
+
+- name: SARS-CoV-2 forecasts
+  description: SARS-CoV-2 clade and lineage frequency dynamics
+  img: ncov_frequencies.png
+  url: /sars-cov-2/forecasts
+
 - name: Oropouche
   description: Oropouche virus evolution and spread
   img: oropouche_map.png
