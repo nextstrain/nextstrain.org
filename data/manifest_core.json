@@ -17,6 +17,12 @@
                   "default": "genome"
               }
           },
+          "h5n1-d1.1": {
+              "segment": {
+                  "genome": "",
+                  "default": "genome"
+              }
+          },
           "h5n1": {
             "segment": {
               "ha": {
