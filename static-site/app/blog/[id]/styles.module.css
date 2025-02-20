@@ -1,3 +1,35 @@
+.blogPost p > code {
+  /* prevent linebreaks in code snippets in text */
+  white-space: nowrap;
+}
+
+/* style tables in blog posts:
+ * - bold headers with dark-ish background
+ * - even rows striped with lighter background
+ * - 1px dark border around table and under header
+ * - 2rem top/bottom margin
+ * - left-aligned text
+*/
+.blogPost table {
+  border: 1px solid #333;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  text-align: left;
+  width: 100%;
+}
+.blogPost table th {
+  background-color: #ddd;
+  border-bottom: 1px solid #333;
+  font-weight: 500;
+  padding: 0.75rem;
+}
+.blogPost table tr:nth-child(even) {
+  background-color: #eee;
+}
+.blogPost table td {
+  padding: 0.75rem;
+}
+
 .blogPostTitle {
   clear: both; /* this is to let the title fall under the floated date, not under it */
   color: black;
