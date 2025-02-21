@@ -108,7 +108,7 @@ export default async function BlogPost({
     <>
       <BigSpacer count={2} />
 
-      <article className="container">
+      <article className={`container ${styles.blogPost}`}>
         <div className="row">
           <div className="col-lg-8">
             <time className={styles.blogPostDate} dateTime={blogPost.date}>
