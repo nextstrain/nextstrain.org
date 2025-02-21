@@ -68,7 +68,7 @@ target for neutralizing antibodies.
 
 Nextstrain phylogenetic trees by segment were built against the Josiah
 strain (GenBank reference [NC\_004297][] for L segment; [NC_004296][] for S
-segment) and mid point rooted the segment trees. This enables the
+segment) and mid point rooted. This enables the
 visualization of the global distribution of Lassa virus across its
 segments – which is geographically constrained across lineages
 ([Ehichioya et al. 2019][]). Hence, the introduction of lineages (or
@@ -125,7 +125,7 @@ short-lived infection, but in a minority of cases can cause severe
 liver damage and even death. The jaundice from the liver damage gives
 the disease its name. Yellow fever is caused by the yellow fever virus
 (_Orthoflavivirus flavi_, YFV), a member of the single-stranded RNA
-Flaviviridae family. Desnpite the existence of a safe and highly
+Flaviviridae family. Despite the existence of a safe and highly
 effective vaccine, yellow fever remains an endemic disease in the
 tropical regions of Africa and South America, and has been detected in
 most regions of the world.
