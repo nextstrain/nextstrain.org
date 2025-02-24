@@ -53,10 +53,10 @@ major clades defined in [Troupin et al. 2016][]. Available at
 
 # Lassa fever
 
-Lassa fever is a haemorrhagic disease endemic in West Africa. While
-the causative virus (_Lassa mammarenavirus_, LASV) is usually spread
+Lassa fever is a haemorrhagic disease endemic in West Africa.
+The causative virus (_Lassa mammarenavirus_, LASV) is usually spread
 by the mouse _Mastomys natalensis_ and other reservoir host rodents
-([Olayemi et al. 2015][]; [Happi et al. 2022][]; [Gary, 2023][]),
+([Olayemi et al. 2015][]; [Happi et al. 2022][]; [Gary, 2023][]) and
 person-to-person transmission is rare. Outbreaks of Lassa tend to
 occur from December to March ([llori et al, 2019][], [McKendrick et al,
 2023][]). The Lassa virus genome is composed of two segments — a ~7k
@@ -72,11 +72,11 @@ segment) and mid point rooted. This enables the
 visualization of the global distribution of Lassa virus across its
 segments – which is geographically constrained across lineages
 ([Ehichioya et al. 2019][]). Hence, the introduction of lineages (or
-strains) to new locations can be promptly detected. For the GPC gene
-tree, a [manually cleaned GPC alignment][] was used to enable a more codon
+strains) to new locations can be promptly detected.
+A [manually cleaned GPC alignment][] was used to enable a more codon
 aware alignment for the GPC phylogenetic tree (Figure 2 green boxes).
-This extendable manual alignment provides a guide alignment (used by
-`mafft --extend-alignment`) and enables tracking of a [commonly observed
+New sequences are matched against this guide alignment (used by
+`mafft --extend-alignment`) which enables tracking of a [commonly observed
 position 60 indel region][] in the GPC ([Perrett et al. 2023][] figure S1,
 [Buck et al., 2022][] Fig S4). This region is also a key position
 implicated in a study that applied machine learning analysis to LASV
@@ -92,13 +92,9 @@ within the GPC pos 60 region resulted in challenging codon alignment
 for Augur Align (mafft) and Nextclade alignment (despite increasing
 the penalty-gap-open-out-of-frame). The manual fix adjusted the
 alignment results to maintain the indel in-frame. For example, the GPC
-pos 60 region for GenBank OR147792 (highlighted pink) was manually
-fixed (highlighted in green). The Josiah reference strain (NC004296)
-is shown at the top of the alignment as reference. This figure
-includes 2 lassa sequences with the position 60 gap (OR147791 and
-OR147792) and a lassa sequence without the position 60 gap (OR041676).
-The results of this alignment enables tracking of the GPC pos 60 in
-the tree.
+pos 60 region for GenBank OR147792 (highlighted in pink) was manually
+fixed (highlighted in green). The Josiah strain (NC004296)
+is shown at the top for reference.
 
 Host and geographic information were annotated onto the different
 phylogenies. The host tip colors have been manually ordered from Human
