@@ -1,0 +1,19 @@
+/* padding-top: 72% chosen so that at widescreen the iframe takes up basically the entire height of the window */
+/* padding-top: 580px chosen so that at vertical mobile display the iframe takes up basically the entire height of the window */
+.iframeContainer {
+  overflow: hidden;
+  padding-top: max(580px, 72%);
+  position: relative;
+  width: 100%;
+}
+
+.iframeResponsive {
+  border: 0px;
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
