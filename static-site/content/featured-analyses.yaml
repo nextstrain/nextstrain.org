@@ -15,7 +15,7 @@
   url: /groups/inrb-mpox/clade-I
 
 - name: H5N1 cattle outbreak
-  description: Analysis of the ongoing influenza A/H5N1 cattle outbreak
+  description: Analysis of the ongoing B3.13 outbreak
   img: h5n1_cattle_outbreak_tree.png
   url: /avian-flu/h5n1-cattle-outbreak/genome
 
@@ -48,6 +48,11 @@
   description: Avian influenza A/H5N1 evolution and spread
   img: h5n1_map.png
   url: /avian-flu/h5n1/ha/2y
+
+- name: Avian influenza (D1.1)
+  description: Genome analysis of the D1.1 genome zoonoses
+  img: h5n1_d1.1.png
+  url: /avian-flu/h5n1-d1.1/genome
 
 - name: Oropouche
   description: Oropouche virus evolution and spread
