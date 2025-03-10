@@ -116,6 +116,22 @@ h6 {
   font-weight: 400;
 }
 
+div.errorContainer {
+  color: var(--errorRed);
+  font-size: 28px;
+  font-weight: 300;
+  line-height: calc(1.4 * var(--niceLineHeight));
+  margin: 0 auto;
+  max-width: 640px;
+  padding: 130px 0 80px;
+  text-align: center;
+}
+div.errorContainer a {
+  color: var(--errorRed);
+  font-weight: 300;
+  text-decoration: underline;
+}
+
 div.iconParagraph {
   font-size: var(--niceFontSize);
   font-weight: 300;

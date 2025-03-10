@@ -1,0 +1,84 @@
+.clickable {
+  cursor: pointer;
+}
+
+.collapsibleRow {
+  align-items: center;
+  color: #4f4b50;
+  display: flex;
+  flex-direction: row;
+  font-size: 1.6rem;
+  gap: 0px;
+  justify-content: flex-start;
+  padding-left: 0px;
+  width: 100%;
+}
+
+.flexColumnContainer {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 10;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.flexSpan {
+  flex-grow: 100;
+}
+
+.headerContainer {
+  align-items: center;
+  background-color: rgb(248, 248, 248);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+  padding: 5px;
+}
+
+.headerRow {
+  align-items: flex-end; /* all elements share common baseline */
+  color: #4f4b50;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-start;
+  padding-left: 10px; /* vertically aligns the row with the collapse icon (if any) */
+  width: 100%;
+}
+
+.individualResourceContainer {
+  column-gap: 20px;
+}
+
+.quickLinkRow {
+  font-size: 1.6rem;
+  padding-top: 5px;
+  white-space: nowrap;
+}
+
+.quickLinkWrapper {
+  padding-left: 5px;
+}
+
+.resourceGroupContainer {
+  background-color: rgb(251, 251, 251);
+  border-radius: 5px;
+  border: 2px solid rgb(204, 204, 204);
+  margin-bottom: 10px; /* spacing between groups */
+  padding-bottom: 5px; /* leave some space inside the group at the bottom */
+}
+
+.rotate {
+  display: inline-block;
+  max-height: 30px;
+  max-width: 30px;
+  transition: all 0.3s ease-in;
+}
+
+.unlinkedGroupName {
+  font-size: "2rem";
+  font-weight: "500";
+}

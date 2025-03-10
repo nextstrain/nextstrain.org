@@ -1,0 +1,33 @@
+/* Spinner CSS originally from
+ * https://github.com/nextstrain/auspice/blob/a0e9080dcd61249f24f6c822dfcf6478e4e07ac2/src/css/static.css
+ */
+
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+}
+.spinnerContainer .spinner {
+  align-items: center;
+  animation: spin 1.5s linear infinite;
+  -moz-animation: spin 1.5s linear infinite;
+  -webkit-animation: spin 1.5s linear infinite;
+  height: 80px;
+  margin: 0px 0px 0px -40px;
+  width: 80px;
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,19 @@
+.baseLink {
+  color: #5097ba;
+  text-decoration: none;
+}
+.baseLink:hover {
+  color: #31586c;
+  text-decoration: none;
+}
+
+.groupLink {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.resourceLink {
+  font-size: 16px;
+  font-family: monospace;
+  white-space: pre; /* don't collapse back-to-back spaces */
+}
