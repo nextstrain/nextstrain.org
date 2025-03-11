@@ -778,8 +778,12 @@
       },
       "WNV": {
         "resolution": {
+          "global": "",
+          "wa": "",
+          "lineage-1A": "",
+          "lineage-2": "",
           "NA": "",
-          "default": "NA"
+          "default": "global"
         }
       },
       "yellow-fever": {
