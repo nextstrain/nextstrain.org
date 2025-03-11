@@ -19,12 +19,6 @@ import styles from "./resource-group.module.css";
 /**
  * React Client Component for displaying a group of related Resource
  * objects.
- *
- * @param group - `Group` object representing the resources to display
- * @param elWidth - the width of the element displaying the resources
- * @param numGroups - overall count of `Group` objects being displayed
- * @param sortMethod - React State holding the active sorting method
- * @param quickLinks - a list of `QuickLink` objects for the group
  */
 export default function ResourceGroup({
   group,
@@ -33,10 +27,19 @@ export default function ResourceGroup({
   sortMethod,
   quickLinks,
 }: {
+  /** `Group` object representing the resources to display */
   group: Group;
+
+  /** the width of the element displaying the resources */
   elWidth: number;
+
+  /** overall count of `Group` objects being displayed */
   numGroups: number;
+
+  /** React State holding the active sorting method */
   sortMethod: string;
+
+  /** a list of `QuickLink` objects for the group */
   quickLinks: QuickLink[];
 }): React.ReactElement {
   const { collapseThreshold, resourcesToShowWhenCollapsed } =
