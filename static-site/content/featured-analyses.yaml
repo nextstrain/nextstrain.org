@@ -44,6 +44,11 @@
   img: ncov_frequencies.png
   url: /sars-cov-2/forecasts
 
+- name: Avian influenza
+  description: Avian influenza A/H5N1 evolution and spread
+  img: h5n1_map.png
+  url: /avian-flu/h5n1/ha/2y
+
 - name: Oropouche
   description: Oropouche virus evolution and spread
   img: oropouche_map.png
