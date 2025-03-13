@@ -15,7 +15,7 @@
   url: /groups/inrb-mpox/clade-I
 
 - name: H5N1 cattle outbreak
-  description: Analysis of the ongoing B3.13 outbreak
+  description: Influenza H5N1 cattle outbreak in the USA (genotype B3.13)
   img: h5n1_cattle_outbreak_tree.png
   url: /avian-flu/h5n1-cattle-outbreak/genome
 
@@ -50,7 +50,7 @@
   url: /avian-flu/h5n1/ha/2y
 
 - name: Avian influenza (D1.1)
-  description: Genome analysis of the D1.1 genome zoonoses
+  description: Genomic analysis of avian influenza H5N1 (D1.1 genotype)
   img: h5n1_d1.1.png
   url: /avian-flu/h5n1-d1.1/genome
 
