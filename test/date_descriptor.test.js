@@ -302,20 +302,20 @@ describe("Valid narratives", () => {
 })
 
 const redirects = [
-  ["WNV", "WNV/NA"],
+  ["WNV", "WNV/global"],
   /* Note that WNV is not in the index, so this versioned test ensures we are
   not checking the existence/validity of any version descriptor against the WNV
   resource, rather we are redirecting and deferring those checks */
-  ["WNV@2020-01-01", "WNV/NA@2020-01-01"],
+  ["WNV@2025-03-12", "WNV/global@2025-03-12"],
   /* URL queries should be preserved across the redirect, but only for the RESTful API */
-  ["WNV@2020-01-01?c=region", "WNV/NA@2020-01-01?c=region", {charon: false}],
-  ["staging/WNV@2020-01-01?c=region", "staging/WNV/NA@2020-01-01?c=region", {charon: false}],
+  ["WNV@2025-03-12?c=region", "WNV/global@2025-03-12?c=region", {charon: false}],
+  ["staging/WNV@2025-03-13?c=region", "staging/WNV/global@2025-03-13?c=region", {charon: false}],
 ]
 
 describe("Paths redirect with version descriptors", () => {
   /* See <https://github.com/node-fetch/node-fetch#manual-redirect> for how
   fetch stores the redirect location when {redirect: 'manual'} */
-  
+
   redirects.forEach(([fromUrl, toUrl, opts]) => {
     /* test RESTful API */
     (['html', 'json']).forEach((type) => {
