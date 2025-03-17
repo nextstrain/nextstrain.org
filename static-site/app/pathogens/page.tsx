@@ -6,6 +6,8 @@ import ListResources from "../../components/list-resources";
 import { SmallSpacer, HugeSpacer } from "../../components/spacers";
 import * as coreResources from "../../content/resource-listing.yaml";
 
+import { pathogenResourceListingCallback } from "./callback";
+
 /**
  * React Server Component that generates and presents a list of
  * pathogen resources.
@@ -43,6 +45,7 @@ export default function Pathogens(): React.ReactElement {
         defaultGroupLinks
         groupDisplayNames={coreResources["coreGroupDisplayNames"]}
         quickLinks={coreResources["coreQuickLinks"]}
+        resourceListingCallback={pathogenResourceListingCallback}
         resourceType="dataset"
         tileData={coreResources["coreTiles"]}
         versioned
