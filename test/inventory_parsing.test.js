@@ -61,7 +61,7 @@ test('back-to-back delete markers', async () => {
 test('core URL redirects (via our manifest) are correctly obtained', async () => {
   const expected_url_redirects = {
     'dengue/denv1': 'dengue/denv1/genome',
-    WNV: 'WNV/global',
+    WNV: 'WNV/all-lineages',
     'seasonal-flu': 'seasonal-flu/h3n2/ha/2y',
     'seasonal-flu/h3n2': 'seasonal-flu/h3n2/ha/2y',
     'seasonal-flu/h3n2/ha': 'seasonal-flu/h3n2/ha/2y',

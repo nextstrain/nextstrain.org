@@ -1,10 +1,10 @@
 /**
- * 
+ *
  * Testing of requests made using URLs with date descriptors (i.e. @YYYY-MM-DD).
  * It would be better if we also ran the server from the test process and could
  * spy on the requests being made to check the correct versionId is being used
  * in the requests to AWS.
- * 
+ *
  */
 
 /**
@@ -114,7 +114,7 @@ const narratives = [
 describe("Request valid main datasets", () => {
 
   for (const d of datasets.filter((el) => !el.hasOwnProperty('sidecar') && el.valid===true)) {
-    
+
     if (d.charon!==false) {
       it(`Charon API using ${d.prefix}`, async () => {
         const url = `${BASE_URL}/charon/getDataset?prefix=${d.prefix}`;
@@ -302,14 +302,14 @@ describe("Valid narratives", () => {
 })
 
 const redirects = [
-  ["WNV", "WNV/global"],
+  ["WNV", "WNV/all-lineages"],
   /* Note that WNV is not in the index, so this versioned test ensures we are
   not checking the existence/validity of any version descriptor against the WNV
   resource, rather we are redirecting and deferring those checks */
-  ["WNV@2025-03-12", "WNV/global@2025-03-12"],
+  ["WNV@2025-03-17", "WNV/all-lineages@2025-03-17"],
   /* URL queries should be preserved across the redirect, but only for the RESTful API */
-  ["WNV@2025-03-12?c=region", "WNV/global@2025-03-12?c=region", {charon: false}],
-  ["staging/WNV@2025-03-13?c=region", "staging/WNV/global@2025-03-13?c=region", {charon: false}],
+  ["WNV@2025-03-17?c=region", "WNV/all-lineages@2025-03-17?c=region", {charon: false}],
+  ["staging/WNV@2025-03-17?c=region", "staging/WNV/all-lineages@2025-03-17?c=region", {charon: false}],
 ]
 
 describe("Paths redirect with version descriptors", () => {
