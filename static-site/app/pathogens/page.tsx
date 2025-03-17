@@ -43,6 +43,7 @@ export default function Pathogens(): React.ReactElement {
         defaultGroupLinks
         groupDisplayNames={coreResources["coreGroupDisplayNames"]}
         quickLinks={coreResources["coreQuickLinks"]}
+        resourceName="pathogens"
         resourceType="dataset"
         tileData={coreResources["coreTiles"]}
         versioned
