@@ -1,87 +1,68 @@
 import React from "react";
-import {
-  SmallSpacer,
-  HugeSpacer,
-  FlexCenter,
-} from "../layouts/generalComponents";
-import * as splashStyles from "../components/splash/styles";
-import GenericPage from "../layouts/generic-page";
-import { ErrorBanner } from "../components/errorMessages";
-import ListResources from "../components/ListResources/index";
-import { withRouter } from 'next/router'
+import { Metadata } from "next";
+
+import StagingPageContent from "./content";
+import ValidateStagingUrl from "./validateStagingUrl";
 
 const title = "Staging Data";
-const abstract = (
-  <>
-    Staging datasets & narratives are intended primarily for internal (Nextstrain team) usage.
-    They should be considered unreleased and/or out of date; they should not be used to draw scientific conclusions.
-  </>
-);
 
-const resourceListingCallback = async () => {
-  const sourceId = "staging"
-  const sourceUrl = `list-resources/${sourceId}`;
-
-  const response = await fetch(sourceUrl, {headers: {accept: "application/json"}});
-  if (response.status !== 200) {
-    throw new Error(`fetching data from "${sourceUrl}" returned status code ${response.status}`);
-  }
-
-  return (await response.json()).dataset[sourceId];
+export const metadata: Metadata = {
+  title,
 };
 
-class Index extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  checkRouterParams() {
-    /* Check the next.js router for query params which indicate that the URL was
-    attempting to load a resource but it doesn't exist, e.g. "/staging/no/dataset/here".
-    We update state which results in an error banner being shown. */
-    if (!this.state.resourcePath && this.props.router.query?.staging) {
-      this.setState({resourcePath: "staging/"+this.props.router.query.staging.join("/")})
-    }
-  }
-
-  componentDidMount() {this.checkRouterParams()}
-  componentDidUpdate() {this.checkRouterParams()}
-
-
-  banner() {
-    if (this.state.resourcePath) {
-      const bannerTitle = this.state.resourcePath.startsWith("narratives/")
-        ? `The staging narrative "nextstrain.org/${this.state.resourcePath}" doesn't exist.`
-        : `The staging dataset "nextstrain.org/${this.state.resourcePath}" doesn't exist.`;
-      const bannerContents = `Here is the staging page instead.`;
-      return <ErrorBanner title={bannerTitle} contents={bannerContents}/>;
-    }
-    return null;
-  }
-
-  render() {
-    const banner = this.banner();
-    return (
-      <GenericPage banner={banner}>
-        <splashStyles.H1>{title}</splashStyles.H1>
-        <SmallSpacer />
-
-        <FlexCenter>
-          <splashStyles.CenteredFocusParagraph>
-            {abstract}
-          </splashStyles.CenteredFocusParagraph>
-        </FlexCenter>
-        <HugeSpacer />
-
-        <ListResources resourceType="dataset" versioned={false}
-          resourceListingCallback={resourceListingCallback}/>
-
-        <HugeSpacer />
-
-      </GenericPage>
-    );
-  }
+/**
+ * A React Server Component for `/staging`
+ *
+ * A note about how this page works:
+ *
+ * We expect three different types of requests for resources under
+ * `/staging`:
+ *
+ * 1) Requests for real, existing datasets (e.g., `/staging/ebola`) —
+ *    these requests are handled by the Express-level router, and this
+ *    Next.js page never sees them
+ *
+ * 2) Requests for the plain `/staging` page — that request is handled
+ *    by this page, and we expect it to return a resource listing of
+ *    staging datasets, with an HTTP status code of 200
+ *
+ * 3) Requests for some longer URL that does NOT correspond to a real,
+ *    existing dataset (e.g., `/staging/foo`) — in this case, we want
+ *    to display the same resource listing as the base `/staging`
+ *    page, but to also include an error banner indicating that the
+ *    requested resource (`nextstrain.org/staging/foo` in our example)
+ *    does not exist. We also want the HTTP status code for the
+ *    response to this request to be a 404
+ *
+ * We accomplish this as follows:
+ *
+ * Requests of type #1 are handled completely at the Express level,
+ * and this page never sees them.
+ *
+ * Requests of type #2 and type #3 _are_ handled by this page. It uses
+ * the `<ValidateStagingUrl>` component to detect whether the
+ * requested URL was the plain `/staging` or whether there are
+ * additional path components beyond that (again, `/staging/foo` in
+ * our example). If there _are_ additional path elements,
+ * `<ValidateStagingUrl>` detects that and calls Next.js's
+ * `notFound()` method, which results in the `./not-found.tsx` page
+ * being rendered and returned. If there are not additional path
+ * elements (i.e., if the request was for `/staging`),
+ * `<ValidateStagingUrl>` returns nothing, and the
+ * `<StagingPageContent>` component delivers the desired resource
+ * listing.
+ *
+ * If the `./not-found.tsx` page is rendered, it handles the display
+ * of the error banner; it also uses the `<StagingPageContent>`
+ * component to render the same resource listing as the default case.
+ * However, because it has been invoked via the Next.js `notFound()`
+ * method, it will return a 404 status code.
+ */
+export default function StagingPage(): React.ReactElement {
+  return (
+    <>
+      <ValidateStagingUrl />
+      <StagingPageContent metadata={metadata} />
+    </>
+  );
 }
-
-export default withRouter(Index);
