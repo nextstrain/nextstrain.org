@@ -1,36 +1,25 @@
-import React from 'react';
-import styled from "styled-components";
-import { CenteredFocusParagraph } from "../components/splash/styles";
-import { ErrorBannerInitialMessage, DataFetchError } from '../../data/SiteConfig';
+import React from "react";
 
-export const ErrorBanner = ({title, contents}) => (
-  <FixedBanner $backgroundColor="#c2c1be">
-    <StrongerText>
-      {title}
-    </StrongerText>
-    <br/>
-    <ErrorBannerInitialMessage />
-    <p>{contents}</p>
-  </FixedBanner>
-);
+import styles from "./styles.module.css";
 
-export const DataFetchErrorParagraph = () => (
-  <CenteredFocusParagraph>
-    <DataFetchError />
-  </CenteredFocusParagraph>
-);
-
-export const FixedBanner = styled.div`
-  left: 0px;
-  width: 100%;
-  height: 10%;
-  background-color: ${(props) => props.$backgroundColor};
-  font-size: 18px;
-  padding: 25px 0px 25px 0px;
-  margin: 25px 0px 25px 0px;
-  text-align: center;
-`;
-
-export const StrongerText = styled.span`
-  font-weight: 500;
-`;
+/**
+ * A React Server Component that displays an error message, intended
+ * to be used near the top of a page.
+ */
+export default function ErrorMessage({
+  title,
+  contents,
+}: {
+  title: string;
+  contents: string;
+}): React.ReactElement {
+  return (
+    <div className={styles.errorMessage}>
+      <span className={styles.strongerText}>{title}</span>
+      <br />
+      Please <a href="/contact">contact us</a> if you believe this to be an
+      error.
+      <p>{contents}</p>
+    </div>
+  );
+}
