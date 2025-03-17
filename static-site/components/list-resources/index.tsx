@@ -29,6 +29,7 @@ import useSortAndFilter from "./use-sort-and-filter";
 import useDataFetch from "./use-data-fetch";
 
 import { pathogenResourceListingCallback } from "../../app/pathogens/callback";
+import { stagingResourceListingCallback} from "../../app/staging/[[...staging]]/callback";
 
 import {
   FilterTile,
@@ -36,6 +37,7 @@ import {
   Group,
   QuickLink,
   Resource,
+  ResourceListingInfo,
   SortMethod,
   convertVersionedResource,
 } from "./types";
@@ -56,6 +58,9 @@ interface ListResourcesProps {
   groupDisplayNames: Record<string, string>;
 
   tileData: FilterTile[];
+
+  /** which callback to use */
+  resourceName: string;
 
   /** this is currently unused */
   resourceType: string;
@@ -142,14 +147,27 @@ function ListResourcesContent({
   defaultGroupLinks = false,
   groupDisplayNames,
   tileData,
+  resourceName,
 }: ListResourcesProps & {
   elWidth: number;
 }): React.ReactElement {
+  let resourceListingCallback: () => Promise<ResourceListingInfo>;
+  switch(resourceName) {
+    case "pathogens":
+      resourceListingCallback = pathogenResourceListingCallback;
+      break;
+    case "staging":
+      resourceListingCallback = stagingResourceListingCallback;
+      break;
+    default:
+      throw new InternalError(`${resourceName} is not a valid resource name`);
+  }
+
   const { groups, dataFetchError } = useDataFetch(
     versioned,
     defaultGroupLinks,
     groupDisplayNames,
-    pathogenResourceListingCallback,
+    resourceListingCallback,
   );
 
   const tiles = useTiles(tileData, groups);
