@@ -28,14 +28,13 @@ import { createFilterOption, useFilterOptions } from "./use-filter-options";
 import useSortAndFilter from "./use-sort-and-filter";
 import useDataFetch from "./use-data-fetch";
 
-import { pathogenResourceListingCallback } from "../../app/pathogens/callback";
-
 import {
   FilterTile,
   FilterOption,
   Group,
   QuickLink,
   Resource,
+  ResourceListingInfo,
   SortMethod,
   convertVersionedResource,
 } from "./types";
@@ -56,6 +55,9 @@ interface ListResourcesProps {
   groupDisplayNames: Record<string, string>;
 
   tileData: FilterTile[];
+
+  /** callback to use to get data */
+  resourceListingCallback: () => Promise<ResourceListingInfo>;
 
   /** this is currently unused */
   resourceType: string;
@@ -142,6 +144,7 @@ function ListResourcesContent({
   defaultGroupLinks = false,
   groupDisplayNames,
   tileData,
+  resourceListingCallback,
 }: ListResourcesProps & {
   elWidth: number;
 }): React.ReactElement {
@@ -149,7 +152,7 @@ function ListResourcesContent({
     versioned,
     defaultGroupLinks,
     groupDisplayNames,
-    pathogenResourceListingCallback,
+    resourceListingCallback,
   );
 
   const tiles = useTiles(tileData, groups);
