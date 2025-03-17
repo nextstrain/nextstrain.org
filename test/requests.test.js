@@ -340,13 +340,19 @@ function testMissingResourcePage(path) {
    * customised "this <resource> doesn't exist" (for instance,
    * "nextstrain.org/flu/does-not-exist"). These are valid next.js pages,
    * and so have response 200.
+   *
+   * Starting with the move to App Router, these pages are being converted
+   * to return a (proper) 404 status code — so until that is complete, we
+   * conditionalize the expected status code based on the path.
    */
   describe(`${path} sends a high-level page indicating missing resource`, () => {
     const req = fetch(url(path), {headers: {accept: "text/html,*/*;q=0.1"}});
 
+    const expectedStatus = path.startsWith("/staging") ? 404 : 200;
+
     test("status is 200", async () => {
       const res = await req;
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(expectedStatus);
     });
 
     /* Next.js pages don't contain much/any HTML content as that arrives via
