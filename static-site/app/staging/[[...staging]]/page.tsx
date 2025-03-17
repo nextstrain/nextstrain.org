@@ -7,6 +7,7 @@ import ListResources from "../../../components/list-resources";
 import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
 
 import ErrorBanner from "./error-banner";
+import { stagingResourceListingCallback } from "./callback";
 
 const title = "Staging Data";
 
@@ -43,7 +44,7 @@ export default async function StagingPage(): Promise<React.ReactElement> {
         defaultGroupLinks={false}
         groupDisplayNames={{}}
         quickLinks={[]}
-        resourceName="staging"
+        callback={stagingResourceListingCallback}
         resourceType="dataset"
         tileData={[]}
         versioned={false}

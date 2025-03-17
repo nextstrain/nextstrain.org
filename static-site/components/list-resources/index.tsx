@@ -28,9 +28,6 @@ import { createFilterOption, useFilterOptions } from "./use-filter-options";
 import useSortAndFilter from "./use-sort-and-filter";
 import useDataFetch from "./use-data-fetch";
 
-import { pathogenResourceListingCallback } from "../../app/pathogens/callback";
-import { stagingResourceListingCallback} from "../../app/staging/[[...staging]]/callback";
-
 import {
   FilterTile,
   FilterOption,
@@ -60,7 +57,7 @@ interface ListResourcesProps {
   tileData: FilterTile[];
 
   /** which callback to use */
-  resourceName: string;
+  callback: () => Promise<ResourceListingInfo>;
 
   /** this is currently unused */
   resourceType: string;
@@ -147,27 +144,16 @@ function ListResourcesContent({
   defaultGroupLinks = false,
   groupDisplayNames,
   tileData,
-  resourceName,
+  callback,
 }: ListResourcesProps & {
   elWidth: number;
 }): React.ReactElement {
-  let resourceListingCallback: () => Promise<ResourceListingInfo>;
-  switch(resourceName) {
-    case "pathogens":
-      resourceListingCallback = pathogenResourceListingCallback;
-      break;
-    case "staging":
-      resourceListingCallback = stagingResourceListingCallback;
-      break;
-    default:
-      throw new InternalError(`${resourceName} is not a valid resource name`);
-  }
 
   const { groups, dataFetchError } = useDataFetch(
     versioned,
     defaultGroupLinks,
     groupDisplayNames,
-    resourceListingCallback,
+    callback,
   );
 
   const tiles = useTiles(tileData, groups);

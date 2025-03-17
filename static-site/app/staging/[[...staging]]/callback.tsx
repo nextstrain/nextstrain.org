@@ -1,3 +1,5 @@
+"use client";
+
 import { ResourceListingInfo } from "../../../components/list-resources/types";
 
 /**
