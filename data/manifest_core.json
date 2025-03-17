@@ -307,111 +307,33 @@
           "default": "d68"
         }
       },
-      "seasonal-flu": {
-        "lineage": {
-          "h3n2": {
-            "segment": {
-              "ha": {
-                "resolution": {
-                  "6m": "",
-                  "2y": "",
-                  "3y": "",
-                  "6y": "",
-                  "12y": "",
-                  "default": "2y"
-                }
-              },
-              "na": {
-                "resolution": {
-                  "6m": "",
-                  "2y": "",
-                  "3y": "",
-                  "6y": "",
-                  "12y": "",
-                  "default": "2y"
-                }
-              },
-              "default": "ha"
+      "hmpv": {
+        "type": {
+          "all": {
+            "region":{
+              "genome": "",
+              "G": "",
+              "F": "",
+              "default":"genome"
             }
           },
-          "h1n1pdm": {
-            "segment": {
-              "ha": {
-                "resolution": {
-                  "6m": "",
-                  "2y": "",
-                  "3y": "",
-                  "6y": "",
-                  "12y": "",
-                  "pandemic": "",
-                  "default": "2y"
-                }
-              },
-              "na": {
-                "resolution": {
-                  "6m": "",
-                  "2y": "",
-                  "3y": "",
-                  "6y": "",
-                  "12y": "",
-                  "pandemic": "",
-                  "default": "2y"
-                }
-              },
-              "default": "ha"
+          "a": {
+            "region":{
+              "genome": "",
+              "G": "",
+              "F": "",
+              "default":"genome"
             }
           },
-          "vic": {
-            "segment": {
-              "ha": {
-                "resolution": {
-                  "6m": "",
-                  "2y": "",
-                  "3y": "",
-                  "6y": "",
-                  "12y": "",
-                  "default": "2y"
-                }
-              },
-              "na": {
-                "resolution": {
-                  "6m": "",
-                  "2y": "",
-                  "3y": "",
-                  "6y": "",
-                  "12y": "",
-                  "default": "2y"
-                }
-              },
-              "default": "ha"
+          "b": {
+            "region":{
+              "genome": "",
+              "G": "",
+              "F": "",
+              "default":"genome"
             }
           },
-          "yam": {
-            "segment": {
-              "ha": {
-                "resolution": {
-                  "6m": "",
-                  "2y": "",
-                  "3y": "",
-                  "6y": "",
-                  "12y": "",
-                  "default": "2y"
-                }
-              },
-              "na": {
-                "resolution": {
-                  "6m": "",
-                  "2y": "",
-                  "3y": "",
-                  "6y": "",
-                  "12y": "",
-                  "default": "2y"
-                }
-              },
-              "default": "ha"
-            }
-          },
-          "default": "h3n2"
+          "default": "all"
         }
       },
       "lassa": {
@@ -732,35 +654,6 @@
           "default": "a"
         }
       },
-      "hmpv": {
-        "type": {
-          "all": {
-            "region":{
-              "genome": "",
-              "G": "",
-              "F": "",
-              "default":"genome"
-            }
-          },
-          "a": {
-            "region":{
-              "genome": "",
-              "G": "",
-              "F": "",
-              "default":"genome"
-            }
-          },
-          "b": {
-            "region":{
-              "genome": "",
-              "G": "",
-              "F": "",
-              "default":"genome"
-            }
-          },
-          "default": "all"
-        }
-      },
       "seasonal-cov": {
         "resolution": {
           "229e": "",
@@ -768,6 +661,113 @@
           "nl63": "",
           "oc43": "",
           "default": "oc43"
+        }
+      },
+      "seasonal-flu": {
+        "lineage": {
+          "h3n2": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "default": "ha"
+            }
+          },
+          "h1n1pdm": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "pandemic": "",
+                  "default": "2y"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "pandemic": "",
+                  "default": "2y"
+                }
+              },
+              "default": "ha"
+            }
+          },
+          "vic": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "default": "ha"
+            }
+          },
+          "yam": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "6m": "",
+                  "2y": "",
+                  "3y": "",
+                  "6y": "",
+                  "12y": "",
+                  "default": "2y"
+                }
+              },
+              "default": "ha"
+            }
+          },
+          "default": "h3n2"
         }
       },
       "tb": {
