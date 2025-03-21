@@ -1,7 +1,8 @@
 import React from "react";
 
+import { ErrorBanner } from "../../../components/error-banner";
+
 import PathogensPageContent from "./content";
-import ErrorBanner from "./error-banner";
 import { metadata } from "./page";
 
 /**
@@ -12,7 +13,7 @@ import { metadata } from "./page";
 export default function FourOhFour(): React.ReactElement {
   return (
     <>
-      <ErrorBanner />
+      <ErrorBanner stub="pathogens" />
       <PathogensPageContent metadata={metadata} />
     </>
   );
