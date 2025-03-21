@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Contact",
 };
 
+/**
+ * A React Server Component that renders the /contact page
+ */
 export default function ContactPage(): React.ReactElement {
   return (
     <>
