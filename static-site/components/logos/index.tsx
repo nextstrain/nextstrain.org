@@ -11,14 +11,20 @@ import bzLogo from "../../static/logos/bz_logo.png";
 
 import styles from "./styles.module.css";
 
-type Logo = {
+type LogoType = {
+  /** `src` property of the logo image */
   imgSrc: string;
+
+  /** URL that the image should link to */
   href: string;
+
+  /** width of the image, in pixels */
   width: number;
 };
 
+/** React Server Component to return a set of logos, used in the site footer. */
 export default function Logos(): React.ReactElement {
-  const logos: Logo[] = [
+  const logos: LogoType[] = [
     {
       imgSrc: fredHutchLogo.src,
       href: "http://www.fredhutch.org/",
@@ -67,7 +73,7 @@ export default function Logos(): React.ReactElement {
         <p className="footerParagraph">Nextstrain is supported by</p>
 
         <div className={styles.allLogosContainer}>
-          {logos.map((logo: Logo) => (
+          {logos.map((logo: LogoType) => (
             <Logo key={logo.href} href={logo.href} imgSrc={logo.imgSrc} width={logo.width} />
           ))}
         </div>
@@ -76,13 +82,19 @@ export default function Logos(): React.ReactElement {
   );
 }
 
+/** React Server Component to render a single logo */
 function Logo({
   href,
   imgSrc,
   width,
 }: {
+  /** URL that the image should link to */
   href: string;
+
+  /** `src` property of the logo image */
   imgSrc: string;
+
+  /** width of the image, in pixels */
   width: number;
 }): React.ReactElement {
   return (
