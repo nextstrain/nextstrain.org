@@ -3,11 +3,15 @@ import sanitizeHtml, { Attributes, IOptions, Tag } from "sanitize-html";
 
 import { siteUrl } from "../../data/BaseConfig";
 
+/**
+ * Render a string of text formatted with Markdown into HTML
+ */
 export default async function parseMarkdown({
   mdString,
   addHeadingAnchors = false,
   headingAnchorClass = undefined,
 }: {
+  /** the Markdown-formatted text to render */
   mdString: string
 
   /** Should `<a>` tags be added to headings? */
@@ -55,7 +59,17 @@ export default async function parseMarkdown({
   return cleanDescription;
 }
 
-function transformA(tagName: string, attribs: Attributes): Tag {
+/**
+ * A function to add `target=_blank` and `rel="noreferrer nofollow"`
+ * attributes to <a> tags that link to external destinations
+ */
+function transformA(
+  /** the name of the tag being transformed (will always be `a`) */
+  tagName: string,
+
+  /** attributes of the tag being transformed */
+  attribs: Attributes
+): Tag {
   // small helper to keep things dry
   const _setAttribs: (attribs: Attributes) => void = (attribs) => {
     attribs.target = "_blank";
