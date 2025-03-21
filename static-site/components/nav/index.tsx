@@ -7,6 +7,7 @@ import UserOrLoginLink from "./user-or-login-link";
 
 import styles from "./styles.module.css";
 
+/** React Server Component to render the site nav bar */
 export default function Nav(): React.ReactElement {
   return (
     <nav className={styles.nav}>
