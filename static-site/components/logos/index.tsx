@@ -12,11 +12,17 @@ import bzLogo from "../../static/logos/bz_logo.png";
 import styles from "./styles.module.css";
 
 type Logo = {
+  /** `src` property of the logo image */
   imgSrc: string;
+
+  /** URL that the image should link to */
   href: string;
+
+  /** width of the image, in pixels */
   width: number;
 };
 
+/** React Server Component to return a set of logos, used in the site footer. */
 export default function Logos(): React.ReactElement {
   const logos: Logo[] = [
     {
@@ -76,13 +82,19 @@ export default function Logos(): React.ReactElement {
   );
 }
 
+/** React Server Component to render a single logo */
 function Logo({
   href,
   imgSrc,
   width,
 }: {
+  /** URL that the image should link to */
   href: string;
+
+  /** `src` property of the logo image */
   imgSrc: string;
+
+  /** width of the image, in pixels */
   width: number;
 }): React.ReactElement {
   return (
