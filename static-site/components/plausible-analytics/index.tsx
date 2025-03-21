@@ -1,6 +1,7 @@
 import Script from "next/script";
 import React from "react";
 
+/** React Server Component to add analytics javascript */
 export default function PlausibleAnalytics(): React.ReactElement {
   /* See <https://plausible.io/docs/plausible-script>. Analytics are disabled on
      localhost, but use `script.local.js` if you want to track localhost for
