@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "Team",
 };
 
+/**
+ * A React Server Component that renders the /team page
+ */
 export default function TeamPage(): React.ReactElement {
   return (
     <div className={styles.teamPage}>

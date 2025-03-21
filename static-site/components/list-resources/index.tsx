@@ -42,7 +42,10 @@ import {
 import styles from "./styles.module.css";
 
 interface ListResourcesProps {
+  /** Is the resource versioned? */
   versioned: boolean;
+
+  /** Set of quick links associated with the resource */
   quickLinks: QuickLink[];
 
   /**
@@ -54,12 +57,13 @@ interface ListResourcesProps {
   /** Mapping from group name -> display name */
   groupDisplayNames: Record<string, string>;
 
+  /** Metadata about the tile */
   tileData: FilterTile[];
 
-  /** callback to use to get data */
+  /** Callback to use to get data */
   resourceListingCallback: () => Promise<ResourceListingInfo>;
 
-  /** this is currently unused */
+  /** This is currently unused */
   resourceType: string;
 }
 
@@ -83,10 +87,9 @@ const SetSelectedFilterOptions = createContext<React.Dispatch<
  * the resizes happen frequently and debouncing would be better. From
  * limited testing it's not too slow and these resizes should be
  * infrequent.
- *
- * @param props - see the `ListResourceProps` interface for details
  */
 export default function ListResources(
+  /** see the `ListResourceProps` interface for details */
   props: ListResourcesProps,
 ): React.ReactElement {
   const ref = useRef(null);
@@ -129,13 +132,6 @@ export default function ListResources(
  * future this will be expanded. Similarly, we define versioned:
  * boolean here in the UI whereas this may be better expressed as a
  * property of the API response.
- *
- * @param versioned - boolean for whether the resources are versioned
- * @param elWidth - width of the element
- * @param quickLinks - list of `QuickLink` objects for the resources
- * @param defaultGroupLinks - boolean for if the group name is a url
- * @param groupDisplayNames - apping from group name -> display name
- * @param tileData - the tiles for the resources
  */
 function ListResourcesContent({
   versioned = true,
@@ -146,6 +142,7 @@ function ListResourcesContent({
   tileData,
   resourceListingCallback,
 }: ListResourcesProps & {
+  /** width of the element */
   elWidth: number;
 }): React.ReactElement {
   const { groups, dataFetchError } = useDataFetch(
@@ -260,20 +257,19 @@ function ListResourcesContent({
 /**
  * A React Client component that provides a way to filter the
  * displayed resources.
- *
- * @param options - list of available `FilterOption` objects
- * @param selectedFilterOptions - readonly list of active
- * `FilterOption` objects
- * @param setSelectedFilterOptions - React State setter for the active
- * `FilterOption` objects
  */
 function Filter({
   options,
   selectedFilterOptions,
   setSelectedFilterOptions,
 }: {
+  /** list of available `FilterOption` objects */
   options: FilterOption[];
+
+  /** readonly list of active `FilterOption` objects*/
   selectedFilterOptions: readonly FilterOption[];
+
+  /** React State setter for the active `FilterOption` objects*/
   setSelectedFilterOptions: React.Dispatch<
     React.SetStateAction<readonly FilterOption[]>
   >;
@@ -311,17 +307,18 @@ function Filter({
 /**
  * A React Client Component with controls for how the displayed
  * resources are sorted.
- *
- * @param sortMethod - the `SortMethod` to use
- * @param changeSortMethod - React State setter for the `SortMethod`
  */
 function SortOptions({
   sortMethod,
   changeSortMethod,
 }: {
+  /** the `SortMethod` to use */
   sortMethod: SortMethod;
+
+  /** React State setter for the `SortMethod` */
   changeSortMethod: React.Dispatch<React.SetStateAction<SortMethod>>;
 }): React.ReactElement {
+  /** helper function for managing changes to the sort method */
   function onChangeValue(event: FormEvent<HTMLInputElement>): void {
     const sortMethod = event.currentTarget.value;
     if (sortMethod !== "alphabetical" && sortMethod !== "lastUpdated") {
@@ -389,10 +386,13 @@ function SortOptions({
 
 /**
  * A React Client Component for displaying a single `Tile` object
- *
- * @param tile - the `FilterTile` object to display
  */
-function Tile({ tile }: { tile: FilterTile }): React.ReactElement {
+function Tile({
+  tile,
+}: {
+  /** the `FilterTile` object to display */
+  tile: FilterTile;
+}): React.ReactElement {
   const setSelectedFilterOptions = useContext(SetSelectedFilterOptions);
   if (!setSelectedFilterOptions) {
     throw new Error(
@@ -425,15 +425,14 @@ function Tile({ tile }: { tile: FilterTile }): React.ReactElement {
   );
 }
 
-/**
- * React Client Component for the image displayed on a `Tile`
- *
- * @param filename - the file name of the image file to display
- * expected to be within the `pathogen_images` directory
- */
+/** React Client Component for the image displayed on a `Tile` */
 function TileImgWrapper({
   filename,
 }: {
+  /**
+   * the file name of the image file to display expected to be within
+   * the `pathogen_images` directory
+   */
   filename: string;
 }): React.ReactElement {
   let src: string;
@@ -446,9 +445,11 @@ function TileImgWrapper({
   return <img className={styles.tileImg} src={src} alt={""} />;
 }
 
-// Given a set of user-defined tiles, restrict them to the set of
-// tiles for which the filters are valid given the resources known to
-// the resource listing UI
+/**
+ * Given a set of user-defined tiles, restrict them to the set of
+ * tiles for which the filters are valid given the resources known to
+ * the resource listing UI
+ */
 function useTiles(tiles?: FilterTile[], groups?: Group[]): FilterTile[] {
   const [restrictedTiles, setRestrictedTiles] = useState<FilterTile[]>([]);
 

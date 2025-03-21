@@ -14,15 +14,15 @@ import styles from "./group-and-resource-links.module.css";
  * A React Client Component that displays a link to a group resource,
  * with proper styling, with attributes to force the link open in a
  * new window/tab and without sending referrer information.
- *
- * @param displayName - the text to use for the link
- * @param href - the `href` property for the <a> element
  */
 export function GroupLink({
   displayName,
   href,
 }: {
+  /** the text to use for the link */
   displayName: string;
+
+  /** the `href` property for the <a> element */
   href: string;
 }): React.ReactElement {
   return (
@@ -43,18 +43,19 @@ export function GroupLink({
  * new window/tab and without sending referrer information. Adds an
  * `onClick` handler to the `<div>` wrapping the link, so that a shift
  * click opens a modal with a timeline display of the resource.
- *
- * @param displayName - the text to use for the link
- * @param href - the `href` property for the <a> element
- * @param resource - the resource to display in a modal on a shift-click
  */
 export function IndividualQuickLink({
   displayName,
   href,
   resource,
 }: {
+  /** the text to use for the link */
   displayName: string;
+
+  /** the `href` property for the <a> element */
   href: string;
+
+  /** the resource to display in a modal on a shift-click */
   resource: Resource | undefined;
 }): React.ReactElement | null {
   const setModalResource = useContext(SetModalResourceContext);
@@ -66,6 +67,7 @@ export function IndividualQuickLink({
     return null;
   }
 
+  /** Helper function for handling shift-click events */
   function onClick(e: React.MouseEvent): void {
     if (e.shiftKey) {
       setModalResource && setModalResource(resource);
@@ -96,17 +98,19 @@ export function IndividualQuickLink({
  * a shift click opens a modal with a timeline display of the
  * resource. Further, adds hover state handling that changes the
  * display of the resource name on mouse-over/mouse-out.
- *
- * @param resource - the resource to display in a modal on a shift-click
- * @param topOfColumn - whether the resource is at the top of a column
- * when displayed; items at the top of a column act like they're being
- * hovered all the time
  */
 export function IndividualResourceLink({
   resource,
   topOfColumn,
 }: {
+  /** the resource to display in a modal on a shift-click */
   resource: Resource;
+
+  /**
+   * whether the resource is at the top of a column when displayed;
+   * items at the top of a column act like they're being hovered all
+   * the time
+   */
   topOfColumn: boolean;
 }): React.ReactElement | null {
   const setModalResource = useContext(SetModalResourceContext);

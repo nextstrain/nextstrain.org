@@ -6,10 +6,11 @@ import { FilterOption, Group } from "./types";
 /**
  * Utility function that takes a provided `word` and returns a
  *  `FilterOption` object based on the provided string.
- *
- * @param word - the string to make into a `FiterOption`
  */
-export function createFilterOption(word: string): FilterOption {
+export function createFilterOption(
+  /** the string to make into a `FilterOption` */
+  word: string,
+): FilterOption {
   return { label: word, value: word };
 }
 
@@ -26,10 +27,11 @@ export function createFilterOption(word: string): FilterOption {
  * apply a filter) but we don't include the count in the label because
  * the React select component doesn't update already-set options and
  * thus we get out-of-sync.
- *
- * @param resourceGroups - the list of groups to create filter options from
  */
-export function useFilterOptions(resourceGroups: Group[]): FilterOption[] {
+export function useFilterOptions(
+  /** the list of groups to create filter options from */
+  resourceGroups: Group[],
+): FilterOption[] {
   const [state, setState] = useState<FilterOption[]>([]);
 
   useMemo((): void => {

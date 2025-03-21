@@ -19,8 +19,10 @@ import "./styles/browserCompatability.css";
 import "./styles/bootstrap.css";
 import "./styles/globals.css";
 
-// Custom fonts bundled (i.e. no external requests), see
-// <https://nextjs.org/docs/pages/building-your-application/optimizing/fonts>
+/**
+ *  Custom fonts bundled (i.e. no external requests), see
+ * <https://nextjs.org/docs/pages/building-your-application/optimizing/fonts>
+ */
 const lato = Lato({
   style: ["normal", "italic"],
   subsets: ["latin"],
@@ -28,6 +30,9 @@ const lato = Lato({
   weight: ["300", "400", "700"],
 });
 
+/**
+ * data used to generate the metadata tags in the <head>
+ */
 export const metadata: Metadata = {
   title: {
     absolute: siteTitle,
@@ -36,6 +41,10 @@ export const metadata: Metadata = {
   description: siteTitleAlt,
 };
 
+/**
+ * A React Component that provides the overall page layout used by
+ * every page on the site.
+ */
 export default function RootLayout({
   children,
 }: {
