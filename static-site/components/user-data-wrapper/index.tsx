@@ -23,6 +23,7 @@ const initialState: UserState = {
 
 export const UserContext = createContext(initialState);
 
+/** React Client Component that wraps up tracking of logged-in user state */
 export default class UserDataWrapper extends React.Component<
   { children: React.ReactNode },
   UserState
