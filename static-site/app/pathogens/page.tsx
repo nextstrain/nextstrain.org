@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 
 import FlexCenter from "../../components/flex-center";
 import { FocusParagraphCentered } from "../../components/focus-paragraph";
@@ -7,6 +8,12 @@ import { SmallSpacer, HugeSpacer } from "../../components/spacers";
 import * as coreResources from "../../content/resource-listing.yaml";
 
 import { pathogenResourceListingCallback } from "./callback";
+
+const title = "Nextstrain-maintained pathogen analyses";
+
+export const metadata: Metadata = {
+  title,
+};
 
 /**
  * React Server Component that generates and presents a list of
@@ -18,7 +25,7 @@ export default function Pathogens(): React.ReactElement {
       <HugeSpacer />
       <HugeSpacer />
 
-      <h1>Nextstrain-maintained pathogen analyses</h1>
+      <h1>{title}</h1>
 
       <SmallSpacer />
 
