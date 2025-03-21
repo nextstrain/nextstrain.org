@@ -10,6 +10,9 @@ import styles from "./styles.module.css";
 // components aren't allowed to do that, and we need to be a client
 // component to get access to the user context
 
+/**
+ * A React Client Component that renders the /whoami page
+ */
 export default function WhoAmI(): React.ReactElement {
   const { user, groupMemberships } = useContext(UserContext);
 
