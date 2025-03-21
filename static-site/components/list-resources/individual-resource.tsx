@@ -16,19 +16,19 @@ import styles from "./individual-resource.module.css";
 /**
  * React Client Component to display an individual resource as part of
  * a resource listing.
- *
- * @param gapWidth - the value for the CSS `gap` property in the
- * `<div>` containing the resource
- * @param isMobile - boolean for whether the display is a mobile one
- * @param resource - the resource to display
  */
 export function IndividualResource({
   gapWidth,
   isMobile,
   resource,
 }: {
+  /** the value for the CSS `gap` property in the `<div>` containing the resource */
   gapWidth: number;
+
+  /** boolean for whether the display is a mobile one */
   isMobile: boolean;
+
+  /** the resource to display */
   resource: Resource;
 }): React.ReactElement | null {
   const setModalResource = useContext(SetModalResourceContext);

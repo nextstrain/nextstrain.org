@@ -37,12 +37,11 @@ export const SetModalResourceContext = createContext<React.Dispatch<
 /**
  * A React Client Component that displays a provided `resource` in
  * a modal popover window.
- *
- * @param resource - the VersionedResource object to display
  */
 export function ResourceModal({
   resource,
 }: {
+  /** the VersionedResource object to display */
   resource: VersionedResource;
 }): React.ReactElement {
   const [ref, setRef] = useState(null);
@@ -153,11 +152,13 @@ export function ResourceModal({
 /**
  * A React Client Component that displays a close icon in the
  * <ResourceModal> component.
- *
- * @param onClick - the callback to run when the icon is clicked;
- * ideally should close the modal
  */
-function CloseIcon({ onClick }: { onClick: () => void }): React.ReactElement {
+function CloseIcon({
+  onClick,
+}: {
+  /** the callback to run when the icon is clicked; ideally should close the modal */
+  onClick: () => void;
+}): React.ReactElement {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -179,7 +180,10 @@ function CloseIcon({ onClick }: { onClick: () => void }): React.ReactElement {
  * chronologically first date in the list, and the chronologically
  * last date in the list.
  */
-function _snapshotSummary(dates: string[]): {
+function _snapshotSummary(
+  /** list of dates to snapshot */
+  dates: string[],
+): {
   duration: string;
   first: string;
   last: string;
