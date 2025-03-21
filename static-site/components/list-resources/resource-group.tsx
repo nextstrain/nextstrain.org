@@ -16,16 +16,7 @@ import { DisplayNamedResource, Group, QuickLink, Resource } from "./types";
 
 import styles from "./resource-group.module.css";
 
-/**
- * React Client Component for displaying a group of related Resource
- * objects.
- *
- * @param group - `Group` object representing the resources to display
- * @param elWidth - the width of the element displaying the resources
- * @param numGroups - overall count of `Group` objects being displayed
- * @param sortMethod - React State holding the active sorting method
- * @param quickLinks - a list of `QuickLink` objects for the group
- */
+/** React Client Component for displaying a group of related Resource objects. */
 export default function ResourceGroup({
   group,
   elWidth,
@@ -33,10 +24,19 @@ export default function ResourceGroup({
   sortMethod,
   quickLinks,
 }: {
+  /** `Group` object representing the resources to display */
   group: Group;
+
+  /** the width of the element displaying the resources */
   elWidth: number;
+
+  /** overall count of `Group` objects being displayed */
   numGroups: number;
+
+  /** React State holding the active sorting method */
   sortMethod: string;
+
+  /** a list of `QuickLink` objects for the group */
   quickLinks: QuickLink[];
 }): React.ReactElement {
   const { collapseThreshold, resourcesToShowWhenCollapsed } =
@@ -98,18 +98,7 @@ function NextstrainLogo(): React.ReactElement {
   return <img alt="nextstrain logo" height="35px" src={nextstrainLogoPath} />;
 }
 
-/**
- * A React Client Component for the header above a <ResourceGroup>
- *
- * @param group - the `ResourceGroup` being displayed
- * @param isMobile - boolean for whether we're on a mobile sized screen
- * @param setCollapsed - a React State setter for the collapsed state
- * @param collapsible - boolean for whether the header is collapsible
- * @param isCollapsed - boolean for whether the header is _collapsed_
- * @param resourcesToShowWhenCollapsed - count of resources to show in
- * the collapsed state,
- * @param quickLinks - list of `QuickLink` objects to display
- */
+/** A React Client Component for the header above a <ResourceGroup> */
 function ResourceGroupHeader({
   group,
   isMobile,
@@ -119,12 +108,25 @@ function ResourceGroupHeader({
   resourcesToShowWhenCollapsed,
   quickLinks,
 }: {
+  /** the `ResourceGroup` being displayed */
   group: Group;
+
+  /** boolean for whether we're on a mobile sized screen */
   isMobile: boolean;
+
+  /** a React State setter for the collapsed state */
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+
+  /** boolean for whether the header is collapsible */
   collapsible: boolean;
+
+  /** boolean for whether the header is _collapsed_ */
   isCollapsed: boolean;
+
+  /** count of resources to show in the collapsed state, */
   resourcesToShowWhenCollapsed: number;
+
+  /** list of `QuickLink` objects to display */
   quickLinks: QuickLink[];
 }): React.ReactElement {
   const setModalResource = useContext(SetModalResourceContext);
@@ -266,13 +268,11 @@ function ResourceGroupHeader({
  *
  *     "seasonal-flu | h1n1pdm"
  *     "             | h3n2"
- *
- * @param resources - the list of `Resource` objects to operate on
- *
- * @returns a list of `DisplayNamedResource` objects corresponding to
- * the inputs with `displayName` added
  */
-function _addDisplayName(resources: Resource[]): DisplayNamedResource[] {
+function _addDisplayName(
+  /** the list of `Resource` objects to operate on */
+  resources: Resource[],
+): DisplayNamedResource[] {
   const sep = "│"; // ASCII 179
 
   return resources.map((r, i) => {
@@ -313,13 +313,11 @@ function _addDisplayName(resources: Resource[]): DisplayNamedResource[] {
  * A helper function to calculate the collapse threshold and number of
  * groups to display when collapsed, based on the number of total
  * groups.
- *
- * @param numGroups - the total number of `Group` objects in play
- *
- * @returns An object with two numberic properties,
- * `collapseThreshold` and `resourcesToShowWhenCollapsed`
  */
-function _collapseThresholds(numGroups: number): {
+function _collapseThresholds(
+  /** the total number of `Group` objects in play */
+  numGroups: number,
+): {
   collapseThreshold: number;
   resourcesToShowWhenCollapsed: number;
 } {
@@ -348,14 +346,11 @@ function _collapseThresholds(numGroups: number): {
  * Helper function to calculate the width between resources and the
  * max width of a single resource, based on the provided list of
  * `DisplayNamedResource` objects.
- *
- * @param displayResources - the list of `DisplayNamedResource`
- * objects in play
- *
- * @returns An object with numeric properties, `gapWidth` and
- * `maxResourceWidth`
  */
-function _getMaxResourceWidth(displayResources: DisplayNamedResource[]): {
+function _getMaxResourceWidth(
+  /** the list of `DisplayNamedResource` objects in play */
+  displayResources: DisplayNamedResource[],
+): {
   gapWidth: number;
   maxResourceWidth: number;
 } {
