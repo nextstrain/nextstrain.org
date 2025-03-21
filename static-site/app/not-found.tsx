@@ -1,5 +1,9 @@
 import React from "react";
 
+/**
+ * A React Server Component that renders the 404 page, shown when a
+ * non-existent URL is requested.
+ */
 export default function FourOhFour(): React.ReactElement {
   return (
     <>
