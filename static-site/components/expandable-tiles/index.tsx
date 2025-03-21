@@ -15,11 +15,6 @@ const expandPreviewHeight = 60;
 
 /**
  * React Client Component to display an expandable div with a list of tiles.
- *
- * @param tiles - the list of tiles to display
- * @param tileWidth - width of an individual tile in pixels
- * @param tileHeight - height of an individual tile in pixels
- * @param TileComponent - React Functional Component to render an individual tile
  */
 export default function ExpandableTiles<Tile extends GenericTileBase>({
   tiles,
@@ -27,9 +22,16 @@ export default function ExpandableTiles<Tile extends GenericTileBase>({
   tileHeight,
   TileComponent,
 }: {
+  /** the list of tiles to display */
   tiles: Tile[];
+
+  /** width of an individual tile in pixels */
   tileWidth: number;
+
+  /** height of an individual tile in pixels */
   tileHeight: number;
+
+  /** React Functional Component to render an individual tile */
   TileComponent: React.FunctionComponent<{ tile: Tile }>;
 }): React.ReactElement {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
