@@ -83,10 +83,11 @@ export interface QuickLink {
  *
  * If applied to a Group object that does not have version
  * information, will throw an `InternalError`
- *
- * @param group - the Group object to convert to a VersionedGroup
  */
-export function convertVersionedGroup(group: Group): VersionedGroup {
+export function convertVersionedGroup(
+  /** the Group object to convert to a VersionedGroup */
+  group: Group,
+): VersionedGroup {
   if (group.nVersions !== undefined && group.lastUpdated !== undefined) {
     return {
       ...group,
@@ -104,10 +105,9 @@ export function convertVersionedGroup(group: Group): VersionedGroup {
  *
  * If applied to a Resource object that does not have version
  * information, will throw an `InternalError`
- *
- * @param resource - the Resource object to convert to a VersionedResource
  */
 export function convertVersionedResource(
+  /** the Resource object to convert to a VersionedResource */
   resource: Resource,
 ): VersionedResource {
   if (

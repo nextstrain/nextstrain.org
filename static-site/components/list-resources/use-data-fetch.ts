@@ -24,16 +24,18 @@ import { Group, Resource, ResourceListingInfo } from "./types";
  * to the entire API response. In the future, we may shift this
  * `versioned` status into the API response proper, to allow it to
  * vary across the returned resources.
- *
- * @param versioned - indicates whether the fetched resources are versioned
- * @param defaultGroupLinks - whether to modify the group URL to include a group
- * @param groupDisplayNames - a map used to optionally rename some resources
- * @param resourceListingCallback - the callback to fetch resource data
  */
 export default function useDataFetch(
+  /** indicates whether the fetched resources are versioned */
   versioned: boolean,
+
+  /** whether to modify the group URL to include a group */
   defaultGroupLinks: boolean,
+
+  /** a map used to optionally rename some resources */
   groupDisplayNames: Record<string, string>,
+
+  /** the callback to fetch resource data */
   resourceListingCallback: () => Promise<ResourceListingInfo>,
 ): { groups: Group[] | undefined; dataFetchError: boolean } {
   const [groups, setGroups] = useState<Group[]>();
@@ -83,16 +85,18 @@ export default function useDataFetch(
  * Helper function to convert the provided `partitions` (an object
  * mapping group names to lists of resources) into a list of `Group`
  * objects
- *
- * @param partitions - object map of names to resources
- * @param pathPrefix - prefix to add when defaultGroupLinks param is true
- * @param defaultGroupLinks - boolean controlling conversion of groupUrl values
- * @param groupDisplayNames - map controlling rename of resource names
  */
 function _groupsFrom(
+  /** object map of names to resources */
   partitions: Record<string, Resource[]>,
+
+  /** prefix to add when defaultGroupLinks param is true */
   pathPrefix: string,
+
+  /** boolean controlling conversion of groupUrl values */
   defaultGroupLinks: boolean,
+
+  /** map controlling rename of resource names */
   groupDisplayNames: Record<string, string>,
 ): Group[] {
   return Object.entries(partitions).map(([groupName, resources]) => {
@@ -127,14 +131,15 @@ function _groupsFrom(
  * Helper function to group the provided `pathVersions` object
  * mapping between path and dates into an object with pathogen/group
  * names as the keys and arrays of Resource objects as the values.
- *
- * @param pathVersions - object mapping path to lists of dates
- * @param pathPrefix - prefix added to resource name to build URL
- * @param versioned - boolean controlling addition of version-specific fields
  */
 function _partitionByPathogen(
+  /** object mapping path to lists of dates */
   pathVersions: Record<string, string[]>,
+
+  /** prefix added to resource name to build URL */
   pathPrefix: string,
+
+  /** boolean controlling addition of version-specific fields */
   versioned: boolean,
 ): Record<string, Resource[]> {
   return Object.entries(pathVersions).reduce(
@@ -182,10 +187,11 @@ function _partitionByPathogen(
  * Helper function for sorting datasets in a way that is nicer than
  * pure lexicographic sorting when dealing with temporal datasets
  * names (e.g., "12y", "2y", "6m", etc.)
- *
- * @param words - list of strings to sort
  */
-function _sortableName(words: string[]): string {
+function _sortableName(
+  /** list of strings to sort*/
+  words: string[],
+): string {
   const w = words.map((word) => {
     const m = word.match(/^(\d+)([ym])$/);
     if (m && m[1]) {
@@ -211,10 +217,11 @@ const msInADay = 1000 * 60 * 60 * 24;
  * between updates. Also considers consistency (essentially, the
  * variance) of the updates, and whether the resource/dataset
  * continues to be updated
- *
- * @param dateObjects - a list of Date objects corresponding to update dates
  */
-function _updateCadence(dateObjects: Date[]): {
+function _updateCadence(
+  /** a list of Date objects corresponding to update dates */
+  dateObjects: Date[],
+): {
   summary: string;
   description: string;
 } {

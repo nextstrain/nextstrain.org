@@ -8,15 +8,15 @@ import React from "react";
  * Note that the <Tooltip> component must be included somewhere in the
  * rendered React output in order for this wrapper element to cause a
  * tooltip to appear.
- *
- * @param description - a string containing HTML, to display as the tooltip
- * @param children - the content that the tooltip applies to
  */
 export default function TooltipWrapper({
   description,
   children,
 }: {
+  /** a string containing HTML, to display as the tooltip */
   description: string;
+
+  /** the content that the tooltip applies to */
   children: React.ReactNode;
 }): React.ReactElement {
   return (

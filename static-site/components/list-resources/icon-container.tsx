@@ -16,13 +16,6 @@ import styles from "./icon-container.module.css";
  * Currently supports `"history"` and `"bullet-list"` as `iconName`
  * values; if provided with something else, will throw an
  * `InternalError`
- *
- * @param color - (optional) string value for CSS `color`
- * @param handleClick - (optional) callback for `onClick` handler
- * @param hoverColor - (optional) string value for CSS `color` when
- * element is hovered over
- * @param iconName - name of icon to display
- * @param text to display below icon
  */
 export default function IconContainer({
   color,
@@ -31,10 +24,19 @@ export default function IconContainer({
   iconName,
   text,
 }: {
+  /** (optional) string value for CSS `color` */
   color?: string;
+
+  /** (optional) callback for `onClick` handler */
   handleClick?: () => void;
+
+  /** (optional) string value for CSS `color` when element is hovered over */
   hoverColor?: string;
+
+  /** name of icon to display */
   iconName: string;
+
+  /** text to display below icon */
   text: string;
 }): React.ReactElement {
   const [hovered, setHovered] = useState(false);

@@ -21,16 +21,18 @@ import {
  *
  * N.b., this code runs in a React Client Component context (i.e., not
  * server side, but during the client-side hydration phase)
- *
- * @param sortMethod - either "lastUpdated" or "alphabetical""
- * @param selectedFilterOptions - a list of `FilterOption` values
- * @param setState - a setter for a React State
- * @param originalData - a list of Group objects
  */
 export default function useSortAndFilter(
+  /** either "lastUpdated" or "alphabetical"" */
   sortMethod: SortMethod,
+
+  /** a list of `FilterOption` values */
   selectedFilterOptions: readonly FilterOption[],
+
+  /** a setter for a React State */
   setState: React.Dispatch<React.SetStateAction<Group[]>>,
+
+  /** a list of Group objects */
   originalData?: Group[],
 ): void {
   useMemo(() => {
