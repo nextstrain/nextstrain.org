@@ -16,11 +16,14 @@ import styles from "./styles.module.css";
 
 // just to avoid having to repeat this in a couple method sigs...
 interface BlogPostParams {
+  /** a string representing the base name of the post */
   id: string;
 }
 
-// return a list of params that will get handed to this page at build
-// time, to statically build out all the blog posts
+/**
+ * return a list of params that will get handed to this page at build
+ * time, to statically build out all the blog posts
+ */
 export function generateStaticParams(): BlogPostParams[] {
   return getBlogPosts().map((post) => {
     return { id: post.blogUrlName };
@@ -28,21 +31,36 @@ export function generateStaticParams(): BlogPostParams[] {
 }
 
 type PopulatedMetadata = Metadata & {
+  /** the base URL to use for metadata attributes */
   metadataBase: URL
+
+  /** data to generate OpenGraph headers in the <head> of the page */
   openGraph: {
+    /** a brief description of the post */
     description: string
+
+    /** an array of image URLs associated with the post */
     images: { url: string}[]
+
+    /** the name of our site */
     siteName: string
+
+    /** the title of the blog post */
     title: string
+
+    /** we have a website! */
     type: "website"
+
+    /** the URL for the post */
     url: URL | string
   }
 }
 
-// generate opengraph and other metadata tags
+/** generate opengraph and other metadata tags */
 export async function generateMetadata({
   params,
 }: {
+  /** the string identifing the post we're generating metadata for */
   params: BlogPostParams;
 }): Promise<Metadata> {
   const { id } = params;
@@ -81,9 +99,13 @@ export async function generateMetadata({
   return metadata;
 }
 
+/**
+ * A React Server Component for rendering a single blog post
+ */
 export default async function BlogPost({
   params,
 }: {
+  /** the string identifing the post we're generating metadata for */
   params: BlogPostParams;
 }): Promise<React.ReactElement> {
   const { id } = params;
