@@ -1,0 +1,16 @@
+.errorMessage {
+  background-color: #c2c1be;
+  font-size: 18px;
+  height: 15%;
+  left: 0px;
+  margin: 25px 0px 25px 0px;
+  padding: 25px 0px 25px 0px;
+  text-align: center;
+}
+.errorMessage p {
+  margin: 20px 0 0;
+}
+
+.strongerText {
+  font-weight: 500;
+}
