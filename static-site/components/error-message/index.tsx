@@ -10,7 +10,10 @@ export default function ErrorMessage({
   title,
   contents,
 }: {
+  /** the title of the error; displayed on top in bold */
   title: string;
+
+  /** the more specific contents of the error message */
   contents: string;
 }): React.ReactElement {
   return (
