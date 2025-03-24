@@ -2,6 +2,10 @@ import { notFound, redirect } from "next/navigation";
 
 import { getBlogPosts } from "./utils";
 
+/**
+ * A React Server component that handles redirecting requests for
+ * /blog to the most recent blog post
+ */
 export default function Index(): void {
   const mostRecentPost = getBlogPosts()[0];
 

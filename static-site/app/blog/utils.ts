@@ -6,17 +6,33 @@ import { fileURLToPath } from "url";
 import parseMarkdown from "./parseMarkdown";
 
 export interface BlogPost {
+  /** author(s) name(s) */
   author: string;
+
+  /**
+   * the "slug" for this post, i.e., the string after `/blog` in the
+   * post's URL
+   */
   blogUrlName: string;
+
+  /** publication date of the post */
   date: string;
+
+  /** the Markdown-formatted content of the post */
   mdstring: string;
+
+  /** the string to use in the blog sidebar for this post */
   sidebarTitle: string;
+
+  /** the post title */
   title: string;
 }
 
-// Scans the ./static-site/content/blog directory for .md files and
-// returns a chronologically-sorted array of posts, each with some
-// basic metadata and the raw (unsanitized) markdown contents.
+/**
+ * Scans the ./static-site/content/blog directory for .md files and
+ * returns a chronologically-sorted array of posts, each with some
+ * basic metadata and the raw (unsanitized) markdown contents.
+ */
 export function getBlogPosts(): BlogPost[] {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -82,12 +98,18 @@ export function getBlogPosts(): BlogPost[] {
   return blogPosts;
 }
 
+/**
+ * A function to transform a Markdown-formatted string into HTML.
+ */
 export async function markdownToHtml({
   mdString,
   headingAnchorClass,
 }: {
-  mdString: string
-  headingAnchorClass?: string
+  /** the Markdown-formatted string to transform */
+  mdString: string;
+
+  /** the name to use for the CSS class on heading anchors */
+  headingAnchorClass?: string;
 }): Promise<string> {
   try {
     return await parseMarkdown({

@@ -2,11 +2,12 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 
 import React from "react";
 
-import{ BigSpacer} from "../spacers";
+import { BigSpacer } from "../spacers";
 
 import styles from "./site-map.module.css";
-import {sections, Entry, Section} from "./sitemap";
+import { sections, Entry, Section } from "./sitemap";
 
+/** A React Server Component that renders the site map in the page footer */
 export default function SiteMap(): React.ReactElement {
   return (
     <div className={`${styles.siteMap} row`}>
@@ -26,7 +27,8 @@ export default function SiteMap(): React.ReactElement {
   );
 }
 
-function SectionList({ entries }:{entries: Entry[]}): React.ReactElement {
+/** A helper component that renders one section of the site map */
+function SectionList({ entries }: { entries: Entry[] }): React.ReactElement {
   return (
     <ul className={styles.unstyled}>
       {entries.map((entry) => (

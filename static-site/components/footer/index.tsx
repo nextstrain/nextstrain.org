@@ -6,6 +6,10 @@ import { BigSpacer, SmallSpacer } from "../spacers";
 import SiteMap from "./site-map";
 import TeamList from "./team-list";
 
+/**
+ * A React Server Component that renders the site footer, used at the
+ * bottom of all our pages.
+ */
 export default function Footer(): React.ReactElement {
   return (
     <div>
