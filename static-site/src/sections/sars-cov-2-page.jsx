@@ -40,12 +40,12 @@ const contents = [
         daily using data from GISAID. We also maintain additional analyses to
         focus subsampling on different geographic regions and different time
         periods. These include analyses that focus on the previous 6 months for
-        <a href="/ncov/gisaid/africa/6m?f_region=Africa"> Africa</a>,
-        <a href="/ncov/gisaid/asia/6m?f_region=Asia"> Asia</a>,
-        <a href="/ncov/gisaid/europe/6m?f_region=Europe"> Europe</a>,
-        <a href="/ncov/gisaid/north-america/6m?f_region=North%20America"> North America</a>,
-        <a href="/ncov/gisaid/oceania/6m?f_region=Oceania"> Oceania</a> and
-        <a href="/ncov/gisaid/south-america/6m?f_region=South%20America"> South America</a>,
+        <a href="/ncov/gisaid/africa/6m?f_region=Africa&label=clade:21L%20%28BA.2%29"> Africa</a>,
+        <a href="/ncov/gisaid/asia/6m?f_region=Asia&label=clade:21L%20%28BA.2%29"> Asia</a>,
+        <a href="/ncov/gisaid/europe/6m?f_region=Europe&label=clade:21L%20%28BA.2%29"> Europe</a>,
+        <a href="/ncov/gisaid/north-america/6m?f_region=North%20America&label=clade:21L%20%28BA.2%29"> North America</a>,
+        <a href="/ncov/gisaid/oceania/6m?f_region=Oceania&label=clade:21L%20%28BA.2%29"> Oceania</a> and
+        <a href="/ncov/gisaid/south-america/6m?f_region=South%20America&label=clade:21L%20%28BA.2%29"> South America</a>,
         as well as analyses that focus on the entire pandemic for
         <a href="/ncov/gisaid/africa/all-time?f_region=Africa"> Africa</a>,
         <a href="/ncov/gisaid/asia/all-time?f_region=Asia"> Asia</a>,
@@ -66,12 +66,12 @@ const contents = [
         daily using open data from GenBank. Additional analyses that focus
         subsampling on  different geographic regions and different time periods
         include analyses that focus on the previous 6 months for
-        <a href="/ncov/open/africa/6m?f_region=Africa"> Africa</a>,
-        <a href="/ncov/open/asia/6m?f_region=Asia"> Asia</a>,
-        <a href="/ncov/open/europe/6m?f_region=Europe"> Europe</a>,
-        <a href="/ncov/open/north-america/6m?f_region=North%20America"> North America</a>,
-        <a href="/ncov/open/oceania/6m?f_region=Oceania"> Oceania</a> and
-        <a href="/ncov/open/south-america/6m?f_region=South%20America"> South America</a>,
+        <a href="/ncov/open/africa/6m?f_region=Africa&label=clade:21L%20%28BA.2%29"> Africa</a>,
+        <a href="/ncov/open/asia/6m?f_region=Asia&label=clade:21L%20%28BA.2%29"> Asia</a>,
+        <a href="/ncov/open/europe/6m?f_region=Europe&label=clade:21L%20%28BA.2%29"> Europe</a>,
+        <a href="/ncov/open/north-america/6m?f_region=North%20America&label=clade:21L%20%28BA.2%29"> North America</a>,
+        <a href="/ncov/open/oceania/6m?f_region=Oceania&label=clade:21L%20%28BA.2%29"> Oceania</a> and
+        <a href="/ncov/open/south-america/6m?f_region=South%20America&label=clade:21L%20%28BA.2%29"> South America</a>,
         as well as analyses that focus on the entire pandemic for
         <a href="/ncov/open/africa/all-time?f_region=Africa"> Africa</a>,
         <a href="/ncov/open/asia/all-time?f_region=Asia"> Asia</a>,
