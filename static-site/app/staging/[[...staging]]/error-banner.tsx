@@ -33,7 +33,7 @@ export default function ErrorBanner(): React.ReactElement | null {
       : "dataset";
 
     const title = `The staging ${resourceType} "nextstrain.org/staging/${path}" doesn't exist.`;
-    const contents = `Here is the staging page instead.`;
+    const contents = <p>Here is the staging page instead.</p>;
 
     return <ErrorMessage title={title} contents={contents} />;
   } else {
