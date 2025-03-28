@@ -1,109 +1,160 @@
-import React from "react";
-import Collapsible from "react-collapsible";
+"use client";
+
+import React, { useEffect, useState } from "react";
+
 import _sortBy from "lodash/sortBy";
-import {FaFile} from "react-icons/fa";
-import { FlexCenter } from "../../layouts/generalComponents";
-import * as splashStyles from "../splash/styles";
-import CollapseTitle from "../Misc/collapse-title";
-import { DataFetchErrorParagraph } from "../errorMessages";
+import Collapsible from "react-collapsible";
+import { FaFile } from "react-icons/fa";
+
+import { parseNcovSitRepInfo } from "../../../../auspice-client/customisations/languageSelector";
+
+import FlexCenter from "../../../components/flex-center";
+import { FocusParagraphCentered } from "../../../components/focus-paragraph";
+import { DataFetchError } from "../../../data/SiteConfig";
+
+import CollapseTitle from "./collapse-title";
+
+import styles from "./situation-reports-by-language.module.css";
 
 const charonGetAvailableAddress = "/charon/getAvailable";
 
 /**
- * A component to render all situation reports for a given pathogen.
+ * A React Client Component to render all situation reports for a
+ * given pathogen.
+ *
  * Data is obtained on page load by a API call to /charon/getAvailable.
  */
-export class SituationReportsByLanguage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {hasError: false};
-    this.handleError = this.handleServerError.bind(this);
-    this.sitRepCards = this.getNarrativesByLanguage.bind(this);
-  }
+export default function SituationReportsByLanguage(): React.ReactElement {
+  const [hasError, setError] = useState<boolean>(false);
+  const [narrativesByLang, setNarrativesByLang] = useState<LanguageObject[]>(
+    [],
+  );
 
-  getNarrativesByLanguage(json) {
-    const narrativesByLanguage = {};
-    json.narratives
-      .filter((o) => o.request)
-      .map((o) => o.request)
-      .map(this.props.parseSitRepInfo)
-      .filter((sitrep) => sitrep !== null)
-      .forEach((sitrep) => {
-        sitrep.url = "/"+sitrep.url;
+  useEffect((): void => {
+    async function fetchSitReps(): Promise<void> {
+      try {
+        const response = await fetch(charonGetAvailableAddress);
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch available situation report narratives from ${charonGetAvailableAddress}: ${response.status} ${response.statusText}`,
+          );
+        }
+
+        const sitRepsJson = await response.json();
+
+        setNarrativesByLang(parseNarrativesByLang(sitRepsJson));
+      } catch (err) {
+        console.log(
+          "The following error occurred during fetching or parsing situation reports:",
+          err,
+        );
+        setError(true);
+      }
+    }
+
+    fetchSitReps();
+  }, []);
+
+  return (
+    <>
+      {hasError && (
+        <FocusParagraphCentered>
+          <DataFetchError />
+        </FocusParagraphCentered>
+      )}
+
+      {/* Sit Reps */}
+      {!hasError &&
+        narrativesByLang &&
+        narrativesByLang.map((language) => (
+          <div key={language.languageNative}>
+            <Collapsible
+              triggerWhenOpen={
+                <CollapseTitle name={language.languageNative} isExpanded />
+              }
+              trigger={<CollapseTitle name={language.languageNative} />}
+              triggerStyle={{ cursor: "pointer", textDecoration: "none" }}
+              // start with English open. Later we can take this from browser settings using Jover's code?
+              open={language.languageNative === "English"}
+            >
+              {/* Begin collapsible content */}
+              <div className="row">
+                {Array.from(language.narratives.entries()).map(
+                  ([index, narrative]) => (
+                    <div key={narrative.url} className="col-md-4">
+                      <FlexCenter>
+                        <a href={narrative.url}>
+                          <div
+                            className={styles.sitRepTitle}
+                            style={{ fontWeight: index === 0 ? "600" : "500" }}
+                          >
+                            <FaFile />
+                            {" " + narrative.date}
+                          </div>
+                        </a>
+                      </FlexCenter>
+                    </div>
+                  ),
+                )}
+              </div>
+            </Collapsible>
+          </div>
+        ))}
+    </>
+  );
+}
+
+type SitRepJson = {
+  narratives: { request: string }[];
+};
+
+type NcovSitRepInfo = {
+  url: string;
+  date: string;
+  languageCode: string;
+  languageNative: string;
+};
+
+type LanguageObject = {
+  languageCode: string;
+  languageNative: string;
+  narratives: NcovSitRepInfo[];
+};
+
+function parseNarrativesByLang(json: SitRepJson): LanguageObject[] {
+  const narrativesByLanguage: Record<string, LanguageObject> = {};
+
+  json.narratives
+    .filter((o) => o.request)
+    .map((o) => o.request)
+    .map(parseNcovSitRepInfo)
+    .forEach((sitrep: NcovSitRepInfo | null) => {
+      if (sitrep !== null) {
+        sitrep.url = "/" + sitrep.url;
+
         if (narrativesByLanguage[sitrep.languageCode]) {
-          narrativesByLanguage[sitrep.languageCode].narratives.push(sitrep);
+          narrativesByLanguage[sitrep.languageCode]?.narratives.push(sitrep);
         } else {
           narrativesByLanguage[sitrep.languageCode] = {
             languageCode: sitrep.languageCode,
             languageNative: sitrep.languageNative,
-            narratives: [sitrep]
+            narratives: [sitrep],
           };
         }
-      });
-    const languageObjects = Object.values(narrativesByLanguage);
-    // sort most recent dates first within each language
-    languageObjects.forEach((l) => {
-      l.narratives.sort().reverse();
+      }
     });
-    // English first then by language code
-    return _sortBy(languageObjects, [(o) => o.languageNative !== "English", (o) => o.languageCode]);
-  }
 
-  handleServerError(response) {
-    if (!response.ok) {
-      throw new Error(`Failed to fetch available situation report narratives from /charon/getAvailable: ${response.status} ${response.statusText}`);
-    }
-    return response;
-  }
+  const languageObjects: LanguageObject[] = Object.values(narrativesByLanguage);
 
-  componentDidMount() {
-    fetch(charonGetAvailableAddress)
-      .then(this.handleServerError)
-      .then((res) => res.json())
-      .then((json) => {
-        this.setState({ narrativesByLanguage: this.getNarrativesByLanguage(json) });
-      })
-      .catch(error => {
-        console.log("The following error occurred during fetching or parsing situation reports:", error);
-        this.setState({ hasError: true });
-      });
-  }
+  // sort most recent dates first within each language
+  languageObjects.forEach((l) => {
+    l.narratives.sort().reverse();
+  });
 
-  render() {
-    return (
-      <>
-        { this.state.hasError && <DataFetchErrorParagraph />}
-
-        {/* Sit Reps */
-          !this.state.hasError &&
-          this.state.narrativesByLanguage &&
-          this.state.narrativesByLanguage.map((language) => (
-            <div key={language.languageNative}>
-              <Collapsible
-                triggerWhenOpen={<CollapseTitle name={language.languageNative} isExpanded />}
-                trigger={<CollapseTitle name={language.languageNative} />}
-                triggerStyle={{cursor: "pointer", textDecoration: "none"}}
-                open={language.languageNative === "English"} // start with English open. Later we can take this from browser settings using Jover's code?
-              >
-                {/* Begin collapsible content */}
-                <div className="row">
-                  {Array.from(language.narratives.entries()).map(([index, narrative]) => (
-                    <div key={narrative.url} className="col-md-4">
-                      <FlexCenter>
-                        <a href={narrative.url}>
-                          <splashStyles.SitRepTitle $attn={index === 0}>
-                            <FaFile />
-                            {" "+narrative.date}
-                          </splashStyles.SitRepTitle>
-                        </a>
-                      </FlexCenter>
-                    </div>
-                  ))}
-                </div>
-              </Collapsible>
-            </div>
-          ))}
-      </>
-    );
-  }
+  // English first then by language code
+  return _sortBy(languageObjects, [
+    (o: LanguageObject) => o.languageNative !== "English",
+    (o: LanguageObject) => o.languageCode,
+  ]);
 }
