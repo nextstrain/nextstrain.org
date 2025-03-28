@@ -1,27 +1,22 @@
 import React from "react";
-import styled from "styled-components";
-import {FaAngleUp, FaAngleDown} from "react-icons/fa";
 
-const TitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid #F0F0F0;
-  margin: 0px;
-  padding: 15px 10px 10px 10px;
-`;
-const IconContainer = styled.span`
-  font-size: 22px;
-  font-weight: 500;
-`;
-const Name = styled.span`
-  font-size: 20px;
-  font-weight: 500;
-`;
-const CollapseTitle = ({name, isExpanded=false}) => (
-  <TitleContainer>
-    <Name>{name}</Name>
-    <IconContainer>{isExpanded ? <FaAngleUp /> : <FaAngleDown />}</IconContainer>
-  </TitleContainer>
-);
+import { FaAngleUp, FaAngleDown } from "react-icons/fa";
 
-export default CollapseTitle;
+import styles from "./collapse-title.module.css";
+
+export default function CollapseTitle({
+  name,
+  isExpanded = false,
+}: {
+  name: string;
+  isExpanded?: boolean;
+}): React.ReactElement {
+  return (
+    <div className={styles.titleContainer}>
+      <span className={styles.name}>{name}</span>
+      <span className={styles.iconContainer}>
+        {isExpanded ? <FaAngleUp /> : <FaAngleDown />}
+      </span>
+    </div>
+  );
+}
