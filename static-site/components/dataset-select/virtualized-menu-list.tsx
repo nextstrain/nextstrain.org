@@ -1,37 +1,76 @@
+"use client";
+
 /**
- * Code and components related to the virtualized menu list to be used with react-select.
- * Most code and logic was originally lifted from Auspice, with the addition of
- * the AutoSizer to make the menu list width dynamic.
+ * Code and components related to the virtualized menu list to be used
+ * with react-select. Most code and logic was originally lifted from
+ * Auspice, with the addition of the AutoSizer to make the menu list
+ * width dynamic.
  */
 import React, { useLayoutEffect, useRef } from "react";
+
 import { isEqual } from "lodash";
 import { AutoSizer } from "react-virtualized/dist/es/AutoSizer";
+import {
+  CellMeasurer,
+  CellMeasurerCache,
+} from "react-virtualized/dist/es/CellMeasurer";
 import { List } from "react-virtualized/dist/es/List";
-import { CellMeasurer, CellMeasurerCache } from "react-virtualized/dist/es/CellMeasurer";
 
+/** The default height for a row in the menu list, in pixels */
 const DEFAULT_ROW_HEIGHT = 40;
-const getOptionKeys = (options) => options.map((option) => option.key);
 
-export const VirtualizedMenuList = ({ children, maxHeight, focusedOption }) => {
-  const listRef = useRef(null);
-  const optionKeys = useRef(null);
+/**
+ * Helper function to return the `key` value from a list of objects,
+ * which must all have a `key` property
+ */
+function getOptionKeys(
+  /** the list of objects to process */
+  options: { key: string }[],
+): string[] {
+  return options.map((option) => option.key);
+}
+
+/**
+ * A React Client Component to display a list of options, with one focused
+ */
+export default function VirtualizedMenuList({
+  children,
+  maxHeight,
+  focusedOption,
+}: {
+  // FIXME figure out what these are?
+  /** the menu items */
+  children: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  /** maximum height of the menu, in pixels */
+  maxHeight: number;
+
+  // FIXME pretty sure this is a single element of `children`
+  /** which option to focus */
+  focusedOption: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+}): React.ReactElement {
+  const listRef = useRef<List>(null);
+
+  const optionKeys = useRef<string[]>([]);
+
   const cache = useRef(
     new CellMeasurerCache({
       fixedWidth: true,
-      defaultHeight: DEFAULT_ROW_HEIGHT
-    })
+      defaultHeight: DEFAULT_ROW_HEIGHT,
+    }),
   );
 
   /**
-  * If the focused option is outside of the currently displayed options, we
-  * need to create the scrollToIndex so that the List can be forced to scroll
-  * to display the focused option.
-  */
-  let scrollToIndex;
+   * If the focused option is outside of the currently displayed options, we
+   * need to create the scrollToIndex so that the List can be forced to scroll
+   * to display the focused option.
+   */
+  let scrollToIndex: number;
+
   if (children instanceof Array) {
-    const focusedOptionIndex = children.findIndex((option) => (
-      isEqual(focusedOption, option.props.data)
-    ));
+    const focusedOptionIndex = children.findIndex((option) =>
+      isEqual(focusedOption, option.props.data),
+    );
     if (focusedOptionIndex >= 0) {
       scrollToIndex = focusedOptionIndex;
     }
@@ -44,9 +83,11 @@ export const VirtualizedMenuList = ({ children, maxHeight, focusedOption }) => {
    * See answer from react-virtualized maintainer @bvaughn at
    * https://stackoverflow.com/a/43837929
    */
-  useLayoutEffect(() => {
-    if (children instanceof Array &&
-        !isEqual(optionKeys.current, getOptionKeys(children))) {
+  useLayoutEffect((): void => {
+    if (
+      children instanceof Array &&
+      !isEqual(optionKeys.current, getOptionKeys(children))
+    ) {
       cache.current.clearAll();
       listRef.current.recomputeRowHeights();
       optionKeys.current = getOptionKeys(children);
@@ -62,21 +103,40 @@ export const VirtualizedMenuList = ({ children, maxHeight, focusedOption }) => {
    * StrictMode, which we avoid by using the `registerChild` ref. See
    * <https://github.com/bvaughn/react-virtualized/issues/1572>
    */
-  const rowRenderer = ({ index, key, parent, style }) => (
-    <CellMeasurer
-      cache={cache.current}
-      columnIndex={0}
-      key={key}
-      parent={parent}
-      rowIndex={index}
-    >
-      {({registerChild}) => (
-        <div ref={registerChild} style={style}>
-          {children[index]}
-        </div>
-      )}
-    </CellMeasurer>
-  );
+  function rowRenderer({
+    index,
+    key,
+    parent,
+    style,
+  }: {
+    /** the index of the row being rendered */
+    index: number;
+
+    /** unique key */
+    key: string;
+
+    /** parent of the row being rendered */
+    parent: unknown;
+
+    /** style string for the row */
+    style: React.CSSProperties;
+  }): React.ReactElement {
+    return (
+      <CellMeasurer
+        cache={cache.current}
+        columnIndex={0}
+        key={key}
+        parent={parent}
+        rowIndex={index}
+      >
+        {({ registerChild }) => (
+          <div ref={registerChild} style={style}>
+            {children[index]}
+          </div>
+        )}
+      </CellMeasurer>
+    );
+  }
 
   /**
    * Because the individual row heights are measured and cached on render,
@@ -84,14 +144,21 @@ export const VirtualizedMenuList = ({ children, maxHeight, focusedOption }) => {
    * There can be a delay in the list height changing if there is a rapid
    * change of the children options.
    */
-  const calcListHeight = () => {
-    const currentRowHeights = Object.values(cache.current._rowHeightCache);
-    const totalRowHeight = currentRowHeights.reduce((a, b) => a + b, 0);
-    return totalRowHeight === 0 ? maxHeight : Math.min(maxHeight, totalRowHeight);
-  };
+  function calcListHeight(): number {
+    const currentRowHeights: number[] = Object.values(
+      cache.current._rowHeightCache,
+    );
+    const totalRowHeight = currentRowHeights.reduce(
+      (a: number, b: number) => a + b,
+      0,
+    );
+    return totalRowHeight === 0
+      ? maxHeight
+      : Math.min(maxHeight, totalRowHeight);
+  }
 
   return (
-    <AutoSizer disableHeight >
+    <AutoSizer disableHeight>
       {({ width }) => (
         <List
           ref={listRef}
@@ -106,4 +173,4 @@ export const VirtualizedMenuList = ({ children, maxHeight, focusedOption }) => {
       )}
     </AutoSizer>
   );
-};
+}

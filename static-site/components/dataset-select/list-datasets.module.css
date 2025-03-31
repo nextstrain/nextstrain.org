@@ -1,0 +1,48 @@
+.col1 {
+  flex-basis: 60%;
+}
+.col2 {
+  flex-basis: 40%;
+}
+
+.datasetSelectionResultsContainer {
+  height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.logoContainer {
+  margin-right: 5px;
+  padding: 1px 1px;
+  width: 24px;
+}
+
+.logoContainerLink {
+  cursor: pointer;
+  margin-right: 5px;
+  padding: 1px 1px;
+  width: 24px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 1px 10px 1px;
+}
+
+.rowContainer {
+  font-family: var(--lato);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 24px;
+  padding: 10px 1px 10px 1px;
+}
+
+.styledLink {
+  color: #444 !important;
+}
+.styledLink:hover,
+.styledLink:focus {
+  color: #5097ba !important;
+  text-decoration: underline;
+}

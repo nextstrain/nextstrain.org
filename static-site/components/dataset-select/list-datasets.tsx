@@ -1,147 +1,156 @@
 import React from "react";
-import styled from 'styled-components';
-import { CenteredContainer } from "./styles";
 
-const Row = styled.div`
-  padding: 10px 1px 10px 1px;
-  display: flex;
-  flex-direction: row;
-`;
+import CenteredContainer from "../../components/centered-container";
+import { DatasetSelectColumnsType, DatasetType } from "./types";
 
-export const StyledLink = styled.a`
-  color: #444 !important;
-  font-weight: ${(props) => props.$bold ? 500 : 300} !important;
-  &:hover,
-  &:focus {
-    color: #5097BA !important;
-    text-decoration: underline;
-  }
-`;
+import styles from "./list-datasets.module.css";
 
-const DatasetSelectionResultsContainer = styled.div`
-  height: 600px;
-  overflow-x: hidden;
-  overflow-y: auto;
-`;
+/**
+ * React Server Component to render a table showing the `datasets` as rows
+ * with the specified `columns`. Open to future expansion.
+ *
+ * Currently only 2 or 3 columns are supported.
+ *
+ * If 3 columns are supplied, the 3rd will not be shown on small screens.
+ */
+export default function ListDatasets({
+  datasets,
+  columns,
+}: {
+  /** List of datasets to display */
+  datasets: DatasetType[];
 
-const RowContainer = styled.div`
-  font-family: ${(props) => props.theme.generalFont};
-  font-weight: 900;
-  font-size: 18px;
-  padding: 10px 1px 10px 1px;
-  line-height: 24px;
-`;
-
-const LogoContainerLink = styled.a`
-  padding: 1px 1px;
-  margin-right: 5px;
-  width: 24px;
-  cursor: pointer;
-`;
-
-const LogoContainer = styled.span`
-  padding: 1px 1px;
-  margin-right: 5px;
-  width: 24px;
-`;
-
-const SingleColumn = styled.div``;
-
-const Col1 = styled.div`
-  flex-basis: 60%;
-`;
-const Col2 = styled.div`
-  flex-basis: 40%;
-`;
-
-
-const HeaderRow = ({columns}) => {
-  const names = columns.map((c) => c.name);
-  if (columns.length===1) {
-    return (
-      <Row>
-        <SingleColumn>{names[0]}</SingleColumn>
-      </Row>
-    )
-  }
+  /** List of columns to display */
+  columns: DatasetSelectColumnsType[];
+}): React.ReactElement {
   return (
-    <Row>
-      <Col1>{names[0]}</Col1>
-      <Col2>{names[1]}</Col2>
-    </Row>
-  )
+    <CenteredContainer>
+      <div className={styles.rowContainer}>
+        <HeaderRow columns={columns} />
+        <div className={styles.datasetSelectionResultsContainer}>
+          {datasets.map((dataset) => (
+            <NormalRow
+              dataset={dataset}
+              columns={columns}
+              key={columns[0]?.value(dataset)}
+            />
+          ))}
+        </div>
+      </div>
+    </CenteredContainer>
+  );
 }
 
-const NormalRow = ({columns, dataset}) => {
-  if (columns.length===1) {
+/** The header of the dataset listing; shows column names */
+function HeaderRow({
+  columns,
+}: {
+  /** The column definition to drive the display */
+  columns: DatasetSelectColumnsType[];
+}): React.ReactElement {
+  const names = columns.map((c) => c.name);
+
+  if (columns.length === 1) {
     return (
-      <Row>
-        <SingleColumn>
-          <Value dataset={dataset} columnInfo={columns[0]} firstColumn/>
-        </SingleColumn>
-      </Row>
-    )
+      <div className={styles.row}>
+        <div>{names[0]}</div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={styles.row}>
+        <div className={styles.col1}>{names[0]}</div>
+        <div className={styles.col2}>{names[1]}</div>
+      </div>
+    );
   }
-  return (
-    <Row>
-      <Col1>
-        <Value dataset={dataset} columnInfo={columns[0]} firstColumn/>
-      </Col1>
-      <Col2>
-        <Value dataset={dataset} columnInfo={columns[1]}/>
-      </Col2>
-    </Row>
-  )
+}
+
+/** A row displaying a dataset */
+function NormalRow({
+  columns,
+  dataset,
+}: {
+  /** The column definition to drive the display */
+  columns: DatasetSelectColumnsType[];
+
+  /** The dataset displayed in the row */
+  dataset: DatasetType;
+}): React.ReactElement {
+  if (columns.length === 1) {
+    return (
+      <div className={styles.row}>
+        <div>
+          <Value dataset={dataset} columnInfo={columns[0]} firstColumn />
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={styles.row}>
+        <div className={styles.col1}>
+          <Value dataset={dataset} columnInfo={columns[0]} firstColumn />
+        </div>
+        <div className={styles.col2}>
+          <Value dataset={dataset} columnInfo={columns[1]} />
+        </div>
+      </div>
+    );
+  }
 }
 
 /**
  * Render the value for a particular cell in the table.
  * May be a link and/or have a logo, depending on the data in `columnInfo`
  */
-const Value = ({dataset, columnInfo, firstColumn}) => {
+function Value({
+  dataset,
+  columnInfo,
+  firstColumn,
+}: {
+  /** The type of dataset being displayed */
+  dataset: DatasetType;
+
+  /** The column definition to drive the display */
+  columnInfo: DatasetSelectColumnsType | undefined;
+
+  /** Is this the first column in the table? */
+  firstColumn?: boolean;
+}): React.ReactElement {
+  if (!columnInfo) {
+    // this shouldn't ever happen
+    throw new Error("oh the typechecker was right!");
+  }
+
   const url = typeof columnInfo.url === "function" && columnInfo.url(dataset);
+
   const value = columnInfo.value(dataset);
-  const logo = typeof columnInfo.logo === "function" ? columnInfo.logo(dataset) : undefined;
+
+  const logo =
+    typeof columnInfo.logo === "function"
+      ? columnInfo.logo(dataset)
+      : undefined;
+
   return (
     <>
-      {(logo && url) ?
-        (<LogoContainerLink href={url}>{logo}</LogoContainerLink>) :
-        logo ?
-          (<LogoContainer>{logo}</LogoContainer>) :
-          null
-      }
-      {url ?
-        <StyledLink $bold={firstColumn} href={url}>{value}</StyledLink> :
+      {logo && url ? (
+        <a className={styles.logoContainerLink} href={url}>
+          {logo}
+        </a>
+      ) : logo ? (
+        <span className={styles.logoContainer}>{logo}</span>
+      ) : null}
+      {url ? (
+        <a
+          className={styles.styledLink}
+          href={url}
+          style={{ fontWeight: firstColumn ? 500 : 300 }}
+        >
+          {value}
+        </a>
+      ) : (
         value
-      }
+      )}
     </>
   );
-};
-
-
-/**
- * React component to render a table showing the `datasets` as rows with
- * the specified `columns`. Open to future expansion.
- * Currently only 2 or 3 columns are supported.
- * If 3 columns are supplied, the 3rd will not be shown on small screens.
- * @prop {Array} columns Array of columns. Each entry is an object with following properties:
- *       `name` {string} To be displayed in the header
- *       `value` {function} return the value, given an individual entry from `datasets`
- *       `url` {function | undefined} render the value as a link to this URL
- *       `logo` {function | undefined} if the function returns "nextstrain" then we render the Nextstrain logo.
- * @returns React Component
- */
-export const ListDatasets = ({datasets, columns}) => {
-  return (
-    <CenteredContainer>
-      <RowContainer>
-        <HeaderRow columns={columns}/>
-        <DatasetSelectionResultsContainer>
-          {datasets.map((dataset) => (
-            <NormalRow dataset={dataset} columns={columns} key={columns[0].value(dataset)}/>
-          ))}
-        </DatasetSelectionResultsContainer>
-      </RowContainer>
-    </CenteredContainer>
-  );
-};
+}
