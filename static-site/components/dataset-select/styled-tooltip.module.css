@@ -1,0 +1,8 @@
+.styledTooltip {
+   line-height: 1.2;
+   max-width: 30vh !important;
+   padding: 10px !important; /* override internal styling */
+   pointer-events: auto !important;
+   white-space: normal;
+   z-index: 1002 !important; /* on top of viz legend */
+}
