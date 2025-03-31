@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import _sortBy from "lodash/sortBy";
 import Collapsible from "react-collapsible";
-import { FaFile } from "react-icons/fa";
+import { FaAngleUp, FaAngleDown, FaFile } from "react-icons/fa";
 
 import { parseNcovSitRepInfo } from "../../../../auspice-client/customisations/languageSelector";
 
@@ -12,7 +12,7 @@ import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
 import { DataFetchError } from "../../../data/SiteConfig";
 
-import CollapseTitle from "./collapse-title";
+import { LanguageObject, NcovSitRepInfo, SitRepJson } from "./types";
 
 import styles from "./situation-reports-by-language.module.css";
 
@@ -105,23 +105,6 @@ export default function SituationReportsByLanguage(): React.ReactElement {
   );
 }
 
-type SitRepJson = {
-  narratives: { request: string }[];
-};
-
-type NcovSitRepInfo = {
-  url: string;
-  date: string;
-  languageCode: string;
-  languageNative: string;
-};
-
-type LanguageObject = {
-  languageCode: string;
-  languageNative: string;
-  narratives: NcovSitRepInfo[];
-};
-
 function parseNarrativesByLang(json: SitRepJson): LanguageObject[] {
   const narrativesByLanguage: Record<string, LanguageObject> = {};
 
@@ -157,4 +140,25 @@ function parseNarrativesByLang(json: SitRepJson): LanguageObject[] {
     (o: LanguageObject) => o.languageNative !== "English",
     (o: LanguageObject) => o.languageCode,
   ]);
+}
+
+/** A helper component for rendering a collapsible title element */
+function CollapseTitle({
+  name,
+  isExpanded = false,
+}: {
+  /** the name of the element */
+  name: string;
+
+  /** whether or not it is expanded */
+  isExpanded?: boolean;
+}): React.ReactElement {
+  return (
+    <div className={styles.titleContainer}>
+      <span className={styles.name}>{name}</span>
+      <span className={styles.iconContainer}>
+        {isExpanded ? <FaAngleUp /> : <FaAngleDown />}
+      </span>
+    </div>
+  );
 }

@@ -1,3 +1,13 @@
+.iconContainer {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 500;
+}
+
 .sitRepTitle {
   border-radius: 3px;
   font-family: --var(lato);
@@ -8,4 +18,12 @@
   @media (max-width: 768px) {
     font-size: 18px;
   }
+}
+
+.titleContainer {
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  margin: 0px;
+  padding: 15px 10px 10px 10px;
 }
