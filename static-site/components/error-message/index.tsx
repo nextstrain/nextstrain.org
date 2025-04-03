@@ -14,7 +14,7 @@ export default function ErrorMessage({
   title: string;
 
   /** the more specific contents of the error message */
-  contents: string;
+  contents: string | React.ReactElement
 }): React.ReactElement {
   return (
     <div className={styles.errorMessage}>
