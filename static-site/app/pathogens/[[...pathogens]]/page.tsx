@@ -1,8 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
 
+import { ValidateUrl } from "../../../components/error-banner";
+
 import PathogensPageContent from "./content";
-import ValidatePathogensUrl from "./validatePathogensUrl";
 
 const title = "Nextstrain-maintained pathogen analyses";
 
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 export default function Pathogens(): React.ReactElement {
   return (
     <>
-      <ValidatePathogensUrl />
+      <ValidateUrl stub="pathogens" />
       <PathogensPageContent metadata={metadata} />
     </>
   );

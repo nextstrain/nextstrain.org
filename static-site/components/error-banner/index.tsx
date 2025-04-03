@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 
 import ErrorMessage from "../error-message";
 
@@ -53,6 +53,31 @@ export function ErrorBanner({
     return <ErrorMessage title={errorTitle} contents={errorContents} />;
   } else {
     // this will never happen
+    return null;
+  }
+}
+
+/**
+ * A React Client Component to detect when an invalid URL is
+ * requested, which calls the `notFound()` method to redirect to the
+ * `not-found.tsx` component
+ *
+ * Note that any actually valid `/<stub>/<something>` URL will be
+ * redirected at the Express router level, before the Next.js router
+ * is engaged, so if we are trying to render a `/<stub>/<something>`
+ * URL, it _is_ an error
+ */
+export function ValidateUrl({
+  stub,
+}: {
+  /** the initial URL part to check */
+  stub: string;
+}): null {
+  const params = useParams();
+
+  if (params && params[stub]) {
+    notFound();
+  } else {
     return null;
   }
 }
