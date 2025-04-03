@@ -1,0 +1,26 @@
+.listContainer {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: var(--niceLineHeight);
+  margin: 0px auto;
+  max-width: 640px;
+}
+/* svg sub-elements represent icons (eg. external link) */
+.listContainer svg {
+  color: var(--brandColor);
+  font-size: 14px;
+  margin-left: 10px;
+}
+.listContainer ul {
+  margin: 20px 0 0;
+}
+.listContainer li {
+  padding-bottom: 10px;
+}
+
+.subtext {
+  font-size: var(--niceFontSize);
+  font-style: italic;
+  font-weight: 300;
+  line-height: var(--niceLineHeight);
+}

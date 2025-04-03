@@ -2,12 +2,12 @@
 .focus {
   font-size: var(--niceFontSize);
   line-height: var(--tightLineHight);
-  max-width: 640px;
+  margin: 20px 0 0;
 }
 
 /* this is specifically *added* to the base style for FocusParagraphCentered */
 .centered {
-  margin: 20px 0 0;
+  max-width: 640px;
   text-align: center;
 }
 .centered > strong {
@@ -16,6 +16,6 @@
 
 /* this is specifically *added* to the base style for FocusParagraphNarrow */
 .narrow {
-  margin: 20px 0px 0px;
+  max-width: 640px;
   text-align: left;
 }
