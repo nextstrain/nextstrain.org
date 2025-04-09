@@ -1,0 +1,48 @@
+.badgeContainer {
+  background-color: #e9f2f6;
+  border-color: #bdd8e5;
+  border-radius: 2px;
+  border-style: solid;
+  border-width: 1px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.baseContainer {
+  color: #5097ba;
+  cursor: pointer;
+  font-weight: 300;
+  padding: 0px 2px 0px 2px;
+}
+
+.iconContainer {
+  color: #5097ba;
+  cursor: pointer;
+  /* left vertical border */
+  border-color: #bdd8e5;
+  border-style: solid;
+  border-width: 0px 0px 0px 1px;
+  display: inline-block;
+  min-width: 20px;
+  padding: 0px 1px 0px 5px;
+  text-align: center;
+}
+.iconContainer:hover,
+.iconContainer:focus {
+  .iconContainer > svg {
+    color: #0071e6;
+  }
+}
+.iconContainer > svg {
+  transform: translate(-2px, 2px);
+}
+
+.textContainer {
+  color: #5097ba;
+  cursor: help;
+  display: inline-block;
+  font-weight: 300;
+  margin: 0px 0px 0px 2px;
+  padding: 0px 2px 0px 2px;
+}
+

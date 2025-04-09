@@ -14,7 +14,7 @@ export default function ErrorMessage({
   title: string;
 
   /** the more specific contents of the error message */
-  contents: string;
+  contents: React.ReactElement
 }): React.ReactElement {
   return (
     <div className={styles.errorMessage}>
@@ -22,7 +22,7 @@ export default function ErrorMessage({
       <br />
       Please <a href="/contact">contact us</a> if you believe this to be an
       error.
-      <p>{contents}</p>
+      {contents}
     </div>
   );
 }

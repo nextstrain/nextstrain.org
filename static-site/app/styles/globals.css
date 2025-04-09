@@ -84,14 +84,20 @@ a:focus {
   outline-offset: -2px;
 }
 
-h1 {
+h1,
+h2,
+h3,
+h4 {
   color: var(--darkGrey);
-  font-size: 38px;
-  font-weight: 300;
   line-height: 32px;
   margin-bottom: 0px;
   margin-top: 0px;
   min-width: 240px;
+}
+
+h1 {
+  font-size: 38px;
+  font-weight: 300;
   text-align: center;
 }
 
@@ -105,14 +111,6 @@ h3 {
 }
 h4 {
   font-size: 1.8rem;
-  font-weight: 400;
-}
-h5 {
-  font-size: 1.6rem;
-  font-weight: 400;
-}
-h6 {
-  font-size: 1.6rem;
   font-weight: 400;
 }
 
@@ -155,5 +153,3 @@ p.wideParagraph {
   line-height: var(--tightLineHight);
   margin: 20px 0 0;
 }
-
-
