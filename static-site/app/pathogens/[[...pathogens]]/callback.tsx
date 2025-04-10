@@ -1,6 +1,6 @@
 "use client";
 
-import { ResourceListingInfo } from "../../components/list-resources/types";
+import { ResourceListingInfo } from "../../../components/list-resources/types";
 
 /**
  * A callback function used by the <ListResources> component (which

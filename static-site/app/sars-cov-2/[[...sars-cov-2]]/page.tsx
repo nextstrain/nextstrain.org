@@ -1,8 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
 
+import { ValidateUrl } from "../../../components/error-banner";
+
 import SarsCov2PageContent from "./content";
-import ValidateSarsUrl from "./validateSarsUrl";
 
 const title = "Nextstrain SARS-CoV-2 resources";
 
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 export default function SarsCov2Page(): React.ReactElement {
   return (
     <>
-      <ValidateSarsUrl />
+      <ValidateUrl stub="sars-cov-2" />
       <SarsCov2PageContent metadata={metadata} />
     </>
   );

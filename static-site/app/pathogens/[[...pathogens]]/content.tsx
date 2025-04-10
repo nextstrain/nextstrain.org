@@ -1,25 +1,34 @@
 import React from "react";
 import { Metadata } from "next";
 
-import FlexCenter from "../../components/flex-center";
-import { FocusParagraphCentered } from "../../components/focus-paragraph";
-import ListResources from "../../components/list-resources";
-import { SmallSpacer, HugeSpacer } from "../../components/spacers";
-import * as coreResources from "../../content/resource-listing.yaml";
+import FlexCenter from "../../../components/flex-center";
+import { FocusParagraphCentered } from "../../../components/focus-paragraph";
+import ListResources from "../../../components/list-resources";
+import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
+import * as coreResources from "../../../content/resource-listing.yaml";
 
 import { pathogenResourceListingCallback } from "./callback";
 
-const title = "Nextstrain-maintained pathogen analyses";
-
-export const metadata: Metadata = {
-  title,
-};
-
 /**
- * React Server Component that generates and presents a list of
- * pathogen resources.
+ * React Server Component that generates the content of the /pathogens page
+ *
+ * This is abstracted out into a distinct component so that it can
+ * also be used in the "./not-found.tsx" component, to render the
+ * /staging page content beneath an error banner, when a bad URL is
+ * requested.
  */
-export default function Pathogens(): React.ReactElement {
+export default function PathogensPageContent({
+  metadata,
+}: {
+  /**
+   * A Metadata object, that is assumed to have a `title` key with a
+   * string value
+   */
+  metadata: Metadata;
+}): React.ReactElement {
+  // the cast is not ideal, but it _is_ going to be a string...
+  const title = metadata.title as string; // eslint-disable-line @typescript-eslint/consistent-type-assertions
+
   return (
     <>
       <HugeSpacer />

@@ -1,8 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
 
+import { ValidateUrl } from "../../../components/error-banner";
+
 import StagingPageContent from "./content";
-import ValidateStagingUrl from "./validateStagingUrl";
 
 const title = "Staging Data";
 
@@ -40,15 +41,15 @@ export const metadata: Metadata = {
  * and this page never sees them.
  *
  * Requests of type #2 and type #3 _are_ handled by this page. It uses
- * the `<ValidateStagingUrl>` component to detect whether the
+ * the `<ValidateUrl>` component to detect whether the
  * requested URL was the plain `/staging` or whether there are
  * additional path components beyond that (again, `/staging/foo` in
  * our example). If there _are_ additional path elements,
- * `<ValidateStagingUrl>` detects that and calls Next.js's
+ * `<ValidateUrl>` detects that and calls Next.js's
  * `notFound()` method, which results in the `./not-found.tsx` page
  * being rendered and returned. If there are not additional path
  * elements (i.e., if the request was for `/staging`),
- * `<ValidateStagingUrl>` returns nothing, and the
+ * `<ValidateUrl>` returns nothing, and the
  * `<StagingPageContent>` component delivers the desired resource
  * listing.
  *
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
 export default function StagingPage(): React.ReactElement {
   return (
     <>
-      <ValidateStagingUrl />
+      <ValidateUrl stub="staging" />
       <StagingPageContent metadata={metadata} />
     </>
   );

@@ -1,7 +1,8 @@
 import React from "react";
 
+import { ErrorBanner } from "../../../components/error-banner";
+
 import SarsCov2PageContent from "./content";
-import ErrorBanner from "./error-banner";
 import { metadata } from "./page";
 
 /**
@@ -10,9 +11,20 @@ import { metadata } from "./page";
  * dataset doesn't actually exist.
  */
 export default function FourOhFour(): React.ReactElement {
+  const contents = (
+    <p>
+      {`Here is the SARS-CoV-2 page, where we have listed featured datasets,
+        narratives, and resources related to SARS-CoV-2. Note that some SARS-CoV-2
+        datasets may not be listed here. For a more comprehensive list of
+        Nextstrain-maintained (including SARS-CoV-2) datasets,
+        check out `}
+      <a href="/pathogens">nextstrain.org/pathogens</a>.
+    </p>
+  );
+
   return (
     <>
-      <ErrorBanner />
+      <ErrorBanner stub="sars-cov-2" contents={contents} />
       <SarsCov2PageContent metadata={metadata} />
     </>
   );
