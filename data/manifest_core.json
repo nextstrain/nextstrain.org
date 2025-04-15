@@ -362,9 +362,9 @@
       },
       "mumps": {
         "resolution": {
-          "na": "",
+          "north-america": "",
           "global": "",
-          "default": "na"
+          "default": "global"
         }
       },
       "ncov": {
