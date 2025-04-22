@@ -135,11 +135,11 @@ groups.setup(app);
 /* CLI convenience endpoints, e.g. downloads of release assets.
  *
  * Routes:
- *   /cli/download/:version/:assetSuffix")
- *   /cli/download/pr-build/:prId/:assetSuffix")
- *   /cli/download/ci-build/:runId/:assetSuffix")
- *   /cli/installer/:os")
- *   /cli")
+ *   /cli/download/:version/:assetSuffix
+ *   /cli/download/pr-build/:prId/:assetSuffix
+ *   /cli/download/ci-build/:runId/:assetSuffix
+ *   /cli/installer/:os
+ *   /cli
  */
 cli.setup(app);
 
