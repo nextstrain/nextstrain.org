@@ -122,7 +122,8 @@ const setup = (app) => {
     "/help/coronavirus/FAQ": `${mainReadTheDocs}/learn/pathogens/coronavirus/FAQ.html`,
     "/help/coronavirus/SARS-CoV-2": `${mainReadTheDocs}/learn/pathogens/coronavirus/SARS-CoV-2.html`,
     "/help/coronavirus/Technical-FAQ": `${mainReadTheDocs}/learn/pathogens/coronavirus/Technical-FAQ.html`,
-    "/help/coronavirus/human-CoV": `${mainReadTheDocs}/learn/pathogens/coronavirus/human-CoV.html`
+    "/help/coronavirus/human-CoV": `${mainReadTheDocs}/learn/pathogens/coronavirus/human-CoV.html`,
+    "/workshop": "https://github.com/nextstrain/nextstrain-walkthrough"
   };
 
   for (const [from, to] of Object.entries(docsRedirects)) {
