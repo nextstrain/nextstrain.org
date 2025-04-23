@@ -1,10 +1,9 @@
-import LinkHeader from 'http-link-header';
 import jszip from 'jszip';
 import mime from 'mime';
 import pep440 from '@renovatebot/pep440';
 import { pipeline } from 'stream/promises';
 import { BadRequest, InternalServerError, NotFound, ServiceUnavailable } from '../httpErrors.js';
-import { fetch } from '../fetch.js';
+import { fetch, paginatedFetch } from '../fetch.js';
 import { uri } from '../templateLiterals.js';
 import { map } from '../utils/iterators.js';
 
@@ -40,18 +39,13 @@ async function download(req, res) {
    *   -trs, 12 Feb 2024
    */
   const releases = new Map(await map(
-    (async function* () {
-      let nextPage = "https://api.github.com/repos/nextstrain/cli/releases?per_page=100";
-
-      while (nextPage) {
-        const response = await fetch(nextPage, {headers: {authorization}});
+    paginatedFetch(
+      "https://api.github.com/repos/nextstrain/cli/releases?per_page=100", {headers: {authorization}},
+      async function* (response) {
         assertStatusOk(response);
-
         yield* await response.json();
-
-        nextPage = LinkHeader.parse(response.headers.get("Link") ?? "").rel("next")[0]?.uri;
       }
-    })(),
+    ),
     r => [r.tag_name, r]
   ));
 
