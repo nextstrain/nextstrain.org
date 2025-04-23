@@ -49,7 +49,7 @@ async function download(req, res) {
 
         yield* await response.json();
 
-        nextPage = LinkHeader.parse(response.headers.get("Link") ?? "").rel("next")[0];
+        nextPage = LinkHeader.parse(response.headers.get("Link") ?? "").rel("next")[0]?.uri;
       }
     })(),
     r => [r.tag_name, r]
