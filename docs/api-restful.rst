@@ -190,8 +190,7 @@ make requests for all supported representations (or some subset, e.g. all
 Versioning
 ==========
 
-Neither endpoints, nor media types, nor resource revisions are currently
-versioned.
+Neither endpoints nor media types are currently versioned.
 
 It's expected that either versioned or schema-parameterized media types will be
 added in the future when there's a need to distinguish between incompatible
@@ -201,7 +200,11 @@ will continue to work in a future where corresponding versioned media types
 also exist, with the expectation that the unversioned media types will always
 be an alias for their latest versions.
 
-Resource revisions may also be supported via other mechanisms in the future.
+Revisions for some datasets and narratives resources are implicitly versioned
+via date-based snapshots.  Versions are specified in the URL path.  See our
+:doc:`previous analyses <docs:guides/snapshots>` documentation for more
+information.  Revisions for datasets and narratives may also be supported via
+other mechanisms in the future.
 
 
 Methods
