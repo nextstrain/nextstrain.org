@@ -318,5 +318,9 @@
   {
     "name": "TrepoGen-private",
     "isPublic": false
+  },
+  {
+    "name": "CPHL_MPOX",
+    "isPublic": false
   }
 ]
