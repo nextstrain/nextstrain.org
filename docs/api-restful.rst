@@ -107,6 +107,21 @@ user.
 .. _Authorization: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization
 
 
+Resource types
+==============
+
+Datasets
+    Trees and other sequenced-based data for visualization with Auspice.
+    Conceptually singular but comprised of multiple "physical" parts/files.
+
+Narratives
+    Slide-like documents for presenting commentary alongside views of datasets
+    in Auspice.
+
+Group settings and memberships
+    :doc:`Nextstrain Groups <docs:learn/groups/index>` administration
+
+
 Media types
 ===========
 
