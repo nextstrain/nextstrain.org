@@ -70,6 +70,16 @@ Synopsis
         --header 'Content-Type: text/markdown'                                  \
         --upload-file overview.md
 
+    # List versions of a pathogen repository (set of pathogen workflows)
+    curl https://nextstrain.org/pathogen-repos/measles/versions                 \
+        --header 'Accept: application/json'
+
+    # Download a ZIP archive of a pathogen repository at a specific version.
+    curl https://nextstrain.org/pathogen-repos/measles/versions/main            \
+        --header 'Accept: application/zip, */*'                                 \
+        --location                                                              \
+            > measles.zip
+
 Authentication
 ==============
 
@@ -120,6 +130,11 @@ Narratives
 
 Group settings and memberships
     :doc:`Nextstrain Groups <docs:learn/groups/index>` administration
+
+Pathogen repositories
+    Container of pathogen-specific workflows (typically using Snakemake) to
+    ingest data from upstream sources and produce datasets for Auspice (and
+    sometimes Nextclade).  Typically used with Nextstrain CLI.
 
 
 Media types
@@ -205,6 +220,19 @@ Group memberships
     Lists of group members, group roles, and group role members.
 
 
+Pathogen repository versions
+----------------------------
+
+``application/json``
+    Metadata about a resolved pathogen repository version, namely the
+    ``revision`` for now.
+
+``application/zip``
+    ZIP archive of the resolved pathogen repository version's contents.
+    Typically fulfilled via a redirect.  You should also accept ``*/*`` as a
+    fallback to account for third-party API behaviour.
+
+
 Link header
 -----------
 
@@ -242,6 +270,16 @@ via date-based snapshots.  Versions are specified in the URL path.  See our
 :doc:`previous analyses <docs:guides/snapshots>` documentation for more
 information.  Revisions for datasets and narratives may also be supported via
 other mechanisms in the future.
+
+Revisions of pathogen repository resources are explicitly versioned.  Versions
+are specified in the URL path.  The versioning model supports both named
+versions (e.g. ``1.2.3``, ``v42``, ``main``) which might resolve differently at
+different times (i.e. are mutable) and revision ids (e.g.
+``abadcafefeedfacebadc0ffee0ddf00ddeadd00d``) which won't (i.e. are immutable
+content-addressed versions).  Currently these closely reflect our use of Git
+for storage and distribution—Git refs (tags, branches) are named versions and
+commit ids (SHAs) are revisions—but we may manage versions with the same
+properties outside of Git in the future.
 
 
 Methods
@@ -342,6 +380,13 @@ The following group membership endpoints exist::
     {GET, HEAD, OPTIONS} /groups/{name}/settings/roles/{role}/members
 
     {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/settings/roles/{role}/members/{username}
+
+.. _api-pathogen-repos:
+
+The following pathogen repository endpoints exist::
+
+    {GET, HEAD} /pathogen-repos/{name}/versions
+    {GET, HEAD} /pathogen-repos/{name}/versions/{version}
 
 .. _motivation:
 
