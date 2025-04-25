@@ -127,7 +127,8 @@ Media types
 
 Several Nextstrain-specific `media types`_ are used to identify the different
 data files (or "representations") that make up a conceptual Nextstrain dataset
-or narrative.
+or narrative.  General-purpose media types, e.g. for JSON, images, and
+Markdown, are also used where applicable.
 
 When making a GET or HEAD request, use these types in the ``Accept`` request
 header to indicate the desired representation.  Responses will use the
@@ -181,6 +182,27 @@ documentation for more information on the Markdown content.
     Currently an alias for ``text/vnd.nextstrain.narrative+markdown``.
     Intended primarily for curious humans instead of programs and so may change
     over time.  Not recommended for stable programmatic use.
+
+
+Group settings
+--------------
+
+See also our :doc:`group customization <docs:guides/share/groups/customize>`
+documentation for more information.
+
+``text/markdown``
+``text/plain``
+    Group overview Markdown, including frontmatter fields.
+
+``image/png``
+    Group logo.
+
+
+Group memberships
+-----------------
+
+``application/json``
+    Lists of group members, group roles, and group role members.
 
 
 Link header
