@@ -26,6 +26,7 @@ settings:
 ignorePatterns:
   - "/*"
   - "!/app"
+  - "!/data"
   - "!/components"
   - "!/pages"
   - "!/src"
