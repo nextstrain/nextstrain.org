@@ -24,7 +24,13 @@ settings:
     version: "16"
 
 ignorePatterns:
-  - public/
+  - "/*"
+  - "!/app"
+  - "!/components"
+  - "!/pages"
+  - "!/src"
+  - "!/types.d.ts"
+  - "!/vendored"
 
 rules:
   "@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: 'never' }]
