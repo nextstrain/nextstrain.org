@@ -1,6 +1,6 @@
 # Nextstrain logos
 
-![Nextstrain](logo.svg)
+![Nextstrain](logo-portable.svg)
 
 These vector logos were made in Inkscape from existing assets in use by Auspice and nextstrain.org.
 
