@@ -14,6 +14,6 @@ export function setup(app) {
   app.routeAsync("/cli/installer/:os")
     .getAsync(endpoints.cli.installer);
 
-  app.route("/cli")
-    .get((req, res) => res.redirect("https://docs.nextstrain.org/projects/cli/"));
+  app.routeAsync("/cli")
+    .getAsync(endpoints.cli.info);
 }

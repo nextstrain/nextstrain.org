@@ -4,6 +4,7 @@ import pep440 from '@renovatebot/pep440';
 import { pipeline } from 'stream/promises';
 import { BadRequest, InternalServerError, NotFound, ServiceUnavailable } from '../httpErrors.js';
 import { fetch, paginatedFetch } from '../fetch.js';
+import { contentTypesProvided } from "../negotiate.js";
 import { uri } from '../templateLiterals.js';
 import { map } from '../utils/iterators.js';
 
@@ -11,6 +12,31 @@ import { map } from '../utils/iterators.js';
 const authorization = process.env.GITHUB_TOKEN
   ? `token ${process.env.GITHUB_TOKEN}`
   : "";
+
+
+const info = contentTypesProvided([
+  ["application/json", infoJSON],
+  ["text/html", (req, res) => res.redirect("https://docs.nextstrain.org/projects/cli/")],
+]);
+
+async function infoJSON(req, res) {
+  /* This PyPI query was directly ported out of Nextstrain CLI, and I think it
+   * makes sense to keep it as-is here.  Other handlers here deal with
+   * GitHub releases instead of PyPI distributions since they're specific to
+   * our standalone distribution.  We _could_ move this handler to querying
+   * GitHub as well, though I don't see a compelling reason to do so.  To the
+   * contrary, I noticed a request to the equivalent GitHub API resource is
+   * roughly 4x slower than PyPI in my testing!
+   *    -trs, 28 April 2025
+   *
+   * ¹ <https://api.github.com/repos/nextstrain/cli/releases/latest>
+   */
+  const distribution = await (await fetch("https://pypi.org/pypi/nextstrain-cli/json", {cache: "no-cache"})).json();
+
+  return res.json({
+    latest_version: String(distribution?.info?.version),
+  });
+}
 
 
 async function download(req, res) {
@@ -191,6 +217,7 @@ function installer (req, res) {
 
 
 export {
+  info,
   download,
   downloadPRBuild,
   downloadCIBuild,
