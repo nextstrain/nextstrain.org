@@ -110,5 +110,6 @@
   "OIDC_GROUPS_CLAIM": "cognito:groups",
   "SESSION_COOKIE_DOMAIN": "nextstrain.org",
   "GROUPS_DATA_FILE": "groups.json",
-  "RESOURCE_INDEX": "s3://nextstrain-inventories/resources/v4.json.gz"
+  "RESOURCE_INDEX": "s3://nextstrain-inventories/resources/v4.json.gz",
+  "PLAUSIBLE_ANALYTICS_DOMAIN": "nextstrain.org"
 }
