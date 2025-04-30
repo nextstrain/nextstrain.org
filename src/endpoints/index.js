@@ -6,5 +6,6 @@ export * as listResources from './listResources.js';
 export * as nextJsApp from './nextjs.js';
 export * as openid from './openid.js';
 export * as options from './options.js';
+export * as pathogenRepos from './pathogenRepos.js';
 export * as sources from './sources.js';
 export * as users from './users.js';

@@ -15,6 +15,7 @@ const {
   fetch,
   groups,
   openid,
+  pathogenRepos,
   schemas,
   staging,
   staticSite,
@@ -142,6 +143,16 @@ groups.setup(app);
  *   /cli
  */
 cli.setup(app);
+
+
+/* Pathogen repository resolution endpoints, e.g. for the CLI.
+ *
+ * Routes:
+ *   /pathogen-repos/:name/versions
+ *   /pathogen-repos/:name/versions/:version
+ */
+pathogenRepos.setup(app);
+
 
 
 /* JSON Schemas.

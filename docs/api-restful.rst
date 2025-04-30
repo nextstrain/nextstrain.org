@@ -70,6 +70,16 @@ Synopsis
         --header 'Content-Type: text/markdown'                                  \
         --upload-file overview.md
 
+    # List versions of a pathogen repository (set of pathogen workflows)
+    curl https://nextstrain.org/pathogen-repos/measles/versions                 \
+        --header 'Accept: application/json'
+
+    # Download a ZIP archive of a pathogen repository at a specific version.
+    curl https://nextstrain.org/pathogen-repos/measles/versions/main            \
+        --header 'Accept: application/zip, */*'                                 \
+        --location                                                              \
+            > measles.zip
+
 Authentication
 ==============
 
@@ -107,12 +117,33 @@ user.
 .. _Authorization: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization
 
 
+Resource types
+==============
+
+Datasets
+    Trees and other sequenced-based data for visualization with Auspice.
+    Conceptually singular but comprised of multiple "physical" parts/files.
+
+Narratives
+    Slide-like documents for presenting commentary alongside views of datasets
+    in Auspice.
+
+Group settings and memberships
+    :doc:`Nextstrain Groups <docs:learn/groups/index>` administration
+
+Pathogen repositories
+    Container of pathogen-specific workflows (typically using Snakemake) to
+    ingest data from upstream sources and produce datasets for Auspice (and
+    sometimes Nextclade).  Typically used with Nextstrain CLI.
+
+
 Media types
 ===========
 
 Several Nextstrain-specific `media types`_ are used to identify the different
 data files (or "representations") that make up a conceptual Nextstrain dataset
-or narrative.
+or narrative.  General-purpose media types, e.g. for JSON, images, and
+Markdown, are also used where applicable.
 
 When making a GET or HEAD request, use these types in the ``Accept`` request
 header to indicate the desired representation.  Responses will use the
@@ -168,6 +199,40 @@ documentation for more information on the Markdown content.
     over time.  Not recommended for stable programmatic use.
 
 
+Group settings
+--------------
+
+See also our :doc:`group customization <docs:guides/share/groups/customize>`
+documentation for more information.
+
+``text/markdown``
+``text/plain``
+    Group overview Markdown, including frontmatter fields.
+
+``image/png``
+    Group logo.
+
+
+Group memberships
+-----------------
+
+``application/json``
+    Lists of group members, group roles, and group role members.
+
+
+Pathogen repository versions
+----------------------------
+
+``application/json``
+    Metadata about a resolved pathogen repository version, namely the
+    ``revision`` for now.
+
+``application/zip``
+    ZIP archive of the resolved pathogen repository version's contents.
+    Typically fulfilled via a redirect.  You should also accept ``*/*`` as a
+    fallback to account for third-party API behaviour.
+
+
 Link header
 -----------
 
@@ -190,8 +255,7 @@ make requests for all supported representations (or some subset, e.g. all
 Versioning
 ==========
 
-Neither endpoints, nor media types, nor resource revisions are currently
-versioned.
+Neither endpoints nor media types are currently versioned.
 
 It's expected that either versioned or schema-parameterized media types will be
 added in the future when there's a need to distinguish between incompatible
@@ -201,7 +265,21 @@ will continue to work in a future where corresponding versioned media types
 also exist, with the expectation that the unversioned media types will always
 be an alias for their latest versions.
 
-Resource revisions may also be supported via other mechanisms in the future.
+Revisions for some datasets and narratives resources are implicitly versioned
+via date-based snapshots.  Versions are specified in the URL path.  See our
+:doc:`previous analyses <docs:guides/snapshots>` documentation for more
+information.  Revisions for datasets and narratives may also be supported via
+other mechanisms in the future.
+
+Revisions of pathogen repository resources are explicitly versioned.  Versions
+are specified in the URL path.  The versioning model supports both named
+versions (e.g. ``1.2.3``, ``v42``, ``main``) which might resolve differently at
+different times (i.e. are mutable) and revision ids (e.g.
+``abadcafefeedfacebadc0ffee0ddf00ddeadd00d``) which won't (i.e. are immutable
+content-addressed versions).  Currently these closely reflect our use of Git
+for storage and distribution—Git refs (tags, branches) are named versions and
+commit ids (SHAs) are revisions—but we may manage versions with the same
+properties outside of Git in the future.
 
 
 Methods
@@ -302,6 +380,13 @@ The following group membership endpoints exist::
     {GET, HEAD, OPTIONS} /groups/{name}/settings/roles/{role}/members
 
     {GET, HEAD, PUT, DELETE, OPTIONS} /groups/{name}/settings/roles/{role}/members/{username}
+
+.. _api-pathogen-repos:
+
+The following pathogen repository endpoints exist::
+
+    {GET, HEAD} /pathogen-repos/{name}/versions
+    {GET, HEAD} /pathogen-repos/{name}/versions/{version}
 
 .. _motivation:
 

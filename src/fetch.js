@@ -1,4 +1,5 @@
 import debugFactory from 'debug';
+import LinkHeader from 'http-link-header';
 import __fetch from 'make-fetch-happen';
 
 const debug = debugFactory("nextstrain:fetch");
@@ -72,7 +73,29 @@ class Request extends __fetch.Request {
   get cache() { return this[FETCH_OPTIONS].cache; }
 }
 
+/**
+ * Fetch one or more pages of a resource by starting at the given URL and
+ * iteratively following the Link header's rel=next URLs in the responses until
+ * they run out.
+ *
+ * @param {String} url - same as {@link fetch#url}
+ * @param {Object} options - same as {@link fetch#options}
+ * @param {Function} pageFn - Function (synchronous or asynchronous) that maps the Response for a single page to an iterable, e.g. an array or generator.
+ */
+async function* paginatedFetch(url, options, pageFn) {
+  let nextPage = url;
+
+  while (nextPage) {
+    const response = await fetch(nextPage, options);
+
+    yield* pageFn(response);
+
+    nextPage = LinkHeader.parse(response.headers.get("Link") ?? "").rel("next")[0]?.uri;
+  }
+}
+
 export {
   fetch,
+  paginatedFetch,
   Request,
 };
