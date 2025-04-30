@@ -30,3 +30,13 @@ export const blogFeeds = {
   rss2: `rss2.xml`,
 }
 export const blogFeedUrls = Object.fromEntries( Object.entries(blogFeeds).map(([k,v]) => [k, `${blogUrl}/${v}`]));
+
+/*
+  See <https://plausible.io/docs/plausible-script>. Analytics are
+  disabled on localhost, but use `script.local.js` if you want to
+  track localhost for testing purposes. If you want to disable all
+  analytics, set both of these constants to `undefined`.
+*/
+export const plausibleAnalyticsScript = "https://plausible.io/js/script.js";
+export const plausibleAnalyticsDataDomain = "nextstrain.org";
+
