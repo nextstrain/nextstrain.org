@@ -40,7 +40,14 @@ export default function PathogensPageContent({
 
       <FlexCenter>
         <FocusParagraphCentered>
-          These data represent analyses produced by the{" "}
+          These analyses are{" "}
+          <a
+            href="https://docs.nextstrain.org/en/latest/reference/glossary.html#term-phylogenetic-dataset"
+            target="_blank"
+            rel="noreferrer"
+          >
+            phylogenetic datasets
+          </a> produced by the{" "}
           <a href="/team">core Nextstrain team</a>. Explore analyses produced by
           others on the <a href="/groups">Groups</a> and{" "}
           <a href="/community">Community</a> pages.
