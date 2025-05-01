@@ -40,7 +40,7 @@ export default function PathogensPageContent({
 
       <FlexCenter>
         <FocusParagraphCentered>
-          These data represent analyses and situation-reports produced by the{" "}
+          These data represent analyses produced by the{" "}
           <a href="/team">core Nextstrain team</a>. Explore analyses produced by
           others on the <a href="/groups">Groups</a> and{" "}
           <a href="/community">Community</a> pages.
