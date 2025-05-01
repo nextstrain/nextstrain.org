@@ -46,7 +46,7 @@ export default function PathogensPageContent({
           <a href="/community">Community</a> pages.
           <br />
           <br />
-          We aim to provide a continually-updated view of publicly available
+          We aim to provide continually-updated views of publicly available
           data to show pathogen evolution and epidemic spread. The pipeline used
           to generate each dataset is available on{" "}
           <a href="https://github.com/nextstrain/">our GitHub page</a> or by
