@@ -40,18 +40,30 @@ export default function PathogensPageContent({
 
       <FlexCenter>
         <FocusParagraphCentered>
-          These data represent analyses and situation-reports produced by the{" "}
+          These analyses are{" "}
+          <a
+            href="https://docs.nextstrain.org/en/latest/reference/glossary.html#term-phylogenetic-dataset"
+            target="_blank"
+            rel="noreferrer"
+          >
+            phylogenetic datasets
+          </a> produced by the{" "}
           <a href="/team">core Nextstrain team</a>. Explore analyses produced by
           others on the <a href="/groups">Groups</a> and{" "}
           <a href="/community">Community</a> pages.
           <br />
           <br />
-          We aim to provide a continually-updated view of publicly available
+          We aim to provide continually-updated views of publicly available
           data to show pathogen evolution and epidemic spread. The pipeline used
           to generate each dataset is available on{" "}
-          <a href="https://github.com/nextstrain/">our GitHub page</a> or by
-          loading a dataset and clicking the &ldquo;built with&rdquo; link at
-          the top of the page.
+          <a
+            href="https://github.com/nextstrain/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            our GitHub page
+          </a> or by loading a dataset and clicking the &ldquo;built
+          with&rdquo; link at the top of the page.
         </FocusParagraphCentered>
       </FlexCenter>
 
