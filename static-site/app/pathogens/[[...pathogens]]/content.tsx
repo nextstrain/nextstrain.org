@@ -49,9 +49,14 @@ export default function PathogensPageContent({
           We aim to provide continually-updated views of publicly available
           data to show pathogen evolution and epidemic spread. The pipeline used
           to generate each dataset is available on{" "}
-          <a href="https://github.com/nextstrain/">our GitHub page</a> or by
-          loading a dataset and clicking the &ldquo;built with&rdquo; link at
-          the top of the page.
+          <a
+            href="https://github.com/nextstrain/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            our GitHub page
+          </a> or by loading a dataset and clicking the &ldquo;built
+          with&rdquo; link at the top of the page.
         </FocusParagraphCentered>
       </FlexCenter>
 
