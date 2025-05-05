@@ -481,3 +481,19 @@ export const RESOURCE_INDEX = fromEnvOrConfig("RESOURCE_INDEX", null);
  * canonical PRODUCTION flag set here. 
  */
 export const STATIC_SITE_PRODUCTION = PRODUCTION || !!process.env.USE_PREBUILT_STATIC_SITE;
+
+/**
+ * Domain in Plausible analytics for which to record server-side analytics
+ * events.
+ *
+ * Analytics are not recorded if this is not set.
+ */
+export const PLAUSIBLE_ANALYTICS_DOMAIN = fromEnvOrConfig("PLAUSIBLE_ANALYTICS_DOMAIN", null);
+
+/**
+ * URL of submission endpoint for Plausible analytics events.
+ *
+ * Defaults to Plausible's standard endpoint.  Useful to change during
+ * development and testing of analytics.
+ */
+export const PLAUSIBLE_ANALYTICS_ENDPOINT = fromEnvOrConfig("PLAUSIBLE_ANALYTICS_ENDPOINT", "https://plausible.io/api/event");

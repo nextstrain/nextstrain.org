@@ -1,7 +1,10 @@
+import * as analytics from '../analytics.js';
 import * as endpoints from '../endpoints/index.js';
 
 
 export function setup(app) {
+  app.useAsync("/cli", analytics.recordEvent());
+
   app.routeAsync("/cli/download/:version/:assetSuffix")
     .getAsync(endpoints.cli.download);
 
