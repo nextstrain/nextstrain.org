@@ -11,10 +11,13 @@ globals:
   BASE_URL: true
 
 ignorePatterns:
-  - auspice-client/
-  - docs/
-  - node_modules/
-  - static-site/
+  - "/*"
+  - "!/jest.config.js"
+  - "!/resourceIndexer"
+  - "!/scripts"
+  - "!/server.js"
+  - "!/src"
+  - "!/test"
 
 rules:
   # Code quality rules
