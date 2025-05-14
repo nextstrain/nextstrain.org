@@ -61,13 +61,16 @@ be set and will rewrite this file if they aren't set.²
     ]
   },
   "include": [
-    ".next/types/**/*.ts",
     "app/**/*",
+    "data/**/*",
     "components/**/*",
-    "next-env.d.ts",
     "pages/**/*",
     "src/**/*",
     "types.d.ts",
+
+    /* For Next.js */
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
   ],
   "exclude": [
     "node_modules"
