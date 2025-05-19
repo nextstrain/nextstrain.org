@@ -45,8 +45,11 @@ export default function ContactPage(): React.ReactElement {
           .
           <br />
           <br />
-          For private inquiries, you can reach us at hello
-          <span style={{ display: "none" }}>obfuscate</span>@nextstrain.org.
+          For private inquiries, you can reach us at{" "}
+          <a href="mailto:hello@nextstrain.org">
+            hello@nextstrain.org
+          </a>
+          .
           <br />
           <br />
           We also host office hours via Zoom every week on Thursdays at 10AM US
