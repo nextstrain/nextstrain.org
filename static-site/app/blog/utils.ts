@@ -103,10 +103,18 @@ export function getBlogPosts(): BlogPost[] {
  */
 export async function markdownToHtml({
   mdString,
+  inline,
+  addHeadingAnchors,
   headingAnchorClass,
 }: {
   /** the Markdown-formatted string to transform */
   mdString: string;
+
+  /** inline or block? **/
+  inline?: boolean;
+
+  /** if to add anchors to headings or not */
+  addHeadingAnchors?: boolean;
 
   /** the name to use for the CSS class on heading anchors */
   headingAnchorClass?: string;
@@ -114,7 +122,8 @@ export async function markdownToHtml({
   try {
     return await parseMarkdown({
       mdString,
-      addHeadingAnchors: true,
+      inline: !!inline,
+      addHeadingAnchors: addHeadingAnchors ?? !inline,
       headingAnchorClass,
     })
   }

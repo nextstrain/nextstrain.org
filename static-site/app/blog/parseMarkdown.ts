@@ -8,11 +8,15 @@ import { siteUrl } from "../../data/BaseConfig";
  */
 export default async function parseMarkdown({
   mdString,
+  inline = false,
   addHeadingAnchors = false,
   headingAnchorClass = undefined,
 }: {
   /** the Markdown-formatted text to render */
   mdString: string
+
+  /** inline or block? */
+  inline?: boolean
 
   /** Should `<a>` tags be added to headings? */
   addHeadingAnchors?: boolean
@@ -40,7 +44,9 @@ export default async function parseMarkdown({
     });
   }
 
-  const rawDescription = await marked.parse(mdString);
+  const rawDescription = inline
+    ? await marked.parseInline(mdString)
+    : await marked.parse(mdString);
 
   const sanitizerConfig: IOptions = {
     allowedTags,

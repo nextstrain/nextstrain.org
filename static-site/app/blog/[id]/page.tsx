@@ -10,6 +10,7 @@ import {
   siteUrl,
 } from "../../../data/BaseConfig";
 
+import type { BlogPost } from "../utils";
 import { getBlogPosts, markdownToHtml } from "../utils";
 
 import styles from "./styles.module.css";
@@ -109,7 +110,7 @@ export default async function BlogPost({
   const { id } = params;
 
   // we need this list to build the archive list in the sidebar
-  const allBlogPosts = getBlogPosts();
+  const allBlogPosts: Array<BlogPost & {sidebarTitleHtml?: {__html: string}}> = getBlogPosts();
 
   // and then this is the specific post we're rendering
   const blogPost = allBlogPosts.find((post) => post.blogUrlName === id);
@@ -119,10 +120,22 @@ export default async function BlogPost({
     notFound();
   }
 
-  const html = await markdownToHtml({
-    mdString: blogPost.mdstring,
-    headingAnchorClass: styles.blogPostAnchor,
+  const mdToHtml = async (md: string, {inline = false}: {inline?: boolean} = {}) => ({
+    __html: await markdownToHtml({
+      mdString: md,
+      inline,
+      ...(!inline
+        ? {addHeadingAnchors: true, headingAnchorClass: styles.blogPostAnchor}
+        : {}),
+    })
   });
+
+  const bodyHtml = await mdToHtml(blogPost.mdstring);
+  const titleHtml = await mdToHtml(blogPost.title, {inline: true});
+
+  for (const p of allBlogPosts) {
+    p.sidebarTitleHtml = await mdToHtml(p.sidebarTitle, {inline: true});
+  }
 
   return (
     <>
@@ -134,13 +147,14 @@ export default async function BlogPost({
             <time className={styles.blogPostDate} dateTime={blogPost.date}>
               {blogPost.date}
             </time>
-            <h1 className={styles.blogPostTitle}>{blogPost.title}</h1>
+            <h1
+              className={styles.blogPostTitle}
+              dangerouslySetInnerHTML={titleHtml}
+            />
             <h2 className={styles.blogPostAuthor}>{blogPost.author}</h2>
             <div
               className={styles.blogPostBody}
-              dangerouslySetInnerHTML={{
-                __html: html,
-              }}
+              dangerouslySetInnerHTML={bodyHtml}
             />
           </div>
           <div className="col-lg-1" />
@@ -149,7 +163,10 @@ export default async function BlogPost({
             <ul>
               {allBlogPosts.map((p) => (
                 <li key={p.blogUrlName}>
-                  <a href={p.blogUrlName}>{p.sidebarTitle}</a> ({p.date})
+                  <a
+                    href={p.blogUrlName}
+                    dangerouslySetInnerHTML={p.sidebarTitleHtml}
+                  /> ({p.date})
                 </li>
               ))}
             </ul>
