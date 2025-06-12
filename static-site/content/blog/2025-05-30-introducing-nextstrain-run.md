@@ -32,7 +32,7 @@ without conflict, allowing for independent outputs and analyses.
 
 Getting started with a pathogen's workflows doesn't involve Git like in the
 past.  Instead, you initially set up the pathogen with `nextstrain setup` (e.g.
-`nextstrain setup measles`).  This downloads the pathogen's files into a
+`nextstrain setup measles`).  This downloads the pathogen's files into an
 isolated and automatically-managed location.  (And while you’re not expected to
 ever need to dig into that location, it’s not hidden from you either.)  The
 latest version of the pathogen is set up by default, but multiple specific
