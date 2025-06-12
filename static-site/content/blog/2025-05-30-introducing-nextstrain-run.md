@@ -55,9 +55,10 @@ knowledge of Git or management of pathogen repositories and source code.  For
 active authorship and development of workflows, the `nextstrain build` command
 remains more suitable for many tasks.  (For now!)
 
-It's still early days, and right now, only [measles][] supports `nextstrain
-run` and its configurability is limited at that.  Still, you can try the basics
-out yourself by following the example shell session at the end of this post.
+It's still early days, and right now, only [measles][] and [zika][] support
+`nextstrain run` and the overall configurability of these repos is limited at
+that. Still, you can try the basics out yourself by following the example shell
+session at the end of this post.
 
 Support in more pathogens is coming, along with increased configurability and
 ease of adding your own data.  We're also working on standardizing and
@@ -134,5 +135,6 @@ $ nextstrain view /tmp/example-analysis
 [pathogen workflows]: https://docs.nextstrain.org/page/reference/glossary.html#term-workflow
 [phylogenetic workflow]: https://docs.nextstrain.org/page/reference/glossary.html#term-phylogenetic-workflow
 [measles]: https://github.com/nextstrain/measles
+[zika]: https://github.com/nextstrain/zika
 [our public tracking issue]: https://github.com/nextstrain/public/issues/1
 [discussion forum]: https://discussion.nextstrain.org
