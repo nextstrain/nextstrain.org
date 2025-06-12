@@ -6,11 +6,11 @@ sidebarTitle: "Introducing `nextstrain run`"
 ---
 
 One of our [planned directions for 2025][] is to facilitate running pathogen
-workflows with user data and user config, and we've recently taken a big step
-toward reaching that goal, with the introduction of the new [`nextstrain run`][]
-command in the recent release of [version 10.0.0][] of [Nextstrain CLI][] at the
-beginning of May. This new command was accompanied by new supporting features in
-[`nextstrain setup`][], [`nextstrain update`][], and [`nextstrain version`][].
+workflows with user data and user config. At the beginning of May we took a big
+step toward reaching that goal, with the introduction of the new [`nextstrain
+run`][] command in the [version 10.0.0][] release of our [Nextstrain CLI][] package.
+This new command was accompanied by new supporting features in the existing
+[`nextstrain setup`][], [`nextstrain update`][], and [`nextstrain version`][] commands.
 
 `nextstrain run` is a new way of running our [pathogen workflows][] without the
 co-mingling of your input and output files with the workflow's own source code.
