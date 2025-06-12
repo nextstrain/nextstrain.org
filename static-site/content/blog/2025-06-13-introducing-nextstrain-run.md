@@ -1,6 +1,6 @@
 ---
 author: Thomas Sibley
-date: "2025-05-30"
+date: "2025-06-13"
 title: "Introducing `nextstrain run`"
 sidebarTitle: "Introducing `nextstrain run`"
 ---
