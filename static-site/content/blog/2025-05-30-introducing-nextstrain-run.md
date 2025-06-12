@@ -5,10 +5,12 @@ title: "Introducing `nextstrain run`"
 sidebarTitle: "Introducing `nextstrain run`"
 ---
 
-The recent release of [version 10.0.0][] of [Nextstrain CLI][] at the beginning
-of May included a new command: [`nextstrain run`][].  It was accompanied by new
-supporting features in [`nextstrain setup`][], [`nextstrain update`][], and
-[`nextstrain version`][].
+One of our [planned directions for 2025][] is to facilitate running pathogen
+workflows with user data and user config, and we've recently taken a big step
+toward reaching that goal, with the introduction of the new [`nextstrain run`][]
+command in the recent release of [version 10.0.0][] of [Nextstrain CLI][] at the
+beginning of May. This new command was accompanied by new supporting features in
+[`nextstrain setup`][], [`nextstrain update`][], and [`nextstrain version`][].
 
 `nextstrain run` is a new way of running our [pathogen workflows][] without the
 co-mingling of your input and output files with the workflow's own source code.
@@ -124,6 +126,7 @@ $ nextstrain view /tmp/example-analysis
 […]
 ```
 
+[planned directions for 2025]: /blog/2025-03-31-annual-update-march-2025
 [version 10.0.0]: https://docs.nextstrain.org/projects/cli/en/latest/changes/#v10-0-0
 [Nextstrain CLI]: https://docs.nextstrain.org/projects/cli/
 [`nextstrain run`]: https://docs.nextstrain.org/projects/cli/page/commands/run/
