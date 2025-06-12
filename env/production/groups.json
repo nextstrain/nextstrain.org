@@ -338,5 +338,9 @@
   {
     "name": "CPHL-VZV",
     "isPublic": false
+  },
+  {
+    "name": "clade1a-workshop-acdc",
+    "isPublic": false
   }
 ]
