@@ -342,5 +342,9 @@
   {
     "name": "clade1a-workshop-acdc",
     "isPublic": false
+  },
+  {
+    "name": "HTI-Micro-Lab",
+    "isPublic": false
   }
 ]
