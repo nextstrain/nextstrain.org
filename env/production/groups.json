@@ -346,5 +346,9 @@
   {
     "name": "HTI-Micro-Lab",
     "isPublic": false
+  },
+  {
+    "name": "NICD-CRDM",
+    "isPublic": true
   }
 ]
