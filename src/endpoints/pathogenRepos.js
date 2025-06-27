@@ -93,7 +93,7 @@ async function versionZIP(req, res) {
   const {name, revision} = await resolveVersion(req);
 
   // Use revision instead of version to avoid race conditions/inconsistent resolution.
-  return res.redirect(uri`https://api.github.com/repos/nextstrain/${name}/zipball/${revision}`);
+  return res.redirect(uri`https://github.com/nextstrain/${name}/archive/${revision}.zip`);
 }
 
 
