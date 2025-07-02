@@ -654,6 +654,13 @@
           "default": "a"
         }
       },
+      "rubella": {
+        "resolution":{
+          "genome": "",
+          "E1": "",
+          "default": "genome"
+        }
+      },
       "seasonal-cov": {
         "resolution": {
           "229e": "",
