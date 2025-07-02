@@ -74,6 +74,11 @@
   img: measles_tree.png
   url: /measles/N450
 
+- name: Mumps
+  description: Mumps virus evolution and spread
+  img: mumps_tree.png
+  url: /mumps/global
+
 - name: RSV
   description: RSV evolution and spread
   img: rsv_tree.png
