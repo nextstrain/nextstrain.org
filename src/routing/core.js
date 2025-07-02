@@ -46,6 +46,7 @@ const coreBuildPaths = [
   "/oropouche",
   "/rabies",
   "/rsv",
+  "/rubella",
   "/seasonal-cov",
   "/seasonal-flu",
   "/tb",

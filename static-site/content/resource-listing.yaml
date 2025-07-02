@@ -137,3 +137,7 @@ coreTiles:
     img: hmpv_tree.png
     filters:
       - hmpv
+  - name: Rubella
+    img: rubella_tree.png
+    filters:
+      - rubella
