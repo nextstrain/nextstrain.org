@@ -70,6 +70,7 @@ charon.setup(app);
  *   /ncov
  *   /nextclade
  *   /rsv
+ *   /rubella
  *   /seasonal-flu
  *   /tb
  *   /WNV
