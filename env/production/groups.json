@@ -350,5 +350,9 @@
   {
     "name": "NICD-CRDM",
     "isPublic": true
+  },
+  {
+    "name": "NorwegianVeterinaryInstitute",
+    "isPublic": false
   }
 ]
