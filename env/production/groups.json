@@ -354,5 +354,9 @@
   {
     "name": "NorwegianVeterinaryInstitute",
     "isPublic": false
+  },
+  {
+    "name": "OFFLU-AIM",
+    "isPublic": false
   }
 ]
