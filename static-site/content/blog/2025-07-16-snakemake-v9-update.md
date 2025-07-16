@@ -11,11 +11,12 @@ breaking changes. However, we've realized that remote file support for user data
 would be better implemented with [Snakemake's storage support][] that was
 introduced with Snakemake version 8. Since we need to make changes across many
 pathogen workflows for this upgrade, we've decided to upgrade directly to
-Snakemake version 9.
+the most recent stable version, Snakemake version 9.
 
-To update to the latest version of runtimes, please follow our docs to [update an existing runtime][].
+To update runtimes to the latest version, please follow our instructions on
+[how to update an existing runtime][].
 
-If you are using a Nextstrain maintained pathogen, please review the pathogen's
+If you are using a Nextstrain-maintained pathogen repo, please review the repo's
 changelog for any breaking changes and then update your local copy of the pathogen
 repository:
 
@@ -59,6 +60,6 @@ or create an issue in a pathogen GitHub repository.
 
 [Nextstrain managed runtimes]: https://docs.nextstrain.org/projects/cli/page/runtimes
 [Snakemake's storage support]: https://snakemake.readthedocs.io/page/snakefiles/storage.html
-[update an existing runtime]: https://docs.nextstrain.org/page/guides/manage-installation.html#update-an-existing-installation
+[how to update an existing runtime]: https://docs.nextstrain.org/page/guides/manage-installation.html#update-an-existing-installation
 [Snakemake's migration guides]: https://snakemake.readthedocs.io/page/getting_started/migration.html
 [discussion forum]: https://discussion.nextstrain.org
