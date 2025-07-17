@@ -1,6 +1,6 @@
 ---
 author: "The Nextstrain team"
-date: "2025-07-16"
+date: "2025-07-17"
 title: "Upgrade to Snakemake v9"
 sidebarTitle: "Upgrade to Snakemake v9"
 ---
