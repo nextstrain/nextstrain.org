@@ -1,6 +1,6 @@
 ---
 author: John SJ Anderson
-date: "2025-07-18"
+date: "2025-07-24"
 title: "New Resources for Rubella"
 sidebarTitle: "Rubella resources"
 ---
