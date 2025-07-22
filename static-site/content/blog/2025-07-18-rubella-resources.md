@@ -33,7 +33,11 @@ latter of which encodes three structural proteins, C (capsid), E1, and
 E2 (envelope proteins). E1 is the source of hemagglutin activity for
 the virus, and is the only region that is sequenced for many samples.
 It is also the basis of the [WHO genotype reference][], which we used
-for genotype definition in the Nextclade dataset.
+for genotype definition in the Nextclade dataset. The WHO nomenclature
+classifies Rubella into have two large overarching clades (1 and 2),
+split into specific genotypes (1A-1J and 2A-2C) based on clades
+observed in trees built with reference samples. (See [WHO genotype
+reference][] for further specifics.)
 
 ![Figure 1](/blog/img/rubella_genome.png)
 **Figure 1. Phylogenetic tree of rubella virus whole genome.** The
@@ -62,7 +66,7 @@ samples that were more basal to the WHO samples in the tree, with the
 intention of capturing additional genotype diversity.
 
 The 1A genotype, as noted in the [original WHO nomenclature
-publication][], is multiphyletic. In particular, we observed a clade
+publication][], is polyphyletic. In particular, we observed a clade
 of approximately 22 samples in the whole genome tree, which appear to
 reflect more recent vaccine-derived 1A strains, which have a more
 distal placement in the tree relative to most of the original 1A
