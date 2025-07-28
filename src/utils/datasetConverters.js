@@ -5,6 +5,12 @@
  * with minor modification (adjusting "utils" require/import; adjusting export
  * syntax; adding this comment).
  *   -trs, 30 March 2023
+ *
+ * and modification to mirror changes made in
+ *
+ *    https://github.com/nextstrain/auspice/commit/e2cda9719e1f370b130c62e8e8b64230fd49de42#diff-82d200a99014332a4010c47a7b9f88701e13363b76d40ba4a426b722f3fa5bb7
+ *
+ *  -Jover, 30 July 2025
  */
 import * as utils from './index.js';
 
@@ -406,7 +412,7 @@ const setNodeBranchAttrs = (v2) => {
 
 
 const convertFromV1 = ({tree, meta}) => {
-  const v2 = {version: "v2", meta: {}};
+  const v2 = {version: "v2", meta: { extensions: { original_version: "v1" }}};
   // set metadata
   setColorings(v2["meta"], meta);
   setMiscMetaProperties(v2["meta"], meta);
