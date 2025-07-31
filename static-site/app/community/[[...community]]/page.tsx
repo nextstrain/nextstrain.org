@@ -1,38 +1,28 @@
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
-const MainCommunityPage = dynamic(() => import("../../src/sections/community-page"), {ssr: false})
-const SpecificCommunityPage = dynamic(() => import("../../src/sections/community-repo-page"), {ssr: false})
+import React from "react";
+import type { Metadata } from "next";
 
+import CommuityPageRouter from "./router";
+
+const title = "Nextstrain Community: Data Sharing via GitHub";
+
+export const metadata: Metadata = {
+  title,
+};
 
 /**
- * This page implements the following routing for community URLs:
- * /community/:something -> MainCommunityPage
- * /community/:userName/:repoName[/*] -> SpecificCommunityPage
- * /community/narratives/:userName -> MainCommunityPage
- * /community/narratives/:userName/:repoName[/*] -> SpecificCommunityPage
- * 
- * Note that the URL path '/community' is already handled by /pages/community.jsx
+ * A React Server Component for `/community` and other URLs in that namespace
+ *
+ * Properly routing `/community` requests involves things that must
+ * happen in a React Client Component, but those can't make use of the
+ * Metadata API (which we want to use so we have functional OpenGraph
+ * tags, etc.), so this component exists to wrap the router Client
+ * Component and inject the page title from the metadata into it.
+ *
+ * See <CommunityPageRouter> for additional information about how URLs
+ * that look like `/community/plus/other/stuff` are routed, how errors
+ * are handled, etc.
  */
-const Index = () => {
-  const router = useRouter();  
-  if (!router.query.community) return null; // wait until query ready
-  const parts = router.query.community.slice();
-  let isNarrative = false;
-  if (parts[0]==='narratives') {
-    isNarrative = true;
-    parts.shift()
-  }
-  const [ userName, repoName, ...rest ] = parts;
-  const resourcePath = router.asPath.replace(/^\//, '');
-
-  if (!(userName && repoName)) {
-    return (<MainCommunityPage resourcePath={resourcePath}/>)
-  }
-
-  return <SpecificCommunityPage
-    isNarrative={isNarrative}
-    userName={userName} repoName={repoName}
-    resourcePath={resourcePath} nonDefaultResourcePathParts={rest}/>
+export default function CommunityPage(): React.ReactElement {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  return <CommuityPageRouter title={metadata.title as string} />;
 }
-
-export default Index;
