@@ -11,7 +11,7 @@ export default function ErrorMessage({
   contents,
 }: {
   /** the title of the error; displayed on top in bold */
-  title: string;
+  title: string | React.ReactElement;
 
   /** the more specific contents of the error message */
   contents: React.ReactElement
