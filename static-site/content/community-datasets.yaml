@@ -142,10 +142,6 @@ data:
     maintainers: Bryan Tegomoh (CDCF/NDHHS)
     date: '2021-12-27'
     title: 'Genomic Surveillance of SARS-CoV-2 in Nebraska: Nebraska-focused subsampling, Last 4 EpiWeeks'
-  - url: https://nextstrain.org/community/arodzh-sudo/ncov-puertorico/Puerto-Rico
-    maintainers: Arnold Rodriguez-Hilario
-    date: '2022-02-11'
-    title: Phylogenetic Analysis of SARS-CoV-2 in Puerto Rico
   - url: https://nextstrain.org/community/andersen-lab/HCoV-19-Genomics-Nextstrain/hCoV-19/usa/california
     maintainers: the SEARCH Alliance
     date: '2021-02-18'
