@@ -34,13 +34,13 @@ const tableColumns: DatasetSelectColumnsType[] = [
   {
     name: "Dataset",
     value: (dataset) =>
-      dataset.filename.replace(/_/g, " / ").replace(".json", ""),
+      dataset.filename?.replace(/_/g, " / ").replace(".json", "") || "",
     url: (dataset) => dataset.url,
   },
   {
     name: "Contributor",
-    value: (dataset) => dataset.contributor,
-    url: (dataset) => dataset.contributorUrl,
+    value: (dataset) => dataset.contributor || "",
+    url: (dataset) => dataset.contributorUrl || "",
     logo: (dataset) =>
       dataset.contributor === "Nextstrain Team" ? (
         <img

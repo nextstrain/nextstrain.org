@@ -1,0 +1,58 @@
+.avatarImg {
+  margin-right: 20px;
+  object-fit: contain;
+  width: 140px;
+}
+
+.byline {
+  color: #a9adb1;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.428;
+}
+
+.overviewContainer {
+  color: var(--darkGrey);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.42857143;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin: 0px auto 0px auto;
+  max-width: 900px;
+  text-align: justify;
+}
+.overviewContainer table,
+.overviewContainer th {
+  border-collapse: separate;
+  border-style: none;
+  padding: 0;
+}
+.overviewContainer td {
+  border-style: none;
+  padding: 0;
+  width: 200px;
+}
+
+.styledLink {
+  color: #444 !important;
+}
+.styledLink:hover,
+.styledLink:focus {
+  color: #5097ba !important;
+  text-decoration: underline;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  font-size: 26px;
+  font-weight: 500;
+  justify-content: center;
+}
+
+.titleWrapper {
+  display: flex;
+  justify-content: start;
+  padding: 50px 0px 20px 0px;
+}

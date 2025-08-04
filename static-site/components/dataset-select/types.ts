@@ -19,7 +19,7 @@ export interface DatasetSelectColumnsType {
   value: (dataset: DatasetType) => string;
 
   /** Callback to get the URL to wrap around the value of the column */
-  url: (dataset: DatasetType) => string;
+  url?: (dataset: DatasetType) => string;
 
   /** Logo to display next to the contributor name (only used for Nextstrain(?)) */
   logo?: (dataset: DatasetType) => React.ReactElement | undefined;
@@ -48,7 +48,7 @@ export interface DatasetSelectProps {
    * may be filtered), and should return a react component for
    * rendering.
    */
-  interfaces: DatasetSelectInterfacesType[];
+  interfaces?: DatasetSelectInterfacesType[];
 
   /** Title to display above the DatasetSelect */
   title?: string;
@@ -56,31 +56,34 @@ export interface DatasetSelectProps {
 
 /** A individual dataset to be displayed in a <DatasetSelect> component */
 export interface DatasetType {
-  /** filename of the dataset */
-  filename: string;
+  /** filename of the dataset -- only used in SARS datasets */
+  filename?: string;
 
   /** URL where the dataset is found */
   url: string;
 
+  /** Version of the URL to display in the <DatasetSelect> -- only used in Community datasets */
+  urlDisplayName?: string;
+
   /** Name of the dataset */
-  name: string;
+  name?: string;
 
   /** Name(s) of the contributor(s) that built the dataset */
   contributor: string;
 
-  /** URL for the contributors(s) that built the dataset */
-  contributorUrl: string;
+  /** URL for the contributors(s) that built the dataset -- only used in SARS datasets */
+  contributorUrl?: string;
 
-  /** Long/lat for the location of the dataset */
+  /** Long/lat for the location of the dataset -- only used in SARS datasets */
   coords?: [number, number];
 
-  /** Organization that built the dataset */
+  /** Organization that built the dataset -- only used in SARS datasets */
   org?: {
     name?: string;
     url: string;
   };
 
-  /** geographical level / scope of dataset */
+  /** geographical level / scope of dataset -- only used in SARS datasets */
   level?: string;
 }
 

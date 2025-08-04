@@ -109,9 +109,15 @@ h3 {
   font-size: 2rem;
   font-weight: 400;
 }
+h3.centered {
+  text-align: center;
+}
 h4 {
   font-size: 1.8rem;
   font-weight: 400;
+}
+h4.centered {
+  text-align: center;
 }
 
 div.errorContainer {
