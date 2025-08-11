@@ -28,7 +28,7 @@ export function ErrorBanner({
   contents?: React.ReactElement;
 
   /** title of the error message */
-  title?: string;
+  title?: string | React.ReactElement;
 }): React.ReactElement | null {
   const params = useParams();
 
