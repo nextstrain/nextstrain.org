@@ -36,8 +36,8 @@ export default function ResourceGroup({
   /** React State holding the active sorting method */
   sortMethod: string;
 
-  /** a list of `QuickLink` objects for the group */
-  quickLinks: QuickLink[];
+  /** an optional list of `QuickLink` objects for the group */
+  quickLinks?: QuickLink[];
 }): React.ReactElement {
   const { collapseThreshold, resourcesToShowWhenCollapsed } =
     _collapseThresholds(numGroups);
@@ -126,8 +126,8 @@ function ResourceGroupHeader({
   /** count of resources to show in the collapsed state, */
   resourcesToShowWhenCollapsed: number;
 
-  /** list of `QuickLink` objects to display */
-  quickLinks: QuickLink[];
+  /** optional list of `QuickLink` objects to display */
+  quickLinks?: QuickLink[];
 }): React.ReactElement {
   const setModalResource = useContext(SetModalResourceContext);
   if (!setModalResource) {
