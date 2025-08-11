@@ -53,6 +53,6 @@
 
 .titleWrapper {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   padding: 50px 0px 20px 0px;
 }
