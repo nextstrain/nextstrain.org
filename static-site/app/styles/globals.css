@@ -15,9 +15,10 @@
 
   --blue: #5097ba;
   --darkGrey: #333;
-  --errorRed: #DE3C26;
+  --errorRed: #de3c26;
   --mediumGrey: #888;
   --lightGrey: #ccc;
+  --extraLightGrey: #f1f1f1;
 
   --niceFontSize: 16px;
   --niceLineHeight: 1.6;
@@ -104,6 +105,9 @@ h1 {
 h2 {
   font-size: 2.5rem;
   font-weight: 400;
+}
+h2.centered {
+  text-align: center;
 }
 h3 {
   font-size: 2rem;
