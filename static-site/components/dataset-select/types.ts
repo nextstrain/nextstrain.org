@@ -69,7 +69,7 @@ export interface DatasetType {
   name?: string;
 
   /** Name(s) of the contributor(s) that built the dataset */
-  contributor: string;
+  contributor?: string;
 
   /** URL for the contributors(s) that built the dataset -- only used in SARS datasets */
   contributorUrl?: string;
