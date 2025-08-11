@@ -9,15 +9,18 @@ type User = {
 type Group = {
   isPublic: boolean;
   name: string;
+  private: boolean;
 };
 
 type UserState = {
   user: null | User;
+  visibleGroups: undefined | Group[],
   groupMemberships: Group[];
 };
 
 const initialState: UserState = {
   user: null,
+  visibleGroups: undefined,
   groupMemberships: [],
 };
 
