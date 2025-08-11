@@ -9,27 +9,6 @@ export const FlexCenter = styled.div`
   padding: 0px;
 `;
 
-export const FlexGrid = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-`;
-
-export const FlexGridLeft = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-`;
-
-export const FlexGridRight = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-`
-
 export const SmallSpacer = styled.div`
   height: 5px;
 `;
