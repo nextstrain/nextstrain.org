@@ -13,6 +13,7 @@ import { NotFound } from '../httpErrors.js';
 const schemaRoutes = [
   ["/schemas/augur/annotations",       "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-annotations.json"],
   ["/schemas/augur/frequencies",       "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-frequencies.json"],
+  ["/schemas/augur/subsample",         "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-subsample-config.json"],
   ["/schemas/auspice/config/v2",       "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-auspice-config-v2.json"],
   ["/schemas/dataset/v1/meta",         "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-v1-meta.json"],
   ["/schemas/dataset/v1/tree",         "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-v1-tree.json"],
