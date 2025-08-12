@@ -2,9 +2,8 @@
 
 // `parseMarkdown` in this file has been moved to
 // `/static-site/app/blog/parseMarkdown.ts`; this version is still
-// here because it is used by `/static-site/src/util/blogFeeds.js' and
-// `/static-site/src/components/sourceInfoHeading.jsx` which still
-// need to be ported over.
+// here because it is used by `/static-site/src/util/blogFeeds.js'
+// which still needs to be ported over.
 
 // DO NOT ADD NEW USES OF THE METHOD IN THIS FILE
 
