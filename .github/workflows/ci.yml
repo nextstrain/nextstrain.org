@@ -83,7 +83,7 @@ jobs:
       # <https://www.gnu.org/software/bash/manual/bash.html#Invoked-non_002dinteractively>.
       BASH_ENV: .heroku/BASH_ENV
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: build
           path: build/
@@ -159,7 +159,7 @@ jobs:
     env:
       HEROKU_APP: ${{ inputs.heroku-app || 'nextstrain-canary' }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: build
           path: build/
