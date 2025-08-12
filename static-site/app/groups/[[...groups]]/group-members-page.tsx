@@ -1,159 +1,147 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { startCase } from "lodash"
-import { uri } from "../../../src/templateLiterals.js";
-import GenericPage from "../layouts/generic-page.jsx";
-import { BigSpacer, CenteredContainer, FlexGridRight, MediumSpacer } from "../layouts/generalComponents.jsx";
-import * as splashStyles from "../components/splash/styles";
-import { ErrorBanner } from "../components/errorMessages.jsx";
+
+import { startCase } from "lodash";
+
+import Button from "../../../components/button";
+import CenteredContainer from "../../../components/centered-container";
+import ErrorMessage from "../../../components/error-message";
+import { FlexGridRight } from "../../../components/flex-grid";
+import { FocusParagraphCentered } from "../../../components/focus-paragraph";
+import {
+  BigSpacer,
+  HugeSpacer,
+  MediumSpacer,
+} from "../../../components/spacers";
+import { fetchAndParseJSON } from "../../../src/util/datasetsHelpers";
+
+import styles from "./group-members-page.module.css";
 
 interface GroupMember {
-  username: string,
-  roles: string[]
+  username: string;
+  roles: string[];
 }
 
-interface ErrorMessage {
-  title: string,
-  contents: string
-}
+const emptyErrorMessage = {
+  title: "",
+  contents: <></>,
+};
 
-const GroupMembersPage = ({ groupName }: {groupName: string}) => {
-  const [ errorMessage, setErrorMessage ] = useState<ErrorMessage>({title: "", contents: ""});
-  const [ roles, setRoles ] = useState<string[]>([]);
-  const [ members, setMembers ] = useState<GroupMember[]>([]);
+/**
+ * A React Client Component to fetch and display the members of a
+ * given `group`
+ */
+export default function GroupMembersPage({
+  group,
+}: {
+  /** the name of the group whose members will be shown */
+  group: string;
+}): React.ReactElement {
+  /**
+   * the props for an <ErrorMessage> component displayed when there
+   * are problems getting the data for the page
+   */
+  const [errorMessage, setErrorMessage] = useState<{
+    title: string;
+    contents: React.ReactElement;
+  }>(emptyErrorMessage);
+  /** the group members to display */
+  const [members, setMembers] = useState<GroupMember[]>([]);
 
-  useEffect(() => {
-    async function getGroupMembership(groupName: string) {
-      const headers = { headers: {"Accept": "application/json"}};
-      let roles, members = [];
+  useEffect((): void => {
+    async function getGroupMembership(): Promise<void> {
       try {
-        const [ rolesResponse, membersResponse ] = await Promise.all([
-          fetch(uri`/groups/${groupName}/settings/roles`, headers),
-          fetch(uri`/groups/${groupName}/settings/members`, headers)
-        ]);
-        if (!rolesResponse.ok) {
-          throw new Error(`Fetching group roles failed: ${rolesResponse.status} ${rolesResponse.statusText}`)
-        }
-        if (!membersResponse.ok) {
-          throw new Error(`Fetching group members failed: ${membersResponse.status} ${membersResponse.statusText}`)
-        }
-        roles = await rolesResponse.json();
-        members = await membersResponse.json();
+        const members: GroupMember[] = await fetchAndParseJSON(
+          `/groups/${group}/settings/members`,
+        );
+        const sortedMembers = [...members].sort((a, b) =>
+          a.username.localeCompare(b.username),
+        );
+
+        setMembers(sortedMembers);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : String(err)
-        if(!ignore) {
-          setErrorMessage({
-            title: "An error occurred when trying to fetch group membership data",
-            contents: errorMessage})
-        }
+        const errorContents = err instanceof Error ? err.message : String(err);
+        setErrorMessage({
+          title: "An error occurred when trying to fetch group membership data",
+          contents: <p>{errorContents}</p>,
+        });
+        console.error(errorContents);
       }
-      return {roles, members};
     }
 
-    let ignore = false;
-    getGroupMembership(groupName).then(result => {
-      if (!ignore) {
-        setRoles(result.roles);
-        setMembers(result.members);
-      }
-    })
-    return () => {
-      ignore = true;
-    };
-  }, [groupName]);
+    getGroupMembership();
+  }, [group]);
 
   return (
-    <GenericPage banner={errorMessage.title ? <ErrorBanner {...errorMessage} /> : undefined}>
+    <>
+      <HugeSpacer />
+      <HugeSpacer />
+
+      {errorMessage.title && (
+        <ErrorMessage
+          title={errorMessage.title}
+          contents={errorMessage.contents}
+        />
+      )}
+
       <FlexGridRight>
-        <splashStyles.Button to={uri`/groups/${groupName}`}>
-          Return to {`"${groupName}"`} Page
-        </splashStyles.Button>
+        <Button to={`/groups/${group}`}>Return to {`"${group}"`} Page</Button>
       </FlexGridRight>
-      <MediumSpacer/>
 
-      <splashStyles.H2>
-        {`"${groupName}"`} Group Members
-      </splashStyles.H2>
-      <BigSpacer/>
+      <MediumSpacer />
 
-      {roles && members
-        ? <MembersTable members={members} />
-        : <splashStyles.H4>Fetching group members...</splashStyles.H4>}
-    </GenericPage>
-  )
-};
+      <h2 className="centered">{`"${group}"`} Group Members</h2>
 
-const MembersTableContainer = styled.div`
-  border: 1px solid #CCC;
-  .row {
-    border-bottom: 1px solid #CCC;
-  }
-  .row:last-child {
-    border-bottom: 0;
-  }
-  .row:nth-child(even) {
-    background-color: #F1F1F1;
-  }
-  p {
-    margin: 10px;
-  }
-`;
+      <BigSpacer />
 
-const MembersTable = ({ members }: { members: GroupMember[]}) => {
-  const sortedMembers = [...members].sort((a, b) => a.username.localeCompare(b.username));
-  function prettifyRoles(memberRoles: string[]) {
-    // Prettify the role names by making them singular and capitalized
-    return memberRoles.map((roleName) => startCase(roleName.replace(/s$/, ''))).join(", ");
-  }
-
-  return (
-    <CenteredContainer>
-      <MembersTableContainer>
-        <div className="row no-gutters">
-          <div className="col">
-            <splashStyles.CenteredFocusParagraph>
-              <strong>Username</strong>
-            </splashStyles.CenteredFocusParagraph>
-          </div>
-          <div className="col">
-            <splashStyles.CenteredFocusParagraph>
-              <strong>Roles</strong>
-            </splashStyles.CenteredFocusParagraph>
-          </div>
-        </div>
-
-        {sortedMembers.map((member) =>
-          <div className="row no-gutters" key={member.username}>
-            <div className="col">
-              <splashStyles.CenteredFocusParagraph>
-                {member.username}
-              </splashStyles.CenteredFocusParagraph>
+      {members.length > 0 ? (
+        <CenteredContainer>
+          <div className={styles.membersTableContainer}>
+            <div className={`${styles.tableRow} row no-gutters`}>
+              <div className="col">
+                <FocusParagraphCentered>
+                  <strong>Username</strong>
+                </FocusParagraphCentered>
+              </div>
+              <div className="col">
+                <FocusParagraphCentered>
+                  <strong>Roles</strong>
+                </FocusParagraphCentered>
+              </div>
             </div>
-            <div className="col">
-              <splashStyles.CenteredFocusParagraph>
-                {prettifyRoles(member.roles)}
-              </splashStyles.CenteredFocusParagraph>
-            </div>
-          </div>
-        )}
-      </MembersTableContainer>
-    </CenteredContainer>
-  )
-};
 
-export async function canViewGroupMembers(groupName: string) {
-  try {
-    const groupMemberOptions = await fetch(uri`/groups/${groupName}/settings/members`, { method: "OPTIONS"});
-      if ([401, 403].includes(groupMemberOptions.status)) {
-        console.log("You can ignore the console error above; it is used to determine whether the members can be shown.");
-      }
-      const allowedMethods = new Set(groupMemberOptions.headers.get("Allow")?.split(/\s*,\s*/));
-      return allowedMethods.has("GET");
-  } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : String(err)
-    console.error("Cannot check user permissions to view group members", errorMessage);
-  }
-  return false
+            {members.map(
+              (member): React.ReactElement => (
+                <div
+                  className={`${styles.tableRow} row no-gutters`}
+                  key={member.username}
+                >
+                  <div className="col">
+                    <FocusParagraphCentered>
+                      {member.username}
+                    </FocusParagraphCentered>
+                  </div>
+                  <div className="col">
+                    <FocusParagraphCentered>
+                      {_prettifyRoles(member.roles)}
+                    </FocusParagraphCentered>
+                  </div>
+                </div>
+              ),
+            )}
+          </div>
+        </CenteredContainer>
+      ) : (
+        <h4 className="centered">Fetching group members…</h4>
+      )}
+    </>
+  );
 }
 
-export default GroupMembersPage;
+function _prettifyRoles(roles: string[]): string {
+  // Prettify the role names by making them singular and capitalized
+  return roles
+    .map((role: string): string => startCase(role.replace(/s$/, "")))
+    .join(", ");
+}

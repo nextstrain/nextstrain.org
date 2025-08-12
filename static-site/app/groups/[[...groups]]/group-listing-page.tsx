@@ -1,154 +1,185 @@
-import React, { useContext } from "react";
-import ScrollableAnchor from '../../vendored/react-scrollable-anchor/index';
-import { SmallSpacer, BigSpacer, HugeSpacer, FlexCenter } from "../layouts/generalComponents";
-import * as splashStyles from "../components/splash/styles";
-import { fetchAndParseJSON } from "../util/datasetsHelpers";
-import DatasetSelect from "../components/Datasets/dataset-select";
-import ListResources from "../components/ListResources/index";
-import { GroupTiles } from "../components/Groups/Tiles";
-import GenericPage from "../layouts/generic-page";
-import { UserContext } from "../layouts/userDataWrapper";
-import { DataFetchErrorParagraph } from "../components/errorMessages";
-import { groupsTitle, GroupsAbstract } from "../../data/SiteConfig";
+"use client";
 
-const resourceListingCallback = async () => {
-  const sourceUrl = "/charon/getAvailable?prefix=/groups/";
+import React, { useContext, useEffect, useState } from "react";
 
-  const response = await fetch(sourceUrl);
-  if (response.status !== 200) {
-    throw new Error(`fetching data from "${sourceUrl}" returned status code ${response.status}`);
-  }
+import DatasetSelect from "../../../components/dataset-select";
+import {
+  DatasetSelectColumnsType,
+  DatasetType,
+} from "../../../components/dataset-select/types";
+import FlexCenter from "../../../components/flex-center";
+import { FocusParagraphCentered } from "../../../components/focus-paragraph";
+import ListResources from "../../../components/list-resources";
+import { ResourceListingInfo } from "../../../components/list-resources/types";
+import {
+  BigSpacer,
+  HugeSpacer,
+} from "../../../components/spacers";
+import { UserContext } from "../../../components/user-data-wrapper";
+import {
+  DataFetchError,
+} from "../../../data/SiteConfig";
+import { fetchAndParseJSON } from "../../../src/util/datasetsHelpers";
+import ScrollableAnchor from "../../../vendored/react-scrollable-anchor/index";
 
-  const datasets = (await response.json()).datasets;
-  // Use an empty array as the value side, to indicate that there are
-  // no dated versions associated with this data
-  const pathVersions = Object.assign(
-    ...datasets.map((ds) => ({
-      [ds.request.replace(/^\/groups\//, "")]: []
-    })),
-  );
+import GroupTiles from "./group-tiles";
 
-  return { pathPrefix: "groups/", pathVersions };
-};
-
-const datasetColumns = [
+const datasetColumns: DatasetSelectColumnsType[] = [
   {
     name: "Narrative",
-    value: (d) => d.request.replace("/groups/", "").replace(/\//g, " / "),
+    value: (d) => d.url.replace("/groups/", "").replace(/\//g, " / "),
     url: (d) => d.url,
   },
   {
     name: "Group Name",
-    value: (d) => d.request.split("/")[2],
-    url: (d) => `/groups/${d.request.split("/")[2]}`,
+    value: (d) => d.url.split("/")[2] || "",
+    url: (d) => `/groups/${d.url.split("/")[2]}`,
   },
 ];
 
-const GroupListingInfo = () => {
+/**
+ * A React Client Component that fetches and then lists all the groups
+ * available to a user, using both a <GroupTiles> component for a
+ * tile-based view of the groups, a <ListResources> component for a
+ * card-based view of available datasets within the groups, and a
+ * <DatasetSelect> component for a list-based view of available
+ * narratives within the groups.
+ */
+export default function GroupListingPage(): React.ReactElement {
   const { user } = useContext(UserContext);
-  return (
-    <FlexCenter>
-      <splashStyles.CenteredFocusParagraph>
-        Click on any tile to view the different datasets and narratives available for that group.
-        {user ?
-          <> A padlock icon indicates a private group which you ({user.username}) have access to.</> :
-          <> These groups are all public, to see private groups please <a href="/login">log in</a>.</>}
-      </splashStyles.CenteredFocusParagraph>
-    </FlexCenter>
-  );
-};
 
-// GenericPage needs to be a parent of GroupsPage for the latter to know about
-// UserContext, specifically for class functions to be able to use `this.context`.
-// We `export default Index` below.
-const Index = () => (
-  <GenericPage>
-    <GroupsPage/>
-  </GenericPage>
-);
+  /** flag for whether data is loaded yet */
+  const [dataLoaded, setDataLoaded] = useState<boolean>(false);
+  /** flag for any errors seen while fetching data */
+  const [errorFetchingData, setErrorFetchingData] = useState<boolean>(false);
+  /** state to hold available narratives */
+  const [narratives, setNarratives] = useState<DatasetType[]>([]);
 
-class GroupsPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dataLoaded: false,
-      errorFetchingData: false,
-      datasets: [],
-      narratives: []
-    };
-  }
-
-  static contextType = UserContext;
-
-  async componentDidMount() {
-    try {
-      const available = await fetchAndParseJSON("/charon/getAvailable?prefix=/groups");
-      this.setState({
-        datasets: cleanUpAvailable(available['datasets']),
-        narratives: cleanUpAvailable(available['narratives']),
-        dataLoaded: true
-      });
-    } catch (err) {
-      console.error("Error fetching / parsing data.", err.message);
-      this.setState({errorFetchingData: true});
+  useEffect((): void => {
+    async function fetchData(): Promise<void> {
+      try {
+        const available = await fetchAndParseJSON(
+          "/charon/getAvailable?prefix=/groups",
+        );
+        setNarratives(_cleanUpAvailable(available["narratives"]));
+        setDataLoaded(true);
+      } catch (err) {
+        console.error(
+          "Error fetching / parsing data.",
+          err instanceof Error ? err.message : String(err),
+        );
+        setErrorFetchingData(true);
+      }
     }
-  }
 
-  render() {
-    return (
-      <>
-        <splashStyles.H1>{groupsTitle}</splashStyles.H1>
-        <SmallSpacer />
+    fetchData();
+  }, []);
 
-        <FlexCenter>
-          <splashStyles.CenteredFocusParagraph>
-            <GroupsAbstract />
-          </splashStyles.CenteredFocusParagraph>
-        </FlexCenter>
-        <HugeSpacer /><HugeSpacer />
+  return (
+    <>
+      <HugeSpacer />
+      <HugeSpacer />
 
-        <splashStyles.H2>Available groups</splashStyles.H2>
-        <GroupListingInfo/>
-        {/* These tiles dont go nicely into FlexCenter as they manage their own spacing */}
-        <GroupTiles />
-        <HugeSpacer />
+      <h2 className="centered">Available groups</h2>
+      <FlexCenter>
+        <FocusParagraphCentered>
+          Click on any tile to view the different datasets and narratives
+          available for that group.{" "}
+          {user ? (
+            <>
+              A padlock icon indicates a private group which you (
+              {user.username}) have access to.
+            </>
+          ) : (
+            <>
+              These groups are all public, to see private groups please{" "}
+              <a href="/login">log in</a>.
+            </>
+          )}
+        </FocusParagraphCentered>
+      </FlexCenter>
 
-        <splashStyles.H2>Available Datasets</splashStyles.H2>
+      {/* These tiles don't go nicely into FlexCenter as they manage their own spacing */}
+      <GroupTiles />
 
-        <BigSpacer />
+      <HugeSpacer />
 
-        <ListResources
-          resourceType="dataset"
-          versioned={false}
-          resourceListingCallback={resourceListingCallback}/>
+      <h2 className="centered">Available Datasets</h2>
 
-        <HugeSpacer />
+      <BigSpacer />
 
-        <ScrollableAnchor id={'narratives'}>
-          <splashStyles.H2>Available Narratives</splashStyles.H2>
-        </ScrollableAnchor>
+      <ListResources
+        resourceType="dataset"
+        versioned={false}
+        resourceListingCallback={_resourceListingCallback}
+      />
 
-        {this.state.dataLoaded && (
-          <DatasetSelect
-            datasets={this.state.narratives}
-            columns={datasetColumns}/>
-        )}
-        { this.state.errorFetchingData && <DataFetchErrorParagraph />}
+      <HugeSpacer />
 
-      </>
-    );
-  }
+      <ScrollableAnchor id={"narratives"}>
+        <h2 className="centered">Available Narratives</h2>
+      </ScrollableAnchor>
+
+      {dataLoaded && (
+        <DatasetSelect
+          datasets={narratives}
+          columns={datasetColumns}
+          title={"Filter Narratives"}
+        />
+      )}
+
+      {errorFetchingData && (
+        <FocusParagraphCentered>
+          <DataFetchError />
+        </FocusParagraphCentered>
+      )}
+    </>
+  );
 }
 
-function cleanUpAvailable(datasets) {
-  /* The dataset display & filtering has a number of hardcoded assumptions and TODOs, which
-  requires us to coerce dataset lists into a specific format */
+function _cleanUpAvailable(datasets: { request: string }[]): DatasetType[] {
+  /** The dataset display & filtering has a number of hard-coded
+   * assumptions and TODOs, which requires us to coerce dataset lists
+   * into a specific format
+   */
   if (!datasets) return [];
-  return datasets.map((d) => ({
-    ...d,
-    filename: d.request.replace(/\//g, "_").replace(/^_/, ''),
-    url: d.request
-  }));
+
+  return datasets.map(
+    (d: { request: string }): DatasetType => ({
+      ...d,
+      filename: d.request.replace(/\//g, "_").replace(/^_/, ""),
+      url: d.request,
+    }),
+  );
 }
 
-export default Index;
+// It is unfortunate that this method repeats the request to
+// `charon/getAvailable?prefix=/groups/` that we're already making
+// above in the `useEffect()` hook. Ideally we could make that request
+// once, and re-use the response.
+//   - jsja, 08 Aug 2025
+async function _resourceListingCallback(): Promise<ResourceListingInfo> {
+  const sourceUrl = "/charon/getAvailable?prefix=/groups/";
+
+  try {
+    const response = await fetchAndParseJSON(sourceUrl);
+
+    const datasets: { request: string }[] = response["datasets"];
+
+    // Use an empty array as the value side, to indicate that there are
+    // no dated versions associated with this data
+    // const pathVersions: Record<string, string[]> = Object.assign(
+    const pathVersions = Object.assign(
+      {},
+      ...datasets.map((ds) => ({
+        [ds.request.replace(/^\/groups\//, "")]: [],
+      })),
+    );
+
+    return { pathPrefix: "groups/", pathVersions };
+  } catch (err) {
+    const message = `fetching data from "${sourceUrl}" failed`;
+    console.error(message, err instanceof Error ? err.message : String(err));
+    throw new Error(message);
+  }
+}
