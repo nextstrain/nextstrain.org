@@ -9,6 +9,13 @@
   max-width: 680px;
 }
 
+/* Wrapper used to reset some props we don't want to inherit from the global style */
+.sectionTitleWrapper {
+  line-height: unset;
+  min-width: unset;
+  margin-top: 20px;
+}
+
 /* Wrapper is used to center the actual Section while allowing it to be left-aligned. */
 .sectionWrapper {
   /* When there are multiple rows, left-align so columns are aligned */
@@ -41,6 +48,7 @@
 
 .unstyled {
   list-style: none;
+  margin: 20px 0 0;
 }
 
 .footerIcon {
