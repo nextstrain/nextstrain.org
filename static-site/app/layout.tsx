@@ -1,6 +1,6 @@
+import React from "react";
 import { Metadata } from "next";
 import { Lato } from "next/font/google";
-import React from "react";
 
 import { BigSpacer } from "../components/spacers";
 import Footer from "../components/footer";
@@ -12,6 +12,7 @@ import {
   groupsApp,
   siteTitle,
   siteTitleAlt,
+  siteUrl,
 } from "../data/BaseConfig";
 import UserDataWrapper from "../components/user-data-wrapper";
 
@@ -39,6 +40,31 @@ export const metadata: Metadata = {
     template: `%s - ${siteTitle}`,
   },
   description: siteTitleAlt,
+  openGraph: {
+    title: siteTitle,
+    description: siteTitleAlt,
+    url: siteUrl,
+    siteName: siteTitle,
+    images: [
+      {
+        url: "https://nextstrain.org/nextstrain-logo-small.png",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+};
+
+/**
+ * data used to generate JSON-LD schema script in the <head>
+ */
+const jsonLd = {
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  url: "https://nextstrain.org/",
+  name: "Nextstrain",
+  image: "https://nextstrain.org/nextstrain-logo-small.png",
+  alternateName: "Real-time tracking of pathogen evolution",
 };
 
 /**
@@ -74,12 +100,19 @@ export default function RootLayout({
               title="RSS2 feed for nextstrain.org/blog"
               type="application/rss+xml"
             />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+              }}
+            />
           </>
         )}
       </head>
       <body className={lato.variable}>
         <UserDataWrapper>
           <Nav />
+
           <main>
             {children}
 
