@@ -138,7 +138,7 @@ export default async function BlogPost({
   }
 
   return (
-    <>
+    <div className="pageContent">
       <BigSpacer count={2} />
 
       <article className={`container ${styles.blogPost}`}>
@@ -173,6 +173,6 @@ export default async function BlogPost({
           </div>
         </div>
       </article>
-    </>
+    </div>
   );
 }

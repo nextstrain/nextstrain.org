@@ -116,7 +116,7 @@ export default function CommunityPageRouter({
   }, [params]);
 
   return (
-    <>
+    <div className="pageContent">
       {errorPath && (
         <ErrorMessage
           title={`The community repository, dataset, or narrative "${errorPath}" doesn't exist.`}
@@ -134,6 +134,6 @@ export default function CommunityPageRouter({
           isNarrative={isNarrative}
         />
       )}
-    </>
+    </div>
   );
 }

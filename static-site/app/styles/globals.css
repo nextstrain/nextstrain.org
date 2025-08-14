@@ -62,10 +62,6 @@ html {
   }
 }
 
-main {
-  padding: 0 25px;
-}
-
 a {
   background-color: transparent;
   color: var(--blue);
@@ -146,6 +142,10 @@ div.iconParagraph {
   line-height: 2.5;
   margin: 0 auto;
   text-align: center;
+}
+
+div.pageContent {
+  padding: 0 25px;
 }
 
 p.footerParagraph {

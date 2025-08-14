@@ -17,41 +17,45 @@ export default function WhoAmI(): React.ReactElement {
   const { user, groupMemberships } = useContext(UserContext);
 
   return user ? (
-    <div className={styles.userContainer}>
-      You’re logged in as <strong>{user.username}</strong>.
-      <p className={styles.subText}>
-        You are a member of the following Nextstrain groups, which each contain
-        a collection of datasets and/or narratives:
-      </p>
-      Public:
-      <ul className={styles.userGroupList}>
-        {groupMemberships
-          .filter((group) => group.isPublic)
-          .map((group) => (
-            <li key={group.name}>
-              <a href={`/groups/${group.name}`}>{group.name}</a>
-            </li>
-          ))}
-      </ul>
-      Private:
-      <ul className={styles.userGroupList}>
-        {groupMemberships
-          .filter((group) => !group.isPublic)
-          .map((group) => (
-            <li key={group.name}>
-              <a href={`/groups/${group.name}`}>{group.name}</a>
-            </li>
-          ))}
-      </ul>
-      <a href="/logout">Logout</a>
+    <div className="pageContent">
+      <div className={styles.userContainer}>
+        You’re logged in as <strong>{user.username}</strong>.
+        <p className={styles.subText}>
+          You are a member of the following Nextstrain groups, which each
+          contain a collection of datasets and/or narratives:
+        </p>
+        Public:
+        <ul className={styles.userGroupList}>
+          {groupMemberships
+            .filter((group) => group.isPublic)
+            .map((group) => (
+              <li key={group.name}>
+                <a href={`/groups/${group.name}`}>{group.name}</a>
+              </li>
+            ))}
+        </ul>
+        Private:
+        <ul className={styles.userGroupList}>
+          {groupMemberships
+            .filter((group) => !group.isPublic)
+            .map((group) => (
+              <li key={group.name}>
+                <a href={`/groups/${group.name}`}>{group.name}</a>
+              </li>
+            ))}
+        </ul>
+        <a href="/logout">Logout</a>
+      </div>
     </div>
   ) : (
-    <div className={styles.userContainer}>
-      <p>
-        You are not logged in.
-        <br />
-        <a href="/login">Login</a>
-      </p>
+    <div className="pageContent">
+      <div className={styles.userContainer}>
+        <p>
+          You are not logged in.
+          <br />
+          <a href="/login">Login</a>
+        </p>
+      </div>
     </div>
   );
 }

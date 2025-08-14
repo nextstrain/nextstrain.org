@@ -116,9 +116,11 @@ export default function RootLayout({
           <main>
             {children}
 
-            <Line />
+            <div className="pageContent">
+              <Line />
 
-            <Footer />
+              <Footer />
+            </div>
 
             <BigSpacer />
           </main>
