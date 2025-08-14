@@ -1,0 +1,341 @@
+.container {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 25px;
+  padding-right: 25px;
+
+  @media (min-width: 768px) {
+    width: 728px;
+  }
+  @media (min-width: 992px) {
+    width: 952px;
+  }
+  @media (min-width: 1200px) {
+    width: 1150px;
+  }
+  @media (min-width: 1550px) {
+    width: 1500px;
+  }
+}
+
+.H1 {
+  color: var(--darkGrey);
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 32px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  min-width: 240px;
+  text-align: center;
+}
+
+.H2 {
+  color: var(--darkGrey);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  min-width: 240px;
+  text-align: center;
+}
+
+.headingContainer {
+  /* narrow widths */
+  display: grid;
+  grid-template-areas:
+    "title"
+    "subtitle";
+  justify-items: center;
+
+  @media (min-width: 576px) {
+    grid-template-areas:
+      "logo title"
+      "logo subtitle";
+    justify-items: left;
+  }
+}
+
+.headingLogo {
+  align-self: center;
+  display: none;
+  grid-area: logo;
+  height: 143px; /* height of image  */
+  justify-self: end;
+  padding-right: 9px;
+  padding-top: 24px;
+  width: auto;
+
+  @media (min-width: 576px) {
+    display: inline;
+  }
+}
+
+/* This should stay on a single line even at ~375px viewport width */
+.headingSubtitle {
+  font-size: 18px;
+  grid-area: subtitle;
+
+  @media (min-width: 576px) {
+    font-size: 27px;
+    padding-left: 7px;
+  }
+}
+
+.headingTitleContainer {
+  font-size: 106px;
+  font-weight: 30px;
+  letter-spacing: -1px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+
+  @media (max-width: 780px) {
+    font-size: 82px;
+  }
+  @media (max-width: 576px) {
+    font-size: 64px;
+  }
+}
+
+.headingTitleWrapper {
+  grid-area: title;
+}
+
+.sectionAbstract {
+  font-size: var(--niceFontSize);
+  font-weight: 300;
+  line-height: var(--tightLineHight);
+  margin-top: 5px;
+}
+
+.sectionHeader {
+  font-size: 25px;
+  font-weight: 400;
+}
+
+.sectionImage {
+  padding-right: 5px;
+
+  /* Vertically align with SectionHeader's font-siz */
+  height: 20px;
+  margin-bottom: -1px;
+  vertical-align: baseline;
+}
+
+/* export const StyledDiv = styled.div` */
+/*   text-align: justify; */
+/*   font-size: ${(props) => props.theme.niceFontSize}; */
+/*   margin-top: 5px; */
+/*   margin-bottom: 5px; */
+/*   font-weight: 300; */
+/*   color: ${(props) => props.theme.darkGrey}; */
+/*   line-height: ${(props) => props.theme.tightLineHeight}; */
+/* `; */
+
+/*   vertical-align: middle; */
+/*   &:hover { */
+/*     color: black; */
+/*     border: 1px solid black; */
+/*   } */
+/* `; */
+
+/* export const Button = ({to, children, target, rel}: { */
+/*   to: string */
+/*   children: React.ReactNode */
+/*   target?: string */
+/*   rel?: string */
+/* }) => ( */
+/*   <a href={to} target={target} rel={rel}> */
+/*     <ButtonContainer> */
+/*       {children} */
+/*     </ButtonContainer> */
+/*   </a> */
+/* ); */
+
+.infoIconImg {
+  border-radius: 3px;
+  margin: 0 3px;
+  width: 20px;
+}
+
+.infoIcons {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 0 0 6px 0;
+  border: 0px;
+  left: 0px;
+  padding: 3px 1px;
+  position: absolute;
+  top: 0px;
+}
+
+.tileDescription {
+  font-size: 14px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.tileImg {
+  max-height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.tileImgContainer {
+  position: relative;
+}
+
+.tileInner {
+  margin: 5px 10px 5px 10px;
+}
+
+.tileName {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.tileOuter {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+/* export const H3 = styled.div<{ $left?: boolean }>` */
+/*   text-align: ${(props) => props.$left ? "left" : "center"}; */
+/*   font-size: 20px; */
+/*   line-height: 32px; */
+/*   font-weight: 500; */
+/*   color: ${(props) => props.theme.darkGrey}; */
+/*   min-width: 240px; */
+/*   margin-top: 0px; */
+/*   margin-bottom: 0px; */
+/* `; */
+
+/* export const H4 = styled.div<{ $left?: boolean }>` */
+/*   text-align: ${(props) => props.$left ? "left" : "center"}; */
+/*   font-size: 18px; */
+/*   line-height: 32px; */
+/*   font-weight: 500; */
+/*   color: ${(props) => props.theme.darkGrey}; */
+/*   min-width: 240px; */
+/*   margin-top: 0px; */
+/*   margin-bottom: 0px; */
+/* `; */
+
+/* export const Heading = styled.div<{ fontSize: number, attn?: boolean }>` */
+/*   font-family: ${(props) => props.theme.generalFont}; */
+/*   font-weight: ${(props) => props.attn ? "600": "500"}; */
+/*   font-size: ${(props) => `${props.fontSize}px`}; */
+/*   @media (max-width: 768px) { */
+/*     font-size: 18px; */
+/*   } */
+/*   border-radius: 3px; */
+/*   padding: 10px 20px 10px 20px; */
+/*   top: 40px; */
+/*   left: 20px; */
+/* `; */
+
+/* export const SitRepTitle = styled.div<{ $attn?: boolean }>` */
+/*   font-family: ${(props) => props.theme.generalFont}; */
+/*   font-weight: ${(props) => props.$attn ? "600": "500"}; */
+/*   font-size: 16px; */
+/*   @media (max-width: 768px) { */
+/*     font-size: 18px; */
+/*   } */
+/*   border-radius: 3px; */
+/*   padding: 5px 20px 10px 20px; */
+/*   top: 40px; */
+/*   left: 20px; */
+/* `; */
+
+/* export const CenteredFocusParagraph = styled.p` */
+/*   max-width: 640px; */
+/*   margin-top: 0px; */
+/*   margin-right: auto; */
+/*   margin-bottom: 0px; */
+/*   margin-left: auto; */
+/*   text-align: center; */
+/*   font-size: ${(props) => props.theme.niceFontSize}; */
+/*   font-weight: 300; */
+/*   line-height: ${(props) => props.theme.tightLineHeight}; */
+/*   strong { */
+/*     font-weight: 500; */
+/*   } */
+/* `; */
+
+/* export const FocusParagraph = styled.p` */
+/*   margin-top: 0px; */
+/*   margin-right: auto; */
+/*   margin-bottom: 0px; */
+/*   margin-left: auto; */
+/*   text-align: left; */
+/*   font-size: ${(props) => props.theme.niceFontSize}; */
+/*   font-weight: 300; */
+/*   line-height: ${(props) => props.theme.tightLineHeight}; */
+/* `; */
+
+/* export const NarrowFocusParagraph = styled(FocusParagraph)` */
+/*   max-width: 640px; */
+/* `; */
+
+/* export const IconParagraph = styled.div` */
+/*   margin-top: 0px; */
+/*   margin-right: auto; */
+/*   margin-bottom: 0px; */
+/*   margin-left: auto; */
+/*   text-align: center; */
+/*   font-size: ${(props) => props.theme.niceFontSize}; */
+/*   font-weight: 300; */
+/*   line-height: 2.5; */
+/* `; */
+
+/* export const WideParagraph = styled.p` */
+/*   margin-top: 0px; */
+/*   margin-bottom: 0px; */
+/*   font-size: 14px !important; */
+/*   font-weight: 300; */
+/*   line-height: ${(props) => props.theme.tightLineHeight}; */
+/* `; */
+
+/* export const CenteredWideParagraph = styled.p` */
+/*   margin-left: auto; */
+/*   margin-right: auto; */
+/*   margin-top: 0px; */
+/*   margin-bottom: 0px; */
+/*   text-align: center; */
+/*   font-size: 14px !important; */
+/*   font-weight: 300; */
+/*   line-height: ${(props) => props.theme.tightLineHeight}; */
+/* `; */
+
+/* export const FooterParagraph = styled.p` */
+/*   margin-left: auto; */
+/*   margin-right: auto; */
+/*   margin-top: 0px; */
+/*   margin-bottom: 0px; */
+/*   font-size: ${(props) => props.theme.smallFontSize} !important; */
+/*   font-weight: 300; */
+/*   text-align: center; */
+/*   color: ${(props) => props.theme.medGrey} !important; */
+/*   line-height: ${(props) => props.theme.tightLineHeight}; */
+/* `; */
+
+/* const ButtonContainer = styled.button` */
+/*   border: 1px solid #CCC; */
+/*   background-color: inherit; */
+/*   border-radius: 3px; */
+/*   cursor: pointer; */
+/*   padding: 5px 10px 5px 10px; */
+/*   font-size: 16px; */
+/*   font-family: ${(props) => props.theme.generalFont}; */
+/*   color: ${(props) => props.theme.medGrey}; */
+/*   font-weight: 400; */
+/*   text-transform: uppercase; */
+/*   font-size: 14; */
