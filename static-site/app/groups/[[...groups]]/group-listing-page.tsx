@@ -11,18 +11,15 @@ import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
 import ListResources from "../../../components/list-resources";
 import { ResourceListingInfo } from "../../../components/list-resources/types";
-import {
-  BigSpacer,
-  HugeSpacer,
-} from "../../../components/spacers";
+import { BigSpacer, HugeSpacer } from "../../../components/spacers";
 import { UserContext } from "../../../components/user-data-wrapper";
-import {
-  DataFetchError,
-} from "../../../data/SiteConfig";
-import { fetchAndParseJSON } from "../../../src/util/datasetsHelpers";
+import { DataFetchError } from "../../../data/SiteConfig";
+import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 import ScrollableAnchor from "../../../vendored/react-scrollable-anchor/index";
 
 import GroupTiles from "./group-tiles";
+
+import type { AvailableGroups, DataResource } from "./types";
 
 const datasetColumns: DatasetSelectColumnsType[] = [
   {
@@ -58,7 +55,7 @@ export default function GroupListingPage(): React.ReactElement {
   useEffect((): void => {
     async function fetchData(): Promise<void> {
       try {
-        const available = await fetchAndParseJSON(
+        const available = await fetchAndParseJSON<AvailableGroups[]>(
           "/charon/getAvailable?prefix=/groups",
         );
         setNarratives(_cleanUpAvailable(available["narratives"]));
@@ -137,7 +134,7 @@ export default function GroupListingPage(): React.ReactElement {
   );
 }
 
-function _cleanUpAvailable(datasets: { request: string }[]): DatasetType[] {
+function _cleanUpAvailable(datasets: DataResource[]): DatasetType[] {
   /** The dataset display & filtering has a number of hard-coded
    * assumptions and TODOs, which requires us to coerce dataset lists
    * into a specific format
@@ -145,7 +142,7 @@ function _cleanUpAvailable(datasets: { request: string }[]): DatasetType[] {
   if (!datasets) return [];
 
   return datasets.map(
-    (d: { request: string }): DatasetType => ({
+    (d: DataResource): DatasetType => ({
       ...d,
       filename: d.request.replace(/\//g, "_").replace(/^_/, ""),
       url: d.request,
@@ -162,9 +159,8 @@ async function _resourceListingCallback(): Promise<ResourceListingInfo> {
   const sourceUrl = "/charon/getAvailable?prefix=/groups/";
 
   try {
-    const response = await fetchAndParseJSON(sourceUrl);
-
-    const datasets: { request: string }[] = response["datasets"];
+    const response = await fetchAndParseJSON<AvailableGroups>(sourceUrl);
+    const datasets = response["datasets"];
 
     // Use an empty array as the value side, to indicate that there are
     // no dated versions associated with this data

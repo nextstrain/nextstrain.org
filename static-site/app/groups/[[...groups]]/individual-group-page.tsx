@@ -15,9 +15,11 @@ import SourceInfoHeading, {
 } from "../../../components/source-info-heading";
 import { HugeSpacer } from "../../../components/spacers";
 import Spinner from "../../../components/spinner";
-import { fetchAndParseJSON } from "../../../src/util/datasetsHelpers";
+import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 
 import { canUserEditGroupSettings, canViewGroupMembers } from "./utils";
+
+import type { AvailableGroups, DataResource } from "./types";
 
 /**
  * A React Client component to display a page for an individual
@@ -76,13 +78,23 @@ export default function IndividualGroupPage({
 
       try {
         const [sourceInfo, availableData] = await Promise.all([
-          fetchAndParseJSON(`/charon/getSourceInfo?prefix=/groups/${group}/`),
-          fetchAndParseJSON(`/charon/getAvailable?prefix=/groups/${group}/`),
+          fetchAndParseJSON<SourceInfo>(`/charon/getSourceInfo?prefix=/groups/${group}/`),
+          fetchAndParseJSON<AvailableGroups>(`/charon/getAvailable?prefix=/groups/${group}/`),
         ]);
 
         setSourceInfo(sourceInfo);
-        setDatasets(_createDatasetListing(availableData.datasets, group));
-        setNarratives(_createDatasetListing(availableData.narratives, group));
+        setDatasets(
+          _createDatasetListing(
+            availableData.datasets,
+            group,
+          ),
+        );
+        setNarratives(
+          _createDatasetListing(
+            availableData.narratives,
+            group,
+          ),
+        );
         setEditGroupSettingsAllowed(await canUserEditGroupSettings(group));
         setViewGroupMembersAllowed(await canViewGroupMembers(group));
 
@@ -238,10 +250,10 @@ export default function IndividualGroupPage({
 // helper function to parse getAvailable listing into one that the
 // <DatasetSelect> component will accept
 function _createDatasetListing(
-  list: { request: string }[],
+  list: DataResource[],
   group: string,
 ): DatasetType[] {
-  return list.map((d: { request: string }): DatasetType => {
+  return list.map((d: DataResource): DatasetType => {
     return {
       filename: d.request
         .replace(`groups/${group}/`, "")

@@ -7,7 +7,7 @@ import SourceInfoHeading, {
   SourceInfo,
 } from "../../../components/source-info-heading";
 import { HugeSpacer } from "../../../components/spacers";
-import { fetchAndParseJSON } from "../../../src/util/datasetsHelpers";
+import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 
 /** Data structure for `/charon/getAvailable` response */
 interface AvailableData {
@@ -81,14 +81,11 @@ export default function CommunityRepoPage({
       }
 
       try {
-        const [fetchedSourceInfo, fetchedAvailableData]: [
-          SourceInfo,
-          AvailableData,
-        ] = await Promise.all([
-          fetchAndParseJSON(
+        const [fetchedSourceInfo, fetchedAvailableData] = await Promise.all([
+          fetchAndParseJSON<SourceInfo>(
             `/charon/getSourceInfo?prefix=/community/${user}/${repo}/`,
           ),
-          fetchAndParseJSON(
+          fetchAndParseJSON<AvailableData>(
             `/charon/getAvailable?prefix=/community/${user}/${repo}/`,
           ),
         ]);
@@ -231,9 +228,7 @@ function AvailableDatasets({
     <div>
       <h3 className="centered">Available {kind}s</h3>
       {datasets.length === 0 ? (
-        <h4 className="centered">
-          No {kind}s are available for this repo.
-        </h4>
+        <h4 className="centered">No {kind}s are available for this repo.</h4>
       ) : (
         <DatasetSelect
           datasets={datasets}
