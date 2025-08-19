@@ -21,7 +21,7 @@ export const metadata: Metadata = {
  */
 export default function SarsCov2Forecasts(): React.ReactElement {
   return (
-    <>
+    <div className="pageContent">
       <HugeSpacer />
       <HugeSpacer />
 
@@ -92,6 +92,6 @@ export default function SarsCov2Forecasts(): React.ReactElement {
           through GISAID on which this research is based.
         </FocusParagraphNarrow>
       </FlexCenter>
-    </>
+    </div>
   );
 }

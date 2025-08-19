@@ -91,7 +91,7 @@ export default function GroupSettingsPage({
   }
 
   return (
-    <>
+    <div className="pageContent">
       <HugeSpacer />
       <HugeSpacer />
 
@@ -130,7 +130,7 @@ export default function GroupSettingsPage({
       ) : (
         <ErrorMessage title={UNAUTHORIZED_MESSAGE} contents=<></> />
       )}
-    </>
+    </div>
   );
 }
 

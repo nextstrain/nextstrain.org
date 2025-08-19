@@ -74,7 +74,7 @@ export default function GroupMembersPage({
   }, [group]);
 
   return (
-    <>
+    <div className="pageContent">
       <HugeSpacer />
       <HugeSpacer />
 
@@ -135,7 +135,7 @@ export default function GroupMembersPage({
       ) : (
         <h4 className="centered">Fetching group members…</h4>
       )}
-    </>
+    </div>
   );
 }
 

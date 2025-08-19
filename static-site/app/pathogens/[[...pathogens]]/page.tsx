@@ -19,9 +19,9 @@ export const metadata: Metadata = {
  */
 export default function Pathogens(): React.ReactElement {
   return (
-    <>
+    <div className="pageContent">
       <ValidateUrl stub="pathogens" />
       <PathogensPageContent metadata={metadata} />
-    </>
+    </div>
   );
 }
