@@ -22,11 +22,10 @@ There are no specific dependencies or software defined within `./static-site`, s
 
 > See [our routing docs](https://docs.nextstrain.org/projects/nextstrain-dot-org/en/latest/routing.html) for a high level overview of the routing used in nextstrain.org
 
-We use Next.JS' [Pages Router](https://nextjs.org/docs/pages) to define routes based on filenames within `./static-site/pages`.
+We use Next.JS' [App Router](https://nextjs.org/docs/app) to define routes based on filenames within `./static-site/app`.
 The [Next.JS dynamic routing](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) docs explain mapping between filenames and URL paths.
 
-Currently these are the only Next.JS pages we serve. If the path doesn't exist in `./static-site/pages` (and it's not handled elsewhere by the nextstrain.org server) then the default 404 page will be displayed.
-
+Currently these are the only Next.JS pages we serve. If the path doesn't exist in `./static-site/app` (and it's not handled elsewhere by the nextstrain.org server) then the default 404 page will be displayed.
 
 ### Routing conflicts
 
@@ -34,40 +33,21 @@ As alluded to in [our routing docs](https://docs.nextstrain.org/projects/nextstr
 We'll use an example here to demonstrate how such a conflict could occur:
 
 We currently route requests for `/zika` to the auspice entrypoint.
-If a Next.JS page `./static-site/pages/zika.jsx` existed then requests to `/zika` would still go to Auspice, because that route takes priority in our nextstrain.org server route hierarchy.
+If a Next.JS page `./static-site/app/zika/page.tsx` existed then requests to `/zika` would still go to Auspice, because that route takes priority in our nextstrain.org server route hierarchy.
 However if we included a client-side `<Link href='/zika'>` component then via client-side routing you would be able to load the Next.JS Zika page. (Refreshing the page would go back to Auspice, as the browser would make a new request to `/zika`.)
 Please don't do this!
-
 
 ## Pages are statically generated
 
 In production mode all pages are statically generated at build time.
-Whilst pages may make API requests to the server for information, there is no server-rendering involved.
-This mode can be used during development by setting the env variable `USE_PREBUILT_STATIC_SITE=1`; don't forget to build the static-site before running the server (e.g. `npx next build static-site`).
+Pages may make API requests to the server for information, and the use of App Router and React Server Components means some things are rendered server-side.
 
 In development mode the pages are dynamically served by the server to allow hot-reloading etc (this is the default situation if you don't specify `NODE_ENV=production` or `USE_PREBUILT_STATIC_SITE=1`)
-
-## Folder structure under ./static-site/src
-
-Prior to using Next.JS we used Gatsby which enforced a specific folder structure which is still visible within `./static-site/src`.
-This file structure was kept during the migration to Next.JS but no longer has any significance.
-We maintain it here for simplicity but at some point we may do a mass file reorgansiation.
-
-The vast majority of Next.JS pages within `./static-site/pages` are files of only a few lines which import & re-export the appropriate component from within `./static-site/src`.
 
 ### public directory
 
 We use a `static-site/public` directory for assets which are exposed at the root (nextstrain.org) URL.
 At the moment these largely consist of images used in blog posts.
-
-### static directory
-
-When starting the server you may see a warning message:
-
-> ⚠ The static directory has been deprecated in favor of the public directory.
-
-However assets within this directory (`./static-site/static`) are not exposed.
-We may wish to rename this directory to avoid any doubt.
 
 # Adding content
 * [See this page in the docs](https://nextstrain.org/docs/contributing/documentation)
@@ -83,7 +63,7 @@ We may wish to rename this directory to avoid any doubt.
 
 To add a new team member to the [nextstrain.org/team](https://nextstrain.org/team) page, make a PR in this repo with the following changes:
 1. Add an image for the team member to the [./static/team](./static/team) directory.
-2. Add an entry for the team member to the [./src/components/People/teamMembers.js](./src/components/People/teamMembers.js) file in the appropriate list.
+2. Add an entry for the team member to the [./components/people/teamMembers.ts](./components/people/teamMembers.ts) file in the appropriate list.
    Note that the lists are currently ordered by alphabetical order by the last names.
 
 After the above PR is merged, the new team member can then be added to the [docs.nextstrain.org](https://docs.nextstrain.org) footer.
@@ -111,10 +91,8 @@ followed by the content of the blog post, marked up using [Markdown](https://en.
 * Image URLs in the post should be given in an origin-relative format; i.e., they should start with `/blog/img/`
 * Links to other pages and resources on `nextstrain.org` should also be given in origin-relative form; i.e., they should NOT start with `https://nextstraing.org`, only with a `/`
 
-
 ## Deploying
 The static documentation is automatically rebuilt every time the (parent) repo is pushed to master.
-
 
 ## License and copyright
 
