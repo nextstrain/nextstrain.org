@@ -15,7 +15,7 @@ import SourceInfoHeading, {
 } from "../../../components/source-info-heading";
 import { HugeSpacer } from "../../../components/spacers";
 import Spinner from "../../../components/spinner";
-import { fetchAndParseJSON } from "../../../src/util/datasetsHelpers";
+import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 
 import { canUserEditGroupSettings, canViewGroupMembers } from "./utils";
 
@@ -80,9 +80,22 @@ export default function IndividualGroupPage({
           fetchAndParseJSON(`/charon/getAvailable?prefix=/groups/${group}/`),
         ]);
 
-        setSourceInfo(sourceInfo);
-        setDatasets(_createDatasetListing(availableData.datasets, group));
-        setNarratives(_createDatasetListing(availableData.narratives, group));
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        setSourceInfo(sourceInfo as SourceInfo);
+        setDatasets(
+          _createDatasetListing(
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            (availableData as { datasets: { request: string }[] }).datasets,
+            group,
+          ),
+        );
+        setNarratives(
+          _createDatasetListing(
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            (availableData as { narratives: { request: string }[] }).narratives,
+            group,
+          ),
+        );
         setEditGroupSettingsAllowed(await canUserEditGroupSettings(group));
         setViewGroupMembersAllowed(await canViewGroupMembers(group));
 

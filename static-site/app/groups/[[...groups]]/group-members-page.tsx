@@ -14,7 +14,7 @@ import {
   HugeSpacer,
   MediumSpacer,
 } from "../../../components/spacers";
-import { fetchAndParseJSON } from "../../../src/util/datasetsHelpers";
+import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 
 import styles from "./group-members-page.module.css";
 
@@ -52,9 +52,10 @@ export default function GroupMembersPage({
   useEffect((): void => {
     async function getGroupMembership(): Promise<void> {
       try {
-        const members: GroupMember[] = await fetchAndParseJSON(
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        const members = (await fetchAndParseJSON(
           `/groups/${group}/settings/members`,
-        );
+        )) as GroupMember[];
         const sortedMembers = [...members].sort((a, b) =>
           a.username.localeCompare(b.username),
         );
