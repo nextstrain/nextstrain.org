@@ -70,7 +70,7 @@ export default function CommunityPageRouter({
         // I don't think `params["community"]` will ever _NOT_ be an
         // array, but this guard makes the typechecker happy and
         // really isn't that what matters
-        if (_isArray(params["community"])) {
+        if (Array.isArray(params["community"])) {
           // make a copy via slice() to keep things stable
           const path = params["community"].slice();
           const fullPath = `nextstrain.org/community/${path.join("/")}`;
@@ -136,8 +136,4 @@ export default function CommunityPageRouter({
       )}
     </>
   );
-}
-
-function _isArray(params: string | string[]): params is string[] {
-  return !(typeof params === "string");
 }

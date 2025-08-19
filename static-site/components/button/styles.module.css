@@ -1,0 +1,17 @@
+.button {
+  background-color: inherit;
+  border-radius: 3px;
+  border: 1px solid var(--lightGrey);
+  color: var(--mediumGrey);
+  cursor: pointer;
+  font-size: 14;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 5px 10px 5px 10px;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.button:hover {
+  border: 1px solid black;
+  color: black;
+}

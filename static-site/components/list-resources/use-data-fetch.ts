@@ -29,14 +29,15 @@ export default function useDataFetch(
   /** indicates whether the fetched resources are versioned */
   versioned: boolean,
 
+  /** the callback to fetch resource data */
+  resourceListingCallback: () => Promise<ResourceListingInfo>,
+
   /** whether to modify the group URL to include a group */
   defaultGroupLinks: boolean,
 
   /** a map used to optionally rename some resources */
-  groupDisplayNames: Record<string, string>,
+  groupDisplayNames?: Record<string, string>,
 
-  /** the callback to fetch resource data */
-  resourceListingCallback: () => Promise<ResourceListingInfo>,
 ): { groups: Group[] | undefined; dataFetchError: boolean } {
   const [groups, setGroups] = useState<Group[]>();
   const [dataFetchError, setDataFetchError] = useState<boolean>(false);
@@ -97,7 +98,7 @@ function _groupsFrom(
   defaultGroupLinks: boolean,
 
   /** map controlling rename of resource names */
-  groupDisplayNames: Record<string, string>,
+  groupDisplayNames?: Record<string, string>,
 ): Group[] {
   return Object.entries(partitions).map(([groupName, resources]) => {
     const groupInfo: Group = {

@@ -1,0 +1,16 @@
+.membersTableContainer {
+  border: 1px solid var(--lightGrey);
+}
+.membersTableContainer p {
+  margin: 10px;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--lightGrey);
+}
+.tableRow:last-child {
+  border-bottom: 0;
+}
+.tableRow:nth-child(even) {
+  background-color: var(--extraLightGrey);
+}

@@ -46,19 +46,19 @@ interface ListResourcesProps {
   versioned: boolean;
 
   /** Set of quick links associated with the resource */
-  quickLinks: QuickLink[];
+  quickLinks?: QuickLink[];
 
   /**
    * Should the group name itself be a url? (which we let the server
    * redirect)
    */
-  defaultGroupLinks: boolean;
+  defaultGroupLinks?: boolean;
 
   /** Mapping from group name -> display name */
-  groupDisplayNames: Record<string, string>;
+  groupDisplayNames?: Record<string, string>;
 
   /** Metadata about the tile */
-  tileData: FilterTile[];
+  tileData?: FilterTile[];
 
   /** Callback to use to get data */
   resourceListingCallback: () => Promise<ResourceListingInfo>;
@@ -147,9 +147,9 @@ function ListResourcesContent({
 }): React.ReactElement {
   const { groups, dataFetchError } = useDataFetch(
     versioned,
+    resourceListingCallback,
     defaultGroupLinks,
     groupDisplayNames,
-    resourceListingCallback,
   );
 
   const tiles = useTiles(tileData, groups);

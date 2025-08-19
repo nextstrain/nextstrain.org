@@ -1,0 +1,45 @@
+.avatarImg {
+  margin: 0;
+  object-fit: contain;
+  width: 140px;
+}
+
+.centeredForm {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 10px;
+}
+
+.inputButton,
+.inputLabel {
+  background-color: inherit;
+  border-radius: 3px;
+  border: 1px solid var(--lightGrey);
+  color: var(--darkGrey);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 400;
+  margin: 5px;
+  padding: 5px 10px 5px 10px;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.inputButton:disabled {
+  border: none;
+}
+.inputButton:hover:enabled,
+.inputLabel:hover {
+  color: black;
+  border: 1px solid black;
+}
+
+.textArea {
+  color: var(--darkGrey);
+  font-family: monospace;
+  font-size: 14px;
+  height: 100%;
+  width: 100%;
+}

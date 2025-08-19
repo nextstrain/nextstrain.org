@@ -1,0 +1,44 @@
+.bottomRightLabel {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 3px;
+  bottom: 20px;
+  color: white;
+  font-size: 26px;
+  font-weight: 500;
+  padding: 10px 20px 10px 20px;
+  position: absolute;
+  right: 0px;
+}
+
+.tileImg {
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
+  float: right;
+  max-height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.tileInner {
+  cursor: pointer;
+  margin: 5px 10px 5px 10px;
+}
+
+.tileName {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 3px;
+  color: white;
+  font-size: 22px;
+  font-weight: 500;
+  left: 20px;
+  padding: 10px 20px 10px 10px;
+  position: absolute;
+  top: 20px;
+}
+
+.tileOuter {
+  background-color: white;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}

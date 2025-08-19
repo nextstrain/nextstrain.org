@@ -1,5 +1,4 @@
 import React from "react";
-import NextstrainFooter from "../src/components/Footer";
 
 export * from "./BaseConfig";
 
@@ -33,5 +32,3 @@ export const GroupsAbstract = () => (<>
   member to set up and add users.
   Please <a href="mailto:hello@nextstrain.org">contact us at hello@nextstrain.org</a> and we’d be happy to set up a group for you.
 </>);
-
-export const Footer = NextstrainFooter;
