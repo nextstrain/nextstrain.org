@@ -7,7 +7,7 @@ import SourceInfoHeading, {
   SourceInfo,
 } from "../../../components/source-info-heading";
 import { HugeSpacer } from "../../../components/spacers";
-import { fetchAndParseJSON } from "../../../src/util/datasetsHelpers";
+import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 
 /** Data structure for `/charon/getAvailable` response */
 interface AvailableData {
@@ -81,10 +81,7 @@ export default function CommunityRepoPage({
       }
 
       try {
-        const [fetchedSourceInfo, fetchedAvailableData]: [
-          SourceInfo,
-          AvailableData,
-        ] = await Promise.all([
+        const [fetchedSourceInfo, fetchedAvailableData] = await Promise.all([
           fetchAndParseJSON(
             `/charon/getSourceInfo?prefix=/community/${user}/${repo}/`,
           ),
@@ -94,16 +91,19 @@ export default function CommunityRepoPage({
         ]);
 
         setShowContent(true);
-        setSourceInfo(fetchedSourceInfo);
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        setSourceInfo(fetchedSourceInfo as SourceInfo);
         setDatasets(
           _createDatasetListing({
-            list: fetchedAvailableData.datasets,
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            list: (fetchedAvailableData as AvailableData).datasets,
             user,
           }),
         );
         setNarratives(
           _createDatasetListing({
-            list: fetchedAvailableData.narratives,
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            list: (fetchedAvailableData as AvailableData).narratives,
             user,
           }),
         );
@@ -231,9 +231,7 @@ function AvailableDatasets({
     <div>
       <h3 className="centered">Available {kind}s</h3>
       {datasets.length === 0 ? (
-        <h4 className="centered">
-          No {kind}s are available for this repo.
-        </h4>
+        <h4 className="centered">No {kind}s are available for this repo.</h4>
       ) : (
         <DatasetSelect
           datasets={datasets}

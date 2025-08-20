@@ -3,8 +3,9 @@
 import { usePathname } from "next/navigation";
 import React from "react";
 
-import { MediumSpacer } from "../../src/layouts/generalComponents";
 import { FooterTeamList } from "../people/avatars";
+
+import { MediumSpacer } from "../spacers";
 
 /**
  * A React Client component that displays the core Nextstrain team in
