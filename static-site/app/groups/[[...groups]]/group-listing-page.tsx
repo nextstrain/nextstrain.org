@@ -53,10 +53,9 @@ export default function GroupListingPage(): React.ReactElement {
   useEffect((): void => {
     async function fetchData(): Promise<void> {
       try {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        const available = (await fetchAndParseJSON(
+        const available = await fetchAndParseJSON<{ request: string }[]>(
           "/charon/getAvailable?prefix=/groups",
-        )) as { request: string }[];
+        );
         setNarratives(_cleanUpAvailable(available["narratives"]));
         setDataLoaded(true);
       } catch (err) {
@@ -158,10 +157,7 @@ async function _resourceListingCallback(): Promise<ResourceListingInfo> {
   const sourceUrl = "/charon/getAvailable?prefix=/groups/";
 
   try {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const response = (await fetchAndParseJSON(sourceUrl)) as {
-      datasets: { request: string }[];
-    };
+    const response = await fetchAndParseJSON<{ datasets: { request: string }[]}>(sourceUrl);
 
     const datasets: { request: string }[] = response["datasets"];
 

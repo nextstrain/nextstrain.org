@@ -82,28 +82,25 @@ export default function CommunityRepoPage({
 
       try {
         const [fetchedSourceInfo, fetchedAvailableData] = await Promise.all([
-          fetchAndParseJSON(
+          fetchAndParseJSON<SourceInfo>(
             `/charon/getSourceInfo?prefix=/community/${user}/${repo}/`,
           ),
-          fetchAndParseJSON(
+          fetchAndParseJSON<AvailableData>(
             `/charon/getAvailable?prefix=/community/${user}/${repo}/`,
           ),
         ]);
 
         setShowContent(true);
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        setSourceInfo(fetchedSourceInfo as SourceInfo);
+        setSourceInfo(fetchedSourceInfo);
         setDatasets(
           _createDatasetListing({
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            list: (fetchedAvailableData as AvailableData).datasets,
+            list: fetchedAvailableData.datasets,
             user,
           }),
         );
         setNarratives(
           _createDatasetListing({
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            list: (fetchedAvailableData as AvailableData).narratives,
+            list: fetchedAvailableData.narratives,
             user,
           }),
         );

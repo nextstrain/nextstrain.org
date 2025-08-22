@@ -1,6 +1,6 @@
-export default async function fetchAndParseJSON(
+export default async function fetchAndParseJSON<T = unknown>(
   jsonUrl: string,
-): Promise<unknown> {
+): Promise<T> {
   const response = await fetch(jsonUrl, {
     headers: { Accept: "application/json" },
   });

@@ -52,10 +52,9 @@ export default function GroupMembersPage({
   useEffect((): void => {
     async function getGroupMembership(): Promise<void> {
       try {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        const members = (await fetchAndParseJSON(
+        const members = await fetchAndParseJSON<GroupMember[]>(
           `/groups/${group}/settings/members`,
-        )) as GroupMember[];
+        );
         const sortedMembers = [...members].sort((a, b) =>
           a.username.localeCompare(b.username),
         );

@@ -76,26 +76,16 @@ export default function IndividualGroupPage({
 
       try {
         const [sourceInfo, availableData] = await Promise.all([
-          fetchAndParseJSON(`/charon/getSourceInfo?prefix=/groups/${group}/`),
-          fetchAndParseJSON(`/charon/getAvailable?prefix=/groups/${group}/`),
+          fetchAndParseJSON<SourceInfo>(`/charon/getSourceInfo?prefix=/groups/${group}/`),
+          fetchAndParseJSON<{
+            narratives: { request: string }[],
+            datasets:   { request: string }[],
+          }>(`/charon/getAvailable?prefix=/groups/${group}/`),
         ]);
 
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        setSourceInfo(sourceInfo as SourceInfo);
-        setDatasets(
-          _createDatasetListing(
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (availableData as { datasets: { request: string }[] }).datasets,
-            group,
-          ),
-        );
-        setNarratives(
-          _createDatasetListing(
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (availableData as { narratives: { request: string }[] }).narratives,
-            group,
-          ),
-        );
+        setSourceInfo(sourceInfo);
+        setDatasets(_createDatasetListing(availableData.datasets, group));
+        setNarratives(_createDatasetListing(availableData.narratives, group));
         setEditGroupSettingsAllowed(await canUserEditGroupSettings(group));
         setViewGroupMembersAllowed(await canViewGroupMembers(group));
 
