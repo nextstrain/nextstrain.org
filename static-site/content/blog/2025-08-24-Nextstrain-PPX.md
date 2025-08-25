@@ -16,7 +16,7 @@ The information on each sample in our trees now includes links to these samples 
 
 The files containing the curated metadata and the sequences that we reshare on [Nextstrain](https://nextstrain.org/rsv/a/genome/6y) contain the subset of the data that is available under 'OPEN' data use terms, which in most cases is going to be the same as data available in NCBI virus.
 The metadata table contains additional columns linking back to the data source on Pathoplexus and the Pathoplexus accessions.
-For the time being, we advise users interested in restricted use data to obtain these from Pathoplexus directly and to carefully consult the data use terms.
+For the time being, we advise users interested in restricted use data to obtain these from Pathoplexus directly and to carefully consult the [data use terms](https://pathoplexus.org/about/terms-of-use/data-use-terms).
 
 
 
