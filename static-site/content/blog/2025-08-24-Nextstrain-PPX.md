@@ -6,7 +6,7 @@ sidebarTitle: "PPX and Nextstrain"
 ---
 
 [Pathoplexus](https://pathoplexus.org) (PPX) is a new database for timely sharing of viral sequence data that was launched about one year ago (disclosure: some of us at Nextstrain are involved in Pathoplexus).
-Pathoplexus' goal is to facilitate sharing of virus genomes, ensure that those involved in collecting the samples and generating the sequences get the recognition they deserve, while maximizing the utility of the data to advance public health.
+The goal of Pathoplexus is to facilitate sharing of virus genomes, in a way that ensures that those involved in collecting the samples and generating the sequences get the recognition they deserve, while maximizing the utility of the data to advance public health.
 Sharing data via PPX is very easy, and submitters can choose to share their data either as "OPEN" or as "RESTRICTED" use.
 Open sequences are submitted to INSDC (ENA/NCBI/DDBJ) immediately, while restricted use data are made available for public health and surveillance purposes right away on Pathoplexus, while publishing using these data is generally prohibited (see [Data use terms](https://pathoplexus.org/about/terms-of-use/data-use-terms) for details).
 
