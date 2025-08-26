@@ -11,10 +11,12 @@ Sharing data via PPX is very easy, and submitters can choose to share their data
 Open sequences are submitted to INSDC (ENA/NCBI/DDBJ) immediately, while restricted use data are made available for public health and surveillance purposes right away on Pathoplexus, while publishing using these data is generally prohibited (see [Data use terms](https://pathoplexus.org/about/terms-of-use/data-use-terms) for details).
 
 Pathoplexus provides a modern API to the data such that is straightforward and fast to retrieve (and submit) data in an automated way.
-Nextstrain has started using Pathoplexus as the data source for our automatically updated analyses of RSV.
+Nextstrain has started using Pathoplexus as the data source for [our automatically updated analyses of RSV](https://nextstrain.org/rsv/a/genome/6y).
 The information on each sample in our trees now includes links to these samples on Pathoplexus and an explicit statement on the data use terms associated with this sample, along with a link to the data use terms on Pathoplexus -- as is required by the Pathoplexus data use terms.
 
-The files containing the curated metadata and the sequences that we reshare on [Nextstrain](https://nextstrain.org/rsv/a/genome/6y) contain the subset of the data that is available under 'OPEN' data use terms, which in most cases is going to be the same as data available in NCBI virus.
+![tooltip](/blog/img/ppx_tip_tooltip.png)
+
+The files containing the curated metadata and the sequences that we reshare on [Nextstrain](https://nextstrain.org/rsv/a/genome/6y) contain the subset of the data that is available under 'OPEN' data use terms, which in most cases is going to be the same as data available in NCBI virus (synchronization delays can lead to differences).
 The metadata table contains additional columns linking back to the data source on Pathoplexus and the Pathoplexus accessions.
 For the time being, we advise users interested in restricted use data to obtain these from Pathoplexus directly and to carefully consult the [data use terms](https://pathoplexus.org/about/terms-of-use/data-use-terms).
 
