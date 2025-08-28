@@ -1,6 +1,6 @@
 ---
 author: Nextstrain team
-date: "2025-08-24"
+date: "2025-08-28"
 title: "Using Pathoplexus as data source for Nextstrain builds"
 sidebarTitle: "PPX and Nextstrain"
 ---
