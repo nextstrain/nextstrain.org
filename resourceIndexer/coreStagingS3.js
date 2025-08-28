@@ -213,34 +213,78 @@ function validDataset(id, date, objects) {
   };
 }
 
+/* Intermediate files in the core bucket are many and varied, however we expect them
+ * to follow the format specified in <https://docs.nextstrain.org/en/latest/reference/data-files.html>
+ * and thus we can determine if a file is an intermediate file by the key (filename) alone.
+ *
+ * At the moment we only consider "workflows", i.e. files in `/files/workflows/*`
+ * as there are currently no "build intermediate files" (i.e. the intermediate files
+ * of a phylogenetic workflow) and it's unclear if we'll ever store these.
+ *
+ * The file name schema is:
+ *   /files
+ *     /workflows
+ *       {/workflow-repo}                (matching github.com/nextstrain{/workflow-repo})
+ *         {/arbitrary-structure*}
+ *           /metadata.tsv.zst (etc)
+ *           /sequences.fasta.zst (etc)
+ *
+ * For the current listing we filter out any files where "/arbitrary-structure*" matches
+ * some hardcoded list in an attempt to filter out test runs which we don't want to surface.
+ *
+ * We also include /files/ncov which predates the above structure design.
+ */
 function _isIntermediateFile(key) {
-  if (key.startsWith('files/')) {
-    if (
-      key.includes('/archive/')
-      || key.includes('/test/')
-      || key.includes('/workflows/')
-      || key.includes('/branch/')
-      || key.includes('/trial/')
-      || key.includes('/test-data/')
-      || key.includes('jen_test/')
-      || key.match(/\/nextclade-full-run-[\d-]+--UTC\//)
-      || key.match(/\/\d{4}-\d{2}-\d{2}_results.json/) // forecasts-ncov
-      || key.endsWith('.png')                          // forecasts-ncov
-    ) {
-      return false;
-    }
-  return true;
+  const excludePatterns = [
+    /* testing/tmp directories */
+    /\/(?:branch|test|test-data|trial|trials)\//,
+    /\/forecasts-(flu|ncov)\//,
+    /\/cartography\//,
+    /** monkeypox filenames contain data from 2022-06-01 - 2023-10-31 before we changed
+     * to using 'mpox'. We could combine this with the mpox files if desired. */
+    /\/monkeypox\//,
+     /* lowercase 'wnv' used once (2024-10-04) */
+    /\/wnv\//,
+    /* the TB workflow is in flux - revisit once the datasets are "released" */
+    /\/tb\//,
+    /* We could detail versions via the datestamped filename if desired */
+    /\/nextclade-full-run[\d-]+--UTC\//,
+  ];
+  
+  if (key.endsWith('/')) {
+    // oropouche has keys for directory-like objects, but they're not valid intermediate files
+    return false
   }
+
+  if ((key.startsWith("files/workflows/") || key.startsWith("files/ncov/"))) {
+    for (const pattern of excludePatterns) {
+      if (key.match(pattern)) return false;
+    }
+    return true;
+  }
+  return false;
 }
 
-/** The ID is used for grouping. For a nextstrain.org dataset this would be
- *  combined with the source to form a nextstrain URL, however that's not
- *  applicable here. Instead we use the filepath information without the leading
- *  'files/' and without the (trailing) filename so that different files in the
- *  same directory structure get grouped together. For instance,
- *  'files/ncov/open/x.json' -> 'ncov/open' */
+/**
+ * The *resourcePath* is essentially the (unversioned) ID of the resource.
+ * (For Auspice datasets, this is combined with the source to form the URL of the
+ * dataset, but that's not applicable for intermediate files.) This ID is used
+ * to group together versions of an intermediate resource.
+ * 
+ * Note: redirects are not yet considered for intermediate resource paths, and
+ * thus 'monkeypox' and 'mpox' intermediate resources are separate intermediate
+ * files. 
+ * 
+ * Examples ( S3 key → resourcePath)
+ *    files/ncov/open/100k/metadata.tsv.xz → ncov/open/100k
+ *    files/workflows/zika/sequences.fasta.zst → zika
+ *
+ */
 function _intermediateResourcePath(key) {
-  return key.split('/').slice(1, -1).join('/');
+  return key
+    .replace(/^files\/ncov\//, "ncov/")
+    .replace(/^files\/workflows\//, "")
+    .replace(/\/[^/]+$/, '');
 }
 
 /**
@@ -264,9 +308,13 @@ function validIntermediate(id, date, objects) {
         })
         .map((s3object) => {
           const filename = s3object.key.split('/').pop();
-          const url = s3object.versionId ?
+          let url = s3object.versionId ?
             `${s3object.baseUrl}?versionId=${encodeURIComponent(s3object.versionId)}` :
             s3object.baseUrl;
+          /* we prefer to serve objects on the nextstrain-data bucket via the cloudfront-ed
+          data.nextstrain.org domain rather than nextstrain-data.s3.amazonaws.com. This
+          continues to work with versionId queries */
+          url = url.replace('https://nextstrain-data.s3.amazonaws.com', 'https://data.nextstrain.org');
           return [filename, url]
         })
     )
