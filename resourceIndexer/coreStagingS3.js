@@ -30,36 +30,11 @@ function categoriseCoreObjects(item, staging) {
     || key.startsWith('datasets_')
   ) return false;
 
-  // On the core bucket, directory-like hierarchies are used for intermediate
-  // files. These intermediate files may include files which auspice can
-  // display, but nextstrain.org cannot map URLs to directory-like hierarchies.
-  // There are other resourceTypes here we may consider in the future -- e.g.
-  // model output JSONs
+  /* slash-containing filenames are not (auspice) datasets, but they may be intermediate files */
   if (key.includes("/")) {
-    if (staging===true) return false;
-    if (key.startsWith('files/')) {
-      if (
-        key.includes('/archive/')
-        || key.includes('/test/')
-        || key.includes('/workflows/')
-        || key.includes('/branch/')
-        || key.includes('/trial/')
-        || key.includes('/test-data/')
-        || key.includes('jen_test/')
-        || key.match(/\/nextclade-full-run-[\d-]+--UTC\//)
-        || key.match(/\/\d{4}-\d{2}-\d{2}_results.json/) // forecasts-ncov
-        || key.endsWith('.png')                          // forecasts-ncov
-      ) {
-        return false;
-      }
+    if (!staging && _isIntermediateFile(key)) {
       item.resourceType = 'intermediate';
-      /* The ID is used for grouping. For a nextstrain.org dataset this would be
-      combined with the source to form a nextstrain URL, however that's not
-      applicable here. Instead we use the filepath information without the
-      leading 'files/' and without the (trailing) filename so that different
-      files in the same directory structure get grouped together. For instance,
-      files/ncov/open/x.json -> ncov/open */
-      item.resourcePath = key.split('/').slice(1, -1).join('/')
+      item.resourcePath = _intermediateResourcePath(key);
       return item;
     }
     return false;
@@ -236,6 +211,36 @@ function validDataset(id, date, objects) {
       })
     )
   };
+}
+
+function _isIntermediateFile(key) {
+  if (key.startsWith('files/')) {
+    if (
+      key.includes('/archive/')
+      || key.includes('/test/')
+      || key.includes('/workflows/')
+      || key.includes('/branch/')
+      || key.includes('/trial/')
+      || key.includes('/test-data/')
+      || key.includes('jen_test/')
+      || key.match(/\/nextclade-full-run-[\d-]+--UTC\//)
+      || key.match(/\/\d{4}-\d{2}-\d{2}_results.json/) // forecasts-ncov
+      || key.endsWith('.png')                          // forecasts-ncov
+    ) {
+      return false;
+    }
+  return true;
+  }
+}
+
+/** The ID is used for grouping. For a nextstrain.org dataset this would be
+ *  combined with the source to form a nextstrain URL, however that's not
+ *  applicable here. Instead we use the filepath information without the leading
+ *  'files/' and without the (trailing) filename so that different files in the
+ *  same directory structure get grouped together. For instance,
+ *  'files/ncov/open/x.json' -> 'ncov/open' */
+function _intermediateResourcePath(key) {
+  return key.split('/').slice(1, -1).join('/');
 }
 
 /**
