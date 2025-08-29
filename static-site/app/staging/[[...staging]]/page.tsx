@@ -61,9 +61,9 @@ export const metadata: Metadata = {
  */
 export default function StagingPage(): React.ReactElement {
   return (
-    <>
+    <div className="pageContent">
       <ValidateUrl stub="staging" />
       <StagingPageContent metadata={metadata} />
-    </>
+    </div>
   );
 }

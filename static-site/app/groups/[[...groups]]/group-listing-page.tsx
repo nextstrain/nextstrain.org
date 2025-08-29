@@ -76,7 +76,7 @@ export default function GroupListingPage(): React.ReactElement {
   }, []);
 
   return (
-    <>
+    <div className="pageContent">
       <HugeSpacer />
       <HugeSpacer />
 
@@ -133,7 +133,7 @@ export default function GroupListingPage(): React.ReactElement {
           <DataFetchError />
         </FocusParagraphCentered>
       )}
-    </>
+    </div>
   );
 }
 

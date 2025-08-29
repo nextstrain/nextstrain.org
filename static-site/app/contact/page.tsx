@@ -9,12 +9,13 @@ export const metadata: Metadata = {
   title: "Contact",
 };
 
+
 /**
  * A React Server Component that renders the /contact page
  */
 export default function ContactPage(): React.ReactElement {
   return (
-    <>
+    <div className="pageContent">
       <BigSpacer count={4} />
 
       <h1>Contact Us</h1>
@@ -58,6 +59,6 @@ export default function ContactPage(): React.ReactElement {
       </FlexCenter>
 
       <BigSpacer />
-    </>
+    </div>
   );
 }

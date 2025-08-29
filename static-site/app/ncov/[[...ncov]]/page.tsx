@@ -21,9 +21,9 @@ export const metadata: Metadata = {
  */
 export default function SarsCov2Page(): React.ReactElement {
   return (
-    <>
+    <div className="pageContent">
       <ValidateUrl stub="ncov" />
       <SarsCov2PageContent metadata={metadata} />
-    </>
+    </div>
   );
 }

@@ -143,7 +143,7 @@ export default function IndividualGroupPage({
     return <ErrorMessage title={bannerTitle} contents={bannerContents} />;
   } else {
     return (
-      <>
+      <div className="pageContent">
         <HugeSpacer />
         <HugeSpacer />
 
@@ -230,7 +230,7 @@ export default function IndividualGroupPage({
             </div>
           </ScrollableAnchor>
         )}
-      </>
+      </div>
     );
   }
 }

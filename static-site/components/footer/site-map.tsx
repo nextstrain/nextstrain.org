@@ -1,11 +1,11 @@
-import { FaExternalLinkAlt } from "react-icons/fa";
-
 import React from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { BigSpacer } from "../spacers";
 
-import styles from "./site-map.module.css";
 import { sections, Entry, Section } from "./sitemap";
+
+import styles from "./site-map.module.css";
 
 /** A React Server Component that renders the site map in the page footer */
 export default function SiteMap(): React.ReactElement {
@@ -13,12 +13,12 @@ export default function SiteMap(): React.ReactElement {
     <div className={`${styles.siteMap} row`}>
       {sections.map((section: Section) => (
         <div
-          className={`col-md-3 col-sm-6 ${styles.sectionWrapper}`}
+          className={`${styles.sectionWrapper} col-md-3 col-sm-6`}
           key={section.title}
         >
           <div className={styles.section}>
             <BigSpacer />
-            <h3>{section.title}</h3>
+            <h3 className={styles.sectionTitleWrapper}>{section.title}</h3>
             <SectionList entries={section.entries} />
           </div>
         </div>
