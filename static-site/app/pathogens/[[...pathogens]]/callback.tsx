@@ -8,7 +8,7 @@ import { ResourceListingInfo } from "../../../components/list-resources/types";
  */
 export async function pathogenResourceListingCallback(): Promise<ResourceListingInfo> {
   const sourceId = "core";
-  const sourceUrl = `/list-resources/${sourceId}`;
+  const sourceUrl = `/list-resources/${sourceId}/dataset`;
 
   const response = await fetch(sourceUrl, {
     headers: { accept: "application/json" },

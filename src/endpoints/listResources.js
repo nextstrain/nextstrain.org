@@ -12,10 +12,10 @@ import { BadRequest } from '../httpErrors.js';
 const listResourcesJson = async (req, res) => {
   /* API currently only handles a limited range of sources / resource types.
   ListResources will throw a HTTP error if they do not exist */
-  const resourceType = 'dataset';
+  const resourceType = req.params.resourceType;
   const sourceName = req.params.sourceName;
   const unexpectedUriParts = req.params[0];
-  if (!sourceName || unexpectedUriParts) {
+  if (!resourceType || !sourceName || unexpectedUriParts) {
     throw new BadRequest(`Malformed listing resources URI`)
   }
   const resources = new ListResources([sourceName], [resourceType]);
