@@ -142,7 +142,7 @@ class ListResources {
       throw new BadRequest(`Listing resources currently only supports a single resource type`)
     }
     if (!resources[sourceIds[0]]) {
-      throw new BadRequest(`Source ${sourceIds[0]} does not exist in the index`)
+      throw new NotFound(`Source ${sourceIds[0]} does not exist in the index`)
     }
     this.sourceId = sourceIds[0];
     this.resourceType = resourceTypes[0];
