@@ -15,12 +15,12 @@ import {listResources} from '../endpoints/index.js';
  * for some discussion about route name choices.
  */
 export function setup(app) {
-  app.routeAsync("/list-resources/:sourceName?")
+  app.routeAsync("/list-resources/:sourceName?/:resourceType?")
     .getAsync(listResources.listResources);
 
   // route to match routes which have extra path segments. Note that this doesn't
   // match valid routes with a trailing slash, which is why it's defined as an
   // extra route.
-  app.routeAsync("/list-resources/:sourceName/*")
+  app.routeAsync("/list-resources/:sourceName/:resourceType?/*")
     .getAsync(listResources.listResources);
 }

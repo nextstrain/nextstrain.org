@@ -15,11 +15,12 @@ const OK = 200;
 describe("Routes are correctly routed", () => {
 
   const routes = [
-    ['list-resources/core', OK], // PS no staging data in test/date_descriptor_index.json
-    ['list-resources', BAD_REQUEST],
-    ['list-resources/', BAD_REQUEST],
-    ['list-resources/core/foo', BAD_REQUEST],
-    ['list-resources/foo', NOT_FOUND],
+    ['list-resources/core/dataset', OK],  // PS no staging data in test/date_descriptor_index.json
+    ['list-resources', BAD_REQUEST],      // missing source and resource type
+    ['list-resources/core', BAD_REQUEST], // missing resource type
+    ['list-resources/core/dataset/foo', BAD_REQUEST], // extra segment paths
+    ['list-resources/core/foo', NOT_FOUND], // foo isn't found as a resource type
+    ['list-resources/foo/bar', NOT_FOUND], // foo isn't a source & bar isn't a resource type
   ]
 
   for (const [path, code] of routes) {
@@ -27,8 +28,8 @@ describe("Routes are correctly routed", () => {
       const p = path + trailing;
       it(`Route for ${p}`, async () => {
         const res = await fetchJson(`${BASE_URL}/${p}`);
-      expect(res.status).toEqual(code);
-      if (code===OK) {
+        expect(res.status).toEqual(code);
+        if (code===OK) {
           expect(res.headers.get('Content-Type')).toMatch('application/json')
         }
       })
