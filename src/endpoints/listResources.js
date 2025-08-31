@@ -15,10 +15,11 @@ const listResourcesJson = async (req, res) => {
   const resourceType = req.params.resourceType;
   const sourceName = req.params.sourceName;
   const unexpectedUriParts = req.params[0];
+  const query = req.query;
   if (!resourceType || !sourceName || unexpectedUriParts) {
     throw new BadRequest(`Malformed listing resources URI`)
   }
-  const resources = new ListResources([sourceName], [resourceType]);
+  const resources = new ListResources([sourceName], [resourceType], query);
   const data = {
     WARNING: `This API is intended for internal use only. The API, including the address, may change at any point without notice.`,
     ...resources.data
