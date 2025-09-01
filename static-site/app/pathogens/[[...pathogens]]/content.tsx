@@ -61,6 +61,10 @@ export default function PathogensPageContent({
             our GitHub page
           </a> or by loading a dataset and clicking the &ldquo;built
           with&rdquo; link at the top of the page.
+          <br />
+          <br />
+          Workflow files such as sequences and metadata are listed on the
+          {' '}<a href="/pathogens/files">pathogens/files page</a> where available.
         </FocusParagraphCentered>
       </FlexCenter>
 

@@ -6,6 +6,15 @@ interface ResourceListingDatasets {
   pathVersions: Record<string, string[]>;
 }
 
+interface ResourceListingIntermediates {
+  pathPrefix: string;
+  latestVersions: {
+    [id: string]: {
+      [filename: string]: [url: string, mostRecentlyIndexed: string]
+    }
+  }
+}
+
 /**
  * A callback function used by the <ListResources> component to fetch information
  * about the resources to list from the host server's /list-resources API endpoint.
@@ -32,10 +41,15 @@ export async function listResourcesAPI(
     );
   }
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  const data = (await response.json())[resourceType][sourceId] as ResourceListingDatasets;
+  const data = ((await response.json())[resourceType][sourceId]) as ResourceListingDatasets |  ResourceListingIntermediates;
   const urlBuilder = (name) => `/${data.pathPrefix}${name}`;
+  const areDatasets = (x: ResourceListingDatasets |  ResourceListingIntermediates): x is ResourceListingDatasets => {
+    return Object.hasOwn(x, 'pathVersions');
+  }
   const groups = Object.entries(
-      groupByPathogen(data.pathVersions, urlBuilder, versioned)
+      areDatasets(data) ?
+        groupDatasetsByPathogen(data.pathVersions, urlBuilder, versioned) :
+        groupIntermediatesByPathogen(data.latestVersions)
     ).map(([groupName, resources]) => {
       const group = resourceGroup(groupName, resources);
       if (groupDisplayNames && groupName in groupDisplayNames) {
@@ -79,7 +93,7 @@ function resourceGroup(groupName: string, resources: Resource[]): Group {
  * under 'seasonal-flu'. Each pathogen has an array of Resource
  * objects, each corresponding to a single dataset. 
  */
-function groupByPathogen(
+function groupDatasetsByPathogen(
   /** object mapping path to lists of dates */
   pathVersions: ResourceListingDatasets['pathVersions'],
 
@@ -130,6 +144,37 @@ function groupByPathogen(
   );
 }
 
+function groupIntermediatesByPathogen(
+  latestVersions: ResourceListingIntermediates['latestVersions']
+): Record<string, Resource[]> {
+  return Object.entries(latestVersions).reduce(
+    (store: Record<string, Resource[]>, [baseName, d]) => {
+      // base name does not include the filename
+      const baseParts = baseName.split("/");
+      if (baseParts[0] === undefined) {
+        throw new InternalError(`Resource is not properly formatted (empty name)`);
+      }
+      const groupName = baseParts[0];
+      for (const [filename, urlDatePair] of Object.entries(d)) {
+        if (filename==='mostRecentlyIndexed') continue;
+        const nameParts = [...baseParts, filename]
+        const resourceDetails: Resource = {
+          name: nameParts.join('/'), // includes filename
+          groupName, // decoupled from nameParts
+          nameParts,
+          sortingName: _sortableName(nameParts),
+          url: urlDatePair[0],
+          lastUpdated: urlDatePair[1],
+        };
+
+        (store[groupName] ??= []).push(resourceDetails);
+      }
+
+      return store;
+    },
+    {},
+  );
+}
 
 /**
  * Helper function for sorting datasets in a way that is nicer than

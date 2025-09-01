@@ -56,7 +56,7 @@ export interface ResourceDisplayName {
   default: string;
 }
 
-export type ResourceType = 'dataset';
+export type ResourceType = 'dataset'|'intermediate';
 
 
 export interface UpdateCadence {

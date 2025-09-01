@@ -53,7 +53,7 @@ interface ListResourcesProps {
   /** Metadata about the tile */
   tileData?: FilterTile[];
 
-  /** This is currently unused */
+  /** Resource type modifies the language used to describe resources */
   resourceType: ResourceType;
 
   /** Function to return groups of resources for display */
@@ -129,6 +129,7 @@ export default function ListResources(
 function ListResourcesContent({
   versioned = true,
   elWidth,
+  resourceType,
   quickLinks,
   tileData,
   fetchResourceGroups,
@@ -214,6 +215,7 @@ function ListResourcesContent({
         options={availableFilterOptions}
         selectedFilterOptions={selectedFilterOptions}
         setSelectedFilterOptions={setSelectedFilterOptions}
+        resourceType={resourceType}
       />
 
       {(versioned && (
@@ -228,6 +230,7 @@ function ListResourcesContent({
           <div>
             {resourceGroups.map((group) => (
               <ResourceGroup
+                resourceType={resourceType}
                 key={group.groupName}
                 group={group}
                 quickLinks={quickLinks}
@@ -262,6 +265,7 @@ function Filter({
   options,
   selectedFilterOptions,
   setSelectedFilterOptions,
+  resourceType,
 }: {
   /** list of available `FilterOption` objects */
   options: FilterOption[];
@@ -273,6 +277,9 @@ function Filter({
   setSelectedFilterOptions: React.Dispatch<
     React.SetStateAction<readonly FilterOption[]>
   >;
+
+  /** Resource type modifies the language used to describe resources */
+  resourceType: ResourceType;
 }): React.ReactElement {
   const onChange = (options: MultiValue<FilterOption>) => {
     if (options) {
@@ -283,7 +290,7 @@ function Filter({
   return (
     <div className="filter">
       <Select
-        placeholder={"Filter by keywords in dataset names"}
+        placeholder={`Filter by keywords in ${resourceType==='dataset'?'dataset':'file'} names`}
         isMulti
         options={options}
         value={selectedFilterOptions}
