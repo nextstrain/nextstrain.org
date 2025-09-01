@@ -12,7 +12,7 @@ import { GroupLink, IndividualQuickLink } from "./group-and-resource-links";
 import { SetModalResourceContext } from "./modal";
 import TooltipWrapper from "./tooltip-wrapper";
 
-import { DisplayNamedResource, Group, QuickLink, Resource } from "./types";
+import { DisplayNamedResource, Group, QuickLink, Resource, ResourceType } from "./types";
 
 import styles from "./resource-group.module.css";
 
@@ -20,6 +20,7 @@ import styles from "./resource-group.module.css";
 export default function ResourceGroup({
   group,
   elWidth,
+  resourceType,
   numGroups,
   sortMethod,
   quickLinks,
@@ -29,6 +30,9 @@ export default function ResourceGroup({
 
   /** the width of the element displaying the resources */
   elWidth: number;
+
+  /** Resource type modifies the language used to describe resources */
+  resourceType: ResourceType;
 
   /** overall count of `Group` objects being displayed */
   numGroups: number;
@@ -58,6 +62,7 @@ export default function ResourceGroup({
   return (
     <div className={styles.resourceGroupContainer}>
       <ResourceGroupHeader
+        resourceType={resourceType}
         group={group}
         quickLinks={quickLinks}
         setCollapsed={setCollapsed}
@@ -102,6 +107,7 @@ function NextstrainLogo(): React.ReactElement {
 function ResourceGroupHeader({
   group,
   isMobile,
+  resourceType,
   setCollapsed,
   collapsible,
   isCollapsed,
@@ -114,6 +120,9 @@ function ResourceGroupHeader({
   /** boolean for whether we're on a mobile sized screen */
   isMobile: boolean;
 
+  /** Resource type modifies the language used to describe resources */
+  resourceType: ResourceType;
+  
   /** a React State setter for the collapsed state */
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 
@@ -180,7 +189,7 @@ function ResourceGroupHeader({
           )}
           <span className={styles.flexSpan} />
           <TooltipWrapper
-            description={`There are ${group.nResources} datasets in this group`}
+            description={`There are ${group.nResources} ${resourceType==='dataset' ? 'datasets' : 'files'} in this group`}
           >
             <IconContainer
               color={"rgb(79, 75, 80)"}
@@ -190,7 +199,7 @@ function ResourceGroupHeader({
           </TooltipWrapper>
           {group.nVersions && !isMobile && (
             <TooltipWrapper
-              description={`${group.nVersions} snapshots exist across the ${group.nResources} datasets in this group`}
+              description={`${group.nVersions} snapshots exist across the ${group.nResources} ${resourceType==='dataset' ? 'datasets' : 'files'} in this group`}
             >
               <IconContainer
                 iconName="history"
