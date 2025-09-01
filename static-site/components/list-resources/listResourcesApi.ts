@@ -1,144 +1,90 @@
-"use client";
-
-import { useState, useEffect } from "react";
-
+import { ResourceType, Resource, Group } from "./types";
 import { InternalError } from "../error-boundary";
 
-import { Group, Resource, ResourceListingInfo } from "./types";
-
-/**
- * React Hook that uses the provided `resourceListingCallback` to
- * fetch resources and parse them into `pathVersions` and `pathPrefix`
- * values. This callback is expected (and encouraged!) to `throw()` on
- * any and all errors.
- *
- * Then continues on to parse the `pathVersions`/`pathPrefix` data
- * structures into a list of `Group` objects, each representing a
- * "pathogen" or "group", and detailing the available resources for
- * them, as well as the available versions (aka snapshots) for each of
- * those resources. In the case of un-versioned resources (i.e., where
- * the provided `versioned` boolean is false), `versions` will be an
- * empty array (i.e., `[]`).
- *
- * The current implementation applies the provided `versioned` boolean
- * to the entire API response. In the future, we may shift this
- * `versioned` status into the API response proper, to allow it to
- * vary across the returned resources.
- */
-export default function useDataFetch(
-  /** indicates whether the fetched resources are versioned */
-  versioned: boolean,
-
-  /** the callback to fetch resource data */
-  resourceListingCallback: () => Promise<ResourceListingInfo>,
-
-  /** whether to modify the group URL to include a group */
-  defaultGroupLinks: boolean,
-
-  /** a map used to optionally rename some resources */
-  groupDisplayNames?: Record<string, string>,
-
-): { groups: Group[] | undefined; dataFetchError: boolean } {
-  const [groups, setGroups] = useState<Group[]>();
-  const [dataFetchError, setDataFetchError] = useState<boolean>(false);
-
-  useEffect((): void => {
-    async function fetchAndParse(): Promise<void> {
-      try {
-        const { pathPrefix, pathVersions } = await resourceListingCallback();
-
-        // group/partition the resources by pathogen (the first word
-        // of the resource path). This grouping is constant for all UI
-        // options so we do it a single time following the data fetch
-        const partitions = _partitionByPathogen(
-          pathVersions,
-          pathPrefix,
-          versioned,
-        );
-
-        setGroups(
-          _groupsFrom(
-            partitions,
-            pathPrefix,
-            defaultGroupLinks,
-            groupDisplayNames,
-          ),
-        );
-      } catch (err) {
-        console.error(`Error while fetching and/or parsing data`);
-        console.error(err);
-        return setDataFetchError(true);
-      }
-    }
-
-    fetchAndParse();
-  }, [
-    versioned,
-    defaultGroupLinks,
-    groupDisplayNames,
-    resourceListingCallback,
-  ]);
-
-  return { groups, dataFetchError };
+interface ResourceListingDatasets {
+  pathPrefix: string;
+  pathVersions: Record<string, string[]>;
 }
 
 /**
- * Helper function to convert the provided `partitions` (an object
- * mapping group names to lists of resources) into a list of `Group`
- * objects
+ * A callback function used by the <ListResources> component to fetch information
+ * about the resources to list from the host server's /list-resources API endpoint.
  */
-function _groupsFrom(
-  /** object map of names to resources */
-  partitions: Record<string, Resource[]>,
-
-  /** prefix to add when defaultGroupLinks param is true */
-  pathPrefix: string,
-
-  /** boolean controlling conversion of groupUrl values */
-  defaultGroupLinks: boolean,
-
-  /** map controlling rename of resource names */
-  groupDisplayNames?: Record<string, string>,
-): Group[] {
-  return Object.entries(partitions).map(([groupName, resources]) => {
-    const groupInfo: Group = {
-      groupName: groupName,
-      nResources: resources.length,
-      nVersions:
-        resources.reduce(
-          (total, r) => (r.nVersions ? total + r.nVersions : total),
-          0,
-        ) || undefined,
-      lastUpdated: resources
-        .map((r) => r.lastUpdated)
-        .sort()
-        .at(-1),
-      resources,
-    };
-
-    // add optional properties
-    if (defaultGroupLinks) {
-      groupInfo.groupUrl = `/${pathPrefix}${groupName}`;
-    }
-    if (groupDisplayNames?.[groupName]) {
-      groupInfo.groupDisplayName = groupDisplayNames[groupName];
-    }
-
-    return groupInfo;
+export async function listResourcesAPI(
+  sourceId: string,
+  resourceType: ResourceType,
+  {versioned, groupDisplayNames, groupUrl}: {
+    /** Report prior versions of each resource.
+     * TODO: infer this from the API data itself
+     */
+    versioned: boolean,
+    groupDisplayNames?: Record<string, string>,
+    groupUrl?: (groupName: string) => string
+  }
+): Promise<Group[]> {
+  const requestPath = `/list-resources/${sourceId}/${resourceType}`;
+  const response = await fetch(requestPath, {
+    headers: { accept: "application/json" },
   });
+  if (response.status !== 200) {
+    throw new Error(
+      `fetching application/json data from "${requestPath}" returned status code ${response.status}`,
+    );
+  }
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  const data = (await response.json())[resourceType][sourceId] as ResourceListingDatasets;
+  const urlBuilder = (name) => `/${data.pathPrefix}${name}`;
+  const groups = Object.entries(
+      groupByPathogen(data.pathVersions, urlBuilder, versioned)
+    ).map(([groupName, resources]) => {
+      const group = resourceGroup(groupName, resources);
+      if (groupDisplayNames && groupName in groupDisplayNames) {
+        group.groupDisplayName = groupDisplayNames[groupName];
+      }
+      if (groupUrl) {
+        group.groupUrl = groupUrl(groupName);
+      }
+      return group;
+    });
+
+  return groups;
 }
 
-/**
- * Helper function to group the provided `pathVersions` object
- * mapping between path and dates into an object with pathogen/group
- * names as the keys and arrays of Resource objects as the values.
- */
-function _partitionByPathogen(
-  /** object mapping path to lists of dates */
-  pathVersions: Record<string, string[]>,
+function resourceGroup(groupName: string, resources: Resource[]): Group {
+  const lastUpdated = resources
+    .map((r) => r.lastUpdated)
+    .sort()
+    .at(-1);
 
-  /** prefix added to resource name to build URL */
-  pathPrefix: string,
+  const nVersions = resources.reduce(
+    (total, r) => (r.nVersions ? total + r.nVersions : total),
+    0,
+  ) || undefined;
+
+  const groupInfo: Group = {
+    groupName,
+    resources,
+    nResources: resources.length,
+    nVersions,
+    lastUpdated,
+  };
+
+  return groupInfo;
+}
+
+
+/**
+ * Group the provided `pathVersions` by pathogen, which is determined
+ * by inspecting the path. For instance, 'seasonal-flu/h3n2' is grouped
+ * under 'seasonal-flu'. Each pathogen has an array of Resource
+ * objects, each corresponding to a single dataset. 
+ */
+function groupByPathogen(
+  /** object mapping path to lists of dates */
+  pathVersions: ResourceListingDatasets['pathVersions'],
+
+  /** constructs the dataset URL from the provided resource name/ID */
+  urlBuilder: (name: string) => string,
 
   /** boolean controlling addition of version-specific fields */
   versioned: boolean,
@@ -158,7 +104,7 @@ function _partitionByPathogen(
         groupName, // decoupled from nameParts
         nameParts,
         sortingName: _sortableName(nameParts),
-        url: `/${pathPrefix}${name}`,
+        url: urlBuilder(name),
       };
 
       if (versioned) {
@@ -184,6 +130,7 @@ function _partitionByPathogen(
   );
 }
 
+
 /**
  * Helper function for sorting datasets in a way that is nicer than
  * pure lexicographic sorting when dealing with temporal datasets
@@ -206,6 +153,7 @@ function _sortableName(
   });
   return w.join("/");
 }
+
 
 /** number of milliseconds in a day */
 const msInADay = 1000 * 60 * 60 * 24;

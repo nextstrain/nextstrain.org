@@ -23,6 +23,8 @@ export interface VersionedGroup extends Group {
   lastUpdated: string;
 }
 
+export type ResourcesPerPathogen = Record<string, Resource[]>
+
 export interface Resource {
   name: string;
   displayName?: ResourceDisplayName;
@@ -54,10 +56,8 @@ export interface ResourceDisplayName {
   default: string;
 }
 
-export interface ResourceListingInfo {
-  pathPrefix: string;
-  pathVersions: Record<string, string[]>;
-}
+export type ResourceType = 'dataset';
+
 
 export interface UpdateCadence {
   summary: string;
