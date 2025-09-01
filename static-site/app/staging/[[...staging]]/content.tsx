@@ -3,10 +3,8 @@ import type { Metadata } from "next";
 
 import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import ListResources from "../../../components/list-resources";
+import StagingPathogenResourceListing from "./resources";
 import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
-
-import { stagingResourceListingCallback } from "./callback";
 
 /**
  * A React Server component that generates the contents of the
@@ -47,17 +45,7 @@ export default function StagingPageContent({
       </FlexCenter>
 
       <HugeSpacer />
-
-      <ListResources
-        defaultGroupLinks={false}
-        groupDisplayNames={{}}
-        quickLinks={[]}
-        resourceListingCallback={stagingResourceListingCallback}
-        resourceType="dataset"
-        tileData={[]}
-        versioned={false}
-      />
-
+      <StagingPathogenResourceListing/>
       <HugeSpacer />
     </>
   );

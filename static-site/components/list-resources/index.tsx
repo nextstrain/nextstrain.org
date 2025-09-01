@@ -26,7 +26,6 @@ import ResourceGroup from "./resource-group";
 import TooltipWrapper from "./tooltip-wrapper";
 import { createFilterOption, useFilterOptions } from "./use-filter-options";
 import useSortAndFilter from "./use-sort-and-filter";
-import useDataFetch from "./use-data-fetch";
 
 import {
   FilterTile,
@@ -34,37 +33,31 @@ import {
   Group,
   QuickLink,
   Resource,
-  ResourceListingInfo,
   SortMethod,
   convertVersionedResource,
+  ResourceType,
 } from "./types";
 
 import styles from "./styles.module.css";
 
 interface ListResourcesProps {
-  /** Is the resource versioned? */
+  /** Is the resource versioned?
+   * TODO - this is currently all-or-nothing, however we should instead parse the
+   * resources (once available) and determine this on a per-group (?) basis
+   */
   versioned: boolean;
 
   /** Set of quick links associated with the resource */
   quickLinks?: QuickLink[];
 
-  /**
-   * Should the group name itself be a url? (which we let the server
-   * redirect)
-   */
-  defaultGroupLinks?: boolean;
-
-  /** Mapping from group name -> display name */
-  groupDisplayNames?: Record<string, string>;
-
   /** Metadata about the tile */
   tileData?: FilterTile[];
 
-  /** Callback to use to get data */
-  resourceListingCallback: () => Promise<ResourceListingInfo>;
-
   /** This is currently unused */
-  resourceType: string;
+  resourceType: ResourceType;
+
+  /** Function to return groups of resources for display */
+  fetchResourceGroups: () => Promise<Group[]>
 }
 
 /** The name of the anchor that represents the top of the resource listing */
@@ -137,20 +130,27 @@ function ListResourcesContent({
   versioned = true,
   elWidth,
   quickLinks,
-  defaultGroupLinks = false,
-  groupDisplayNames,
   tileData,
-  resourceListingCallback,
+  fetchResourceGroups,
 }: ListResourcesProps & {
   /** width of the element */
   elWidth: number;
 }): React.ReactElement {
-  const { groups, dataFetchError } = useDataFetch(
-    versioned,
-    resourceListingCallback,
-    defaultGroupLinks,
-    groupDisplayNames,
-  );
+  const [groups, setGroups] = useState<Group[]>();
+  const [dataFetchError, setDataFetchError] = useState<boolean>(false);
+
+  useEffect((): void => {
+    async function effect(): Promise<void> {
+      try {
+        setGroups(await fetchResourceGroups())
+      } catch (err) {
+        console.error(`Error while fetching and/or parsing data`);
+        console.error(err);
+        return setDataFetchError(true);
+      }
+    }
+    effect();
+  }, [fetchResourceGroups]);
 
   const tiles = useTiles(tileData, groups);
 

@@ -1,13 +1,10 @@
 import React from "react";
 import { Metadata } from "next";
 
+import CorePathogenResourceListing from "./resources";
 import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import ListResources from "../../../components/list-resources";
 import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
-import * as coreResources from "../../../content/resource-listing.yaml";
-
-import { pathogenResourceListingCallback } from "./callback";
 
 /**
  * React Server Component that generates the content of the /pathogens page
@@ -68,17 +65,7 @@ export default function PathogensPageContent({
       </FlexCenter>
 
       <HugeSpacer />
-
-      <ListResources
-        defaultGroupLinks
-        groupDisplayNames={coreResources["coreGroupDisplayNames"]}
-        quickLinks={coreResources["coreQuickLinks"]}
-        resourceListingCallback={pathogenResourceListingCallback}
-        resourceType="dataset"
-        tileData={coreResources["coreTiles"]}
-        versioned
-      />
-
+      <CorePathogenResourceListing/>
       <HugeSpacer />
     </>
   );
