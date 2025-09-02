@@ -22,7 +22,8 @@ import ExpandableTiles from "../expandable-tiles";
 import { HugeSpacer } from "../spacers";
 import Spinner from "../spinner";
 
-import { ResourceModal, SetModalResourceContext } from "./modal";
+import { Modal, SetModalResourceContext } from "./modal";
+import { DatasetHistory } from "./modal-contents-dataset-history";
 import ResourceGroup from "./resource-group";
 import TooltipWrapper from "./tooltip-wrapper";
 import { createFilterOption, useFilterOptions } from "./use-filter-options";
@@ -255,8 +256,10 @@ function ListResourcesContent({
           />
         </div>
 
-        {versioned && modalResource && (
-          <ResourceModal resource={convertVersionedResource(modalResource)} />
+        {resourceType==='dataset' && versioned && modalResource && (
+          <Modal>
+            <DatasetHistory resource={convertVersionedResource(modalResource)} />
+          </Modal> 
         )}
       </SetModalResourceContext.Provider>
     </div>
