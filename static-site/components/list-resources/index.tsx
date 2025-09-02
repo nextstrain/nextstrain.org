@@ -8,6 +8,7 @@ import React, {
   useCallback,
   createContext,
   useContext,
+  Suspense,
 } from "react";
 import Select, { MultiValue } from "react-select";
 import { Tooltip } from "react-tooltip-v5";
@@ -26,6 +27,7 @@ import ResourceGroup from "./resource-group";
 import TooltipWrapper from "./tooltip-wrapper";
 import { createFilterOption, useFilterOptions } from "./use-filter-options";
 import useSortAndFilter from "./use-sort-and-filter";
+import { useUrlQueries } from "./urlQueries";
 
 import {
   FilterTile,
@@ -110,7 +112,9 @@ export default function ListResources(
   return (
     <ErrorBoundary>
       <div ref={ref}>
-        <ListResourcesContent {...props} elWidth={elWidth} />
+        <Suspense>
+          <ListResourcesContent {...props} elWidth={elWidth} />
+        </Suspense>
       </div>
     </ErrorBoundary>
   );
@@ -158,6 +162,8 @@ function ListResourcesContent({
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<
     readonly FilterOption[]
   >([]);
+
+  useUrlQueries(selectedFilterOptions, setSelectedFilterOptions);
 
   const [sortMethod, changeSortMethod] = useState<SortMethod>("alphabetical");
 
