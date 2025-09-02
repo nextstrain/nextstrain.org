@@ -84,7 +84,8 @@ jobs:
         run: |
           node resourceIndexer/main.js \
             --gzip --output resources.json.gz \
-            --resourceTypes dataset --collections core staging
+            --resourceTypes dataset intermediate \
+            --collections core staging
       - name: Upload the new index, overwriting the existing index
         if: ${{ startsWith(env.RESOURCE_INDEX, 's3://') }}
         run: |
