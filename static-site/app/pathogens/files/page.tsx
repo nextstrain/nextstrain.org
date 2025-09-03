@@ -39,6 +39,9 @@ export default function PathogenWorkflowFiles(): React.ReactElement {
           {`Each filename below is a clickable (external) link which will download the latest version of the particular file.`}
           {` Hovering on a filename shows the last known update date however our knowledge of this lags by a day or two`}
           {` and so a more recent copy may be available; if this is the case the link will point to the latest version.`}
+          <br/>
+          <br/>
+          {`The 'show full history' link details the temporal history of files for a given pathogen.`}
           </FocusParagraphCentered>
       </FlexCenter>
 

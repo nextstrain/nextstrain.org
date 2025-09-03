@@ -82,3 +82,9 @@
   font-size: 2rem;
   font-weight: 500;
 }
+
+.clickableSpan {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #5097ba;
+}

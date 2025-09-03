@@ -22,8 +22,9 @@ import ExpandableTiles from "../expandable-tiles";
 import { HugeSpacer } from "../spacers";
 import Spinner from "../spinner";
 
-import { Modal, SetModalResourceContext } from "./modal";
+import { Modal, SetModalDataContext } from "./modal";
 import { DatasetHistory } from "./modal-contents-dataset-history";
+import { GroupHistory } from "./modal-contents-group-history";
 import ResourceGroup from "./resource-group";
 import TooltipWrapper from "./tooltip-wrapper";
 import { createFilterOption, useFilterOptions } from "./use-filter-options";
@@ -34,6 +35,7 @@ import {
   FilterTile,
   FilterOption,
   Group,
+  isGroup,
   QuickLink,
   Resource,
   SortMethod,
@@ -179,7 +181,7 @@ function ListResourcesContent({
 
   const availableFilterOptions = useFilterOptions(resourceGroups);
 
-  const [modalResource, setModalResource] = useState<Resource>();
+  const [modalData, setModalData] = useState<Resource|Group|null>(null);
 
   if (dataFetchError) {
     return (
@@ -232,7 +234,7 @@ function ListResourcesContent({
         />
       )) || <HugeSpacer />}
 
-      <SetModalResourceContext.Provider value={setModalResource}>
+      <SetModalDataContext.Provider value={setModalData}>
         <ScrollableAnchor id={LIST_ANCHOR}>
           <div>
             {resourceGroups.map((group) => (
@@ -256,12 +258,18 @@ function ListResourcesContent({
           />
         </div>
 
-        {resourceType==='dataset' && versioned && modalResource && (
+        {resourceType==='dataset' && versioned && modalData && !isGroup(modalData) && (
           <Modal>
-            <DatasetHistory resource={convertVersionedResource(modalResource)} />
+            <DatasetHistory resource={convertVersionedResource(modalData)} />
           </Modal> 
         )}
-      </SetModalResourceContext.Provider>
+        {resourceType==='intermediate' && modalData &&  isGroup(modalData) && (
+          <Modal>
+            <GroupHistory group={modalData} selectedFilterOptions={selectedFilterOptions}/>
+          </Modal>
+        )}
+
+      </SetModalDataContext.Provider>
     </div>
   );
 }

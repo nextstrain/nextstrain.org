@@ -16,7 +16,28 @@ export interface Group {
   resources: Resource[];
   groupUrl?: string;
   groupDisplayName?: string;
+  fetchHistory?: FetchGroupHistory;
 }
+
+/* helper function / type guard */
+export function isGroup(x: Group|Resource): x is Group {
+  return Object.hasOwn(x, 'resources');
+}
+
+export type PathVersionsForGroup = {
+  [id: string]: {
+    date: string,
+    [filename: string]: string
+  }[]
+}
+
+export type GroupFilesChangelog = [
+  date: string,
+  {[nameInclFilename: string]: string}
+][]
+
+
+export type FetchGroupHistory = () => Promise<PathVersionsForGroup>
 
 export interface VersionedGroup extends Group {
   nVersions: number;

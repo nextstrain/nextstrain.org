@@ -50,3 +50,28 @@
   font-weight: 500;
   padding-bottom: 15px;
 }
+
+.error {
+  color: red;
+  font-size: 2.5rem;
+  padding-bottom: 15px;
+}
+
+.changelogSectionTitle {
+  font-weight: 500;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.list {
+  margin-left: 20px;
+  margin-bottom: 3px;
+}
+
+.list a {
+  font-weight: 300;
+}
+
+.newLine {
+  margin-top: 5px;
+}
