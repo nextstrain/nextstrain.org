@@ -9,7 +9,7 @@ import { InternalError } from "../error-boundary";
 import IconContainer from "./icon-container";
 import { IndividualResource } from "./individual-resource";
 import { GroupLink, IndividualQuickLink } from "./group-and-resource-links";
-import { SetModalResourceContext } from "./modal";
+import { SetModalDataContext } from "./modal";
 import TooltipWrapper from "./tooltip-wrapper";
 
 import { DisplayNamedResource, Group, QuickLink, Resource, ResourceType } from "./types";
@@ -138,8 +138,8 @@ function ResourceGroupHeader({
   /** optional list of `QuickLink` objects to display */
   quickLinks?: QuickLink[];
 }): React.ReactElement {
-  const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) {
+  const setModalData = useContext(SetModalDataContext);
+  if (!setModalData) {
     throw new InternalError("Context not provided!");
   }
 
@@ -186,6 +186,11 @@ function ResourceGroupHeader({
                   `Most recent snapshot: ${group.lastUpdated}`}
               </span>
             </TooltipWrapper>
+          )}
+          {resourceType==='intermediate' && Object.hasOwn(group, 'fetchHistory') && (
+            <span className={styles.clickableSpan} onClick={() => {setModalData(group)}}>
+              Show full history
+            </span>
           )}
           <span className={styles.flexSpan} />
           <TooltipWrapper

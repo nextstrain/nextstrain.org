@@ -1,4 +1,4 @@
-import { ResourceType, Resource, Group } from "./types";
+import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory } from "./types";
 import { InternalError } from "../error-boundary";
 
 interface ResourceListingDatasets {
@@ -57,6 +57,9 @@ export async function listResourcesAPI(
       }
       if (groupUrl) {
         group.groupUrl = groupUrl(groupName);
+      }
+      if (resourceType==='intermediate' && sourceId==='core') {
+        group.fetchHistory = fetchIntermediateGroupHistoryFactory(sourceId, groupName);
       }
       return group;
     });
@@ -286,4 +289,28 @@ function _updateCadence(
   }
 
   return { summary, description };
+}
+
+
+/**
+ * Returns a function which is used as a callback to get the full history for the group
+ */
+function fetchIntermediateGroupHistoryFactory(
+  sourceId: string,
+  groupName: string,
+): FetchGroupHistory {
+  return async () => {
+    const resourceType = 'intermediate';
+    const requestPath = `/list-resources/${sourceId}/${resourceType}?groupHistory=${groupName}`;
+    const response = await fetch(requestPath, {
+      headers: { accept: "application/json" },
+    });
+    if (response.status !== 200) {
+      throw new Error(
+        `fetching history of group ${groupName} using the (application/json) list-resources API. Returned status code ${response.status}`,
+      );
+    }
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return ((await response.json())[resourceType][sourceId].pathVersions) as PathVersionsForGroup;
+  }
 }

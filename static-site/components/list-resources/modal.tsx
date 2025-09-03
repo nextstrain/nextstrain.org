@@ -13,7 +13,7 @@ import { MdClose } from "react-icons/md";
 
 import { InternalError } from "../error-boundary";
 
-import { Resource } from "./types";
+import { Resource, Group } from "./types";
 
 import styles from "./modal.module.css";
 
@@ -29,8 +29,8 @@ export const lightGrey = "rgba(0,0,0,0.1)";
  * that controls the resource loaded by the `<ResourceModal>` React
  * Component (which see)
  */
-export const SetModalResourceContext = createContext<React.Dispatch<
-  React.SetStateAction<Resource | undefined>
+export const SetModalDataContext = createContext<React.Dispatch<
+  React.SetStateAction<Resource | Group | null>
 > | null>(null);
 
 /**
@@ -42,13 +42,13 @@ export function Modal({
 }: {
   children: ReactNode
 }): React.ReactElement {
-  const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) {
+  const setModalData = useContext(SetModalDataContext);
+  if (!setModalData) {
     throw new InternalError("Context not provided!");
   }
   const dismissModal: () => void = useCallback(() => {
-    setModalResource(undefined);
-  }, [setModalResource]);
+    setModalData(null);
+  }, [setModalData]);
 
   useEffect(() => {
     function _handleEsc(event: KeyboardEvent): void {

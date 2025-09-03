@@ -4,7 +4,7 @@ import React, { useContext, useState } from "react";
 
 import { InternalError } from "../error-boundary";
 
-import { SetModalResourceContext } from "./modal";
+import { SetModalDataContext } from "./modal";
 
 import { Resource } from "./types";
 
@@ -58,7 +58,7 @@ export function IndividualQuickLink({
   /** the resource to display in a modal on a shift-click */
   resource: Resource | undefined;
 }): React.ReactElement | null {
-  const setModalResource = useContext(SetModalResourceContext);
+  const setModalResource = useContext(SetModalDataContext);
   if (!setModalResource) {
     throw new InternalError("Context not provided!");
   }
@@ -70,7 +70,7 @@ export function IndividualQuickLink({
   /** Helper function for handling shift-click events */
   function onClick(e: React.MouseEvent): void {
     if (e.shiftKey) {
-      setModalResource && setModalResource(resource);
+      resource && setModalResource && setModalResource(resource);
       // child elements (e.g. <a>) shouldn't receive the click
       e.preventDefault();
     }
@@ -113,8 +113,8 @@ export function IndividualResourceLink({
    */
   topOfColumn: boolean;
 }): React.ReactElement | null {
-  const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) {
+  const setModalData = useContext(SetModalDataContext);
+  if (!setModalData) {
     throw new InternalError("Context not provided!");
   }
 
@@ -122,7 +122,7 @@ export function IndividualResourceLink({
 
   function onClick(e: React.MouseEvent): void {
     if (e.shiftKey) {
-      setModalResource && setModalResource(resource);
+      setModalData && setModalData(resource);
       // child elements (e.g. <a>) shouldn't receive the click
       e.preventDefault();
     }
