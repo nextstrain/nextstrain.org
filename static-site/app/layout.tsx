@@ -1,6 +1,6 @@
+import React from "react";
 import { Metadata } from "next";
 import { Lato } from "next/font/google";
-import React from "react";
 
 import { BigSpacer } from "../components/spacers";
 import Footer from "../components/footer";
@@ -10,8 +10,10 @@ import PlausibleAnalytics from "../components/plausible-analytics/";
 import {
   blogFeedUrls,
   groupsApp,
+  siteLogo,
   siteTitle,
   siteTitleAlt,
+  siteUrl,
 } from "../data/BaseConfig";
 import UserDataWrapper from "../components/user-data-wrapper";
 
@@ -39,7 +41,30 @@ export const metadata: Metadata = {
     template: `%s - ${siteTitle}`,
   },
   description: siteTitleAlt,
+  openGraph: {
+    title: siteTitle,
+    description: siteTitleAlt,
+    url: siteUrl,
+    siteName: siteTitle,
+    images: [{ url: `${siteUrl}${siteLogo}` }],
+    locale: "en_US",
+    type: "website",
+  },
 };
+
+/**
+ * data used to generate JSON-LD schema script in the <head>
+ */
+const jsonLd: string = JSON.stringify({
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  url: siteUrl,
+  name: siteTitle,
+  image: `${siteUrl}${siteLogo}`,
+  alternateName: "Real-time tracking of pathogen evolution",
+})
+  // unicode-encode `<` to guard against potential XSS/HTML injection
+  .replace(/</g, "\\u003c");
 
 /**
  * A React Component that provides the overall page layout used by
@@ -74,12 +99,19 @@ export default function RootLayout({
               title="RSS2 feed for nextstrain.org/blog"
               type="application/rss+xml"
             />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: jsonLd,
+              }}
+            />
           </>
         )}
       </head>
       <body className={lato.variable}>
         <UserDataWrapper>
           <Nav />
+
           <main>
             {children}
 
