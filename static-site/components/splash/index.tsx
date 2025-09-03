@@ -361,7 +361,7 @@ function Tile({
           <div className={styles.tileName}>{tile.name}</div>
 
           <div className={styles.tileImgContainer}>
-            <img className={styles.tileImg} src={tileImg} alt={""} />;
+            <img className={styles.tileImg} src={tileImg} alt={""} />
             <div className={styles.infoIcons}>
               <TileSourceIcon url={tile.url} isNarrative={isNarrative} />
               {isNarrative && <NarrativeIcon />}
