@@ -10,6 +10,7 @@ import PlausibleAnalytics from "../components/plausible-analytics/";
 import {
   blogFeedUrls,
   groupsApp,
+  siteLogo,
   siteTitle,
   siteTitleAlt,
   siteUrl,
@@ -45,11 +46,7 @@ export const metadata: Metadata = {
     description: siteTitleAlt,
     url: siteUrl,
     siteName: siteTitle,
-    images: [
-      {
-        url: "https://nextstrain.org/nextstrain-logo-small.png",
-      },
-    ],
+    images: [{ url: `${siteUrl}${siteLogo}` }],
     locale: "en_US",
     type: "website",
   },
@@ -61,9 +58,9 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  url: "https://nextstrain.org/",
-  name: "Nextstrain",
-  image: "https://nextstrain.org/nextstrain-logo-small.png",
+  url: siteUrl,
+  name: siteTitle,
+  image: `${siteUrl}${siteLogo}`,
   alternateName: "Real-time tracking of pathogen evolution",
 };
 
