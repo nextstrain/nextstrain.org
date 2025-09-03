@@ -57,26 +57,18 @@ export function Modal({
       }
     }
     window.addEventListener("keydown", _handleEsc);
+
+    // Prevent background scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+
     return (): void => {
       window.removeEventListener("keydown", _handleEsc);
+      document.body.style.overflow = 'unset';
     };
   }, [dismissModal]);
 
-  const scrollRef = useCallback((node: HTMLDivElement): void => {
-    // A CSS-only solution would be to set 'overflow: hidden' on
-    // <body>. This solution works well, but there are still ways to
-    // scroll (e.g. via down/up arrows)
-    node?.addEventListener(
-      "wheel",
-      (event: WheelEvent): void => {
-        event.preventDefault();
-      },
-      false,
-    );
-  }, []);
-
   return (
-    <div ref={scrollRef}>
+    <div>
       <div
         className={styles.background}
         style={{ backgroundColor: `${lightGrey}` }}

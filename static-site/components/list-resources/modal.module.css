@@ -24,8 +24,9 @@
   font-size: 18px;
   left: 10%;
   max-width: 80%;
-  min-height: 80%;
+  max-height: 80%;
   min-width: 80%;
+  overflow: auto;
   padding: 20px;
   position: fixed;
   top: 10%;
