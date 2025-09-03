@@ -55,14 +55,16 @@ export const metadata: Metadata = {
 /**
  * data used to generate JSON-LD schema script in the <head>
  */
-const jsonLd = {
+const jsonLd: string = JSON.stringify({
   "@context": "http://schema.org",
   "@type": "WebSite",
   url: siteUrl,
   name: siteTitle,
   image: `${siteUrl}${siteLogo}`,
   alternateName: "Real-time tracking of pathogen evolution",
-};
+})
+  // unicode-encode `<` to guard against potential XSS/HTML injection
+  .replace(/</g, "\\u003c");
 
 /**
  * A React Component that provides the overall page layout used by
@@ -100,7 +102,7 @@ export default function RootLayout({
             <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{
-                __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+                __html: jsonLd,
               }}
             />
           </>
