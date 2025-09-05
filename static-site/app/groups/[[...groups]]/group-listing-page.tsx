@@ -10,7 +10,7 @@ import {
 import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
 import ListResources from "../../../components/list-resources";
-import { ResourceListingInfo } from "../../../components/list-resources/types";
+import { Group, Resource} from "../../../components/list-resources/types";
 import { BigSpacer, HugeSpacer } from "../../../components/spacers";
 import { UserContext } from "../../../components/user-data-wrapper";
 import { DataFetchError } from "../../../data/SiteConfig";
@@ -108,7 +108,7 @@ export default function GroupListingPage(): React.ReactElement {
       <ListResources
         resourceType="dataset"
         versioned={false}
-        resourceListingCallback={_resourceListingCallback}
+        fetchResourceGroups={_resourcesCallback}
       />
 
       <HugeSpacer />
@@ -155,27 +155,42 @@ function _cleanUpAvailable(datasets: DataResource[]): DatasetType[] {
 // above in the `useEffect()` hook. Ideally we could make that request
 // once, and re-use the response.
 //   - jsja, 08 Aug 2025
-async function _resourceListingCallback(): Promise<ResourceListingInfo> {
-  const sourceUrl = "/charon/getAvailable?prefix=/groups/";
-
+async function _resourcesCallback(): Promise<Group[]> {
+  // NOTE: "group" has two meanings here - a nextstrain group and a group of
+  // resources for listing. Luckily for us the "group name" is the same for both
+  const route = "/charon/getAvailable?prefix=/groups/";
+  let datasets: AvailableGroups['datasets'];
   try {
-    const response = await fetchAndParseJSON<AvailableGroups>(sourceUrl);
-    const datasets = response["datasets"];
-
-    // Use an empty array as the value side, to indicate that there are
-    // no dated versions associated with this data
-    // const pathVersions: Record<string, string[]> = Object.assign(
-    const pathVersions = Object.assign(
-      {},
-      ...datasets.map((ds) => ({
-        [ds.request.replace(/^\/groups\//, "")]: [],
-      })),
-    );
-
-    return { pathPrefix: "groups/", pathVersions };
+    datasets = ((await fetchAndParseJSON<AvailableGroups>(route)))['datasets'];
   } catch (err) {
-    const message = `fetching data from "${sourceUrl}" failed`;
+    const message = `getAvailable request with query 'prefix=/groups/' failed`;
     console.error(message, err instanceof Error ? err.message : String(err));
     throw new Error(message);
   }
+
+  /* Convert the API response structure into `Group[]` */
+  const resources: Resource[] = datasets.map((dataset) => {
+    const name = dataset.request
+      .replace(/^\/groups\//, '');
+    const nameParts = name.split('/');
+    const groupName = nameParts[0];
+    if (groupName===undefined) return undefined;
+    const sortingName = name;
+    const url = dataset.request;
+    return {name, groupName, nameParts, sortingName, url};
+  }).filter((r): r is Resource => r!==undefined);
+
+  const groups: Group[] = Array.from(new Set(resources.map((r) => r.groupName)))
+    .map((groupName) => {
+      const filteredResources = resources.filter((r) => r.groupName===groupName);
+      return {
+        groupName,
+        groupDisplayName: groupName, 
+        resources: filteredResources,
+        nResources: filteredResources.length,
+        nVersions: undefined,
+        lastUpdated: undefined,
+      }
+    });
+  return groups;
 }

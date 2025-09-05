@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 import { IconType } from "react-icons";
-import { MdFormatListBulleted, MdHistory } from "react-icons/md";
+import { MdFormatListBulleted, MdHistory, MdOutlineWarningAmber } from "react-icons/md";
 
 import { InternalError } from "../error-boundary";
 
@@ -56,6 +56,9 @@ export default function IconContainer({
       break;
     case "bullet-list":
       Icon = MdFormatListBulleted;
+      break;
+    case "out-of-date":
+      Icon = MdOutlineWarningAmber;
       break;
     default:
       throw new InternalError(`${iconName} is not a valid icon name`);
