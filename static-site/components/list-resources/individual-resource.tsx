@@ -70,10 +70,16 @@ export function IndividualResource({
     return null;
   }
 
-  // add history if not mobile and resource has version info
+  // If an out of date warning exists then show it. Otherwise show cadence information if it's available
   let history: React.JSX.Element | null = null;
-  if (
-    !isMobile &&
+  if (resource.outOfDateWarning) {
+    history = (
+      <TooltipWrapper description={resource.outOfDateWarning}>
+        <IconContainer iconName="out-of-date" text={''}/>
+      </TooltipWrapper>
+    );
+  } else if (
+    !isMobile && // don't show cadence information on mobile
     resource.updateCadence &&
     resource.nVersions &&
     resource.lastUpdated
