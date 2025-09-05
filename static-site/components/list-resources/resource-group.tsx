@@ -381,7 +381,9 @@ function _getMaxResourceWidth(
     (w: number, r: DisplayNamedResource): number => {
       /* add the pixels for the display name */
       let _w = r.displayName.default.length * namePxPerChar;
-      if (r.nVersions && r.updateCadence) {
+      if (r.outOfDateWarning) {
+        _w += 40; // icon + padding
+      } else if (r.nVersions && r.updateCadence) {
         _w += gapWidth + iconWidth;
         _w +=
           ((r.updateCadence.summary.length || 0) +

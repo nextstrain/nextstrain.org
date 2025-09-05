@@ -129,16 +129,19 @@ function groupDatasetsByPathogen(
         if (sortedDates[0] === undefined) {
           throw new InternalError("Resource does not have any dates.");
         }
-
-        resourceDetails.lastUpdated = sortedDates.at(-1);
+        const lastUpdated = sortedDates.at(-1) as string; // eslint-disable-line @typescript-eslint/consistent-type-assertions
+        resourceDetails.lastUpdated = lastUpdated;
         resourceDetails.firstUpdated = sortedDates[0];
         resourceDetails.dates = sortedDates;
         resourceDetails.nVersions = sortedDates.length;
         resourceDetails.updateCadence = _updateCadence(
           sortedDates.map((date) => new Date(date)),
         );
+        const nDaysOld = _timeDelta(lastUpdated);
+        if (nDaysOld && nDaysOld>365) {
+          resourceDetails.outOfDateWarning = `Warning! This dataset may be over a year old. Last known update on ${lastUpdated}`;
+        }
       }
-
       (store[groupName] ??= []).push(resourceDetails);
 
       return store;
@@ -161,15 +164,19 @@ function groupIntermediatesByPathogen(
       for (const [filename, urlDatePair] of Object.entries(d)) {
         if (filename==='mostRecentlyIndexed') continue;
         const nameParts = [...baseParts, filename]
+        const [url, lastUpdated] = urlDatePair;
         const resourceDetails: Resource = {
           name: nameParts.join('/'), // includes filename
           groupName, // decoupled from nameParts
           nameParts,
           sortingName: _sortableName(nameParts),
-          url: urlDatePair[0],
-          lastUpdated: urlDatePair[1],
+          url,
+          lastUpdated,
         };
-
+        const nDaysOld = _timeDelta(lastUpdated);
+        if (nDaysOld && nDaysOld>365) {
+          resourceDetails.outOfDateWarning = `Warning! This file may be over a year old. Last known update on ${lastUpdated}`;
+        }
         (store[groupName] ??= []).push(resourceDetails);
       }
 
@@ -313,4 +320,16 @@ function fetchIntermediateGroupHistoryFactory(
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return ((await response.json())[resourceType][sourceId].pathVersions) as PathVersionsForGroup;
   }
+}
+
+
+/**
+ * Return the number of days between the provided date (YYYY-MM-DD) and today.
+ * Note that due to subleties around dates, time zones etc this may be +- 1 day.
+ */
+function _timeDelta(t: string): number|null {
+  const [year, month, day] = t.split("-").map(Number);
+  if (year===undefined || month===undefined ) return null;
+  const d = new Date(year, month - 1, day);
+  return Math.round((new Date().getTime() - d.getTime()) / msInADay);
 }

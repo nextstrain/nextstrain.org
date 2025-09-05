@@ -58,6 +58,10 @@ export interface Resource {
   dates?: string[];
   nVersions?: number;
   updateCadence?: UpdateCadence;
+
+  /** If the resource is (potentially) out of date (according to the `lastUpdated` property)
+   * the `outOfDateWarning` may be set */
+  outOfDateWarning?: string;
 }
 
 export interface DisplayNamedResource extends Resource {
