@@ -1,5 +1,12 @@
 import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory } from "./types";
 import { InternalError } from "../error-boundary";
+import fetchAndParseJSON from "../../util/fetch-and-parse-json";
+
+interface APIWrapper<T> {
+  [resourceType: string]: {
+    [sourceId: string]: T
+  }
+}
 
 interface ResourceListingDatasets {
   pathPrefix: string;
@@ -32,16 +39,11 @@ export async function listResourcesAPI(
   }
 ): Promise<Group[]> {
   const requestPath = `/list-resources/${sourceId}/${resourceType}`;
-  const response = await fetch(requestPath, {
-    headers: { accept: "application/json" },
-  });
-  if (response.status !== 200) {
-    throw new Error(
-      `fetching application/json data from "${requestPath}" returned status code ${response.status}`,
-    );
+  const response = await fetchAndParseJSON<APIWrapper<ResourceListingDatasets |  ResourceListingIntermediates>>(requestPath);
+  const data = response?.[resourceType]?.[sourceId];
+  if (data===undefined) {
+    throw new Error(`Resources request to ${requestPath} returned no data for source ${sourceId}, resource ${resourceType}`)
   }
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  const data = ((await response.json())[resourceType][sourceId]) as ResourceListingDatasets |  ResourceListingIntermediates;
   const urlBuilder = (name) => `/${data.pathPrefix}${name}`;
   const areDatasets = (x: ResourceListingDatasets |  ResourceListingIntermediates): x is ResourceListingDatasets => {
     return Object.hasOwn(x, 'pathVersions');
@@ -309,16 +311,12 @@ function fetchIntermediateGroupHistoryFactory(
   return async () => {
     const resourceType = 'intermediate';
     const requestPath = `/list-resources/${sourceId}/${resourceType}?groupHistory=${groupName}`;
-    const response = await fetch(requestPath, {
-      headers: { accept: "application/json" },
-    });
-    if (response.status !== 200) {
-      throw new Error(
-        `fetching history of group ${groupName} using the (application/json) list-resources API. Returned status code ${response.status}`,
-      );
+    const response = await fetchAndParseJSON<APIWrapper<{pathVersions: PathVersionsForGroup}>>(requestPath);
+    const data = response?.[resourceType]?.[sourceId]?.pathVersions;
+    if (data===undefined) {
+      throw new Error(`Resources request to ${requestPath} returned no data for source ${sourceId}, resource ${resourceType}`)
     }
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    return ((await response.json())[resourceType][sourceId].pathVersions) as PathVersionsForGroup;
+    return data;
   }
 }
 
