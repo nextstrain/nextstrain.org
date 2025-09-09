@@ -8,6 +8,7 @@ import React, {
   useCallback,
   createContext,
   useContext,
+  Suspense,
 } from "react";
 import Select, { MultiValue } from "react-select";
 import { Tooltip } from "react-tooltip-v5";
@@ -21,50 +22,47 @@ import ExpandableTiles from "../expandable-tiles";
 import { HugeSpacer } from "../spacers";
 import Spinner from "../spinner";
 
-import { ResourceModal, SetModalResourceContext } from "./modal";
+import { Modal, SetModalDataContext } from "./modal";
+import { DatasetHistory } from "./modal-contents-dataset-history";
+import { GroupHistory } from "./modal-contents-group-history";
 import ResourceGroup from "./resource-group";
 import TooltipWrapper from "./tooltip-wrapper";
 import { createFilterOption, useFilterOptions } from "./use-filter-options";
 import useSortAndFilter from "./use-sort-and-filter";
-import useDataFetch from "./use-data-fetch";
+import { useUrlQueries } from "./urlQueries";
 
 import {
   FilterTile,
   FilterOption,
   Group,
+  isGroup,
   QuickLink,
   Resource,
-  ResourceListingInfo,
   SortMethod,
   convertVersionedResource,
+  ResourceType,
 } from "./types";
 
 import styles from "./styles.module.css";
 
 interface ListResourcesProps {
-  /** Is the resource versioned? */
+  /** Is the resource versioned?
+   * TODO - this is currently all-or-nothing, however we should instead parse the
+   * resources (once available) and determine this on a per-group (?) basis
+   */
   versioned: boolean;
 
   /** Set of quick links associated with the resource */
   quickLinks?: QuickLink[];
 
-  /**
-   * Should the group name itself be a url? (which we let the server
-   * redirect)
-   */
-  defaultGroupLinks?: boolean;
-
-  /** Mapping from group name -> display name */
-  groupDisplayNames?: Record<string, string>;
-
   /** Metadata about the tile */
   tileData?: FilterTile[];
 
-  /** Callback to use to get data */
-  resourceListingCallback: () => Promise<ResourceListingInfo>;
+  /** Resource type modifies the language used to describe resources */
+  resourceType: ResourceType;
 
-  /** This is currently unused */
-  resourceType: string;
+  /** Function to return groups of resources for display */
+  fetchResourceGroups: () => Promise<Group[]>
 }
 
 /** The name of the anchor that represents the top of the resource listing */
@@ -117,7 +115,9 @@ export default function ListResources(
   return (
     <ErrorBoundary>
       <div ref={ref}>
-        <ListResourcesContent {...props} elWidth={elWidth} />
+        <Suspense>
+          <ListResourcesContent {...props} elWidth={elWidth} />
+        </Suspense>
       </div>
     </ErrorBoundary>
   );
@@ -136,27 +136,37 @@ export default function ListResources(
 function ListResourcesContent({
   versioned = true,
   elWidth,
+  resourceType,
   quickLinks,
-  defaultGroupLinks = false,
-  groupDisplayNames,
   tileData,
-  resourceListingCallback,
+  fetchResourceGroups,
 }: ListResourcesProps & {
   /** width of the element */
   elWidth: number;
 }): React.ReactElement {
-  const { groups, dataFetchError } = useDataFetch(
-    versioned,
-    resourceListingCallback,
-    defaultGroupLinks,
-    groupDisplayNames,
-  );
+  const [groups, setGroups] = useState<Group[]>();
+  const [dataFetchError, setDataFetchError] = useState<boolean>(false);
+
+  useEffect((): void => {
+    async function effect(): Promise<void> {
+      try {
+        setGroups(await fetchResourceGroups())
+      } catch (err) {
+        console.error(`Error while fetching and/or parsing data`);
+        console.error(err);
+        return setDataFetchError(true);
+      }
+    }
+    effect();
+  }, [fetchResourceGroups]);
 
   const tiles = useTiles(tileData, groups);
 
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<
     readonly FilterOption[]
   >([]);
+
+  useUrlQueries(selectedFilterOptions, setSelectedFilterOptions);
 
   const [sortMethod, changeSortMethod] = useState<SortMethod>("alphabetical");
 
@@ -171,7 +181,7 @@ function ListResourcesContent({
 
   const availableFilterOptions = useFilterOptions(resourceGroups);
 
-  const [modalResource, setModalResource] = useState<Resource>();
+  const [modalData, setModalData] = useState<Resource|Group|null>(null);
 
   if (dataFetchError) {
     return (
@@ -214,6 +224,7 @@ function ListResourcesContent({
         options={availableFilterOptions}
         selectedFilterOptions={selectedFilterOptions}
         setSelectedFilterOptions={setSelectedFilterOptions}
+        resourceType={resourceType}
       />
 
       {(versioned && (
@@ -223,11 +234,12 @@ function ListResourcesContent({
         />
       )) || <HugeSpacer />}
 
-      <SetModalResourceContext.Provider value={setModalResource}>
+      <SetModalDataContext.Provider value={setModalData}>
         <ScrollableAnchor id={LIST_ANCHOR}>
           <div>
             {resourceGroups.map((group) => (
               <ResourceGroup
+                resourceType={resourceType}
                 key={group.groupName}
                 group={group}
                 quickLinks={quickLinks}
@@ -246,10 +258,18 @@ function ListResourcesContent({
           />
         </div>
 
-        {versioned && modalResource && (
-          <ResourceModal resource={convertVersionedResource(modalResource)} />
+        {resourceType==='dataset' && versioned && modalData && !isGroup(modalData) && (
+          <Modal>
+            <DatasetHistory resource={convertVersionedResource(modalData)} />
+          </Modal> 
         )}
-      </SetModalResourceContext.Provider>
+        {resourceType==='intermediate' && modalData &&  isGroup(modalData) && (
+          <Modal>
+            <GroupHistory group={modalData} selectedFilterOptions={selectedFilterOptions}/>
+          </Modal>
+        )}
+
+      </SetModalDataContext.Provider>
     </div>
   );
 }
@@ -262,6 +282,7 @@ function Filter({
   options,
   selectedFilterOptions,
   setSelectedFilterOptions,
+  resourceType,
 }: {
   /** list of available `FilterOption` objects */
   options: FilterOption[];
@@ -273,6 +294,9 @@ function Filter({
   setSelectedFilterOptions: React.Dispatch<
     React.SetStateAction<readonly FilterOption[]>
   >;
+
+  /** Resource type modifies the language used to describe resources */
+  resourceType: ResourceType;
 }): React.ReactElement {
   const onChange = (options: MultiValue<FilterOption>) => {
     if (options) {
@@ -283,7 +307,7 @@ function Filter({
   return (
     <div className="filter">
       <Select
-        placeholder={"Filter by keywords in dataset names"}
+        placeholder={`Filter by keywords in ${resourceType==='dataset'?'dataset':'file'} names`}
         isMulti
         options={options}
         value={selectedFilterOptions}

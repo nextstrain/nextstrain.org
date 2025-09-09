@@ -129,12 +129,18 @@ async function updateResourceVersions() {
 }
 
 /**
- * ListResources is intended to respond to resource listing queries. The current
- * implementation only handles a single source Id and single resource type, but
- * this will be extended as needed.
+ * ListResources creates the response data for resource listing queries
+ * 
+ * Note: 'word' as used here relates to the resource name/ID in the sense that the
+ * ID is made up of slash-separated words.
  */
 class ListResources {
-  constructor(sourceIds, resourceTypes) {
+   /**
+   * @param {string[]} sourceIds Currently this should only contain a single source ID, e.g. `['core']`
+   * @param {string[]} resourceTypes Currently this should contain a single resource type, e.g. `['dataset']`
+   * @param {object} query URL queries associated with the request
+   */
+  constructor(sourceIds, resourceTypes, query) {
     if (sourceIds.length>1) {
       throw new BadRequest(`Listing resources currently only supports a single source`)
     }
@@ -142,13 +148,16 @@ class ListResources {
       throw new BadRequest(`Listing resources currently only supports a single resource type`)
     }
     if (!resources[sourceIds[0]]) {
-      throw new BadRequest(`Source ${sourceIds[0]} does not exist in the index`)
+      throw new NotFound(`Source ${sourceIds[0]} does not exist in the index`)
     }
     this.sourceId = sourceIds[0];
     this.resourceType = resourceTypes[0];
+    // "group" in the sense used here is a ResourceListing Group - see
+    // static-site/components/list-resources/types.ts for more context
+    this.groupHistory = query.groupHistory;
   }
 
-  coreDatasetFilter([name, ]) {
+  filterResources([name, ]) {
     /* Consult the manifest to and restrict our listed resources to those whose
     _first words_ appear as a top-level key the manifest. Subsequent words
     aren't checked, so datasets may be returned which aren't explicitly defined
@@ -159,6 +168,9 @@ class ListResources {
     as the listed resources should be those for which we have added the pathogen
     name to the manifest.
     */
+    if (this.sourceId!=='core') {
+      return true;
+    }
     if (!this._coreDatasetFirstWords) {
       this._coreDatasetFirstWords = new Set(
         global?.availableDatasets?.core?.map((path) => path.split("/")[0]) || []
@@ -186,26 +198,42 @@ class ListResources {
 
 
   get data() {
-    const _resources = resources?.[this.sourceId]?.[this.resourceType];
-    if (!_resources) {
+    const _resources = Object.entries(resources?.[this.sourceId]?.[this.resourceType] || [])
+      .filter((el) => this.filterResources(el)); // fat-arrow to avoid rebinding `this`
+
+    if (!_resources.length) {
       throw new NotFound(`No resources exist for the provided source-id / resource-type`);
     }
-    if (this.resourceType !== 'dataset') {
-      throw new InternalServerError(`Resource listing is currently only implemented for datasets`);
+
+    // Use conditional logic to select appropriate behaviour as it's simpler to understand
+    // than splitting behaviour across multiple classes (in this case, anyway)
+    let key;
+    let valuePairs;
+    if (this.resourceType === 'dataset') {
+      key = "pathVersions";
+      valuePairs = _resources.map(_formatDatasets);
+    } else if (this.resourceType === 'intermediate') {
+      if (this.groupHistory) {
+        key = "pathVersions";
+        valuePairs = _resources
+          .filter(([name,]) => name.split('/')[0]===this.groupHistory)
+          .map(_formatIntermediates);
+      } else {
+        key = "latestVersions";
+        valuePairs = _resources
+          .map(_formatIntermediates)
+          .map(_onlyLatestIntermediates);
+      }
     }
-    const pathVersions = Object.fromEntries(
-      Object.entries(_resources).map(([name, data]) => {
-        return [name, data.versions.map((v) => v.date)];
-      })
-      .filter((d) => this.sourceId==='core' ? this.coreDatasetFilter(d) : true)
-    )
-    const d = {}
-    d[this.resourceType] = {}
-    d[this.resourceType][this.sourceId] = {
-      pathVersions,
-      pathPrefix: this.pathPrefixBySource(this.sourceId)
-    }
-    return d;
+
+    return {
+      [this.resourceType]: {
+        [this.sourceId]: {
+          pathPrefix: this.pathPrefixBySource(this.sourceId),
+          [key]: Object.fromEntries(valuePairs),
+        }
+      }
+    };
   }
 }
 
@@ -214,4 +242,51 @@ export {
   ResourceVersions,
   ListResources,
   updateResourceVersions,
+}
+
+/**
+ * Format information about datasets into the shape for the API result
+ * `name` is the ID of the resource, e.g. "measles", "seasonal-flu/h3n2/ha/12y"
+ * `data` is the corresponding data in the (pre-computed) resource index
+ */
+function _formatDatasets([name, data]) {
+  return [name, data.versions.map((v) => v.date)];
+}
+
+/**
+ * Format information about intermediate files into the shape for the API result
+ * `name` is the ID of the resource, e.g. "measles", "seasonal-flu/h3n2/ha/12y"
+ * `data` is the corresponding data in the (pre-computed) resource index
+ */
+function _formatIntermediates([name, data]) {
+  const versions = data.versions.map(({date, fileUrls}) => ({
+    date,
+    ...fileUrls
+  }));
+  return [name, versions];
+}
+
+/**
+ * Given a chronological list of data files for a given intermediate ID (name)
+ * return the set of filenames associated with them and, for each file, the most
+ * recently updated date (which we know about). We also drop the versionId query
+ * (if it exists) as it's preferable to fetch the current S3 object version
+ * rather than the latest one in the inventory as that may be out of date.
+ */
+function _onlyLatestIntermediates([name, data]) {
+  // data is sorted in the indexer but sort again to make sure
+  const chronologicalData = data.sort((a, b) => a.date<b.date ? 1 : a.date>b.date ? -1 : 0);
+  const files = {};
+  for (const dataPoint of chronologicalData) {
+    const date = dataPoint.date;
+    for (const [filenameOrDate, indexedUrlOrDate] of Object.entries(dataPoint)) {
+      if (!filenameOrDate) continue;
+      if (filenameOrDate==='date') continue;
+      if (Object.hasOwn(files, filenameOrDate)) continue;
+      const link = new URL(indexedUrlOrDate);
+      link.searchParams.delete('versionId')
+      files[filenameOrDate] = [link.toString(), date]
+    }
+  }
+  return [name, files];
 }

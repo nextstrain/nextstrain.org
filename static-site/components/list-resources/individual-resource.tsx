@@ -6,7 +6,7 @@ import { InternalError } from "../error-boundary";
 
 import { IndividualResourceLink } from "./group-and-resource-links";
 import IconContainer from "./icon-container";
-import { SetModalResourceContext } from "./modal";
+import { SetModalDataContext } from "./modal";
 import TooltipWrapper from "./tooltip-wrapper";
 
 import { Resource } from "./types";
@@ -31,8 +31,8 @@ export function IndividualResource({
   /** the resource to display */
   resource: Resource;
 }): React.ReactElement | null {
-  const setModalResource = useContext(SetModalResourceContext);
-  if (!setModalResource) {
+  const setModalData = useContext(SetModalDataContext);
+  if (!setModalData) {
     throw new InternalError("Context not provided!");
   }
 
@@ -70,10 +70,16 @@ export function IndividualResource({
     return null;
   }
 
-  // add history if not mobile and resource has version info
+  // If an out of date warning exists then show it. Otherwise show cadence information if it's available
   let history: React.JSX.Element | null = null;
-  if (
-    !isMobile &&
+  if (resource.outOfDateWarning) {
+    history = (
+      <TooltipWrapper description={resource.outOfDateWarning}>
+        <IconContainer iconName="out-of-date" text={''}/>
+      </TooltipWrapper>
+    );
+  } else if (
+    !isMobile && // don't show cadence information on mobile
     resource.updateCadence &&
     resource.nVersions &&
     resource.lastUpdated
@@ -87,7 +93,7 @@ export function IndividualResource({
         }
       >
         <IconContainer
-          handleClick={() => setModalResource(resource)}
+          handleClick={() => setModalData(resource)}
           iconName="history"
           text={`${resource.updateCadence.summary} (n=${resource.nVersions})`}
         />

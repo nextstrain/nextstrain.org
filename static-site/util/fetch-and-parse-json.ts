@@ -6,7 +6,7 @@ export default async function fetchAndParseJSON<T = unknown>(
   });
 
   if (!response.ok) {
-    throw new Error(`fetch failed: ${response.status} ${response.statusText}`);
+    throw new Error(`application/json request to ${jsonUrl} failed: ${response.status} ${response.statusText}`);
   } else {
     return await response.json();
   }

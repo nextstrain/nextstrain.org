@@ -16,12 +16,35 @@ export interface Group {
   resources: Resource[];
   groupUrl?: string;
   groupDisplayName?: string;
+  fetchHistory?: FetchGroupHistory;
 }
+
+/* helper function / type guard */
+export function isGroup(x: Group|Resource): x is Group {
+  return Object.hasOwn(x, 'resources');
+}
+
+export type PathVersionsForGroup = {
+  [id: string]: {
+    date: string,
+    [filename: string]: string
+  }[]
+}
+
+export type GroupFilesChangelog = [
+  date: string,
+  {[nameInclFilename: string]: string}
+][]
+
+
+export type FetchGroupHistory = () => Promise<PathVersionsForGroup>
 
 export interface VersionedGroup extends Group {
   nVersions: number;
   lastUpdated: string;
 }
+
+export type ResourcesPerPathogen = Record<string, Resource[]>
 
 export interface Resource {
   name: string;
@@ -35,6 +58,10 @@ export interface Resource {
   dates?: string[];
   nVersions?: number;
   updateCadence?: UpdateCadence;
+
+  /** If the resource is (potentially) out of date (according to the `lastUpdated` property)
+   * the `outOfDateWarning` may be set */
+  outOfDateWarning?: string;
 }
 
 export interface DisplayNamedResource extends Resource {
@@ -54,10 +81,8 @@ export interface ResourceDisplayName {
   default: string;
 }
 
-export interface ResourceListingInfo {
-  pathPrefix: string;
-  pathVersions: Record<string, string[]>;
-}
+export type ResourceType = 'dataset'|'intermediate';
+
 
 export interface UpdateCadence {
   summary: string;

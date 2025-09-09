@@ -1,13 +1,10 @@
 import React from "react";
 import { Metadata } from "next";
 
+import CorePathogenResourceListing from "./resources";
 import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import ListResources from "../../../components/list-resources";
 import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
-import * as coreResources from "../../../content/resource-listing.yaml";
-
-import { pathogenResourceListingCallback } from "./callback";
 
 /**
  * React Server Component that generates the content of the /pathogens page
@@ -64,21 +61,15 @@ export default function PathogensPageContent({
             our GitHub page
           </a> or by loading a dataset and clicking the &ldquo;built
           with&rdquo; link at the top of the page.
+          <br />
+          <br />
+          Workflow files such as sequences and metadata are listed on the
+          {' '}<a href="/pathogens/files">pathogens/files page</a> where available.
         </FocusParagraphCentered>
       </FlexCenter>
 
       <HugeSpacer />
-
-      <ListResources
-        defaultGroupLinks
-        groupDisplayNames={coreResources["coreGroupDisplayNames"]}
-        quickLinks={coreResources["coreQuickLinks"]}
-        resourceListingCallback={pathogenResourceListingCallback}
-        resourceType="dataset"
-        tileData={coreResources["coreTiles"]}
-        versioned
-      />
-
+      <CorePathogenResourceListing/>
       <HugeSpacer />
     </>
   );
