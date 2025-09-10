@@ -17,6 +17,7 @@ set -euo pipefail
 
 : "${PROD_APP_NAME:=nextstrain-server}"
 : "${CANARY_APP_NAME:=nextstrain-canary}"
+: "${RESOURCE_INDEX:=}"
 
 main () {
     if [[ "$IS_WORKFLOW_CALL" == true || \
@@ -35,6 +36,8 @@ main () {
 }
 
 build_prod_and_canary_ref_matrix() {
+    >&2 echo "Creating ref matrix from prod (${PROD_APP_NAME}) and canary (${CANARY_APP_NAME}) apps"
+
     local prod_commit prod_resource_index
     local canary_commit canary_resource_index
     local jq_array
@@ -42,8 +45,14 @@ build_prod_and_canary_ref_matrix() {
     prod_commit=$(get_heroku_slug_commit "$PROD_APP_NAME")
     prod_resource_index=$(get_resource_index_at_commit "$prod_commit")
 
+    >&2 echo "Prod commit ${prod_commit}"
+    >&2 echo "Prod resource index ${prod_resource_index}"
+
     canary_commit=$(get_heroku_slug_commit "$CANARY_APP_NAME")
     canary_resource_index=$(get_resource_index_at_commit "$canary_commit")
+
+    >&2 echo "Canary commit ${canary_commit}"
+    >&2 echo "Canary resource index ${canary_resource_index}"
 
     jq -c --null-input \
         --arg PROD_COMMIT "$prod_commit" \
@@ -100,7 +109,15 @@ get_resource_index_at_commit() {
     # script. We can remove it once all the servers have been updated.
     #   -Jover, 01 May 2024
     if [[ -f "$repo/scripts/get-resource-index.js" ]]; then
-        npm ci --silent --prefix "$repo"
+        >&2 echo "Running $repo/scripts/get-resource-index.js"
+        >&2 echo "RESOURCE_INDEX in $repo/env/production/config.json: $(jq -r '.RESOURCE_INDEX' $repo/env/production/config.json)"
+
+        if [[ -n "${RESOURCE_INDEX}" ]]; then
+            >&2 echo "RESOURCE_INDEX envvar: $RESOURCE_INDEX"
+        fi
+
+        cd "$repo"
+        npm ci --silent
         resource_index=$(node "$repo"/scripts/get-resource-index.js)
     else
         resource_index=$(jq -r '.RESOURCE_INDEX' "$repo"/env/production/config.json)
