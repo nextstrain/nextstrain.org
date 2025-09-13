@@ -76,7 +76,7 @@ jobs:
         with:
           node-version-file: 'package.json'
       - run: npm ci
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::827581582529:role/GitHubActionsRoleResourceIndexer
