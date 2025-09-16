@@ -27,7 +27,7 @@ We provide two views of mumps for genomic analysis, a Global and a North-America
 
 ## Nextclade dataset
 
-We provide two Nextclade datasets (SH region or genome) to assign genotypes (e.g. A to N) to mumps samples based on criteria outlined by the WHO and tree placement. Scaffold strains for the Nextclade dataset were pulled from the literature ([Jin et al., 2005][], [WHO 2012][], [Jin et al., 2015][]) and augmented with some subsampling to fill in the tree. Mutations are called against a Jeryl-Lynn Reference ([D90232][] for the SH region and [HQ416907][] for the full genome).
+We provide two Nextclade datasets (SH region and genome) to assign genotypes (e.g. A to N) to mumps samples based on criteria outlined by the WHO and tree placement. Scaffold strains for the Nextclade dataset were pulled from the literature ([Jin et al., 2005][], [WHO 2012][], [Jin et al., 2015][]) and augmented with some subsampling to fill in the tree. Mutations are called against a Jeryl-Lynn reference ([D90232][] for the SH region and [HQ416907][] for the full genome).
 
 | Scope | Nextclade dataset | Reference |
 |:--|:--|:--|
