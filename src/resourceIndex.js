@@ -130,7 +130,7 @@ async function updateResourceVersions() {
 
 /**
  * ListResources creates the response data for resource listing queries
- * 
+ *
  * Note: 'word' as used here relates to the resource name/ID in the sense that the
  * ID is made up of slash-separated words.
  */
@@ -285,6 +285,8 @@ function _onlyLatestIntermediates([name, data]) {
       if (Object.hasOwn(files, filenameOrDate)) continue;
       const link = new URL(indexedUrlOrDate);
       link.searchParams.delete('versionId')
+      // Use the CloudFront URLs for the unversioned link
+      link.host = "data.nextstrain.org"
       files[filenameOrDate] = [link.toString(), date]
     }
   }
