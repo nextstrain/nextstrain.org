@@ -11,15 +11,16 @@ import { NotFound } from '../httpErrors.js';
  * to programmatic clients, though we're not this fancy yet.
  */
 const schemaRoutes = [
-  ["/schemas/augur/annotations",       "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-annotations.json"],
-  ["/schemas/augur/frequencies",       "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-frequencies.json"],
-  ["/schemas/auspice/config/v2",       "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-auspice-config-v2.json"],
-  ["/schemas/dataset/v1/meta",         "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-v1-meta.json"],
-  ["/schemas/dataset/v1/tree",         "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-v1-tree.json"],
-  ["/schemas/dataset/v2",              "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-v2.json"],
-  ["/schemas/dataset/root-sequence",   "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-root-sequence.json"],
-  ["/schemas/dataset/tip-frequencies", "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-tip-frequencies.json"],
-  ["/schemas/dataset/measurements",    "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-measurements.json"],
+  ["/schemas/augur/annotations",         "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-annotations.json"],
+  ["/schemas/augur/frequencies",         "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-frequencies.json"],
+  ["/schemas/augur/subsample-config/v1", "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-subsample-config.json"],
+  ["/schemas/auspice/config/v2",         "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-auspice-config-v2.json"],
+  ["/schemas/dataset/v1/meta",           "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-v1-meta.json"],
+  ["/schemas/dataset/v1/tree",           "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-v1-tree.json"],
+  ["/schemas/dataset/v2",                "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-v2.json"],
+  ["/schemas/dataset/root-sequence",     "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-root-sequence.json"],
+  ["/schemas/dataset/tip-frequencies",   "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-tip-frequencies.json"],
+  ["/schemas/dataset/measurements",      "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-measurements.json"],
 ];
 
 
