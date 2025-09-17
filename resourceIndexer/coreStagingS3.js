@@ -308,13 +308,9 @@ function validIntermediate(id, date, objects) {
         })
         .map((s3object) => {
           const filename = s3object.key.split('/').pop();
-          let url = s3object.versionId ?
+          const url = s3object.versionId ?
             `${s3object.baseUrl}?versionId=${encodeURIComponent(s3object.versionId)}` :
             s3object.baseUrl;
-          /* we prefer to serve objects on the nextstrain-data bucket via the cloudfront-ed
-          data.nextstrain.org domain rather than nextstrain-data.s3.amazonaws.com. This
-          continues to work with versionId queries */
-          url = url.replace('https://nextstrain-data.s3.amazonaws.com', 'https://data.nextstrain.org');
           return [filename, url]
         })
     )
