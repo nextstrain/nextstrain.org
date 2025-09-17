@@ -10,9 +10,9 @@ import { remapCoreUrl } from "./coreUrlRemapping.js";
  *    - Files which don't match a resource to list should be excluded
  *    - Datestamped files (e.g. _YYYY-MM-DD in the filename) are excluded
  *      (we use S3 versioning instead)
- * 
+ *
  * If the s3 object is to be excluded we return false here.
- * 
+ *
  * In the case where the object represents a (part of) a resource we want to
  * expose, then we categorise it here by adding the following properties:
  *   - source (STAGING or CORE)
@@ -49,7 +49,7 @@ function categoriseCoreObjects(item, staging) {
   if (!auspiceFileInfo) return false
   item.resourceType = 'dataset';
   item.subresourceType = auspiceFileInfo.subresourceType;
-  
+
   /**
    * We remap the expected URls (created from the S3 key name) using the same
    * underlying data that the server uses to redirect certain URLs. This allows
@@ -102,7 +102,7 @@ function auspiceFile(filename, staging) {
  *  {date: C, versions: [{main: versionId}]},
  *  {date: A, versions: [{v1-meta: versionId, v1-tree: versionId}]}
  * ]
- * 
+ *
  * The maximum temporal resolution is per-day, in other words if a resource was uploaded
  * multiple times in a single day then only the last one is used. This matches our
  * (implicit) expectation when we started used datestamped datasets during the ncov pandemic.
@@ -115,7 +115,7 @@ function createVersionedResources(resourceType, id, items) {
   const groupedByDate = items.reduce((acc, o) => {
     const date = o.date;
     if (acc.hasOwnProperty(date)) { // eslint-disable-line no-prototype-builtins
-      acc[date].push(o) 
+      acc[date].push(o)
     } else {
       acc[date] = [o]
     }
@@ -194,7 +194,7 @@ function validDataset(id, date, objects) {
     sidecars seem to exist. */
     return false;
   }
-  
+
   ([...types]).filter((subresourceType) => SIDECAR_TYPES.has(subresourceType))
     .forEach((subresourceType) => {
       subresources[subresourceType] = _firstItem(subresourceType);
@@ -250,7 +250,7 @@ function _isIntermediateFile(key) {
     /* We could detail versions via the datestamped filename if desired */
     /\/nextclade-full-run[\d-]+--UTC\//,
   ];
-  
+
   if (key.endsWith('/')) {
     // oropouche has keys for directory-like objects, but they're not valid intermediate files
     return false
@@ -270,11 +270,11 @@ function _isIntermediateFile(key) {
  * (For Auspice datasets, this is combined with the source to form the URL of the
  * dataset, but that's not applicable for intermediate files.) This ID is used
  * to group together versions of an intermediate resource.
- * 
+ *
  * Note: redirects are not yet considered for intermediate resource paths, and
  * thus 'monkeypox' and 'mpox' intermediate resources are separate intermediate
- * files. 
- * 
+ * files.
+ *
  * Examples ( S3 key → resourcePath)
  *    files/ncov/open/100k/metadata.tsv.xz → ncov/open/100k
  *    files/workflows/zika/sequences.fasta.zst → zika
