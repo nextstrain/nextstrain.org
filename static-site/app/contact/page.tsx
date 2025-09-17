@@ -52,8 +52,8 @@ export default function ContactPage(): React.ReactElement {
           .
           <br />
           <br />
-          We also host office hours via Zoom every week on Thursdays at 10AM US
-          Pacific time. Email us for the meeting link.
+          We also host office hours via Zoom on the first Thursday of every month
+          at 10AM US Pacific time. Email us for the meeting link.
         </FocusParagraphNarrow>
       </FlexCenter>
 
