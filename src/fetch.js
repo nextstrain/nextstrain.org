@@ -1,8 +1,14 @@
 import debugFactory from 'debug';
+import { readFile } from 'fs/promises';
 import LinkHeader from 'http-link-header';
 import __fetch from 'make-fetch-happen';
+import { fileURLToPath } from 'url';
 
 const debug = debugFactory("nextstrain:fetch");
+
+const {version: makeFetchHappenVersion} = JSON.parse(await readFile(fileURLToPath(import.meta.resolve("make-fetch-happen/package.json"))));
+
+const USER_AGENT = `nextstrain.org (https://nextstrain.org) make-fetch-happen/${makeFetchHappenVersion} (https://www.npmjs.com/package/make-fetch-happen)`;
 
 const FETCH_OPTIONS = Symbol("Request options for make-fetch-happen");
 
@@ -12,6 +18,13 @@ const _fetch = __fetch.defaults({
 });
 
 const fetch = async (url, options) => {
+  // Provide our own User-Agent unless the request comes with one
+  if (!(new Headers(options?.headers ?? {})).has("User-Agent")) {
+    options ??= {};
+    options.headers ??= {};
+    options.headers["User-Agent"] = USER_AGENT;
+  }
+
   /* "url" may be a URL or a Request object, but always construct our own
    * Request() so the rest of this function only has to deal with a single
    * interface instead of looking for properties like "method" and "cache" on
