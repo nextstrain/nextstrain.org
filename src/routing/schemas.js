@@ -21,6 +21,7 @@ const schemaRoutes = [
   ["/schemas/dataset/root-sequence",     "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-export-root-sequence.json"],
   ["/schemas/dataset/tip-frequencies",   "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-tip-frequencies.json"],
   ["/schemas/dataset/measurements",      "https://raw.githubusercontent.com/nextstrain/augur/HEAD/augur/data/schema-measurements.json"],
+  ["/schemas/pathogen/v0",               "https://raw.githubusercontent.com/nextstrain/cli/HEAD/nextstrain/cli/resources/schema-pathogen-v0.json"],
 ];
 
 
