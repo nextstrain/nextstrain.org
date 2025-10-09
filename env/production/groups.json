@@ -280,6 +280,10 @@
     "isPublic": true
   },
   {
+    "name": "wadoh-private",
+    "isPublic": false
+  },
+  {
     "name": "ppx-private",
     "isPublic": false
   },
