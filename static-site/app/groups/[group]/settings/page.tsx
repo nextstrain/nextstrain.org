@@ -1,16 +1,17 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
-import Button from "../../../components/button";
-import ErrorMessage from "../../../components/error-message";
-import { FlexGrid, FlexGridRight } from "../../../components/flex-grid";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import { HugeSpacer, MediumSpacer } from "../../../components/spacers";
+import Button from "../../../../components/button";
+import ErrorMessage from "../../../../components/error-message";
+import { FlexGrid, FlexGridRight } from "../../../../components/flex-grid";
+import { FocusParagraphCentered } from "../../../../components/focus-paragraph";
+import { HugeSpacer, MediumSpacer } from "../../../../components/spacers";
 
-import { canUserEditGroupSettings } from "./utils";
+import { canUserEditGroupSettings } from "../../utils";
 
-import styles from "./group-settings-page.module.css";
+import styles from "./page.module.css";
 
 interface LogoType {
   current: string | null;
@@ -47,12 +48,9 @@ const UNAUTHORIZED_MESSAGE = (
  * A React Client Component to display the logo and settings for a
  * given `group` and allow them to be updated.
  */
-export default function GroupSettingsPage({
-  group,
-}: {
-  /** the name of the group whose logo and settings will be shown */
-  group: string;
-}): React.ReactElement {
+export default function GroupSettingsPage(): React.ReactElement {
+  const { group } = useParams();
+
   /** the props for an <ErrorMessage> component, displayed when there are problems */
   const [errorMessage, setErrorMessage] = useState<{
     title: string;

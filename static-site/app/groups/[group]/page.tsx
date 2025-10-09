@@ -17,20 +17,15 @@ import { HugeSpacer } from "../../../components/spacers";
 import Spinner from "../../../components/spinner";
 import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 
-import { canUserEditGroupSettings, canViewGroupMembers } from "./utils";
+import { canUserEditGroupSettings, canViewGroupMembers } from "../utils";
 
-import type { AvailableGroups, DataResource } from "./types";
+import type { AvailableGroups, DataResource } from "../types";
 
 /**
  * A React Client component to display a page for an individual
  * Nextstrain group
  */
-export default function IndividualGroupPage({
-  group,
-}: {
-  /** the name of the group to display */
-  group: string;
-}): React.ReactElement {
+export default function IndividualGroupPage(): React.ReactElement {
   /** a flag for whether data is being loaded */
   const [dataLoading, setDataLoading] = useState<boolean>(true);
   /** the datasets of the group being displayed */
@@ -66,16 +61,10 @@ export default function IndividualGroupPage({
   const [viewGroupMembersAllowed, setViewGroupMembersAllowed] =
     useState<boolean>(false);
 
-  const params = useParams();
+  const { group } = useParams();
 
   useEffect(() => {
     async function getGroupInfo(): Promise<void> {
-      if (params && params["groups"] && Array.isArray(params["groups"])) {
-        // save the parts of the requested URL after `groups/{:group}`
-        // as a `/`-delimited string
-        setNonExistentPath(params["groups"].slice(1).join("/"));
-      }
-
       try {
         const [sourceInfo, availableData] = await Promise.all([
           fetchAndParseJSON<SourceInfo>(`/charon/getSourceInfo?prefix=/groups/${group}/`),
@@ -109,7 +98,7 @@ export default function IndividualGroupPage({
     }
 
     getGroupInfo();
-  }, [group, params]);
+  }, [group]);
 
   let bannerContents: React.ReactElement = <></>;
   let bannerTitle = "";

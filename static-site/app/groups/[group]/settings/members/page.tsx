@@ -1,22 +1,23 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 import { startCase } from "lodash";
 
-import Button from "../../../components/button";
-import CenteredContainer from "../../../components/centered-container";
-import ErrorMessage from "../../../components/error-message";
-import { FlexGridRight } from "../../../components/flex-grid";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
+import Button from "../../../../../components/button";
+import CenteredContainer from "../../../../../components/centered-container";
+import ErrorMessage from "../../../../../components/error-message";
+import { FlexGridRight } from "../../../../../components/flex-grid";
+import { FocusParagraphCentered } from "../../../../../components/focus-paragraph";
 import {
   BigSpacer,
   HugeSpacer,
   MediumSpacer,
-} from "../../../components/spacers";
-import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
+} from "../../../../../components/spacers";
+import fetchAndParseJSON from "../../../../../util/fetch-and-parse-json";
 
-import styles from "./group-members-page.module.css";
+import styles from "./page.module.css";
 
 interface GroupMember {
   username: string;
@@ -32,12 +33,10 @@ const emptyErrorMessage = {
  * A React Client Component to fetch and display the members of a
  * given `group`
  */
-export default function GroupMembersPage({
-  group,
-}: {
-  /** the name of the group whose members will be shown */
-  group: string;
-}): React.ReactElement {
+export default function GroupMembersPage(): React.ReactElement {
+
+  const { group } = useParams();
+
   /**
    * the props for an <ErrorMessage> component displayed when there
    * are problems getting the data for the page
