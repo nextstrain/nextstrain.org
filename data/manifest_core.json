@@ -582,6 +582,15 @@
           "default": "sars-cov-2"
         }
       },
+      "nipah": {
+        "resolution": {
+          "all": "",
+          "human": "",
+          "I": "",
+          "II": "",
+          "default": "all"
+        }
+      },
       "oropouche": {
         "segment": {
           "L": "",
