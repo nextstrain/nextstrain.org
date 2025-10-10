@@ -79,6 +79,11 @@
   img: mumps_tree.png
   url: /mumps/global
 
+- name: Nipah
+  description: Nipah virus evolution and spread
+  img: nipah_tree.png
+  url: /nipah/all
+
 - name: Rubella
   description: Rubella virus evolution and spread
   img: rubella_tree.png

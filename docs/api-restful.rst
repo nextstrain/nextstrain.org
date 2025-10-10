@@ -337,6 +337,7 @@ The following dataset endpoints exist::
     {GET, HEAD, PUT, DELETE, OPTIONS} /mers/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /mumps/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /ncov/*
+    {GET, HEAD, PUT, DELETE, OPTIONS} /nipah/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /rubella/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /seasonal-flu/*
     {GET, HEAD, PUT, DELETE, OPTIONS} /tb/*
