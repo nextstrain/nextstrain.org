@@ -141,3 +141,7 @@ coreTiles:
     img: rubella_tree.png
     filters:
       - rubella
+  - name: Nipah
+    img: nipah_tree.png
+    filters:
+      - nipah
