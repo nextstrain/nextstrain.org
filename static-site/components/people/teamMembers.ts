@@ -36,13 +36,6 @@ export const teamMembers: {
         "Ivan joined the team in 2020 and focuses on Nextclade and some of the algorithms in Nextstrain's underlying tools.",
     },
     {
-      name: "John SJ Anderson",
-      image: "john-sj-anderson.jpg",
-      link: "https://bedford.io/team/john-sj-anderson/",
-      blurb:
-        "John joined the team in 2024 and works on all aspects of Nextstrain.",
-    },
-    {
       name: "Kim Andrews",
       image: "kim-andrews.jpg",
       link: "https://bedford.io/team/kim-andrews/",
@@ -107,6 +100,13 @@ export const teamMembers: {
     },
   ],
   alumni: [
+    {
+      name: "John SJ Anderson",
+      image: "john-sj-anderson.jpg",
+      link: "https://bedford.io/team/john-sj-anderson/",
+      blurb:
+        "John was part the team 2024-2025 and worked on all aspects of Nextstrain.",
+    },
     {
       name: "Sidney Bell",
       image: "sidney-bell.jpg",
