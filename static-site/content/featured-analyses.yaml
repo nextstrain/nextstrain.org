@@ -14,6 +14,11 @@
   img: mpox_drc.png
   url: /groups/inrb-mpox/clade-I
 
+- name: All Ebola outbreaks
+  description: Evolutionary history of all Zaire ebolavirus outbreaks
+  img: ebola_streams.png
+  url: /ebola/all-outbreaks
+
 - name: H5N1 cattle outbreak
   description: Influenza H5N1 cattle outbreak in the USA (genotype B3.13)
   img: h5n1_cattle_outbreak_tree.png
