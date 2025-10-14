@@ -294,7 +294,13 @@
           "default": "all"
         }
       },
-      "ebola": "",
+      "ebola": {
+        "outbreak": {
+          "all-outbreaks": "",
+          "ebov-2013": "",
+          "default": "all-outbreaks"
+        }
+      },
       "enterovirus": {
         "lineage": {
           "d68": {

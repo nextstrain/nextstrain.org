@@ -51,12 +51,20 @@ function categoriseCoreObjects(item, staging) {
   item.subresourceType = auspiceFileInfo.subresourceType;
 
   /**
-   * We remap the expected URls (created from the S3 key name) using the same
-   * underlying data that the server uses to redirect certain URLs. This allows
-   * "new" URLs (i.e. where the client gets redirected to) to contain the entire
-   * history of the resource
+   * The S3 key name gives us the expected nextstrain URL path, however this may
+   * not be the correct (current) URL path for two reasons:
+   *
+   * 1. We've implemented a number of redirects, such as /flu → /seasonal-flu.
+   *    When viewing the history of a /seasonal-flu dataset we can include the
+   *    versions stored under 'flu*' S3 keys.
+   *
+   * 2. There are also situations where we chose to redirect the URL for dataset
+   *    A to dataset B for various reasons. We don't want the history of B to
+   *    include dataset A, so `remapCoreVersion` takes these situations into
+   *    account.
+   *
    */
-  item.resourcePath = remapCoreUrl(auspiceFileInfo.urlPath);
+  item.resourcePath = remapCoreUrl(auspiceFileInfo.urlPath, item);
 
   return item;
 }

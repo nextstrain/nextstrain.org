@@ -11,13 +11,54 @@ const __basedir = path.join(__dirname, "..");
 let resolvedPath;
 
 /**
- * Remaps an incomplete URL core dataset path to the path it will be redirected
- * to by the server via the "nextstrain manifest". If the provided URL would not
- * be redirected we return the provided path unchanged.
- * @param {string} urlPath nextstrain.org URL path
- * @returns {string}
+ * A map of specific S3 object versions (via key & version ID tuple) to the
+ * current URL the dataset is available at. These are intended to be used in the
+ * case where the redirect of the original URL goes to a semantically different
+ * dataset (as opposed to the URL redirecting to the same dataset at a
+ * different location, which is the norm)
  */
-export const remapCoreUrl = (urlPath) => {
+const keyVersionsToUrls = new Map([
+  ['ebola', new Map([
+    ['urlPath', 'ebola/ebov-2013'],
+    ['versions', new Set([
+      /* note: versioned objects incl. root-sequence sidecar, v1 (meta/tree) JSONs */
+      'JbR6aHm.sD0SCXpaIcG14e.Wn.bfxErD',
+      'Y_5o_1ij5yMhX23opio_GIC8KiHYytcI',
+      'DQvz5C6Z8Ykti9E521FlAlgaBkeyOGq0',
+      'CzboV3n8_YOPuBTyA1.3qCkXgDIqZpdZ',
+      '2MYdv9mEBUGYefZEUquE9lyuxxHfjxQ9',
+      'A0JKybbTqwgERxLETcwYen_zg.jxgcb0',
+      'L720m0OhpxYDCLGeiElDG1jIg_8jJA8S',
+      'VAsOxpi9hbPweCtw4iGkiBwjYNqIU8Al',
+    ])],
+  ])],
+]);
+
+/**
+ * Takes an old or incomplete nextstrain.org URL path and information about the
+ * S3 object and returns the current nextstrain.org URL path for that resource
+ * (dataset). This is how we can match resources which were surfaced under one
+ * URL but now use a new one. If the provided URL would not be redirected we
+ * return the provided path unchanged. Some examples:
+ *
+ *  OLD URL PATH              NEW URL PATH              COMMENT
+ *  ebola                     ebola/ebov-2013           Only if S3 object's version ID in keyVersionsToUrls map
+ *                                                      (i.e. only the pre-2025 West-African analyses files)
+ *  ebola                     ebola/all-outbreaks       redirected via manifest JSON
+ *  measles                   measles/genome            redirected via manifest JSON
+ *  flu/seasonal/h3n2/ha/3y   seasonal-flu/h3n2/ha/3y   hardcoded server redirect logic
+ *  seasonal-flu/h3n2/ha/3y   seasonal-flu/h3n2/ha/3y   valid (no change)
+ *
+ * @param {string} urlPath putative nextstrain.org URL path
+ * @param {object} item information about the S3 object
+ * @returns {string} nextstrain.org URL path
+ */
+export const remapCoreUrl = (urlPath, item) => {
+
+  if (keyVersionsToUrls.has(urlPath) && keyVersionsToUrls.get(urlPath).get('versions').has(item.versionId)) {
+    return keyVersionsToUrls.get(urlPath).get('urlPath');
+  }
+
   if (!resolvedPath) {
     /* map only computed the first time this function is run */
     const serverManifest = JSON.parse(readFileSync(path.join(__basedir, "data", "manifest_core.json")));

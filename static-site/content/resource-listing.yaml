@@ -81,7 +81,7 @@ coreTiles:
     img: dengue_tree.png
     filters:
       - dengue
-  - name: Ebola in West Africa
+  - name: Ebola
     img: ebola_map.png
     filters:
       - ebola
