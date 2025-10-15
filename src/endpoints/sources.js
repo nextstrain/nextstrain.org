@@ -1,4 +1,5 @@
 import contentDisposition from 'content-disposition';
+import url from 'url';
 
 import { NotFound } from '../httpErrors.js';
 
@@ -46,12 +47,13 @@ const setDataset = (pathExtractor) => (req, res, next) => {
 /**
  * Generate Express middleware that redirects to the canonical path for the
  * current {@link Dataset} if it is not fully resolved. Any provided version
- * descriptor is included in the redirect.
+ * descriptor is included in the redirect. Original query params are preserved
+ * across the redirect unless overridden by canonicalBuilder.
  *
- * @param {pathBuilder} pathBuilder - Function to build a fully-specified path
+ * @param {canonicalBuilder} canonicalBuilder - Function to build a fully-specified path or URL object suitable for {@link url#format}
  * @returns {expressMiddleware}
  */
-const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
+const canonicalizeDataset = (canonicalBuilder) => (req, res, next) => {
   const dataset = req.context.dataset;
   const resolvedDataset = dataset.resolve();
 
@@ -59,14 +61,22 @@ const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
 
   const version = dataset.versionDescriptor ? `@${dataset.versionDescriptor}` : '';
 
-  const canonicalPath = pathBuilder.length >= 2
-    ? pathBuilder(req, resolvedDataset.pathParts.join("/") + version)
-    : pathBuilder(resolvedDataset.pathParts.join("/") + version);
+  let canonical = canonicalBuilder.length >= 2
+    ? canonicalBuilder(req, resolvedDataset.pathParts.join("/") + version)
+    : canonicalBuilder(resolvedDataset.pathParts.join("/") + version);
+
+  // Convert plain path string to an object for url.format()
+  if (typeof canonical === "string")
+    canonical = {pathname: canonical}
+
+  // Default to current path and current query
+  canonical.pathname ??= req.baseUrl + req.path; // baseUrl is really "basePath"
+  canonical.query ??= req.query;
 
   /* 307 Temporary Redirect preserves request method, unlike 302 Found, which
    * is important since this middleware function may be used in non-GET routes.
    */
-  return res.redirect(307, canonicalPath);
+  return res.redirect(307, url.format(canonical));
 };
 
 
@@ -368,18 +378,18 @@ function receiveSubresource(subresourceExtractor) {
  * ¹ https://github.com/jsdoc/jsdoc/issues/1017
  */
 /**
- * @callback pathBuilder
+ * @callback canonicalBuilder
  *
  * @param {String} path - Canonical path for the dataset within the context of
  *   the current {@link Source}
- * @returns {String} Fully-specified path to redirect to
+ * @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
  *//**
-* @callback pathBuilder
+* @callback canonicalBuilder
 *
 * @param {express.request} req
 * @param {String} path - Canonical path for the dataset within the context of
 *   the current {@link Source}
-* @returns {String} Fully-specified path to redirect to
+* @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
 */
 
 /**
