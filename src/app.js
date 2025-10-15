@@ -68,7 +68,6 @@ charon.setup(app);
  *   /monkeypox
  *   /mpox
  *   /ncov
- *   /nextclade
  *   /rsv
  *   /rubella
  *   /seasonal-flu
