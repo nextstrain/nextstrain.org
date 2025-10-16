@@ -1,7 +1,12 @@
+import { strict as assert } from 'assert';
+
 import * as authz from '../authz/index.js';
 
 import { fetch } from '../fetch.js';
 import { Source, Dataset, DatasetSubresource } from './models.js';
+
+// XXX FIXME comment on this
+const NEXTSTRAIN_COLLECTION_ID = "nextstrain";
 
 export class NextcladeSource extends Source {
   get name() { return "nextclade"; }
@@ -52,10 +57,25 @@ class NextcladeDataset extends Dataset {
   }
 
   /*
+  set pathParts(pathParts) {
+    // XXX FIXME comment on this
+    if (pathParts[0] === NEXTSTRAIN_COLLECTION_ID)
+      pathParts = pathParts.slice(1);
+
+    super.pathParts = pathParts;
+  }
+  get pathParts() {
+    return super.pathParts;
+  }
+  */
+
+  /*
   get baseParts() {
     // XXX FIXME: handle the index's collections concept at our Source level
     // instead? e.g. new NextcladeSource("nextstrain") and new
     // NextcladeSource("community")?
+    //
+    // but that complicates things in src/utils/prefix.js
     return this.pathParts.length && this.pathParts[0] !== "community"
       ? ["nextstrain", ...this.pathParts]
       : [...this.pathParts];
@@ -64,14 +84,6 @@ class NextcladeDataset extends Dataset {
 
   get baseName() {
     return this.baseParts.join("/");
-  }
-
-  async index() {
-    return this._index ??=
-      (await this.source.index())
-        .collections
-        .flatMap(c => c.datasets)
-        .find(d => d.path === this.baseName);
   }
 
   // XXX FIXME: resolve shortcuts from index, plus names with leading "nextstrain/"
@@ -130,8 +142,27 @@ class NextcladeDatasetSubresource extends DatasetSubresource {
   static validTypes = ["main"];
 
   async url() {
+    // XXX FIXME: comment on this implicit fetch and caching
+    const sourceIndex = await this.resource.source.index();
+    const sourceCollectionIds = new Set(
+      sourceIndex
+        .collections
+        .map(c => c.meta.id)
+    );
+    assert(sourceCollectionIds.has(NEXTSTRAIN_COLLECTION_ID));
+
+    const datasetPath =
+      sourceCollectionIds.has(this.resource.baseParts[0])
+        ? this.resource.baseName
+        : `${NEXTSTRAIN_COLLECTION_ID}/${this.resource.baseName}`;
+
+    const datasetIndex =
+      sourceIndex
+        .collections
+        .flatMap(c => c.datasets)
+        .find(d => d.path === datasetPath);
+
     // XXX FIXME: versions: this.resource.versionDescriptor
-    const versionTag = (await this.resource.index()).version.tag;
-    return await this.resource.source.urlFor(`${this.resource.baseName}/${versionTag}/tree.json`);
+    return await this.resource.source.urlFor(`${datasetIndex.path}/${datasetIndex.version.tag}/tree.json`);
   }
 }
