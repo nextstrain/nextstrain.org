@@ -46,6 +46,10 @@ class UrlDefinedSource extends Source {
 }
 
 class UrlDefinedDataset extends Dataset {
+  static get Subresource() {
+    return UrlDefinedDatasetSubresource;
+  }
+
   // eslint-disable-next-line no-unused-vars
   assertValidPathParts(pathParts) {
     // Override check for underscores (_), as we want to allow arbitrary
@@ -62,9 +66,6 @@ class UrlDefinedDataset extends Dataset {
      */
     const version = this.versionDescriptor ? `@${this.versionDescriptor}` : ""
     return this.baseParts.join("/") + version;
-  }
-  subresource(type) {
-    return new UrlDefinedDatasetSubresource(this, type);
   }
   async exists() {
     /* Assume existence.  There's little benefit to checking with extra

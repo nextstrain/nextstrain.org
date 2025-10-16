@@ -180,17 +180,17 @@ class Resource {
   get baseName() {
     return this.baseParts.join("_");
   }
+  /**
+   * Interrogates the resource index to find the appropriate version of the
+   * resource and associated subresource URLs by comparing to
+   * this.versionDescriptor.
+   * This method should be overridden by subclasses when they are used to
+   * handle URLs which extract version descriptors.
+   * @param {(string|false)} versionDescriptor from the URL string
+   * @throws {BadRequest}
+   * @returns {([string, Object]|[null, undefined])} [0]: versionDate [1]: versionUrls
+   */
   versionInfo(versionDescriptor) {
-    /**
-     * Interrogates the resource index to find the appropriate version of the
-     * resource and associated subresource URLs by comparing to
-     * this.versionDescriptor.
-     * This method should be overridden by subclasses when they are used to
-     * handle URLs which extract version descriptors.
-     * @param {(string|false)} versionDescriptor from the URL string
-     * @throws {BadRequest}
-     * @returns {([string, Object]|[null, undefined])} [0]: versionDate [1]: versionUrls
-     */
     if (versionDescriptor) {
       throw new BadRequest(`This resource cannot handle versioned dataset requests (version descriptor requested: "${this.versionDescriptor}")`)
     }
@@ -290,7 +290,9 @@ class Dataset extends Resource {
       (await Promise.all(promises)).every(x => x);
 
     return (await _exists("main"))
-        || (await all(_exists("meta"), _exists("tree")))
+        || ((new Set(["meta", "tree"])).isSubsetOf(this.Subresource.validTypes)
+              ? (await all(_exists("meta"), _exists("tree")))
+              : false)
         || false;
   }
 

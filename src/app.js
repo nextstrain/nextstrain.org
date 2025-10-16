@@ -14,6 +14,7 @@ const {
   errors,
   fetch,
   groups,
+  nextclade,
   openid,
   pathogenRepos,
   schemas,
@@ -89,6 +90,15 @@ core.setup(app);
  *   /staging/*
  */
 staging.setup(app);
+
+
+/* Nextclade reference datasets
+ *
+ * Routes:
+ *   /nextclade
+ *   /nextclade/*
+ */
+nextclade.setup(app);
 
 
 /* Community on GitHub

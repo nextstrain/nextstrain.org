@@ -19,8 +19,8 @@ const gzip = promisify(zlib.gzip)
  * (sub-)class and resourcePath to parallel the information in the Resource
  * (sub-)class.
  *
- * Currently only sources {core, staging} and resource types {dataset,
- * intermediate} are part of the index.
+ * Currently only sources {core, staging, nextclade} and resource types
+ * {dataset, intermediate} are part of the index.
  *
  * As an example, the core WNV/NA (nextstrain.org/WNV/NA) dataset is indexed
  * like so:
@@ -34,6 +34,8 @@ const gzip = promisify(zlib.gzip)
 const COLLECTIONS = [
   coreS3Data,
   stagingS3Data,
+  // XXX FIXME
+  //nextcladeIndexData,
 ];
 
 function parseArgs() {
@@ -46,6 +48,7 @@ function parseArgs() {
       For more verbose logging set a 'DEBUG=nextstrain:*' env variable.
     `,
   });
+  // XXX FIXME: Nextclade index not S3 inventories
   argparser.addArgument("--local", {action: 'storeTrue',
     help: 'Access a local copy of S3 inventories within ./devData/. See docstring of fetchInventoryLocal() for expected filenames.'})
   argparser.addArgument("--collections", {metavar: "<name>", type: "string", nargs: '+', choices: COLLECTIONS.map((c) => c.name),
