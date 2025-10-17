@@ -290,7 +290,7 @@ class Dataset extends Resource {
       (await Promise.all(promises)).every(x => x);
 
     return (await _exists("main"))
-        || ((new Set(["meta", "tree"])).isSubsetOf(this.Subresource.validTypes)
+        || (["meta", "tree"].every(t => this.Subresource.validTypes.includes(t))
               ? (await all(_exists("meta"), _exists("tree")))
               : false)
         || false;

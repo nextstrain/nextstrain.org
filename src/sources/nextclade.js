@@ -1,8 +1,9 @@
 import { strict as assert } from 'assert';
 
 import * as authz from '../authz/index.js';
-
 import { fetch } from '../fetch.js';
+import { NotFound } from '../httpErrors.js';
+import { re } from '../templateLiterals.js';
 import { Source, Dataset, DatasetSubresource } from './models.js';
 
 // XXX FIXME comment on this
@@ -21,8 +22,11 @@ export class NextcladeSource extends Source {
   }
 
   async availableDatasets() {
-    // XXX FIXME: calculated from index
-    return [];
+    return (await this.index())
+      .collections
+      .flatMap(c => c.datasets)
+      .filter(d => d.files.treeJson)
+      .map(d => d.path.replace(re`^${NEXTSTRAIN_COLLECTION_ID}/`, ""));
   }
 
   async getInfo() {
@@ -68,6 +72,14 @@ class NextcladeDataset extends Dataset {
     return super.pathParts;
   }
   */
+
+  // eslint-disable-next-line no-unused-vars
+  assertValidPathParts(pathParts) {
+    // Override check for underscores (_), as we want to allow Nextclade
+    // dataset paths that include them.  There is no risk of "confused deputy"
+    // problems as this is a read-only source with fixed datasets from an
+    // index.
+  }
 
   /*
   get baseParts() {
@@ -143,26 +155,29 @@ class NextcladeDatasetSubresource extends DatasetSubresource {
 
   async url() {
     // XXX FIXME: comment on this implicit fetch and caching
-    const sourceIndex = await this.resource.source.index();
-    const sourceCollectionIds = new Set(
-      sourceIndex
+    const index = await this.resource.source.index();
+    const collectionIds = new Set(
+      index
         .collections
         .map(c => c.meta.id)
     );
-    assert(sourceCollectionIds.has(NEXTSTRAIN_COLLECTION_ID));
+    assert(collectionIds.has(NEXTSTRAIN_COLLECTION_ID));
 
     const datasetPath =
-      sourceCollectionIds.has(this.resource.baseParts[0])
+      collectionIds.has(this.resource.baseParts[0])
         ? this.resource.baseName
         : `${NEXTSTRAIN_COLLECTION_ID}/${this.resource.baseName}`;
 
-    const datasetIndex =
-      sourceIndex
+    const indexed =
+      index
         .collections
         .flatMap(c => c.datasets)
         .find(d => d.path === datasetPath);
 
+    if (!indexed)
+      throw new NotFound(`Dataset '${datasetPath}' is not in Nextclade's index`);
+
     // XXX FIXME: versions: this.resource.versionDescriptor
-    return await this.resource.source.urlFor(`${datasetIndex.path}/${datasetIndex.version.tag}/tree.json`);
+    return await this.resource.source.urlFor([indexed.path, indexed.version.tag, indexed.files.treeJson].join("/"));
   }
 }
