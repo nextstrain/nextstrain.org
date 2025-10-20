@@ -89,6 +89,11 @@
   img: nipah_tree.png
   url: /nipah/all
 
+- name: Norovirus
+  description: Norovirus evolution and spread
+  img: norovirus_map.png
+  url: /norovirus/all/VP1
+
 - name: Rubella
   description: Rubella virus evolution and spread
   img: rubella_tree.png
