@@ -221,7 +221,7 @@ class Subresource {
       throw new Error(`invalid Subresource parent resource type: ${resource.constructor}`);
     }
     if (!this.constructor.validTypes.includes(type)) {
-      throw new Error(`invalid Subresource type: ${type}`);
+      throw new NotFound(`subresource type '${type}' is unsupported for this resource`);
     }
     this.resource = resource;
     this.type = type;
