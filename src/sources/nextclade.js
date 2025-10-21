@@ -8,7 +8,16 @@ import { Source, Dataset, DatasetSubresource } from './models.js';
 
 // XXX FIXME comment on this
 const NEXTSTRAIN_COLLECTION_ID = "nextstrain";
+const NEXTSTRAIN_COLLECTION_PREFIX = re`^${NEXTSTRAIN_COLLECTION_ID}/`;
 
+/**
+ * XXX FIXME
+ * 
+Drop the leading nextstrain/ from dataset names, but accept it as an alias by redirecting (e.g. https://nextstrain.org/nextclade/nextstrain/mpox/clade-iib → https://nextstrain.org/nextclade/mpox/clade-iib).
+Accept the index's shortcut names, but expand them by redirection to the canonical name (e.g. https://nextstrain.org/nextclade/hMPXV → https://nextstrain.org/nextclade/mpox/clade-iib). Some shortcuts have _ in their name (e.g. flu_h1n1pdm_na); accept those both as-is and with s{_}{/}g applied (e.g. flu/h1n1pdm/na).
+Prefer full names (minus leading nextstrain/) as the canonical name
+ * <https://github.com/nextstrain/nextstrain.org/issues/1156>
+ */
 export class NextcladeSource extends Source {
   get name() { return "nextclade"; }
   async baseUrl() { return "https://data.clades.nextstrain.org/v3/"; }
@@ -29,11 +38,56 @@ export class NextcladeSource extends Source {
   }
 
   async availableDatasets() {
+    return (await this._datasetsWithTrees())
+      .map(({path}) => path.replace(NEXTSTRAIN_COLLECTION_PREFIX, ""));
+  }
+
+  async _datasetAliases() {
+    return new Map(
+      (await this._datasetsWithTrees())
+        .flatMap(({path, shortcuts}) => [
+          /* Canonicalize nextstrain/a/b/c → a/b/c since we're on nextstrain.org
+           * after all.
+           */
+          [path, path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")],
+
+          /* Include index-defined shortcuts under the permutations of a)
+           * removing the leading "nextstrain/" and b) replacing underscores (_)
+           * with slashes (/).  Spell out all permutations so an
+           * iterative/recursive alias resolution is not necessary.
+           */
+          ...((shortcuts ?? []).flatMap(shortcut => [
+            [
+              shortcut
+                .replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+                .replace(/_/g, "/"),
+              path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+            ],
+            [
+              shortcut
+                .replace(NEXTSTRAIN_COLLECTION_PREFIX, ""),
+              path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+            ],
+            [
+              shortcut
+                .replace(/_/g, "/"),
+              path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+            ],
+            [
+              shortcut,
+              path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+            ],
+          ])),
+        ])
+        .filter(([alias, path]) => alias !== path)
+    );
+  }
+
+  async _datasetsWithTrees() {
     return (await this.index())
       .collections
       .flatMap(c => c.datasets)
-      .filter(d => d.files.treeJson)
-      .map(d => d.path.replace(re`^${NEXTSTRAIN_COLLECTION_ID}/`, ""));
+      .filter(d => d.files.treeJson);
   }
 
   async getInfo() {
@@ -82,12 +136,15 @@ class NextcladeDataset extends Dataset {
   }
 
   async resolve() {
-    if (this.pathParts[0] === NEXTSTRAIN_COLLECTION_ID) {
-      const dataset = new this.constructor(this.source, this.pathParts.slice(1), this.versionDescriptor);
-      return await dataset.resolve();
-    }
+    /* Resolve using a complete and static map of aliases for all paths we
+     * support.  This avoids the need for recursive resolving like other
+     * sources which dynamically determine supported aliases.
+     */
+    const aliases = await this.source._datasetAliases();
 
-    // XXX FIXME shortcuts
+    const resolvedPath = aliases.get(this.pathParts.join("/"));
+    if (resolvedPath)
+      return new this.constructor(this.source, resolvedPath.split("/"), this.versionDescriptor);
 
     return this;
   }
