@@ -151,8 +151,8 @@ class NextcladeDataset extends Dataset {
 
   // XXX FIXME: resolve using versions in index
   /*
-  versionInfo(versionDescriptor) {
-    if (!versionDescriptor)
+  versionInfo() {
+    if (!this.versionDescriptor)
       return [null, undefined];
 
     const versions = new ResourceVersions(this.source.name, 'dataset', this.pathParts.join("/"));

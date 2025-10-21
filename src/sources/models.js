@@ -186,12 +186,11 @@ class Resource {
    * this.versionDescriptor.
    * This method should be overridden by subclasses when they are used to
    * handle URLs which extract version descriptors.
-   * @param {(string|false)} versionDescriptor from the URL string
    * @throws {BadRequest}
    * @returns {([string, Object]|[null, undefined])} [0]: versionDate [1]: versionUrls
    */
-  versionInfo(versionDescriptor) {
-    if (versionDescriptor) {
+  versionInfo() {
+    if (this.versionDescriptor) {
       throw new BadRequest(`This resource cannot handle versioned dataset requests (version descriptor requested: "${this.versionDescriptor}")`)
     }
     return [null, undefined];
@@ -241,7 +240,7 @@ class Subresource {
      * this as needed.
      */
 
-    const versionUrls = this.resource.versionInfo(this.resource.versionDescriptor)[1];
+    const versionUrls = this.resource.versionInfo()[1];
 
     if (versionUrls) {
       if (!['HEAD', 'GET'].includes(method)) {
