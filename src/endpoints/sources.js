@@ -51,11 +51,11 @@ const setDataset = (pathExtractor) => (req, res, next) => {
  * across the redirect unless overridden by canonicalBuilder.
  *
  * @param {canonicalBuilder} canonicalBuilder - Function to build a fully-specified path or URL object suitable for {@link url#format}
- * @returns {expressMiddleware}
+ * @returns {expressMiddlewareAsync}
  */
-const canonicalizeDataset = (canonicalBuilder) => (req, res, next) => {
+const canonicalizeDataset = (canonicalBuilder) => async (req, res, next) => {
   const dataset = req.context.dataset;
-  const resolvedDataset = dataset.resolve();
+  const resolvedDataset = await dataset.resolve();
 
   if (dataset === resolvedDataset) return next();
 

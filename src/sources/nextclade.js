@@ -14,6 +14,13 @@ export class NextcladeSource extends Source {
   async baseUrl() { return "https://data.clades.nextstrain.org/v3/"; }
 
   async index() {
+    /* Source instances are constructed for each request, so this
+     * instance-local cache results in one index fetch per request.  The
+     * fetch()-level HTTP caching results in conditional fetches to the
+     * upstream that mostly return as 304 Not Modified.  This seems Fine, at
+     * least For Now.
+     *   -trs, 16 Oct 2025
+     */
     return this._index ??= await (await fetch(await this.urlFor("index.json"), {cache: "no-cache"})).json();
   }
 
@@ -60,80 +67,30 @@ class NextcladeDataset extends Dataset {
     return NextcladeDatasetSubresource;
   }
 
-  /*
-  set pathParts(pathParts) {
-    // XXX FIXME comment on this
-    if (pathParts[0] === NEXTSTRAIN_COLLECTION_ID)
-      pathParts = pathParts.slice(1);
-
-    super.pathParts = pathParts;
-  }
-  get pathParts() {
-    return super.pathParts;
-  }
-  */
-
   // eslint-disable-next-line no-unused-vars
   assertValidPathParts(pathParts) {
     // Override check for underscores (_), as we want to allow Nextclade
     // dataset paths that include them.  There is no risk of "confused deputy"
-    // problems as this is a read-only source with fixed datasets from an
-    // index.
+    // problems as this source 1) only allows fixed datasets from an index and
+    // 2) uses slashes (/) not underscores (_) when joining path parts.
   }
-
-  /*
   get baseParts() {
-    // XXX FIXME: handle the index's collections concept at our Source level
-    // instead? e.g. new NextcladeSource("nextstrain") and new
-    // NextcladeSource("community")?
-    //
-    // but that complicates things in src/utils/prefix.js
-    return this.pathParts.length && this.pathParts[0] !== "community"
-      ? ["nextstrain", ...this.pathParts]
-      : [...this.pathParts];
+    return this.pathParts.slice();
   }
-  */
-
   get baseName() {
     return this.baseParts.join("/");
   }
 
-  // XXX FIXME: resolve shortcuts from index, plus names with leading "nextstrain/"
-  /*
-  resolve() {
-    /* XXX TODO: Reimplement this in terms of methods on the source, not by
-     * breaking encapsulation by using a process-wide global.
-     *   -trs, 26 Oct 2021 (based on a similar comment 5 Sept 2019)
-     *//*
-    const sourceName = this.source.name;
-    const prefixParts = this.pathParts;
-
-    if (!global.availableDatasets[sourceName]) {
-      utils.verbose("Can't compare against available datasets as there are none!");
-      return this;
+  async resolve() {
+    if (this.pathParts[0] === NEXTSTRAIN_COLLECTION_ID) {
+      const dataset = new this.constructor(this.source, this.pathParts.slice(1), this.versionDescriptor);
+      return await dataset.resolve();
     }
 
-    const doesPathExist = (pathToCheck) =>
-      global.availableDatasets[sourceName]
-        .includes(pathToCheck);
-
-    const prefix = prefixParts.join("/");
-
-    if (doesPathExist(prefix)) {
-      return this;
-    }
-
-    /* if we are here, then the path doesn't match any available datasets exactly *//*
-    const nextDefaultPart = global.availableDatasets.defaults[sourceName][prefix];
-
-    if (nextDefaultPart) {
-      const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart], this.versionDescriptor);
-      return dataset.resolve();
-    }
+    // XXX FIXME shortcuts
 
     return this;
   }
-  */
 
   // XXX FIXME: resolve using versions in index
   /*

@@ -24,7 +24,7 @@ export function setup(app) {
   ;
 
   app.routeAsync("/nextclade/*")
-    .all(setDataset(req => req.params[0]), canonicalizeDataset(path => `/nextclade/${path}`))
+    .allAsync(setDataset(req => req.params[0]), canonicalizeDataset(path => `/nextclade/${path}`))
     .getAsync(getDataset)
     .optionsAsync(optionsDataset)
   ;
