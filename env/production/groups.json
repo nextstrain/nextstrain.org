@@ -362,5 +362,9 @@
   {
     "name": "OFFLU-AIM",
     "isPublic": false
+  },
+  {
+    "name": "MIDGE",
+    "isPublic": true
   }
 ]
