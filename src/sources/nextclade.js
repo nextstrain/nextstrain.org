@@ -165,9 +165,10 @@ class NextcladeDataset extends Dataset {
 
 
 class NextcladeDatasetSubresource extends DatasetSubresource {
-  static validTypes = ["main"];
-
   async url() {
+    if (this.type !== "main")
+      throw new NotFound(`Nextclade datasets do not provide a '${this.type}' sidecar`);
+
     // XXX FIXME: comment on this implicit fetch and caching
     const index = await this.resource.source.index();
     const collectionIds = new Set(
@@ -192,6 +193,7 @@ class NextcladeDatasetSubresource extends DatasetSubresource {
       throw new NotFound(`Dataset '${datasetPath}' is not in Nextclade's index`);
 
     // XXX FIXME: versions: this.resource.versionDescriptor
+
     return await this.resource.source.urlFor([indexed.path, indexed.version.tag, indexed.files.treeJson].join("/"));
   }
 }
