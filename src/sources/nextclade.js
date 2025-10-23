@@ -1,8 +1,9 @@
 import { strict as assert } from 'assert';
+import { DateTime } from 'luxon';
 
 import * as authz from '../authz/index.js';
 import { fetch } from '../fetch.js';
-import { NotFound } from '../httpErrors.js';
+import { BadRequest, NotFound } from '../httpErrors.js';
 import { re } from '../templateLiterals.js';
 import { Source, Dataset, DatasetSubresource } from './models.js';
 
@@ -19,10 +20,17 @@ Prefer full names (minus leading nextstrain/) as the canonical name
  * <https://github.com/nextstrain/nextstrain.org/issues/1156>
  */
 export class NextcladeSource extends Source {
+  /* XXX FIXME */
+  constructor(index) {
+    super();
+    if (index)
+      this.#index = index;
+  }
+
   get name() { return "nextclade"; }
   async baseUrl() { return "https://data.clades.nextstrain.org/v3/"; }
 
-  async index() {
+  async _index() {
     /* Source instances are constructed for each request, so this
      * instance-local cache results in one index fetch per request.  The
      * fetch()-level HTTP caching results in conditional fetches to the
@@ -30,7 +38,7 @@ export class NextcladeSource extends Source {
      * least For Now.
      *   -trs, 16 Oct 2025
      */
-    return this._index ??= await (await fetch(await this.urlFor("index.json"), {cache: "no-cache"})).json();
+    return this.#index ??= await (await fetch(await this.urlFor("index.json"), {cache: "no-cache"})).json();
   }
 
   dataset(pathParts, versionDescriptor) {
@@ -84,7 +92,7 @@ export class NextcladeSource extends Source {
   }
 
   async _datasetsWithTrees() {
-    return (await this.index())
+    return (await this._index())
       .collections
       .flatMap(c => c.datasets)
       .filter(d => d.files.treeJson);
@@ -121,6 +129,14 @@ class NextcladeDataset extends Dataset {
     return NextcladeDatasetSubresource;
   }
 
+  constructor(source, pathParts, versionDescriptor) {
+    super(source, pathParts, versionDescriptor);
+
+    if (this.versionDescriptor && !this.versionDescriptor.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      throw new BadRequest(`Requested version must be in YYYY-MM-DD format (version descriptor requested: "${this.versionDescriptor}")`);
+    }
+  }
+
   // eslint-disable-next-line no-unused-vars
   assertValidPathParts(pathParts) {
     // Override check for underscores (_), as we want to allow Nextclade
@@ -132,7 +148,18 @@ class NextcladeDataset extends Dataset {
     return this.pathParts.slice();
   }
   get baseName() {
-    return this.baseParts.join("/");
+    return this.source._index().then(index => {
+      const collectionIds = new Set(
+        index 
+          .collections
+          .map(c => c.meta.id)
+      );
+      assert(collectionIds.has(NEXTSTRAIN_COLLECTION_ID));
+
+      return collectionIds.has(this.baseParts[0])
+        ? this.baseParts.join("/")
+        : `${NEXTSTRAIN_COLLECTION_ID}/${this.baseParts.join("/")}`;
+    });
   }
 
   async resolve() {
@@ -161,39 +188,76 @@ class NextcladeDataset extends Dataset {
     return [versionDate, versionUrls];
   }
   */
+
+  // XXX FIXME: specific to this source
+  async indexed() {
+    const baseName = await this.baseName;
+    const indexed =
+      (await this.source._index())
+        .collections
+        .flatMap(c => c.datasets)
+        .find(d => d.path === baseName);
+
+    if (!indexed)
+      throw new NotFound(`Dataset '${baseName}' is not in Nextclade's index`);
+
+    // XXX FIXME: this.versionDescriptor
+    return indexed;
+  }
+
+  /*
+  async blah() {
+    if (!this.versionDescriptor)
+      return indexed;
+
+    // XXX FIXME resolve version to tag
+    // XXX FIXME fetch 
+    const version =
+      indexed.versions
+        .map(v => ({
+          ...v,
+          _timestamp: DateTime.fromISO(v.updatedAt, {zone:"UTC"}),
+        }))
+        .toSorted((a, b) => b._timestamp - a._timestamp);
+        .find(v => v._timestamp.toISODate() <= this.versionDescriptor); // XXX FIXME this is wrong
+
+    if (!version)
+      throw new NotFound(`All dataset versions newer than version descriptor '${this.versionDescriptor}'`);
+
+    return await (await fetch(await this.source.urlFor([indexed.path, version.tag, "pathogen.json"].join("/")), {cache: "no-cache"})).json();
+  }
+  */
+
+  async resolveVersion() {
+
+  }
 }
 
 
 class NextcladeDatasetSubresource extends DatasetSubresource {
-  async url() {
+  constructor(resource, type) {
+    super(resource, type);
+
+    if (this.type !== "main")
+      throw new NotFound(`Nextclade datasets do not provide a '${this.type}' sidecar`);
+  }
+
+  get baseName() {
+    return this.resource._indexed().then(indexed => {
+      return [indexed.path, indexed.version.tag, indexed.files.treeJson].join("/");
+    });
+  }
+
+  /*
+  async url(method = "GET", headers = {}) {
     if (this.type !== "main")
       throw new NotFound(`Nextclade datasets do not provide a '${this.type}' sidecar`);
 
-    // XXX FIXME: comment on this implicit fetch and caching
-    const index = await this.resource.source.index();
-    const collectionIds = new Set(
-      index
-        .collections
-        .map(c => c.meta.id)
-    );
-    assert(collectionIds.has(NEXTSTRAIN_COLLECTION_ID));
-
-    const datasetPath =
-      collectionIds.has(this.resource.baseParts[0])
-        ? this.resource.baseName
-        : `${NEXTSTRAIN_COLLECTION_ID}/${this.resource.baseName}`;
-
-    const indexed =
-      index
-        .collections
-        .flatMap(c => c.datasets)
-        .find(d => d.path === datasetPath);
-
-    if (!indexed)
-      throw new NotFound(`Dataset '${datasetPath}' is not in Nextclade's index`);
+    const indexed = await this.resource._indexed();
 
     // XXX FIXME: versions: this.resource.versionDescriptor
 
     return await this.resource.source.urlFor([indexed.path, indexed.version.tag, indexed.files.treeJson].join("/"));
   }
+  */
 }
