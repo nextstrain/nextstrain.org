@@ -11,6 +11,11 @@ import { Source, Dataset, DatasetSubresource } from './models.js';
 const NEXTSTRAIN_COLLECTION_ID = "nextstrain";
 const NEXTSTRAIN_COLLECTION_PREFIX = re`^${NEXTSTRAIN_COLLECTION_ID}/`;
 
+// XXX FIXME comment
+const COLLECTION_IDS = new Set([NEXTSTRAIN_COLLECTION_ID, "community"]);
+
+// XXX FIXME comment on convention in this file of underscore methods vs private fields
+
 /**
  * XXX FIXME
  * 
@@ -20,6 +25,9 @@ Prefer full names (minus leading nextstrain/) as the canonical name
  * <https://github.com/nextstrain/nextstrain.org/issues/1156>
  */
 export class NextcladeSource extends Source {
+  #index;
+  #indexDatasets;
+
   /* XXX FIXME */
   constructor(index) {
     super();
@@ -46,13 +54,13 @@ export class NextcladeSource extends Source {
   }
 
   async availableDatasets() {
-    return (await this._datasetsWithTrees())
+    return (await this._indexDatasets())
       .map(({path}) => path.replace(NEXTSTRAIN_COLLECTION_PREFIX, ""));
   }
 
   async _datasetAliases() {
     return new Map(
-      (await this._datasetsWithTrees())
+      (await this._indexDatasets())
         .flatMap(({path, shortcuts}) => [
           /* Canonicalize nextstrain/a/b/c → a/b/c since we're on nextstrain.org
            * after all.
@@ -91,11 +99,13 @@ export class NextcladeSource extends Source {
     );
   }
 
-  async _datasetsWithTrees() {
-    return (await this._index())
-      .collections
-      .flatMap(c => c.datasets)
-      .filter(d => d.files.treeJson);
+  async _indexDatasets() {
+    return this.#indexDatasets ??=
+      (await this._index())
+        .collections
+        .filter(c => COLLECTION_IDS.has(c.meta.id))
+        .flatMap(c => c.datasets)
+        .filter(d => d.files.treeJson);
   }
 
   async getInfo() {
@@ -129,14 +139,6 @@ class NextcladeDataset extends Dataset {
     return NextcladeDatasetSubresource;
   }
 
-  constructor(source, pathParts, versionDescriptor) {
-    super(source, pathParts, versionDescriptor);
-
-    if (this.versionDescriptor && !this.versionDescriptor.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      throw new BadRequest(`Requested version must be in YYYY-MM-DD format (version descriptor requested: "${this.versionDescriptor}")`);
-    }
-  }
-
   // eslint-disable-next-line no-unused-vars
   assertValidPathParts(pathParts) {
     // Override check for underscores (_), as we want to allow Nextclade
@@ -147,15 +149,13 @@ class NextcladeDataset extends Dataset {
   get baseParts() {
     return this.pathParts.slice();
   }
-  async baseName() {
-    const collectionIds = new Set(
-      (await this.source._index())
-        .collections
-        .map(c => c.meta.id)
+  get baseName() {
+    const explicitCollections = new Set(
+      Array.from(COLLECTION_IDS)
+        .filter(id => id !== NEXTSTRAIN_COLLECTION_ID)
     );
-    assert(collectionIds.has(NEXTSTRAIN_COLLECTION_ID));
 
-    return collectionIds.has(this.baseParts[0])
+    return explicitCollections.has(this.baseParts[0])
       ? this.baseParts.join("/")
       : `${NEXTSTRAIN_COLLECTION_ID}/${this.baseParts.join("/")}`;
   }
@@ -174,33 +174,26 @@ class NextcladeDataset extends Dataset {
     return this;
   }
 
-  // XXX FIXME: resolve using versions in index
-  /*
   versionInfo() {
-    if (!this.versionDescriptor)
+    /* Copied wholesale from src/sources/core.js.  This is part of the tension
+     * between the Source/Resource/Subresource framework and the
+     * resourceIndexer/ResourceVersions/ListResources framework.
+     *   -trs, 23 Oct 2025
+     */
+    if (!this.versionDescriptor) {
       return [null, undefined];
+    }
 
     const versions = new ResourceVersions(this.source.name, 'dataset', this.pathParts.join("/"));
     const versionDate = versions.versionDateFromDescriptor(this.versionDescriptor);
     const versionUrls = versionDate ? versions.subresourceUrls(versionDate) : undefined
     return [versionDate, versionUrls];
   }
-  */
 
-  // XXX FIXME: specific to this source
-  async _indexed() {
-    const baseName = await this.baseName();
-    const indexed =
-      (await this.source._index())
-        .collections
-        .flatMap(c => c.datasets)
-        .find(d => d.path === baseName);
-
-    if (!indexed)
-      throw new NotFound(`Dataset '${baseName}' is not in Nextclade's index`);
-
-    // XXX FIXME: this.versionDescriptor
-    return indexed;
+  async _indexDataset() {
+    // XXX FIXME: ignores this.resource.versionDescriptor
+    return (await this.source._indexDatasets())
+      .find(d => d.path === this.baseName);
   }
 }
 
@@ -214,8 +207,13 @@ class NextcladeDatasetSubresource extends DatasetSubresource {
   }
 
   async baseName() {
-    const indexed = await this.resource._indexed();
-    const baseName = await this.resource.baseName();
-    return `${baseName}/${indexed.files.treeJson}`;
+    // XXX FIXME: ignores this.resource.versionDescriptor
+    const indexed = await this.resource._indexDataset();
+
+    if (!indexed)
+      throw new NotFound(`Dataset '${this.resource.baseName}' is not in Nextclade's index (or does not have a tree)`);
+
+    // XXX FIXME: comment on version tag here
+    return `${indexed.path}/${indexed.version.tag}/${indexed.files.treeJson}`;
   }
 }

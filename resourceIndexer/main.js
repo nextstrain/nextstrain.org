@@ -2,7 +2,7 @@
 import { ArgumentParser } from 'argparse';
 import fs from 'fs';
 import { coreS3Data, stagingS3Data } from "./coreStagingS3.js";
-import { nextcladeData } from "./nextclade.js";
+import { NextcladeData } from "./nextclade.js";
 import zlib from 'zlib';
 import { promisify } from 'util';
 import { ResourceIndexerError } from './errors.js';
@@ -35,7 +35,7 @@ const gzip = promisify(zlib.gzip)
 const COLLECTIONS = [
   coreS3Data,
   stagingS3Data,
-  nextcladeData,
+  new NextcladeData(),
 ];
 
 function parseArgs() {
