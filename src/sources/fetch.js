@@ -59,7 +59,7 @@ class UrlDefinedDataset extends Dataset {
     /* Version descriptors make no sense for fetch sources, but our routing approach always extracts them */
     return [null, undefined];
   }
-  async baseName() {
+  get baseName() {
     /**
      * The baseName includes anything that looks like a version descriptor.
      * Minor bug: If the requested URL ends with a '@' then it'll be dropped here.
@@ -80,9 +80,9 @@ class UrlDefinedDataset extends Dataset {
 }
 
 class UrlDefinedDatasetSubresource extends DatasetSubresource {
-  async baseName() {
+  get baseName() {
     const type = this.type;
-    const baseName = await this.resource.baseName();
+    const baseName = this.resource.baseName;
 
     if (type === "main") {
       return baseName;
@@ -104,7 +104,7 @@ class UrlDefinedNarrative extends Narrative {
     /* Version descriptors make no sense for fetch sources, but our routing approach always extracts them */
     return [null, undefined];
   }
-  async baseName() {
+  get baseName() {
     /* see comment in UrlDefinedDataset */
     const version = this.versionDescriptor ? `@${this.versionDescriptor}` : ""
     return this.baseParts.join("/") + version;
@@ -125,8 +125,8 @@ class UrlDefinedNarrative extends Narrative {
 }
 
 class UrlDefinedNarrativeSubresource extends NarrativeSubresource {
-  async baseName() {
-    return await this.resource.baseName();
+  get baseName() {
+    return this.resource.baseName;
   }
 }
 

@@ -200,15 +200,15 @@ class GroupSource extends Source {
 
 
 class GroupDataset extends Dataset {
-  async baseName() {
-    return `${DATASET_PREFIX}${await super.baseName()}`;
+  get baseName() {
+    return `${DATASET_PREFIX}${super.baseName}`;
   }
 }
 
 
 class GroupNarrative extends Narrative {
-  async baseName() {
-    return `${NARRATIVE_PREFIX}${await super.baseName()}`;
+  get baseName() {
+    return `${NARRATIVE_PREFIX}${super.baseName}`;
   }
 }
 
