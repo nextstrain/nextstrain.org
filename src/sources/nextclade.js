@@ -147,19 +147,17 @@ class NextcladeDataset extends Dataset {
   get baseParts() {
     return this.pathParts.slice();
   }
-  get baseName() {
-    return this.source._index().then(index => {
-      const collectionIds = new Set(
-        index 
-          .collections
-          .map(c => c.meta.id)
-      );
-      assert(collectionIds.has(NEXTSTRAIN_COLLECTION_ID));
+  async baseName() {
+    const collectionIds = new Set(
+      (await this.source._index())
+        .collections
+        .map(c => c.meta.id)
+    );
+    assert(collectionIds.has(NEXTSTRAIN_COLLECTION_ID));
 
-      return collectionIds.has(this.baseParts[0])
-        ? this.baseParts.join("/")
-        : `${NEXTSTRAIN_COLLECTION_ID}/${this.baseParts.join("/")}`;
-    });
+    return collectionIds.has(this.baseParts[0])
+      ? this.baseParts.join("/")
+      : `${NEXTSTRAIN_COLLECTION_ID}/${this.baseParts.join("/")}`;
   }
 
   async resolve() {
@@ -190,8 +188,8 @@ class NextcladeDataset extends Dataset {
   */
 
   // XXX FIXME: specific to this source
-  async indexed() {
-    const baseName = await this.baseName;
+  async _indexed() {
+    const baseName = await this.baseName();
     const indexed =
       (await this.source._index())
         .collections
@@ -204,33 +202,6 @@ class NextcladeDataset extends Dataset {
     // XXX FIXME: this.versionDescriptor
     return indexed;
   }
-
-  /*
-  async blah() {
-    if (!this.versionDescriptor)
-      return indexed;
-
-    // XXX FIXME resolve version to tag
-    // XXX FIXME fetch 
-    const version =
-      indexed.versions
-        .map(v => ({
-          ...v,
-          _timestamp: DateTime.fromISO(v.updatedAt, {zone:"UTC"}),
-        }))
-        .toSorted((a, b) => b._timestamp - a._timestamp);
-        .find(v => v._timestamp.toISODate() <= this.versionDescriptor); // XXX FIXME this is wrong
-
-    if (!version)
-      throw new NotFound(`All dataset versions newer than version descriptor '${this.versionDescriptor}'`);
-
-    return await (await fetch(await this.source.urlFor([indexed.path, version.tag, "pathogen.json"].join("/")), {cache: "no-cache"})).json();
-  }
-  */
-
-  async resolveVersion() {
-
-  }
 }
 
 
@@ -242,22 +213,9 @@ class NextcladeDatasetSubresource extends DatasetSubresource {
       throw new NotFound(`Nextclade datasets do not provide a '${this.type}' sidecar`);
   }
 
-  get baseName() {
-    return this.resource._indexed().then(indexed => {
-      return [indexed.path, indexed.version.tag, indexed.files.treeJson].join("/");
-    });
-  }
-
-  /*
-  async url(method = "GET", headers = {}) {
-    if (this.type !== "main")
-      throw new NotFound(`Nextclade datasets do not provide a '${this.type}' sidecar`);
-
+  async baseName() {
     const indexed = await this.resource._indexed();
-
-    // XXX FIXME: versions: this.resource.versionDescriptor
-
-    return await this.resource.source.urlFor([indexed.path, indexed.version.tag, indexed.files.treeJson].join("/"));
+    const baseName = await this.resource.baseName();
+    return `${baseName}/${indexed.files.treeJson}`;
   }
-  */
 }
