@@ -5,8 +5,6 @@ import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphNarrow } from "../../../components/focus-paragraph";
 import { HugeSpacer, SmallSpacer } from "../../../components/spacers";
 
-import gisaidLogo from "../../../static/logos/gisaid.png";
-
 import styles from "./styles.module.css";
 
 const title = "Nextstrain SARS-CoV-2 Forecasts";
@@ -53,8 +51,8 @@ export default function SarsCov2Forecasts(): React.ReactElement {
           in the{" "}
           <a href="https://www.github.com/blab/evofr">evofr GitHub repo</a>.
           Enabled by data from{" "}
-          <a href="https://gisaid.org/">
-            <img alt="GISAID" src={gisaidLogo.src} width={70} />
+          <a href="https://www.ncbi.nlm.nih.gov/genbank/">
+            GenBank
           </a>
           .
           <br />
@@ -89,7 +87,7 @@ export default function SarsCov2Forecasts(): React.ReactElement {
         <FocusParagraphNarrow>
           We gratefully acknowledge the authors, originating and submitting
           laboratories of the genetic sequences and metadata made available
-          through GISAID on which this research is based.
+          through GenBank on which this research is based.
         </FocusParagraphNarrow>
       </FlexCenter>
     </>
