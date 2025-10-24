@@ -597,6 +597,55 @@
           "default": "all"
         }
       },
+      "norovirus": {
+        "group": {
+          "all": {
+            "genes": {
+              "genome": "",
+              "p48": "",
+              "NTPase": "",
+              "p22": "",
+              "VPg": "",
+              "3CLpro": "",
+              "RdRp": "",
+              "VP1": "",
+              "VP2": "",
+              "default": "VP1"
+            }
+          },
+          "GII.2": {
+            "genes": {
+              "genome": "",
+              "default": "genome"
+            }
+          },
+          "GII.3": {
+            "genes": {
+              "genome": "",
+              "default": "genome"
+            }
+          },
+          "GII.4": {
+            "genes": {
+              "genome": "",
+              "default": "genome"
+            }
+          },
+          "GII.6": {
+            "genes": {
+              "genome": "",
+              "default": "genome"
+            }
+          },
+          "GII.17": {
+            "genes": {
+              "genome": "",
+              "default": "genome"
+            }
+          },
+          "default": "all"
+        }
+      },
       "oropouche": {
         "segment": {
           "L": "",

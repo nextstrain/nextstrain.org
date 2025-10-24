@@ -145,3 +145,7 @@ coreTiles:
     img: nipah_tree.png
     filters:
       - nipah
+  - name: Norovirus
+    img: norovirus_map.png
+    filters:
+      - norovirus
