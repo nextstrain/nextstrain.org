@@ -579,7 +579,7 @@
               "default": "global"
             }
           },
-          "default": "gisaid"
+          "default": "open"
         }
       },
       "nextclade": {
