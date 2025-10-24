@@ -7,7 +7,7 @@
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
   img: ncov_freq.png
-  url: /ncov/gisaid/global/6m
+  url: /ncov/open/global/6m
 
 - name: Mpox in the DRC
   description: INRB analysis of ongoing mpox clade I outbreak in the DRC
