@@ -238,6 +238,16 @@ function addAsync(app) {
     };
   }
 
+  if (app.all) {
+    app.allAsync = function() {
+      const fn = arguments[arguments.length - 1];
+      assert.ok(typeof fn === 'function',
+        'Last argument to `allAsync()` must be a function');
+      const args = wrapArgs(arguments);
+      return app.all.apply(app, args);
+    };
+  }
+
   app.deleteAsync = function() {
     const fn = arguments[arguments.length - 1];
     assert.ok(typeof fn === 'function',
