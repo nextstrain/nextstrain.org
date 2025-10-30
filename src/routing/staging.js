@@ -40,7 +40,7 @@ export function setup(app) {
   ;
 
   app.routeAsync("/staging/*")
-    .all(setDataset(req => req.params[0]), canonicalizeDataset(path => `/staging/${path}`))
+    .allAsync(setDataset(req => req.params[0]), canonicalizeDataset(path => `/staging/${path}`))
     .getAsync(getDataset)
     .putAsync(putDataset)
     .deleteAsync(deleteDataset)

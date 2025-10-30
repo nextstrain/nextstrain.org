@@ -67,7 +67,7 @@ export function setup(app) {
   app.use([coreBuildRoutes, "/narratives/*"], setSource(req => new CoreSource())); // eslint-disable-line no-unused-vars
 
   app.routeAsync(coreBuildRoutes)
-    .all(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
+    .allAsync(setDataset(req => req.path), canonicalizeDataset(path => `/${path}`))
     .getAsync(getDataset)
     .putAsync(putDataset)
     .deleteAsync(deleteDataset)
