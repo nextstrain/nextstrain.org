@@ -1,5 +1,5 @@
 import { BadRequest, isHttpError } from '../../httpErrors.js';
-import { splitPrefixIntoParts } from '../../utils/prefix.js';
+import { splitPrefixIntoParts, joinPartsIntoPrefix } from '../../utils/prefix.js';
 import { setSource, setDataset, canonicalizeDataset, setNarrative } from '../sources.js';
 import './setAvailableDatasets.js'; // sets globals
 export { getAvailable } from './getAvailable.js';
@@ -29,10 +29,13 @@ const setDatasetFromPrefix = setDataset(req => req.context.splitPrefixIntoParts.
  * Leave the URL path (e.g. /charon/getDataset) unchanged with only the
  * "prefix" query param updated with the resolved dataset path.
  */
-const canonicalizeDatasetPrefix = canonicalizeDataset((req, path) => ({
+const canonicalizeDatasetPrefix = canonicalizeDataset(async (req, path) => ({
   query: {
     ...req.query,
-    prefix: path,
+    prefix: await joinPartsIntoPrefix({
+      source: req.context.source,
+      prefixParts: path.split("/")
+    }),
   }
 }));
 
