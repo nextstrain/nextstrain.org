@@ -50,10 +50,10 @@ const setDataset = (pathExtractor) => (req, res, next) => {
  * descriptor is included in the redirect. Original query params are preserved
  * across the redirect unless overridden by canonicalBuilder.
  *
- * @param {canonicalBuilder} canonicalBuilder - Function to build a fully-specified path or URL object suitable for {@link url#format}
- * @returns {expressMiddleware}
+ * @param {canonicalBuilder|canonicalBuilderAsync} canonicalBuilder - Function to build a fully-specified path or URL object suitable for {@link url#format}
+ * @returns {expressMiddlewareAsync}
  */
-const canonicalizeDataset = (canonicalBuilder) => (req, res, next) => {
+const canonicalizeDataset = (canonicalBuilder) => async (req, res, next) => {
   const dataset = req.context.dataset;
   const resolvedDataset = dataset.resolve();
 
@@ -62,8 +62,8 @@ const canonicalizeDataset = (canonicalBuilder) => (req, res, next) => {
   const version = dataset.versionDescriptor ? `@${dataset.versionDescriptor}` : '';
 
   let canonical = canonicalBuilder.length >= 2
-    ? canonicalBuilder(req, resolvedDataset.pathParts.join("/") + version)
-    : canonicalBuilder(resolvedDataset.pathParts.join("/") + version);
+    ? await canonicalBuilder(req, resolvedDataset.pathParts.join("/") + version)
+    : await canonicalBuilder(resolvedDataset.pathParts.join("/") + version);
 
   // Convert plain path string to an object for url.format()
   if (typeof canonical === "string")
@@ -390,6 +390,22 @@ function receiveSubresource(subresourceExtractor) {
 * @param {String} path - Canonical path for the dataset within the context of
 *   the current {@link Source}
 * @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
+*/
+/**
+ * @callback canonicalBuilderAsync
+ *
+ * @async
+ * @param {String} path - Canonical path for the dataset within the context of
+ *   the current {@link Source}
+ * @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
+ *//**
+* @callback canonicalBuilderAsync
+*
+* @async
+* @param {express.request} req
+* @param {String} path - Canonical path for the dataset within the context of
+*   the current {@link Source}
+ * @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
 */
 
 /**
