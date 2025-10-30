@@ -228,13 +228,15 @@ function addAsync(app) {
     return addAsync(this.route.apply(this, arguments));
   };
 
-  app.useAsync = function() {
-    const fn = arguments[arguments.length - 1];
-    assert.ok(typeof fn === 'function',
-      'Last argument to `useAsync()` must be a function');
-    const args = wrapArgs(arguments);
-    return app.use.apply(app, args);
-  };
+  if (app.use) {
+    app.useAsync = function() {
+      const fn = arguments[arguments.length - 1];
+      assert.ok(typeof fn === 'function',
+        'Last argument to `useAsync()` must be a function');
+      const args = wrapArgs(arguments);
+      return app.use.apply(app, args);
+    };
+  }
 
   app.deleteAsync = function() {
     const fn = arguments[arguments.length - 1];
