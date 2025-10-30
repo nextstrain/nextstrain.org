@@ -2,6 +2,7 @@
 import { ArgumentParser } from 'argparse';
 import fs from 'fs';
 import { coreS3Data, stagingS3Data } from "./coreStagingS3.js";
+import { NextcladeData } from "./nextclade.js";
 import zlib from 'zlib';
 import { promisify } from 'util';
 import { ResourceIndexerError } from './errors.js';
@@ -19,8 +20,8 @@ const gzip = promisify(zlib.gzip)
  * (sub-)class and resourcePath to parallel the information in the Resource
  * (sub-)class.
  *
- * Currently only sources {core, staging} and resource types {dataset,
- * intermediate} are part of the index.
+ * Currently only sources {core, staging, nextclade} and resource types
+ * {dataset, intermediate} are part of the index.
  *
  * As an example, the core WNV/NA (nextstrain.org/WNV/NA) dataset is indexed
  * like so:
@@ -34,6 +35,7 @@ const gzip = promisify(zlib.gzip)
 const COLLECTIONS = [
   coreS3Data,
   stagingS3Data,
+  new NextcladeData(),
 ];
 
 function parseArgs() {
@@ -46,12 +48,14 @@ function parseArgs() {
       For more verbose logging set a 'DEBUG=nextstrain:*' env variable.
     `,
   });
+  // XXX FIXME: Nextclade index too not only S3 inventories
   argparser.addArgument("--local", {action: 'storeTrue',
     help: 'Access a local copy of S3 inventories within ./devData/. See docstring of fetchInventoryLocal() for expected filenames.'})
   argparser.addArgument("--collections", {metavar: "<name>", type: "string", nargs: '+', choices: COLLECTIONS.map((c) => c.name),
     help: "Only fetch data from a subset of collections. Source names are those defined in COLLECTIONS"});
   argparser.addArgument("--resourceTypes", {metavar: "<name>", type: "string", nargs: '+', choices: ['dataset', 'intermediate'],
     help: "Only index data matching specified resource types"});
+  // XXX FIXME: Nextclade index too not only S3 inventories
   argparser.addArgument("--save-inventories", {action: 'storeTrue',
     help: "Save the fetched inventories + manifest files to ./devData so that future invocations can use --local"});
   argparser.addArgument("--output", {metavar: "<json>", required: true})

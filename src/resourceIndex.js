@@ -191,6 +191,8 @@ class ListResources {
         return ""
       case "staging":
         return "staging/"
+      case "nextclade":
+        return "nextclade/"
       default:
         throw new InternalServerError(`Source "${name}" does not have a corresponding prefix`)
     }
@@ -216,7 +218,7 @@ class ListResources {
       if (this.groupHistory) {
         key = "pathVersions";
         valuePairs = _resources
-          .filter(([name,]) => name.split('/')[0]===this.groupHistory)
+          .filter(([name,]) => name.split('/')[0]===this.groupHistory) // XXX FIXME
           .map(_formatIntermediates);
       } else {
         key = "latestVersions";
