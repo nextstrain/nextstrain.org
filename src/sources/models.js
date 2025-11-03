@@ -252,9 +252,9 @@ class Subresource {
       throw new NotFound(`This version of the resource does not have a subresource for ${this.type}`);
     }
 
-    return await this.resource.source.urlFor(this.baseName, method, headers);
+    return await this.resource.source.urlFor(await this.baseName(), method, headers);
   }
-  get baseName() {
+  async baseName() {
     throw new Error("baseName() must be implemented by Subresource subclasses");
   }
   get mediaType() {
@@ -337,7 +337,7 @@ class DatasetSubresource extends Subresource {
     "application/octet-stream; q=0.01",
   ].join(", ");
 
-  get baseName() {
+  async baseName() {
     return this.type === "main"
       ? `${this.resource.baseName}.json`
       : `${this.resource.baseName}_${this.type}.json`;
@@ -392,7 +392,7 @@ class NarrativeSubresource extends Subresource {
     "text/*; q=0.1",
   ].join(", ");
 
-  get baseName() {
+  async baseName() {
     return `${this.resource.baseName}.md`;
   }
 
