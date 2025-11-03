@@ -99,6 +99,7 @@ export default function Available(): React.ReactElement {
         return {
           groupName,
           groupDisplayName: groupName,
+          sortingGroupName: groupName,
           groupUrl: `/groups/${groupName}`,
           groupUrlTooltip: `Click to view the page for ${groupName}`,
           resources: filteredResources,

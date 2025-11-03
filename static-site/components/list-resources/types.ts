@@ -10,6 +10,7 @@ export type SortMethod = "lastUpdated" | "alphabetical";
 
 export type Group = {
   groupName: string;
+  sortingGroupName: string;
   groupImgSrc?: string;
   groupImgAlt?: string;
   nResources: number;

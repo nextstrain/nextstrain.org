@@ -123,6 +123,7 @@ export default function IndividualGroupPage({
     return [{
       groupName: group,
       groupDisplayName: group,
+      sortingGroupName: group,
       resources,
       nResources: resources.length,
       nVersions: undefined,
