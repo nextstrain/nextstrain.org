@@ -55,7 +55,7 @@ const setDataset = (pathExtractor) => (req, res, next) => {
  */
 const canonicalizeDataset = (canonicalBuilder) => async (req, res, next) => {
   const dataset = req.context.dataset;
-  const resolvedDataset = dataset.resolve();
+  const resolvedDataset = await dataset.resolve();
 
   if (dataset === resolvedDataset) return next();
 
