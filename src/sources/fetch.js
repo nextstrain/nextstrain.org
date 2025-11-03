@@ -80,7 +80,7 @@ class UrlDefinedDataset extends Dataset {
 }
 
 class UrlDefinedDatasetSubresource extends DatasetSubresource {
-  get baseName() {
+  async baseName() {
     const type = this.type;
     const baseName = this.resource.baseName;
 
@@ -126,7 +126,7 @@ class UrlDefinedNarrative extends Narrative {
 }
 
 class UrlDefinedNarrativeSubresource extends NarrativeSubresource {
-  get baseName() {
+  async baseName() {
     return this.resource.baseName;
   }
 }
