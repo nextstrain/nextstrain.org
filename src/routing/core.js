@@ -40,7 +40,6 @@ const coreBuildPaths = [
   "/monkeypox", // Not actively updated, but YYYY-MM-DD URLs remain & don't redirect
   "/mpox",      // monkeypox URLs will redirect to /mpox (except for datestamped URLs)
   "/ncov",
-  "/nextclade",
   "/nipah",
   "/norovirus",
   "/oropouche",

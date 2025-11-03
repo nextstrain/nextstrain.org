@@ -582,12 +582,6 @@
           "default": "open"
         }
       },
-      "nextclade": {
-        "dataset": {
-          "sars-cov-2": "",
-          "default": "sars-cov-2"
-        }
-      },
       "nipah": {
         "resolution": {
           "all": "",

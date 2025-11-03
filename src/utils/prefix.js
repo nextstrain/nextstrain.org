@@ -9,6 +9,7 @@ import * as sources from '../sources/index.js';
 const sourceNameToClass = new Map([
   ["core", sources.CoreSource],
   ["staging", sources.CoreStagingSource],
+  ["nextclade", sources.NextcladeSource],
   ["community", sources.CommunitySource],
   ["fetch", sources.UrlDefinedSource],
   ["groups", sources.GroupSource],
@@ -44,6 +45,7 @@ const splitPrefixIntoParts = (prefix) => {
   switch (prefixParts[0]) {
     case "community":
     case "staging":
+    case "nextclade":
     case "fetch":
       sourceName = prefixParts.shift();
       break;
@@ -119,6 +121,7 @@ const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) =
   switch (sourceName) {
     case "community":
     case "staging":
+    case "nextclade":
     case "fetch":
       leadingParts.push(sourceName);
       break;
