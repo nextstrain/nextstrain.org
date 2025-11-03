@@ -10,6 +10,7 @@ export type SortMethod = "lastUpdated" | "alphabetical";
 
 export interface Group {
   groupName: string;
+  sortingGroupName: string;
   nResources: number;
   nVersions: number | undefined;
   lastUpdated: string | undefined;

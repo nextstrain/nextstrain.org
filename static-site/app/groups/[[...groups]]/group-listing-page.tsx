@@ -186,6 +186,7 @@ async function _resourcesCallback(): Promise<Group[]> {
       return {
         groupName,
         groupDisplayName: groupName, 
+        sortingGroupName: groupName,
         resources: filteredResources,
         nResources: filteredResources.length,
         nVersions: undefined,

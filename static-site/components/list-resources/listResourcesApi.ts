@@ -33,6 +33,7 @@ export async function listResourcesAPI(
     versioned,
     groupNameBuilder = (name: string) => name.split("/")[0]!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
     groupDisplayNames,
+    groupSortableName,
     groupUrl
   }: {
     /** Report prior versions of each resource.
@@ -41,6 +42,7 @@ export async function listResourcesAPI(
     versioned: boolean,
     groupNameBuilder?: (name: string) => string,
     groupDisplayNames?: Record<string, string>,
+    groupSortableName?: (group: Group) => string,
     groupUrl?: (groupName: string) => string
   }
 ): Promise<Group[]> {
@@ -62,6 +64,9 @@ export async function listResourcesAPI(
       const group = resourceGroup(groupName, resources);
       if (groupDisplayNames && groupName in groupDisplayNames) {
         group.groupDisplayName = groupDisplayNames[groupName];
+      }
+      if (groupSortableName) {
+        group.sortingGroupName = groupSortableName(group);
       }
       if (groupUrl) {
         group.groupUrl = groupUrl(groupName);
@@ -88,6 +93,7 @@ function resourceGroup(groupName: string, resources: Resource[]): Group {
 
   const groupInfo: Group = {
     groupName,
+    sortingGroupName: groupName,
     resources,
     nResources: resources.length,
     nVersions,
