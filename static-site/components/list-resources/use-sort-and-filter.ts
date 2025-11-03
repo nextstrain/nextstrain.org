@@ -104,8 +104,8 @@ export default function useSortAndFilter(
       const groups = originalData;
       const _sortGroups = (groupA: Group, groupB: Group) =>
         _lexicographicSort(
-          groupA.groupName.toLowerCase(),
-          groupB.groupName.toLowerCase(),
+          groupA.sortingGroupName.toLowerCase(),
+          groupB.sortingGroupName.toLowerCase(),
         );
       const _sortResources = (a: Resource, b: Resource) =>
         _lexicographicSort(a.sortingName, b.sortingName);

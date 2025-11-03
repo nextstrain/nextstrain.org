@@ -34,6 +34,7 @@ export async function listResourcesAPI(
     versioned,
     groupNameBuilder = (name: string) => name.split("/")[0]!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
     groupDisplayNames,
+    groupSortableName,
     groupUrl,
     groupUrlTooltip
   }: {
@@ -43,6 +44,7 @@ export async function listResourcesAPI(
     versioned: boolean,
     groupNameBuilder?: (name: string) => string,
     groupDisplayNames?: Record<string, string>,
+    groupSortableName?: (group: Group) => string,
     groupUrl?: (groupName: string) => string,
     groupUrlTooltip?: (groupName: string) => string
   }
@@ -65,6 +67,9 @@ export async function listResourcesAPI(
       const group = resourceGroup(groupName, resources);
       if (groupDisplayNames && groupName in groupDisplayNames) {
         group.groupDisplayName = groupDisplayNames[groupName];
+      }
+      if (groupSortableName) {
+        group.sortingGroupName = groupSortableName(group);
       }
       if (groupUrl) {
         group.groupUrl = groupUrl(groupName);
@@ -94,6 +99,7 @@ function resourceGroup(groupName: string, resources: Resource[]): Group {
 
   const groupInfo: Group = {
     groupName,
+    sortingGroupName: groupName,
     groupImgSrc: nextstrainLogoSmall.src,
     groupImgAlt: "nextstrain logo",
     resources,
