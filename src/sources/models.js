@@ -306,7 +306,7 @@ class Dataset extends Resource {
    *
    * @returns {Dataset}
    */
-  resolve() {
+  async resolve() {
     return this;
   }
 
