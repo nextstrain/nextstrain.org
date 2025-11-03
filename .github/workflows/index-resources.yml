@@ -85,7 +85,7 @@ jobs:
           node resourceIndexer/main.js \
             --gzip --output resources.json.gz \
             --resourceTypes dataset intermediate \
-            --collections core staging
+            --collections core staging nextclade
       - name: Upload the new index, overwriting the existing index
         if: ${{ startsWith(env.RESOURCE_INDEX, 's3://') }}
         run: |
