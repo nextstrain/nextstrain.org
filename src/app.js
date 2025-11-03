@@ -14,6 +14,7 @@ const {
   errors,
   fetch,
   groups,
+  nextclade,
   openid,
   pathogenRepos,
   schemas,
@@ -68,7 +69,6 @@ charon.setup(app);
  *   /monkeypox
  *   /mpox
  *   /ncov
- *   /nextclade
  *   /rsv
  *   /rubella
  *   /seasonal-flu
@@ -90,6 +90,15 @@ core.setup(app);
  *   /staging/*
  */
 staging.setup(app);
+
+
+/* Nextclade reference datasets
+ *
+ * Routes:
+ *   /nextclade
+ *   /nextclade/*
+ */
+nextclade.setup(app);
 
 
 /* Community on GitHub

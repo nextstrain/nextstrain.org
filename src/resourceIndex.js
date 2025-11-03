@@ -191,6 +191,8 @@ class ListResources {
         return ""
       case "staging":
         return "staging/"
+      case "nextclade":
+        return "nextclade/"
       default:
         throw new InternalServerError(`Source "${name}" does not have a corresponding prefix`)
     }
