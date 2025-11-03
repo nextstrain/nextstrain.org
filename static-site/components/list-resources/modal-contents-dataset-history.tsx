@@ -42,7 +42,7 @@ export function DatasetHistory({
         </strong>
         <a
         className={styles.snapshotLink}
-        href={`/${resource.name}`}
+        href={resource.url}
         rel="noreferrer noopener"
         target="_blank"
         >
