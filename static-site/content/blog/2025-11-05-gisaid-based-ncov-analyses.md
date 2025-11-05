@@ -22,7 +22,7 @@ Instead GISAID has proposed that we "provide to GISAID the parameters for Augur 
 We believe that continued flat-file access is the appropriate modality and easiest way forward to keep genomic surveillance operating.
 Additionally, we think it is important to keep a bright line between analyses run by Nextstrain and those run by others.
 That said, we're open to finding a solution that would respect this, with a conceivable option of GISAID produced JSONs shared directly by GISAID through a new [Groups page](https://docs.nextstrain.org/en/latest/learn/groups/).
-We don't have a timeline or details on continued GISAID-based analyses at the point.
+We don't have a timeline or details on continued GISAID-based analyses at the moment.
 
 We firmly support labs collecting specimens and generating sequence data and strive to credit these labs prominently.
 But credit for data contributions does not need to be a zero sum game – appropriate surfacing of data in popular tools generates visibility and recognition and does not infringe on future publications by the data generators.
