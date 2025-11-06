@@ -1,6 +1,6 @@
 ---
 author: "Trevor Bedford, Richard Neher and the Nextstrain team"
-date: "2025-11-05"
+date: "2025-11-06"
 title: "Interruption to GISAID-based SARS-CoV-2 sequence analyses"
 sidebarTitle: "Interruption to GISAID-based SARS-CoV-2 analyses"
 ---
