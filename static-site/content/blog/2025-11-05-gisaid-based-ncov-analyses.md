@@ -16,11 +16,11 @@ Starting May 2020, these were available through the ["nextregion" section](https
 
 More precisely, in ending updates to our flat file, GISAID stated that our 'nextregion' package was not being downloaded with a "frequency that justifies the effort required by GISAID to package and prepare the information".
 Our belief is that the primary public health utility and original purpose of the data feed from Jan 2020 was to enable continued updates to nextstrain.org/ncov, which still sees significant daily visitors.
-Making metadata and sequences available through the "nextregion" interface was a secondary outcome enacted in May 2020 to allow reproducible research given strictures of GISAID's data resharing policy.
+Making metadata and sequences available through the "nextregion" interface was a secondary byproduct enacted in May 2020 to allow reproducible research given strictures of GISAID's data resharing policy.
 
 In October's email exchange, we requested continued flat file access to keep nextstrain.org/ncov updated, but GISAID has refused this request stating that "after consulting with our staff and advisors on the feasibility of keeping your global tree up-to-date, there was a clear consensus that continuing to generate, zip and move big files back and forth is not sustainable and a waste of resources."
-This has not made sense to us as GISAID is already keeping exactly this file up-to-date and available for other analysis websites like [LANL](https://cov.lanl.gov/content/index).
-We believe that parity access to the same non-Nextstrain-specific flat files provided to other external platforms should not represent additional resources required from GISAID.
+This has not made sense to us as GISAID can keep a single flat file up-to-date and available across analysis websites including [LANL](https://cov.lanl.gov/content/index), [CoV-Spectrum](https://cov-spectrum.org/), Nextstrain, etc...
+There are also simple technical revisions (for example sharding by submission year) that would easily reduce resource overhead in generating this single file for use across external analysis websites.
 
 Instead GISAID has proposed that we "provide to GISAID the parameters for Augur and GISAID will run it for you. You would then be provided the Augur output JSON file with the relevant subsample for your phylogenetic tree."
 However, our analyses pipelines are developed continuously and we don't think this proposal is a viable or desirable solution.
