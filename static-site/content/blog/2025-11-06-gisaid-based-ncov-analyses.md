@@ -8,7 +8,7 @@ sidebarTitle: "Interruption to GISAID-based SARS-CoV-2 analyses"
 On Oct 1, 2025, we received an email from GISAID Secretariat informing us that GISAID has immediately ended updates to the flat file of SARS-CoV-2 genomic sequences and associated metadata that they had provisioned to Trevor Bedford for updating Nextstrain analyses since Feb 2020.
 GISAID's stated rationale was that their "resources are limited".
 
-This file was initially provisioned Jan 30 2020, and we had kept [nextstrain.org/ncov](https://nextstrain.org/ncov/open/global/6m@2020-01-30) updated from it to show the genetic relationships among all SARS-CoV-2 viruses sequenced and shared to GISAID.
+This file was initially provisioned Jan 30 2020, and we had kept [nextstrain.org/ncov](https://nextstrain.org/ncov@2020-01-30) updated from it to show the genetic relationships among all SARS-CoV-2 viruses sequenced and shared to GISAID.
 As the dataset grew, we developed a subsampling strategy that faceted the data by different continent-level regions, by different recency windows (ie 2 months back, 6 months back or the entire timeseries) and by different rootings (ie to Wuhan or to clade 21L).
 On GISAID's request, we made specific changes to the website to do things like surface GISAID's logo at the top of the page, to keep the hCoV-19/ prefix in strain names and to disable download of associated metadata.
 We also arranged with GISAID for them to host matching sequence and metadata files because we're not permitted to reshare GISAID data under their [Database Access Agreement](https://gisaid.org/terms-of-use/).
