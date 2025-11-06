@@ -33,9 +33,14 @@ We firmly support labs collecting specimens and generating sequence data and str
 But credit for data contributions does not need to be a zero sum game – appropriate surfacing of data in popular tools generates visibility and recognition and does not infringe on future publications by the data generators.
 Real-time genomic surveillance including early variant warning requires a healthy analysis ecosystem.
 Tools like Nextstrain, [CoV-Spectrum](https://cov-spectrum.org/), [UShER](https://genome.ucsc.edu/cgi-bin/hgPhyloPlace) and [outbreak.info](https://outbreak.info/) facilitate a global community of experts to keep close tabs on the ongoing evolution of SARS-CoV-2.
-Support for Outbreak.info ended in [May 2025](https://bsky.app/profile/kgandersen.bsky.social/post/3lqbcqxxyss2l) and CoV-Spectrum hasn't been updated for 3 weeks.
+Support for Outbreak.info ended in [May 2025](https://bsky.app/profile/kgandersen.bsky.social/post/3lqbcqxxyss2l) and CoV-Spectrum hasn't been updated for >3 weeks.
 Closing these public analyses puts the world more in the dark and concretely harms surveillance as it becomes more difficult for variant spotters to contribute to [global](https://x.com/siamosolocani/status/1983854434988769597) [situational](https://x.com/JPWeiland/status/1984030560801714217) [awareness](https://www.thinkglobalhealth.org/article/to-finish-the-pandemic-agreement-who-needs-a-trustworthy-viral-database).
+Ending flat-file access undermines vital surveillance infrastructure and conflicts with GISAID's [mission](https://gisaid.org/about-us/mission/) to promote rapid data sharing and develop new research tools.
 
 Our [open analyses](https://nextstrain.org/pathogens?filter=ncov&filter=open) based on GenBank / INSDC data continue to operate as usual.
 There is a fair amount of recent data here, but it is geographically restricted as many countries submit primarily to GISAID.
 If you're interested to see your data in these open analyses please consider submitting sequences to INSDC via the [NCBI SARS-CoV-2 submission portal](https://submit.ncbi.nlm.nih.gov/sarscov2/).
+
+_We believe transparency is essential in these matters of global genomic surveillance._
+_As such, we requested a fact check from GISAID prior to publication of this blog post._
+_Our queries, GISAID's verbatim responses and our clarifications are [available in this PDF document](https://data.nextstrain.org/files/blog/2025-11-06_gisaid_fact_check.pdf)._
