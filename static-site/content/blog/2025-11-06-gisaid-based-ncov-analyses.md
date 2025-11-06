@@ -33,7 +33,7 @@ We firmly support labs collecting specimens and generating sequence data and str
 But credit for data contributions does not need to be a zero sum game – appropriate surfacing of data in popular tools generates visibility and recognition and does not infringe on future publications by the data generators.
 Real-time genomic surveillance including early variant warning requires a healthy analysis ecosystem.
 Tools like Nextstrain, [CoV-Spectrum](https://cov-spectrum.org/), [UShER](https://genome.ucsc.edu/cgi-bin/hgPhyloPlace) and [outbreak.info](https://outbreak.info/) facilitate a global community of experts to keep close tabs on the ongoing evolution of SARS-CoV-2.
-Support for Outbreak.info ended in [May 2025](https://bsky.app/profile/kgandersen.bsky.social/post/3lqbcqxxyss2l) and CoV-Spectrum hasn't been updated for >3 weeks.
+Support for Outbreak.info ended in [Jan 2025](https://bsky.app/profile/kgandersen.bsky.social/post/3lqbcqxxyss2l) and CoV-Spectrum hasn't been updated for >3 weeks.
 Closing these public analyses puts the world more in the dark and concretely harms surveillance as it becomes more difficult for variant spotters to contribute to [global](https://x.com/siamosolocani/status/1983854434988769597) [situational](https://x.com/JPWeiland/status/1984030560801714217) [awareness](https://www.thinkglobalhealth.org/article/to-finish-the-pandemic-agreement-who-needs-a-trustworthy-viral-database).
 Ending flat-file access undermines vital surveillance infrastructure and conflicts with GISAID's [mission](https://gisaid.org/about-us/mission/) to promote rapid data sharing and develop new research tools.
 
