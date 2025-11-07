@@ -58,7 +58,7 @@ export const parseMarkdown = (mdString) => {
     allowedAttributes: {"*": allowedAttributes},
     nonTextTags: ['style', 'script', 'textarea', 'option'],
     transformTags: {
-      'a': function(tagName, attribs) {
+      a: function(tagName, attribs) {
         try {
           const url = new URL(attribs.href); // URL is not supported on Internet Explorer
           if (url.hostname !== location.hostname) {
