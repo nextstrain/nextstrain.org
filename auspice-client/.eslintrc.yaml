@@ -1,0 +1,15 @@
+---
+parser: "@babel/eslint-parser"
+
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+
+ignorePatterns:
+  - "/*"
+  - "!/customisations"
+
+parserOptions:
+  babelOptions:
+    plugins:
+      - "@babel/plugin-syntax-jsx"

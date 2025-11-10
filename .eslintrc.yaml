@@ -19,6 +19,10 @@ ignorePatterns:
   - "!/src"
   - "!/test"
 
+  # NOTE: auspice-client has another configuration file with additional rules to
+  # cover React usage.
+  - "!/auspice-client"
+
   # NOTE: static-site has another configuration file with additional rules to
   # cover React and TypeScript usage.
   - "!/static-site"
