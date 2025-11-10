@@ -366,5 +366,9 @@
   {
     "name": "MIDGE",
     "isPublic": true
+  },
+  {
+    "name": "Brazil-H5N1",
+    "isPublic": false
   }
 ]
