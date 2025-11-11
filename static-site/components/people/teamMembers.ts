@@ -91,13 +91,6 @@ export const teamMembers: {
       blurb:
         "Cornelius joined the team in 2021 and focuses on Nextclade and SARS-CoV-2.",
     },
-    {
-      name: "Thomas Sibley",
-      image: "thomas-sibley.jpg",
-      link: "https://bedford.io/team/thomas-sibley/",
-      blurb:
-        "Thomas works on all aspects of Nextstrain with a particular focus on reducing barriers to usage via better infrastructure (e.g. nextstrain.org, Groups), tooling (e.g. CLI, runtimes), and documentation.",
-    },
   ],
   alumni: [
     {
@@ -161,6 +154,13 @@ export const teamMembers: {
       name: "Pavel Sagulenko",
       image: "pavel-sagulenko.jpg",
       link: "https://neherlab.org/pavel-sagulenko.html",
+    },
+    {
+      name: "Thomas Sibley",
+      image: "thomas-sibley.jpg",
+      link: "https://bedford.io/team/thomas-sibley/",
+      blurb:
+        "Thomas was part of the team from 2018–2025 and worked on all aspects of Nextstrain with a particular focus on reducing barriers to usage via better infrastructure (e.g. nextstrain.org, Groups), tooling (e.g. CLI, runtimes), and documentation.",
     },
     {
       name: "Cassia Wagner",
