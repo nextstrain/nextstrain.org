@@ -19,10 +19,32 @@ ignorePatterns:
   - "!/src"
   - "!/test"
 
+  # NOTE: auspice-client has another configuration file with additional rules to
+  # cover React usage.
+  - "!/auspice-client"
+
+  # NOTE: static-site has another configuration file with additional rules to
+  # cover React and TypeScript usage.
+  - "!/static-site"
+
 rules:
   # Code quality rules
+  eqeqeq: error
   no-unused-vars: error
-  no-use-before-define: ["error", { "functions": false, "classes": false }]
+  no-use-before-define: ["error",
+    {
+      # Function declarations are hoisted, so it’s safe to disable this option.
+      # <https://eslint.org/docs/v9.x/rules/no-use-before-define#options>
+      "functions": false,
+
+      # Class declarations are not hoisted, but they are safe to reference
+      # within a function as long as the function is not run before the class
+      # declaration.
+      # This allows true errors to pass linting, but such errors should be
+      # obvious upon app startup as long class declarations are at the top
+      # level.
+      "classes": false,
+    }]
   prefer-const: ["error", {"destructuring": "all"}]
 
   # Code style rules

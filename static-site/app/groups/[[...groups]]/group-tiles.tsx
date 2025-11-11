@@ -118,7 +118,7 @@ function createGroupTiles(groups: Group[]): GroupTile[] {
       };
 
       // rotate the color
-      color = color == 9 ? 0 : color + 1;
+      color = color === 9 ? 0 : color + 1;
 
       return tile;
     });

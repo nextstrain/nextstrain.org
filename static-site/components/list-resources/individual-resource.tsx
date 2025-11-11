@@ -43,7 +43,7 @@ export function IndividualResource({
     if (
       ref.current === null ||
       ref.current.parentNode === null ||
-      ref.current.parentNode.nodeName != "DIV"
+      ref.current.parentNode.nodeName !== "DIV"
     ) {
       throw new InternalError(
         "ref must be defined and the parent must be a div (i.e., IndividualResourceContainer).",

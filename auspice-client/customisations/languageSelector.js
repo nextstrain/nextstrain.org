@@ -96,7 +96,7 @@ class LanguageSelector extends React.Component {
           <select value={this.state.currentNarrative} onChange={this.handleLanguageChange}>
             {this.state.availableNarratives.map((narrative) => {
               return (
-                <option value={narrative.url}>
+                <option key={narrative.url} value={narrative.url}>
                   {narrative.languageNative}
                 </option>
               );

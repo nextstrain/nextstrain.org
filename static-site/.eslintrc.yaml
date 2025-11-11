@@ -1,6 +1,3 @@
-# Prevent parent configuration from being applied.
-root: true
-
 plugins:
   - "@typescript-eslint"
 
@@ -35,6 +32,23 @@ ignorePatterns:
 
 rules:
   "@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: 'never' }]
+
+  no-use-before-define: off
+  "@typescript-eslint/no-use-before-define": ["error",
+    {
+      # Variable declarations are not hoisted, but they are safe to reference
+      # within a function as long as the function is not run before the variable
+      # declaration.
+      # This allows true errors to pass linting, but such errors should be
+      # caught by the TypeScript compiler.
+      # <https://github.com/microsoft/TypeScript/blob/v5.4.5/src/compiler/diagnosticMessages.json#L2263-L2266>
+      "variables": false,
+
+      # See commentary in parent configuration file
+      "functions": false,
+      "classes": false,
+    }]
+
   react/prop-types: off # Remove this override once all props have been typed using PropTypes or TypeScript.
   '@next/next/no-img-element': off # Remove this if we use next.js optimisations for <img>
   '@next/next/no-html-link-for-pages': off

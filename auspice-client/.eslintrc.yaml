@@ -1,0 +1,18 @@
+---
+parser: "@babel/eslint-parser"
+
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+
+ignorePatterns:
+  - "/*"
+  - "!/customisations"
+
+rules:
+  react/prop-types: off # Remove this override once all props have been typed using PropTypes or TypeScript.
+
+parserOptions:
+  babelOptions:
+    plugins:
+      - "@babel/plugin-syntax-jsx"

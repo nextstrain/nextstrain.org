@@ -18,9 +18,9 @@ import tags from './tags.js';
  */
 function authorized(user, action, object) {
   // user may be null
-  assert(!user || user.authzRoles != null, "user.authzRoles is not null if user is not null");
+  assert(!user || user.authzRoles !== null, "user.authzRoles is not null if user is not null");
   assert(actions.has(action), "action is known");
-  assert(object != null, "object is not null");
+  assert(object !== null, "object is not null");
 
   /* As a safe guard, anonymous users can only ever read, regardless of
    * policies right now.  We don't have any use cases right now where letting
