@@ -8,8 +8,8 @@
   "repository": "github:nextstrain/nextstrain.org",
   "homepage": "https://nextstrain.org",
   "engines": {
-    "node": "^20.8",
-    "npm": "^10"
+    "node": "^24.10",
+    "npm": "^11.6"
   },
   "scripts": {
     "build": "./build.sh",
