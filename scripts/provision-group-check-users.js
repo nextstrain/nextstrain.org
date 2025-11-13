@@ -185,8 +185,8 @@ async function getUserRole(group, username) {
 async function crossReferenceUsernameAndEmail(group, member, usersByEmail, usersByUsername) {
   console.log()
   console.log(`Membership request for user "${member.username}" (${member.email}). Proposed role: ${member.role}`)
-  const emailMatch = searchCognito(usersByEmail, member.email);
-  const userNameMatch = member.username && searchCognito(usersByUsername, member.username);
+  const emailMatch = caseInsensitiveSearch(Object.keys(usersByEmail), member.email);
+  const userNameMatch = member.username && caseInsensitiveSearch(Object.keys(usersByUsername), member.username);
 
   // Situation 1: Username match (either exact or with different casing)
   if (userNameMatch && userNameMatch.candidates.length===1) {
@@ -256,7 +256,7 @@ async function crossReferenceUsernameAndEmail(group, member, usersByEmail, users
 async function candidateUsernamesForEmail(group, member, usersByEmail) {
   console.log()
   console.log(`Request for user with email "${member.email}" but unknown username. Proposed role: ${member.role}`)
-  const emailMatch = searchCognito(usersByEmail, member.email);
+  const emailMatch = caseInsensitiveSearch(Object.keys(usersByEmail), member.email);
 
   if (!emailMatch) {
     console.log(`\tThe proposed email is not present in this cognito pool (via case-insensitive matching)`)
@@ -295,24 +295,15 @@ async function describeMatchingEmails(group, member, emailMatch, usersByEmail) {
 }
 
 /**
- * Search the user data by a query string in a case-insensitive manner.
- * The user data is an object with keys being either usernames or emails
- * (case sensitive); the query should be a username or email, respectively.
+ * Search values by a query string in a case-insensitive manner.
  * We return false if there is no (case-insensitive) match, or an object
- * with keys `candidates` (an array of case-insensitive matching keys
- * of the provided user data) and `exact` (whether one of these keys is an
- * exact case-sensitive match)
+ * with keys `candidates` (an array of matched values) and `exact` (whether
+ * one of the values is an exact case-sensitive match)
  */
-function searchCognito(usersByUsernameOrEmail, query) {
-  const candidates = [];
-  for (const cognitoValue of Object.keys(usersByUsernameOrEmail)) {
-    if (cognitoValue.toUpperCase() === query.toUpperCase()) {
-      candidates.push(cognitoValue);
-    }
-  }
-  const exact = candidates.includes(query);
+function caseInsensitiveSearch(values, query) {
+  const candidates = values.filter(v => v.toUpperCase() === query.toUpperCase());
   if (candidates.length===0) return false;
-  return {candidates, exact};
+  return { candidates, exact: candidates.includes(query) };
 }
 
 
