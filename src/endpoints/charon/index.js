@@ -1,5 +1,5 @@
 import { BadRequest, isHttpError } from '../../httpErrors.js';
-import { splitPrefixIntoParts } from '../../utils/prefix.js';
+import { splitPrefixIntoParts, joinPartsIntoPrefix } from '../../utils/prefix.js';
 import { setSource, setDataset, canonicalizeDataset, setNarrative } from '../sources.js';
 import './setAvailableDatasets.js'; // sets globals
 export { getAvailable } from './getAvailable.js';
@@ -25,13 +25,19 @@ const setSourceFromPrefix = setSource(req => {
 
 const setDatasetFromPrefix = setDataset(req => req.context.splitPrefixIntoParts.prefixParts.join("/"));
 
-const canonicalizeDatasetPrefix = canonicalizeDataset((req, resolvedPrefix) => {
-  // A absolute base is required but we won't use it, so use something bogus.
-  const resolvedUrl = new URL(req.originalUrl, "http://x");
-  resolvedUrl.searchParams.set("prefix", resolvedPrefix);
-
-  return resolvedUrl.pathname + resolvedUrl.search;
-});
+/**
+ * Leave the URL path (e.g. /charon/getDataset) unchanged with only the
+ * "prefix" query param updated with the resolved dataset path.
+ */
+const canonicalizeDatasetPrefix = canonicalizeDataset(async (req, path) => ({
+  query: {
+    ...req.query,
+    prefix: await joinPartsIntoPrefix({
+      source: req.context.source,
+      prefixParts: path.split("/")
+    }),
+  }
+}));
 
 const setNarrativeFromPrefix = setNarrative(req => {
   const {prefixParts} = req.context.splitPrefixIntoParts;
