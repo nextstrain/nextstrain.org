@@ -10,7 +10,8 @@ export type SortMethod = "lastUpdated" | "alphabetical";
 
 export interface Group {
   groupName: string;
-  groupLogo: React.ReactElement;
+  groupImgSrc: string;
+  groupImgAlt: string;
   nResources: number;
   nVersions: number | undefined;
   lastUpdated: string | undefined;

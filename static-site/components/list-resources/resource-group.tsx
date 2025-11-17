@@ -142,7 +142,7 @@ function ResourceGroupHeader({
 
   return (
     <div className={styles.headerContainer}>
-      {group.groupLogo}
+      <img alt={group.groupImgAlt} height="35px" src={group.groupImgSrc} />
 
       <div className={styles.flexColumnContainer}>
         <div className={styles.headerRow}>
