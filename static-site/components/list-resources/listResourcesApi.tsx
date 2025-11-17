@@ -1,6 +1,8 @@
+import React from "react";
 import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory } from "./types";
 import { InternalError } from "../error-boundary";
 import fetchAndParseJSON from "../../util/fetch-and-parse-json";
+import nextstrainLogoSmall from "../../static/logos/nextstrain-logo-small.png";
 
 interface APIWrapper<T> {
   [resourceType: string]: {
@@ -82,6 +84,7 @@ function resourceGroup(groupName: string, resources: Resource[]): Group {
 
   const groupInfo: Group = {
     groupName,
+    groupLogo: <NextstrainLogo />,
     resources,
     nResources: resources.length,
     nVersions,
@@ -91,6 +94,9 @@ function resourceGroup(groupName: string, resources: Resource[]): Group {
   return groupInfo;
 }
 
+function NextstrainLogo(): React.ReactElement {
+  return <img alt="nextstrain logo" height="35px" src={nextstrainLogoSmall.src} />;
+}
 
 /**
  * Group the provided `pathVersions` by pathogen, which is determined
