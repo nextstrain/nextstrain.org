@@ -95,7 +95,7 @@ class CoreStagingSource extends CoreSource {
 
 class CoreDataset extends Dataset {
   /* NOTE: This class is also used for staging datasets */
-  resolve() {
+  async resolve() {
     /* XXX TODO: Reimplement this in terms of methods on the source, not by
      * breaking encapsulation by using a process-wide global.
      *   -trs, 26 Oct 2021 (based on a similar comment 5 Sept 2019)
@@ -123,7 +123,7 @@ class CoreDataset extends Dataset {
 
     if (nextDefaultPart) {
       const dataset = new this.constructor(this.source, [...prefixParts, nextDefaultPart], this.versionDescriptor);
-      return dataset.resolve();
+      return await dataset.resolve();
     }
 
     return this;
@@ -138,18 +138,17 @@ class CoreDataset extends Dataset {
    *
    * We only want to do this for core datasets, not staging.
    *
-   * @param {(string|false)} versionDescriptor from the URL
    * @throws {BadRequest || NotFound}
    * @returns {([string, Object]|[null, undefined])} [0]: versionDate [1]:
    * versionUrls
    */
-  versionInfo(versionDescriptor) {
+  versionInfo() {
     
     if (this.source.name!=='core') {
-      return super.versionInfo(versionDescriptor);
+      return super.versionInfo();
     }
 
-    if (!versionDescriptor) {
+    if (!this.versionDescriptor) {
       return [null, undefined];
     }
 
