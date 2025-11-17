@@ -1,6 +1,6 @@
 ---
 author: "Kim Andrews, James Hadfield, Victor Lin, Jover Lee, Jennifer Chang"
-date: "2025-11-13"
+date: "2025-11-17"
 title: "New Resources for Tuberculosis"
 sidebarTitle: "Tuberculosis resources"
 ---
