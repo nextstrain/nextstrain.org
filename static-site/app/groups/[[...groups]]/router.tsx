@@ -1,7 +1,4 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import React from "react";
 
 import { HugeSpacer } from "../../../components/spacers";
 import Spinner from "../../../components/spinner";
@@ -37,53 +34,33 @@ type GroupsPages = "listing" | "members" | "settings" | "individual-group" | "";
  *   a valid group and user does not have permissions -> display
  *   <ErrorMessage>
  */
-export default function GroupsPageRouter(): React.ReactElement {
+export default function GroupsPageRouter({ groupsParam }: { groupsParam?: string[] }): React.ReactElement {
   /** a string indicating which sub-page should be displayed */
-  const [pageToShow, setPageToShow] = useState<GroupsPages>("");
-  /**
-   * the name of the individual group being processed, if we're
-   * loading a `/groups/{:group}` URL
-   */
-  const [group, setGroup] = useState<string>("");
+  let pageToShow: GroupsPages = "";
+  let group = "";
+  
+  if (groupsParam) {
+    group = groupsParam[0] || "";
+    const extra = groupsParam.slice(1).join("/");
 
-  // get the requested path, to be parsed in the `useEffect()` hook below
-  const params = useParams();
-
-  useEffect((): void => {
-    async function parseRequestUrl(): Promise<void> {
-      if (params && params["groups"]) {
-        // I don't think `params["groups"]` will ever _NOT_ be an
-        // array, but this guard makes the typechecker happy and
-        // really isn't that what matters
-        if (Array.isArray(params["groups"])) {
-          const groupName = params["groups"][0];
-          const extra = params["groups"].slice(1).join("/");
-
-          if (!groupName) {
-            throw new Error("didn't get a group name, shouldn't happen");
-          }
-
-          setGroup(groupName);
-
-          switch (extra) {
-            case "settings/members":
-              setPageToShow("members");
-              break;
-            case "settings":
-              setPageToShow("settings");
-              break;
-            default:
-              setPageToShow("individual-group");
-          }
-        }
-      } else {
-        // no params = load groups listing page
-        setPageToShow("listing");
-      }
+    if (!group) {
+      throw new Error("didn't get a group name, shouldn't happen");
     }
 
-    parseRequestUrl();
-  }, [params]);
+    switch (extra) {
+      case "settings/members":
+        pageToShow = "members"
+        break;
+      case "settings":
+        pageToShow = "settings"
+        break;
+      default:
+        pageToShow = "individual-group"
+    }
+  } else {
+    // no params = load groups listing page
+    pageToShow = "listing"
+  }
 
   switch (pageToShow) {
     case "listing":

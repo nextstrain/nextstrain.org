@@ -33,7 +33,7 @@ export default function GroupsPage({
   return (
     <>
       {isMainGroupsPage && <GroupsIntro />}
-      <GroupsPageRouter />
+      <GroupsPageRouter groupsParam={params?.groups} />
     </>
   );
 }
