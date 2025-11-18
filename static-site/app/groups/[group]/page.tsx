@@ -25,7 +25,7 @@ import type { AvailableGroups, DataResource } from "../types";
  * A React Client component to display a page for an individual
  * Nextstrain group
  */
-export default function IndividualGroupPage(): React.ReactElement {
+export default function IndividualGroupPage({ nonExistentPathParam }: { nonExistentPathParam?: string }): React.ReactElement {
   /** a flag for whether data is being loaded */
   const [dataLoading, setDataLoading] = useState<boolean>(true);
   /** the datasets of the group being displayed */
@@ -44,7 +44,7 @@ export default function IndividualGroupPage(): React.ReactElement {
   /** the narratives of the group being displayed */
   const [narratives, setNarratives] = useState<DatasetType[]>([]);
   /** used to store the request url when asking for a group that can't be read */
-  const [nonExistentPath, setNonExistentPath] = useState<string>("");
+  const [nonExistentPath, setNonExistentPath] = useState<string>(nonExistentPathParam || "");
   /** props passed to a <SourceInfoHeader> child component */
   const [sourceInfo, setSourceInfo] = useState<SourceInfo>({
     title: "",
