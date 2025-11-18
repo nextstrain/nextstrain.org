@@ -2,8 +2,8 @@
 
 import React from "react";
 
-import nextstrainLogoSmall from "../../../static/logos/nextstrain-logo-small.png";
+import usersIcon from "../../../static/logos/fa-users-solid.svg";
 
 export default function GroupLogo(): React.ReactElement {
-  return <img alt="nextstrain logo" height="35px" src={nextstrainLogoSmall.src} />;
+  return <img alt="default group logo" height="35px" src={usersIcon.src} />;
 }
