@@ -90,19 +90,6 @@ export default function ResourceGroup({
   );
 }
 
-/**
- * A React Client Component for the Nextstrain logo
- */
-function NextstrainLogo(): React.ReactElement {
-  // TODO -- map the resource collection name to a suitable logo.
-  // Currently we are only using core datasets
-
-  // next.js surfaced from /static-site/public
-  const nextstrainLogoPath = "/nextstrain-logo-small.png";
-
-  return <img alt="nextstrain logo" height="35px" src={nextstrainLogoPath} />;
-}
-
 /** A React Client Component for the header above a <ResourceGroup> */
 function ResourceGroupHeader({
   group,
@@ -155,7 +142,7 @@ function ResourceGroupHeader({
 
   return (
     <div className={styles.headerContainer}>
-      <NextstrainLogo />
+      {group.groupLogo}
 
       <div className={styles.flexColumnContainer}>
         <div className={styles.headerRow}>
