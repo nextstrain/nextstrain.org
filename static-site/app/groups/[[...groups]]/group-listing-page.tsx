@@ -160,9 +160,9 @@ async function _resourcesCallback(): Promise<Group[]> {
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
   const route = "/charon/getAvailable?prefix=/groups/";
-  let datasets: AvailableGroups['datasets'];
+  let availableGroups: AvailableGroups;
   try {
-    datasets = ((await fetchAndParseJSON<AvailableGroups>(route)))['datasets'];
+    availableGroups = ((await fetchAndParseJSON<AvailableGroups>(route)));
   } catch (err) {
     const message = `getAvailable request with query 'prefix=/groups/' failed`;
     console.error(message, err instanceof Error ? err.message : String(err));
@@ -170,7 +170,7 @@ async function _resourcesCallback(): Promise<Group[]> {
   }
 
   /* Convert the API response structure into `Group[]` */
-  const resources: Resource[] = datasets.map((dataset) => {
+  const resources: Resource[] = availableGroups.datasets.map((dataset) => {
     const name = dataset.request
       .replace(/^\/groups\//, '');
     const nameParts = name.split('/');
@@ -184,11 +184,12 @@ async function _resourcesCallback(): Promise<Group[]> {
   const groups: Group[] = Array.from(new Set(resources.map((r) => r.groupName)))
     .map((groupName) => {
       const filteredResources = resources.filter((r) => r.groupName===groupName);
+      const avatar = availableGroups.avatars[groupName];
       return {
         groupName,
         groupDisplayName: groupName,
-        groupImgSrc: usersIcon.src,
-        groupImgAlt: "default group logo",
+        groupImgSrc: avatar || usersIcon.src,
+        groupImgAlt: avatar ? `${groupName} group logo` : "default group logo",
         resources: filteredResources,
         nResources: filteredResources.length,
         nVersions: undefined,

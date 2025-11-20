@@ -82,6 +82,26 @@ const Groups = (() => {
         .map((e) => e[1])
         .flat();
     }
+    async getGroupAvatars() {
+      const avatarPromises = Array.from(this.visibleGroups).map(async (groupName) => {
+        const source = groupSources.get(groupName);
+        if (!source) return [groupName, undefined];
+
+        try {
+          const info = await source.getInfo();
+          return [groupName, info.avatar || undefined];
+        } catch (error) {
+          utils.warn(`Error fetching info for group ${groupName}: ${error.message}`);
+          return [groupName, undefined];
+        }
+      });
+
+      const avatars = {};
+      for (const [groupName, avatar] of await Promise.all(avatarPromises)) {
+        avatars[groupName] = avatar;
+      }
+      return avatars;
+    }
   }
   return MetaGroupSource;
 })();

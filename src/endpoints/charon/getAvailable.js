@@ -47,9 +47,23 @@ async function collectAllAvailableGroups(user) {
   const source = new metaSources.Groups(user);
   const datasets = await source.availableDatasets();
   const narratives = await source.availableNarratives();
+  const avatars = await source.getGroupAvatars();
+  /* TODO: Consider using a single call to GroupSource.getInfo() to return data
+  for all 3 calls above. I think this means a structure like below, but the
+  current flat structure should also work fine.
+  {
+    [groupName]: {
+      datasets: …
+      narratives: …
+      avatar: …
+    }
+  }
+  */
+
   return {
     datasets: datasets.map((request) => ({request})),
-    narratives: narratives.map((request) => ({request}))
+    narratives: narratives.map((request) => ({request})),
+    avatars
   };
 }
 
