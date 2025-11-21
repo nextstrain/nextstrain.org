@@ -55,7 +55,7 @@ export default function GroupListingPage(): React.ReactElement {
   useEffect((): void => {
     async function fetchData(): Promise<void> {
       try {
-        const available = await fetchAndParseJSON<AvailableGroups[]>(
+        const available = await fetchAndParseJSON<AvailableGroups>(
           "/charon/getAvailable?prefix=/groups",
         );
         setNarratives(_cleanUpAvailable(available["narratives"]));
