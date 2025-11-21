@@ -177,6 +177,8 @@ function _getResourceGroups(dataResources: DataResource[]): Group[] {
       return {
         groupName,
         groupDisplayName: groupName,
+        groupUrl: `/groups/${groupName}`,
+        groupUrlTooltip: `Click to view the page for ${groupName}`,
         resources: filteredResources,
         nResources: filteredResources.length,
         nVersions: undefined,
