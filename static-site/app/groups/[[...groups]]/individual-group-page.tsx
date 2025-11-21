@@ -232,25 +232,25 @@ export default function IndividualGroupPage({
   }
 }
 
-function _getResourceGroups(datasets: AvailableGroups['datasets'], groupName: string): Group[] {
+function _getResourceGroups(dataResources: DataResource[], groupName: string): Group[] {
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
-  const resources = datasets.map((dataset): Resource => {
-    const name = dataset.request
+  const resources = dataResources.map((dataResource): Resource => {
+    const name = dataResource.request
       .replace(new RegExp(`^groups/${groupName}/`), '');
     return {
       name,
       groupName,
       nameParts: name.split('/'),
       sortingName: name,
-      url: dataset.request.replace(/^groups\//, ''),
+      url: dataResource.request.replace(/^groups\//, ''),
     };
   });
 
   return [{
     groupName,
     groupDisplayName: groupName,
-    resources,
+    resources: resources,
     nResources: resources.length,
     nVersions: undefined,
     lastUpdated: undefined,

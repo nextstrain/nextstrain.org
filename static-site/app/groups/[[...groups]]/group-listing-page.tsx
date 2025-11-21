@@ -155,19 +155,19 @@ function _cleanUpAvailable(datasets: DataResource[]): DatasetType[] {
   );
 }
 
-function _getResourceGroups(datasets: AvailableGroups['datasets']): Group[] {
+function _getResourceGroups(dataResources: DataResource[]): Group[] {
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
 
   /* Convert the API response structure into `Group[]` */
-  const resources = datasets.flatMap((dataset): Resource[] => {
-    const name = dataset.request
+  const resources = dataResources.flatMap((dataResource): Resource[] => {
+    const name = dataResource.request
       .replace(/^\/groups\//, '');
     const nameParts = name.split('/');
     const groupName = nameParts[0];
     if (groupName===undefined) return [];
     const sortingName = name;
-    const url = dataset.request;
+    const url = dataResource.request;
     return [{name, groupName, nameParts, sortingName, url}];
   });
 
