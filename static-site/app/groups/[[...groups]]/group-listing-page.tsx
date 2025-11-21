@@ -18,7 +18,6 @@ import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 import ScrollableAnchor from "../../../vendored/react-scrollable-anchor/index";
 
 import GroupTiles from "./group-tiles";
-import usersIcon from "../../../static/logos/fa-users-solid.svg";
 
 import type { AvailableGroups, DataResource } from "./types";
 
@@ -187,8 +186,6 @@ async function _resourcesCallback(): Promise<Group[]> {
       return {
         groupName,
         groupDisplayName: groupName,
-        groupImgSrc: usersIcon.src,
-        groupImgAlt: "default group logo",
         resources: filteredResources,
         nResources: filteredResources.length,
         nVersions: undefined,
