@@ -18,7 +18,7 @@ import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 import ScrollableAnchor from "../../../vendored/react-scrollable-anchor/index";
 
 import GroupTiles from "./group-tiles";
-import GroupLogo from "./group-logo";
+import usersIcon from "../../../static/logos/fa-users-solid.svg";
 
 import type { AvailableGroups, DataResource } from "./types";
 
@@ -186,8 +186,9 @@ async function _resourcesCallback(): Promise<Group[]> {
       const filteredResources = resources.filter((r) => r.groupName===groupName);
       return {
         groupName,
-        groupDisplayName: groupName, 
-        groupLogo: <GroupLogo />,
+        groupDisplayName: groupName,
+        groupImgSrc: usersIcon.src,
+        groupImgAlt: "default group logo",
         resources: filteredResources,
         nResources: filteredResources.length,
         nVersions: undefined,
