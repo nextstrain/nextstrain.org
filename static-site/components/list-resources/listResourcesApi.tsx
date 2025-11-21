@@ -30,13 +30,14 @@ interface ResourceListingIntermediates {
 export async function listResourcesAPI(
   sourceId: string,
   resourceType: ResourceType,
-  {versioned, groupDisplayNames, groupUrl}: {
+  {versioned, groupDisplayNames, groupUrl, groupUrlTooltip}: {
     /** Report prior versions of each resource.
      * TODO: infer this from the API data itself
      */
     versioned: boolean,
     groupDisplayNames?: Record<string, string>,
-    groupUrl?: (groupName: string) => string
+    groupUrl?: (groupName: string) => string,
+    groupUrlTooltip?: (groupName: string) => string
   }
 ): Promise<Group[]> {
   const requestPath = `/list-resources/${sourceId}/${resourceType}`;
@@ -60,6 +61,9 @@ export async function listResourcesAPI(
       }
       if (groupUrl) {
         group.groupUrl = groupUrl(groupName);
+      }
+      if (groupUrlTooltip) {
+        group.groupUrlTooltip = groupUrlTooltip(groupName);
       }
       if (resourceType==='intermediate' && sourceId==='core') {
         group.fetchHistory = fetchIntermediateGroupHistoryFactory(sourceId, groupName);

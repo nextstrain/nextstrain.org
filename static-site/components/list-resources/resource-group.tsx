@@ -150,7 +150,7 @@ function ResourceGroupHeader({
         <div className={styles.headerRow}>
           {group.groupUrl ? (
             <TooltipWrapper
-              description={`Click to load the default (and most recent) analysis for ${group.groupDisplayName || group.groupName}`}
+              description={group.groupUrlTooltip}
             >
               <GroupLink
                 displayName={group.groupDisplayName || group.groupName}
