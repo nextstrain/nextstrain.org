@@ -173,7 +173,7 @@ async function _resourcesCallback(): Promise<Group[]> {
     const parts = dataset.request.split('/').slice(1);
     const groupName = parts[1]
     if (parts[0] !== "groups" || groupName === undefined) return [];
-    const name = parts.slice(1).join('/');
+    const name = parts.slice(2).join('/');
     return [{
       name,
       groupName,
