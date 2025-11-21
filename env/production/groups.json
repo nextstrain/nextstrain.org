@@ -370,5 +370,9 @@
   {
     "name": "Brazil-H5N1",
     "isPublic": false
+  },
+  {
+    "name": "APHA-H5Nx-Avian-Influenza",
+    "isPublic": false
   }
 ]
