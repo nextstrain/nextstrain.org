@@ -10,8 +10,8 @@ export type SortMethod = "lastUpdated" | "alphabetical";
 
 export interface Group {
   groupName: string;
-  groupImgSrc: string;
-  groupImgAlt: string;
+  groupImgSrc?: string;
+  groupImgAlt?: string;
   nResources: number;
   nVersions: number | undefined;
   lastUpdated: string | undefined;
