@@ -10,6 +10,8 @@ import DatasetSelect from "../../../components/dataset-select";
 import { DatasetType } from "../../../components/dataset-select/types";
 import ErrorMessage from "../../../components/error-message";
 import { FlexGridRight } from "../../../components/flex-grid";
+import ListResources from "../../../components/list-resources";
+import { Group, Resource } from "../../../components/list-resources/types";
 import SourceInfoHeading, {
   SourceInfo,
 } from "../../../components/source-info-heading";
@@ -33,8 +35,6 @@ export default function IndividualGroupPage({
 }): React.ReactElement {
   /** a flag for whether data is being loaded */
   const [dataLoading, setDataLoading] = useState<boolean>(true);
-  /** the datasets of the group being displayed */
-  const [datasets, setDatasets] = useState<DatasetType[]>([]);
   /**
    * boolean for whether the currently logged-in user can edit the
    * settings of the current group
@@ -83,12 +83,6 @@ export default function IndividualGroupPage({
         ]);
 
         setSourceInfo(sourceInfo);
-        setDatasets(
-          _createDatasetListing(
-            availableData.datasets,
-            group,
-          ),
-        );
         setNarratives(
           _createDatasetListing(
             availableData.narratives,
@@ -190,25 +184,11 @@ export default function IndividualGroupPage({
           <ScrollableAnchor id={"datasets"}>
             <div>
               <h3 className="centered">Available datasets</h3>
-              {datasets.length === 0 ? (
-                <h4 className="centered">
-                  No datasets are available for this group.
-                </h4>
-              ) : (
-                <DatasetSelect
-                  datasets={datasets}
-                  columns={[
-                    {
-                      name: "Dataset",
-                      value: (dataset) =>
-                        dataset.filename
-                          ?.replace(/_/g, " / ")
-                          .replace(".json", "") || "",
-                      url: (dataset) => dataset.url,
-                    },
-                  ]}
-                />
-              )}
+              <ListResources
+                resourceType="dataset"
+                versioned={false}
+                fetchResourceGroups={() => _resourcesCallback(group)}
+              />
             </div>
           </ScrollableAnchor>
         )}
@@ -245,6 +225,46 @@ export default function IndividualGroupPage({
       </>
     );
   }
+}
+
+// It is unfortunate that this method repeats the request that we're already
+// making above in the `useEffect()` hook. Ideally we could make that request
+// once, and re-use the response.
+//   - jsja, 08 Aug 2025
+//   - copied/modified by victor, 21 Nov 2025
+async function _resourcesCallback(groupName: string): Promise<Group[]> {
+  // NOTE: "group" has two meanings here - a nextstrain group and a group of
+  // resources for listing. Luckily for us the "group name" is the same for both
+  const route = `/charon/getAvailable?prefix=/groups/${groupName}/`;
+  let datasets: AvailableGroups['datasets'];
+  try {
+    datasets = ((await fetchAndParseJSON<AvailableGroups>(route)))['datasets'];
+  } catch (err) {
+    const message = `getAvailable request with query 'prefix=/groups/${groupName}/' failed`;
+    console.error(message, err instanceof Error ? err.message : String(err));
+    throw new Error(message);
+  }
+
+  const resources = datasets.map((dataset): Resource => {
+    const name = dataset.request
+      .replace(new RegExp(`^groups/${groupName}/`), '');
+    return {
+      name,
+      groupName,
+      nameParts: name.split('/'),
+      sortingName: name,
+      url: dataset.request.replace(/^groups\//, ''),
+    };
+  });
+
+  return [{
+    groupName,
+    groupDisplayName: groupName,
+    resources,
+    nResources: resources.length,
+    nVersions: undefined,
+    lastUpdated: undefined,
+  }];
 }
 
 // helper function to parse getAvailable listing into one that the
