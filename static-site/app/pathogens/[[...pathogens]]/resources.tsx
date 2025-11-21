@@ -29,6 +29,7 @@ export default function CorePathogenResourceListing(): React.ReactElement {
           versioned: true,
           groupDisplayNames: coreResources["coreGroupDisplayNames"],
           groupUrl: (groupName: string) => `/${groupName}`,
+          groupUrlTooltip: (groupName: string) => `Click to load the default (and most recent) analysis for ${coreResources["coreGroupDisplayNames"][groupName] || groupName}`,
         };
         const result = await listResourcesAPI('core', 'dataset', opts);
         setGroups(result);
