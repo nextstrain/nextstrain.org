@@ -164,7 +164,7 @@ function _getResourceGroups(dataResources: DataResource[]): Group[] {
     const parts = dataResource.request.split('/').slice(1);
     const groupName = parts[1]
     if (parts[0] !== "groups" || groupName === undefined) return [];
-    const name = parts.slice(1).join('/');
+    const name = parts.slice(2).join('/');
     return [{
       name,
       groupName,
