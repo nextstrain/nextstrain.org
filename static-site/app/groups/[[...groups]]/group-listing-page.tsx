@@ -170,19 +170,19 @@ async function _resourcesCallback(): Promise<Group[]> {
   }
 
   /* Convert the API response structure into `Group[]` */
-  const resources: Resource[] = datasets.map((dataset) => {
+  const resources = datasets.flatMap((dataset): Resource[] => {
     const name = dataset.request
       .replace(/^\/groups\//, '');
     const nameParts = name.split('/');
     const groupName = nameParts[0];
-    if (groupName===undefined) return undefined;
+    if (groupName===undefined) return [];
     const sortingName = name;
     const url = dataset.request;
-    return {name, groupName, nameParts, sortingName, url};
-  }).filter((r): r is Resource => r!==undefined);
+    return [{name, groupName, nameParts, sortingName, url}];
+  });
 
-  const groups: Group[] = Array.from(new Set(resources.map((r) => r.groupName)))
-    .map((groupName) => {
+  const groups = Array.from(new Set(resources.map((r) => r.groupName)))
+    .map((groupName): Group => {
       const filteredResources = resources.filter((r) => r.groupName===groupName);
       return {
         groupName,
