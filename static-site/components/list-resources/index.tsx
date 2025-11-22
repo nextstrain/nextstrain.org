@@ -20,7 +20,6 @@ import ScrollableAnchor, {
 import { ErrorBoundary, InternalError } from "../error-boundary";
 import ExpandableTiles from "../expandable-tiles";
 import { HugeSpacer } from "../spacers";
-import Spinner from "../spinner";
 
 import { Modal, SetModalDataContext } from "./modal";
 import { DatasetHistory } from "./modal-contents-dataset-history";
@@ -61,8 +60,8 @@ interface ListResourcesProps {
   /** Resource type modifies the language used to describe resources */
   resourceType: ResourceType;
 
-  /** Function to return groups of resources for display */
-  fetchResourceGroups: () => Promise<Group[]>
+  /** Groups of resources to display */
+  groups: Group[];
 }
 
 /** The name of the anchor that represents the top of the resource listing */
@@ -124,9 +123,8 @@ export default function ListResources(
 }
 
 /**
- * A React Client Component that uses a callback to fetch data about
- * available resources, and then display them, including past versions
- * ("snapshots"), if those exist.
+ * A React Client Component that displays available resources, including
+ * past versions ("snapshots"), if those exist.
  *
  * Note that currently this only uses 'dataset' resources. In the
  * future this will be expanded. Similarly, we define versioned:
@@ -139,27 +137,11 @@ function ListResourcesContent({
   resourceType,
   quickLinks,
   tileData,
-  fetchResourceGroups,
+  groups,
 }: ListResourcesProps & {
   /** width of the element */
   elWidth: number;
 }): React.ReactElement {
-  const [groups, setGroups] = useState<Group[]>();
-  const [dataFetchError, setDataFetchError] = useState<boolean>(false);
-
-  useEffect((): void => {
-    async function effect(): Promise<void> {
-      try {
-        setGroups(await fetchResourceGroups())
-      } catch (err) {
-        console.error(`Error while fetching and/or parsing data`);
-        console.error(err);
-        return setDataFetchError(true);
-      }
-    }
-    effect();
-  }, [fetchResourceGroups]);
-
   const tiles = useTiles(tileData, groups);
 
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<
@@ -182,24 +164,6 @@ function ListResourcesContent({
   const availableFilterOptions = useFilterOptions(resourceGroups);
 
   const [modalData, setModalData] = useState<Resource|Group|null>(null);
-
-  if (dataFetchError) {
-    return (
-      <div className="errorContainer">
-        {"Whoops - listing resources isn't working!"}
-        <br />
-        Please <a href="/contact">get in touch</a> if this keeps happening
-      </div>
-    );
-  }
-
-  if (!resourceGroups?.length) {
-    return (
-      <div>
-        <Spinner />
-      </div>
-    );
-  }
 
   return (
     <div className={styles.listResourcesContainer}>

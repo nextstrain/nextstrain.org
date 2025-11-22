@@ -17,6 +17,7 @@ export interface Group {
   lastUpdated: string | undefined;
   resources: Resource[];
   groupUrl?: string;
+  groupUrlTooltip?: string;
   groupDisplayName?: string;
   fetchHistory?: FetchGroupHistory;
 }

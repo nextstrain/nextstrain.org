@@ -148,9 +148,9 @@ function ResourceGroupHeader({
 
       <div className={styles.flexColumnContainer}>
         <div className={styles.headerRow}>
-          {group.groupUrl ? (
+          {group.groupUrl && group.groupUrlTooltip ? (
             <TooltipWrapper
-              description={`Click to load the default (and most recent) analysis for ${group.groupDisplayName || group.groupName}`}
+              description={group.groupUrlTooltip}
             >
               <GroupLink
                 displayName={group.groupDisplayName || group.groupName}
