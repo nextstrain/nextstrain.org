@@ -170,7 +170,7 @@ function ListResourcesContent({
 
   const [sortMethod, changeSortMethod] = useState<SortMethod>("alphabetical");
 
-  const [resourceGroups, setResourceGroups] = useState<Group[]>([]);
+  const [resourceGroups, setResourceGroups] = useState<Group[]>();
 
   useSortAndFilter(
     sortMethod,
@@ -193,11 +193,19 @@ function ListResourcesContent({
     );
   }
 
-  if (!resourceGroups?.length) {
+  if (resourceGroups === undefined) {
     return (
       <div>
         <Spinner />
       </div>
+    );
+  }
+
+  if (resourceGroups.length === 0) {
+    return (
+      <h4 className="centered">
+        {`No ${resourceType}s are available for this group.`}
+      </h4>
     );
   }
 

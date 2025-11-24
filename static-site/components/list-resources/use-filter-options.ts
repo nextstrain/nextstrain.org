@@ -30,11 +30,13 @@ export function createFilterOption(
  */
 export function useFilterOptions(
   /** the list of groups to create filter options from */
-  resourceGroups: Group[],
+  resourceGroups?: Group[],
 ): FilterOption[] {
   const [state, setState] = useState<FilterOption[]>([]);
 
   useMemo((): void => {
+    if (resourceGroups === undefined) return;
+
     const counts: { [key: string]: number } = {};
 
     const increment = (key: string) => {
