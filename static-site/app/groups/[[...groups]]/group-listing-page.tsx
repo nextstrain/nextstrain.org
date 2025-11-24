@@ -61,7 +61,7 @@ export default function GroupListingPage(): React.ReactElement {
           "/charon/getAvailable?prefix=/groups",
         );
         setDatasets(available.datasets);
-        setNarratives(_cleanUpAvailable(available["narratives"]));
+        setNarratives(_cleanUpAvailable(available.narratives));
         setDataLoaded(true);
       } catch (err) {
         console.error(
