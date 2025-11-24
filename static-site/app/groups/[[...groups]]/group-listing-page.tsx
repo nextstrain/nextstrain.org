@@ -49,6 +49,8 @@ export default function GroupListingPage(): React.ReactElement {
   const [dataLoaded, setDataLoaded] = useState<boolean>(false);
   /** flag for any errors seen while fetching data */
   const [errorFetchingData, setErrorFetchingData] = useState<boolean>(false);
+  /** state to hold available datasets */
+  const [datasets, setDatasets] = useState<DataResource[]>([]);
   /** state to hold available narratives */
   const [narratives, setNarratives] = useState<DatasetType[]>([]);
 
@@ -58,6 +60,7 @@ export default function GroupListingPage(): React.ReactElement {
         const available = await fetchAndParseJSON<AvailableGroups>(
           "/charon/getAvailable?prefix=/groups",
         );
+        setDatasets(available.datasets);
         setNarratives(_cleanUpAvailable(available["narratives"]));
         setDataLoaded(true);
       } catch (err) {
@@ -71,6 +74,41 @@ export default function GroupListingPage(): React.ReactElement {
 
     fetchData();
   }, []);
+
+  // NOTE: "group" has two meanings here - a nextstrain group and a group of
+  // resources for listing. Luckily for us the "group name" is the same for both
+  async function resourcesCallback(): Promise<Group[]> {
+    /* Convert the API response structure into `Group[]` */
+    const resources = datasets.flatMap((dataset): Resource[] => {
+      const parts = dataset.request.split('/').slice(1);
+      const groupName = parts[1]
+      if (parts[0] !== "groups" || groupName === undefined) return [];
+      const name = parts.slice(2).join('/');
+      return [{
+        name,
+        groupName,
+        nameParts: name.split('/'),
+        sortingName: name,
+        url: dataset.request,
+      }];
+    });
+
+    const groups = Array.from(new Set(resources.map((r) => r.groupName)))
+      .map((groupName): Group => {
+        const filteredResources = resources.filter((r) => r.groupName===groupName);
+        return {
+          groupName,
+          groupDisplayName: groupName,
+          groupUrl: `/groups/${groupName}`,
+          groupUrlTooltip: `Click to view the page for ${groupName}`,
+          resources: filteredResources,
+          nResources: filteredResources.length,
+          nVersions: undefined,
+          lastUpdated: undefined,
+        }
+      });
+    return groups;
+  }
 
   return (
     <>
@@ -108,7 +146,7 @@ export default function GroupListingPage(): React.ReactElement {
       <ListResources
         resourceType="dataset"
         versioned={false}
-        fetchResourceGroups={_resourcesCallback}
+        fetchResourceGroups={resourcesCallback}
       />
 
       <HugeSpacer />
@@ -148,54 +186,4 @@ function _cleanUpAvailable(datasets: DataResource[]): DatasetType[] {
       url: d.request,
     }),
   );
-}
-
-// It is unfortunate that this method repeats the request to
-// `charon/getAvailable?prefix=/groups/` that we're already making
-// above in the `useEffect()` hook. Ideally we could make that request
-// once, and re-use the response.
-//   - jsja, 08 Aug 2025
-async function _resourcesCallback(): Promise<Group[]> {
-  // NOTE: "group" has two meanings here - a nextstrain group and a group of
-  // resources for listing. Luckily for us the "group name" is the same for both
-  const route = "/charon/getAvailable?prefix=/groups/";
-  let datasets: AvailableGroups['datasets'];
-  try {
-    datasets = ((await fetchAndParseJSON<AvailableGroups>(route)))['datasets'];
-  } catch (err) {
-    const message = `getAvailable request with query 'prefix=/groups/' failed`;
-    console.error(message, err instanceof Error ? err.message : String(err));
-    throw new Error(message);
-  }
-
-  /* Convert the API response structure into `Group[]` */
-  const resources = datasets.flatMap((dataset): Resource[] => {
-    const parts = dataset.request.split('/').slice(1);
-    const groupName = parts[1]
-    if (parts[0] !== "groups" || groupName === undefined) return [];
-    const name = parts.slice(2).join('/');
-    return [{
-      name,
-      groupName,
-      nameParts: name.split('/'),
-      sortingName: name,
-      url: dataset.request,
-    }];
-  });
-
-  const groups = Array.from(new Set(resources.map((r) => r.groupName)))
-    .map((groupName): Group => {
-      const filteredResources = resources.filter((r) => r.groupName===groupName);
-      return {
-        groupName,
-        groupDisplayName: groupName,
-        groupUrl: `/groups/${groupName}`,
-        groupUrlTooltip: `Click to view the page for ${groupName}`,
-        resources: filteredResources,
-        nResources: filteredResources.length,
-        nVersions: undefined,
-        lastUpdated: undefined,
-      }
-    });
-  return groups;
 }
