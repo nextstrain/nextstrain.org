@@ -108,15 +108,15 @@ export default function IndividualGroupPage({
 
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
-  async function resourcesCallback(): Promise<Group[]> {
-    const resources = datasets.map((dataset): Resource => {
-      const name = dataset.request.replace(new RegExp(`^groups/${group}/`), '');
+  async function getResourceGroups(dataResources: DataResource[]): Promise<Group[]> {
+    const resources = dataResources.map((dataResource): Resource => {
+      const name = dataResource.request.replace(new RegExp(`^groups/${group}/`), '');
       return {
         name,
         groupName: group,
         nameParts: name.split('/'),
         sortingName: name,
-        url: `/${dataset.request}`,
+        url: `/${dataResource.request}`,
       };
     });
 
@@ -212,7 +212,7 @@ export default function IndividualGroupPage({
               <ListResources
                 resourceType="dataset"
                 versioned={false}
-                fetchResourceGroups={resourcesCallback}
+                fetchResourceGroups={() => getResourceGroups(datasets)}
               />
             </div>
           </ScrollableAnchor>

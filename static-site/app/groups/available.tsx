@@ -77,10 +77,10 @@ export default function Available(): React.ReactElement {
 
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
-  async function resourcesCallback(): Promise<Group[]> {
+  async function getResourceGroups(dataResources: DataResource[]): Promise<Group[]> {
     /* Convert the API response structure into `Group[]` */
-    const resources = datasets.flatMap((dataset): Resource[] => {
-      const parts = dataset.request.split('/').slice(1);
+    const resources = dataResources.flatMap((dataResource): Resource[] => {
+      const parts = dataResource.request.split('/').slice(1);
       const groupName = parts[1]
       if (parts[0] !== "groups" || groupName === undefined) return [];
       const name = parts.slice(2).join('/');
@@ -89,7 +89,7 @@ export default function Available(): React.ReactElement {
         groupName,
         nameParts: name.split('/'),
         sortingName: name,
-        url: dataset.request,
+        url: dataResource.request,
       }];
     });
 
@@ -148,7 +148,7 @@ export default function Available(): React.ReactElement {
       <ListResources
         resourceType="dataset"
         versioned={false}
-        fetchResourceGroups={resourcesCallback}
+        fetchResourceGroups={() => getResourceGroups(datasets)}
       />
 
       <HugeSpacer />
