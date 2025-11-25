@@ -1,4 +1,10 @@
 name: CI
+run-name: >-
+  ${{ (github.event_name == 'push' && github.ref == 'refs/heads/master') &&
+         'Deploy to nextstrain-canary'
+      || (github.event_name == 'workflow_dispatch' && inputs.heroku-app != 'none') &&
+         format('Deploy to {0}', inputs.heroku-app)
+      || 'CI' }}
 
 on:
   push:
