@@ -8,7 +8,7 @@ export interface FilterOption {
 
 export type SortMethod = "lastUpdated" | "alphabetical";
 
-export interface Group {
+export type Group = {
   groupName: string;
   groupImgSrc?: string;
   groupImgAlt?: string;
@@ -16,10 +16,14 @@ export interface Group {
   nVersions: number | undefined;
   lastUpdated: string | undefined;
   resources: Resource[];
-  groupUrl?: string;
   groupDisplayName?: string;
   fetchHistory?: FetchGroupHistory;
-}
+} & GroupUrlProperties
+
+/* URL and tooltip must be defined together */
+type GroupUrlProperties =
+  | { groupUrl: string; groupUrlTooltip: string }
+  | { groupUrl?: undefined; groupUrlTooltip?: undefined }
 
 /* helper function / type guard */
 export function isGroup(x: Group|Resource): x is Group {
@@ -41,7 +45,7 @@ export type GroupFilesChangelog = [
 
 export type FetchGroupHistory = () => Promise<PathVersionsForGroup>
 
-export interface VersionedGroup extends Group {
+export type VersionedGroup = Group & {
   nVersions: number;
   lastUpdated: string;
 }

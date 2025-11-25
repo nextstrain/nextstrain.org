@@ -29,8 +29,6 @@ export function GroupLink({
     <a
       className={`${styles.baseLink} ${styles.groupLink}`}
       href={href}
-      rel="noreferrer"
-      target="_blank"
     >
       {displayName}
     </a>
@@ -81,8 +79,6 @@ export function IndividualQuickLink({
       <a
         className={`${styles.baseLink} ${styles.resourceLink}`}
         href={href}
-        rel="noreferrer"
-        target="_blank"
       >
         {displayName}
       </a>
@@ -140,8 +136,6 @@ export function IndividualResourceLink({
         href={resource.url}
         onMouseOut={(): void => setHovered(false)}
         onMouseOver={(): void => setHovered(true)}
-        rel="noreferrer"
-        target="_blank"
       >
         {"• "}
         {hovered || topOfColumn

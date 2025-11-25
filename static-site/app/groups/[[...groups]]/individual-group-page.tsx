@@ -46,6 +46,8 @@ export default function IndividualGroupPage({
    * not accessible to the currently logged-in user)
    */
   const [groupNotFound, setGroupNotFound] = useState<boolean>(false);
+  /** the datasets of the group being displayed */
+  const [datasets, setDatasets] = useState<DataResource[]>([]);
   /** the narratives of the group being displayed */
   const [narratives, setNarratives] = useState<DatasetType[]>([]);
   /** used to store the request url when asking for a group that can't be read */
@@ -83,6 +85,7 @@ export default function IndividualGroupPage({
         ]);
 
         setSourceInfo(sourceInfo);
+        setDatasets(availableData.datasets);
         setNarratives(
           _createDatasetListing(
             availableData.narratives,
@@ -104,6 +107,30 @@ export default function IndividualGroupPage({
 
     getGroupInfo();
   }, [group, params]);
+
+  // NOTE: "group" has two meanings here - a nextstrain group and a group of
+  // resources for listing. Luckily for us the "group name" is the same for both
+  async function resourcesCallback(): Promise<Group[]> {
+    const resources = datasets.map((dataset): Resource => {
+      const name = dataset.request.replace(new RegExp(`^groups/${group}/`), '');
+      return {
+        name,
+        groupName: group,
+        nameParts: name.split('/'),
+        sortingName: name,
+        url: dataset.request.replace(/^groups\//, ''),
+      };
+    });
+
+    return [{
+      groupName: group,
+      groupDisplayName: group,
+      resources,
+      nResources: resources.length,
+      nVersions: undefined,
+      lastUpdated: undefined,
+    }];
+  }
 
   let bannerContents: React.ReactElement = <></>;
   let bannerTitle = "";
@@ -187,7 +214,7 @@ export default function IndividualGroupPage({
               <ListResources
                 resourceType="dataset"
                 versioned={false}
-                fetchResourceGroups={() => _resourcesCallback(group)}
+                fetchResourceGroups={resourcesCallback}
               />
             </div>
           </ScrollableAnchor>
@@ -225,46 +252,6 @@ export default function IndividualGroupPage({
       </>
     );
   }
-}
-
-// It is unfortunate that this method repeats the request that we're already
-// making above in the `useEffect()` hook. Ideally we could make that request
-// once, and re-use the response.
-//   - jsja, 08 Aug 2025
-//   - copied/modified by victor, 21 Nov 2025
-async function _resourcesCallback(groupName: string): Promise<Group[]> {
-  // NOTE: "group" has two meanings here - a nextstrain group and a group of
-  // resources for listing. Luckily for us the "group name" is the same for both
-  const route = `/charon/getAvailable?prefix=/groups/${groupName}/`;
-  let datasets: AvailableGroups['datasets'];
-  try {
-    datasets = ((await fetchAndParseJSON<AvailableGroups>(route)))['datasets'];
-  } catch (err) {
-    const message = `getAvailable request with query 'prefix=/groups/${groupName}/' failed`;
-    console.error(message, err instanceof Error ? err.message : String(err));
-    throw new Error(message);
-  }
-
-  const resources = datasets.map((dataset): Resource => {
-    const name = dataset.request
-      .replace(new RegExp(`^groups/${groupName}/`), '');
-    return {
-      name,
-      groupName,
-      nameParts: name.split('/'),
-      sortingName: name,
-      url: dataset.request.replace(/^groups\//, ''),
-    };
-  });
-
-  return [{
-    groupName,
-    groupDisplayName: groupName,
-    resources,
-    nResources: resources.length,
-    nVersions: undefined,
-    lastUpdated: undefined,
-  }];
 }
 
 // helper function to parse getAvailable listing into one that the
