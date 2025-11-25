@@ -8,9 +8,13 @@ on:
   workflow_dispatch:
     inputs:
       heroku-app:
-        description: Deploy to Heroku app (if set)
-        type: string
-        required: false
+        description: Deploy to Heroku app
+        type: choice
+        default: 'none'
+        options:
+          - 'nextstrain-dev'
+          - 'nextstrain-canary'
+          - 'none'
 
 # Only one run per branch at a time.
 concurrency:
@@ -140,7 +144,7 @@ jobs:
 
           # workflow_dispatch with a selected app
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" && \
-                  "${{ inputs.heroku-app }}" != "" ]]; then
+                  "${{ inputs.heroku-app }}" != "none" ]]; then
 
             echo "value=${{ inputs.heroku-app }}" >> "$GITHUB_OUTPUT"
 
