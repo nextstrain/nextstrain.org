@@ -30,7 +30,7 @@ export default function useSortAndFilter(
   selectedFilterOptions: readonly FilterOption[],
 
   /** a setter for a React State */
-  setState: React.Dispatch<React.SetStateAction<Group[]>>,
+  setState: React.Dispatch<React.SetStateAction<Group[] | undefined>>,
 
   /** a list of Group objects */
   originalData?: Group[],
