@@ -315,7 +315,7 @@ function Filter({
   return (
     <div className="filter">
       <Select
-        placeholder={`Filter by keywords in ${resourceType==='dataset'?'dataset':'file'} names`}
+        placeholder={`Filter by keywords in ${displayResourceType(resourceType, 1)} names`}
         isMulti
         options={options}
         value={selectedFilterOptions}
@@ -507,4 +507,19 @@ function useTiles(tiles?: FilterTile[], groups?: Group[]): FilterTile[] {
   }, [tiles, groups]);
 
   return restrictedTiles;
+}
+
+/**
+ * Returns a human-readable, properly pluralized label for a given resource type.
+ */
+export function displayResourceType(
+  resourceType: ResourceType,
+  /**
+   * Optional count used to determine singular vs. plural form.
+   * If unset, defaults to plural form.
+   */
+  n?: number,
+) {
+  const singular = resourceType === "intermediate" ? "file" : resourceType;
+  return n === 1 ? singular : singular + "s";
 }

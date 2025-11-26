@@ -6,6 +6,7 @@ import { MdChevronRight } from "react-icons/md";
 
 import { InternalError } from "../error-boundary";
 
+import { displayResourceType } from ".";
 import IconContainer from "./icon-container";
 import { IndividualResource } from "./individual-resource";
 import { GroupLink, IndividualQuickLink } from "./group-and-resource-links";
@@ -183,7 +184,7 @@ function ResourceGroupHeader({
           )}
           <span className={styles.flexSpan} />
           <TooltipWrapper
-            description={`There are ${group.nResources} ${resourceType==='dataset' ? 'datasets' : 'files'} in this group`}
+            description={`There are ${group.nResources} ${displayResourceType(resourceType, group.nResources)} in this group`}
           >
             <IconContainer
               color={"rgb(79, 75, 80)"}
@@ -193,7 +194,7 @@ function ResourceGroupHeader({
           </TooltipWrapper>
           {group.nVersions && !isMobile && (
             <TooltipWrapper
-              description={`${group.nVersions} snapshots exist across the ${group.nResources} ${resourceType==='dataset' ? 'datasets' : 'files'} in this group`}
+              description={`${group.nVersions} snapshots exist across the ${group.nResources} ${displayResourceType(resourceType, group.nResources)} in this group`}
             >
               <IconContainer
                 iconName="history"
