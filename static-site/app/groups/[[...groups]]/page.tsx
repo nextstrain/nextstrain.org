@@ -3,11 +3,10 @@ import type { Metadata } from "next";
 
 import GroupsIntro from "./groups-intro";
 import GroupsPageRouter from "./router";
-
-const title = "Scalable Sharing with Nextstrain Groups";
+import { groupsTitle } from "../../../data/SiteConfig";
 
 export const metadata: Metadata = {
-  title,
+  title: groupsTitle,
 };
 
 /**
