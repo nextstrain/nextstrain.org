@@ -87,7 +87,9 @@ export interface ResourceDisplayName {
   default: string;
 }
 
-export type ResourceType = 'dataset'|'intermediate';
+export type ResourceType = 'dataset'|'intermediate'|'narrative';
+// NOTE: 'narrative' is not supported by the resource indexer, but it can be
+// used by ListResources.
 
 
 export interface UpdateCadence {
