@@ -1,4 +1,10 @@
 name: CI
+run-name: >-
+  ${{ (github.event_name == 'push' && github.ref == 'refs/heads/master') &&
+         'Deploy to nextstrain-canary'
+      || (github.event_name == 'workflow_dispatch' && inputs.heroku-app != 'none') &&
+         format('Deploy to {0}', inputs.heroku-app)
+      || 'CI' }}
 
 on:
   push:
@@ -8,9 +14,13 @@ on:
   workflow_dispatch:
     inputs:
       heroku-app:
-        description: Deploy to Heroku app (if set)
-        type: string
-        required: false
+        description: Deploy to Heroku app
+        type: choice
+        default: 'none'
+        options:
+          - 'nextstrain-dev'
+          - 'nextstrain-canary'
+          - 'none'
 
 # Only one run per branch at a time.
 concurrency:
@@ -125,6 +135,30 @@ jobs:
     uses: ./.github/workflows/index-resources.yml
     secrets: inherit
 
+  vars:
+    runs-on: ubuntu-latest
+    outputs:
+      heroku-app: ${{ steps.heroku-app.outputs.value }}
+    steps:
+      - id: heroku-app
+        run: |
+          # Push to default branch
+          if [[ "${{ github.event_name }}" == "push" && \
+                "${{ github.ref }}" == "refs/heads/master" ]]; then
+
+            echo "value=nextstrain-canary" >> "$GITHUB_OUTPUT"
+
+          # workflow_dispatch with a selected app
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && \
+                  "${{ inputs.heroku-app }}" != "none" ]]; then
+
+            echo "value=${{ inputs.heroku-app }}" >> "$GITHUB_OUTPUT"
+
+          # No deploy
+          else
+            echo "value=" >> "$GITHUB_OUTPUT"
+          fi
+
   deploy:
     if: |2
          !cancelled()
@@ -132,14 +166,14 @@ jobs:
       && needs.test.result == 'success'
       && contains(fromJSON('["success", "skipped"]'), needs.index-resources.result)
       && github.repository == 'nextstrain/nextstrain.org'
-      && (   (github.event_name == 'push' && github.ref == 'refs/heads/master')
-          || (github.event_name == 'workflow_dispatch' && inputs.heroku-app) )
+      && needs.vars.outputs.heroku-app != ''
 
-    # Wait for "build", "test", and "index-resources" jobs above to pass.
+    # Wait for "build", "test", "index-resources", and "vars" jobs above to pass.
     needs:
       - build
       - test
       - index-resources
+      - vars
 
     # Name a GitHub environment configuration¹ to auto-create deployment
     # records in GitHub based on this job's progress/status.  Also grants
@@ -150,13 +184,13 @@ jobs:
     #
     # ¹ https://github.com/nextstrain/nextstrain.org/settings/environments
     environment:
-      name: ${{ inputs.heroku-app || 'nextstrain-canary' }}
-      url: ${{ inputs.heroku-app && format('https://{0}.herokuapp.com', inputs.heroku-app) || 'https://next.nextstrain.org' }}
+      name: ${{ needs.vars.outputs.heroku-app }}
+      url: ${{ needs.vars.outputs.heroku-app && format('https://{0}.herokuapp.com', needs.vars.outputs.heroku-app) || 'https://next.nextstrain.org' }}
 
     # Deploy steps
     runs-on: ubuntu-24.04
     env:
-      HEROKU_APP: ${{ inputs.heroku-app || 'nextstrain-canary' }}
+      HEROKU_APP: ${{ needs.vars.outputs.heroku-app }}
     steps:
       - uses: actions/download-artifact@v6
         with:
