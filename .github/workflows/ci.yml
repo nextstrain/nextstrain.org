@@ -140,7 +140,8 @@ jobs:
     outputs:
       heroku-app: ${{ steps.heroku-app.outputs.value }}
     steps:
-      - id: heroku-app
+      - name: Set heroku-app
+        id: heroku-app
         run: |
           # Push to default branch
           if [[ "${{ github.event_name }}" == "push" && \
