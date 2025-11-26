@@ -66,6 +66,8 @@ export default function GroupSettingsPage({
   const [userAuthorized, setUserAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
+    document.title = `"${group}" Group Settings - Nextstrain`;
+
     async function checkUserAuthz(): Promise<void> {
       setUserAuthorized(await canUserEditGroupSettings(group));
     }

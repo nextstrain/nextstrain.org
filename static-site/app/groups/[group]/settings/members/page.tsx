@@ -54,6 +54,8 @@ export default function GroupMembersPage({
   const [members, setMembers] = useState<GroupMember[]>([]);
 
   useEffect((): void => {
+    document.title =`"${group}" Group Members - Nextstrain`;
+
     async function getGroupMembership(): Promise<void> {
       try {
         const members = await fetchAndParseJSON<GroupMember[]>(

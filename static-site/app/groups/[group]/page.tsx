@@ -73,6 +73,8 @@ export default function IndividualGroupPage({
   const { group } = params;
 
   useEffect(() => {
+    document.title = `"${group}" Group - Nextstrain`;
+
     async function getGroupInfo(): Promise<void> {
       try {
         const [sourceInfo, availableData] = await Promise.all([
