@@ -2,15 +2,15 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 
-import Button from "../../../components/button";
-import ErrorMessage from "../../../components/error-message";
-import { FlexGrid, FlexGridRight } from "../../../components/flex-grid";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import { HugeSpacer, MediumSpacer } from "../../../components/spacers";
+import Button from "../../../../components/button";
+import ErrorMessage from "../../../../components/error-message";
+import { FlexGrid, FlexGridRight } from "../../../../components/flex-grid";
+import { FocusParagraphCentered } from "../../../../components/focus-paragraph";
+import { HugeSpacer, MediumSpacer } from "../../../../components/spacers";
 
-import { canUserEditGroupSettings } from "./utils";
+import { canUserEditGroupSettings } from "../utils";
 
-import styles from "./group-settings-page.module.css";
+import styles from "./page.module.css";
 
 interface LogoType {
   current: string | null;
@@ -48,11 +48,15 @@ const UNAUTHORIZED_MESSAGE = (
  * given `group` and allow them to be updated.
  */
 export default function GroupSettingsPage({
-  group,
+  params,
 }: {
-  /** the name of the group whose logo and settings will be shown */
-  group: string;
+  params: {
+    /** the name of the group whose logo and settings will be shown */
+    group: string;
+  }
 }): React.ReactElement {
+  const { group } = params;
+
   /** the props for an <ErrorMessage> component, displayed when there are problems */
   const [errorMessage, setErrorMessage] = useState<{
     title: string;
@@ -62,6 +66,8 @@ export default function GroupSettingsPage({
   const [userAuthorized, setUserAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
+    document.title = `"${group}" Group Settings - Nextstrain`;
+
     async function checkUserAuthz(): Promise<void> {
       setUserAuthorized(await canUserEditGroupSettings(group));
     }

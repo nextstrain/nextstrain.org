@@ -2,10 +2,10 @@
 
 import React, { useContext } from "react";
 
-import { ErrorBoundary } from "../../../components/error-boundary";
-import ExpandableTiles from "../../../components/expandable-tiles";
-import { GenericTileBase } from "../../../components/expandable-tiles/types"
-import { UserContext } from "../../../components/user-data-wrapper";
+import { ErrorBoundary } from "../../components/error-boundary";
+import ExpandableTiles from "../../components/expandable-tiles";
+import { GenericTileBase } from "../../components/expandable-tiles/types"
+import { UserContext } from "../../components/user-data-wrapper";
 
 import styles from "./group-tiles.module.css";
 
@@ -85,7 +85,7 @@ function Tile({ tile }: { tile: GroupTile }): React.ReactElement {
               style={{ backgroundColor: `var(--titleColor${tile.color})` }}
               className={styles.tileImg}
               src={
-                require(`../../../static/pathogen_images/${tile.img}`).default
+                require(`../../static/pathogen_images/${tile.img}`).default
                   .src
               }
               alt={""}
