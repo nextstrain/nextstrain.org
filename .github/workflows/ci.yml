@@ -18,9 +18,9 @@ on:
         type: choice
         default: 'none'
         options:
+          - 'none'
           - 'nextstrain-dev'
           - 'nextstrain-canary'
-          - 'none'
 
 # Only one run per branch at a time.
 concurrency:
