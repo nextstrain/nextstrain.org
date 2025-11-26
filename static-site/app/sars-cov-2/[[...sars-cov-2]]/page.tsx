@@ -1,6 +1,6 @@
 import React from "react";
-import { Metadata } from "next";
 
+import type { TitledMetadata } from "../../types";
 import { ValidateUrl } from "../../../components/error-banner";
 
 import SarsCov2PageContent from "./content";
@@ -8,7 +8,7 @@ import SarsCov2PageContent from "./content";
 const title = "Nextstrain SARS-CoV-2 resources";
 
 /** Page metadata */
-export const metadata: Metadata = {
+export const metadata: TitledMetadata = {
   /** The title of the page */
   title,
 };

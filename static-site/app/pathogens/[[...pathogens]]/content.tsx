@@ -1,6 +1,6 @@
 import React from "react";
-import { Metadata } from "next";
 
+import type { TitledMetadata } from "../../types";
 import CorePathogenResourceListing from "./resources";
 import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
@@ -21,10 +21,9 @@ export default function PathogensPageContent({
    * A Metadata object, that is assumed to have a `title` key with a
    * string value
    */
-  metadata: Metadata;
+  metadata: TitledMetadata;
 }): React.ReactElement {
-  // the cast is not ideal, but it _is_ going to be a string...
-  const title = metadata.title as string; // eslint-disable-line @typescript-eslint/consistent-type-assertions
+  const title = metadata.title;
 
   return (
     <>

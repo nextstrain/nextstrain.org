@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { Metadata } from "next";
 
 import { get } from "lodash";
 
+import type { TitledMetadata } from "../../types";
 import DatasetSelect from "../../../components/dataset-select";
 import DatasetMap from "../../../components/dataset-select/dataset-map";
 import {
@@ -71,10 +71,9 @@ export default function SarsCov2PageContent({
    * A Metadata object, that is assumed to have a `title` key with a
    * string value
    */
-  metadata: Metadata;
+  metadata: TitledMetadata;
 }): React.ReactElement {
-  // the cast is not ideal, but it _is_ going to be a string...
-  const title = metadata.title as string; // eslint-disable-line @typescript-eslint/consistent-type-assertions
+  const title = metadata.title;
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const datasets = (sarscov2Catalogue as { datasets: DatasetType[] })[
