@@ -2,20 +2,20 @@
 
 import React, { useContext, useEffect, useState } from "react";
 
-import DatasetSelect from "../../../components/dataset-select";
+import DatasetSelect from "../../components/dataset-select";
 import {
   DatasetSelectColumnsType,
   DatasetType,
-} from "../../../components/dataset-select/types";
-import FlexCenter from "../../../components/flex-center";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import ListResources from "../../../components/list-resources";
-import { Group, Resource} from "../../../components/list-resources/types";
-import { BigSpacer, HugeSpacer } from "../../../components/spacers";
-import { UserContext } from "../../../components/user-data-wrapper";
-import { DataFetchError } from "../../../data/SiteConfig";
-import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
-import ScrollableAnchor from "../../../vendored/react-scrollable-anchor/index";
+} from "../../components/dataset-select/types";
+import FlexCenter from "../../components/flex-center";
+import { FocusParagraphCentered } from "../../components/focus-paragraph";
+import ListResources from "../../components/list-resources";
+import { Group, Resource} from "../../components/list-resources/types";
+import { BigSpacer, HugeSpacer } from "../../components/spacers";
+import { UserContext } from "../../components/user-data-wrapper";
+import { DataFetchError } from "../../data/SiteConfig";
+import fetchAndParseJSON from "../../util/fetch-and-parse-json";
+import ScrollableAnchor from "../../vendored/react-scrollable-anchor/index";
 
 import GroupTiles from "./group-tiles";
 
@@ -42,7 +42,7 @@ const datasetColumns: DatasetSelectColumnsType[] = [
  * <DatasetSelect> component for a list-based view of available
  * narratives within the groups.
  */
-export default function GroupListingPage(): React.ReactElement {
+export default function Available(): React.ReactElement {
   const { user } = useContext(UserContext);
 
   /** flag for whether data is loaded yet */
