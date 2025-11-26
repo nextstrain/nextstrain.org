@@ -204,7 +204,7 @@ function ListResourcesContent({
   if (resourceGroups.length === 0) {
     return (
       <h4 className="centered">
-        {`No ${resourceType}s are available for this group.`}
+        {`No ${displayResourceType(resourceType)} are available for this group.`}
       </h4>
     );
   }

@@ -141,6 +141,8 @@ function ResourceGroupHeader({
 
   const rotateDeg = isCollapsed ? "0" : "90";
 
+  const nHidden = group.resources.length - resourcesToShowWhenCollapsed;
+
   return (
     <div className={styles.headerContainer}>
       {group.groupImgSrc && (
@@ -242,12 +244,12 @@ function ResourceGroupHeader({
               </div>
               {isCollapsed ? (
                 <TooltipWrapper
-                  description={`For brevity we're only showing a subset of ${group.groupName} resources - click to show them all`}
+                  description={`For brevity we're only showing a subset of ${group.groupName} ${displayResourceType(resourceType)} - click to show them all`}
                 >
-                  {` show ${group.resources.length - resourcesToShowWhenCollapsed} more datasets`}
+                  {` show ${nHidden} more ${displayResourceType(resourceType, nHidden)}`}
                 </TooltipWrapper>
               ) : (
-                " collapse datasets"
+                ` collapse ${displayResourceType(resourceType)}`
               )}
             </div>
           </div>
