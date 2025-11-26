@@ -60,7 +60,12 @@ export default function Available(): React.ReactElement {
       const parts = dataResource.request.split('/').slice(1);
       const groupName = parts[1]
       if (parts[0] !== "groups" || groupName === undefined) return [];
-      const name = parts.slice(2).join('/');
+      let name: string;
+      if (parts[2] === "narratives") {
+        name = parts.slice(3).join('/');
+      } else {
+        name = parts.slice(2).join('/');
+      }
       return [{
         name,
         groupName,

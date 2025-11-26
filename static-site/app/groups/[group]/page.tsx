@@ -103,7 +103,13 @@ export default function IndividualGroupPage({
   // resources for listing. Luckily for us the "group name" is the same for both
   async function getResourceGroups(dataResources: DataResource[]): Promise<Group[]> {
     const resources = dataResources.map((dataResource): Resource => {
-      const name = dataResource.request.replace(new RegExp(`^groups/${group}/`), '');
+      const parts = dataResource.request.split('/');
+      let name: string;
+      if (parts[2] === "narratives") {
+        name = parts.slice(3).join('/');
+      } else {
+        name = parts.slice(2).join('/');
+      }
       return {
         name,
         groupName: group,
