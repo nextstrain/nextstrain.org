@@ -159,6 +159,9 @@ jobs:
           else
             echo "value=" >> "$GITHUB_OUTPUT"
           fi
+      - name: Show outputs
+        run: |
+          echo "heroku-app: ${{ steps.heroku-app.outputs.value }}"
 
   deploy:
     if: |2
