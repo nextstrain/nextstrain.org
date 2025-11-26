@@ -50,7 +50,7 @@ export default function IndividualGroupPage({
   const [datasets, setDatasets] = useState<DataResource[]>([]);
   /** the narratives of the group being displayed */
   const [narratives, setNarratives] = useState<DatasetType[]>([]);
-  /** used to store the request url when asking for a group that can't be read */
+  /** used to store the request url when asking for a nonexistent resource */
   const [nonExistentPath, setNonExistentPath] = useState<string>("");
   /** props passed to a <SourceInfoHeader> child component */
   const [sourceInfo, setSourceInfo] = useState<SourceInfo>({
