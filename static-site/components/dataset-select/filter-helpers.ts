@@ -259,5 +259,5 @@ export function getFilteredDatasets(
     ? rowSort
     : [(d: { filename: string }) => d.filename.toLowerCase()];
 
-  return sortBy(filteredDatasets, iteratees);
+  return sortBy(filteredDatasets, iteratees) as DatasetType[]; /* eslint-disable-line @typescript-eslint/consistent-type-assertions */
 }
