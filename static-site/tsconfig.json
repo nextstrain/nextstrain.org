@@ -62,6 +62,7 @@ be set and will rewrite this file if they aren't set.²
   },
   "include": [
     "app/**/*",
+    "content/**/*",
     "data/**/*",
     "components/**/*",
     "pages/**/*",

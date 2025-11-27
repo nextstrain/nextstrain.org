@@ -5,7 +5,7 @@
 import React from "react";
 import ListResources from "../../../components/list-resources";
 import { listResourcesAPI } from "../../../components/list-resources/listResourcesApi";
-import * as coreResources from "../../../content/resource-listing.yaml";
+import { coreResources } from "../../../content/resource-listing";
 
 
 /**
