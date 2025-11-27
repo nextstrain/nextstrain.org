@@ -84,7 +84,7 @@ export interface DatasetType {
   };
 
   /** geographical level / scope of dataset -- only used in SARS datasets */
-  level?: string;
+  level?: "region" | "country" | "division" | "location";
 }
 
 /** The different potential UI elements displayed by a <DatasetSelect> component */
@@ -92,7 +92,7 @@ export type DatasetSelectInterfacesType =
   | "FilterSelect"
   | "FilterDisplay"
   | "ListDatasets"
-  | ((props) => React.ReactElement);
+  | ((props: { datasets: DatasetType[] }) => React.ReactElement);
 
 /** Filter categories and associated badges */
 export interface FilterCategoryType {

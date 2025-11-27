@@ -13,6 +13,7 @@ import { AutoSizer } from "react-virtualized/dist/es/AutoSizer";
 import {
   CellMeasurer,
   CellMeasurerCache,
+  MeasuredCellParent,
 } from "react-virtualized/dist/es/CellMeasurer";
 import { List } from "react-virtualized/dist/es/List";
 
@@ -116,7 +117,7 @@ export default function VirtualizedMenuList({
     key: string;
 
     /** parent of the row being rendered */
-    parent: unknown;
+    parent: MeasuredCellParent;
 
     /** style string for the row */
     style: React.CSSProperties;
@@ -159,7 +160,7 @@ export default function VirtualizedMenuList({
 
   return (
     <AutoSizer disableHeight>
-      {({ width }) => (
+      {({ width }: { width: number }) => (
         <List
           ref={listRef}
           height={calcListHeight()}
