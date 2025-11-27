@@ -88,6 +88,7 @@ export default function VirtualizedMenuList({
   useLayoutEffect((): void => {
     if (
       children instanceof Array &&
+      listRef.current !== null &&
       !isEqual(optionKeys.current, getOptionKeys(children))
     ) {
       cache.current.clearAll();
