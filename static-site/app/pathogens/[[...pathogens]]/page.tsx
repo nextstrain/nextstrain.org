@@ -1,13 +1,13 @@
 import React from "react";
-import { Metadata } from "next";
 
+import type { TitledMetadata } from "../../types";
 import { ValidateUrl } from "../../../components/error-banner";
 
 import PathogensPageContent from "./content";
 
 const title = "Nextstrain-maintained pathogen analyses";
 
-export const metadata: Metadata = {
+export const metadata: TitledMetadata = {
   title,
 };
 

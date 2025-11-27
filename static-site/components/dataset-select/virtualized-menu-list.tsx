@@ -13,6 +13,7 @@ import { AutoSizer } from "react-virtualized/dist/es/AutoSizer";
 import {
   CellMeasurer,
   CellMeasurerCache,
+  MeasuredCellParent,
 } from "react-virtualized/dist/es/CellMeasurer";
 import { List } from "react-virtualized/dist/es/List";
 
@@ -53,11 +54,12 @@ export default function VirtualizedMenuList({
 
   const optionKeys = useRef<string[]>([]);
 
-  const cache = useRef(
+  const cache = useRef<FullCellMeasurerCache>(
+    /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions */
     new CellMeasurerCache({
       fixedWidth: true,
       defaultHeight: DEFAULT_ROW_HEIGHT,
-    }),
+    }) as FullCellMeasurerCache,
   );
 
   /**
@@ -86,6 +88,7 @@ export default function VirtualizedMenuList({
   useLayoutEffect((): void => {
     if (
       children instanceof Array &&
+      listRef.current !== null &&
       !isEqual(optionKeys.current, getOptionKeys(children))
     ) {
       cache.current.clearAll();
@@ -116,7 +119,7 @@ export default function VirtualizedMenuList({
     key: string;
 
     /** parent of the row being rendered */
-    parent: unknown;
+    parent: MeasuredCellParent;
 
     /** style string for the row */
     style: React.CSSProperties;
@@ -159,7 +162,7 @@ export default function VirtualizedMenuList({
 
   return (
     <AutoSizer disableHeight>
-      {({ width }) => (
+      {({ width }: { width: number }) => (
         <List
           ref={listRef}
           height={calcListHeight()}
@@ -174,3 +177,10 @@ export default function VirtualizedMenuList({
     </AutoSizer>
   );
 }
+
+// _rowHeightCache is not annotated in @types/react-virtualized
+type FullCellMeasurerCache = CellMeasurerCache & {
+  _rowHeightCache: {
+    [key: number]: number;
+  };
+};

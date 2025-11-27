@@ -35,7 +35,7 @@ export function TeamPageList({
   membersKey,
 }: {
   /** which set of team members we want to render */
-  membersKey: string;
+  membersKey: keyof typeof teamMembers;
 }): React.ReactElement {
   const people: TeamMember[] = teamMembers[membersKey];
 
