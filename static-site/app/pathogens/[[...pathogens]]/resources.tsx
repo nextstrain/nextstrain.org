@@ -29,7 +29,7 @@ async function _coreDatasetResourceGroups() {
   const opts = {
     versioned: true,
     groupDisplayNames: coreResources["coreGroupDisplayNames"],
-    groupUrl: (groupName) => `/${groupName}`,
+    groupUrl: (groupName: string) => `/${groupName}`,
     groupUrlTooltip: (groupName: string) => `Click to load the default (and most recent) analysis for ${coreResources["coreGroupDisplayNames"][groupName] || groupName}`,
   };
   return await listResourcesAPI('core', 'dataset', opts);
