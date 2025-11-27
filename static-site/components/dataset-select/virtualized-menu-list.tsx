@@ -54,11 +54,12 @@ export default function VirtualizedMenuList({
 
   const optionKeys = useRef<string[]>([]);
 
-  const cache = useRef(
+  const cache = useRef<FullCellMeasurerCache>(
+    /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions */
     new CellMeasurerCache({
       fixedWidth: true,
       defaultHeight: DEFAULT_ROW_HEIGHT,
-    }),
+    }) as FullCellMeasurerCache,
   );
 
   /**
@@ -175,3 +176,10 @@ export default function VirtualizedMenuList({
     </AutoSizer>
   );
 }
+
+// _rowHeightCache is not annotated in @types/react-virtualized
+type FullCellMeasurerCache = CellMeasurerCache & {
+  _rowHeightCache: {
+    [key: number]: number;
+  };
+};
