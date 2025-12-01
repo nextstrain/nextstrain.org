@@ -118,7 +118,7 @@ export default function IndividualGroupPage({
         groupName: group,
         nameParts: name.split('/'),
         sortingName: name,
-        url: dataset.request.replace(/^groups\//, ''),
+        url: `/${dataset.request}`,
       };
     });
 
