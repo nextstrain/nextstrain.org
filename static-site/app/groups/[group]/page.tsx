@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import ScrollableAnchor from "../../../vendored/react-scrollable-anchor/index";
 
 import Button from "../../../components/button";
-import DatasetSelect from "../../../components/dataset-select";
-import { DatasetType } from "../../../components/dataset-select/types";
 import ErrorMessage from "../../../components/error-message";
 import { FlexGridRight } from "../../../components/flex-grid";
 import ListResources from "../../../components/list-resources";
@@ -50,10 +48,8 @@ export default function IndividualGroupPage({
    * not accessible to the currently logged-in user)
    */
   const [groupNotFound, setGroupNotFound] = useState<boolean>(false);
-  /** the datasets of the group being displayed */
-  const [datasets, setDatasets] = useState<DataResource[]>([]);
-  /** the narratives of the group being displayed */
-  const [narratives, setNarratives] = useState<DatasetType[]>([]);
+  /** the resources of the group being displayed */
+  const [dataResources, setDataResources] = useState<DataResource[]>([]);
   /** props passed to a <SourceInfoHeader> child component */
   const [sourceInfo, setSourceInfo] = useState<SourceInfo>({
     title: "",
@@ -83,13 +79,10 @@ export default function IndividualGroupPage({
         ]);
 
         setSourceInfo(sourceInfo);
-        setDatasets(availableData.datasets);
-        setNarratives(
-          _createDatasetListing(
-            availableData.narratives,
-            group,
-          ),
-        );
+        setDataResources([
+          ...availableData.datasets,
+          ...availableData.narratives,
+        ]);
         setEditGroupSettingsAllowed(await canUserEditGroupSettings(group));
         setViewGroupMembersAllowed(await canViewGroupMembers(group));
 
@@ -109,14 +102,21 @@ export default function IndividualGroupPage({
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
   async function resourcesCallback(): Promise<Group[]> {
-    const resources = datasets.map((dataset): Resource => {
-      const name = dataset.request.replace(new RegExp(`^groups/${group}/`), '');
+    const resources = dataResources.map((dataResource): Resource => {
+      const parts = dataResource.request.split('/');
+      let name: string;
+      if (parts[2] === "narratives") {
+        name = parts.slice(3).join('/');
+      } else {
+        name = parts.slice(2).join('/');
+      }
       return {
         name,
         groupName: group,
         nameParts: name.split('/'),
         sortingName: name,
-        url: `/${dataset.request}`,
+        url: `/${dataResource.request}`,
+        resourceType: parts[2] === "narratives" ? "narrative" : "dataset",
       };
     });
 
@@ -205,66 +205,19 @@ export default function IndividualGroupPage({
 
         <HugeSpacer />
 
-        {sourceInfo.showDatasets && (
-          <ScrollableAnchor id={"datasets"}>
+        {(sourceInfo.showDatasets || sourceInfo.showNarratives) && (
+          <ScrollableAnchor id={"resources"}>
             <div>
-              <h3 className="centered">Available datasets</h3>
+              <h3 className="centered">Available resources</h3>
               <ListResources
-                resourceType="dataset"
+                resourceType="resource"
                 versioned={false}
                 fetchResourceGroups={resourcesCallback}
               />
             </div>
           </ScrollableAnchor>
         )}
-
-        <HugeSpacer />
-
-        {sourceInfo.showNarratives && (
-          <ScrollableAnchor id={"narratives"}>
-            <div>
-              <h3 className="centered">Available narratives</h3>
-              {narratives.length === 0 ? (
-                <h4 className="centered">
-                  No narratives are available for this group.
-                </h4>
-              ) : (
-                <DatasetSelect
-                  datasets={narratives}
-                  columns={[
-                    {
-                      name: "Narrative",
-                      value: (dataset) =>
-                        dataset.filename
-                          ?.replace(/_/g, " / ")
-                          .replace(".json", "") || "",
-                      url: (dataset) => dataset.url,
-                    },
-                  ]}
-                  title="Filter Narratives"
-                />
-              )}
-            </div>
-          </ScrollableAnchor>
-        )}
       </>
     );
   }
-}
-
-// helper function to parse getAvailable listing into one that the
-// <DatasetSelect> component will accept
-function _createDatasetListing(
-  list: DataResource[],
-  group: string,
-): DatasetType[] {
-  return list.map((d: DataResource): DatasetType => {
-    return {
-      filename: d.request
-        .replace(`groups/${group}/`, "")
-        .replace("narratives/", ""),
-      url: `/${d.request}`,
-      contributor: group,
-    };
-  });
 }
