@@ -2,11 +2,6 @@
 
 import React, { useContext, useEffect, useState } from "react";
 
-import DatasetSelect from "../../components/dataset-select";
-import {
-  DatasetSelectColumnsType,
-  DatasetType,
-} from "../../components/dataset-select/types";
 import FlexCenter from "../../components/flex-center";
 import { FocusParagraphCentered } from "../../components/focus-paragraph";
 import ListResources from "../../components/list-resources";
@@ -21,38 +16,19 @@ import GroupTiles from "./group-tiles";
 
 import type { AvailableGroups, DataResource } from "./types";
 
-const datasetColumns: DatasetSelectColumnsType[] = [
-  {
-    name: "Narrative",
-    value: (d) => d.url.replace("/groups/", "").replace(/\//g, " / "),
-    url: (d) => d.url,
-  },
-  {
-    name: "Group Name",
-    value: (d) => d.url.split("/")[2] || "",
-    url: (d) => `/groups/${d.url.split("/")[2]}`,
-  },
-];
-
 /**
  * A React Client Component that fetches and then lists all the groups
  * available to a user, using both a <GroupTiles> component for a
- * tile-based view of the groups, a <ListResources> component for a
- * card-based view of available datasets within the groups, and a
- * <DatasetSelect> component for a list-based view of available
- * narratives within the groups.
+ * tile-based view of the groups, and <ListResources> components for
+ * card-based views of available datasets and narratives within the groups.
  */
 export default function Available(): React.ReactElement {
   const { user } = useContext(UserContext);
 
-  /** flag for whether data is loaded yet */
-  const [dataLoaded, setDataLoaded] = useState<boolean>(false);
   /** flag for any errors seen while fetching data */
   const [errorFetchingData, setErrorFetchingData] = useState<boolean>(false);
-  /** state to hold available datasets */
-  const [datasets, setDatasets] = useState<DataResource[]>([]);
-  /** state to hold available narratives */
-  const [narratives, setNarratives] = useState<DatasetType[]>([]);
+  /** state to hold available resources */
+  const [dataResources, setDataResources] = useState<DataResource[]>([]);
 
   useEffect((): void => {
     async function fetchData(): Promise<void> {
@@ -60,9 +36,7 @@ export default function Available(): React.ReactElement {
         const available = await fetchAndParseJSON<AvailableGroups>(
           "/charon/getAvailable?prefix=/groups",
         );
-        setDatasets(available.datasets);
-        setNarratives(_cleanUpAvailable(available.narratives));
-        setDataLoaded(true);
+        setDataResources([...available.datasets, ...available.narratives]);
       } catch (err) {
         console.error(
           "Error fetching / parsing data.",
@@ -79,8 +53,8 @@ export default function Available(): React.ReactElement {
   // resources for listing. Luckily for us the "group name" is the same for both
   async function resourcesCallback(): Promise<Group[]> {
     /* Convert the API response structure into `Group[]` */
-    const resources = datasets.flatMap((dataset): Resource[] => {
-      const parts = dataset.request.split('/').slice(1);
+    const resources = dataResources.flatMap((dataResource): Resource[] => {
+      const parts = dataResource.request.split('/').slice(1);
       const groupName = parts[1]
       if (parts[0] !== "groups" || groupName === undefined) return [];
       const name = parts.slice(1).join('/');
@@ -91,7 +65,8 @@ export default function Available(): React.ReactElement {
         nameParts,
         displayNameParts: nameParts.slice(1),
         sortingName: name,
-        url: dataset.request,
+        url: dataResource.request,
+        resourceType: parts[2] === "narratives" ? "narrative" : "dataset",
       }];
     });
 
@@ -141,31 +116,17 @@ export default function Available(): React.ReactElement {
 
       <HugeSpacer />
 
-      <ScrollableAnchor id={'datasets'}>
-        <h2 className="centered">Available Datasets</h2>
+      <ScrollableAnchor id={'resources'}>
+        <h2 className="centered">Available Resources</h2>
       </ScrollableAnchor>
 
       <BigSpacer />
 
       <ListResources
-        resourceType="dataset"
+        resourceType="resource"
         versioned={false}
         fetchResourceGroups={resourcesCallback}
       />
-
-      <HugeSpacer />
-
-      <ScrollableAnchor id={"narratives"}>
-        <h2 className="centered">Available Narratives</h2>
-      </ScrollableAnchor>
-
-      {dataLoaded && (
-        <DatasetSelect
-          datasets={narratives}
-          columns={datasetColumns}
-          title={"Filter Narratives"}
-        />
-      )}
 
       {errorFetchingData && (
         <FocusParagraphCentered>
@@ -173,21 +134,5 @@ export default function Available(): React.ReactElement {
         </FocusParagraphCentered>
       )}
     </>
-  );
-}
-
-function _cleanUpAvailable(datasets: DataResource[]): DatasetType[] {
-  /** The dataset display & filtering has a number of hard-coded
-   * assumptions and TODOs, which requires us to coerce dataset lists
-   * into a specific format
-   */
-  if (!datasets) return [];
-
-  return datasets.map(
-    (d: DataResource): DatasetType => ({
-      ...d,
-      filename: d.request.replace(/\//g, "_").replace(/^_/, ""),
-      url: d.request,
-    }),
   );
 }
