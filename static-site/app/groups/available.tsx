@@ -141,7 +141,9 @@ export default function Available(): React.ReactElement {
 
       <HugeSpacer />
 
-      <h2 className="centered">Available Datasets</h2>
+      <ScrollableAnchor id={'datasets'}>
+        <h2 className="centered">Available Datasets</h2>
+      </ScrollableAnchor>
 
       <BigSpacer />
 
