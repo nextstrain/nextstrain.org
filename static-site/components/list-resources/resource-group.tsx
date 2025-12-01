@@ -81,7 +81,7 @@ export default function ResourceGroup({
           // We use key changes to re-render the component & thus recompute the DOM position
           <IndividualResource
             gapWidth={gapWidth}
-            key={`${d.name}_${isCollapsed}_${elWidth}_${sortMethod}`}
+            key={`${d.url}_${isCollapsed}_${elWidth}_${sortMethod}`}
             isMobile={isMobile}
             resource={d}
           />
