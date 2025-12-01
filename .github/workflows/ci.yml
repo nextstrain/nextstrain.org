@@ -157,7 +157,7 @@ jobs:
 
           # No deploy
           else
-            echo "value=" >> "$GITHUB_OUTPUT"
+            echo "value=" | tee -a "$GITHUB_OUTPUT"
           fi
 
   deploy:
