@@ -18,9 +18,9 @@ on:
         type: choice
         default: 'none'
         options:
+          - 'none'
           - 'nextstrain-dev'
           - 'nextstrain-canary'
-          - 'none'
 
 # Only one run per branch at a time.
 concurrency:
@@ -140,7 +140,8 @@ jobs:
     outputs:
       heroku-app: ${{ steps.heroku-app.outputs.value }}
     steps:
-      - id: heroku-app
+      - name: Set heroku-app
+        id: heroku-app
         run: |
           # Push to default branch
           if [[ "${{ github.event_name }}" == "push" && \
@@ -156,7 +157,7 @@ jobs:
 
           # No deploy
           else
-            echo "value=" >> "$GITHUB_OUTPUT"
+            echo "value=" | tee -a "$GITHUB_OUTPUT"
           fi
 
   deploy:
