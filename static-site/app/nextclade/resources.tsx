@@ -3,9 +3,9 @@
 // and we want to run as much of the parent page server-side as possible.
 
 import React from "react";
-import ListResources from "../../../components/list-resources";
-import { listResourcesAPI } from "../../../components/list-resources/listResourcesApi";
-import { Group } from "../../../components/list-resources/types";
+import ListResources from "../../components/list-resources";
+import { listResourcesAPI } from "../../components/list-resources/listResourcesApi";
+import { Group } from "../../components/list-resources/types";
 
 export default function NextcladeResourceListing(): React.ReactElement {
   return (
