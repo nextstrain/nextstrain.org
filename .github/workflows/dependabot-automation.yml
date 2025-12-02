@@ -9,7 +9,7 @@ permissions:
 jobs:
   merge-auspice-bump:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - id: metadata
         uses: dependabot/fetch-metadata@v2

@@ -31,7 +31,7 @@ defaults:
 
 jobs:
   build-ref-matrix:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     outputs:
       ref-matrix: ${{ steps.ref-matrix.outputs.ref-matrix }}
     steps:
@@ -61,7 +61,7 @@ jobs:
       group: ${{ github.workflow }}-${{ matrix.resource_index }}
     env:
         RESOURCE_INDEX: ${{ matrix.resource_index }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     permissions:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint
       contents: read

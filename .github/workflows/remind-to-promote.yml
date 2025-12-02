@@ -11,7 +11,7 @@ on:
 
 jobs:
   remind-to-promote:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
