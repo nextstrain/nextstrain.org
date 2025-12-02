@@ -99,7 +99,6 @@
     "@types/lodash": "^4.17.21",
     "@types/react": "^18.2.73",
     "@types/react-virtualized": "^9.22.3",
-    "babel-plugin-lodash": "^3.2.11",
     "benchmark": "^2.1.4",
     "eslint": "^8.23.0",
     "eslint-config-next": "^14.1.4",
