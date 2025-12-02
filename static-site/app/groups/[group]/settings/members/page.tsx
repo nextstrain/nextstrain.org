@@ -4,19 +4,19 @@ import React, { useEffect, useState } from "react";
 
 import { startCase } from "lodash";
 
-import Button from "../../../components/button";
-import CenteredContainer from "../../../components/centered-container";
-import ErrorMessage from "../../../components/error-message";
-import { FlexGridRight } from "../../../components/flex-grid";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
+import Button from "../../../../../components/button";
+import CenteredContainer from "../../../../../components/centered-container";
+import ErrorMessage from "../../../../../components/error-message";
+import { FlexGridRight } from "../../../../../components/flex-grid";
+import { FocusParagraphCentered } from "../../../../../components/focus-paragraph";
 import {
   BigSpacer,
   HugeSpacer,
   MediumSpacer,
-} from "../../../components/spacers";
-import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
+} from "../../../../../components/spacers";
+import fetchAndParseJSON from "../../../../../util/fetch-and-parse-json";
 
-import styles from "./group-members-page.module.css";
+import styles from "./page.module.css";
 
 interface GroupMember {
   username: string;
@@ -33,11 +33,15 @@ const emptyErrorMessage = {
  * given `group`
  */
 export default function GroupMembersPage({
-  group,
+  params,
 }: {
-  /** the name of the group whose members will be shown */
-  group: string;
+  params: {
+    /** the name of the group whose members will be shown */
+    group: string;
+  }
 }): React.ReactElement {
+  const { group } = params;
+
   /**
    * the props for an <ErrorMessage> component displayed when there
    * are problems getting the data for the page
@@ -50,6 +54,8 @@ export default function GroupMembersPage({
   const [members, setMembers] = useState<GroupMember[]>([]);
 
   useEffect((): void => {
+    document.title =`"${group}" Group Members - Nextstrain`;
+
     async function getGroupMembership(): Promise<void> {
       try {
         const members = await fetchAndParseJSON<GroupMember[]>(

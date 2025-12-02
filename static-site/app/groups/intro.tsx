@@ -1,9 +1,9 @@
 import React from "react";
 
-import FlexCenter from "../../../components/flex-center";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import { HugeSpacer, SmallSpacer } from "../../../components/spacers";
-import { groupsTitle, GroupsAbstract } from "../../../data/SiteConfig";
+import FlexCenter from "../../components/flex-center";
+import { FocusParagraphCentered } from "../../components/focus-paragraph";
+import { HugeSpacer, SmallSpacer } from "../../components/spacers";
+import { groupsTitle, GroupsAbstract } from "../../data/SiteConfig";
 
 /**
  * A React Server Component to render the groups page title and abstract

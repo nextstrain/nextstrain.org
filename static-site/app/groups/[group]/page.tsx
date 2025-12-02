@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 
 import ScrollableAnchor from "../../../vendored/react-scrollable-anchor/index";
 
@@ -21,17 +20,22 @@ import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
 
 import { canUserEditGroupSettings, canViewGroupMembers } from "./utils";
 
-import type { AvailableGroups, DataResource } from "./types";
+import type { AvailableGroups, DataResource } from "../types";
 
 /**
  * A React Client component to display a page for an individual
  * Nextstrain group
  */
 export default function IndividualGroupPage({
-  group,
+  params,
+  nonExistentPath,
 }: {
-  /** the name of the group to display */
-  group: string;
+  params: {
+    /** the name of the group to display */
+    group: string;
+  }
+  /** used to store the request url when asking for a nonexistent resource */
+  nonExistentPath?: string
 }): React.ReactElement {
   /** a flag for whether data is being loaded */
   const [dataLoading, setDataLoading] = useState<boolean>(true);
@@ -50,8 +54,6 @@ export default function IndividualGroupPage({
   const [datasets, setDatasets] = useState<DataResource[]>([]);
   /** the narratives of the group being displayed */
   const [narratives, setNarratives] = useState<DatasetType[]>([]);
-  /** used to store the request url when asking for a group that can't be read */
-  const [nonExistentPath, setNonExistentPath] = useState<string>("");
   /** props passed to a <SourceInfoHeader> child component */
   const [sourceInfo, setSourceInfo] = useState<SourceInfo>({
     title: "",
@@ -68,16 +70,12 @@ export default function IndividualGroupPage({
   const [viewGroupMembersAllowed, setViewGroupMembersAllowed] =
     useState<boolean>(false);
 
-  const params = useParams();
+  const { group } = params;
 
   useEffect(() => {
-    async function getGroupInfo(): Promise<void> {
-      if (params && params["groups"] && Array.isArray(params["groups"])) {
-        // save the parts of the requested URL after `groups/{:group}`
-        // as a `/`-delimited string
-        setNonExistentPath(params["groups"].slice(1).join("/"));
-      }
+    document.title = `"${group}" Group - Nextstrain`;
 
+    async function getGroupInfo(): Promise<void> {
       try {
         const [sourceInfo, availableData] = await Promise.all([
           fetchAndParseJSON<SourceInfo>(`/charon/getSourceInfo?prefix=/groups/${group}/`),
@@ -106,7 +104,7 @@ export default function IndividualGroupPage({
     }
 
     getGroupInfo();
-  }, [group, params]);
+  }, [group]);
 
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
