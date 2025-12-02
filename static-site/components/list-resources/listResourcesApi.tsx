@@ -46,7 +46,7 @@ export async function listResourcesAPI(
   if (data===undefined) {
     throw new Error(`Resources request to ${requestPath} returned no data for source ${sourceId}, resource ${resourceType}`)
   }
-  const urlBuilder = (name) => `/${data.pathPrefix}${name}`;
+  const urlBuilder = (name: string) => `/${data.pathPrefix}${name}`;
   const areDatasets = (x: ResourceListingDatasets |  ResourceListingIntermediates): x is ResourceListingDatasets => {
     return Object.hasOwn(x, 'pathVersions');
   }

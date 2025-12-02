@@ -1,13 +1,13 @@
 import React from "react";
-import { Metadata } from "next";
 
+import type { TitledMetadata } from "../../types";
 import { ValidateUrl } from "../../../components/error-banner";
 
 import StagingPageContent from "./content";
 
 const title = "Staging Data";
 
-export const metadata: Metadata = {
+export const metadata: TitledMetadata = {
   title,
 };
 

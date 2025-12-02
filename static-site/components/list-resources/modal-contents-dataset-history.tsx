@@ -14,13 +14,13 @@ export function DatasetHistory({
   resource: VersionedResource;
 }): React.ReactElement {
 
-  const [ref, setRef] = useState(null);
+  const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
   // FIXME figure out what type can be assigned to `node`
   // * `unknown` doesn't work
   // * `React.SetStateAction<null>` doesn't work
   // * `React.LegacyRef<HTMLDivElement>` doesn't work
-  const handleRef = useCallback((node): void => {
+  const handleRef = useCallback((node: HTMLDivElement | null): void => {
     setRef(node);
   }, []);
 

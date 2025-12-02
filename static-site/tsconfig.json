@@ -29,7 +29,7 @@ be set and will rewrite this file if they aren't set.²
 
     /* Type Checking */
     "strict": true,                                      /* Enable all strict type-checking options. */
-    "noImplicitAny": false,                              /* Allow implicit any to make incremental TypeScript adoption easier. */
+    "noImplicitAny": true,                               /* Disable implicit any. */
     "noUnusedLocals": true,                              /* Enable error reporting when a local variables aren't read. */
     "noUnusedParameters": true,                          /* Raise an error when a function parameter isn't read */
     "noImplicitReturns": true,                           /* Enable error reporting for codepaths that do not explicitly return in a function. */
@@ -62,6 +62,7 @@ be set and will rewrite this file if they aren't set.²
   },
   "include": [
     "app/**/*",
+    "content/**/*",
     "data/**/*",
     "components/**/*",
     "pages/**/*",
