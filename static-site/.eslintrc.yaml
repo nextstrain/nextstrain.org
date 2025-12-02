@@ -5,15 +5,11 @@ parser: "@typescript-eslint/parser"
 
 extends:
   - eslint:recommended
-  - plugin:react/recommended
-  - plugin:react-hooks/recommended
   - plugin:@typescript-eslint/strict
   # We use the recommended Next.js eslint configuration `next/core-web-vitals` as per
-  # <https://nextjs.org/docs/pages/building-your-application/configuring/eslint#core-web-vitals>
-  # As of April 2024, the extension simply adds the `@next/next/core-web-vitals` plugin:
-  # <https://github.com/vercel/next.js/blob/canary/packages/eslint-config-next/core-web-vitals.js>
-  # Which in turn adds the `@next/next` and `@next/next/recommended` rulesets defined in
-  # <https://github.com/vercel/next.js/blob/canary/packages/eslint-plugin-next/src/index.ts>
+  # <https://nextjs.org/docs/14/app/building-your-application/configuring/eslint#core-web-vitals>
+  # In v14, the base configuration uses predefined rulesets including react, react-hooks, and next
+  # <https://github.com/vercel/next.js/blob/v14.1.4/packages/eslint-config-next/index.js#L54>
   - next/core-web-vitals
 
 settings:
