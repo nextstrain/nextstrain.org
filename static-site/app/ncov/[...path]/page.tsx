@@ -2,15 +2,22 @@ import React from "react";
 
 import { ErrorBanner } from "../../../components/error-banner";
 
-import SarsCov2PageContent from "./content";
-import { metadata } from "./page";
+import SarsCov2PageContent from "../../sars-cov-2/content";
+
+import { metadata } from "../page";
 
 /**
  * A React Server component that renders the usual `/sars-cov-2` page
  * content, with an error banner up-top explaining that the requested
  * dataset doesn't actually exist.
  */
-export default function FourOhFour(): React.ReactElement {
+export default function FourOhFour({
+  params
+}: {
+  params: {
+    path: string[]
+  }
+}): React.ReactElement {
   const contents = (
     <p>
       {`Here is the SARS-CoV-2 page, where we have listed featured datasets,
@@ -24,7 +31,7 @@ export default function FourOhFour(): React.ReactElement {
 
   return (
     <>
-      <ErrorBanner stub="sars-cov-2" contents={contents} />
+      <ErrorBanner stub="ncov" path={params.path.join("/")} contents={contents} />
       <SarsCov2PageContent metadata={metadata} />
     </>
   );

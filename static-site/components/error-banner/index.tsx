@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { notFound, useParams } from "next/navigation";
 
 import ErrorMessage from "../error-message";
 
@@ -18,66 +17,32 @@ import ErrorMessage from "../error-message";
  */
 export function ErrorBanner({
   stub,
+  path,
   contents,
   title,
 }: {
   /** the initial URL part to check */
   stub: string;
 
+  /** the invalid path */
+  path: string;
+
   /** contents of the error message */
   contents?: React.ReactElement;
 
   /** title of the error message */
   title?: string | React.ReactElement;
-}): React.ReactElement | null {
-  const params = useParams();
+}): React.ReactElement {
 
-  if (params && params[stub]) {
-    // n.b., I don't think `params[stub]` is ever going to be
-    // anything other than a list, but let's make the type checker
-    // happy…
-    const path = Array.isArray(params[stub])
-      ? (params[stub] as string[]).join("/") // eslint-disable-line @typescript-eslint/consistent-type-assertions
-      : (params[stub] as string); // eslint-disable-line @typescript-eslint/consistent-type-assertions
+  const resourceType = path.startsWith("narratives")
+    ? "narrative"
+    : "dataset";
+  const errorTitle = title
+    ? title
+    : `The ${stub} ${resourceType} "nextstrain.org/${stub}/${path}" doesn't exist.`;
+  const errorContents = contents
+    ? contents
+    : <p>Here is the {stub} page instead.</p>;
 
-    const resourceType = path.startsWith("narratives")
-      ? "narrative"
-      : "dataset";
-    const errorTitle = title
-      ? title
-      : `The ${stub} ${resourceType} "nextstrain.org/${stub}/${path}" doesn't exist.`;
-    const errorContents = contents
-      ? contents
-      : <p>Here is the {stub} page instead.</p>;
-
-    return <ErrorMessage title={errorTitle} contents={errorContents} />;
-  } else {
-    // this will never happen
-    return null;
-  }
-}
-
-/**
- * A React Client Component to detect when an invalid URL is
- * requested, which calls the `notFound()` method to redirect to the
- * `not-found.tsx` component
- *
- * Note that any actually valid `/<stub>/<something>` URL will be
- * redirected at the Express router level, before the Next.js router
- * is engaged, so if we are trying to render a `/<stub>/<something>`
- * URL, it _is_ an error
- */
-export function ValidateUrl({
-  stub,
-}: {
-  /** the initial URL part to check */
-  stub: string;
-}): null {
-  const params = useParams();
-
-  if (params && params[stub]) {
-    notFound();
-  } else {
-    return null;
-  }
+  return <ErrorMessage title={errorTitle} contents={errorContents} />;
 }

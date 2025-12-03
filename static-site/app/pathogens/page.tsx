@@ -1,7 +1,6 @@
 import React from "react";
 
-import type { TitledMetadata } from "../../types";
-import { ValidateUrl } from "../../../components/error-banner";
+import type { TitledMetadata } from "../types";
 
 import PathogensPageContent from "./content";
 
@@ -13,14 +12,10 @@ export const metadata: TitledMetadata = {
 
 /**
  * React Server Component for `/pathogens`
- *
- * See note in `static-site/app/staging/[[...staging]]/page.tsx`
- * to understand how this works
  */
 export default function Pathogens(): React.ReactElement {
   return (
     <>
-      <ValidateUrl stub="pathogens" />
       <PathogensPageContent metadata={metadata} />
     </>
   );
