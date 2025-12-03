@@ -57,7 +57,7 @@ const tableColumns: DatasetSelectColumnsType[] = [
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 /**
- * React Server Component that generates the content of the /sars-cov-2 page
+ * React Client Component that generates the content of the /sars-cov-2 page
  *
  * This is abstracted out into a distinct component so that it can
  * also be used in the "./not-found.tsx" component, to render the
