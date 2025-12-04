@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 jobs:
   fmt:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Install Terraform
         run: |
@@ -34,7 +34,7 @@ jobs:
         env:
           - env/production
           - env/testing
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Install Terraform
         run: |
