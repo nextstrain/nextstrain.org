@@ -6,6 +6,7 @@ import React from "react";
 import ListResources from "../../../components/list-resources";
 import { listResourcesAPI } from "../../../components/list-resources/listResourcesApi";
 import { Group } from "../../../components/list-resources/types";
+import nextstrainLogoSmall from "../../../static/logos/nextstrain-logo-small.png";
 
 export default function NextcladeResourceListing(): React.ReactElement {
   return (
@@ -28,7 +29,7 @@ async function nextcladeDatasetResourceGroups() {
      */
     groupNameBuilder: (name: string): string => {
       return name.startsWith("community/")
-        ? name.split("/").slice(0, 2).join("/")
+        ? name.split("/").slice(1, 3).join("/")
         : name.split("/")[0]!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
     },
 
@@ -37,6 +38,14 @@ async function nextcladeDatasetResourceGroups() {
       const name = group.groupName;
       return name.startsWith("community/") ? `001 ${name}` :
                                              `000 ${name}` ;
+    },
+
+    // Add Nextstrain logo for core datasets
+    groupImg: (group: Group) => {
+      const isOfficialDataset = group.resources.some((r) => !r.name.startsWith('community/'));
+      return isOfficialDataset
+        ? { src: nextstrainLogoSmall.src, alt: "nextstrain logo" }
+        : undefined;
     },
   });
 }
