@@ -59,6 +59,7 @@ export interface Resource {
   nameParts: string[];
   sortingName: string;
   url: string;
+  resourceType?: ResourceType;
   lastUpdated?: string; // date
   firstUpdated?: string; // date
   dates?: string[];
@@ -87,7 +88,8 @@ export interface ResourceDisplayName {
   default: string;
 }
 
-export type ResourceType = 'dataset'|'intermediate';
+export type ResourceType = 'resource'|'dataset'|'intermediate'|'narrative';
+// NOTE: the resource indexer only uses a subset of these
 
 
 export interface UpdateCadence {

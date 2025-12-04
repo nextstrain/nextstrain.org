@@ -8,6 +8,8 @@ import { SetModalDataContext } from "./modal";
 
 import { Resource } from "./types";
 
+import bookOpenIcon from "../../static/logos/fa-book-open-solid.svg";
+
 import styles from "./group-and-resource-links.module.css";
 
 /**
@@ -141,6 +143,17 @@ export function IndividualResourceLink({
         {hovered || topOfColumn
           ? resource.displayName.hovered
           : resource.displayName.default}
+        {resource.resourceType === 'narrative' && (
+          <img
+            src={bookOpenIcon.src}
+            alt="narrative"
+            style={{
+              height: '1em',
+              width: '1em',
+              marginLeft: '8px',
+            }}
+          />
+        )}
       </a>
     </div>
   );
