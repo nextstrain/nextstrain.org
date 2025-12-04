@@ -3,9 +3,9 @@
 // and we want to run as much of the parent page server-side as possible.
 
 import React from "react";
-import ListResources from "../../../components/list-resources";
-import { listResourcesAPI } from "../../../components/list-resources/listResourcesApi";
-import { coreResources } from "../../../content/resource-listing";
+import ListResources from "../../components/list-resources";
+import { listResourcesAPI } from "../../components/list-resources/listResourcesApi";
+import { coreResources } from "../../content/resource-listing";
 
 
 /**
