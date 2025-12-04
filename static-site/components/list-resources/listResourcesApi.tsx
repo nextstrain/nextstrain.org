@@ -1,7 +1,6 @@
 import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory } from "./types";
 import { InternalError } from "../error-boundary";
 import fetchAndParseJSON from "../../util/fetch-and-parse-json";
-import nextstrainLogoSmall from "../../static/logos/nextstrain-logo-small.png";
 
 interface APIWrapper<T> {
   [resourceType: string]: {
@@ -36,7 +35,8 @@ export async function listResourcesAPI(
     groupDisplayNames,
     groupSortableName,
     groupUrl,
-    groupUrlTooltip
+    groupUrlTooltip,
+    groupImg
   }: {
     /** Report prior versions of each resource.
      * TODO: infer this from the API data itself
@@ -46,7 +46,8 @@ export async function listResourcesAPI(
     groupDisplayNames?: Record<string, string>,
     groupSortableName?: (group: Group) => string,
     groupUrl?: (groupName: string) => string,
-    groupUrlTooltip?: (groupName: string) => string
+    groupUrlTooltip?: (groupName: string) => string,
+    groupImg?: (group: Group) => { src: string; alt: string } | undefined
   }
 ): Promise<Group[]> {
   const requestPath = `/list-resources/${sourceId}/${resourceType}`;
@@ -77,6 +78,13 @@ export async function listResourcesAPI(
       if (groupUrlTooltip) {
         group.groupUrlTooltip = groupUrlTooltip(groupName);
       }
+      if (groupImg) {
+        const img = groupImg(group);
+        if (img) {
+          group.groupImgSrc = img.src;
+          group.groupImgAlt = img.alt;
+        }
+      }
       if (resourceType==='intermediate' && sourceId==='core') {
         group.fetchHistory = fetchIntermediateGroupHistoryFactory(sourceId, groupName);
       }
@@ -100,8 +108,6 @@ function resourceGroup(groupName: string, resources: Resource[]): Group {
   const groupInfo: Group = {
     groupName,
     sortingGroupName: groupName,
-    groupImgSrc: nextstrainLogoSmall.src,
-    groupImgAlt: "nextstrain logo",
     resources,
     nResources: resources.length,
     nVersions,
