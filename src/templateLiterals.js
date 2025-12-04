@@ -1,3 +1,6 @@
+import escapeStringRegexp from 'escape-string-regexp';
+
+
 /**
  * Safe-by-construction URI strings via [template literals]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates}.
  *
@@ -19,5 +22,23 @@ export function uri(literalParts, ...exprParts) {
   return literalParts.slice(1).reduce(
     (url, literalPart, idx) => `${url}${encodeURIComponent(exprParts[idx])}${literalPart}`,
     literalParts[0]
+  );
+}
+
+
+/**
+ * Safe-by-construction RegExps from strings via [template literals]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates}.
+ *
+ * Interpolations in the template literal are automatically escaped so no regex
+ * metachars are interpretted.
+ *
+ * @returns RegExp
+ */
+export function re(literalParts, ...exprParts) {
+  /* See comment above in uri() about the data structures involved.
+   */
+  return literalParts.slice(1).reduce(
+    (re, literalPart, idx) => new RegExp(`${re.source}${escapeStringRegexp(exprParts[idx])}${literalPart}`),
+    new RegExp(literalParts[0])
   );
 }
