@@ -5,6 +5,7 @@
 import React from "react";
 import ListResources from "../../components/list-resources";
 import { listResourcesAPI } from "../../components/list-resources/listResourcesApi";
+import nextstrainLogoSmall from "../../static/logos/nextstrain-logo-small.png";
 
 export default function StagingPathogenResourceListing(): React.ReactElement {
   return (
@@ -19,6 +20,9 @@ export default function StagingPathogenResourceListing(): React.ReactElement {
 }
 
 async function stagingDatasetResourceGroups() {
-  const opts = {versioned: false};
+  const opts = {
+    versioned: false,
+    groupImg: () => ({ src: nextstrainLogoSmall.src, alt: "nextstrain logo" }),
+  };
   return await listResourcesAPI('staging', 'dataset', opts);
 }

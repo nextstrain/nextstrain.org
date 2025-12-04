@@ -6,6 +6,7 @@ import React from "react";
 import ListResources from "../../../components/list-resources";
 import { listResourcesAPI } from "../../../components/list-resources/listResourcesApi";
 import { coreResources } from "../../../content/resource-listing";
+import nextstrainLogoSmall from "../../../static/logos/nextstrain-logo-small.png";
 
 /**
  * A React Client Component which wraps the ListResources component to list
@@ -27,6 +28,7 @@ async function _coreDatasetResourceGroups() {
   const opts = {
     versioned: false,
     groupDisplayNames: coreResources["coreGroupDisplayNames"],
+    groupImg: () => ({ src: nextstrainLogoSmall.src, alt: "nextstrain logo" }),
   };
   return await listResourcesAPI('core', 'intermediate', opts);
 }
