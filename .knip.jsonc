@@ -1,0 +1,76 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+
+  /**
+   * Defaults scoped down to dependency checks and others without existing
+   * issues.
+   * <https://knip.dev/reference/issue-types>
+   */
+  "include": [
+    "files",
+    "dependencies",
+    "unlisted",
+    "binaries",
+    "catalog",
+    "unresolved",
+    // "exports",
+    // "types",
+    "enumMembers",
+    "duplicates"
+  ],
+
+  "entry": [
+    "server.js",
+
+    // Dynamically imported in server.js
+    "src/app.js",
+    "src/groupsApp.js",
+
+    // Included by tsconfig.json
+    "static-site/types.d.ts",
+
+    // Other tools, not used by the server
+    "resourceIndexer/main.js",
+    "scripts/*.js"
+  ],
+
+  // Future-proof to potential TypeScript conversions
+  "project": [
+    "src/**/*.{js,ts}",
+    "static-site/**/*.{ts,tsx,js,jsx,mjs}",
+    "resourceIndexer/**/*.{js,ts}",
+    "scripts/**/*.{js,ts}"
+  ],
+
+
+  /*** Plugins ***/
+
+  /**
+   * Custom config is necessary because we rely on configuration cascading.
+   * <https://knip.dev/reference/plugins/eslint#eslint-v8>
+   */
+  "eslint": {
+    "config": ["**/.eslintrc.yaml"]
+  },
+
+  /**
+   * Custom config is necessary because files live under a custom top-level
+   * folder.
+   * <https://knip.dev/reference/plugins/typescript>
+   */
+  "typescript": {
+    "config": ["static-site/tsconfig.json"]
+  },
+
+  /**
+   * Custom config is necessary because files live under a custom top-level
+   * folder.
+   * <https://knip.dev/reference/plugins/next>
+   */
+  "next": {
+    "config": ["static-site/next.config.{js,ts,cjs,mjs}"],
+    "entry": [
+      "static-site/app/**/*.{js,jsx,ts,tsx}"
+    ]
+  }
+}
