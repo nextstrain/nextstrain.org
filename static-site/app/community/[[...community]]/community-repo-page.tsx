@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 
 import DatasetSelect from "../../../components/dataset-select";
@@ -27,7 +29,7 @@ interface CommunityResource {
 }
 
 /**
- * A React Server Component for displaying a page for a community
+ * A React Client Component for displaying a page for a community
  * repo, with metadata about the repo and user, and listing of
  * available datasets and narratives in that repo.
  */
