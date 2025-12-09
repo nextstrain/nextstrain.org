@@ -4,7 +4,6 @@ import React from "react";
 
 import { get } from "lodash";
 
-import type { TitledMetadata } from "../../types";
 import DatasetSelect from "../../../components/dataset-select";
 import DatasetMap from "../../../components/dataset-select/dataset-map";
 import {
@@ -26,6 +25,7 @@ import sarscov2Catalogue from "../../../content/SARS-CoV-2-Datasets.yaml";
 import SituationReportsByLanguage from "./situation-reports-by-language";
 
 import { ResourceListEntry } from "./types";
+import { title } from "./constants";
 
 import styles from "./content.module.css";
 
@@ -64,16 +64,7 @@ const tableColumns: DatasetSelectColumnsType[] = [
  * /sars-cov-2 page content beneath an error banner, when a bad URL is
  * requested, and in the `/ncov` page and its "not-found.tsx" component.
  */
-export default function SarsCov2PageContent({
-  metadata,
-}: {
-  /**
-   * A Metadata object, that is assumed to have a `title` key with a
-   * string value
-   */
-  metadata: TitledMetadata;
-}): React.ReactElement {
-  const title = metadata.title;
+export default function SarsCov2PageContent(): React.ReactElement {
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const datasets = (sarscov2Catalogue as { datasets: DatasetType[] })[

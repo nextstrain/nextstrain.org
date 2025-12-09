@@ -1,13 +1,12 @@
 import React from "react";
+import type { Metadata } from "next";
 
-import type { TitledMetadata } from "../../types";
 import { ValidateUrl } from "../../../components/error-banner";
 
 import PathogensPageContent from "./content";
+import { title } from "./constants";
 
-const title = "Nextstrain-maintained pathogen analyses";
-
-export const metadata: TitledMetadata = {
+export const metadata: Metadata = {
   title,
 };
 
@@ -21,7 +20,7 @@ export default function Pathogens(): React.ReactElement {
   return (
     <>
       <ValidateUrl stub="pathogens" />
-      <PathogensPageContent metadata={metadata} />
+      <PathogensPageContent />
     </>
   );
 }

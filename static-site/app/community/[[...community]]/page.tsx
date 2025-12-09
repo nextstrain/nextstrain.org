@@ -2,8 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 
 import CommuityPageRouter from "./router";
-
-const title = "Nextstrain Community: Data Sharing via GitHub";
+import { title } from "./constants";
 
 export const metadata: Metadata = {
   title,
@@ -23,6 +22,5 @@ export const metadata: Metadata = {
  * are handled, etc.
  */
 export default function CommunityPage(): React.ReactElement {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  return <CommuityPageRouter title={metadata.title as string} />;
+  return <CommuityPageRouter />;
 }

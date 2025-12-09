@@ -3,7 +3,6 @@ import React from "react";
 import { ErrorBanner } from "../../../components/error-banner";
 
 import PathogensPageContent from "./content";
-import { metadata } from "./page";
 
 /**
  * A React Server component that renders the usual `/pathogens` page
@@ -14,7 +13,7 @@ export default function FourOhFour(): React.ReactElement {
   return (
     <>
       <ErrorBanner stub="pathogens" />
-      <PathogensPageContent metadata={metadata} />
+      <PathogensPageContent />
     </>
   );
 }

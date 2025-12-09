@@ -1,10 +1,10 @@
 import React from "react";
 
-import type { TitledMetadata } from "../../types";
 import CorePathogenResourceListing from "./resources";
 import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
 import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
+import { title } from "./constants";
 
 /**
  * React Server Component that generates the content of the /pathogens page
@@ -14,16 +14,7 @@ import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
  * /staging page content beneath an error banner, when a bad URL is
  * requested.
  */
-export default function PathogensPageContent({
-  metadata,
-}: {
-  /**
-   * A Metadata object, that is assumed to have a `title` key with a
-   * string value
-   */
-  metadata: TitledMetadata;
-}): React.ReactElement {
-  const title = metadata.title;
+export default function PathogensPageContent(): React.ReactElement {
 
   return (
     <>

@@ -1,14 +1,13 @@
 import React from "react";
+import type { Metadata } from "next";
 
-import type { TitledMetadata } from "../../types";
 import { ValidateUrl } from "../../../components/error-banner";
 
 import SarsCov2PageContent from "../../sars-cov-2/[[...sars-cov-2]]/content";
-
-const title = "Nextstrain SARS-CoV-2 resources";
+import { title } from "../../sars-cov-2/[[...sars-cov-2]]/constants";
 
 /** page metadata */
-export const metadata: TitledMetadata = {
+export const metadata: Metadata = {
   /** page title */
   title,
 };
@@ -23,7 +22,7 @@ export default function SarsCov2Page(): React.ReactElement {
   return (
     <>
       <ValidateUrl stub="ncov" />
-      <SarsCov2PageContent metadata={metadata} />
+      <SarsCov2PageContent />
     </>
   );
 }

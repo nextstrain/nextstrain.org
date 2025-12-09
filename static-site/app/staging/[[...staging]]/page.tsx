@@ -1,13 +1,12 @@
 import React from "react";
+import type { Metadata } from "next";
 
-import type { TitledMetadata } from "../../types";
 import { ValidateUrl } from "../../../components/error-banner";
 
 import StagingPageContent from "./content";
+import { title } from "./constants";
 
-const title = "Staging Data";
-
-export const metadata: TitledMetadata = {
+export const metadata: Metadata = {
   title,
 };
 
@@ -63,7 +62,7 @@ export default function StagingPage(): React.ReactElement {
   return (
     <>
       <ValidateUrl stub="staging" />
-      <StagingPageContent metadata={metadata} />
+      <StagingPageContent />
     </>
   );
 }

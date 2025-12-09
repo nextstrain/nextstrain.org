@@ -1,10 +1,10 @@
 import React from "react";
 
-import type { TitledMetadata } from "../../types";
 import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
 import StagingPathogenResourceListing from "./resources";
 import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
+import { title } from "./constants";
 
 /**
  * A React Server component that generates the contents of the
@@ -15,17 +15,7 @@ import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
  * /staging page content beneath an error banner, when a bad URL is
  * requested.
  */
-export default function StagingPageContent({
-  metadata,
-}: {
-  /**
-   * A Metadata object, that is assumed to have a `title` key with a
-   * string value
-   */
-  metadata: TitledMetadata;
-}): React.ReactElement {
-  const title = metadata.title;
-
+export default function StagingPageContent(): React.ReactElement {
   return (
     <>
       <HugeSpacer />

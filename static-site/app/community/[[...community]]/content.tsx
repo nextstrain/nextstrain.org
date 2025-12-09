@@ -11,6 +11,7 @@ import FlexCenter from "../../../components/flex-center";
 import { FocusParagraphCentered } from "../../../components/focus-paragraph";
 import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
 import communityDatasetsYaml from "../../../content/community-datasets.yaml";
+import { title } from "./constants";
 
 /** Column definitions for <DatasetSelect> */
 const tableColumns: DatasetSelectColumnsType[] = [
@@ -29,15 +30,7 @@ const tableColumns: DatasetSelectColumnsType[] = [
  * A React Client Component that generates the contents of the
  * main /community page.
  */
-export default function CommunityPageContent({
-  title,
-}: {
-  /**
-   * used as the page title; parameterized so we can define it once
-   * in './page' and re-use it here.
-   */
-  title: string;
-}): React.ReactElement {
+export default function CommunityPageContent(): React.ReactElement {
   const datasetSelectData = _parseTableData(
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     communityDatasetsYaml as { data: DatasetType[] },
