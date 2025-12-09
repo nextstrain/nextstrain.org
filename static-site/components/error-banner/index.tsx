@@ -19,16 +19,12 @@ import ErrorMessage from "../error-message";
 export function ErrorBanner({
   stub,
   contents,
-  title,
 }: {
   /** the initial URL part to check */
   stub: string;
 
   /** contents of the error message */
   contents?: React.ReactElement;
-
-  /** title of the error message */
-  title?: string | React.ReactElement;
 }): React.ReactElement | null {
   const params = useParams();
 
@@ -43,9 +39,7 @@ export function ErrorBanner({
     const resourceType = path.startsWith("narratives")
       ? "narrative"
       : "dataset";
-    const errorTitle = title
-      ? title
-      : `The ${stub} ${resourceType} "nextstrain.org/${stub}/${path}" doesn't exist.`;
+    const errorTitle = `The ${stub} ${resourceType} "nextstrain.org/${stub}/${path}" doesn't exist.`;
     const errorContents = contents
       ? contents
       : <p>Here is the {stub} page instead.</p>;
