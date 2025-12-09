@@ -10,5 +10,5 @@ export default function Page({
     user: string;
   };
 }): React.ReactElement {
-  return <MissingRepoErrorPage />;
+  return <MissingRepoErrorPage user={params.user} />;
 }
