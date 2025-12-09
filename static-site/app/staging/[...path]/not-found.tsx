@@ -2,7 +2,9 @@ import React from "react";
 
 import { ErrorBanner } from "../../../components/error-banner";
 
-import StagingPageContent from "./content";
+import StagingPageContent from "../content";
+
+export { metadata } from "../page";
 
 /**
  * A React Server component that renders the usual `/staging` page

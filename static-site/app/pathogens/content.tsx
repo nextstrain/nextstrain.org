@@ -1,18 +1,13 @@
 import React from "react";
 
 import CorePathogenResourceListing from "./resources";
-import FlexCenter from "../../../components/flex-center";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
+import FlexCenter from "../../components/flex-center";
+import { FocusParagraphCentered } from "../../components/focus-paragraph";
+import { SmallSpacer, HugeSpacer } from "../../components/spacers";
 import { title } from "./constants";
 
 /**
  * React Server Component that generates the content of the /pathogens page
- *
- * This is abstracted out into a distinct component so that it can
- * also be used in the "./not-found.tsx" component, to render the
- * /staging page content beneath an error banner, when a bad URL is
- * requested.
  */
 export default function PathogensPageContent(): React.ReactElement {
 

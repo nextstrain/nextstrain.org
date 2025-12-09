@@ -1,19 +1,14 @@
 import React from "react";
 
-import FlexCenter from "../../../components/flex-center";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
+import FlexCenter from "../../components/flex-center";
+import { FocusParagraphCentered } from "../../components/focus-paragraph";
 import StagingPathogenResourceListing from "./resources";
-import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
+import { SmallSpacer, HugeSpacer } from "../../components/spacers";
 import { title } from "./constants";
 
 /**
  * A React Server component that generates the contents of the
  * /staging page.
- *
- * This is abstracted out into a distinct component so that it can
- * also be used in the "./not-found.tsx" component, to render the
- * /staging page content beneath an error banner, when a bad URL is
- * requested.
  */
 export default function StagingPageContent(): React.ReactElement {
   return (

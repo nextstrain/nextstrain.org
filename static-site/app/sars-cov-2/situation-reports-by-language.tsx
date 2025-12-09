@@ -6,11 +6,11 @@ import _sortBy from "lodash/sortBy";
 import Collapsible from "react-collapsible";
 import { FaAngleUp, FaAngleDown, FaFile } from "react-icons/fa";
 
-import { parseNcovSitRepInfo } from "../../../../auspice-client/customisations/languageSelector";
+import { parseNcovSitRepInfo } from "../../../auspice-client/customisations/languageSelector";
 
-import FlexCenter from "../../../components/flex-center";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import { DataFetchError } from "../../../data/SiteConfig";
+import FlexCenter from "../../components/flex-center";
+import { FocusParagraphCentered } from "../../components/focus-paragraph";
+import { DataFetchError } from "../../data/SiteConfig";
 
 import { LanguageObject, NcovSitRepInfo, SitRepJson } from "./types";
 

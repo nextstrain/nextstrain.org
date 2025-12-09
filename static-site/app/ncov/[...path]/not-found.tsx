@@ -2,7 +2,9 @@ import React from "react";
 
 import { ErrorBanner } from "../../../components/error-banner";
 
-import SarsCov2PageContent from "../../sars-cov-2/[[...sars-cov-2]]/content";
+import SarsCov2PageContent from "../../sars-cov-2/content";
+
+export { metadata } from "../../sars-cov-2/page";
 
 /**
  * A React Server component that renders the usual `/sars-cov-2` page

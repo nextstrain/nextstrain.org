@@ -2,7 +2,9 @@ import React from "react";
 
 import { ErrorBanner } from "../../../components/error-banner";
 
-import PathogensPageContent from "./content";
+import PathogensPageContent from "../content";
+
+export { metadata } from "../page";
 
 /**
  * A React Server component that renders the usual `/pathogens` page
