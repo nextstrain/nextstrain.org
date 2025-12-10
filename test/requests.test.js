@@ -348,7 +348,8 @@ function testMissingResourcePage(path) {
   describe(`${path} sends a high-level page indicating missing resource`, () => {
     const req = fetch(url(path), {headers: {accept: "text/html,*/*;q=0.1"}});
 
-    const expectedStatus = path.startsWith("/staging") ? 404 : 200;
+    const expectedStatus = ["/staging", "/community"]
+      .some(prefix => path.startsWith(prefix)) ? 404 : 200;
 
     test("status is 200", async () => {
       const res = await req;
