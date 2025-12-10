@@ -21,7 +21,7 @@ export function useUrlQueries(
   useEffect(() => {
     const urlValues = searchParams.getAll(queryKey);
     const serializedState = selectedFilterOptions
-      .map((opts) => opts.value)
+      .map((opt) => opt.value)
       .sort();
     if (urlValues.join() === serializedState.join()) {
       return
@@ -40,7 +40,7 @@ export function useUrlQueries(
       return;
     }
     const serializedState = selectedFilterOptions
-      .map((opts) => opts.value)
+      .map((opt) => opt.value)
       .sort();
     const currentQuery = new URLSearchParams(searchParams.toString());
     const previousUrlState = currentQuery.getAll(queryKey);  
