@@ -157,13 +157,13 @@ jobs:
           if [[ "${{ github.event_name }}" == "push" && \
                 "${{ github.ref }}" == "refs/heads/master" ]]; then
 
-            echo "value=nextstrain-canary" >> "$GITHUB_OUTPUT"
+            echo "value=nextstrain-canary" | tee -a "$GITHUB_OUTPUT"
 
           # workflow_dispatch with a selected app
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" && \
                   "${{ inputs.heroku-app }}" != "none" ]]; then
 
-            echo "value=${{ inputs.heroku-app }}" >> "$GITHUB_OUTPUT"
+            echo "value=${{ inputs.heroku-app }}" | tee -a "$GITHUB_OUTPUT"
 
           # No deploy
           else
