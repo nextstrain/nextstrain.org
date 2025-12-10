@@ -47,11 +47,11 @@ export function useUrlQueries(
     if (previousUrlState.join() === serializedState.join()) {
       return
     }
-    currentQuery.delete(queryKey); // deletes all occurrences
+    const newQuery = new URLSearchParams();
     serializedState.forEach((value) => {
-      currentQuery.append(queryKey, value);
+      newQuery.append(queryKey, value);
     })
-    const nextUrl = currentQuery.toString().length > 0 ? `${pathname}?${currentQuery}` : pathname;
+    const nextUrl = newQuery.toString().length > 0 ? `${pathname}?${newQuery}` : pathname;
     startTransition(() => {
       router.push(nextUrl, { scroll: false });
     });
