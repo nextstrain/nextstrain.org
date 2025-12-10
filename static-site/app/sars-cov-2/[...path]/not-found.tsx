@@ -2,8 +2,9 @@ import React from "react";
 
 import { ErrorBanner } from "../../../components/error-banner";
 
-import SarsCov2PageContent from "./content";
-import { metadata } from "./page";
+import SarsCov2PageContent from "../content";
+
+export { metadata } from "../page";
 
 /**
  * A React Server component that renders the usual `/sars-cov-2` page
@@ -25,7 +26,7 @@ export default function FourOhFour(): React.ReactElement {
   return (
     <>
       <ErrorBanner stub="sars-cov-2" contents={contents} />
-      <SarsCov2PageContent metadata={metadata} />
+      <SarsCov2PageContent />
     </>
   );
 }

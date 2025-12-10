@@ -4,28 +4,28 @@ import React from "react";
 
 import { get } from "lodash";
 
-import type { TitledMetadata } from "../../types";
-import DatasetSelect from "../../../components/dataset-select";
-import DatasetMap from "../../../components/dataset-select/dataset-map";
+import DatasetSelect from "../../components/dataset-select";
+import DatasetMap from "../../components/dataset-select/dataset-map";
 import {
   DatasetType,
   DatasetSelectColumnsType,
-} from "../../../components/dataset-select/types";
-import FlexCenter from "../../../components/flex-center";
+} from "../../components/dataset-select/types";
+import FlexCenter from "../../components/flex-center";
 import {
   FocusParagraph,
   FocusParagraphCentered,
-} from "../../../components/focus-paragraph";
+} from "../../components/focus-paragraph";
 import {
   SmallSpacer,
   MediumSpacer,
   HugeSpacer,
-} from "../../../components/spacers";
-import sarscov2Catalogue from "../../../content/SARS-CoV-2-Datasets.yaml";
+} from "../../components/spacers";
+import sarscov2Catalogue from "../../content/SARS-CoV-2-Datasets.yaml";
 
 import SituationReportsByLanguage from "./situation-reports-by-language";
 
 import { ResourceListEntry } from "./types";
+import { title } from "./constants";
 
 import styles from "./content.module.css";
 
@@ -57,23 +57,9 @@ const tableColumns: DatasetSelectColumnsType[] = [
 /* eslint-disable @next/next/no-html-link-for-pages */
 
 /**
- * React Server Component that generates the content of the /sars-cov-2 page
- *
- * This is abstracted out into a distinct component so that it can
- * also be used in the "./not-found.tsx" component, to render the
- * /sars-cov-2 page content beneath an error banner, when a bad URL is
- * requested, and in the `/ncov` page and its "not-found.tsx" component.
+ * React Client Component that generates the content of the /sars-cov-2 page
  */
-export default function SarsCov2PageContent({
-  metadata,
-}: {
-  /**
-   * A Metadata object, that is assumed to have a `title` key with a
-   * string value
-   */
-  metadata: TitledMetadata;
-}): React.ReactElement {
-  const title = metadata.title;
+export default function SarsCov2PageContent(): React.ReactElement {
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const datasets = (sarscov2Catalogue as { datasets: DatasetType[] })[

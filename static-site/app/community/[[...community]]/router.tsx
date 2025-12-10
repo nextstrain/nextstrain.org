@@ -39,11 +39,7 @@ import CommunityPageContent from "./content";
  * the status should _arguably_ be 200, but I'm not going to worry
  * about that at the moment. - @genehack, 1 Aug 2025
  */
-export default function CommunityPageRouter({
-  title,
-}: {
-  title: string;
-}): React.ReactElement {
+export default function CommunityPageRouter(): React.ReactElement {
   // this flag controls whether we show the "main" content or the
   // "repo-specific" content. "main" versus "repo-specific" are
   // exclusive of each other.
@@ -124,7 +120,7 @@ export default function CommunityPageRouter({
         />
       )}
 
-      {showMainOrRepo === "main" && <CommunityPageContent title={title} />}
+      {showMainOrRepo === "main" && <CommunityPageContent />}
 
       {showMainOrRepo === "repo" && (
         <CommunityRepoPage
