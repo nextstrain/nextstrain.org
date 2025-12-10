@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 
-import CommuityPageRouter from "./router";
+import CommunityPageContent from "./content";
 import { title } from "./constants";
 
 export const metadata: Metadata = {
@@ -16,11 +16,7 @@ export const metadata: Metadata = {
  * Metadata API (which we want to use so we have functional OpenGraph
  * tags, etc.), so this component exists to wrap the router Client
  * Component and inject the page title from the metadata into it.
- *
- * See <CommunityPageRouter> for additional information about how URLs
- * that look like `/community/plus/other/stuff` are routed, how errors
- * are handled, etc.
  */
 export default function CommunityPage(): React.ReactElement {
-  return <CommuityPageRouter />;
+  return <CommunityPageContent />;
 }
