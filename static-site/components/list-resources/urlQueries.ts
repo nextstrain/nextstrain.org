@@ -21,9 +21,8 @@ export function useUrlQueries(
   useEffect(() => {
     const urlValues = searchParams.getAll(queryKey);
     const serializedState = selectedFilterOptions
-      .map((opt) => opt.value)
-      .sort();
-    if (urlValues.join() === serializedState.join()) {
+      .map((opt) => opt.value);
+    if (urlValues.sort().join() === serializedState.sort().join()) {
       return
     }
     justAppliedFromUrl.current = true;
@@ -40,11 +39,10 @@ export function useUrlQueries(
       return;
     }
     const serializedState = selectedFilterOptions
-      .map((opt) => opt.value)
-      .sort();
+      .map((opt) => opt.value);
     const currentQuery = new URLSearchParams(searchParams.toString());
     const previousUrlState = currentQuery.getAll(queryKey);  
-    if (previousUrlState.join() === serializedState.join()) {
+    if (previousUrlState.sort().join() === serializedState.sort().join()) {
       return
     }
     const newQuery = new URLSearchParams();
