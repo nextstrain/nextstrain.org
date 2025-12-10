@@ -312,10 +312,15 @@ function Filter({
     }
   };
 
+  const hasResourceTypeFilters = options.some(opt => opt.filterType === 'resourceType');
+  const placeholder = hasResourceTypeFilters
+    ? "Filter by resource type or keywords in names"
+    : `Filter by keywords in ${displayResourceType(resourceType, 1)} names`;
+
   return (
     <div className="filter">
       <Select
-        placeholder={`Filter by keywords in ${displayResourceType(resourceType, 1)} names`}
+        placeholder={placeholder}
         isMulti
         options={options}
         value={selectedFilterOptions}
@@ -433,7 +438,7 @@ function Tile({
   }
 
   const filter: () => void = useCallback((): void => {
-    setSelectedFilterOptions(tile.filters.map(createFilterOption));
+    setSelectedFilterOptions(tile.filters.map(word => createFilterOption(word)));
     goToAnchor(LIST_ANCHOR);
   }, [setSelectedFilterOptions, tile]);
 
