@@ -6,6 +6,7 @@ import React from "react";
 import ListResources from "../../components/list-resources";
 import { listResourcesAPI } from "../../components/list-resources/listResourcesApi";
 import { coreResources } from "../../content/resource-listing";
+import nextstrainLogoSmall from "../../static/logos/nextstrain-logo-small.png";
 
 
 /**
@@ -31,6 +32,7 @@ async function _coreDatasetResourceGroups() {
     groupDisplayNames: coreResources["coreGroupDisplayNames"],
     groupUrl: (groupName: string) => `/${groupName}`,
     groupUrlTooltip: (groupName: string) => `Click to load the default (and most recent) analysis for ${coreResources["coreGroupDisplayNames"][groupName] || groupName}`,
+    groupImg: () => ({ src: nextstrainLogoSmall.src, alt: "nextstrain logo" }),
   };
   return await listResourcesAPI('core', 'dataset', opts);
 }
