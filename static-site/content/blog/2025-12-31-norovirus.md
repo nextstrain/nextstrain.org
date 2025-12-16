@@ -29,7 +29,7 @@ We maintain **14 views** of norovirus evolution:
 
 ## Norovirus groups, types, and variants
 
-Norovirus samples have a duel-typing system based on a polymerase region (RdRp) and capsid region (VP1) of the genome, between which is a known recombination site. The resolution of norovirus typing has undergone multiple changes ([Zheng et al., 2006](https://doi.org/10.1016/j.virol.2005.11.015); [Eden et al., 2013](https://doi.org/10.1128/jvi.03464-12); [Chhabra et al., 2019](https://doi.org/10.1099/jgv.0.001318); [Tatusov et al., 2020](https://doi.org/10.1016/j.jcv.2020.104718)), but generally are split into a "genogroup", "genotype", and "variant" classification for VP1 (and "P-group", "P-type", and "variant" for RdRp).
+Norovirus samples have a dual-typing system based on a polymerase region (RdRp) and capsid region (VP1) of the genome, between which is a known recombination site. The resolution of norovirus typing has undergone multiple changes ([Zheng et al., 2006](https://doi.org/10.1016/j.virol.2005.11.015); [Eden et al., 2013](https://doi.org/10.1128/jvi.03464-12); [Chhabra et al., 2019](https://doi.org/10.1099/jgv.0.001318); [Tatusov et al., 2020](https://doi.org/10.1016/j.jcv.2020.104718)), but generally are split into a "genogroup", "genotype", and "variant" classification for VP1 (and "P-group", "P-type", and "variant" for RdRp).
 
 ![Figure 2](/blog/img/norovirus-group-type-variant.png)
 **Figure 2. Typing of norovirus samples is based on the VP1 and RdRp region** and are further split out into group, type, and variant resolution.
