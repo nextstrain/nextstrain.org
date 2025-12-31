@@ -279,9 +279,11 @@ function _addDisplayName(
   const sep = "│"; // ASCII 179
 
   return resources.map((r, i) => {
+    const displayParts = r.displayNameParts ?? r.nameParts;
+
     let name: string;
     if (i === 0) {
-      name = r.nameParts.join(sep);
+      name = displayParts.join(sep);
     } else {
       const previousResource = resources[i - 1];
 
@@ -291,23 +293,25 @@ function _addDisplayName(
         );
       }
 
-      let matchIdx = r.nameParts
-        .map((word, j) => word === previousResource.nameParts[j])
+      const prevDisplayParts = previousResource.displayNameParts ?? previousResource.nameParts;
+
+      let matchIdx = displayParts
+        .map((word, j) => word === prevDisplayParts[j])
         .findIndex((v) => !v);
 
       if (matchIdx === -1) {
         // -1 means every word is in the preceding name, but we should display the last word anyway
-        matchIdx = r.nameParts.length - 2;
+        matchIdx = displayParts.length - 2;
       }
 
-      name = r.nameParts
+      name = displayParts
         .map((word, j) => (j < matchIdx ? " ".repeat(word.length) : word))
         .join(sep);
     }
 
     return {
       ...r,
-      displayName: { hovered: r.nameParts.join(sep), default: name },
+      displayName: { hovered: displayParts.join(sep), default: name },
     };
   });
 }

@@ -57,6 +57,13 @@ export interface Resource {
   displayName?: ResourceDisplayName;
   groupName: string;
   nameParts: string[];
+
+  /**
+   * Array of name parts to display.
+   * If not provided, nameParts will be used.
+   */
+  displayNameParts?: string[];
+
   sortingName: string;
   url: string;
   lastUpdated?: string; // date
