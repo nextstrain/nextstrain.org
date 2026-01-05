@@ -102,7 +102,7 @@ jobs:
       # <https://www.gnu.org/software/bash/manual/bash.html#Invoked-non_002dinteractively>.
       BASH_ENV: .heroku/BASH_ENV
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build
           path: build/
@@ -203,7 +203,7 @@ jobs:
     env:
       HEROKU_APP: ${{ needs.vars.outputs.heroku-app }}
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build
           path: build/
