@@ -79,7 +79,7 @@ jobs:
       - run: ./scripts/heroku-build
 
       - if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: build
           path: |
@@ -128,7 +128,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: test-logs
           path: test/server.log
@@ -242,7 +242,7 @@ jobs:
               | tee release.json
 
       - if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: deploy
           path: |
