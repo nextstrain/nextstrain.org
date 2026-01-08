@@ -120,13 +120,44 @@ export default function IndividualGroupPage({
       };
     });
 
-    return [{
-      groupName: group,
-      resources,
-      nResources: resources.length,
-      nVersions: undefined,
-      lastUpdated: undefined,
-    }];
+    // Check if any resource has more than one name part
+    const nestedResources = resources.some(r => r.nameParts.length > 1);
+
+    if (nestedResources) {
+      // Group by first name part
+      const updatedResources = resources.map((r): Resource => {
+        const firstNamePart = r.nameParts[0];
+        if (firstNamePart === undefined) {
+          // This should never happen
+          throw new Error(`Unexpected: Resource "${r.name}" has no name parts`);
+        }
+        return {
+          ...r,
+          groupName: firstNamePart,
+        };
+      });
+      const firstNameParts = Array.from(new Set(updatedResources.map(r => r.groupName)));
+      const groups = firstNameParts.map((firstNamePart): Group => {
+        const resourcesInGroup = updatedResources.filter(r => r.groupName === firstNamePart);
+        return {
+          groupName: firstNamePart,
+          resources: resourcesInGroup,
+          nResources: resourcesInGroup.length,
+          nVersions: undefined,
+          lastUpdated: undefined,
+        };
+      });
+      return groups;
+    } else {
+      // Return a single resource group
+      return [{
+        groupName: group,
+        resources,
+        nResources: resources.length,
+        nVersions: undefined,
+        lastUpdated: undefined,
+      }];
+    }
   }
 
   let bannerContents: React.ReactElement = <></>;
