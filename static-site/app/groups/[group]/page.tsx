@@ -122,7 +122,6 @@ export default function IndividualGroupPage({
 
     return [{
       groupName: group,
-      groupDisplayName: group,
       resources,
       nResources: resources.length,
       nVersions: undefined,
