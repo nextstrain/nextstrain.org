@@ -374,5 +374,9 @@
   {
     "name": "APHA-H5Nx-Avian-Influenza",
     "isPublic": false
+  },
+  {
+    "name": "Phylovir2",
+    "isPublic": true
   }
 ]
