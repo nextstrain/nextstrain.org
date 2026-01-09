@@ -2,15 +2,15 @@
 
 import React from "react";
 
-import DatasetSelect from "../../../components/dataset-select";
+import DatasetSelect from "../../components/dataset-select";
 import {
   DatasetSelectColumnsType,
   DatasetType,
-} from "../../../components/dataset-select/types";
-import FlexCenter from "../../../components/flex-center";
-import { FocusParagraphCentered } from "../../../components/focus-paragraph";
-import { SmallSpacer, HugeSpacer } from "../../../components/spacers";
-import communityDatasetsYaml from "../../../content/community-datasets.yaml";
+} from "../../components/dataset-select/types";
+import FlexCenter from "../../components/flex-center";
+import { FocusParagraphCentered } from "../../components/focus-paragraph";
+import { SmallSpacer, HugeSpacer } from "../../components/spacers";
+import communityDatasetsYaml from "../../content/community-datasets.yaml";
 import { title } from "./constants";
 
 /** Column definitions for <DatasetSelect> */
