@@ -75,9 +75,12 @@ class GroupSource extends Source {
   async _listFiles(listPrefix = "") {
     const prefix = this.prefix + listPrefix;
 
-    const keys = await map(
+    const objects = await map(
       s3.listObjects({bucket: BUCKET, prefix}),
-      object => object.Key,
+      object => ({
+        name: object.Key,
+        lastModified: object.LastModified,
+      }),
     );
 
     /* Remove the prefix from the key, producing a plain "file" name.  The
@@ -85,26 +88,65 @@ class GroupSource extends Source {
      * of listObjects above, but it guards against something going awry.
      *   -trs, 16 Feb 2022 (updated 18 Oct 2023)
      */
-    return keys
-      .filter(key => key.startsWith(prefix))
-      .map(key => key.slice(prefix.length))
+    return objects
+      .filter(obj => obj.name.startsWith(prefix))
+      .map(obj => ({
+        name: obj.name.slice(prefix.length),
+        lastModified: obj.lastModified,
+      }))
     ;
   }
   async availableDatasets() {
     const files = await this._listFiles(DATASET_PREFIX);
-    const pathnames = utils.getDatasetsFromListOfFilenames(files);
-    return pathnames;
+    const filenames = files.map(f => f.name);
+    const pathnames = utils.getDatasetsFromListOfFilenames(filenames);
+
+    // Build a map of dataset pathname to most recent lastModified date
+    const datasetLastModified = new Map();
+
+    for (const pathname of pathnames) {
+      // Find all files that contribute to this dataset
+      const relatedFiles = files.filter(f => {
+        const filename = f.name;
+        // Unified JSON
+        if (filename === `${pathname}.json`) return true;
+        // v1 JSONs
+        if (filename === `${pathname}_meta.json` || filename === `${pathname}_tree.json`) return true;
+        // Sidecar files
+        if (filename.startsWith(`${pathname}_`) && filename.endsWith('.json')) return true;
+        return false;
+      });
+
+      // Find the most recent lastModified among related files
+      const mostRecent = relatedFiles.reduce((latest, file) => {
+        if (!file.lastModified) return latest;
+        if (!latest || file.lastModified > latest) return file.lastModified;
+        return latest;
+      }, null);
+
+      if (mostRecent) {
+        datasetLastModified.set(pathname, mostRecent);
+      }
+    }
+
+    return pathnames.map(pathname => ({
+      pathname,
+      lastUpdated: datasetLastModified.get(pathname),
+    }));
   }
   async availableNarratives() {
     // Walking logic borrowed from auspice's cli/server/getAvailable.js
     const files = await this._listFiles(NARRATIVE_PREFIX);
     return files
-      .filter((file) => file !== 'group-overview.md')
-      .filter((file) => file.endsWith(".md"))
-      .map((file) => file
-        .replace(/[.]md$/, "")
-        .split("_")
-        .join("/"));
+      .filter((file) => file.name !== 'group-overview.md')
+      .filter((file) => file.name.endsWith(".md"))
+      .map((file) => ({
+        pathname: file.name
+          .replace(/[.]md$/, "")
+          .split("_")
+          .join("/"),
+        lastUpdated: file.lastModified,
+      }));
   }
   parseOverviewMarkdown(overviewMarkdown) {
     const frontMatter = yamlFront.safeLoadFront(overviewMarkdown);

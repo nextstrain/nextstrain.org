@@ -30,16 +30,26 @@ const getAvailable = async (req, res) => {
   }
 
   return res.json({
-    datasets: await Promise.all(datasets.map(async (path) => ({
-      request: await joinPartsIntoPrefix({source, prefixParts: [path]}),
-      secondTreeOptions: source.secondTreeOptions(path),
-      buildUrl: source instanceof CommunitySource
-        ? `https://github.com/${source.repo}`
-        : null
-    }))),
-    narratives: await Promise.all(narratives.map(async (path) => ({
-      request: await joinPartsIntoPrefix({source, prefixParts: [path], isNarrative: true})
-    })))
+    datasets: await Promise.all(datasets.map(async (dataset) => {
+      const path = typeof dataset === 'string' ? dataset : dataset.pathname;
+      const lastUpdated = typeof dataset === 'object' ? dataset.lastUpdated : undefined;
+      return {
+        request: await joinPartsIntoPrefix({source, prefixParts: [path]}),
+        secondTreeOptions: source.secondTreeOptions(path),
+        buildUrl: source instanceof CommunitySource
+          ? `https://github.com/${source.repo}`
+          : null,
+        lastUpdated: lastUpdated ? lastUpdated.toISOString().split('T')[0] : undefined,
+      };
+    })),
+    narratives: await Promise.all(narratives.map(async (narrative) => {
+      const path = typeof narrative === 'string' ? narrative : narrative.pathname;
+      const lastUpdated = typeof narrative === 'object' ? narrative.lastUpdated : undefined;
+      return {
+        request: await joinPartsIntoPrefix({source, prefixParts: [path], isNarrative: true}),
+        lastUpdated: lastUpdated ? lastUpdated.toISOString().split('T')[0] : undefined,
+      };
+    }))
   });
 };
 
@@ -48,8 +58,22 @@ async function collectAllAvailableGroups(user) {
   const datasets = await source.availableDatasets();
   const narratives = await source.availableNarratives();
   return {
-    datasets: datasets.map((request) => ({request})),
-    narratives: narratives.map((request) => ({request}))
+    datasets: datasets.map((item) => {
+      const request = typeof item === 'string' ? item : item.pathname;
+      const lastUpdated = typeof item === 'object' ? item.lastUpdated : undefined;
+      return {
+        request,
+        lastUpdated: lastUpdated ? lastUpdated.toISOString().split('T')[0] : undefined,
+      };
+    }),
+    narratives: narratives.map((item) => {
+      const request = typeof item === 'string' ? item : item.pathname;
+      const lastUpdated = typeof item === 'object' ? item.lastUpdated : undefined;
+      return {
+        request,
+        lastUpdated: lastUpdated ? lastUpdated.toISOString().split('T')[0] : undefined,
+      };
+    })
   };
 }
 

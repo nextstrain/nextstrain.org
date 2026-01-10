@@ -112,6 +112,7 @@ export default function IndividualGroupPage({
         sortingName: name,
         url: `/${dataResource.request}`,
         resourceType: parts[2] === "narratives" ? "narrative" : "dataset",
+        lastUpdated: dataResource.lastUpdated,
       };
     });
     const datasets = resources.filter(r => r.resourceType === "dataset");
@@ -139,34 +140,50 @@ export default function IndividualGroupPage({
         const firstNameParts = Array.from(new Set(updatedDatasets.map(r => r.groupName)));
         datasetGroups = firstNameParts.map((firstNamePart): Group => {
           const datasetsInGroup = updatedDatasets.filter(r => r.groupName === firstNamePart);
+          // Calculate the most recent lastUpdated from all resources in this group
+          const groupLastUpdated = datasetsInGroup.reduce((latest, r) => {
+            if (!r.lastUpdated) return latest;
+            if (!latest) return r.lastUpdated;
+            return new Date(r.lastUpdated) > new Date(latest) ? r.lastUpdated : latest;
+          }, undefined as string | undefined);
           return {
             groupName: firstNamePart,
             resources: datasetsInGroup,
             nResources: datasetsInGroup.length,
             nVersions: undefined,
-            lastUpdated: undefined,
+            lastUpdated: groupLastUpdated,
           };
         });
       } else {
         // Use a single group for all datasets
+        const groupLastUpdated = datasets.reduce((latest, r) => {
+          if (!r.lastUpdated) return latest;
+          if (!latest) return r.lastUpdated;
+          return new Date(r.lastUpdated) > new Date(latest) ? r.lastUpdated : latest;
+        }, undefined as string | undefined);
         datasetGroups = [{
           groupName: "datasets",
           resources: datasets,
           nResources: datasets.length,
           nVersions: undefined,
-          lastUpdated: undefined,
+          lastUpdated: groupLastUpdated,
         }];
       }
     }
 
     // Add narratives
     if (narratives.length > 0) {
+      const groupLastUpdated = narratives.reduce((latest, r) => {
+        if (!r.lastUpdated) return latest;
+        if (!latest) return r.lastUpdated;
+        return new Date(r.lastUpdated) > new Date(latest) ? r.lastUpdated : latest;
+      }, undefined as string | undefined);
       narrativeGroups = [{
         groupName: "narratives",
         resources: narratives,
         nResources: narratives.length,
         nVersions: undefined,
-        lastUpdated: undefined,
+        lastUpdated: groupLastUpdated,
       }];
     }
 
