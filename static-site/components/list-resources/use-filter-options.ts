@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { FilterOption, Group } from "./types";
+import { displayResourceType } from "./index";
+import { FilterOption, FilterType, Group, RESOURCE_TYPES, ResourceType } from "./types";
 
 /**
  * Utility function that takes a provided `word` and returns a
@@ -10,8 +11,15 @@ import { FilterOption, Group } from "./types";
 export function createFilterOption(
   /** the string to make into a `FilterOption` */
   word: string,
+  /** the type of filter this option represents */
+  filterType: FilterType = 'namePart',
 ): FilterOption {
-  return { label: word, value: word };
+  if (filterType === 'resourceType') {
+    return { label: `type: ${word}`, value: word, filterType };
+  }
+  else {
+    return { label: word, value: word, filterType };
+  }
 }
 
 /**
@@ -38,25 +46,46 @@ export function useFilterOptions(
     if (resourceGroups === undefined) return;
 
     const counts: { [key: string]: number } = {};
+    const resourceTypeCounts: Partial<Record<ResourceType, number>> = {};
 
-    const increment = (key: string) => {
+    const incrementNamePart = (key: string) => {
       if (!counts[key]) counts[key] = 0;
       counts[key]++;
+    };
+
+    const incrementResourceType = (type: ResourceType) => {
+      resourceTypeCounts[type] = (resourceTypeCounts[type] ?? 0) + 1;
     };
 
     let nResources = 0; // Number of individual resources displayed
     for (const group of resourceGroups) {
       for (const resource of group.resources) {
         nResources++;
-        resource.nameParts.forEach(increment); /* includes groupName */
+        resource.nameParts.forEach((part, index) => {
+          if (index === 0 && part === "narratives") return;
+          incrementNamePart(part); /* includes groupName */
+        });
+        if (resource.resourceType) {
+          incrementResourceType(resource.resourceType);
+        }
       }
     }
 
-    const options = Object.entries(counts)
+    const resourceTypeOptions = RESOURCE_TYPES
+      .filter(type =>
+        resourceTypeCounts[type] !== undefined &&
+        resourceTypeCounts[type] !== 0 &&
+        resourceTypeCounts[type] !== nResources
+      )
+      .map(type => createFilterOption(displayResourceType(type, 1), 'resourceType'));
+
+    const namePartOptions = Object.entries(counts)
       // filter out search options present in every displayed resource
       .filter(([_, count]) => count !== nResources) // eslint-disable-line @typescript-eslint/no-unused-vars
       .sort((a, b) => (a[1] < b[1] ? 1 : -1))
-      .map(([word]) => createFilterOption(word));
+      .map(([word]) => createFilterOption(word, 'namePart'));
+
+    const options = [...resourceTypeOptions, ...namePartOptions];
 
     setState(options);
   }, [resourceGroups]);

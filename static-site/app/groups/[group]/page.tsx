@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import ScrollableAnchor from "../../../vendored/react-scrollable-anchor/index";
 
 import Button from "../../../components/button";
-import DatasetSelect from "../../../components/dataset-select";
-import { DatasetType } from "../../../components/dataset-select/types";
 import ErrorMessage from "../../../components/error-message";
 import { FlexGridRight } from "../../../components/flex-grid";
 import ListResources from "../../../components/list-resources";
@@ -50,10 +48,8 @@ export default function IndividualGroupPage({
    * not accessible to the currently logged-in user)
    */
   const [groupNotFound, setGroupNotFound] = useState<boolean>(false);
-  /** the datasets of the group being displayed */
-  const [datasets, setDatasets] = useState<DataResource[]>([]);
-  /** the narratives of the group being displayed */
-  const [narratives, setNarratives] = useState<DatasetType[]>([]);
+  /** the resources of the group being displayed */
+  const [dataResources, setDataResources] = useState<DataResource[]>([]);
   /** props passed to a <SourceInfoHeader> child component */
   const [sourceInfo, setSourceInfo] = useState<SourceInfo>({
     title: "",
@@ -83,13 +79,10 @@ export default function IndividualGroupPage({
         ]);
 
         setSourceInfo(sourceInfo);
-        setDatasets(availableData.datasets);
-        setNarratives(
-          _createDatasetListing(
-            availableData.narratives,
-            group,
-          ),
-        );
+        setDataResources([
+          ...availableData.datasets,
+          ...availableData.narratives,
+        ]);
         setEditGroupSettingsAllowed(await canUserEditGroupSettings(group));
         setViewGroupMembersAllowed(await canViewGroupMembers(group));
 
@@ -109,55 +102,78 @@ export default function IndividualGroupPage({
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
   async function resourcesCallback(): Promise<Group[]> {
-    const resources = datasets.map((dataset): Resource => {
-      const name = dataset.request.replace(new RegExp(`^groups/${group}/`), '');
+    const resources = dataResources.map((dataResource): Resource => {
+      const parts = dataResource.request.split('/');
+      const name = parts.slice(2).join('/');
       return {
         name,
         groupName: group,
         nameParts: name.split('/'),
         sortingName: name,
-        url: `/${dataset.request}`,
+        url: `/${dataResource.request}`,
+        resourceType: parts[2] === "narratives" ? "narrative" : "dataset",
       };
     });
+    const datasets = resources.filter(r => r.resourceType === "dataset");
+    const narratives = resources.filter(r => r.resourceType === "narrative");
 
-    // Check if any resource has more than one name part
-    const nestedResources = resources.some(r => r.nameParts.length > 1);
+    let datasetGroups: Group[] = [];
+    let narrativeGroups: Group[] = [];
 
-    if (nestedResources) {
-      // Group by first name part
-      const updatedResources = resources.map((r): Resource => {
-        const firstNamePart = r.nameParts[0];
-        if (firstNamePart === undefined) {
-          // This should never happen
-          throw new Error(`Unexpected: Resource "${r.name}" has no name parts`);
-        }
-        return {
-          ...r,
-          groupName: firstNamePart,
-        };
-      });
-      const firstNameParts = Array.from(new Set(updatedResources.map(r => r.groupName)));
-      const groups = firstNameParts.map((firstNamePart): Group => {
-        const resourcesInGroup = updatedResources.filter(r => r.groupName === firstNamePart);
-        return {
-          groupName: firstNamePart,
-          resources: resourcesInGroup,
-          nResources: resourcesInGroup.length,
+    // Add datasets with optional grouping by first name part
+    if (datasets.length > 0) {
+      // Group by first name part if any dataset has more than one name part
+      const nestedDatasets = datasets.some(r => r.nameParts.length > 1);
+      if (nestedDatasets) {
+        const updatedDatasets = datasets.map((r): Resource => {
+          const firstNamePart = r.nameParts[0];
+          if (firstNamePart === undefined) {
+            // This should never happen
+            throw new Error(`Unexpected: Dataset "${r.name}" has no name parts`);
+          }
+          return {
+            ...r,
+            groupName: firstNamePart,
+          };
+        });
+        const firstNameParts = Array.from(new Set(updatedDatasets.map(r => r.groupName)));
+        datasetGroups = firstNameParts.map((firstNamePart): Group => {
+          const datasetsInGroup = updatedDatasets.filter(r => r.groupName === firstNamePart);
+          return {
+            groupName: firstNamePart,
+            resources: datasetsInGroup,
+            nResources: datasetsInGroup.length,
+            nVersions: undefined,
+            lastUpdated: undefined,
+          };
+        });
+      } else {
+        // Use a single group for all datasets
+        datasetGroups = [{
+          groupName: "datasets",
+          resources: datasets,
+          nResources: datasets.length,
           nVersions: undefined,
           lastUpdated: undefined,
-        };
-      });
-      return groups;
-    } else {
-      // Return a single resource group
-      return [{
-        groupName: group,
-        resources,
-        nResources: resources.length,
+        }];
+      }
+    }
+
+    // Add narratives
+    if (narratives.length > 0) {
+      narrativeGroups = [{
+        groupName: "narratives",
+        resources: narratives,
+        nResources: narratives.length,
         nVersions: undefined,
         lastUpdated: undefined,
       }];
     }
+
+    return [
+      ...datasetGroups,
+      ...narrativeGroups,
+    ]
   }
 
   let bannerContents: React.ReactElement = <></>;
@@ -235,66 +251,19 @@ export default function IndividualGroupPage({
 
         <HugeSpacer />
 
-        {sourceInfo.showDatasets && (
-          <ScrollableAnchor id={"datasets"}>
+        {(sourceInfo.showDatasets || sourceInfo.showNarratives) && (
+          <ScrollableAnchor id={"resources"}>
             <div>
-              <h3 className="centered">Available datasets</h3>
+              <h3 className="centered">Available resources</h3>
               <ListResources
-                resourceType="dataset"
+                resourceType="resource"
                 versioned={false}
                 fetchResourceGroups={resourcesCallback}
               />
             </div>
           </ScrollableAnchor>
         )}
-
-        <HugeSpacer />
-
-        {sourceInfo.showNarratives && (
-          <ScrollableAnchor id={"narratives"}>
-            <div>
-              <h3 className="centered">Available narratives</h3>
-              {narratives.length === 0 ? (
-                <h4 className="centered">
-                  No narratives are available for this group.
-                </h4>
-              ) : (
-                <DatasetSelect
-                  datasets={narratives}
-                  columns={[
-                    {
-                      name: "Narrative",
-                      value: (dataset) =>
-                        dataset.filename
-                          ?.replace(/_/g, " / ")
-                          .replace(".json", "") || "",
-                      url: (dataset) => dataset.url,
-                    },
-                  ]}
-                  title="Filter Narratives"
-                />
-              )}
-            </div>
-          </ScrollableAnchor>
-        )}
       </>
     );
   }
-}
-
-// helper function to parse getAvailable listing into one that the
-// <DatasetSelect> component will accept
-function _createDatasetListing(
-  list: DataResource[],
-  group: string,
-): DatasetType[] {
-  return list.map((d: DataResource): DatasetType => {
-    return {
-      filename: d.request
-        .replace(`groups/${group}/`, "")
-        .replace("narratives/", ""),
-      url: `/${d.request}`,
-      contributor: group,
-    };
-  });
 }
