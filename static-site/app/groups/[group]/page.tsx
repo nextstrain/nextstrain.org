@@ -141,6 +141,7 @@ export default function IndividualGroupPage({
         const resourcesInGroup = updatedResources.filter(r => r.groupName === firstNamePart);
         return {
           groupName: firstNamePart,
+          sortingGroupName: firstNamePart,
           resources: resourcesInGroup,
           nResources: resourcesInGroup.length,
           nVersions: undefined,
@@ -152,6 +153,7 @@ export default function IndividualGroupPage({
       // Return a single resource group
       return [{
         groupName: group,
+        sortingGroupName: group,
         resources,
         nResources: resources.length,
         nVersions: undefined,

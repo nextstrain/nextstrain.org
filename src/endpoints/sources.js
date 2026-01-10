@@ -1,4 +1,5 @@
 import contentDisposition from 'content-disposition';
+import url from 'url';
 
 import { NotFound } from '../httpErrors.js';
 
@@ -46,25 +47,36 @@ const setDataset = (pathExtractor) => (req, res, next) => {
 /**
  * Generate Express middleware that redirects to the canonical path for the
  * current {@link Dataset} if it is not fully resolved. Any provided version
- * descriptor is included in the redirect.
+ * descriptor is included in the redirect. Original query params are preserved
+ * across the redirect unless overridden by canonicalBuilder.
  *
- * @param {pathBuilder} pathBuilder - Function to build a fully-specified path
- * @returns {expressMiddleware}
+ * @param {canonicalBuilder|canonicalBuilderAsync} canonicalBuilder - Function to build a fully-specified path or URL object suitable for {@link url#format}
+ * @returns {expressMiddlewareAsync}
  */
-const canonicalizeDataset = (pathBuilder) => (req, res, next) => {
+const canonicalizeDataset = (canonicalBuilder) => async (req, res, next) => {
   const dataset = req.context.dataset;
-  const resolvedDataset = dataset.resolve();
+  const resolvedDataset = await dataset.resolve();
 
   if (dataset === resolvedDataset) return next();
 
   const version = dataset.versionDescriptor ? `@${dataset.versionDescriptor}` : '';
 
-  const canonicalPath = pathBuilder(req, resolvedDataset.pathParts.join("/") + version);
+  let canonical = canonicalBuilder.length >= 2
+    ? await canonicalBuilder(req, resolvedDataset.pathParts.join("/") + version)
+    : await canonicalBuilder(resolvedDataset.pathParts.join("/") + version);
+
+  // Convert plain path string to an object for url.format()
+  if (typeof canonical === "string")
+    canonical = {pathname: canonical}
+
+  // Default to current path and current query
+  canonical.pathname ??= req.baseUrl + req.path; // baseUrl is really "basePath"
+  canonical.query ??= req.query;
 
   /* 307 Temporary Redirect preserves request method, unlike 302 Found, which
    * is important since this middleware function may be used in non-GET routes.
    */
-  return res.redirect(307, canonicalPath);
+  return res.redirect(307, url.format(canonical));
 };
 
 
@@ -358,13 +370,43 @@ function receiveSubresource(subresourceExtractor) {
  * @returns {String} Path for {@link Source#dataset} or {@link Source#narrative}
  */
 
-/**
- * @callback pathBuilder
- * @param {express.request} req
- * @param {String} path - Canonical path (not including query) for the dataset
- *   within the context of the current {@link Source}
- * @returns {String} Fully-specified path (including query) to redirect to
+/* Confused about the duplication below?  It's the documented way to handle
+ * overloaded (e.g. arity-dependent) function signatures.¹  Note that it relies
+ * on the "nestled" or "cuddled" end and start comment markers.
+ *   -trs, 16 June 2022
+ *
+ * ¹ https://github.com/jsdoc/jsdoc/issues/1017
  */
+/**
+ * @callback canonicalBuilder
+ *
+ * @param {String} path - Canonical path for the dataset within the context of
+ *   the current {@link Source}
+ * @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
+ *//**
+* @callback canonicalBuilder
+*
+* @param {express.request} req
+* @param {String} path - Canonical path for the dataset within the context of
+*   the current {@link Source}
+* @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
+*/
+/**
+ * @callback canonicalBuilderAsync
+ *
+ * @async
+ * @param {String} path - Canonical path for the dataset within the context of
+ *   the current {@link Source}
+ * @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
+ *//**
+* @callback canonicalBuilderAsync
+*
+* @async
+* @param {express.request} req
+* @param {String} path - Canonical path for the dataset within the context of
+*   the current {@link Source}
+ * @returns {String|Object} Fully-specified path to redirect to or object suitable for {@link url#format}
+*/
 
 /**
  * @callback subresourceExtractor
