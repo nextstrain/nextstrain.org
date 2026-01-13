@@ -48,6 +48,10 @@ export default function IndividualGroupPage({
    * not accessible to the currently logged-in user)
    */
   const [groupNotFound, setGroupNotFound] = useState<boolean>(false);
+  /** the datasets of the group being displayed */
+  const [datasets, setDatasets] = useState<DataResource[]>([]);
+  /** the narratives of the group being displayed */
+  const [narratives, setNarratives] = useState<DataResource[]>([]);
   /** props passed to a <SourceInfoHeader> child component */
   const [sourceInfo, setSourceInfo] = useState<SourceInfo>({
     title: "",
@@ -71,9 +75,17 @@ export default function IndividualGroupPage({
 
     async function getGroupInfo(): Promise<void> {
       try {
-        setSourceInfo(await fetchAndParseJSON<SourceInfo>(`/charon/getSourceInfo?prefix=/groups/${group}/`));
+        const [sourceInfo, availableData] = await Promise.all([
+          fetchAndParseJSON<SourceInfo>(`/charon/getSourceInfo?prefix=/groups/${group}/`),
+          fetchAndParseJSON<AvailableGroups>(`/charon/getAvailable?prefix=/groups/${group}/`),
+        ]);
+
+        setSourceInfo(sourceInfo);
+        setDatasets(availableData.datasets);
+        setNarratives(availableData.narratives);
         setEditGroupSettingsAllowed(await canUserEditGroupSettings(group));
         setViewGroupMembersAllowed(await canViewGroupMembers(group));
+
         setDataLoading(false);
       } catch (err) {
         console.error(
@@ -90,9 +102,6 @@ export default function IndividualGroupPage({
   // NOTE: "group" has two meanings here - a nextstrain group and a group of
   // resources for listing. Luckily for us the "group name" is the same for both
   const resourcesCallback = useCallback(async (): Promise<Group[]> => {
-    // Any errors should be caught by ListResources
-    const available = await fetchAndParseJSON<AvailableGroups>(`/charon/getAvailable?prefix=/groups/${group}/`);
-
     function convertToResource(dataResource: DataResource, resourceType: "dataset" | "narrative"): Resource {
       const parts = dataResource.request.split('/');
       const name = parts.slice(2).join('/');
@@ -106,8 +115,8 @@ export default function IndividualGroupPage({
       };
     }
 
-    const datasetResources = available.datasets.map(d => convertToResource(d, "dataset"));
-    const narrativeResources = available.narratives.map(n => convertToResource(n, "narrative"));
+    const datasetResources = datasets.map(d => convertToResource(d, "dataset"));
+    const narrativeResources = narratives.map(n => convertToResource(n, "narrative"));
 
     let datasetGroups: Group[] = [];
     let narrativeGroups: Group[] = [];
@@ -166,7 +175,7 @@ export default function IndividualGroupPage({
       ...datasetGroups,
       ...narrativeGroups,
     ]
-  }, [group, sourceInfo.showDatasets, sourceInfo.showNarratives]);
+  }, [group, datasets, narratives, sourceInfo.showDatasets, sourceInfo.showNarratives]);
 
   let bannerContents: React.ReactElement = <></>;
   let bannerTitle = "";
