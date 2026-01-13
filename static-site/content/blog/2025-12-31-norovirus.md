@@ -32,7 +32,7 @@ Norovirus samples have a dual-typing system based on a polymerase region (RdRp) 
 ![Figure 2](/blog/img/norovirus-group-type-variant.png)
 **Figure 2. Typing of norovirus samples is based on the VP1 and RdRp region** and are further split out into group, type, and variant resolution.
 
-Group, type, and variant levels of resolution were roughly classified by a preliminary Nextclade datasets based on either VP1 or RdRp gene. The Norovirus nextclade datasets are preliminary and further development is pending. These datasets have been built from scaffold strains listed at the [Human Calicivirus Typing Tool](https://calicivirustypingtool.cdc.gov/becerance.cgi) as of September 16, 2025.
+The public Nextstrain metadata includes group, type, and variant levels of resolution that were roughly classified by a **preliminary** Nextclade datasets based on either VP1 or RdRp gene and **should be used with caution**. The Norovirus Nextclade datasets have not been published yet, pending further fine tuning to [reduce false positives of GII.4](https://github.com/nextstrain/norovirus/issues/27). These datasets have been built from scaffold strains listed at the [Human Calicivirus Typing Tool](https://calicivirustypingtool.cdc.gov/becerance.cgi) as of September 16, 2025.
 
 ![Figure 3](/blog/img/norovirus-nextclade-results.png)
 **Figure 3. Preliminary norovirus classification into Group, Type, and Variant columns.**
