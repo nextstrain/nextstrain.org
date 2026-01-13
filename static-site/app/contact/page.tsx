@@ -52,8 +52,8 @@ export default function ContactPage(): React.ReactElement {
           .
           <br />
           <br />
-          We also host office hours via Zoom on the first Thursday of every month
-          at 10AM US Pacific time. Email us for the meeting link.
+          As of February 2026, we are no longer hosting regularly scheduled office hours.
+          Please email us if you are interested in scheduling a Zoom meeting. 
         </FocusParagraphNarrow>
       </FlexCenter>
 
