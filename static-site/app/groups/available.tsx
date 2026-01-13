@@ -81,8 +81,15 @@ export default function Available(): React.ReactElement {
     /* Convert the API response structure into `Group[]` */
     const resources = datasets.flatMap((dataset): Resource[] => {
       const parts = dataset.request.split('/').slice(1);
+      if (parts[0] !== "groups") {
+        // This should never happen
+        throw new Error(`Unexpected: Request does not start with "groups": ${dataset.request}`)
+      }
       const groupName = parts[1]
-      if (parts[0] !== "groups" || groupName === undefined) return [];
+      if (groupName === undefined) {
+        // This should never happen
+        throw new Error(`Unexpected: Unable to parse group name from request: ${dataset.request}`)
+      }
       const name = parts.slice(1).join('/');
       const nameParts = name.split('/');
       return [{
