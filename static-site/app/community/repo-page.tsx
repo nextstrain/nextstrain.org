@@ -1,13 +1,15 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 
-import DatasetSelect from "../../../components/dataset-select";
-import { DatasetType } from "../../../components/dataset-select/types";
-import ErrorMessage from "../../../components/error-message";
+import DatasetSelect from "../../components/dataset-select";
+import { DatasetType } from "../../components/dataset-select/types";
+import ErrorMessage from "../../components/error-message";
 import SourceInfoHeading, {
   SourceInfo,
-} from "../../../components/source-info-heading";
-import { HugeSpacer } from "../../../components/spacers";
-import fetchAndParseJSON from "../../../util/fetch-and-parse-json";
+} from "../../components/source-info-heading";
+import { HugeSpacer } from "../../components/spacers";
+import fetchAndParseJSON from "../../util/fetch-and-parse-json";
 
 /** Data structure for `/charon/getAvailable` response */
 interface AvailableData {
@@ -27,7 +29,7 @@ interface CommunityResource {
 }
 
 /**
- * A React Server Component for displaying a page for a community
+ * A React Client Component for displaying a page for a community
  * repo, with metadata about the repo and user, and listing of
  * available datasets and narratives in that repo.
  */
@@ -42,11 +44,11 @@ export default function CommunityRepoPage({
   /** Github repo name */
   repo: string;
   /** Any extra elements in the requested URL past the user and repo */
-  extra: string;
+  extra?: string;
   /** Was the request for a narrative? (i.e., did `/narratives/`
    * appear in the URL?)
    */
-  isNarrative: boolean;
+  isNarrative?: boolean;
 }): React.ReactElement {
   // these flags control what's displayed: the repo content and/or an error banner
   const [showContent, setShowContent] = useState<boolean>(false);
