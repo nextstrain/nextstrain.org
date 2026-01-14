@@ -13,6 +13,7 @@ import React, {
 import Select, { MultiValue } from "react-select";
 import { Tooltip } from "react-tooltip-v5";
 
+import { DataFetchError } from "../../data/SiteConfig";
 import ScrollableAnchor, {
   goToAnchor,
 } from "../../vendored/react-scrollable-anchor/index";
@@ -186,9 +187,7 @@ function ListResourcesContent({
   if (dataFetchError) {
     return (
       <div className="errorContainer">
-        {"Whoops - listing resources isn't working!"}
-        <br />
-        Please <a href="/contact">get in touch</a> if this keeps happening
+        <DataFetchError />
       </div>
     );
   }
