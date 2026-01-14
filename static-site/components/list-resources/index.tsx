@@ -13,6 +13,7 @@ import React, {
 import Select, { MultiValue } from "react-select";
 import { Tooltip } from "react-tooltip-v5";
 
+import { DataFetchError } from "../../data/SiteConfig";
 import ScrollableAnchor, {
   goToAnchor,
 } from "../../vendored/react-scrollable-anchor/index";
@@ -186,9 +187,7 @@ function ListResourcesContent({
   if (dataFetchError) {
     return (
       <div className="errorContainer">
-        {"Whoops - listing resources isn't working!"}
-        <br />
-        Please <a href="/contact">get in touch</a> if this keeps happening
+        <DataFetchError />
       </div>
     );
   }
@@ -204,7 +203,7 @@ function ListResourcesContent({
   if (resourceGroups.length === 0) {
     return (
       <h4 className="centered">
-        {`No ${resourceType}s are available for this group.`}
+        {`No ${displayResourceType(resourceType)} are available for this group.`}
       </h4>
     );
   }
@@ -312,10 +311,15 @@ function Filter({
     }
   };
 
+  const hasResourceTypeFilters = options.some(opt => opt.filterType === 'resourceType');
+  const placeholder = hasResourceTypeFilters
+    ? "Filter by resource type or keywords in names"
+    : `Filter by keywords in ${displayResourceType(resourceType, 1)} names`;
+
   return (
     <div className="filter">
       <Select
-        placeholder={`Filter by keywords in ${resourceType==='dataset'?'dataset':'file'} names`}
+        placeholder={placeholder}
         isMulti
         options={options}
         value={selectedFilterOptions}
@@ -433,7 +437,7 @@ function Tile({
   }
 
   const filter: () => void = useCallback((): void => {
-    setSelectedFilterOptions(tile.filters.map(createFilterOption));
+    setSelectedFilterOptions(tile.filters.map(word => createFilterOption(word)));
     goToAnchor(LIST_ANCHOR);
   }, [setSelectedFilterOptions, tile]);
 
@@ -507,4 +511,19 @@ function useTiles(tiles?: FilterTile[], groups?: Group[]): FilterTile[] {
   }, [tiles, groups]);
 
   return restrictedTiles;
+}
+
+/**
+ * Returns a human-readable, properly pluralized label for a given resource type.
+ */
+export function displayResourceType(
+  resourceType: ResourceType,
+  /**
+   * Optional count used to determine singular vs. plural form.
+   * If unset, defaults to plural form.
+   */
+  n?: number,
+) {
+  const singular = resourceType === "intermediate" ? "file" : resourceType;
+  return n === 1 ? singular : singular + "s";
 }

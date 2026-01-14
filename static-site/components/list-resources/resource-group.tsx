@@ -6,6 +6,7 @@ import { MdChevronRight } from "react-icons/md";
 
 import { InternalError } from "../error-boundary";
 
+import { displayResourceType } from ".";
 import IconContainer from "./icon-container";
 import { IndividualResource } from "./individual-resource";
 import { GroupLink, IndividualQuickLink } from "./group-and-resource-links";
@@ -140,6 +141,8 @@ function ResourceGroupHeader({
 
   const rotateDeg = isCollapsed ? "0" : "90";
 
+  const nHidden = group.resources.length - resourcesToShowWhenCollapsed;
+
   return (
     <div className={styles.headerContainer}>
       {group.groupImgSrc && (
@@ -183,7 +186,7 @@ function ResourceGroupHeader({
           )}
           <span className={styles.flexSpan} />
           <TooltipWrapper
-            description={`There are ${group.nResources} ${resourceType==='dataset' ? 'datasets' : 'files'} in this group`}
+            description={`There are ${group.nResources} ${displayResourceType(resourceType, group.nResources)} in this group`}
           >
             <IconContainer
               color={"rgb(79, 75, 80)"}
@@ -193,7 +196,7 @@ function ResourceGroupHeader({
           </TooltipWrapper>
           {group.nVersions && !isMobile && (
             <TooltipWrapper
-              description={`${group.nVersions} snapshots exist across the ${group.nResources} ${resourceType==='dataset' ? 'datasets' : 'files'} in this group`}
+              description={`${group.nVersions} snapshots exist across the ${group.nResources} ${displayResourceType(resourceType, group.nResources)} in this group`}
             >
               <IconContainer
                 iconName="history"
@@ -241,12 +244,12 @@ function ResourceGroupHeader({
               </div>
               {isCollapsed ? (
                 <TooltipWrapper
-                  description={`For brevity we're only showing a subset of ${group.groupName} resources - click to show them all`}
+                  description={`For brevity we're only showing a subset of ${group.groupName} ${displayResourceType(resourceType)} - click to show them all`}
                 >
-                  {` show ${group.resources.length - resourcesToShowWhenCollapsed} more datasets`}
+                  {` show ${nHidden} more ${displayResourceType(resourceType, nHidden)}`}
                 </TooltipWrapper>
               ) : (
-                " collapse datasets"
+                ` collapse ${displayResourceType(resourceType)}`
               )}
             </div>
           </div>

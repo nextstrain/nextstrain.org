@@ -13,24 +13,36 @@ export function useUrlQueries(
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const queryKey = 'filter';
+  const nameQueryKey = 'filter';
+  const typeQueryKey = 'type';
   /* track if we've just initialised state from the URL so we don't get into a loop */
   const justAppliedFromUrl = useRef(false);
 
   /* On initial load (or back/forward) set the state from the URL query */
   useEffect(() => {
-    const urlValues = searchParams.getAll(queryKey);
-    const serializedState = selectedFilterOptions
-      .map((opts) => opts.value)
-      .sort();
-    if (urlValues.join() === serializedState.join()) {
+    const urlNameValues = searchParams.getAll(nameQueryKey);
+    const urlTypeValues = searchParams.getAll(typeQueryKey);
+
+    const stateNameValues = selectedFilterOptions
+      .filter(opt => opt.filterType === 'namePart')
+      .map(opt => opt.value);
+    const stateTypeValues = selectedFilterOptions
+      .filter(opt => opt.filterType === 'resourceType')
+      .map(opt => opt.value);
+
+    if (urlNameValues.sort().join() === stateNameValues.sort().join() &&
+        urlTypeValues.sort().join() === stateTypeValues.sort().join()) {
       return
     }
+
     justAppliedFromUrl.current = true;
-    setSelectedFilterOptions(urlValues.map(createFilterOption))
+    setSelectedFilterOptions([
+      ...urlNameValues.map(val => createFilterOption(val, 'namePart')),
+      ...urlTypeValues.map(val => createFilterOption(val, 'resourceType'))
+    ]);
     // don't track changes to selectedFilterOptions as we only want to run once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, queryKey]);
+  }, [searchParams, nameQueryKey, typeQueryKey]);
 
 
   /* Update URL query to reflect new state */
@@ -39,19 +51,33 @@ export function useUrlQueries(
       justAppliedFromUrl.current = false;
       return;
     }
-    const serializedState = selectedFilterOptions
-      .map((opts) => opts.value)
-      .sort();
+
+    const stateNameValues = selectedFilterOptions
+      .filter(opt => opt.filterType === 'namePart')
+      .map(opt => opt.value);
+    const stateTypeValues = selectedFilterOptions
+      .filter(opt => opt.filterType === 'resourceType')
+      .map(opt => opt.value);
+
     const currentQuery = new URLSearchParams(searchParams.toString());
-    const previousUrlState = currentQuery.getAll(queryKey);  
-    if (previousUrlState.join() === serializedState.join()) {
+    const previousNameValues = currentQuery.getAll(nameQueryKey);
+    const previousTypeValues = currentQuery.getAll(typeQueryKey);
+
+    if (previousNameValues.sort().join() === stateNameValues.sort().join() &&
+        previousTypeValues.sort().join() === stateTypeValues.sort().join()) {
       return
     }
-    currentQuery.delete(queryKey); // deletes all occurrences
-    serializedState.forEach((value) => {
-      currentQuery.append(queryKey, value);
+
+    const newQuery = new URLSearchParams();
+
+    stateNameValues.forEach((value) => {
+      newQuery.append(nameQueryKey, value);
+    });
+    stateTypeValues.forEach((value) => {
+      newQuery.append(typeQueryKey, value);
     })
-    const nextUrl = currentQuery.toString().length > 0 ? `${pathname}?${currentQuery}` : pathname;
+
+    const nextUrl = newQuery.toString().length > 0 ? `${pathname}?${newQuery}` : pathname;
     startTransition(() => {
       router.push(nextUrl, { scroll: false });
     });

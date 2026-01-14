@@ -10,6 +10,7 @@ import {
   SortMethod,
   VersionedGroup,
 } from "./types";
+import { displayResourceType } from "./index";
 
 /**
  * `useSortAndFilter` takes a `sortMethod` (which currently must be
@@ -43,14 +44,21 @@ export default function useSortAndFilter(
     // Following console log is really useful for development
     // console.log(`useSortAndFilter() sortMethod "${sortMethod}" ` + (selectedFilterOptions.length ? `filtering to ${selectedFilterOptions.map((el) => el.value).join(", ")}` : '(no filtering)'))
 
-    const searchValues = selectedFilterOptions.map((o) => o.value);
+    const nameFilters = selectedFilterOptions
+      .filter(opt => opt.filterType === 'namePart')
+      .map(opt => opt.value);
+    const typeFilters = selectedFilterOptions
+      .filter(opt => opt.filterType === 'resourceType')
+      .map(opt => opt.value);
 
     function _filterResources(resource: Resource): boolean {
-      return searchValues.length === 0
-        ? true
-        : searchValues
-            .map((searchString) => resource.nameParts.includes(searchString))
-            .every((x) => x);
+      const nameMatch = nameFilters.length === 0 ||
+        nameFilters.every(searchString => resource.nameParts.includes(searchString));
+
+      const typeMatch = typeFilters.length === 0 ||
+        Boolean(resource.resourceType && typeFilters.includes(displayResourceType(resource.resourceType, 1)));
+
+      return nameMatch && typeMatch;
     }
 
     function sortAndFilter<T extends Group>(
