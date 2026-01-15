@@ -133,7 +133,7 @@ export class NextcladeData {
               },
             };
           })
-        )).flat();
+        ));
       })
     )).flat();
   }
