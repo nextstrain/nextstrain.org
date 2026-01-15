@@ -180,18 +180,17 @@ class Resource {
   get baseName() {
     return this.baseParts.join("_");
   }
-  versionInfo(versionDescriptor) {
-    /**
-     * Interrogates the resource index to find the appropriate version of the
-     * resource and associated subresource URLs by comparing to
-     * this.versionDescriptor.
-     * This method should be overridden by subclasses when they are used to
-     * handle URLs which extract version descriptors.
-     * @param {(string|false)} versionDescriptor from the URL string
-     * @throws {BadRequest}
-     * @returns {([string, Object]|[null, undefined])} [0]: versionDate [1]: versionUrls
-     */
-    if (versionDescriptor) {
+  /**
+   * Interrogates the resource index to find the appropriate version of the
+   * resource and associated subresource URLs by comparing to
+   * this.versionDescriptor.
+   * This method should be overridden by subclasses when they are used to
+   * handle URLs which extract version descriptors.
+   * @throws {BadRequest}
+   * @returns {([string, Object]|[null, undefined])} [0]: versionDate [1]: versionUrls
+   */
+  versionInfo() {
+    if (this.versionDescriptor) {
       throw new BadRequest(`This resource cannot handle versioned dataset requests (version descriptor requested: "${this.versionDescriptor}")`)
     }
     return [null, undefined];
@@ -241,7 +240,7 @@ class Subresource {
      * this as needed.
      */
 
-    const versionUrls = this.resource.versionInfo(this.resource.versionDescriptor)[1];
+    const versionUrls = this.resource.versionInfo()[1];
 
     if (versionUrls) {
       if (!['HEAD', 'GET'].includes(method)) {
@@ -253,9 +252,9 @@ class Subresource {
       throw new NotFound(`This version of the resource does not have a subresource for ${this.type}`);
     }
 
-    return await this.resource.source.urlFor(this.baseName, method, headers);
+    return await this.resource.source.urlFor(await this.baseName(), method, headers);
   }
-  get baseName() {
+  async baseName() {
     throw new Error("baseName() must be implemented by Subresource subclasses");
   }
   get mediaType() {
@@ -307,7 +306,7 @@ class Dataset extends Resource {
    *
    * @returns {Dataset}
    */
-  resolve() {
+  async resolve() {
     return this;
   }
 
@@ -338,7 +337,7 @@ class DatasetSubresource extends Subresource {
     "application/octet-stream; q=0.01",
   ].join(", ");
 
-  get baseName() {
+  async baseName() {
     return this.type === "main"
       ? `${this.resource.baseName}.json`
       : `${this.resource.baseName}_${this.type}.json`;
@@ -393,7 +392,7 @@ class NarrativeSubresource extends Subresource {
     "text/*; q=0.1",
   ].join(", ");
 
-  get baseName() {
+  async baseName() {
     return `${this.resource.baseName}.md`;
   }
 

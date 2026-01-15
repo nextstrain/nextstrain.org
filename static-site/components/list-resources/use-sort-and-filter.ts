@@ -93,7 +93,7 @@ export default function useSortAndFilter(
         ) {
           // resources updated on the same day or without a last updated date
           // sort alphabetically
-          return _lexicographicSort(a.name, b.name);
+          return _lexicographicSort(a.sortingName, b.sortingName);
         } else {
           return _newestFirstSort(a.lastUpdated, b.lastUpdated);
         }
@@ -104,11 +104,11 @@ export default function useSortAndFilter(
       const groups = originalData;
       const _sortGroups = (groupA: Group, groupB: Group) =>
         _lexicographicSort(
-          groupA.groupName.toLowerCase(),
-          groupB.groupName.toLowerCase(),
+          groupA.sortingGroupName.toLowerCase(),
+          groupB.sortingGroupName.toLowerCase(),
         );
       const _sortResources = (a: Resource, b: Resource) =>
-        _lexicographicSort(a.name, b.name);
+        _lexicographicSort(a.sortingName, b.sortingName);
       const resourceGroups = sortAndFilter(groups, _sortGroups, _sortResources);
       setState(resourceGroups);
     }

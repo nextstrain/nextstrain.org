@@ -86,7 +86,7 @@ const fetchInventoryRemote = async ({bucket, prefix, name, save}) => {
 /**
  * Parse an on-disk inventory. This expects the following files to be present:
  *    - `./devData/${name}.manifest.json`
- *    - `./devData/${name}.inventory.csv.gz`
+ *    - `./devData/${name}-*.csv.gz`
  * 
  * Returns an object with properties:
  * - inventory: object[]      list of entries in the inventory, using the schema to define keys

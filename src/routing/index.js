@@ -8,6 +8,7 @@ export * as errors from "./errors.js";
 export * as fetch from './fetch.js';
 export * as groups from './groups.js';
 export * as listResources from './listResources.js';
+export * as nextclade from './nextclade.js';
 export * as openid from './openid.js';
 export * as pathogenRepos from './pathogenRepos.js';
 export * as schemas from './schemas.js';

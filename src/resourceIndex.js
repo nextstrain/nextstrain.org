@@ -191,6 +191,8 @@ class ListResources {
         return ""
       case "staging":
         return "staging/"
+      case "nextclade":
+        return "nextclade/"
       default:
         throw new InternalServerError(`Source "${name}" does not have a corresponding prefix`)
     }
@@ -216,6 +218,13 @@ class ListResources {
       if (this.groupHistory) {
         key = "pathVersions";
         valuePairs = _resources
+          /* XXX TODO: This comparison relies on use of the default
+           * groupNameBuilder.¹  Currently all sources that index intermediates
+           * use the default.
+           *   -trs, 3 Nov 2025
+           *
+           * ¹in static-site/components/list-resources/listResourcesApi.ts
+           */
           .filter(([name,]) => name.split('/')[0]===this.groupHistory)
           .map(_formatIntermediates);
       } else {

@@ -1,7 +1,6 @@
 import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory } from "./types";
 import { InternalError } from "../error-boundary";
 import fetchAndParseJSON from "../../util/fetch-and-parse-json";
-import nextstrainLogoSmall from "../../static/logos/nextstrain-logo-small.png";
 
 interface APIWrapper<T> {
   [resourceType: string]: {
@@ -30,14 +29,25 @@ interface ResourceListingIntermediates {
 export async function listResourcesAPI(
   sourceId: string,
   resourceType: ResourceType,
-  {versioned, groupDisplayNames, groupUrl, groupUrlTooltip}: {
+  {
+    versioned,
+    groupNameBuilder = (name: string) => name.split("/")[0]!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+    groupDisplayNames,
+    groupSortableName,
+    groupUrl,
+    groupUrlTooltip,
+    groupImg
+  }: {
     /** Report prior versions of each resource.
      * TODO: infer this from the API data itself
      */
     versioned: boolean,
+    groupNameBuilder?: (name: string) => string,
     groupDisplayNames?: Record<string, string>,
+    groupSortableName?: (group: Group) => string,
     groupUrl?: (groupName: string) => string,
-    groupUrlTooltip?: (groupName: string) => string
+    groupUrlTooltip?: (groupName: string) => string,
+    groupImg?: (group: Group) => { src: string; alt: string } | undefined
   }
 ): Promise<Group[]> {
   const requestPath = `/list-resources/${sourceId}/${resourceType}`;
@@ -52,18 +62,28 @@ export async function listResourcesAPI(
   }
   const groups = Object.entries(
       areDatasets(data) ?
-        groupDatasetsByPathogen(data.pathVersions, urlBuilder, versioned) :
-        groupIntermediatesByPathogen(data.latestVersions)
+        groupDatasetsByPathogen(data.pathVersions, urlBuilder, versioned, groupNameBuilder) :
+        groupIntermediatesByPathogen(data.latestVersions, groupNameBuilder)
     ).map(([groupName, resources]) => {
       const group = resourceGroup(groupName, resources);
       if (groupDisplayNames && groupName in groupDisplayNames) {
         group.groupDisplayName = groupDisplayNames[groupName];
+      }
+      if (groupSortableName) {
+        group.sortingGroupName = groupSortableName(group);
       }
       if (groupUrl) {
         group.groupUrl = groupUrl(groupName);
       }
       if (groupUrlTooltip) {
         group.groupUrlTooltip = groupUrlTooltip(groupName);
+      }
+      if (groupImg) {
+        const img = groupImg(group);
+        if (img) {
+          group.groupImgSrc = img.src;
+          group.groupImgAlt = img.alt;
+        }
       }
       if (resourceType==='intermediate' && sourceId==='core') {
         group.fetchHistory = fetchIntermediateGroupHistoryFactory(sourceId, groupName);
@@ -87,8 +107,7 @@ function resourceGroup(groupName: string, resources: Resource[]): Group {
 
   const groupInfo: Group = {
     groupName,
-    groupImgSrc: nextstrainLogoSmall.src,
-    groupImgAlt: "nextstrain logo",
+    sortingGroupName: groupName,
     resources,
     nResources: resources.length,
     nVersions,
@@ -113,6 +132,9 @@ function groupDatasetsByPathogen(
 
   /** boolean controlling addition of version-specific fields */
   versioned: boolean,
+
+  /** constructs the name (e.g. pathogen) under which to group a dataset */
+  groupNameBuilder: (name: string) => string,
 ): Record<string, Resource[]> {
   return Object.entries(pathVersions).reduce(
     (store: Record<string, Resource[]>, [name, dates]) => {
@@ -122,7 +144,7 @@ function groupDatasetsByPathogen(
         throw new InternalError(`Name is not properly formatted: '${name}'`);
       }
 
-      const groupName = nameParts[0];
+      const groupName = groupNameBuilder(name);
 
       const resourceDetails: Resource = {
         name,
@@ -159,7 +181,10 @@ function groupDatasetsByPathogen(
 }
 
 function groupIntermediatesByPathogen(
-  latestVersions: ResourceListingIntermediates['latestVersions']
+  latestVersions: ResourceListingIntermediates['latestVersions'],
+
+  /** constructs the name (e.g. pathogen) under which to group a file */
+  groupNameBuilder: (name: string) => string,
 ): Record<string, Resource[]> {
   return Object.entries(latestVersions).reduce(
     (store: Record<string, Resource[]>, [baseName, d]) => {
@@ -168,7 +193,7 @@ function groupIntermediatesByPathogen(
       if (baseParts[0] === undefined) {
         throw new InternalError(`Resource is not properly formatted (empty name)`);
       }
-      const groupName = baseParts[0];
+      const groupName = groupNameBuilder(baseName);
       for (const [filename, urlDatePair] of Object.entries(d)) {
         if (filename==='mostRecentlyIndexed') continue;
         const nameParts = [...baseParts, filename]

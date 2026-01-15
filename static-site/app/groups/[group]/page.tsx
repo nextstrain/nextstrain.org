@@ -142,6 +142,7 @@ export default function IndividualGroupPage({
           const datasetsInGroup = updatedDatasets.filter(r => r.groupName === firstNamePart);
           return {
             groupName: firstNamePart,
+            sortingGroupName: firstNamePart,
             resources: datasetsInGroup,
             nResources: datasetsInGroup.length,
             nVersions: undefined,
@@ -152,6 +153,7 @@ export default function IndividualGroupPage({
         // Use a single group for all datasets
         datasetGroups = [{
           groupName: "datasets",
+          sortingGroupName: "datasets",
           resources: datasetResources,
           nResources: datasetResources.length,
           nVersions: undefined,
@@ -164,6 +166,7 @@ export default function IndividualGroupPage({
     if (sourceInfo.showNarratives && narrativeResources.length > 0) {
       narrativeGroups = [{
         groupName: "narratives",
+        sortingGroupName: "narratives",
         resources: narrativeResources,
         nResources: narrativeResources.length,
         nVersions: undefined,

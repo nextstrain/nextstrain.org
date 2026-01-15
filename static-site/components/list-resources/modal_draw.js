@@ -180,7 +180,7 @@ export default function modal_draw(ref, resource, lightGrey) {
     })
     // @ts-expect-error no-unused-vars
     .on("click", function (e, d) {
-      window.open(`/${resource.name}@${d.data.version}`, "_blank"); // TEST!
+      window.open(`${resource.url}@${d.data.version}`, "_blank"); // TEST!
     });
 
   /**
@@ -244,7 +244,7 @@ export default function modal_draw(ref, resource, lightGrey) {
     })
     .on("click", function (e) {
       const { datum } = getVersion(e);
-      window.open(`/${resource.name}@${datum.data.version}`, "_blank");
+      window.open(`${resource.url}@${datum.data.version}`, "_blank");
     });
 
   function selectSnapshot(selection, selectedDatum) {
