@@ -22,13 +22,15 @@ export default function NextcladePageContent(): React.ReactElement {
 
       <FlexCenter>
         <FocusParagraphCentered>
-          Part of{" "}
+          Reference trees for{" "}
           <a
             href="https://docs.nextstrain.org/projects/nextclade/page/user/datasets.html"
             target="_blank"
             rel="noreferrer"
           >Nextclade datasets</a> produced by the{" "}
           <a href="/team">core Nextstrain team</a> and broader Nextclade community.
+          In addition to these trees, Nextclade datasets contain other files
+          such as reference sequences and genome annotations.
         </FocusParagraphCentered>
       </FlexCenter>
 
