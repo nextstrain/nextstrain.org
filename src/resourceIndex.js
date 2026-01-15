@@ -219,8 +219,8 @@ class ListResources {
         key = "pathVersions";
         valuePairs = _resources
           /* XXX TODO: This comparison relies on use of the default
-           * groupNameBuilder.¹  Currently the only sources that index
-           * intermediates use the default.
+           * groupNameBuilder.¹  Currently all sources that index intermediates
+           * use the default.
            *   -trs, 3 Nov 2025
            *
            * ¹in static-site/components/list-resources/listResourcesApi.ts
