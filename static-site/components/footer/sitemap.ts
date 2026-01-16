@@ -16,6 +16,7 @@ export const sections: Section[] = [
       { name: "SARS-CoV-2", href: "/sars-cov-2" },
       { name: "Community", href: "/community" },
       { name: "Groups", href: "/groups" },
+      { name: "Nextclade trees", href: "/nextclade" },
     ],
   },
   {
