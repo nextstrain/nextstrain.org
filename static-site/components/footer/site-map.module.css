@@ -36,8 +36,8 @@
 .sectionEntry {
   font-size: var(--niceFontSize);
   font-weight: 400;
-  line-height: 0.5;
-  margin: 20px 0px 0px;
+  line-height: 1;
+  height: 2em;
   max-width: 640px;
   text-align: left;
 }
