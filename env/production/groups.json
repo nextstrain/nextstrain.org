@@ -378,5 +378,9 @@
   {
     "name": "Phylovir2",
     "isPublic": true
+  },
+  {
+    "name": "Barnes-NDM",
+    "isPublic": false
   }
 ]
