@@ -125,10 +125,6 @@ coreTiles:
     img: wnv_map.png
     filters:
       - WNV
-  - name: SARS-CoV-2 (Nextclade)
-    img: nextclade_sars_cov_2_tree.png
-    filters:
-      - nextclade
   - name: Yellow Fever Virus
     img: yellow_fever_tree.png
     filters:
