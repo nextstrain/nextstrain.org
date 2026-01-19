@@ -1,5 +1,5 @@
 import * as authz from '../../authz/index.js';
-import { CommunitySource } from '../../sources/index.js';
+import { CommunitySource, CoreSource, NextcladeSource } from '../../sources/index.js';
 import * as utils from '../../utils/index.js';
 import { splitPrefixIntoParts, joinPartsIntoPrefix } from '../../utils/prefix.js';
 import * as metaSources from '../../metaSources.js';
@@ -32,6 +32,8 @@ const getAvailable = async (req, res) => {
   return res.json({
     datasets: await Promise.all(datasets.map(async (path) => ({
       request: await joinPartsIntoPrefix({source, prefixParts: [path]}),
+      // snapshots only for core & nextclade sources so far
+      snapshots: source instanceof CoreSource || source instanceof NextcladeSource,
       secondTreeOptions: source.secondTreeOptions(path),
       buildUrl: source instanceof CommunitySource
         ? `https://github.com/${source.repo}`
