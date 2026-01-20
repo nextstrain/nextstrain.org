@@ -8,7 +8,7 @@ import { listResourcesAPI } from "../../components/list-resources/listResourcesA
 import { Group } from "../../components/list-resources/types";
 import nextstrainLogoSmall from "../../static/logos/nextstrain-logo-small.png";
 
-const NON_NEXTSTRAIN_COLLECTIONS = ["community"];
+const NON_NEXTSTRAIN_COLLECTIONS = ["community", "enpen"];
 
 export default function NextcladeResourceListing(): React.ReactElement {
   return (
