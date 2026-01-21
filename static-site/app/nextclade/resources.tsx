@@ -24,25 +24,23 @@ async function nextcladeDatasetResourceGroups() {
   return await listResourcesAPI('nextclade', 'dataset', {
     versioned: true,
 
-    /* For dataset "community/a/b/c", use "community/a" as the grouping instead
-     * of just "community".
+    /* For dataset "<collection>/a/b/c", use "<collection>/a" as the grouping
+     * instead of just the collection name.
      */
     groupNameBuilder: (name: string): string => {
-      return name.startsWith("community/")
-        ? name.split("/").slice(0, 2).join("/")
-        : name.split("/")[0]!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      return name.split("/").slice(0, 2).join("/");
     },
 
-    // Sort "community/…" datasets after ours
+    // Show "nextstrain/…" datasets first
     groupSortableName: (group: Group): string => {
       const name = group.groupName;
-      return name.startsWith("community/") ? `001 ${name}` :
-                                             `000 ${name}` ;
+      return name.startsWith("nextstrain/") ? `000 ${name}` :
+                                              `001 ${name}` ;
     },
 
     // Add Nextstrain logo for core datasets
     groupImg: (group: Group) => {
-      const isOfficialDataset = group.resources.some((r) => !r.name.startsWith('community/'));
+      const isOfficialDataset = group.resources.some((r) => r.name.startsWith('nextstrain/'));
       return isOfficialDataset
         ? { src: nextstrainLogoSmall.src, alt: "nextstrain logo" }
         : undefined;
