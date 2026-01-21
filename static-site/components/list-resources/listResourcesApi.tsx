@@ -47,7 +47,7 @@ export async function listResourcesAPI(
     groupSortableName?: (group: Group) => string,
     groupUrl?: (groupName: string) => string,
     groupUrlTooltip?: (groupName: string) => string,
-    groupImg?: (group: Group) => { src: string; alt: string } | undefined
+    groupImg?: (group: Group) => Promise<{ src: string; alt: string } | undefined> | { src: string; alt: string } | undefined
   }
 ): Promise<Group[]> {
   const requestPath = `/list-resources/${sourceId}/${resourceType}`;
@@ -60,11 +60,11 @@ export async function listResourcesAPI(
   const areDatasets = (x: ResourceListingDatasets |  ResourceListingIntermediates): x is ResourceListingDatasets => {
     return Object.hasOwn(x, 'pathVersions');
   }
-  const groups = Object.entries(
+  const groups = await Promise.all(Object.entries(
       areDatasets(data) ?
         groupDatasetsByPathogen(data.pathVersions, urlBuilder, versioned, groupNameBuilder) :
         groupIntermediatesByPathogen(data.latestVersions, groupNameBuilder)
-    ).map(([groupName, resources]) => {
+    ).map(async ([groupName, resources]) => {
       const group = resourceGroup(groupName, resources);
       if (groupDisplayNames && groupName in groupDisplayNames) {
         group.groupDisplayName = groupDisplayNames[groupName];
@@ -79,7 +79,7 @@ export async function listResourcesAPI(
         group.groupUrlTooltip = groupUrlTooltip(groupName);
       }
       if (groupImg) {
-        const img = groupImg(group);
+        const img = await Promise.resolve(groupImg(group));
         if (img) {
           group.groupImgSrc = img.src;
           group.groupImgAlt = img.alt;
@@ -89,7 +89,7 @@ export async function listResourcesAPI(
         group.fetchHistory = fetchIntermediateGroupHistoryFactory(sourceId, groupName);
       }
       return group;
-    });
+    }));
 
   return groups;
 }
