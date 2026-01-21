@@ -17,7 +17,7 @@ const NEXTSTRAIN_COLLECTION_PREFIX = re`^${NEXTSTRAIN_COLLECTION_ID}/`;
  * lookup operation.
  *   -trs, 3 Nov 2025
  */
-const COLLECTION_IDS = new Set([NEXTSTRAIN_COLLECTION_ID, "community"]);
+const COLLECTION_IDS = new Set([NEXTSTRAIN_COLLECTION_ID, "community", "enpen"]);
 
 
 /**
