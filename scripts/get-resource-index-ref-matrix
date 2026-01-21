@@ -1,6 +1,8 @@
 #!/bin/bash
 # Builds a ref matrix of commit hashes and resource index URLs for the
-# `index-resources.yml` GH Action workflow
+# `index-resources.yml` GH Action workflow.
+#
+# Matrix fields: ref, resource_index
 #
 # Uses the GITHUB_SHA if the workflow was called as a reusable workflow or
 # if the workflow was manually run on a branch that is not the default branch.
