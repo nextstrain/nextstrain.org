@@ -32,6 +32,7 @@ These updates include changes to:
 * ``data/manifest_core.json``
 * ``convertManifestJsonToAvailableDatasetList`` in ``src/endpoints/charon/parseManifest.js``
 * ``datasetRedirectPatterns`` in ``src/redirects.js``
+* ``COLLECTION_IDS`` in ``src/sources/nextclade.js``
 
 If you are ever unsure, it's better to just bump the revision number!
 
