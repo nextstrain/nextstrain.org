@@ -21,7 +21,6 @@ jobs:
       - if: |
           contains(fromJSON(steps.metadata.outputs.updated-dependencies-json).*.dependencyName, 'auspice')
           && steps.metadata.outputs.update-type != 'version-update:semver-major'
-        # Dependabot should ensure CI passes before merging.
-        run: gh pr comment "${{ github.event.pull_request.html_url }}" --body "@dependabot merge"
+        run: gh pr merge
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_NEXTSTRAIN_BOT_REPO }}
