@@ -2,7 +2,7 @@
 # Builds a ref matrix of commit hashes and resource index URLs for the
 # `index-resources.yml` GH Action workflow.
 #
-# Matrix fields: ref, resource_index
+# Matrix fields: ref, short_ref, resource_index
 #
 # Uses the GITHUB_SHA if the workflow was called as a reusable workflow or
 # if the workflow was manually run on a branch that is not the default branch.
@@ -28,7 +28,7 @@ main () {
         # <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>
         ref_matrix=$(jq -c --null-input \
                         --arg RESOURCE_INDEX $(get_resource_index_at_commit "$GITHUB_SHA") \
-                        '[ {"ref": env.GITHUB_SHA, "resource_index": $RESOURCE_INDEX} ]')
+                        '[ {"ref": env.GITHUB_SHA, "short_ref": env.GITHUB_SHA[0:7], "resource_index": $RESOURCE_INDEX} ]')
     else
         ref_matrix=$(build_prod_and_canary_ref_matrix)
     fi
@@ -61,8 +61,8 @@ build_prod_and_canary_ref_matrix() {
         --arg CANARY_COMMIT "$canary_commit" \
         --arg CANARY_RESOURCE_INDEX "$canary_resource_index" \
         '[
-            {"ref": $PROD_COMMIT, "resource_index": $PROD_RESOURCE_INDEX},
-            {"ref": $CANARY_COMMIT, "resource_index": $CANARY_RESOURCE_INDEX}
+            {"ref": $PROD_COMMIT, "short_ref": $PROD_COMMIT[0:7], "resource_index": $PROD_RESOURCE_INDEX},
+            {"ref": $CANARY_COMMIT, "short_ref": $CANARY_COMMIT[0:7], "resource_index": $CANARY_RESOURCE_INDEX}
          ]
         | unique_by(.resource_index)'
 }

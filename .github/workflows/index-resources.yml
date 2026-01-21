@@ -52,10 +52,11 @@ jobs:
           echo "ref-matrix=$ref_matrix" | tee -a "$GITHUB_OUTPUT"
 
   rebuild-index:
+    name: rebuild-index (${{ matrix.short_ref }}, ${{ matrix.resource_index }})
     needs: [build-ref-matrix]
     strategy:
       matrix:
-        # Matrix fields: ref, resource_index
+        # Matrix fields: ref, short_ref, resource_index
         include: ${{ fromJson(needs.build-ref-matrix.outputs.ref-matrix) }}
     # Only allow one run of the job per resource index
     concurrency:
