@@ -145,3 +145,7 @@ coreTiles:
     img: norovirus_map.png
     filters:
       - norovirus
+  - name: Chikungunya
+    img: chikv_core.png
+    filters:
+      - chikv
