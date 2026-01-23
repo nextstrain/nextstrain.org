@@ -14,39 +14,26 @@ time and refreshes it hourly. Resource collections can be ignored by the server
 by setting the env variable ``RESOURCE_INDEX="false"`` or by omitting it from
 your configuration JSON.
 
-
 Resource index revisions
 ========================
 
-The nextstrain.org testing & production configs currently set this to
-``s3://nextstrain-inventories/resources/v<revision_number>.json.gz``.
+The nextstrain.org resource index tracks revisions using commit ids:
+``s3://nextstrain-inventories/resources/<commit>.json.gz``
 
-If you make any updates that changes the structure or the contents of the resource
-index JSON, then bump the ``<revision_number>`` within the configs
-(``env/testing/config.json`` and ``env/production/config.json``)
-so that any uploads to S3 does not disrupt the production server.
-
-These updates include changes to:
-
-* any scripts within ``resourceIndexer/*``
-* ``data/manifest_core.json``
-* ``convertManifestJsonToAvailableDatasetList`` in ``src/endpoints/charon/parseManifest.js``
-* ``datasetRedirectPatterns`` in ``src/redirects.js``
-
-If you are ever unsure, it's better to just bump the revision number!
+During development or testing, instead of providing ``RESOURCE_INDEX``, you can
+use an existing index with the env/config variable ``RESOURCE_INDEX_ID``. For
+example, the testing config defaults ``RESOURCE_INDEX_ID`` to ``master`` to use
+the latest index on the master branch.
 
 Testing new revisions
 ---------------------
 
-The handling of new revision numbers in Heroku review apps is currently still
-handled manually.
+When you open a PR, the CI workflow will automatically build a new resource
+index.
+.. FIXME: how are PR merge commits handled?
 
-Once you've pushed up the changes to the revision number in the config, run
-the `index-resource.yml workflow <https://github.com/nextstrain/nextstrain.org/actions/workflows/index-resources.yml>__`
-using your branch.
-
-After the new index resources JSON has been uploaded to S3, then open the PR for
-your branch and the Heroku review app should use the new revision.
+Alternatively, you can test locally by generating a local index and pointing
+``RESOURCE_INDEX`` to it (see `Local index generation`_).
 
 
 Local index generation

@@ -454,6 +454,35 @@ export const GROUPS_BUCKET = fromEnvOrConfig("GROUPS_BUCKET", "nextstrain-groups
 
 
 /**
+ * Commit/branch/tag to use for the resource index revision.
+ *
+ * In production, this should be unspecified and instead derived from
+ * HEROKU_BUILD_COMMIT.
+ *
+ * @type {string}
+ */
+export const RESOURCE_INDEX_ID = fromEnvOrConfig("RESOURCE_INDEX_ID", null);
+
+async function getCommitSha(branch) {
+  if (!branch) return null;
+
+  const repo = "nextstrain/nextstrain.org";
+  const url = `https://api.github.com/repos/${repo}/commits/${branch}`;
+  const response = await fetch(url, {
+    headers: {
+      'Accept': 'application/vnd.github.sha',
+      'User-Agent': 'nextstrain.org'
+    }
+  });
+
+  if (!response.ok) {
+    console.warn(`Failed to fetch ${url}: ${response.status} ${response.statusText}: ${await response.text()}`);
+    return;
+  }
+  return (await response.text()).trim();
+}
+
+/**
  * Location of the JSON file to be used as the resource collection index. Can be
  * a S3 address or a local filepath, if S3 then the file must be gzipped.
  *
@@ -462,7 +491,14 @@ export const GROUPS_BUCKET = fromEnvOrConfig("GROUPS_BUCKET", "nextstrain-groups
  *
  * Falsey values result in the resource collection functionality not being used.
  */
-export const RESOURCE_INDEX = fromEnvOrConfig("RESOURCE_INDEX", null);
+const detectedRevision =
+     await getCommitSha(RESOURCE_INDEX_ID)
+  ?? fromEnvOrConfig("HEROKU_BUILD_COMMIT", null); // FIXME: does this actually work? for review apps too?
+
+export const RESOURCE_INDEX = fromEnvOrConfig(
+  "RESOURCE_INDEX",
+  detectedRevision ? `s3://nextstrain-inventories/resources/${detectedRevision}.json.gz` : null
+);
 
 /**
  * The nextJs route handler can operate in dev mode (hot reloading etc) or in

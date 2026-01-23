@@ -30,37 +30,31 @@ defaults:
     shell: bash --noprofile --norc -eo pipefail {0}
 
 jobs:
-  build-ref-matrix:
+  vars:
     runs-on: ubuntu-latest
     outputs:
-      ref-matrix: ${{ steps.ref-matrix.outputs.ref-matrix }}
+      ref-matrix: ${{ steps.ref-matrix.outputs.value }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
       - id: ref-matrix
-        name: Create ref matrix
         env:
           HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN_READ_PROTECTED }}
           IS_WORKFLOW_CALL: ${{ inputs.is-workflow-call || false }}
-          # Ensure that we are using the production configs to match Heroku apps
-          CONFIG_FILE: ./env/production/config.json
         run: |
           # Assign to variable before output to ensure error exit code propagates to GH Action job
           ref_matrix=$(./scripts/get-resource-index-ref-matrix)
-          echo "ref-matrix=$ref_matrix" | tee -a "$GITHUB_OUTPUT"
+          echo "value=$ref_matrix" | tee -a "$GITHUB_OUTPUT"
 
   rebuild-index:
-    needs: [build-ref-matrix]
+    needs: [vars]
     strategy:
       matrix:
-        include: ${{ fromJson(needs.build-ref-matrix.outputs.ref-matrix) }}
+        ref: ${{ fromJson(needs.vars.outputs.ref-matrix) }}
     # Only allow one run of the job per resource index
     concurrency:
-      group: ${{ github.workflow }}-${{ matrix.resource_index }}
+      group: ${{ github.workflow }}-${{ matrix.ref }}
     env:
-        RESOURCE_INDEX: ${{ matrix.resource_index }}
+        RESOURCE_INDEX: s3://nextstrain-inventories/resources/${{ matrix.ref }}.json.gz
     runs-on: ubuntu-latest
     permissions:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint
@@ -87,6 +81,5 @@ jobs:
             --resourceTypes dataset intermediate \
             --collections core staging nextclade
       - name: Upload the new index, overwriting the existing index
-        if: ${{ startsWith(env.RESOURCE_INDEX, 's3://') }}
         run: |
           aws s3 cp resources.json.gz "$RESOURCE_INDEX"

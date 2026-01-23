@@ -48,7 +48,6 @@ jobs:
       - run: node --version
       - run: npm ci
       - run: npm run lint
-      - run: node ./scripts/check-resource-index-match.js
 
   type-check:
     runs-on: ubuntu-latest
@@ -134,14 +133,8 @@ jobs:
           path: test/server.log
 
   index-resources:
-    if: |2
-         github.repository == 'nextstrain/nextstrain.org'
-      && github.event_name == 'push'
-      && github.ref == 'refs/heads/master'
+    if: github.repository == 'nextstrain/nextstrain.org'
     needs: test
-    permissions:
-      id-token: write # needed to interact with GitHub's OIDC Token endpoint
-      contents: read
     uses: ./.github/workflows/index-resources.yml
     secrets: inherit
 
