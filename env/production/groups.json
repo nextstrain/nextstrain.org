@@ -384,6 +384,10 @@
     "isPublic": false
   },
   {
+    "name": "trajectories",
+    "isPublic": true
+  },
+  {
     "name": "trajectories-private",
     "isPublic": false
   }
