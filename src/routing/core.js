@@ -29,6 +29,7 @@ const coreBuildPaths = [
    * and 'mers'
    */
   "/avian-flu",
+  "/chikv",
   "/dengue",
   "/ebola",
   "/enterovirus",
