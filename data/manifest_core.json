@@ -254,6 +254,15 @@
           "default": "h5n1"
         }
       },
+      "chikv": {
+        "region":{
+          "global":"",
+          "africa":"",
+          "asia":"",
+          "south-america":"",
+          "default":"global"
+        }
+      },
       "dengue": {
         "serotype": {
           "denv1": {
