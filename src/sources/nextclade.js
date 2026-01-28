@@ -17,7 +17,7 @@ const NEXTSTRAIN_COLLECTION_PREFIX = re`^${NEXTSTRAIN_COLLECTION_ID}/`;
  * lookup operation.
  *   -trs, 3 Nov 2025
  */
-const COLLECTION_IDS = new Set([NEXTSTRAIN_COLLECTION_ID, "community"]);
+const COLLECTION_IDS = new Set([NEXTSTRAIN_COLLECTION_ID, "community", "enpen"]);
 
 
 /**
@@ -25,22 +25,25 @@ const COLLECTION_IDS = new Set([NEXTSTRAIN_COLLECTION_ID, "community"]);
  *
  * Decisions we made about behaviour:
  *
- *   • Drop the leading nextstrain/ from dataset names, but accept it as an
- *     alias by redirecting, e.g.
+ *   • Keep the leading nextstrain/ in dataset names, e.g.
  *
  *         https://nextstrain.org/nextclade/nextstrain/mpox/clade-iib
- *       → https://nextstrain.org/nextclade/mpox/clade-iib
+ *
+ *   • Redirect /nextclade/sars-cov-2 as a legacy alias, e.g.
+ *
+ *         https://nextstrain.org/nextclade/sars-cov-2
+ *       → https://nextstrain.org/nextclade/nextstrain/sars-cov-2
  *
  *   • Accept the index's shortcut names, but expand them by redirection to the
  *     canonical name, e.g.
  *
  *         https://nextstrain.org/nextclade/hMPXV
- *       → https://nextstrain.org/nextclade/mpox/clade-iib
+ *       → https://nextstrain.org/nextclade/nextstrain/mpox/clade-iib
  *
  *     Some shortcuts have "_" in their name (e.g. flu_h1n1pdm_na); accept
  *     those both as-is and with s{_}{/}g applied (e.g. flu/h1n1pdm/na).
  *
- *   • Prefer full names (minus leading nextstrain/) as the canonical name
+ *   • Prefer full names as the canonical name
  *
  * See also <https://github.com/nextstrain/nextstrain.org/issues/1156>.
  *
@@ -82,17 +85,19 @@ export class NextcladeSource extends Source {
 
   async availableDatasets() {
     return (await this._indexDatasets())
-      .map(({path}) => path.replace(NEXTSTRAIN_COLLECTION_PREFIX, ""));
+      .map(({path}) => path);
   }
 
   async _datasetAliases() {
     return new Map(
       (await this._indexDatasets())
         .flatMap(({path, shortcuts}) => [
-          /* Canonicalize nextstrain/a/b/c → a/b/c since we're on nextstrain.org
-           * after all.
+          /* Special case: redirect sars-cov-2 to nextstrain/sars-cov-2 as a
+           * legacy alias.
            */
-          [path, path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")],
+          ...(path === "nextstrain/sars-cov-2"
+            ? [["sars-cov-2", path]]
+            : []),
 
           /* Include index-defined shortcuts under the permutations of a)
            * removing the leading "nextstrain/" and b) replacing underscores (_)
@@ -104,21 +109,21 @@ export class NextcladeSource extends Source {
               shortcut
                 .replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
                 .replace(/_/g, "/"),
-              path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+              path
             ],
             [
               shortcut
                 .replace(NEXTSTRAIN_COLLECTION_PREFIX, ""),
-              path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+              path
             ],
             [
               shortcut
                 .replace(/_/g, "/"),
-              path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+              path
             ],
             [
               shortcut,
-              path.replace(NEXTSTRAIN_COLLECTION_PREFIX, "")
+              path
             ],
           ])),
         ])
@@ -177,14 +182,7 @@ class NextcladeDataset extends Dataset {
     return this.pathParts.slice();
   }
   get baseName() {
-    const explicitCollections = new Set(
-      Array.from(COLLECTION_IDS)
-        .filter(id => id !== NEXTSTRAIN_COLLECTION_ID)
-    );
-
-    return explicitCollections.has(this.baseParts[0])
-      ? this.baseParts.join("/")
-      : `${NEXTSTRAIN_COLLECTION_ID}/${this.baseParts.join("/")}`;
+    return this.baseParts.join("/");
   }
 
   async resolve() {
