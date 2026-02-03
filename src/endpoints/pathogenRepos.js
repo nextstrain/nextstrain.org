@@ -1,3 +1,4 @@
+import yaml from "js-yaml";
 import { fetch, paginatedFetch } from "../fetch.js";
 import { BadRequest, InternalServerError, NotFound } from '../httpErrors.js';
 import { contentTypesProvided } from "../negotiate.js";
@@ -155,4 +156,51 @@ function assertStatusOk(response) {
     default:
       throw new InternalServerError(`upstream said: ${response.status} ${response.statusText}`);
   }
+}
+
+
+/**
+ * Lists all Nextstrain pathogen repos with their registration metadata if present.
+ */
+export async function listRepos(req, res) {
+  // Search for nextstrain repos with topics "nextstrain" and "pathogen"¹
+  // ¹ <https://github.com/nextstrain/infra/blob/6b2179bd/env/production/github-repos.tf#L9>
+  const searchResponse = await fetch("https://api.github.com/search/repositories?q=org:nextstrain+topic:nextstrain+topic:pathogen", {headers});
+  assertStatusOk(searchResponse);
+
+  const searchResults = await searchResponse.json();
+
+  const repos = await Promise.all(
+    searchResults.items.map(repo => repo.name).map(async (repo) => {
+      // Fetch pathogen registration file
+      const registration = await fetch(uri`https://api.github.com/repos/nextstrain/${repo}/contents/nextstrain-pathogen.yaml`, {headers});
+
+      switch (registration.status) {
+        case 200:
+          break;
+
+        case 404:
+          // Repo does not have a registration file
+          return { name: repo };
+
+        case 403:
+          console.log(`403 when fetching ${repo}/nextstrain-pathogen.yaml (likely rate limited)`);
+          return { name: repo };
+
+        default:
+          throw new InternalServerError(`upstream said: ${registration.status} ${registration.statusText}`);
+      }
+
+      // GitHub returns base64-encoded content
+      const data = await registration.json();
+      const yamlContent = Buffer.from(data.content, "base64").toString("utf-8");
+
+      return {
+        name: repo,
+        registration: yaml.load(yamlContent) ?? {},
+      };
+    })
+  );
+
+  return res.json(repos);
 }
