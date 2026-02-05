@@ -77,6 +77,9 @@ export interface Resource {
   nVersions?: number;
   updateCadence?: UpdateCadence;
 
+  /** Warning is set if the resource potentially uses restricted data. */
+  restrictedDataWarning?: string;
+
   /** If the resource is (potentially) out of date (according to the `lastUpdated` property)
    * the `outOfDateWarning` may be set */
   outOfDateWarning?: string;

@@ -42,6 +42,15 @@ export default function PathogenWorkflowFiles(): React.ReactElement {
           <br/>
           <br/>
           {`The 'show full history' link details the temporal history of files for a given pathogen.`}
+          <br/>
+          <br/>
+          {`Some of these files contain Restricted Data from Pathoplexus.`}
+          <br/>
+          {`To use these in your own analysis, please read `}
+          <a href="https://pathoplexus.org/about/terms-of-use/restricted-data" target="_blank" rel="noreferrer">
+            Pathoplexus Restricted Data Terms of Use
+          </a>
+          {`.`}
           </FocusParagraphCentered>
       </FlexCenter>
 

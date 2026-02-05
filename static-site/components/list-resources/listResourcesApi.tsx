@@ -206,6 +206,10 @@ function groupIntermediatesByPathogen(
           url,
           lastUpdated,
         };
+        if (nameParts.at(-1)?.includes("restricted")) {
+          // "restricted" in filename
+          resourceDetails.restrictedDataWarning = "Warning! This file may contain restricted data. Please refer to Restricted Data Terms of Use linked above.";
+        }
         const nDaysOld = _timeDelta(lastUpdated);
         if (nDaysOld && nDaysOld>365) {
           resourceDetails.outOfDateWarning = `Warning! This file may be over a year old. Last known update on ${lastUpdated}`;
