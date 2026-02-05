@@ -23,9 +23,9 @@ export default function Nav(): React.ReactElement {
           <a href="https://docs.nextstrain.org">DOCS</a>
           <a href="/contact">CONTACT</a>
           <a href="/blog/">BLOG</a>
-          <UserOrLoginLink />
         </>
       )}
+      <UserOrLoginLink />
     </nav>
   );
 }
