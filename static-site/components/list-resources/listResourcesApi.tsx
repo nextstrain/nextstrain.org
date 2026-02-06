@@ -164,6 +164,7 @@ function groupDatasetsByPathogen(
           throw new InternalError("Resource does not have any dates.");
         }
         const lastUpdated = sortedDates.at(-1) as string; // eslint-disable-line @typescript-eslint/consistent-type-assertions
+        const nDaysOld = _timeDelta(lastUpdated);
         resourceDetails.lastUpdated = lastUpdated;
         resourceDetails.firstUpdated = sortedDates[0];
         resourceDetails.dates = sortedDates;
@@ -171,10 +172,7 @@ function groupDatasetsByPathogen(
         resourceDetails.updateCadence = _updateCadence(
           sortedDates.map((date) => new Date(date)),
         );
-        const nDaysOld = _timeDelta(lastUpdated);
-        if (nDaysOld && nDaysOld>365) {
-          resourceDetails.outOfDateWarning = `Warning! This dataset may be over a year old. Last known update on ${lastUpdated}`;
-        }
+        resourceDetails.maybeOutOfDate = !!nDaysOld && nDaysOld>365;
       }
       (store[groupName] ??= []).push(resourceDetails);
 
@@ -202,6 +200,7 @@ function groupIntermediatesByPathogen(
         if (filename==='mostRecentlyIndexed') continue;
         const nameParts = [...baseParts, filename]
         const [url, lastUpdated] = urlDatePair;
+        const nDaysOld = _timeDelta(lastUpdated);
         const resourceDetails: Resource = {
           name: nameParts.join('/'), // includes filename
           groupName, // decoupled from nameParts
@@ -210,15 +209,9 @@ function groupIntermediatesByPathogen(
           url,
           resourceType: 'intermediate',
           lastUpdated,
+          maybeRestricted: !!nameParts.at(-1)?.includes("restricted"),
+          maybeOutOfDate: !!nDaysOld && nDaysOld>365,
         };
-        if (nameParts.at(-1)?.includes("restricted")) {
-          // "restricted" in filename
-          resourceDetails.restrictedDataWarning = "Warning! This file may contain restricted data. Please refer to Restricted Data Terms of Use linked above.";
-        }
-        const nDaysOld = _timeDelta(lastUpdated);
-        if (nDaysOld && nDaysOld>365) {
-          resourceDetails.outOfDateWarning = `Warning! This file may be over a year old. Last known update on ${lastUpdated}`;
-        }
         (store[groupName] ??= []).push(resourceDetails);
       }
 

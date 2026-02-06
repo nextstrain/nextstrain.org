@@ -77,12 +77,11 @@ export interface Resource {
   nVersions?: number;
   updateCadence?: UpdateCadence;
 
-  /** Warning is set if the resource potentially uses restricted data. */
-  restrictedDataWarning?: string;
+  /** True if the resource potentially uses restricted data. */
+  maybeRestricted?: boolean;
 
-  /** If the resource is (potentially) out of date (according to the `lastUpdated` property)
-   * the `outOfDateWarning` may be set */
-  outOfDateWarning?: string;
+  /** True if the resource is potentially out of date (according to the `lastUpdated` property). */
+  maybeOutOfDate?: boolean;
 }
 
 export interface DisplayNamedResource extends Resource {
