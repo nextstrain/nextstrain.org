@@ -44,6 +44,7 @@ export type PathVersionsForGroup = {
 export interface ChangelogFile {
   name: string;
   url: string;
+  maybeRestricted: boolean;
 }
 
 export type GroupFilesChangelog = [

@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useEffect, useState} from "react";
-import { FilterOption, Group, PathVersionsForGroup, GroupFilesChangelog } from "./types";
+import { FilterOption, Group, PathVersionsForGroup, GroupFilesChangelog, maybeRestrictedData } from "./types";
+import IconContainer from "./icon-container";
+import TooltipWrapper from "./tooltip-wrapper";
 import styles from "./modal.module.css";
 import Spinner from "../spinner";
 
@@ -63,6 +65,7 @@ export function GroupHistory({
   const nDays = filteredHistory.length;
   const allFiles = filteredHistory.flatMap((h) => h[1]);
   const nFilesUnique = (new Set(allFiles.map((file) => file.name))).size;
+  const hasRestricted = allFiles.some((file) => file.maybeRestricted);
 
   return (
     <>
@@ -76,6 +79,17 @@ export function GroupHistory({
         {` and thus there could be more recent versions of a particular file uploaded since ${filteredHistory.at(0)?.[0]};`}
         {` please use the link on the background page to guarantee you're getting the latest version of a particular file.`}
         {` Finally there may have been files or versions beyond those shown here which are no longer available.`}
+        {hasRestricted && (<>
+          <br/>
+          <br/>
+          {`Some of these files contain Restricted Data from Pathoplexus.`}
+          <br/>
+          {`To use these in your own analysis, please read `}
+          <a href="https://pathoplexus.org/about/terms-of-use/restricted-data" target="_blank" rel="noreferrer">
+            Pathoplexus Restricted Data Terms of Use
+          </a>
+          {`.`}
+        </>)}
       </div>
       {filterWords.length!==0 && (
         <div className={styles.newLine}>
@@ -95,6 +109,11 @@ export function GroupHistory({
                 return (
                   <li className={styles.list} key={file.name}>
                     <a href={file.url}>{displayFilename}</a>
+                    {file.maybeRestricted && (
+                      <TooltipWrapper description="Warning! This file may contain restricted data. Please refer to Restricted Data Terms of Use linked above.">
+                        <IconContainer iconName="restricted" text={''}/>
+                      </TooltipWrapper>
+                    )}
                   </li>
                 )
               })}
@@ -142,6 +161,7 @@ function _changelog(pathVersions: PathVersionsForGroup): GroupFilesChangelog {
         historyEl[1].push({
           name: `${id}/${filename}`,
           url,
+          maybeRestricted: maybeRestrictedData(filename),
         });
       }
     }
