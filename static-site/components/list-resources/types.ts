@@ -70,7 +70,7 @@ export interface Resource {
 
   sortingName: string;
   url: string;
-  resourceType?: ResourceType;
+  resourceType: ResourceType;
   lastUpdated?: string; // date
   firstUpdated?: string; // date
   dates?: string[];

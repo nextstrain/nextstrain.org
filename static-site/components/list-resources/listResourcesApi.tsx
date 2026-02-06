@@ -62,7 +62,7 @@ export async function listResourcesAPI(
   }
   const groups = await Promise.all(Object.entries(
       areDatasets(data) ?
-        groupDatasetsByPathogen(data.pathVersions, urlBuilder, versioned, groupNameBuilder) :
+        groupDatasetsByPathogen(data.pathVersions, urlBuilder, versioned, groupNameBuilder, resourceType) :
         groupIntermediatesByPathogen(data.latestVersions, groupNameBuilder)
     ).map(async ([groupName, resources]) => {
       const group = resourceGroup(groupName, resources);
@@ -135,6 +135,9 @@ function groupDatasetsByPathogen(
 
   /** constructs the name (e.g. pathogen) under which to group a dataset */
   groupNameBuilder: (name: string) => string,
+
+  /** the type of resource */
+  resourceType: ResourceType,
 ): Record<string, Resource[]> {
   return Object.entries(pathVersions).reduce(
     (store: Record<string, Resource[]>, [name, dates]) => {
@@ -152,6 +155,7 @@ function groupDatasetsByPathogen(
         nameParts,
         sortingName: _sortableName(nameParts),
         url: urlBuilder(name),
+        resourceType,
       };
 
       if (versioned) {
@@ -204,6 +208,7 @@ function groupIntermediatesByPathogen(
           nameParts,
           sortingName: _sortableName(nameParts),
           url,
+          resourceType: 'intermediate',
           lastUpdated,
         };
         if (nameParts.at(-1)?.includes("restricted")) {
