@@ -10,6 +10,7 @@ import { SetModalDataContext } from "./modal";
 import TooltipWrapper from "./tooltip-wrapper";
 
 import { Resource } from "./types";
+import { displayResourceType } from ".";
 
 import styles from "./individual-resource.module.css";
 
@@ -70,17 +71,17 @@ export function IndividualResource({
     return null;
   }
 
-  const restricted = resource.restrictedDataWarning ? (
-    <TooltipWrapper description={resource.restrictedDataWarning}>
+  const restricted = resource.maybeRestricted ? (
+    <TooltipWrapper description={`Warning! This ${displayResourceType(resource.resourceType, 1)} may contain restricted data. Please refer to Restricted Data Terms of Use linked above.`}>
       <IconContainer iconName="restricted" text={''}/>
     </TooltipWrapper>
   ) : null;
 
   // If an out of date warning exists then show it. Otherwise show cadence information if it's available
   let history: React.JSX.Element | null = null;
-  if (resource.outOfDateWarning) {
+  if (resource.maybeOutOfDate) {
     history = (
-      <TooltipWrapper description={resource.outOfDateWarning}>
+      <TooltipWrapper description={`Warning! This ${displayResourceType(resource.resourceType, 1)} may be over a year old. Last known update on ${resource.lastUpdated}`}>
         <IconContainer iconName="out-of-date" text={''}/>
       </TooltipWrapper>
     );

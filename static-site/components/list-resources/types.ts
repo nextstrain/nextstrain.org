@@ -41,9 +41,15 @@ export type PathVersionsForGroup = {
   }[]
 }
 
+export interface ChangelogFile {
+  name: string;
+  url: string;
+  maybeRestricted: boolean;
+}
+
 export type GroupFilesChangelog = [
   date: string,
-  {[nameInclFilename: string]: string}
+  ChangelogFile[]
 ][]
 
 
@@ -70,19 +76,25 @@ export interface Resource {
 
   sortingName: string;
   url: string;
-  resourceType?: ResourceType;
+  resourceType: ResourceType;
   lastUpdated?: string; // date
   firstUpdated?: string; // date
   dates?: string[];
   nVersions?: number;
   updateCadence?: UpdateCadence;
 
-  /** Warning is set if the resource potentially uses restricted data. */
-  restrictedDataWarning?: string;
+  /** True if the resource potentially uses restricted data. */
+  maybeRestricted?: boolean;
 
-  /** If the resource is (potentially) out of date (according to the `lastUpdated` property)
-   * the `outOfDateWarning` may be set */
-  outOfDateWarning?: string;
+  /** True if the resource is potentially out of date (according to the `lastUpdated` property). */
+  maybeOutOfDate?: boolean;
+}
+
+/**
+ * Check if the filename indicates restricted data.
+ */
+export function maybeRestrictedData(filename: string): boolean {
+  return filename.includes("restricted");
 }
 
 export interface DisplayNamedResource extends Resource {

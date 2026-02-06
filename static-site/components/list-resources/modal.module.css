@@ -64,6 +64,9 @@
 }
 
 .list {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   margin-left: 20px;
   margin-bottom: 3px;
 }
