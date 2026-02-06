@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { IconType } from "react-icons";
 import { MdFormatListBulleted, MdHistory, MdOutlineWarningAmber } from "react-icons/md";
+import { RiErrorWarningLine } from "react-icons/ri";
 
 import { InternalError } from "../error-boundary";
 
@@ -56,6 +57,9 @@ export default function IconContainer({
       break;
     case "bullet-list":
       Icon = MdFormatListBulleted;
+      break;
+    case "restricted":
+      Icon = RiErrorWarningLine;
       break;
     case "out-of-date":
       Icon = MdOutlineWarningAmber;

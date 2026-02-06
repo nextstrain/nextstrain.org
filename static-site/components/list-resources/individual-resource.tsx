@@ -70,6 +70,12 @@ export function IndividualResource({
     return null;
   }
 
+  const restricted = resource.restrictedDataWarning ? (
+    <TooltipWrapper description={resource.restrictedDataWarning}>
+      <IconContainer iconName="restricted" text={''}/>
+    </TooltipWrapper>
+  ) : null;
+
   // If an out of date warning exists then show it. Otherwise show cadence information if it's available
   let history: React.JSX.Element | null = null;
   if (resource.outOfDateWarning) {
@@ -115,6 +121,7 @@ export function IndividualResource({
           />
         </TooltipWrapper>
 
+        {restricted}
         {history}
       </div>
     </div>
