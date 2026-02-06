@@ -29,7 +29,7 @@ const COLLECTION_IDS = new Set([NEXTSTRAIN_COLLECTION_ID, "community", "enpen"])
  *
  *         https://nextstrain.org/nextclade/nextstrain/mpox/clade-iib
  *
- *   • Redirect /nextclade/sars-cov-2 as a legacy alias, e.g.
+ *   • Redirect /nextclade/sars-cov-2/* as a legacy alias, e.g.
  *
  *         https://nextstrain.org/nextclade/sars-cov-2
  *       → https://nextstrain.org/nextclade/nextstrain/sars-cov-2
@@ -92,11 +92,11 @@ export class NextcladeSource extends Source {
     return new Map(
       (await this._indexDatasets())
         .flatMap(({path, shortcuts}) => [
-          /* Special case: redirect sars-cov-2 to nextstrain/sars-cov-2 as a
+          /* Special case: redirect sars-cov-2/* to nextstrain/sars-cov-2/* as a
            * legacy alias.
            */
-          ...(path === "nextstrain/sars-cov-2"
-            ? [["sars-cov-2", path]]
+          ...(path.startsWith("nextstrain/sars-cov-2")
+            ? [[path.slice("nextstrain/".length), path]]
             : []),
 
           /* Include index-defined shortcuts under the permutations of a)
