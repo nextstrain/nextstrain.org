@@ -41,9 +41,14 @@ export type PathVersionsForGroup = {
   }[]
 }
 
+export interface ChangelogFile {
+  name: string;
+  url: string;
+}
+
 export type GroupFilesChangelog = [
   date: string,
-  {[nameInclFilename: string]: string}
+  ChangelogFile[]
 ][]
 
 

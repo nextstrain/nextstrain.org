@@ -61,8 +61,8 @@ export function GroupHistory({
   const filteredHistory = _filterHistory(history, filterWords);
 
   const nDays = filteredHistory.length;
-  const allFiles = filteredHistory.flatMap((h) => Object.keys(h[1]));
-  const nFilesUnique = (new Set(allFiles)).size;
+  const allFiles = filteredHistory.flatMap((h) => h[1]);
+  const nFilesUnique = (new Set(allFiles.map((file) => file.name))).size;
 
   return (
     <>
@@ -90,11 +90,11 @@ export function GroupHistory({
               {date}
             </div>
             <ul>
-              {Object.entries(info).map(([filename, url]) => {
-                const displayFilename = filename.split('/').join(' / ');
+              {info.map((file) => {
+                const displayFilename = file.name.split('/').join(' / ');
                 return (
-                  <li className={styles.list} key={filename}>
-                    <a href={url}>{displayFilename}</a>
+                  <li className={styles.list} key={file.name}>
+                    <a href={file.url}>{displayFilename}</a>
                   </li>
                 )
               })}
@@ -112,24 +112,24 @@ function _filterHistory(history: GroupFilesChangelog, filters: string[]): GroupF
   // Use a cache to speed things up as the same filenames are repeated many times
   const cache: Map<string, boolean> = new Map(); // true: passes filter, false: exclude
   return history.flatMap(([date, files]) => { // flatMap allows empty array returns to disappear
-    const filePairs = Object.entries(files)
-      .filter(([filename, ]) => {
-        if (!cache.has(filename)) {
-          const filewords = filename.split('/');
+    const filtered = files
+      .filter((file) => {
+        if (!cache.has(file.name)) {
+          const filewords = file.name.split('/');
           const passes = filters.map((w) => filewords.includes(w)).every((el) => el===true);
-          cache.set(filename, passes);
+          cache.set(file.name, passes);
         }
-        return cache.get(filename);
+        return cache.get(file.name);
       })
-    if (filePairs.length===0) return []; // no matches from this day
-    return [[date, Object.fromEntries(filePairs)]]
+    if (filtered.length===0) return []; // no matches from this day
+    return [[date, filtered]]
   })
 }
 
 function _changelog(pathVersions: PathVersionsForGroup): GroupFilesChangelog {
   const dates = _orderedDates(pathVersions);
   const indexes = Object.fromEntries(dates.map((d, i) => [d, i]));
-  const history: GroupFilesChangelog = dates.map((d) => [d, {}]);
+  const history: GroupFilesChangelog = dates.map((d) => [d, []]);
   for (const [id, infoByDay] of Object.entries(pathVersions)) {
     for (const info of infoByDay) {
       const date = info.date;
@@ -139,7 +139,10 @@ function _changelog(pathVersions: PathVersionsForGroup): GroupFilesChangelog {
         if (dateIdx===undefined) continue;
         const historyEl = history[dateIdx];
         if (historyEl===undefined) continue;
-        historyEl[1][`${id}/${filename}`] = url;
+        historyEl[1].push({
+          name: `${id}/${filename}`,
+          url,
+        });
       }
     }
   }
