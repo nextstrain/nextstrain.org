@@ -84,6 +84,13 @@ export interface Resource {
   maybeOutOfDate?: boolean;
 }
 
+/**
+ * Check if the filename indicates restricted data.
+ */
+export function maybeRestrictedData(filename: string): boolean {
+  return filename.includes("restricted");
+}
+
 export interface DisplayNamedResource extends Resource {
   displayName: ResourceDisplayName;
 }

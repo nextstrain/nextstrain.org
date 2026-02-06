@@ -1,4 +1,4 @@
-import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory } from "./types";
+import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory, maybeRestrictedData } from "./types";
 import { InternalError } from "../error-boundary";
 import fetchAndParseJSON from "../../util/fetch-and-parse-json";
 
@@ -209,7 +209,7 @@ function groupIntermediatesByPathogen(
           url,
           resourceType: 'intermediate',
           lastUpdated,
-          maybeRestricted: !!nameParts.at(-1)?.includes("restricted"),
+          maybeRestricted: maybeRestrictedData(filename),
           maybeOutOfDate: !!nDaysOld && nDaysOld>365,
         };
         (store[groupName] ??= []).push(resourceDetails);
