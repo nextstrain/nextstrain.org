@@ -1,4 +1,4 @@
-import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory } from "./types";
+import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory, maybeRestrictedData } from "./types";
 import { InternalError } from "../error-boundary";
 import fetchAndParseJSON from "../../util/fetch-and-parse-json";
 
@@ -62,7 +62,7 @@ export async function listResourcesAPI(
   }
   const groups = await Promise.all(Object.entries(
       areDatasets(data) ?
-        groupDatasetsByPathogen(data.pathVersions, urlBuilder, versioned, groupNameBuilder) :
+        groupDatasetsByPathogen(data.pathVersions, urlBuilder, versioned, groupNameBuilder, resourceType) :
         groupIntermediatesByPathogen(data.latestVersions, groupNameBuilder)
     ).map(async ([groupName, resources]) => {
       const group = resourceGroup(groupName, resources);
@@ -135,6 +135,9 @@ function groupDatasetsByPathogen(
 
   /** constructs the name (e.g. pathogen) under which to group a dataset */
   groupNameBuilder: (name: string) => string,
+
+  /** the type of resource */
+  resourceType: ResourceType,
 ): Record<string, Resource[]> {
   return Object.entries(pathVersions).reduce(
     (store: Record<string, Resource[]>, [name, dates]) => {
@@ -152,6 +155,7 @@ function groupDatasetsByPathogen(
         nameParts,
         sortingName: _sortableName(nameParts),
         url: urlBuilder(name),
+        resourceType,
       };
 
       if (versioned) {
@@ -160,6 +164,7 @@ function groupDatasetsByPathogen(
           throw new InternalError("Resource does not have any dates.");
         }
         const lastUpdated = sortedDates.at(-1) as string; // eslint-disable-line @typescript-eslint/consistent-type-assertions
+        const nDaysOld = _timeDelta(lastUpdated);
         resourceDetails.lastUpdated = lastUpdated;
         resourceDetails.firstUpdated = sortedDates[0];
         resourceDetails.dates = sortedDates;
@@ -167,10 +172,7 @@ function groupDatasetsByPathogen(
         resourceDetails.updateCadence = _updateCadence(
           sortedDates.map((date) => new Date(date)),
         );
-        const nDaysOld = _timeDelta(lastUpdated);
-        if (nDaysOld && nDaysOld>365) {
-          resourceDetails.outOfDateWarning = `Warning! This dataset may be over a year old. Last known update on ${lastUpdated}`;
-        }
+        resourceDetails.maybeOutOfDate = !!nDaysOld && nDaysOld>365;
       }
       (store[groupName] ??= []).push(resourceDetails);
 
@@ -198,22 +200,18 @@ function groupIntermediatesByPathogen(
         if (filename==='mostRecentlyIndexed') continue;
         const nameParts = [...baseParts, filename]
         const [url, lastUpdated] = urlDatePair;
+        const nDaysOld = _timeDelta(lastUpdated);
         const resourceDetails: Resource = {
           name: nameParts.join('/'), // includes filename
           groupName, // decoupled from nameParts
           nameParts,
           sortingName: _sortableName(nameParts),
           url,
+          resourceType: 'intermediate',
           lastUpdated,
+          maybeRestricted: maybeRestrictedData(filename),
+          maybeOutOfDate: !!nDaysOld && nDaysOld>365,
         };
-        if (nameParts.at(-1)?.includes("restricted")) {
-          // "restricted" in filename
-          resourceDetails.restrictedDataWarning = "Warning! This file may contain restricted data. Please refer to Restricted Data Terms of Use linked above.";
-        }
-        const nDaysOld = _timeDelta(lastUpdated);
-        if (nDaysOld && nDaysOld>365) {
-          resourceDetails.outOfDateWarning = `Warning! This file may be over a year old. Last known update on ${lastUpdated}`;
-        }
         (store[groupName] ??= []).push(resourceDetails);
       }
 
