@@ -686,6 +686,14 @@
                   "default":"6y"
                 }
               },
+              "F-antibody-escape": {
+                "resolution":{
+                  "all-time":"",
+                  "6y":"",
+                  "3y":"",
+                  "default":"6y"
+                }
+              },
               "default":"genome"
             }
           },
@@ -708,6 +716,14 @@
                 }
               },
               "F": {
+                "resolution":{
+                  "all-time":"",
+                  "6y":"",
+                  "3y":"",
+                  "default":"6y"
+                }
+              },
+              "F-antibody-escape": {
                 "resolution":{
                   "all-time":"",
                   "6y":"",
