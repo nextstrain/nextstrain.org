@@ -24,10 +24,10 @@
   img: ebola_streams.png
   url: /ebola/all-outbreaks
 
-- name: H5N1 cattle outbreak
-  description: Influenza H5N1 cattle outbreak in the USA (genotype B3.13)
-  img: h5n1_cattle_outbreak_tree.png
-  url: /avian-flu/h5n1-cattle-outbreak/genome
+- name: Measles in the USA
+  description: Measles virus evolution and spread in the USA
+  img: measles_usa.png
+  url: /measles/genome?c=division&dmin=2024-06-01&f_country=USA&focus=selected&r=division
 
 - name: HPAI outbreak
   description: "Highly pathogenic avian influenza in North America"
@@ -39,10 +39,15 @@
   img: seasonal_flu_freq.png
   url: /seasonal-flu/h3n2/ha/2y
 
-- name: Mpox
-  description: Evolution and spread of mpox clades I and II
-  img: mpox_tree.png
-  url: /mpox/all-clades
+- name: H5N1 cattle outbreak
+  description: Influenza H5N1 cattle outbreak in the USA (genotype B3.13)
+  img: h5n1_cattle_outbreak_tree.png
+  url: /avian-flu/h5n1-cattle-outbreak/genome
+
+- name: Avian influenza
+  description: Avian influenza A/H5N1 evolution and spread
+  img: h5n1_map.png
+  url: /avian-flu/h5n1/ha/2y
 
 - name: SARS-CoV-2 lineages
   description: Nextclade reference tree of SARS-CoV-2 Pango lineages
@@ -54,20 +59,15 @@
   img: ncov_frequencies.png
   url: /sars-cov-2/forecasts
 
-- name: Avian influenza
-  description: Avian influenza A/H5N1 evolution and spread
-  img: h5n1_map.png
-  url: /avian-flu/h5n1/ha/2y
-
-- name: Avian influenza (D1.1)
-  description: Genomic analysis of avian influenza H5N1 (D1.1 genotype)
-  img: h5n1_d1.1.png
-  url: /avian-flu/h5n1-d1.1/genome
-
 - name: Oropouche
   description: Oropouche virus evolution and spread
   img: oropouche_map.png
   url: /oropouche/L
+
+- name: Mpox
+  description: Evolution and spread of mpox clades I and II
+  img: mpox_tree.png
+  url: /mpox/all-clades
 
 - name: Lassa
   description: Lassa virus evolution and spread
@@ -78,11 +78,6 @@
   description: Historical analysis of geographic spread of plague
   img: yersinia_tree.png
   url: /community/ktmeaton/yersinia-pestis/maximum-likelihood/all?m=num_date
-
-- name: Measles
-  description: Measles virus evolution and spread
-  img: measles_tree.png
-  url: /measles/N450
 
 - name: Mumps
   description: Mumps virus evolution and spread
