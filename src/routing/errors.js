@@ -113,7 +113,10 @@ export async function setup(app) {
         .end();
     }
 
-    if (err instanceof NotFound) {
+    /* Delegate to Next.js only for GET and HEAD requests. This aligns with
+     * handling in src/routing/staticSite.js.
+     */
+    if (err instanceof NotFound && ["GET", "HEAD"].includes(req.method)) {
       /* A note about routing: if the current URL path (i.e. req.path) matches a
        * a page known to the NextJS routes ("pages") then that page will be
        * shown (with response code 200). Moving to server-side rendering of
