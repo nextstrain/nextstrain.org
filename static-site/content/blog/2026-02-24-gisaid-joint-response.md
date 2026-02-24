@@ -15,4 +15,4 @@ We had [previously documented emails](https://data.nextstrain.org/files/blog/202
 This re-writing of history matches previous behavior by GISAID regarding their contentions surrounding the [first publicly shared SARS-CoV-2 genome sequence](https://www.science.org/content/article/dispute-simmers-over-who-first-shared-sars-cov-2-s-genome).
 
 [COG-UK](https://www.sanger.ac.uk/collaboration/covid-19-genomics-uk-cog-uk-consortium/), [outbreak.info](https://outbreak.info/) and [Cov-Spectrum](https://cov-spectrum.org/) were also referenced in GISAID's Jan 20 statement.
-Consequently, we, along with COG-UK, outbreak.info and Cov-Spectrum, have issued a joint response to GISAID that can be found at [github.com/andersen-lab/2026_gisaid_response](https://github.com/andersen-lab/2026_gisaid_response).
+Consequently, we, along with members of COG-UK, outbreak.info and Cov-Spectrum, have issued a joint response to GISAID that can be found at [github.com/andersen-lab/2026_gisaid_response](https://github.com/andersen-lab/2026_gisaid_response).
