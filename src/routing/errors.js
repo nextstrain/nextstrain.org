@@ -1,3 +1,4 @@
+import finalhandler from 'finalhandler';
 import stream from 'stream';
 import { promisify } from 'util';
 import { PRODUCTION } from '../config.js';
@@ -15,6 +16,10 @@ const streamFinished = promisify(stream.finished);
 
 const jsonMediaType = type => type.match(/^application\/(.+\+)?json$/);
 
+function onerror(err, req, res) { // eslint-disable-line no-unused-vars
+  console.error(err.stack || err.toString());
+}
+
 
 /** Set up error handling. Should be done after all routes are added.
  */
@@ -27,15 +32,10 @@ export async function setup(app) {
 
   /* Error handler
    */
-  app.useAsync(async (err, req, res, next) => {
-    /* XXX TODO: Replace calls to Express' next() with calls to our own custom
-     * finalhandler (the library Express uses) function configured with an
-     * "onerror" handler that does what we want with regard to logging.
-     *   -trs, 1 Oct 2021
-     */
+  app.useAsync(async (err, req, res, next) => { // eslint-disable-line no-unused-vars
     if (res.headersSent) {
-      utils.verbose("Headers already sent; using Express' default error handler");
-      return next(err);
+      utils.verbose("Headers already sent; using custom error handler");
+      return finalhandler(req, res, { onerror })(err);
     }
 
     /* Read the entire request body (discarding it) if the request might have a
@@ -129,11 +129,11 @@ export async function setup(app) {
       return await endpoints.nextJsApp.handleRequest(req, res);
     }
 
-    utils.verbose(`Sending ${err} error as HTML with Express' default error handler`);
+    utils.verbose(`Sending ${err} error as HTML with custom error handler`);
     if (err.status && err.status < 500) {
       // Remove stack trace from user errors
       err.stack = "";
     }
-    return next(err);
+    return finalhandler(req, res, { onerror })(err);
   });
 }

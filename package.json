@@ -52,6 +52,7 @@
     "express-naked-redirect": "^0.1.2",
     "express-session": "^1.16.2",
     "express-static-gzip": "^0.2.2",
+    "finalhandler": "^2.1.1",
     "gray-matter": "^4.0.3",
     "heroku-ssl-redirect": "0.0.4",
     "http-errors": "^1.8.0",
