@@ -130,6 +130,10 @@ export async function setup(app) {
     }
 
     utils.verbose(`Sending ${err} error as HTML with Express' default error handler`);
+    if (err.status && err.status < 500) {
+      // Remove stack trace from user errors
+      err.stack = "";
+    }
     return next(err);
   });
 }
