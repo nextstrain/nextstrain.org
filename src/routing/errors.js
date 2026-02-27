@@ -17,7 +17,10 @@ const streamFinished = promisify(stream.finished);
 const jsonMediaType = type => type.match(/^application\/(.+\+)?json$/);
 
 function onerror(err, req, res) { // eslint-disable-line no-unused-vars
-  console.error(err.stack || err.toString());
+  if (!err.status || err.status >= 500) {
+    // Only log unexpected errors
+    console.error(err.stack || err.toString());
+  }
 }
 
 
@@ -130,10 +133,6 @@ export async function setup(app) {
     }
 
     utils.verbose(`Sending ${err} error as HTML with custom error handler`);
-    if (err.status && err.status < 500) {
-      // Remove stack trace from user errors
-      err.stack = "";
-    }
     return finalhandler(req, res, { onerror })(err);
   });
 }
