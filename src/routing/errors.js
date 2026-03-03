@@ -116,21 +116,23 @@ export async function setup(app) {
         .end();
     }
 
-    /* Delegate to Next.js only for GET and HEAD requests. This aligns with
-     * handling in src/routing/staticSite.js.
+    /* Delegate to Next.js for 404s that originate from Express routes.
+     * Because Express routes take priority over the Next.js catch-all in
+     * src/routing/staticSite.js, a 404 from an Express route would not render
+     * with the typical site layout unless we explicitly hand it to Next.js
+     * here.
+     * Note that this is only for GET and HEAD requests to align with handling
+     * in src/routing/staticSite.js.
      */
     if (err instanceof NotFound && ["GET", "HEAD"].includes(req.method)) {
-      /* A note about routing: if the current URL path (i.e. req.path) matches a
-       * a page known to the NextJS routes ("pages") then that page will be
-       * shown (with response code 200). Moving to server-side rendering of
-       * NotFound errors (and InternalServerError etc) will not only solve this
-       * but will also allow us to provide information about the error. See the
-       * following issues for more:
-       * <https://github.com/nextstrain/nextstrain.org/issues/774>
-       * <https://github.com/nextstrain/nextstrain.org/issues/518>
-       */
       return await endpoints.nextJsApp.handleRequest(req, res);
     }
+
+    /* TODO: Serve custom error pages for user errors such as BadRequest¹ and
+     * Forbidden²
+     * ¹ <https://github.com/nextstrain/nextstrain.org/issues/774>
+     * ² <https://github.com/nextstrain/nextstrain.org/issues/518>
+     */
 
     utils.verbose(`Sending ${err} error as HTML with custom error handler`);
     return finalhandler(req, res, { onerror })(err);
