@@ -110,3 +110,23 @@
 .blogSidebar ul li {
   margin: 1.2rem 0;
 }
+
+.blogPostBody :global(.note) {
+    background-color: #f7f7f7;
+    margin: 2rem;
+    border-top: 2px solid #777;
+    border-bottom: 2px solid #777;
+    padding: 0rem 1rem 1rem 1rem;
+}
+
+.blogPostBody :global(.figure) {
+    padding: 0;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+.blogPostBody :global(.figure) p {
+    font-size: 90%;
+    font-style: italic;
+    padding: 0 1rem 1rem;
+}
