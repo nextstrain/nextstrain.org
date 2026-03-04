@@ -13,6 +13,7 @@
 /node_modules/
 /static-site/node_modules/
 /npm-debug.log
+cspell.json
 
 # local sessions
 /sessions/
