@@ -211,9 +211,9 @@ export const teamMembers: {
     {
       name: "Nídia Trovão",
       image: "nidia-trovao.jpg",
-      link: "https://www.fic.nih.gov/About/Staff/epidemiology-population-studies/Pages/Genomic-Epidemiology-and-Evolution-of-Pathogens-.aspx",
+      link: "https://experts.illinois.edu/en/persons/nidia-isabel-sequeira-trovao/",
       blurb:
-        "Section Leader, Fogarty International Center, National Institutes of Health, USA",
+        "Assistant Professor, University of Illinois Urbana-Champaign, USA",
     },
   ],
 };
