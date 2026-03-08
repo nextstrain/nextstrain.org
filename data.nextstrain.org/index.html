@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nextstrain Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --titleColor0: #4377cd; /* N */
+      --titleColor1: #5097ba; /* E */
+      --titleColor2: #63ac9a; /* X */
+      --titleColor3: #7cb879; /* T */
+      --titleColor4: #9abe5c; /* S */
+      --titleColor5: #b9bc4a; /* T */
+      --titleColor6: #d4b13f; /* R */
+      --titleColor7: #e49938; /* A */
+      --titleColor8: #e67030; /* I */
+      --titleColor9: #de3c26; /* N */
+
+      --blue: #5097ba;
+      --darkGrey: #333;
+      --mediumGrey: #888;
+      --lightGrey: #ccc;
+      --extraLightGrey: #f1f1f1;
+      --niceFontSize: 16px;
+      --niceLineHeight: 1.6;
+      --tightLineHeight: 1.4;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Lato', 'Helvetica Neue', sans-serif;
+      font-weight: 300;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 62.5%;
+    }
+
+    body {
+      font-size: 16px;
+    }
+
+    a {
+      background-color: transparent;
+      color: var(--blue);
+      font-weight: 400;
+      text-decoration: none;
+    }
+    a:hover, a:focus {
+      text-decoration: underline;
+    }
+
+    /* Container */
+    .container {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+    @media (min-width: 768px) {
+      .container { width: 728px; }
+    }
+    @media (min-width: 992px) {
+      .container { width: 952px; }
+    }
+    @media (min-width: 1200px) {
+      .container { width: 1150px; }
+    }
+
+    /* Spacers */
+    .big-spacer { height: 30px; }
+    .huge-spacer { height: 60px; }
+
+    /* Heading / Hero */
+    .heading-container {
+      display: grid;
+      grid-template-areas:
+        "title"
+        "subtitle";
+      justify-items: center;
+    }
+    @media (min-width: 576px) {
+      .heading-container {
+        grid-template-areas:
+          "logo title"
+          "logo subtitle";
+        justify-items: left;
+      }
+    }
+
+    .heading-logo {
+      align-self: center;
+      display: none;
+      grid-area: logo;
+      height: 143px;
+      justify-self: end;
+      padding-right: 9px;
+      padding-top: 24px;
+      width: auto;
+    }
+    @media (min-width: 576px) {
+      .heading-logo { display: inline; }
+    }
+
+    .heading-title-wrapper {
+      grid-area: title;
+    }
+
+    .heading-title {
+      font-size: 106px;
+      font-weight: 300;
+      letter-spacing: -1px;
+      margin: 0;
+      line-height: 1.1;
+    }
+    @media (max-width: 780px) {
+      .heading-title { font-size: 82px; }
+    }
+    @media (max-width: 576px) {
+      .heading-title { font-size: 64px; }
+    }
+
+    .heading-subtitle {
+      font-size: 18px;
+      grid-area: subtitle;
+    }
+    @media (min-width: 576px) {
+      .heading-subtitle {
+        font-size: 27px;
+        padding-left: 7px;
+      }
+    }
+
+    /* Section H1 */
+    .section-h1 {
+      color: var(--darkGrey);
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 32px;
+      margin: 0;
+      min-width: 240px;
+      text-align: center;
+    }
+    .section-h1 a {
+      font-weight: inherit;
+    }
+
+    .focus-paragraph-centered {
+      max-width: 640px;
+      margin: 20px auto 0;
+      text-align: center;
+      font-size: var(--niceFontSize);
+      font-weight: 300;
+      line-height: var(--tightLineHeight);
+    }
+    .focus-paragraph-centered.big {
+      font-size: 18px;
+    }
+
+    /* Flex center */
+    .flex-center {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="big-spacer"></div>
+
+    <!-- Heading -->
+    <div class="heading-container">
+      <img
+        class="heading-logo"
+        alt="Logo"
+        src="https://nextstrain.org/nextstrain-logo-small.png"
+      />
+      <div class="heading-title-wrapper">
+        <div class="heading-title">
+          <span style="color: var(--titleColor0)">N</span><span style="color: var(--titleColor1)">e</span><span style="color: var(--titleColor2)">x</span><span style="color: var(--titleColor3)">t</span><span style="color: var(--titleColor4)">s</span><span style="color: var(--titleColor5)">t</span><span style="color: var(--titleColor6)">r</span><span style="color: var(--titleColor7)">a</span><span style="color: var(--titleColor8)">i</span><span style="color: var(--titleColor9)">n</span>
+        </div>
+      </div>
+      <div class="heading-subtitle">Real-time tracking of pathogen evolution</div>
+    </div>
+
+    <div class="big-spacer"></div>
+
+    <div class="flex-center">
+      <p class="focus-paragraph-centered big">
+          <a href="https://nextstrain.org">Nextstrain.org</a>
+          is an open-source project to harness the scientific and public health potential of pathogen genome data.
+          The data.nextstrain.org site (this page) houses two types of data files:
+      </p>
+    </div>
+
+    <div class="big-spacer"></div>
+    
+    <!-- Section 1 -->
+    <h1 class="section-h1">
+        <a href="https://nextstrain.org/pathogens">
+            Core pathogen analyses
+        </a>
+    </h1>
+    <div class="flex-center">
+      <p class="focus-paragraph-centered">
+          We maintain continually updated views of a range of pathogens,
+          and the data files (JSONs) are housed on data.nextstrain.org.
+          The link above lists all of the analyses maintained by Nextstrain,
+          including the ability to access snapshots of previous analyses.
+      </p>
+    </div>
+
+    <div class="huge-spacer"></div>
+
+    <!-- Section 2 -->
+    <h1 class="section-h1">
+        <a href="https://nextstrain.org/pathogens/files">
+            Intermediate data files
+        </a>
+    </h1>
+    <div class="flex-center">
+      <p class="focus-paragraph-centered">
+        Curated metadata (TSV) and sequences (FASTA) files which are created by our workflows
+        as part of the analyses.
+        The link above lists the latest versions of these files as well as providing a window into the history of the file uploads across time.
+      </p>
+    </div>
+
+    <div class="huge-spacer"></div>
+
+    </div>
+</body>
+</html>
