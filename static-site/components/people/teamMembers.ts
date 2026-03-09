@@ -36,20 +36,6 @@ export const teamMembers: {
         "Ivan joined the team in 2020 and focuses on Nextclade and some of the algorithms in Nextstrain's underlying tools.",
     },
     {
-      name: "Kim Andrews",
-      image: "kim-andrews.jpg",
-      link: "https://bedford.io/team/kim-andrews/",
-      blurb:
-        "Kim joined the team in 2023 with a background in ecological and evolutionary genomics, and focuses on pathogen workflows.",
-    },
-    {
-      name: "Jennifer Chang",
-      image: "jennifer-chang.jpg",
-      link: "https://bedford.io/team/jennifer-chang/",
-      blurb:
-        "Jennifer joined the team in 2021 and specializes in Terra and Nextflow workflows and contributes to various pathogen workflows as needed.",
-    },
-    {
       name: "James Hadfield",
       image: "james-hadfield.jpg",
       link: "https://bedford.io/team/james-hadfield/",
@@ -85,6 +71,13 @@ export const teamMembers: {
         "Victor joined the team in 2021 and works on all aspects of Nextstrain with a particular focus on tooling (e.g. Augur, runtimes) and documentation.",
     },
     {
+      name: "JT McCrone",
+      image: "jt-mccrone.jpg",
+      link: "https://mccronelab.github.io/people/",
+      blurb:
+        "JT joined the team in 2025.",
+    },
+    {
       name: "Cornelius Roemer",
       image: "cornelius-roemer.jpg",
       link: "https://neherlab.org/cornelius-roemer.html",
@@ -101,6 +94,13 @@ export const teamMembers: {
         "John was part the team 2024-2025 and worked on all aspects of Nextstrain.",
     },
     {
+      name: "Kim Andrews",
+      image: "kim-andrews.jpg",
+      link: "https://bedford.io/team/kim-andrews/",
+      blurb:
+        "Kim was part of the team 2023-2026 and worked on pathogen workflows.",
+    },
+    {
       name: "Sidney Bell",
       image: "sidney-bell.jpg",
       link: "https://bedford.io/team/sidney-bell/",
@@ -114,6 +114,13 @@ export const teamMembers: {
       name: "Charlton Callender",
       image: "charlton-callender.jpg",
       link: "https://bedford.io/team/charlton-callender/",
+    },
+    {
+      name: "Jennifer Chang",
+      image: "jennifer-chang.jpg",
+      link: "https://bedford.io/team/jennifer-chang/",
+      blurb:
+        "Jennifer was part of the team 2021-2026 and worked on pathogen workflows.",
     },
     {
       name: "Kairsten Fay",
@@ -211,9 +218,9 @@ export const teamMembers: {
     {
       name: "Nídia Trovão",
       image: "nidia-trovao.jpg",
-      link: "https://www.fic.nih.gov/About/Staff/epidemiology-population-studies/Pages/Genomic-Epidemiology-and-Evolution-of-Pathogens-.aspx",
+      link: "https://experts.illinois.edu/en/persons/nidia-isabel-sequeira-trovao/",
       blurb:
-        "Section Leader, Fogarty International Center, National Institutes of Health, USA",
+        "Assistant Professor, University of Illinois Urbana-Champaign, USA",
     },
   ],
 };
