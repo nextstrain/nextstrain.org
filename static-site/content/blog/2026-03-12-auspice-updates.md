@@ -107,7 +107,7 @@ Note: The dataset has two different labellings for outbreaks, here we're [viewin
 **Performance matters**
 
 Streamtrees come into their own when looking at very large trees as they don't suffer from the same scaling problems as regular trees, both in terms of pixels and performance (Figure 4).
-Taxonium's approach - a sparsification algorithm to renders a dynamically-chosen subset of nodes depending on your zoom level - is another direction to solving these problems which works stunningly well for massive trees such as [millions of SARS-CoV-2 genomes](https://taxonium.org/sars-cov-2/public?xType=x_dist). 
+Taxonium's approach - a sparsification algorithm that renders a dynamically-chosen subset of nodes depending on your zoom level - is another direction to solving these problems which works stunningly well for massive trees such as [millions of SARS-CoV-2 genomes](https://taxonium.org/sars-cov-2/public?xType=x_dist). 
 (P.S. Nextstrain datasets are viewable in Taxonium - click the "view in other platforms" button at the bottom of the page in Auspice to get there.)
 We chose to explore streamtrees for two reasons, firstly we wanted to go beyond traditional tree rendering approaches and try to give a better big-picture overview of the evolution we are capturing, and secondly as partitioning the data opens the door to partitioning the analyses which is well suited to our bioinformatics tools and pipelines.
 
