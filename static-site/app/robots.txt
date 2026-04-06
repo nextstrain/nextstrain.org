@@ -1,5 +1,2 @@
 User-agent: *
-Disallow: */tags/
-Disallow: */categories/
-
-sitemap: https://nextstrain.org
+Disallow:
