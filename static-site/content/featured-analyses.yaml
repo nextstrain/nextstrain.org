@@ -24,10 +24,10 @@
   img: ebola_streams.png
   url: /ebola/all-outbreaks
 
-- name: Measles in the USA
-  description: Measles virus evolution and spread in the USA
-  img: measles_usa.png
-  url: /measles/genome?c=division&dmin=2024-06-01&f_country=USA&focus=selected&r=division
+- name: Measles outbreak
+  description: Spread of 2025-2026 North America measles outbreak
+  img: measles_northamerica.png
+  url: /groups/blab/measles/north-america/2026-04-30
 
 - name: HPAI outbreak
   description: "Highly pathogenic avian influenza in North America"
