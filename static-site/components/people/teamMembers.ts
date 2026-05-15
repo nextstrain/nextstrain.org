@@ -18,7 +18,7 @@ export const teamMembers: {
       image: "richard-neher.jpg",
       link: "https://neherlab.org/richard-neher.html",
       blurb:
-        "Richard leads Based-based operations focused broadly on algorithms and Nextclade.",
+        "Richard leads Basel-based operations focused broadly on algorithms and Nextclade.",
     },
     {
       name: "JT McCrone",
