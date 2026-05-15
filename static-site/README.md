@@ -50,14 +50,28 @@ We use a `static-site/public` directory for assets which are exposed at the root
 At the moment these largely consist of images used in blog posts.
 
 # Adding content
-* [See this page in the docs](https://nextstrain.org/docs/contributing/documentation)
 
-### Adding new pathogen images for tiles
+For general contributing to nextstrain information please [see this page in the docs](https://nextstrain.org/docs/contributing/documentation)
+
+### Pathogen image tiles
+
+The **main splash page** has a "featured analyses" front and center to highlight important or relevant pathogen builds.
+We would like this to be updated regularly in order to stay relevant and emphasize the timeliness of Nextstrain.
+The list of tiles is constructed from [featured-analyses.yaml](./content/featured-analyses.yaml).
+Clicking on tiles loads a dataset (in Auspice).
+
+The core **pathogens page** has a set of tiles at the top of the page which act to filter the (now quite large) elements in the resource listing UI.
+Currently every pathogen group listed in the UI has a corresponding tile; please update this list whenever we create a new core pathogen.
+The list of tiles is constructed from [resource-listing.yaml](./content/resource-listing.yaml).
+
+
+**To add a new tile:**
+
 1. Navigate to the Auspice view and take a square screenshot of a panel that is representative of the data.
 2. If using a tree, make sure branch labels are turned off.
 3. Downsize the image to 250px by 250px.
 4. Save the file in `./static/pathogen_images`
-5. Add a new entry to [./content/featured-analyses.yaml](./content/featured-analyses.yaml).
+5. Add a new entry to [featured-analyses.yaml](./content/featured-analyses.yaml) and/or [resource-listing.yaml](./content/resource-listing.yaml).
 
 ### Adding new team members
 

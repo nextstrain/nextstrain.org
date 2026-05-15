@@ -4,6 +4,8 @@
 # - When adding or modifying descriptions, ensure it takes up at most two lines
 #   when rendered on the splash page.
 
+# Image paths in this YAML are relative to REPO_ROOT/static-site/static/pathogen_images/
+
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
   img: ncov_freq.png
