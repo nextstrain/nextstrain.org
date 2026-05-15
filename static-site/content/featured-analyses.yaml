@@ -6,6 +6,11 @@
 
 # Image paths in this YAML are relative to REPO_ROOT/static-site/static/pathogen_images/
 
+- name: Andes Hantavirus
+  description: Phylogenies of ANDV (L, G & S segments)
+  img: andv.png
+  url: /groups/hodcroftlab/andv/S
+
 - name: Measles outbreak
   description: Spread of 2025-2026 North America measles outbreak
   img: measles_northamerica.png
