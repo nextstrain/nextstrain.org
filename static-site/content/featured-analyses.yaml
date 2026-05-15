@@ -4,6 +4,18 @@
 # - When adding or modifying descriptions, ensure it takes up at most two lines
 #   when rendered on the splash page.
 
+# Image paths in this YAML are relative to REPO_ROOT/static-site/static/pathogen_images/
+
+- name: Andes Hantavirus
+  description: Phylogenies of ANDV (L, G & S segments)
+  img: andv.png
+  url: /groups/hodcroftlab/andv/S
+
+- name: Measles outbreak
+  description: Spread of 2025-2026 North America measles outbreak
+  img: measles_northamerica.png
+  url: /groups/blab/measles/north-america
+
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
   img: ncov_freq.png
@@ -23,11 +35,6 @@
   description: Evolutionary history of all Zaire ebolavirus outbreaks
   img: ebola_streams.png
   url: /ebola/all-outbreaks
-
-- name: Measles outbreak
-  description: Spread of 2025-2026 North America measles outbreak
-  img: measles_northamerica.png
-  url: /groups/blab/measles/north-america/2026-04-30
 
 - name: HPAI outbreak
   description: "Highly pathogenic avian influenza in North America"
