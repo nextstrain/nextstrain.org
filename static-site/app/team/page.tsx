@@ -3,7 +3,7 @@ import React from "react";
 
 import FlexCenter from "../../components/flex-center";
 import { FocusParagraphCentered } from "../../components/focus-paragraph";
-import { BigSpacer } from "../../components/spacers";
+import { MediumSpacer, BigSpacer } from "../../components/spacers";
 import { TeamPageList } from "../../components/people/avatars";
 
 import styles from "./styles.module.css";
@@ -21,22 +21,32 @@ export default function TeamPage(): React.ReactElement {
       <BigSpacer count={4} />
 
       <h1>Nextstrain core team</h1>
-
       <FlexCenter>
         <FocusParagraphCentered>
-          Nextstrain was co-founded by:
+          Nextstrain development is co-led by:
         </FocusParagraphCentered>
       </FlexCenter>
-      <TeamPageList membersKey="founders" />
-
+      <TeamPageList membersKey="leads" />
       <FlexCenter>
         <FocusParagraphCentered>
           The core team currently working on Nextstrain are:
         </FocusParagraphCentered>
       </FlexCenter>
       <TeamPageList membersKey="core" />
+      <MediumSpacer />
 
-      <h1>Nextstrain Alumni</h1>
+      <h1>Founders</h1>
+      <FlexCenter>
+        <FocusParagraphCentered>
+          Trevor and Richard coded first version of Nextflu in early 2015 and
+          subsequently expanded to Nextstrain with Ebola, Zika and other pathogens
+          in a single framework.
+        </FocusParagraphCentered>
+      </FlexCenter>
+      <TeamPageList membersKey="founders" />
+      <MediumSpacer />
+
+      <h1>Alumni</h1>
       <FlexCenter>
         <FocusParagraphCentered>
           Our previous core Nextstrain team members, some of whom are still
@@ -47,8 +57,8 @@ export default function TeamPage(): React.ReactElement {
           see the history of (code) contributions.
         </FocusParagraphCentered>
       </FlexCenter>
-      <BigSpacer />
       <TeamPageList membersKey="alumni" />
+      <MediumSpacer />
 
       <h1>Scientific Advisory Board</h1>
       <FlexCenter>
