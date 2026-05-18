@@ -8,7 +8,7 @@ import { TeamMember, teamMembers } from "./teamMembers";
  * members in the footer.
  */
 export function FooterTeamList(): React.ReactElement {
-  const people = [...teamMembers["founders"], ...teamMembers["core"]];
+  const people = [...teamMembers["leads"], ...teamMembers["core"]];
 
   return (
     <div className={styles.footerWrapper}>

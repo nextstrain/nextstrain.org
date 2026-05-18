@@ -6,25 +6,42 @@ export type TeamMember = {
 };
 
 export const teamMembers: {
+  leads: TeamMember[];
   founders: TeamMember[];
   core: TeamMember[];
   alumni: TeamMember[];
   board: TeamMember[];
 } = {
+  leads: [
+    {
+      name: "Richard Neher",
+      image: "richard-neher.jpg",
+      link: "https://neherlab.org/richard-neher.html",
+      blurb:
+        "Richard leads Basel-based operations focused broadly on algorithms and Nextclade.",
+    },
+    {
+      name: "JT McCrone",
+      image: "jt-mccrone.jpg",
+      link: "https://mccronelab.github.io/people/",
+      blurb:
+        "JT leads Seattle-based operations focused on bioinformatic tooling and visualization.",
+    }
+  ],
   founders: [
     {
       name: "Trevor Bedford",
       image: "trevor-bedford.jpg",
       link: "https://bedford.io/team/trevor-bedford/",
       blurb:
-        "Trevor and Richard coded first version of Nextflu in early 2015. Subsequently, Trevor has helped to guide development of software to endemic and emerging pathogens with a focus on UX and scientific impact.",
+        "After initial prototyping and development, Trevor helped to guide applications to endemic and emerging pathogens with a focus on UX and scientific impact.",
     },
     {
       name: "Richard Neher",
       image: "richard-neher.jpg",
       link: "https://neherlab.org/richard-neher.html",
       blurb:
-        "Richard and Trevor coded first version of Nextflu in early 2015. Richard has focussed on the methods and algorithms in Nextstrain's analyses and more recently on Nextclade.",
+        "After initial prototyping and development, Richard focussed on the methods and algorithms in Nextstrain's analyses and more recently on Nextclade.",
     },
   ],
   core: [
@@ -34,6 +51,13 @@ export const teamMembers: {
       link: "https://neherlab.org/ivan-aksamentov.html",
       blurb:
         "Ivan joined the team in 2020 and focuses on Nextclade and some of the algorithms in Nextstrain's underlying tools.",
+    },
+    {
+      name: "Trevor Bedford",
+      image: "trevor-bedford.jpg",
+      link: "https://bedford.io/team/trevor-bedford/",
+      blurb:
+        "Trevor advises on pathogen prioritization and analysis strategies as well as overall UX design.",
     },
     {
       name: "James Hadfield",
@@ -69,13 +93,6 @@ export const teamMembers: {
       link: "https://bedford.io/team/victor-lin/",
       blurb:
         "Victor joined the team in 2021 and works on all aspects of Nextstrain with a particular focus on tooling (e.g. Augur, runtimes) and documentation.",
-    },
-    {
-      name: "JT McCrone",
-      image: "jt-mccrone.jpg",
-      link: "https://mccronelab.github.io/people/",
-      blurb:
-        "JT joined the team in 2025.",
     },
     {
       name: "Cornelius Roemer",
@@ -167,7 +184,7 @@ export const teamMembers: {
       image: "thomas-sibley.jpg",
       link: "https://bedford.io/team/thomas-sibley/",
       blurb:
-        "Thomas was part of the team from 2018–2025 and worked on all aspects of Nextstrain with a particular focus on reducing barriers to usage via better infrastructure (e.g. nextstrain.org, Groups), tooling (e.g. CLI, runtimes), and documentation.",
+        "Thomas was part of the team from 2018–2025 and worked on all aspects of Nextstrain with a focus on reducing barriers to usage via better infrastructure (nextstrain.org, Groups), tooling (CLI, runtimes), and documentation.",
     },
     {
       name: "Cassia Wagner",
