@@ -1,6 +1,6 @@
 ---
 author: "JT McCrone, Richard Neher, Trevor Bedford"
-date: "2026-05-15"
+date: "2026-05-19"
 title: "Nextstrain Annual Update May 2026"
 sidebarTitle: "Annual Update May 2026"
 ---
