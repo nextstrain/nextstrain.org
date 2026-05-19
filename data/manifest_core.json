@@ -307,6 +307,8 @@
         "outbreak": {
           "all-outbreaks": "",
           "ebov-2013": "",
+          "bdbv": "",
+          "sudv": "",
           "default": "all-outbreaks"
         }
       },
