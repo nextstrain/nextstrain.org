@@ -16,6 +16,11 @@
   img: measles_northamerica.png
   url: /groups/blab/measles/north-america
 
+- name: BDBV (Ebola)
+  description: Bundibugyo ebolavirus genomes
+  img: bdbv.png
+  url: /ebola/bdbv
+
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
   img: ncov_freq.png
