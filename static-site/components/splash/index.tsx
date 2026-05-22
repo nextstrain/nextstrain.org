@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip-v5";
 import ScrollableAnchor from "../../vendored/react-scrollable-anchor/ScrollableAnchor";
 
-import featuredAnalyses from "../../content/featured-analyses.yaml";
+import featuredAnalysesYaml from "../../content/featured-analyses.yaml";
 
 import bookOpenIcon from "../../static/logos/fa-book-open-solid.svg";
 import circleInfoIcon from "../../static/logos/fa-circle-info-solid.svg";
@@ -34,6 +34,9 @@ export interface SplashTile extends GenericTileBase {
   /** url to the dataset on the tile */
   url: string;
 }
+// TypeScript interfaces are not available at runtime, so keep the keys in a
+// runtime value.
+const splashTileKeys = ["name", "description", "img", "url"] satisfies (keyof SplashTile)[];
 
 /** width of an individual tile, in pixels */
 const tileWidth = 220; // pixels
@@ -45,6 +48,8 @@ const tileHeight = 285; // pixels
  * different places
  */
 const tooltipId = "featuredAnalysesTooltip";
+
+const featuredAnalyses = validateFeaturedAnalyses(featuredAnalysesYaml);
 
 /** A React Client component to render the "splash" section of the home page */
 export default function Splash(): React.ReactElement {
@@ -110,9 +115,7 @@ export default function Splash(): React.ReactElement {
 
       <BigSpacer />
       <ExpandableTiles
-        tiles={
-          featuredAnalyses as SplashTile[] /* eslint-disable-line @typescript-eslint/consistent-type-assertions */
-        }
+        tiles={featuredAnalyses}
         tileWidth={tileWidth}
         tileHeight={tileHeight}
         TileComponent={Tile}
@@ -454,4 +457,32 @@ function TooltipWrapper({
       {children}
     </span>
   );
+}
+/**
+ * Validate a featured analyses YAML file.
+ *
+ * Note: only types are validated. An img or url string value that 404s is still
+ * seen as valid here. It's possible to use require(…) to validate img files,
+ * but this gets complicated for urls given we are in static-site and the urls
+ * are served elsewhere.
+ */
+function validateFeaturedAnalyses(yamlContents: unknown): SplashTile[] {
+  if (!Array.isArray(yamlContents)) {
+    throw new Error("featured-analyses.yaml must contain a list of entries");
+  }
+
+  function isValid(entry: unknown): entry is SplashTile {
+    return (
+      entry !== null &&
+      typeof entry === "object" &&
+      splashTileKeys.every(key => typeof Reflect.get(entry, key) === "string")
+    );
+  }
+
+  if (!yamlContents.every(isValid)) {
+    const invalidEntry = yamlContents.findIndex(entry => !isValid(entry));
+    throw new Error(`featured-analyses.yaml entry at index ${invalidEntry} is invalid`);
+  }
+
+  return yamlContents;
 }
