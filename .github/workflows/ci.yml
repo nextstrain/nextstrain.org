@@ -94,6 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: heroku/heroku:24
+      # The image's default user does not have access to the working directory.
+      # <https://devcenter.heroku.com/articles/heroku-24-stack>
+      options: --user root
     env:
       # Override NODE_ENV=production default in production build (slug)
       NODE_ENV: development
