@@ -47,5 +47,5 @@ docker run \
   --env HOME=/app \
   --env BASH_ENV=/app/.heroku/BASH_ENV \
   "${docker_args[@]:0}" \
-  heroku/heroku:22 \
+  heroku/heroku:24 \
     bash -c -- 'exec "$@"' "$1" "$@"
