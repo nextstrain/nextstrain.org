@@ -12,6 +12,7 @@ const sourceNameToClass = new Map([
   ["nextclade", sources.NextcladeSource],
   ["community", sources.CommunitySource],
   ["fetch", sources.UrlDefinedSource],
+  ["browser-fetch", sources.UrlDefinedBrowserSource],
   ["groups", sources.GroupSource],
 ]);
 
@@ -47,6 +48,7 @@ const splitPrefixIntoParts = (prefix) => {
     case "staging":
     case "nextclade":
     case "fetch":
+    case "browser-fetch":
       sourceName = prefixParts.shift();
       break;
     case "groups":
@@ -89,8 +91,9 @@ const splitPrefixIntoParts = (prefix) => {
       source = new Source(...prefixParts.splice(0, 2));
       break;
 
-    // UrlDefined source requires a URL authority part
+    // URL-defined sources requires a URL authority part
     case "fetch":
+    case "browser-fetch":
       source = new Source(prefixParts.shift());
       break;
 
@@ -123,6 +126,7 @@ const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) =
     case "staging":
     case "nextclade":
     case "fetch":
+    case "browser-fetch":
       leadingParts.push(sourceName);
       break;
 
@@ -144,8 +148,9 @@ const joinPartsIntoPrefix = async ({source, prefixParts, isNarrative = false}) =
       leadingParts.push(source.owner, await source.repoNameWithBranch());
       break;
 
-    // UrlDefined source requires a URL authority part
+    // URL-defined sources requires a URL authority part
     case "fetch":
+    case "browser-fetch":
       leadingParts.push(source.authority);
       break;
 

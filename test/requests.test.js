@@ -102,6 +102,27 @@ describe("datasets", () => {
     ]);
   });
 
+  describe("browser-fetch", () => {
+    const path = "/browser-fetch/example.com/path/to/dataset.json";
+
+    testIsAuspice(path);
+    testRedirectsToUpstream({
+      path,
+      accept: "application/json",
+      location: "https://example.com/path/to/dataset.json",
+    });
+    testRedirectsToUpstream({
+      path,
+      accept: "application/vnd.nextstrain.dataset.root-sequence+json",
+      location: "https://example.com/path/to/dataset_root-sequence.json",
+    });
+    testRedirectsToUpstream({
+      path: "/charon/getDataset?prefix=/browser-fetch/example.com/path/to/dataset.json",
+      accept: "application/json",
+      location: "https://example.com/path/to/dataset.json",
+    });
+  });
+
   function testPaths(cases) {
     cases.forEach(testPath);
   }
@@ -232,6 +253,22 @@ describe("narratives", () => {
         testDoesNotExist: false
       },
     ]);
+  });
+
+  describe("browser-fetch", () => {
+    const path = "/browser-fetch/narratives/example.com/path/to/narrative.md";
+
+    testIsAuspice(path);
+    testRedirectsToUpstream({
+      path,
+      accept: "text/markdown",
+      location: "https://example.com/path/to/narrative.md",
+    });
+    testRedirectsToUpstream({
+      path: "/charon/getNarrative?prefix=/browser-fetch/narratives/example.com/path/to/narrative.md&type=md",
+      accept: "text/markdown",
+      location: "https://example.com/path/to/narrative.md",
+    });
   });
 
   function testPaths(cases) {
@@ -376,6 +413,25 @@ function testBadRequest(path) {
       const body = await res.json();
       expect(body).toHaveProperty("error");
       expect(body.error).toMatch(/paths may not include underscores/);
+    });
+  });
+}
+
+function testRedirectsToUpstream({path, accept, location}) {
+  describe(`${path} redirects upstream (accept: ${accept})`, () => {
+    const req = fetch(url(path), {
+      headers: {Accept: accept},
+      redirect: "manual",
+    });
+
+    test("status is 307", async () => {
+      const res = await req;
+      expect(res.status).toBe(307);
+    });
+
+    test("location is the upstream URL", async () => {
+      const res = await req;
+      expect(res.headers.get("Location")).toBe(location);
     });
   });
 }

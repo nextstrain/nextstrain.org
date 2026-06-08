@@ -45,6 +45,8 @@ class UrlDefinedSource extends Source {
   }
 }
 
+class UrlDefinedBrowserSource extends UrlDefinedSource {}
+
 class UrlDefinedDataset extends Dataset {
   static get Subresource() {
     return UrlDefinedDatasetSubresource;
@@ -133,4 +135,5 @@ class UrlDefinedNarrativeSubresource extends NarrativeSubresource {
 
 export {
   UrlDefinedSource,
+  UrlDefinedBrowserSource,
 };

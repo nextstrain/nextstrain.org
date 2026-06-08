@@ -105,6 +105,7 @@ const setup = (app) => {
     "/docs/contributing/development": `${mainReadTheDocs}/guides/contribute/index.html`,
     "/docs/contributing/fetch-data-from-custom-urls": `${mainReadTheDocs}/guides/share/fetch-via-urls.html`,
     "/fetch": `${mainReadTheDocs}/guides/share/fetch-via-urls.html`,
+    "/browser-fetch": `${mainReadTheDocs}/guides/share/fetch-via-urls.html`,
     "/docs/contributing/nextstrain-groups": `${mainReadTheDocs}/guides/share/nextstrain-groups.html`,
     "/docs/contributing/sharing-data": `${mainReadTheDocs}/guides/share/index.html`,
     "/docs/contributing/philosophy": `${mainReadTheDocs}/guides/share/index.html`,

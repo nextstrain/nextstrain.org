@@ -13,11 +13,14 @@ const {
 
 const {
   UrlDefinedSource,
+  UrlDefinedBrowserSource,
 } = sources;
 
 export function setup(app) {
   app.use(["/fetch/narratives/:authority", "/fetch/:authority"],
     setSource(req => new UrlDefinedSource(req.params.authority)));
+  app.use(["/browser-fetch/narratives/:authority", "/browser-fetch/:authority"],
+    setSource(req => new UrlDefinedBrowserSource(req.params.authority)));
 
   app.routeAsync("/fetch/narratives/:authority/*")
     .all(setNarrative(req => req.params[0]))
@@ -26,6 +29,18 @@ export function setup(app) {
   ;
 
   app.routeAsync("/fetch/:authority/*")
+    .all(setDataset(req => req.params[0]))
+    .getAsync(getDataset)
+    .optionsAsync(optionsDataset)
+  ;
+
+  app.routeAsync("/browser-fetch/narratives/:authority/*")
+    .all(setNarrative(req => req.params[0]))
+    .getAsync(getNarrative)
+    .optionsAsync(optionsNarrative)
+  ;
+
+  app.routeAsync("/browser-fetch/:authority/*")
     .all(setDataset(req => req.params[0]))
     .getAsync(getDataset)
     .optionsAsync(optionsDataset)

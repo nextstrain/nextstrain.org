@@ -3,6 +3,6 @@
 
 export { CoreSource, CoreStagingSource } from './core.js';
 export { CommunitySource } from './community.js';
-export { UrlDefinedSource } from './fetch.js';
+export { UrlDefinedSource, UrlDefinedBrowserSource } from './fetch.js';
 export { GroupSource } from './groups.js';
 export { NextcladeSource } from './nextclade.js';

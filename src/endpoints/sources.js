@@ -5,6 +5,7 @@ import { NotFound } from '../httpErrors.js';
 
 import * as authz from '../authz/index.js';
 import { contentTypesProvided, contentTypesConsumed } from '../negotiate.js';
+import { UrlDefinedBrowserSource } from '../sources/index.js';
 import * as options from './options.js';
 import { sendAuspiceEntrypoint } from './auspice.js';
 import { deleteByUrls, proxyFromUpstream, proxyToUpstream } from "../upstream.js";
@@ -317,6 +318,13 @@ function sendSubresource(subresourceExtractor) {
     authz.assertAuthorized(req.user, authz.actions.Read, subresource.resource);
 
     res.set("Content-Disposition", contentDisposition(subresource.conventionalFilename));
+
+    if (subresource.resource.source instanceof UrlDefinedBrowserSource) {
+      /* 307 Temporary Redirect preserves request method, unlike 302 Found, which
+       * is important since this middleware function may be used in non-GET routes.
+       */
+      return res.redirect(307, await subresource.url());
+    }
 
     return await proxyFromUpstream(req, res,
       await subresource.url(),

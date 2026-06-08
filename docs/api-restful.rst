@@ -354,6 +354,8 @@ The following dataset endpoints exist::
 
     {GET, HEAD, OPTIONS} /fetch/*
 
+    {GET, HEAD, OPTIONS} /browser-fetch/*
+
 The following narrative endpoints exist::
 
     {GET, HEAD, PUT, DELETE, OPTIONS} /narratives/*
@@ -365,6 +367,8 @@ The following narrative endpoints exist::
     {GET, HEAD, OPTIONS} /community/narratives/{user}/{repo}/*
 
     {GET, HEAD, OPTIONS} /fetch/narratives/*
+
+    {GET, HEAD, OPTIONS} /browser-fetch/narratives/*
 
 The following group settings endpoints exist::
 
