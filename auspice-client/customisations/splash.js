@@ -102,15 +102,40 @@ function ErrorMessage({errorMessage, errorStatus}) {
   `;
   const fetchHost = parseFetchHost(window.location.pathname);
 
-  if (fetchHost && errorStatus === 503) {
-    return (
-      <FixedBanner>
-        {`Nextstrain couldn't fetch this dataset from ${fetchHost}.`}
-        <p style={{fontSize: "14px"}}>
-          {`The dataset host returned HTTP 503, which may mean it is temporarily unavailable or blocking requests from Nextstrain's server. Try again later or contact the host.`}
-        </p>
-      </FixedBanner>
-    );
+  if (fetchHost) {
+    let detail;
+    // errorStatus is from nextstrain.org, which proxies status codes with a fallback to 500 (see src/routing/errors.js)
+    switch (errorStatus) {
+      case 401:
+      case 403:
+        detail = `The dataset host returned HTTP ${errorStatus}, which means the request was not authorized. The dataset may be private and inaccessible by Nextstrain's server.`;
+        break;
+      case 404:
+        detail = `The dataset host returned HTTP ${errorStatus}, which means it could not find this dataset. Check that the URL is correct.`;
+        break;
+      case 502:
+      case 504:
+        detail = `The dataset host returned HTTP ${errorStatus}, which indicates a server-side error on the host. Try again later or contact the host.`;
+        break;
+      case 503:
+        detail = `The dataset host returned HTTP ${errorStatus}, which may mean it is temporarily unavailable or blocking requests from Nextstrain's server. Try again later or contact the host.`;
+        break;
+      case 500:
+        detail = `Details: ${errorMessage}`;
+        break;
+      default:
+        break;
+    }
+    if (detail) {
+      return (
+        <FixedBanner>
+          {`Nextstrain couldn't fetch this dataset from ${fetchHost}.`}
+          <p style={{fontSize: "14px"}}>
+            {detail}
+          </p>
+        </FixedBanner>
+      );
+    }
   }
 
   return (
