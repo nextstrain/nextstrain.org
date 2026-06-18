@@ -130,3 +130,15 @@
     font-style: italic;
     padding: 0 1rem 1rem;
 }
+
+.blogPostBody pre {
+    color: #555;
+    font-size: 90%;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-weight: 300;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin: 1rem;
+    overflow-x: auto;
+    line-height: 1.5;
+}
