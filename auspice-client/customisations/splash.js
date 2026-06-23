@@ -16,7 +16,7 @@ const defaultPageInfo = {
 };
 
 
-const Splash = ({available, browserDimensions, dispatch, errorMessage, changePage}) => {
+const Splash = ({available, browserDimensions, dispatch, errorMessage, errorStatus, changePage}) => {
 
   const [pageInfo, setPageInfo] = useState(defaultPageInfo);
   useEffect(
@@ -32,7 +32,7 @@ const Splash = ({available, browserDimensions, dispatch, errorMessage, changePag
   return (
     <>
       <NavBar sidebar={false}/>
-      {errorMessage ? <ErrorMessage errorMessage={errorMessage}/> : null}
+      {errorMessage ? <ErrorMessage errorMessage={errorMessage} errorStatus={errorStatus}/> : null}
       <div className="static container">
         <Title avatarSrc={pageInfo.avatar}>
           {pageInfo.title}
@@ -90,7 +90,7 @@ function ListAvailable({type, data, width, dispatch, changePage}) {
   );
 }
 
-function ErrorMessage({errorMessage}) {
+function ErrorMessage({errorMessage, errorStatus}) {
   const FixedBanner = styled.div`
     left: 0px;
     width: 100%;
@@ -100,6 +100,44 @@ function ErrorMessage({errorMessage}) {
     padding: 15px 5%;
     margin: 25px 0px;
   `;
+  const fetchHost = parseFetchHost(window.location.pathname);
+
+  if (fetchHost) {
+    let detail;
+    // errorStatus is from nextstrain.org, which proxies status codes with a fallback to 500 (see src/routing/errors.js)
+    switch (errorStatus) {
+      case 401:
+      case 403:
+        detail = `The dataset host returned HTTP ${errorStatus}, which means the request was not authorized. The dataset may be private and inaccessible by Nextstrain's server.`;
+        break;
+      case 404:
+        detail = `The dataset host returned HTTP ${errorStatus}, which means it could not find this dataset. Check that the URL is correct.`;
+        break;
+      case 502:
+      case 504:
+        detail = `The dataset host returned HTTP ${errorStatus}, which indicates a server-side error on the host. Try again later or contact the host.`;
+        break;
+      case 503:
+        detail = `The dataset host returned HTTP ${errorStatus}, which may mean it is temporarily unavailable or blocking requests from Nextstrain's server. Try again later or contact the host.`;
+        break;
+      case 500:
+        detail = `Details: ${errorMessage}`;
+        break;
+      default:
+        break;
+    }
+    if (detail) {
+      return (
+        <FixedBanner>
+          {`Nextstrain couldn't fetch this dataset from ${fetchHost}.`}
+          <p style={{fontSize: "14px"}}>
+            {detail}
+          </p>
+        </FixedBanner>
+      );
+    }
+  }
+
   return (
     <FixedBanner>
       There seems to have been an error accessing that dataset.
@@ -112,6 +150,11 @@ function ErrorMessage({errorMessage}) {
       </p>
     </FixedBanner>
   );
+}
+
+function parseFetchHost(pathname) {
+  const fetchPath = pathname.match(/^\/fetch\/([^/]+)\//);
+  return fetchPath ? fetchPath[1] : null;
 }
 
 /* lifted from auspice's default splash page */
