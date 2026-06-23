@@ -24,7 +24,7 @@ jobs:
           unzip terraform.zip -d "$HOME/terraform"
           echo "$HOME/terraform" >> "$GITHUB_PATH"
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: scripts/terraform-fmt -check
 
   validate:
@@ -42,7 +42,7 @@ jobs:
           unzip terraform.zip -d "$HOME/terraform"
           echo "$HOME/terraform" >> "$GITHUB_PATH"
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - run: terraform init -backend=false
         working-directory: ${{matrix.env}}
