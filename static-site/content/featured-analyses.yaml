@@ -6,20 +6,16 @@
 
 # Image paths in this YAML are relative to REPO_ROOT/static-site/static/pathogen_images/
 
-- name: Andes Hantavirus
-  description: Phylogenies of ANDV (L, G & S segments)
-  img: andv.png
-  url: /groups/hodcroftlab/andv/S
+
+- name: BDBV (Ebola)
+  description: Ongoing Bundibugyo ebolavirus outbreak in the DRC & Uganda
+  img: bdbv.jpg
+  url: /ebola/bdbv-drc-uganda-2026
 
 - name: Measles outbreak
   description: Spread of 2025-2026 North America measles outbreak
   img: measles_northamerica.png
   url: /groups/blab/measles/north-america
-
-- name: BDBV (Ebola)
-  description: Bundibugyo ebolavirus genomes
-  img: bdbv.png
-  url: /ebola/bdbv
 
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
@@ -31,12 +27,17 @@
   img: mpox_drc.png
   url: /groups/inrb-mpox/clade-I
 
+- name: Andes Hantavirus
+  description: Phylogenies of ANDV (L, G & S segments)
+  img: andv.png
+  url: /groups/hodcroftlab/andv/S
+
 - name: Tuberculosis
   description: Mycobacterium tuberculosis evolution and spread
   img: tb_tree.png
   url: /tb/global
 
-- name: All Ebola outbreaks
+- name: Ebola (EBOV)
   description: Evolutionary history of all Zaire ebolavirus outbreaks
   img: ebola_streams.png
   url: /ebola/all-outbreaks
