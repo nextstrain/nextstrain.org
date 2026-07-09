@@ -11,8 +11,10 @@ The Nextstrain team has been focused on extending the usability of Auspice and
 ## Amino Acid datasets
 
 Most Nextstrain datasets focus on nucleotide analyses, but we've had requests
-from users for support of entirely amino acid analyses. Auspice has been updated
-to work with amino acid only datasets. Please see our
+from users for support of entirely amino acid analyses.
+As of [Augur 33.1.0](https://github.com/nextstrain/augur/releases/tag/33.1.0) &
+[Auspice 2.69.0](https://github.com/nextstrain/auspice/releases/tag/v2.69.0)
+we can now run such analyses. Please see our
 [Amino Acid Workflows guide](https://docs.nextstrain.org/en/latest/guides/bioinformatics/amino-acid-workflows.html)
 for more details.
 
@@ -26,12 +28,25 @@ for their Auspice dataset. Please see our
 [sharing controls](https://docs.nextstrain.org/projects/auspice/en/stable/advanced-functionality/view-settings.html#sharing-control-which-assets-auspice-exposes-for-download)
 for more details.
 
+## Download dataset JSON is created on-the-fly
+
+When choosing to download a JSON from within Auspice we now create the JSON
+dynamically rather than re-fetching it from the underlying source. This allows
+[auspice.us](https://auspice.us) to use this functionality, including when
+starting from newick trees, as well as containing any dragged-on metadata.
+We attempt to reflect the current UI state in the downloaded dataset, so that
+things like the current color-by, tree layout etc become the new defaults in
+the downloaded JSON; in the future we will extend this to (e.g.) use the
+current zoom state to download the subtree.
+
 ## Merging drag-and-drop metadata
 
 The drag-and-drop metadata feature has been made more powerful by merging data
 into existing colorings and supporting node data JSON files. In addition, the
 merged metadata is now included in the downloaded Auspice JSON so that users
-can keep a local copy of the merged dataset.
+can keep a local copy of the merged dataset. For more details, please see the
+[drag-and-drop extra metadata](https://docs.nextstrain.org/projects/auspice/en/stable/advanced-functionality/drag-drop-csv-tsv.html)
+docs page.
 
 ## Offline use of auspice.us
 
