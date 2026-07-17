@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 4px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+:global(.dark-mode) .container {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--darkGrey);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+.button:hover {
+  opacity: 1;
+}
+
+.active {
+  opacity: 1;
+  background: var(--darkGrey);
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.2);
+  margin: 0 4px;
+}

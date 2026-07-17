@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { Lato } from "next/font/google";
+import { useTranslation } from "./i18n";
 
 import { BigSpacer } from "../components/spacers";
 import Footer from "../components/footer";
@@ -70,13 +71,16 @@ const jsonLd: string = JSON.stringify({
  * A React Component that provides the overall page layout used by
  * every page on the site.
  */
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}): React.ReactElement {
+}): Promise<React.ReactElement> {
+  const { i18n } = await useTranslation();
+  const lang = i18n.language || "en";
+
   return (
-    <html lang="en">
+    <html lang={lang}>
       <head>
         {!groupsApp && (
           <>
