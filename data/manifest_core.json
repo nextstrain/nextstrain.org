@@ -198,6 +198,59 @@
               "default": "ha"
             }
           },
+          "h7nx": {
+            "segment": {
+              "ha": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "mp": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "na": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "ns": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "np": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pa": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pb1": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "pb2": {
+                "resolution": {
+                  "all-time": "",
+                  "default": "all-time"
+                }
+              },
+              "default": "ha"
+            }
+          },
           "h9n2": {
             "segment": {
               "ha": {
