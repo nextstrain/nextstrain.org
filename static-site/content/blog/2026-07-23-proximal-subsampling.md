@@ -16,21 +16,21 @@ We include an example tutorial to demonstrate the utility of this approach, sele
 
 
 ## Table of contents:
-* Augur Proximity 
-  * Proximal sampling via Augur Subsample
-* Performance
-  * SARS-CoV-2 
-* Tutorial: North American 2025-26 Measles outbreak 
-  * Prerequisites
-  * Configuring the analysis
-  * Running the analysis
+* [Augur Proximity](#augur-proximity)
+  * [Proximal sampling via Augur Subsample](#proximal-sampling-via-augur-subsample)
+* [Performance](#performance)
+  * [SARS-CoV-2](#sars-cov-2)
+* [Tutorial: North American 2025-26 Measles outbreak](#tutorial-north-american-2025-26-measles-outbreak)
+  * [Prerequisites](#prerequisites)
+  * [Configuring the analysis](#configuring-the-analysis)
+  * [Running the analysis](#running-the-analysis)
 
 
 # Augur Proximity
 
 `augur proximity`, introduced in [Augur 33.1.0](https://github.com/nextstrain/augur/releases/tag/33.1.0), compares (a small set of) focal sequences against (a large set of) contextual sequences and returns the set of sequences closest to the focal set.
 Closest here means Hamming distance, i.e. the number of nucleotide differences between two sequences.
-In general, finding proximal sequences is quick but memory intensive, see "Performance" below.
+In general, finding proximal sequences is quick but memory intensive, see "[Performance](#performance)" below.
 
 There are three parameters you can use to configure how matches are found, see [the docs for full details](https://docs.nextstrain.org/projects/augur/en/latest/usage/cli/proximity.html):
   1. How many closest neighbours to find for each focal sequence (`--k`, default 5)
