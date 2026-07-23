@@ -39,13 +39,13 @@ There are three parameters you can use to configure how matches are found, see [
      By default, a valid nucleotide in sequence A and missing data in sequence B would count as a difference.
      Choosing "all" would result in them being considered the same, while "flanking" would do the same only for runs of missing data at the start/end of each sequence.
 
-  
+
 While you can use the `augur proximity` command by itself we expect using its capabilities through `augur subsample` to be the most common use case.
 
 ## Proximal sampling via Augur Subsample
 
-`augur subsample` uses a config YAML to define various samples which are combined together to produce the subsampled datasets; for instance one sample might filter the dataset by geographical region and time whilst a second sample chose 1000 recent samples from your country of interest. 
-An individual sample may represent a proximal sample, for instance finding the set of 1000 genomes which are closest to a small set of genomes of interest (e.g. newly collected outbreak samples). 
+`augur subsample` uses a config YAML to define various samples which are combined together to produce the subsampled datasets; for instance one sample might filter the dataset by geographical region and time whilst a second sample chose 1000 recent samples from your country of interest.
+An individual sample may represent a proximal sample, for instance finding the set of 1000 genomes which are closest to a small set of genomes of interest (e.g. newly collected outbreak samples).
 
 See the [augur subsample docs](https://docs.nextstrain.org/projects/augur/en/latest/usage/cli/subsample.html), and specifically the [proximal sample options available](https://docs.nextstrain.org/projects/augur/en/latest/usage/cli/subsample.html#proximal-sample-options) for more.
 
@@ -65,10 +65,10 @@ For most viral pathogens finding proximal sequences across all available data is
 <p/>
 <div class='figure'>
 <img src="/blog/img/proximity-pathogens.png" alt="runtime-memory-for-different-pathogens" />
-    
-**Figure 1.** 
+
+**Figure 1.**
 Runtime and memory usage for 3 viral pathogens, Zika, Influenza H3 (HA segment) and mpox, using all available data as the contextual set and randomly choosing 100 sequences as the focal set and running on 4 cores; all other parameters are default.
-Each pathogen was run 3 times using a different focal set; memory usage is peak memory footprint as measured on MacOS. 
+Each pathogen was run 3 times using a different focal set; memory usage is peak memory footprint as measured on MacOS.
 
 </div>
 
@@ -82,7 +82,7 @@ Finally, parallalisation (green) is extremely good, with no effect on overall me
 <p/>
 <div class='figure'>
 <img src="/blog/img/proximity-param-changes.png" alt="effect-of-parameters-on-runtime-memory" />
-    
+
 **Figure 2.**
 The effect of parameter choices and input data on runtime and memory.
 Results are of three independent runs using a real-life dataset of Influenza A PB1 sequences (2.3kb), with a focal set of n=800 and a contextual set of n=374k sequences.
@@ -111,7 +111,7 @@ Figure 3 should help guide the number of contextual sequences your environment c
 <p/>
 <div class='figure'>
 <img src="/blog/img/proximity-ncov.png" alt="ncov-analyses" />
-    
+
 **Figure 3.**
 Finding proximal sequences for nCoV is memory bound.
 In our current implementation both runtime and memory scale linearly with the number of contextual sequences, making full analysis of SARS-CoV-2 genomes unfeasible as currently there are over 9M genomes available on GenBank.
@@ -210,15 +210,15 @@ nextstrain run measles phylogenetic .
 ```
 
 When completed, the analysis is available in the `auspice/` directory.
-You can either drag these JSONs onto [auspice.us](https://auspice.us) or use `nextstrain view auspice` to open a browser tab. 
+You can either drag these JSONs onto [auspice.us](https://auspice.us) or use `nextstrain view auspice` to open a browser tab.
 You should see a tree similar to Figure 4.
 
 <p/>
 <div class='figure'>
 <img src="/blog/img/proximity-tutorial-tree.png" alt="ncov-analyses" />
-    
+
 **Figure 4.**
-The phylogenetic tree produced by this tutorial. Montana samples (i.e. those from the "montana-outbreak" yaml config block) are highlighted. 
+The phylogenetic tree produced by this tutorial. Montana samples (i.e. those from the "montana-outbreak" yaml config block) are highlighted.
 
 </div>
 
@@ -229,7 +229,7 @@ Comparing the small tutorial tree with only 136 North American genomes vs our cu
 <p/>
 <div class='figure'>
 <img src="/blog/img/proximity-tutorial-tangle.png" alt="subsampled-tree-vs-full-tree" />
-    
+
 **Figure 5.**
 (**A**) Zoomed in view of the tutorial tree's n=136 North American genomes (LHS) vs a more comprehensive analysis showing n=1992 North American D8 genomes (RHS); horizontal axis represents time.
 The full tree is the measles workflow's "genome/north-america" build.
