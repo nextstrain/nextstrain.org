@@ -32,7 +32,7 @@ We include an example tutorial to demonstrate the utility of this approach, sele
 Closest here means Hamming distance, i.e. the number of nucleotide differences between two sequences.
 In general, finding proximal sequences is quick but memory intensive, see "Performance" below.
 
-There are three parameters you can use to configure how matches are found, see [the docs for full details](https://docs.nextstrain.org/projects/augur/en/latest/usage/cli/proximity.html#sars-cov-2):
+There are three parameters you can use to configure how matches are found, see [the docs for full details](https://docs.nextstrain.org/projects/augur/en/latest/usage/cli/proximity.html):
   1. How many closest neighbours to find for each focal sequence (`--k`, default 5)
   1. The maximum allowed Hamming distance for a match (`--max-distance`, default 4)
   1. How missing data (non-ATGC characters) should be considered (`--ignore-missing-data`).
