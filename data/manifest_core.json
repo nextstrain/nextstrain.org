@@ -416,9 +416,19 @@
         }
       },
       "measles": {
-        "resolution": {
-          "genome": "",
-          "N450": "",
+        "gene": {
+          "genome": {
+            "region": {
+              "global": "",
+              "default": "global"
+            }
+          },
+          "N450": {
+            "region": {
+              "global": "",
+              "default": "global"
+            }
+          },
           "default": "genome"
         }
       },
