@@ -33,6 +33,7 @@ const coreBuildPaths = [
   "/dengue",
   "/ebola",
   "/enterovirus",
+  "/hantavirus",
   "/hmpv",
   "/lassa",
   "/measles",

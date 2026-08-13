@@ -149,3 +149,7 @@ coreTiles:
     img: chikv_core.png
     filters:
       - chikv
+  - name: Hantavirus
+    img: hantavirus.png
+    filters:
+      - hantavirus
