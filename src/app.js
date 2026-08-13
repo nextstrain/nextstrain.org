@@ -58,24 +58,7 @@ charon.setup(app);
 /* Core datasets and narratives
  *
  * Routes:
- *   /avian-flu
- *   /dengue
- *   /ebola
- *   /enterovirus
- *   /lassa
- *   /measles
- *   /mers
- *   /mumps
- *   /monkeypox
- *   /mpox
- *   /ncov
- *   /rsv
- *   /rubella
- *   /seasonal-flu
- *   /tb
- *   /WNV
- *   /yellow-fever
- *   /zika
+ *   /<dataset>
  *   /narratives/*
  */
 core.setup(app);
