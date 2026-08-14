@@ -378,6 +378,51 @@
           "default": "d68"
         }
       },
+      "hantavirus": {
+        "species": {
+          "andv": {
+            "segment": {
+              "l": "",
+              "m": "",
+              "s": "",
+              "default": "l"
+            }
+          },
+          "htnv": {
+            "segment": {
+              "l": "",
+              "m": "",
+              "s": "",
+              "default": "l"
+            }
+          },
+          "puuv": {
+            "segment": {
+              "l": "",
+              "m": "",
+              "s": "",
+              "default": "l"
+            }
+          },
+          "seov": {
+            "segment": {
+              "l": "",
+              "m": "",
+              "s": "",
+              "default": "l"
+            }
+          },
+          "tulv": {
+            "segment": {
+              "l": "",
+              "m": "",
+              "s": "",
+              "default": "l"
+            }
+          },
+          "default": "htnv"
+        }
+      },
       "hmpv": {
         "type": {
           "all": {
