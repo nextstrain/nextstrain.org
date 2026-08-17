@@ -43,7 +43,7 @@ The handling of new revision numbers in Heroku review apps is currently still
 handled manually.
 
 Once you've pushed up the changes to the revision number in the config, run
-the `index-resource.yml workflow <https://github.com/nextstrain/nextstrain.org/actions/workflows/index-resources.yml>__`
+the `index-resource.yml workflow <https://github.com/nextstrain/nextstrain.org/actions/workflows/index-resources.yml>`__
 using your branch.
 
 After the new index resources JSON has been uploaded to S3, then open the PR for
