@@ -4,7 +4,6 @@ import fredHutchLogo from "../../static/logos/fred-hutch-logo-small.png";
 import uniBasLogo from "../../static/logos/unibas-logo.svg";
 import nihLogo from "../../static/logos/nih-logo.jpg";
 import bmgfLogo from "../../static/logos/bmgf.png";
-import mapBoxLogo from "../../static/logos/mapbox-logo-black.svg";
 import sibLogo from "../../static/logos/sib-logo.png";
 import ospLogo from "../../static/logos/osp-logo-small.png";
 import bzLogo from "../../static/logos/bz_logo.png";
@@ -48,12 +47,7 @@ export default function Logos(): React.ReactElement {
     {
       imgSrc: sibLogo.src,
       href: "https://www.sib.swiss/",
-      width: 80,
-    },
-    {
-      imgSrc: mapBoxLogo.src,
-      href: "https://www.mapbox.com",
-      width: 110,
+      width: 80
     },
     {
       imgSrc: ospLogo.src,
