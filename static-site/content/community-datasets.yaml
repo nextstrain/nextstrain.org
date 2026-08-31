@@ -210,3 +210,7 @@ data:
     contributor: NPPO-NL
     date: '2025-08-04'
     name: Real-time tracking of Tomato brown rugose fruit virus (ToBRFV) outbreaks using Nextstrain
+  - url: https://nextstrain.org/community/batyanight/cdv-phylodynamics@main
+    contributor: Batya Nightingale
+    date: '2026-08-29'
+    name: Phylodynamics of a wildlife-maintained canine distemper virus lineage in North American carnivores
