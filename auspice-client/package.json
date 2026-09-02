@@ -1,7 +1,7 @@
 {
   "private": true,
   "dependencies": {
-    "auspice": "^2.73.2",
+    "auspice": "^3.0.0",
     "iso-639-1": "^2.1.15"
   }
 }
