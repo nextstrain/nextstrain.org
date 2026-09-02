@@ -398,6 +398,28 @@ function TileSourceIcon({
     url = "/" + url;
   }
 
+  // Special case co-authorship of BDBV outbreak narratives
+  if (url.startsWith("/narratives/ebola/bdbv/drc-uganda-2026")) {
+    return (
+      <>
+        <TooltipWrapper description="Maintained by INRB and Nextstrain teams">
+          <img
+            className={styles.infoIconImg}
+            src="https://github.com/inrb-drc.png?size=40"
+            alt="INRB"
+          />
+        </TooltipWrapper>
+        <TooltipWrapper description="Maintained by INRB and Nextstrain teams">
+          <img
+            className={styles.infoIconImg}
+            src={nextstrainLogoTiny.src}
+            alt="the Nextstrain team"
+          />
+        </TooltipWrapper>
+      </>
+    );
+  }
+
   if (url.startsWith("/community")) {
     const owner = isNarrative ? url.split("/")[3] : url.split("/")[2] || "";
     maintainers = `${owner} on GitHub`;

@@ -7,10 +7,10 @@
 # Image paths in this YAML are relative to REPO_ROOT/static-site/static/pathogen_images/
 
 
-- name: BDBV (Ebola)
+- name: Ebola BDBV outbreak
   description: Ongoing Bundibugyo ebolavirus outbreak in the DRC & Uganda
   img: bdbv.jpg
-  url: /ebola/bdbv-drc-uganda-2026
+  url: /narratives/ebola/bdbv/drc-uganda-2026/2026-09-01
 
 - name: Measles outbreak
   description: Spread of 2025-2026 North America measles outbreak
