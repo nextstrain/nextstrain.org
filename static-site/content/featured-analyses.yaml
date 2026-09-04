@@ -44,7 +44,7 @@
 
 - name: HPAI outbreak
   description: "Highly pathogenic avian influenza in North America"
-  img: hpai_in_na.png
+  img: hpai_in_na.jpg
   url: /community/narratives/moncla-lab/nextstrain-narrative-hpai-north-america@main/HPAI-in-North-America
 
 - name: Seasonal influenza
