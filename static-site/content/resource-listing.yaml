@@ -82,7 +82,7 @@ coreTiles:
     filters:
       - dengue
   - name: Ebola
-    img: ebola_map.png
+    img: ebola_streams.png
     filters:
       - ebola
   - name: Measles
