@@ -59,7 +59,7 @@
 
 - name: Avian influenza
   description: Avian influenza A/H5N1 evolution and spread
-  img: h5n1_map.png
+  img: h5n1_map.jpg
   url: /avian-flu/h5n1/ha/2y
 
 - name: SARS-CoV-2 lineages
