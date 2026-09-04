@@ -142,7 +142,7 @@ coreTiles:
     filters:
       - nipah
   - name: Norovirus
-    img: norovirus_map.png
+    img: norovirus_map.jpg
     filters:
       - norovirus
   - name: Chikungunya

@@ -104,7 +104,7 @@
 
 - name: Norovirus
   description: Norovirus evolution and spread
-  img: norovirus_map.png
+  img: norovirus_map.jpg
   url: /norovirus/all/VP1
 
 - name: Rubella
