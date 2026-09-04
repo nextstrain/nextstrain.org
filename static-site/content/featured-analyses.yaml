@@ -84,7 +84,7 @@
 
 - name: Lassa
   description: Lassa virus evolution and spread
-  img: lassa_map.png
+  img: lassa_map.jpg
   url: /lassa/l
 
 - name: Yersinia pestis

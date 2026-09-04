@@ -110,7 +110,7 @@ coreTiles:
     filters:
       - oropouche
   - name: Lassa
-    img: lassa_map.png
+    img: lassa_map.jpg
     filters:
       - lassa
   - name: Seasonal CoV
