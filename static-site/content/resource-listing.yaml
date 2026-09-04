@@ -106,7 +106,7 @@ coreTiles:
     filters:
       - rabies
   - name: Oropouche
-    img: oropouche_map.png
+    img: oropouche_map.jpg
     filters:
       - oropouche
   - name: Lassa
