@@ -14,7 +14,7 @@
 
 - name: Measles outbreak
   description: Spread of 2025-2026 North America measles outbreak
-  img: measles_northamerica.png
+  img: measles_northamerica.jpg
   url: /groups/blab/measles/north-america
 
 - name: SARS-CoV-2
@@ -24,7 +24,7 @@
 
 - name: Mpox in the DRC
   description: INRB analysis of ongoing mpox clade I outbreak in the DRC
-  img: mpox_drc.png
+  img: mpox_drc.jpg
   url: /groups/inrb-mpox/clade-I
 
 - name: Andes Hantavirus
@@ -44,7 +44,7 @@
 
 - name: HPAI outbreak
   description: "Highly pathogenic avian influenza in North America"
-  img: hpai_in_na.png
+  img: hpai_in_na.jpg
   url: /community/narratives/moncla-lab/nextstrain-narrative-hpai-north-america@main/HPAI-in-North-America
 
 - name: Seasonal influenza
@@ -59,7 +59,7 @@
 
 - name: Avian influenza
   description: Avian influenza A/H5N1 evolution and spread
-  img: h5n1_map.png
+  img: h5n1_map.jpg
   url: /avian-flu/h5n1/ha/2y
 
 - name: SARS-CoV-2 lineages
@@ -74,7 +74,7 @@
 
 - name: Oropouche
   description: Oropouche virus evolution and spread
-  img: oropouche_map.png
+  img: oropouche_map.jpg
   url: /oropouche/L
 
 - name: Mpox
@@ -84,7 +84,7 @@
 
 - name: Lassa
   description: Lassa virus evolution and spread
-  img: lassa_map.png
+  img: lassa_map.jpg
   url: /lassa/l
 
 - name: Yersinia pestis
@@ -104,7 +104,7 @@
 
 - name: Norovirus
   description: Norovirus evolution and spread
-  img: norovirus_map.png
+  img: norovirus_map.jpg
   url: /norovirus/all/VP1
 
 - name: Rubella
@@ -119,17 +119,17 @@
 
 - name: Ebola in the DRC
   description: Genomic epidemiology of the 2018-20 Ebola epidemic in DRC
-  img: ebola_drc_map.png
+  img: ebola_drc_map.jpg
   url: /community/inrb-drc/ebola-nord-kivu
 
 - name: WNV in the Americas
   description: Analysis of twenty years of West Nile virus spread in the Americas
-  img: wnv_map.png
+  img: wnv_map.jpg
   url: /narratives/twenty-years-of-WNV
 
 - name: Chikungunya
   description: Molecular epidemiology of Chikungunya virus
-  img: chikv_map.png
+  img: chikv_map.jpg
   url: /groups/ViennaRNA/CHIKVnext
 
 - name: HIV
