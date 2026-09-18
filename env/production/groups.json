@@ -333,7 +333,7 @@
   },
   {
     "name": "fchunglab",
-    "isPublic": false
+    "isPublic": true
   },
   {
     "name": "fchunglab-private",
