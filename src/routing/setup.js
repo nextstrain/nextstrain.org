@@ -26,6 +26,10 @@ export function setupApp() {
   // metadata from the proxy.
   if (PRODUCTION) app.enable("trust proxy");
 
+  // Reject abusive source IPs (configured via BLOCKED_IPS) before doing any
+  // other work.  Deliberately first so blocked traffic is as cheap as possible.
+  app.use(middleware.blockIps);
+
   if (PRODUCTION) app.use(sslRedirect()); // redirect HTTP to HTTPS
   app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
   app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org

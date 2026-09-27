@@ -497,3 +497,49 @@ export const PLAUSIBLE_ANALYTICS_DOMAIN = fromEnvOrConfig("PLAUSIBLE_ANALYTICS_D
  * development and testing of analytics.
  */
 export const PLAUSIBLE_ANALYTICS_ENDPOINT = fromEnvOrConfig("PLAUSIBLE_ANALYTICS_ENDPOINT", "https://plausible.io/api/event");
+
+
+/**
+ * Known-abusive source IPs blocked by default.
+ *
+ * Committed here (rather than set as a config var on deploy) so the block is
+ * always in effect and self-documenting.  Annotate each entry with the date and
+ * reason so stale entries can be pruned later.
+ *
+ * @type {string[]}
+ */
+const DEFAULT_BLOCKED_IPS = [
+  "95.179.232.23",  // 2026-09-26/27 flood: Vultr (AS20473) reverse-proxy hammering the origin over HTTP
+  "178.253.16.87",  // 2026-09-26/27 flood: secondary source in the same event
+];
+
+
+/**
+ * Source IP addresses to reject with a 403 before any other processing.
+ *
+ * This is the union of {@link DEFAULT_BLOCKED_IPS} (the committed baseline) and
+ * any IPs supplied at runtime via the BLOCKED_IPS environment variable, given
+ * as a JSON array of strings, e.g.
+ *
+ *     heroku config:set BLOCKED_IPS='["203.0.113.7"]'
+ *
+ * Env-supplied IPs are *added* to the committed baseline (not replacing it), so
+ * a new offender can be blocked during an incident without a code deploy, and
+ * the baseline can never be dropped by accident.  To remove a baseline IP, edit
+ * DEFAULT_BLOCKED_IPS.
+ *
+ * Matching is against the true connecting IP as observed by the Heroku router
+ * (see {@link module:middleware.blockIps}), not the client-supplied and thus
+ * spoofable left-most X-Forwarded-For entry.
+ *
+ * NOTE: This blocks at the app (dyno) level, so requests still traverse the
+ * Heroku router and occupy a dyno request slot.  It prevents abusive IPs from
+ * reaching application logic but does *not* reduce router/dyno load; to shed
+ * load you must drop such traffic at an edge/CDN in front of Heroku.
+ *
+ * @type {Set<string>}
+ */
+export const BLOCKED_IPS = new Set([
+  ...DEFAULT_BLOCKED_IPS,
+  ...fromEnvOrConfig("BLOCKED_IPS", []),
+]);
