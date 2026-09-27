@@ -15,6 +15,40 @@ import { fetch, Request } from './fetch.js';
 const pipeline = promisify(stream.pipeline);
 
 
+/* Rolling, back-of-the-envelope tally of bytes proxied to clients by
+ * proxyResponseBodyFromUpstream() below, which is where the large majority of
+ * our egress originates.
+ *
+ * Caveats: this lives in process memory, so it's per-dyno and resets to zero on
+ * every dyno restart/deploy (Heroku cycles dynos roughly daily).  It also only
+ * counts this proxy path, not static assets, Next.js pages, or Charon API
+ * responses.  To reconstruct a true total from the logs, sum the per-lifecycle
+ * maxima across dynos, or sum the per-request "+N bytes" deltas we log.
+ *   -jh/Claude, 28 Sep 2026
+ */
+const GB = 1e9; // decimal GB, matching how cloud providers meter egress
+let cumulativeEgressBytes = 0;
+let loggedEgressGB = 0;
+
+/* A Transform that passes chunks through untouched while tallying their size
+ * into the module-level counter and logging each time the cumulative total
+ * crosses another whole GB.
+ */
+function egressCounter() {
+  return new stream.Transform({
+    transform(chunk, encoding, callback) {
+      cumulativeEgressBytes += chunk.length;
+      const currentGB = Math.floor(cumulativeEgressBytes / GB);
+      if (currentGB > loggedEgressGB) {
+        loggedEgressGB = currentGB;
+        console.log(`Cumulative upstream-proxied egress: ${currentGB} GB (this dyno, since process start; +${chunk.length} bytes this chunk)`);
+      }
+      callback(null, chunk);
+    },
+  });
+}
+
+
 /**
  * Delete objects by their URLs.
  *
@@ -278,10 +312,10 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
     const etag = res.get("ETag");
     if (etag && !etag.startsWith("W/")) res.set("ETag", `W/${etag}`);
 
-    await pipeline(upstreamRes.body, zlib.createGunzip(), res);
+    await pipeline(upstreamRes.body, zlib.createGunzip(), egressCounter(), res);
   } else {
     try {
-      await pipeline(upstreamRes.body, res);
+      await pipeline(upstreamRes.body, egressCounter(), res);
     } catch (err) {
       /* Nothing we can do about the client closing the connection on us before
        * we were "ready"; see rationale in commit message introducing this
