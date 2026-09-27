@@ -1,4 +1,49 @@
 import { BadRequest } from './httpErrors.js';
+import { BLOCKED_IPS } from './config.js';
+
+
+/**
+ * The true source IP of a request as observed by Heroku's router.
+ *
+ * With `trust proxy` enabled, Express's `req.ip` is the *left*-most
+ * X-Forwarded-For entry, which is supplied by — and therefore forgeable by —
+ * the client.  Heroku's router *appends* the connecting socket peer's address
+ * as the *right*-most entry, and a client cannot forge anything to the right of
+ * it, so that entry is the trustworthy "who actually connected to us" value.
+ *
+ * Falls back to the socket address for non-proxied (e.g. local dev) requests.
+ *
+ * @param {express.request} req
+ * @returns {string|undefined}
+ */
+const connectingIp = (req) => {
+  const xff = req.headers["x-forwarded-for"];
+  if (typeof xff === "string" && xff.length) {
+    const hops = xff.split(",").map(s => s.trim()).filter(Boolean);
+    if (hops.length) return hops[hops.length - 1];
+  }
+  return req.socket?.remoteAddress;
+};
+
+
+/**
+ * Rejects requests from source IPs listed in {@link module:config.BLOCKED_IPS}.
+ *
+ * A no-op unless BLOCKED_IPS is configured.  Intended to be registered as early
+ * as possible in the middleware stack so blocked traffic does the least
+ * possible work.  See the BLOCKED_IPS docs for its (deliberate) limitations.
+ *
+ * @function blockIps
+ * @param {express.request} req
+ * @param {express.response} res
+ * @param {Function} next
+ */
+const blockIps = (req, res, next) => {
+  if (BLOCKED_IPS.size && BLOCKED_IPS.has(connectingIp(req))) {
+    return res.status(403).type("text/plain").end("Forbidden\n");
+  }
+  return next();
+};
 
 
 /* CORS policy to allow read-only requests for public resources.
@@ -82,6 +127,7 @@ const rejectParentTraversals = (req, res, next) => {
 
 
 export {
+  blockIps,
   allowPublicReadOnlyCors,
   rejectParentTraversals,
 };
