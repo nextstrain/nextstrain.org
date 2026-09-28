@@ -10,24 +10,24 @@ import {
 
 
 /**
- * Reject a request with a status + short plain-text body, closing the connection.
+ * Reject a request with a status + short plain-text body.
  *
- * The `Connection: close` header matters for abusive POSTs: when we respond
- * without reading the request body, a keep-alive connection would make Node
- * drain the entire (attacker-controlled) inbound body before the socket frees —
- * observed holding blocked POSTs open for seconds.  `Connection: close` makes
- * Node send the complete response and then a graceful FIN instead, releasing the
- * socket promptly without the truncated-response resets (Heroku H13/H18) a hard
- * `socket.destroy()` would cause.
+ * We deliberately do NOT set `Connection: close` here.  It was tried as a way to
+ * release blocked POSTs promptly (responding without draining the inbound body
+ * otherwise holds a keep-alive socket open for seconds), but in production
+ * Heroku's router flagged the closed connections as H18 and reported them to the
+ * client as 503 — turning cheap, silent blocks into error-rate noise that would
+ * trip alerting.  A plain response keeps the connection alive and is logged as a
+ * clean 403/429; the only cost is that a blocked POST's body is drained first.
+ * Fully avoiding both the drain and H18 is not possible in-app (it requires
+ * dropping the traffic at an edge/CDN before Heroku).
  *
  * @param {express.response} res
  * @param {number} status
  * @param {string} message
  */
-const rejectAndClose = (res, status, message) => {
-  res.set("Connection", "close");
-  return res.status(status).type("text/plain").end(message);
-};
+const reject = (res, status, message) =>
+  res.status(status).type("text/plain").end(message);
 
 
 /**
@@ -68,7 +68,7 @@ const connectingIp = (req) => {
  */
 const blockIps = (req, res, next) => {
   if (BLOCKED_IPS.size && BLOCKED_IPS.has(connectingIp(req))) {
-    return rejectAndClose(res, 403, "Forbidden\n");
+    return reject(res, 403, "Forbidden\n");
   }
   return next();
 };
@@ -102,7 +102,7 @@ const matchesBlockedRequest = (method, path) =>
  */
 const blockRequests = (req, res, next) =>
   matchesBlockedRequest(req.method, req.path)
-    ? rejectAndClose(res, 403, "Forbidden\n")
+    ? reject(res, 403, "Forbidden\n")
     : next();
 
 
@@ -129,7 +129,7 @@ const isStaticAssetPath = (path) =>
  * Because we supply our own keyGenerator, express-rate-limit's trust-proxy
  * validations do not apply; we disable them explicitly for clarity.  Uses the
  * default in-memory (per-dyno) store.  Over-limit requests get the same
- * connection-closing rejection as blocked ones, as a 429.
+ * plain rejection as blocked ones, as a 429.
  *
  * @returns {Function} express middleware
  */
@@ -141,7 +141,7 @@ const makeRateLimiter = () => rateLimit({
   keyGenerator: (req) => connectingIp(req) ?? "unknown",
   skip: (req) => isStaticAssetPath(req.path),
   validate: { trustProxy: false, xForwardedForHeader: false },
-  handler: (req, res) => rejectAndClose(res, 429, "Too many requests\n"),
+  handler: (req, res) => reject(res, 429, "Too many requests\n"),
 });
 
 

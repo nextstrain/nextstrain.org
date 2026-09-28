@@ -99,14 +99,15 @@ describe("blockRequests middleware", () => {
     expect(res.statusCode).toBeUndefined();
   });
 
-  test("rejects a matching request with 403 and closes the connection", () => {
+  test("rejects a matching request with a plain 403", () => {
     const next = jest.fn();
     const res = mockRes();
     blockRequests({ method: "POST", path: "/ZOnZmydxUXxdG4q57/Tun" }, res, next);
     expect(next).not.toHaveBeenCalled();
     expect(res.statusCode).toBe(403);
-    expect(res.headers.Connection).toBe("close");
     expect(res.body).toBe("Forbidden\n");
+    // No Connection: close — it caused Heroku to log blocked requests as H18/503.
+    expect(res.headers.Connection).toBeUndefined();
   });
 });
 
@@ -119,7 +120,6 @@ describe("blockIps middleware", () => {
     blockIps({ headers: { "x-forwarded-for": "203.0.113.1, 164.215.97.167" } }, res, next);
     expect(next).not.toHaveBeenCalled();
     expect(res.statusCode).toBe(403);
-    expect(res.headers.Connection).toBe("close");
   });
 
   test("passes through an unblocked IP", () => {
