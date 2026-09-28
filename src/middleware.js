@@ -1,6 +1,6 @@
 import rateLimit from 'express-rate-limit';
 
-import { BadRequest } from './httpErrors.js';
+import { BadRequest, MethodNotAllowed } from './httpErrors.js';
 import {
   BLOCKED_IPS,
   BLOCKED_REQUEST_PATTERNS,
@@ -191,6 +191,23 @@ const allowPublicReadOnlyCors = (req, res, next) => {
 
 
 /**
+ * Rejects all POST requests.
+ *
+ * @function rejectPostRequests
+ * @param {express.request} req
+ * @param {express.response} res
+ * @param {Function} next
+ * @throws {MethodNotAllowed}
+ */
+const rejectPostRequests = (req, res, next) => {
+  if (req.method === "POST") {
+    throw new MethodNotAllowed("POST is not supported on this server");
+  }
+  return next();
+};
+
+
+/**
  * Rejects any attempted path traversals (..) which may be present if the
  * client sending the request didn't normalize the URL path when making the
  * HTTP request (e.g. curl's --path-as-is option).  This is almost always
@@ -234,4 +251,5 @@ export {
   makeRateLimiter,
   allowPublicReadOnlyCors,
   rejectParentTraversals,
+  rejectPostRequests,
 };

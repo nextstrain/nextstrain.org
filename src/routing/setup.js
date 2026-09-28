@@ -26,6 +26,8 @@ export function setupApp() {
   // metadata from the proxy.
   if (PRODUCTION) app.enable("trust proxy");
 
+  app.use(middleware.rejectPostRequests);
+
   // Reject abusive traffic before doing any other work, so it is as cheap as
   // possible: known-bad source IPs, then known-bad request signatures (which
   // survive source-IP rotation), then a generic per-IP rate-limit backstop.
