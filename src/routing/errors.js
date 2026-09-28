@@ -54,7 +54,10 @@ export async function setup(app) {
       const reqFinished = streamFinished(req);
       req.unpipe();
       req.resume();
-      await reqFinished;
+
+      // Add a short timeout to avoid hanging on slow clients.
+      const timeout = new Promise(resolve => setTimeout(resolve, 250));
+      await Promise.race([reqFinished.catch(() => {}), timeout]);
     }
 
     res.vary("Accept");
