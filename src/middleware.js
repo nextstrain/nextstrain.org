@@ -1,5 +1,33 @@
+import rateLimit from 'express-rate-limit';
+
 import { BadRequest } from './httpErrors.js';
-import { BLOCKED_IPS } from './config.js';
+import {
+  BLOCKED_IPS,
+  BLOCKED_REQUEST_PATTERNS,
+  RATE_LIMIT_MAX,
+  RATE_LIMIT_WINDOW_MS,
+} from './config.js';
+
+
+/**
+ * Reject a request with a status + short plain-text body, closing the connection.
+ *
+ * The `Connection: close` header matters for abusive POSTs: when we respond
+ * without reading the request body, a keep-alive connection would make Node
+ * drain the entire (attacker-controlled) inbound body before the socket frees —
+ * observed holding blocked POSTs open for seconds.  `Connection: close` makes
+ * Node send the complete response and then a graceful FIN instead, releasing the
+ * socket promptly without the truncated-response resets (Heroku H13/H18) a hard
+ * `socket.destroy()` would cause.
+ *
+ * @param {express.response} res
+ * @param {number} status
+ * @param {string} message
+ */
+const rejectAndClose = (res, status, message) => {
+  res.set("Connection", "close");
+  return res.status(status).type("text/plain").end(message);
+};
 
 
 /**
@@ -40,10 +68,81 @@ const connectingIp = (req) => {
  */
 const blockIps = (req, res, next) => {
   if (BLOCKED_IPS.size && BLOCKED_IPS.has(connectingIp(req))) {
-    return res.status(403).type("text/plain").end("Forbidden\n");
+    return rejectAndClose(res, 403, "Forbidden\n");
   }
   return next();
 };
+
+
+/**
+ * Does a request match one of the committed abusive {@link module:config.BLOCKED_REQUEST_PATTERNS}?
+ *
+ * Pure and exported for unit testing.  Matches on method + pathname only.
+ *
+ * @param {string} method - HTTP method, e.g. "GET"
+ * @param {string} path - req.path (pathname, leading slash, no query string)
+ * @returns {boolean}
+ */
+const matchesBlockedRequest = (method, path) =>
+  BLOCKED_REQUEST_PATTERNS.some(pattern => pattern.method === method && pattern.path.test(path));
+
+
+/**
+ * Rejects requests whose method+path match a known-abusive signature, regardless
+ * of source IP.  This catches the flood campaign even as it rotates IPs.
+ *
+ * Registered early (alongside {@link blockIps}) so blocked traffic does the least
+ * possible work.  Like blockIps, this is app-level: it stops abuse reaching
+ * application logic but does not reduce Heroku router/dyno load.
+ *
+ * @function blockRequests
+ * @param {express.request} req
+ * @param {express.response} res
+ * @param {Function} next
+ */
+const blockRequests = (req, res, next) =>
+  matchesBlockedRequest(req.method, req.path)
+    ? rejectAndClose(res, 403, "Forbidden\n")
+    : next();
+
+
+/**
+ * Is this a static-asset path that the rate limiter should not count?
+ *
+ * A single Next.js page load fetches many `/_next/…` assets (and Auspice fetches
+ * `/dist/…`); counting those would throttle legitimate users.  The flood targets
+ * dynamic paths, so exempting static assets is safe.  Exported for testing.
+ *
+ * @param {string} path - req.path
+ * @returns {boolean}
+ */
+const isStaticAssetPath = (path) =>
+  path.startsWith("/_next/") || path.startsWith("/dist/") || path === "/favicon.ico";
+
+
+/**
+ * Build the per-IP rate-limiting middleware.
+ *
+ * Called once at app setup (never per-request).  Keyed on the spoof-resistant
+ * {@link connectingIp} rather than express-rate-limit's default `req.ip` (which,
+ * with `trust proxy` enabled, is the forgeable left-most X-Forwarded-For entry).
+ * Because we supply our own keyGenerator, express-rate-limit's trust-proxy
+ * validations do not apply; we disable them explicitly for clarity.  Uses the
+ * default in-memory (per-dyno) store.  Over-limit requests get the same
+ * connection-closing rejection as blocked ones, as a 429.
+ *
+ * @returns {Function} express middleware
+ */
+const makeRateLimiter = () => rateLimit({
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  limit: RATE_LIMIT_MAX,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  keyGenerator: (req) => connectingIp(req) ?? "unknown",
+  skip: (req) => isStaticAssetPath(req.path),
+  validate: { trustProxy: false, xForwardedForHeader: false },
+  handler: (req, res) => rejectAndClose(res, 429, "Too many requests\n"),
+});
 
 
 /* CORS policy to allow read-only requests for public resources.
@@ -127,7 +226,12 @@ const rejectParentTraversals = (req, res, next) => {
 
 
 export {
+  connectingIp,
   blockIps,
+  matchesBlockedRequest,
+  blockRequests,
+  isStaticAssetPath,
+  makeRateLimiter,
   allowPublicReadOnlyCors,
   rejectParentTraversals,
 };
