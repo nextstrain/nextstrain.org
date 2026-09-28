@@ -511,6 +511,7 @@ export const PLAUSIBLE_ANALYTICS_ENDPOINT = fromEnvOrConfig("PLAUSIBLE_ANALYTICS
 const DEFAULT_BLOCKED_IPS = [
   "95.179.232.23",  // 2026-09-26/27 flood: Vultr (AS20473) reverse-proxy hammering the origin over HTTP
   "178.253.16.87",  // 2026-09-26/27 flood: secondary source in the same event
+  "164.215.97.167", // 2026-09-28 flood: POST /<token>/Tun, same actor after rotating IPs
 ];
 
 
@@ -543,3 +544,57 @@ export const BLOCKED_IPS = new Set([
   ...DEFAULT_BLOCKED_IPS,
   ...fromEnvOrConfig("BLOCKED_IPS", []),
 ]);
+
+
+/**
+ * Request signatures to reject with a 403 before any other processing.
+ *
+ * Unlike {@link BLOCKED_IPS}, these match the *shape* of a request (method +
+ * path), not its source, so they survive the attacker rotating source IPs.
+ * Each entry is `{method, path}` where `path` is a RegExp tested against
+ * `req.path` (pathname only, leading slash, no query).
+ *
+ * Committed here and deliberately NOT env-configurable: a regex sourced from an
+ * environment variable would be an injection / ReDoS risk.  Annotate each entry
+ * with the date and reason.  No legitimate Nextstrain route matches these.
+ *
+ * @type {{method: string, path: RegExp}[]}
+ */
+export const BLOCKED_REQUEST_PATTERNS = [
+  // 2026-09 automated flood; stable across source-IP rotation.  No legit route
+  // is a POST to /<token>/Tun.  Seen: /ZOnZmydxUXxdG4q57/Tun,
+  // /J00c2DWhLjISI1XOdVV5T3gf4hot5/Tun
+  { method: "POST", path: /^\/[A-Za-z0-9_-]{8,}\/Tun\/?$/ },
+  // Same campaign, GET shape: /<token>/<uuid-v4>[/N].  The strict UUID second
+  // segment makes false positives negligible.  Seen:
+  // /yo5ITNamz8tKPAVs0K73HA/<uuid> and .../<uuid>/0
+  { method: "GET", path: /^\/[A-Za-z0-9_-]{8,}\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/\d+)?$/i },
+];
+
+
+/**
+ * Rate limiting for abusive request volume (see {@link module:middleware.makeRateLimiter}).
+ *
+ * A generic backstop: the pattern block and IP list above handle known
+ * signatures precisely, while the rate limiter throttles *any* single source IP
+ * that floods, including signatures we haven't seen.  Thresholds are generous
+ * (a single Next.js page load fires many requests, and research institutions sit
+ * behind shared NAT IPs) and static assets are exempted; the flood rate is
+ * ~100 req/s, far above these limits.
+ *
+ * All three are env-tunable so the limits can be tightened, loosened, or the
+ * limiter disabled entirely during an incident WITHOUT a code deploy, e.g.
+ *
+ *     heroku config:set RATE_LIMIT_MAX=120
+ *     heroku config:set RATE_LIMIT_ENABLED=false
+ *
+ * Counters are in-memory per dyno (so the effective fleet-wide limit is roughly
+ * this value times the web dyno count) and reset on restart.
+ */
+export const RATE_LIMIT_ENABLED = fromEnvOrConfig("RATE_LIMIT_ENABLED", PRODUCTION);
+
+/** Rate-limit window, in milliseconds. @type {number} @default 60000 */
+export const RATE_LIMIT_WINDOW_MS = fromEnvOrConfig("RATE_LIMIT_WINDOW_MS", 60_000);
+
+/** Max requests per {@link RATE_LIMIT_WINDOW_MS} per source IP. @type {number} @default 300 */
+export const RATE_LIMIT_MAX = fromEnvOrConfig("RATE_LIMIT_MAX", 300);
