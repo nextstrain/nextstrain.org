@@ -113,7 +113,9 @@ See [redis.md](./redis.md).
 
 ### Logs
 
-Server logs are available via the [papertrail web app](https://my.papertrailapp.com/systems/nextstrain-server/events) (requires heroku login).
+Server logs for nextstrain.org & next.nextstrain.org are collected via Papertrail.
+To access, open the [nextstrain-server](https://dashboard.heroku.com/apps/nextstrain-server) or [nextstrain-canary Heroku app](https://dashboard.heroku.com/apps/nextstrain-canary) and click the "SolarWinds Papertrail" link in "Installed Add-ons"
+
 The dev server does not have papertrail enabled, but logs may be viewed using the heroku CLI via `heroku logs --app=nextstrain-dev --tail`.
 
 ### Development server
