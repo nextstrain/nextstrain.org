@@ -5,6 +5,7 @@ export const {
   BadRequest,
   Forbidden,
   InternalServerError,
+  MethodNotAllowed,
   NotAcceptable,
   NotFound,
   ServiceUnavailable,

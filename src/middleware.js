@@ -1,148 +1,4 @@
-import rateLimit from 'express-rate-limit';
-
-import { BadRequest } from './httpErrors.js';
-import {
-  BLOCKED_IPS,
-  BLOCKED_REQUEST_PATTERNS,
-  RATE_LIMIT_MAX,
-  RATE_LIMIT_WINDOW_MS,
-} from './config.js';
-
-
-/**
- * Reject a request with a status + short plain-text body.
- *
- * We deliberately do NOT set `Connection: close` here.  It was tried as a way to
- * release blocked POSTs promptly (responding without draining the inbound body
- * otherwise holds a keep-alive socket open for seconds), but in production
- * Heroku's router flagged the closed connections as H18 and reported them to the
- * client as 503 — turning cheap, silent blocks into error-rate noise that would
- * trip alerting.  A plain response keeps the connection alive and is logged as a
- * clean 403/429; the only cost is that a blocked POST's body is drained first.
- * Fully avoiding both the drain and H18 is not possible in-app (it requires
- * dropping the traffic at an edge/CDN before Heroku).
- *
- * @param {express.response} res
- * @param {number} status
- * @param {string} message
- */
-const reject = (res, status, message) =>
-  res.status(status).type("text/plain").end(message);
-
-
-/**
- * The true source IP of a request as observed by Heroku's router.
- *
- * With `trust proxy` enabled, Express's `req.ip` is the *left*-most
- * X-Forwarded-For entry, which is supplied by — and therefore forgeable by —
- * the client.  Heroku's router *appends* the connecting socket peer's address
- * as the *right*-most entry, and a client cannot forge anything to the right of
- * it, so that entry is the trustworthy "who actually connected to us" value.
- *
- * Falls back to the socket address for non-proxied (e.g. local dev) requests.
- *
- * @param {express.request} req
- * @returns {string|undefined}
- */
-const connectingIp = (req) => {
-  const xff = req.headers["x-forwarded-for"];
-  if (typeof xff === "string" && xff.length) {
-    const hops = xff.split(",").map(s => s.trim()).filter(Boolean);
-    if (hops.length) return hops[hops.length - 1];
-  }
-  return req.socket?.remoteAddress;
-};
-
-
-/**
- * Rejects requests from source IPs listed in {@link module:config.BLOCKED_IPS}.
- *
- * A no-op unless BLOCKED_IPS is configured.  Intended to be registered as early
- * as possible in the middleware stack so blocked traffic does the least
- * possible work.  See the BLOCKED_IPS docs for its (deliberate) limitations.
- *
- * @function blockIps
- * @param {express.request} req
- * @param {express.response} res
- * @param {Function} next
- */
-const blockIps = (req, res, next) => {
-  if (BLOCKED_IPS.size && BLOCKED_IPS.has(connectingIp(req))) {
-    return reject(res, 403, "Forbidden\n");
-  }
-  return next();
-};
-
-
-/**
- * Does a request match one of the committed abusive {@link module:config.BLOCKED_REQUEST_PATTERNS}?
- *
- * Pure and exported for unit testing.  Matches on method + pathname only.
- *
- * @param {string} method - HTTP method, e.g. "GET"
- * @param {string} path - req.path (pathname, leading slash, no query string)
- * @returns {boolean}
- */
-const matchesBlockedRequest = (method, path) =>
-  BLOCKED_REQUEST_PATTERNS.some(pattern => pattern.method === method && pattern.path.test(path));
-
-
-/**
- * Rejects requests whose method+path match a known-abusive signature, regardless
- * of source IP.  This catches the flood campaign even as it rotates IPs.
- *
- * Registered early (alongside {@link blockIps}) so blocked traffic does the least
- * possible work.  Like blockIps, this is app-level: it stops abuse reaching
- * application logic but does not reduce Heroku router/dyno load.
- *
- * @function blockRequests
- * @param {express.request} req
- * @param {express.response} res
- * @param {Function} next
- */
-const blockRequests = (req, res, next) =>
-  matchesBlockedRequest(req.method, req.path)
-    ? reject(res, 403, "Forbidden\n")
-    : next();
-
-
-/**
- * Is this a static-asset path that the rate limiter should not count?
- *
- * A single Next.js page load fetches many `/_next/…` assets (and Auspice fetches
- * `/dist/…`); counting those would throttle legitimate users.  The flood targets
- * dynamic paths, so exempting static assets is safe.  Exported for testing.
- *
- * @param {string} path - req.path
- * @returns {boolean}
- */
-const isStaticAssetPath = (path) =>
-  path.startsWith("/_next/") || path.startsWith("/dist/") || path === "/favicon.ico";
-
-
-/**
- * Build the per-IP rate-limiting middleware.
- *
- * Called once at app setup (never per-request).  Keyed on the spoof-resistant
- * {@link connectingIp} rather than express-rate-limit's default `req.ip` (which,
- * with `trust proxy` enabled, is the forgeable left-most X-Forwarded-For entry).
- * Because we supply our own keyGenerator, express-rate-limit's trust-proxy
- * validations do not apply; we disable them explicitly for clarity.  Uses the
- * default in-memory (per-dyno) store.  Over-limit requests get the same
- * plain rejection as blocked ones, as a 429.
- *
- * @returns {Function} express middleware
- */
-const makeRateLimiter = () => rateLimit({
-  windowMs: RATE_LIMIT_WINDOW_MS,
-  limit: RATE_LIMIT_MAX,
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-  keyGenerator: (req) => connectingIp(req) ?? "unknown",
-  skip: (req) => isStaticAssetPath(req.path),
-  validate: { trustProxy: false, xForwardedForHeader: false },
-  handler: (req, res) => reject(res, 429, "Too many requests\n"),
-});
+import { BadRequest, MethodNotAllowed } from './httpErrors.js';
 
 
 /* CORS policy to allow read-only requests for public resources.
@@ -191,6 +47,23 @@ const allowPublicReadOnlyCors = (req, res, next) => {
 
 
 /**
+ * Rejects all POST requests.
+ *
+ * @function rejectPostRequests
+ * @param {express.request} req
+ * @param {express.response} res
+ * @param {Function} next
+ * @throws {MethodNotAllowed}
+ */
+const rejectPostRequests = (req, res, next) => {
+  if (req.method === "POST") {
+    throw new MethodNotAllowed("POST is not supported on this server");
+  }
+  return next();
+};
+
+
+/**
  * Rejects any attempted path traversals (..) which may be present if the
  * client sending the request didn't normalize the URL path when making the
  * HTTP request (e.g. curl's --path-as-is option).  This is almost always
@@ -226,12 +99,7 @@ const rejectParentTraversals = (req, res, next) => {
 
 
 export {
-  connectingIp,
-  blockIps,
-  matchesBlockedRequest,
-  blockRequests,
-  isStaticAssetPath,
-  makeRateLimiter,
   allowPublicReadOnlyCors,
   rejectParentTraversals,
+  rejectPostRequests,
 };
