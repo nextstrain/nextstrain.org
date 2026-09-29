@@ -9,6 +9,7 @@ export const {
   NotAcceptable,
   NotFound,
   ServiceUnavailable,
+  TooManyRequests,
   Unauthorized,
   UnsupportedMediaType,
   isHttpError,
