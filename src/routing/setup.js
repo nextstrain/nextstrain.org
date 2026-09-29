@@ -4,7 +4,7 @@ import nakedRedirect from 'express-naked-redirect';
 import express from 'express';
 import compression from 'compression';
 
-import { PRODUCTION, STATIC_SITE_PRODUCTION, RATE_LIMIT_ENABLED } from '../config.js';
+import { PRODUCTION, STATIC_SITE_PRODUCTION } from '../config.js';
 import { addAsync } from '../async.js';
 import * as authn from '../authn/index.js';
 import { replacer as jsonReplacer } from '../json.js';
@@ -27,18 +27,6 @@ export function setupApp() {
   if (PRODUCTION) app.enable("trust proxy");
 
   app.use(middleware.rejectPostRequests);
-
-  // Reject abusive traffic before doing any other work, so it is as cheap as
-  // possible: known-bad source IPs, then known-bad request signatures (which
-  // survive source-IP rotation), then a generic per-IP rate-limit backstop.
-  app.use(middleware.blockIps);
-  app.use(middleware.blockRequests);
-
-  // Built once here (never per-request).  Gated so it can't throttle the
-  // localhost-driven test suite / dev, and can be disabled in prod via a config
-  // var (RATE_LIMIT_ENABLED) without a deploy.  Before sslRedirect so an HTTP
-  // flood is limited ahead of the redirect round-trip.
-  if (RATE_LIMIT_ENABLED) app.use(middleware.makeRateLimiter());
 
   if (PRODUCTION) app.use(sslRedirect()); // redirect HTTP to HTTPS
   app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
