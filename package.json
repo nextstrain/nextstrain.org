@@ -50,7 +50,6 @@
     "escape-string-regexp": "^5.0.0",
     "express": "^4.17.1",
     "express-naked-redirect": "^0.1.2",
-    "express-rate-limit": "^8.7.0",
     "express-session": "^1.16.2",
     "express-static-gzip": "^0.2.2",
     "finalhandler": "^2.1.1",

@@ -4,7 +4,7 @@ import nakedRedirect from 'express-naked-redirect';
 import express from 'express';
 import compression from 'compression';
 
-import { PRODUCTION, STATIC_SITE_PRODUCTION, RATE_LIMIT_ENABLED } from '../config.js';
+import { PRODUCTION, STATIC_SITE_PRODUCTION } from '../config.js';
 import { addAsync } from '../async.js';
 import * as authn from '../authn/index.js';
 import { replacer as jsonReplacer } from '../json.js';
@@ -26,17 +26,7 @@ export function setupApp() {
   // metadata from the proxy.
   if (PRODUCTION) app.enable("trust proxy");
 
-  // Reject abusive traffic as cheaply and early as possible: known-bad source
-  // IPs and request-shape signatures first, then all POSTs (unsupported), then a
-  // per-IP rate-limit backstop.  Cheap early rejection (before Next.js) raises
-  // the dyno throughput ceiling and helps keep the Heroku router backlog below
-  // the H11 "backlog too deep" threshold.
-  app.use(middleware.blockRequests);
   app.use(middleware.rejectPostRequests);
-  // Built once here (never per-request).  Gated so it can't throttle the
-  // localhost-driven test suite / dev, and can be disabled in prod via a config
-  // var (RATE_LIMIT_ENABLED) without a deploy.
-  if (RATE_LIMIT_ENABLED) app.use(middleware.makeRateLimiter());
 
   if (PRODUCTION) app.use(sslRedirect()); // redirect HTTP to HTTPS
   app.use(compression()); // send files (e.g. res.json()) using compression (if possible)
