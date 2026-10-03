@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+"""
+Helper script to fetch logs from Papertrail via API.
+
+Using the API has benefits over the .json.gz archived logs:
+1. Archived logs are only available at the end of an hour. API logs are
+   real-time.
+2. API logs are more comprehensive, at least when it comes to requests that are
+   terminated (e.g. on dyno restart) rather than fully completed.
+
+This script needs a SWO_TOKEN environment variable.
+Generate at <https://my.na-01.cloud.solarwinds.com/219500396279838720/settings/tokens>.
+"""
+import argparse
+from datetime import date, timedelta
+import json
+import os
+import re
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+
+
+API_HOST = "https://api.na-01.cloud.solarwinds.com"
+
+
+def main() -> None:
+    args = parse_args()
+
+    token = os.environ.get("SWO_TOKEN")
+    if not token:
+        log_stderr("ERROR: Missing SWO_TOKEN environment variable.")
+        sys.exit(1)
+
+    query = urllib.parse.urlencode({
+        "startTime": args.start,
+        "endTime": args.end,
+        "pageSize": args.page_size,
+    })
+    next_path = f"/v1/logs?{query}"
+
+    page = 1
+    total_logs = 0
+
+    out_file = sys.stdout if args.output == "-" else open(args.output, "w", encoding="utf-8")
+    try:
+        while next_path:
+            log_stderr(f"Fetching page {page}… ", end="")
+            request_url = urllib.parse.urljoin(API_HOST, next_path)
+            data = fetch_page(request_url, token, args.user_agent)
+
+            logs = data.get("logs") or []
+            for entry in logs:
+                timestamp = entry.get("time", "")
+                program = entry.get("program", "")
+                raw_msg = entry.get("message", "")
+
+                # Output one line per log with common format and normalized whitespace.
+                clean_msg = " ".join(raw_msg.split())
+                out_file.write(f"{timestamp} {program} {clean_msg}\n")
+
+            count = len(logs)
+            total_logs += count
+            log_stderr(f"received {count} logs (total: {total_logs})")
+
+            page_info = data.get("pageInfo") or {}
+            next_path = page_info.get("nextPage")
+
+            if not next_path or next_path == "null" or next_path == "string":
+                break
+
+            page += 1
+    finally:
+        if out_file is not sys.stdout:
+            out_file.close()
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=first_line(__doc__))
+    parser.add_argument("--date", metavar="YYYY-MM-DD", help="Fetch logs for this day (UTC). Alternatively, specify an exact --start and --end.")
+    parser.add_argument("--start", metavar="YYYY-MM-DDTHH:mm:ssZ", help="Start time (UTC). Use with --end.")
+    parser.add_argument("--end", metavar="YYYY-MM-DDTHH:mm:ssZ", help="End time (UTC). Use with --start.")
+    parser.add_argument("--page-size", type=int, default=1000, help="Number of logs per fetched page (default: %(default)s)")
+    parser.add_argument("--user-agent", default="fetch-papertrail-logs (https://nextstrain.org)", help="User-Agent header value (default: %(default)s)")
+    parser.add_argument("--output", help="Output file path (default: <date>.txt or <start>_<end>.txt)")
+    args = parser.parse_args()
+
+    if args.date:
+        if args.start or args.end:
+            parser.error("Cannot specify both --date and --start/--end.")
+        try:
+            start_date = date.fromisoformat(args.date)
+        except ValueError:
+            parser.error(f"Invalid --date format '{args.date}', expected YYYY-MM-DD.")
+        end_date = start_date + timedelta(days=1)
+        args.start = f"{start_date.isoformat()}T00:00:00Z"
+        args.end = f"{end_date.isoformat()}T00:00:00Z"
+        default_output = f"{args.date}.txt"
+    else:
+        if not (args.start and args.end):
+            parser.error("Must specify either --date or both --start and --end.")
+        start_for_filename = timestamp_for_filename(args.start)
+        end_for_filename = timestamp_for_filename(args.end)
+        default_output = f"{start_for_filename}_{end_for_filename}.txt"
+
+    if not args.output:
+        args.output = default_output
+
+    return args
+
+
+def first_line(text: str) -> str:
+    return text.strip().splitlines()[0]
+
+
+def timestamp_for_filename(timestamp: str) -> str:
+    """Convert timestamp from YYYY-MM-DDTHH:mm:ssZ to YYYY-MM-DD-HH-mm-ss for use in filenames."""
+    return re.sub(r"[^0-9]+", "-", timestamp).strip("-")
+
+
+def fetch_page(url: str, token: str, user_agent: str) -> dict:
+    request = urllib.request.Request(
+        url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+            "User-Agent": user_agent,
+        },
+    )
+    try:
+        with urllib.request.urlopen(request) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        body = error.read().decode("utf-8", errors="replace")
+        log_stderr(f"\nERROR: Request failed with HTTP {error.code}")
+        log_stderr(f"Response body: {body}")
+        sys.exit(1)
+    except urllib.error.URLError as error:
+        log_stderr(f"\nERROR: Network error: {error.reason}")
+        sys.exit(1)
+
+
+def log_stderr(message: str, end: str = "\n") -> None:
+    sys.stderr.write(f"{message}{end}")
+    sys.stderr.flush()
+
+
+if __name__ == "__main__":
+    main()
