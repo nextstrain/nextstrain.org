@@ -36,13 +36,12 @@ coreQuickLinks:
   - groupName: 'ncov'
     display: '[SARS-CoV-2 main page]'
     name: 'sars-cov-2'
-  - name: 'ncov/gisaid/21L/global/6m'
-    display: '21L/global/6m (GISAID)'
-  # note that open/21L doesn't exist
-  - name: 'ncov/gisaid/global/6m'
-    display: 'global/6m (GISAID)'
   - name: 'ncov/open/global/6m'
-    display: 'global/6m (open data)'
+    display: 'open/global/6m'
+  - name: 'ncov/open/global/2y'
+    display: 'open/global/2y'
+  - name: 'ncov/open/global/all-time'
+    display: 'open/global/all-time'
 
 coreGroupDisplayNames:
   "avian-flu": avian-flu (influenza)
