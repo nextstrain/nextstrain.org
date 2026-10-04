@@ -158,56 +158,12 @@ function ResourceListing(): React.ReactElement {
   const contents: ResourceListEntry[] = [
     {
       type: "external",
-      to: "/ncov/gisaid/global",
-      title: "Latest global SARS-CoV-2 analysis (GISAID data)",
-      subtext: (
-        <span>
-          Jump to our globally-subsampled SARS-CoV-2 dataset which is updated
-          daily using data from GISAID. We also maintain additional analyses to
-          focus subsampling on different geographic regions and different time
-          periods. These include analyses that focus on the previous 6 months
-          for
-          <a href="/ncov/gisaid/africa/6m?f_region=Africa"> Africa</a>,
-          <a href="/ncov/gisaid/asia/6m?f_region=Asia"> Asia</a>,
-          <a href="/ncov/gisaid/europe/6m?f_region=Europe"> Europe</a>,
-          <a href="/ncov/gisaid/north-america/6m?f_region=North%20America">
-            {" "}
-            North America
-          </a>
-          ,<a href="/ncov/gisaid/oceania/6m?f_region=Oceania"> Oceania</a> and
-          <a href="/ncov/gisaid/south-america/6m?f_region=South%20America">
-            {" "}
-            South America
-          </a>
-          , as well as analyses that focus on the entire pandemic for
-          <a href="/ncov/gisaid/africa/all-time?f_region=Africa"> Africa</a>,
-          <a href="/ncov/gisaid/asia/all-time?f_region=Asia"> Asia</a>,
-          <a href="/ncov/gisaid/europe/all-time?f_region=Europe"> Europe</a>,
-          <a href="/ncov/gisaid/north-america/all-time?f_region=North%20America">
-            {" "}
-            North America
-          </a>
-          ,<a href="/ncov/gisaid/oceania/all-time?f_region=Oceania">
-            {" "}
-            Oceania
-          </a>{" "}
-          and
-          <a href="/ncov/gisaid/south-america/all-time?f_region=South%20America">
-            {" "}
-            South America
-          </a>
-          .
-        </span>
-      ),
-    },
-    {
-      type: "external",
       to: "/ncov/open/global",
-      title: "Latest global SARS-CoV-2 analysis (open data)",
+      title: "Latest global SARS-CoV-2 analysis using open data",
       subtext: (
         <span>
-          Jump to our globally-subsampled SARS-CoV-2 dataset which is updated
-          daily using open data from GenBank. Additional analyses that focus
+          Our globally subsampled SARS-CoV-2 analysis is updated
+          weekly using open data from GenBank. Additional analyses that focus
           subsampling on different geographic regions and different time periods
           include analyses that focus on the previous 6 months for
           <a href="/ncov/open/africa/6m?f_region=Africa"> Africa</a>,
