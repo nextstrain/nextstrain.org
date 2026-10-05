@@ -215,5 +215,30 @@
     "name": "Underscores aren't permitted for group narratives",
     "url": "/charon/getNarrative?prefix=/groups/blab/narratives/test_fixture",
     "expectStatusCode": 400
+  },
+  {
+    "name": "An owner and repo name are required for community",
+    "url": "/charon/getAvailable?prefix=/community",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "A repo name is required for community",
+    "url": "/charon/getAvailable?prefix=/community/jameshadfield",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "A URL authority is required for fetch",
+    "url": "/charon/getAvailable?prefix=/fetch",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "A dataset path is required for a group dataset",
+    "url": "/charon/getDataset?prefix=/groups/blab",
+    "expectStatusCode": 400
+  },
+  {
+    "name": "A narrative path is required for a group narrative",
+    "url": "/charon/getNarrative?prefix=/groups/blab",
+    "expectStatusCode": 400
   }
 ]
