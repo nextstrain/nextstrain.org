@@ -149,7 +149,7 @@ class Resource {
     // This inspects baseParts because some of the pathParts (above) may not
     // apply, which each Dataset/Narrative subclass determines for itself.
     if (!this.baseParts.length) {
-      throw new Error(`no Resource path provided (${this.constructor.name}.baseParts is empty)`);
+      throw new BadRequest(`no Resource path provided (${this.constructor.name}.baseParts is empty)`);
     }
   }
   set pathParts(pathParts) {

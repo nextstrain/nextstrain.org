@@ -1,7 +1,7 @@
 import * as authz from '../authz/index.js';
 
 import { fetch } from '../fetch.js';
-import { NotFound } from '../httpErrors.js';
+import { BadRequest, NotFound } from '../httpErrors.js';
 import * as utils from '../utils/index.js';
 import { Source, Dataset, Narrative } from './models.js';
 
@@ -14,14 +14,14 @@ class CommunitySource extends Source {
     super();
 
     // The GitHub owner and repo names are required.
-    if (!owner) throw new Error(`Cannot construct a ${this.constructor.name} without an owner`);
-    if (!repoName) throw new Error(`Cannot construct a ${this.constructor.name} without a repoName`);
+    if (!owner) throw new BadRequest(`Cannot construct a ${this.constructor.name} without an owner`);
+    if (!repoName) throw new BadRequest(`Cannot construct a ${this.constructor.name} without a repoName`);
 
     this.owner = owner;
     [this.repoName, this.branch] = repoName.split(/@/, 2);
     this.branchExplicitlyDefined = !!this.branch;
 
-    if (!this.repoName) throw new Error(`Cannot construct a ${this.constructor.name} without a repoName after splitting on /@/`);
+    if (!this.repoName) throw new BadRequest(`Cannot construct a ${this.constructor.name} without a repoName after splitting on /@/`);
 
     const repoInfo = fetch(`https://api.github.com/repos/${this.owner}/${this.repoName}`, {headers: {authorization}});
     this.repoExists = repoInfo

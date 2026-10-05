@@ -1,4 +1,5 @@
 import * as authz from '../authz/index.js';
+import { BadRequest } from '../httpErrors.js';
 
 import { Source, Dataset, DatasetSubresource, Narrative, NarrativeSubresource } from './models.js';
 
@@ -6,7 +7,7 @@ class UrlDefinedSource extends Source {
   constructor(authority) {
     super();
 
-    if (!authority) throw new Error(`Cannot construct a ${this.constructor.name} without a URL authority`);
+    if (!authority) throw new BadRequest(`Cannot construct a ${this.constructor.name} without a URL authority`);
 
     this.authority = authority;
   }
