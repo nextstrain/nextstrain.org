@@ -687,63 +687,63 @@
             "region": {
               "global": {
                 "resolution": {
-                  "1m": "",
                   "2m": "",
                   "6m": "",
+                  "2y": "",
                   "all-time": "",
                   "default": "6m"
                 }
               },
               "africa": {
                 "resolution": {
-                  "1m": "",
                   "2m": "",
                   "6m": "",
+                  "2y": "",
                   "all-time": "",
                   "default": "6m"
                 }
               },
               "asia": {
                 "resolution": {
-                  "1m": "",
                   "2m": "",
                   "6m": "",
+                  "2y": "",
                   "all-time": "",
                   "default": "6m"
                 }
               },
               "europe": {
                 "resolution": {
-                  "1m": "",
                   "2m": "",
                   "6m": "",
+                  "2y": "",
                   "all-time": "",
                   "default": "6m"
                 }
               },
               "north-america": {
                 "resolution": {
-                  "1m": "",
                   "2m": "",
                   "6m": "",
+                  "2y": "",
                   "all-time": "",
                   "default": "6m"
                 }
               },
               "oceania": {
                 "resolution": {
-                  "1m": "",
                   "2m": "",
                   "6m": "",
+                  "2y": "",
                   "all-time": "",
                   "default": "6m"
                 }
               },
               "south-america": {
                 "resolution": {
-                  "1m": "",
                   "2m": "",
                   "6m": "",
+                  "2y": "",
                   "all-time": "",
                   "default": "6m"
                 }
