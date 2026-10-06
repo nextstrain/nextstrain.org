@@ -221,7 +221,9 @@ class Subresource {
       throw new Error(`invalid Subresource parent resource type: ${resource.constructor}`);
     }
     if (!this.constructor.validTypes.includes(type)) {
-      throw new Error(`invalid Subresource type: ${type}`);
+      // Throw a user-facing error because the value is user-defined in
+      // charon/getDataset.
+      throw new BadRequest(`invalid Subresource type: ${type}`);
     }
     this.resource = resource;
     this.type = type;

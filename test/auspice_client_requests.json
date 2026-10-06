@@ -240,5 +240,10 @@
     "name": "A narrative path is required for a group narrative",
     "url": "/charon/getNarrative?prefix=/groups/blab",
     "expectStatusCode": 400
+  },
+  {
+    "name": "Request an invalid subresource type",
+    "url": "/charon/getDataset?prefix=/zika&type=invalid",
+    "expectStatusCode": 400
   }
 ]
