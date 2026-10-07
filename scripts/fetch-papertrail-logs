@@ -1,0 +1,159 @@
+#!/usr/bin/env python3
+"""
+Helper script to fetch search logs from Papertrail.
+
+Using the search logs has benefits over the .json.gz archive logs:
+1. Archive logs are only available at the end of an hour. Search logs are
+   real-time.
+2. Search logs are more comprehensive, at least when it comes to requests that
+   are terminated (e.g. on dyno restart) rather than fully completed.
+
+The Fixa plan retains search logs for 7 days.
+<https://elements.heroku.com/addons/papertrail#pricing>
+"""
+import argparse
+import csv
+from datetime import date, timedelta
+import json
+import os
+import re
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+
+API_URL = "https://api.na-01.cloud.solarwinds.com/v1/logs"
+# Docs:    https://api.na-01.cloud.solarwinds.com/v1/#/logs
+
+FIELDS = ["time", "hostname", "program", "severity", "message"]
+
+
+def main() -> None:
+    args = parse_args()
+
+    token = os.environ.get("SWO_TOKEN")
+    if not token:
+        log_stderr("ERROR: Missing SWO_TOKEN environment variable.")
+        log_stderr("Generate at <https://my.na-01.cloud.solarwinds.com/219500396279838720/settings/tokens>.")
+        sys.exit(1)
+
+    query = urllib.parse.urlencode({
+        "startTime": args.start,
+        "endTime": args.end,
+        "pageSize": args.page_size,
+
+        # Logs within each page are oldest to newest, so fetch pages from oldest
+        # to newest for linearity. API docs say that should be direction
+        # "backward", but in practice it seems to be "forward".
+        "direction": "forward",
+    })
+    next_url = f"{API_URL}?{query}"
+
+    page = 1
+    total_logs = 0
+
+    out_file = sys.stdout if args.output == "-" else open(args.output, "w", encoding="utf-8")
+    if out_file is not sys.stdout:
+        log_stderr(f"Saving logs to {args.output}…")
+
+    writer = csv.DictWriter(out_file, fieldnames=FIELDS, delimiter="\t", extrasaction="ignore", lineterminator="\n")
+    writer.writeheader()
+
+    try:
+        while next_url:
+            log_stderr(f"Fetching page {page}… ", end="")
+            data = fetch_page(next_url, token, args.user_agent)
+
+            logs = data["logs"]
+            writer.writerows(logs)
+
+            count = len(logs)
+            total_logs += count
+            log_stderr(f"received {count} logs (total: {total_logs})")
+
+            next_path = data["pageInfo"]["nextPage"]
+            if not next_path:
+                break
+
+            next_url = urllib.parse.urljoin(API_URL, next_path)
+            page += 1
+    finally:
+        if out_file is not sys.stdout:
+            out_file.close()
+
+    if out_file is not sys.stdout:
+        log_stderr(f"Logs saved to {args.output}.")
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=first_line(__doc__))
+    parser.add_argument("--date", metavar="YYYY-MM-DD", help="Fetch logs for this day (UTC). Alternatively, specify an exact --start and --end.")
+    parser.add_argument("--start", metavar="YYYY-MM-DDTHH:mm:ssZ", help="Start time (UTC). Use with --end.")
+    parser.add_argument("--end", metavar="YYYY-MM-DDTHH:mm:ssZ", help="End time (UTC). Use with --start.")
+    parser.add_argument("--page-size", type=int, default=1000, help="Number of logs per fetched page (default: %(default)s)")
+    parser.add_argument("--user-agent", default="fetch-papertrail-logs (https://nextstrain.org)", help="User-Agent header value (default: %(default)s)")
+    parser.add_argument("--output", help="Output file path (default: <date>.tsv or <start>_<end>.tsv)")
+    args = parser.parse_args()
+
+    if args.date:
+        if args.start or args.end:
+            parser.error("Cannot specify both --date and --start/--end.")
+        try:
+            start_date = date.fromisoformat(args.date)
+        except ValueError:
+            parser.error(f"Invalid --date format '{args.date}', expected YYYY-MM-DD.")
+        end_date = start_date + timedelta(days=1)
+        args.start = f"{start_date.isoformat()}T00:00:00Z"
+        args.end = f"{end_date.isoformat()}T00:00:00Z"
+        default_output = f"{args.date}.tsv"
+    else:
+        if not (args.start and args.end):
+            parser.error("Must specify either --date or both --start and --end.")
+        start_for_filename = timestamp_for_filename(args.start)
+        end_for_filename = timestamp_for_filename(args.end)
+        default_output = f"{start_for_filename}_{end_for_filename}.tsv"
+
+    if not args.output:
+        args.output = default_output
+
+    return args
+
+
+def first_line(text: str) -> str:
+    return text.strip().splitlines()[0]
+
+
+def timestamp_for_filename(timestamp: str) -> str:
+    """Convert timestamp from YYYY-MM-DDTHH:mm:ssZ to YYYY-MM-DD-HH-mm-ss for use in filenames."""
+    return re.sub(r"[^0-9]+", "-", timestamp).strip("-")
+
+
+def fetch_page(url: str, token: str, user_agent: str) -> dict:
+    request = urllib.request.Request(
+        url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+            "User-Agent": user_agent,
+        },
+    )
+    try:
+        with urllib.request.urlopen(request) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        body = error.read().decode("utf-8", errors="replace")
+        log_stderr(f"\nERROR: Request failed with HTTP {error.code}")
+        log_stderr(f"Response body: {body}")
+        sys.exit(1)
+    except urllib.error.URLError as error:
+        log_stderr(f"\nERROR: Network error: {error.reason}")
+        sys.exit(1)
+
+
+def log_stderr(message: str, end: str = "\n") -> None:
+    sys.stderr.write(f"{message}{end}")
+    sys.stderr.flush()
+
+
+if __name__ == "__main__":
+    main()

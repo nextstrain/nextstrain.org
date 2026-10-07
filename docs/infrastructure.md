@@ -114,6 +114,9 @@ See [redis.md](./redis.md).
 ### Logs
 
 Server logs are available via the [papertrail web app](https://my.papertrailapp.com/systems/nextstrain-server/events) (requires heroku login).
+
+Logs can be fetched using `scripts/fetch-papertrail-logs`.
+
 The dev server does not have papertrail enabled, but logs may be viewed using the heroku CLI via `heroku logs --app=nextstrain-dev --tail`.
 
 ### Development server
