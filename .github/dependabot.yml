@@ -19,6 +19,10 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "auspice"
+    # Exclude Auspice from default 3 day cooldown to update ASAP
+    cooldown:
+      exclude:
+        - "auspice"
 
   - package-ecosystem: "github-actions"
     directory: "/"
