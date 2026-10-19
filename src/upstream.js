@@ -4,7 +4,7 @@ import stream from 'stream';
 import { promisify } from 'util';
 import zlib from 'zlib';
 import readStream from 'raw-body';
-import { InternalServerError, NotFound, UnsupportedMediaType } from './httpErrors.js';
+import { BadGateway, NotFound, UnsupportedMediaType } from './httpErrors.js';
 import { fetch, Request } from './fetch.js';
 
 
@@ -27,7 +27,7 @@ async function deleteByUrls(urls) {
   const goodStatuses = new Set([204, 404]);
 
   if (!responses.every(r => goodStatuses.has(r.status))) {
-    throw new InternalServerError("At least one delete request failed.");
+    throw new BadGateway("At least one delete request failed.");
   }
 }
 
@@ -166,7 +166,7 @@ async function proxyToUpstream(req, res, upstreamUrlExtractor, contentType) {
       break;
 
     default:
-      throw new InternalServerError(`upstream said: ${upstreamRes.status} ${upstreamRes.statusText}`);
+      throw new BadGateway(`upstream said: ${upstreamRes.status} ${upstreamRes.statusText}`);
   }
 
   return res.status(204).end();
@@ -178,7 +178,7 @@ async function proxyToUpstream(req, res, upstreamUrlExtractor, contentType) {
  * our own response body.
  *
  * Only 200 and 304 responses are passed through.  403 and 404 statuses are
- * raised as 404s.  Everything else raises a 500.
+ * raised as 404s.  Everything else raises a 502.
  *
  * If our upstream request included an `Accept` header, makes sure the upstream
  * response satisfies it.
@@ -201,7 +201,7 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
       throw new NotFound();
 
     default:
-      throw new InternalServerError(`upstream said: ${upstreamRes.status} ${upstreamRes.statusText}`);
+      throw new BadGateway(`upstream said: ${upstreamRes.status} ${upstreamRes.statusText}`);
   }
 
   /* Check that the upstream returned something acceptable to us.  This ensures
@@ -211,7 +211,7 @@ async function proxyResponseBodyFromUpstream(req, res, upstreamReq) {
   const contentType = upstreamRes.headers.get("Content-Type");
 
   if (!acceptableContentType(accept, contentType)) {
-    throw new InternalServerError(`source response has unacceptable Content-Type: ${contentType}`);
+    throw new BadGateway(`source response has unacceptable Content-Type: ${contentType}`);
   }
 
   const forwardedUpstreamResHeaders = [

@@ -3,7 +3,8 @@ import stream from 'stream';
 import { promisify } from 'util';
 import { PRODUCTION } from '../config.js';
 import * as utils from '../utils/index.js';
-import { Forbidden, NotFound, Unauthorized } from '../httpErrors.js';
+import { BadGateway, Forbidden, NotFound, Unauthorized } from '../httpErrors.js';
+import { isFetchError } from '../fetch.js';
 import * as endpoints from '../endpoints/index.js';
 import { AuthzDenied } from '../exceptions.js';
 
@@ -99,6 +100,10 @@ export async function setup(app) {
       } else {
         err = new Forbidden(err.message);
       }
+    }
+
+    if (isFetchError(err)) {
+      err = new BadGateway(err.message);
     }
 
     /* Browser-like clients get JSON if they explicitly ask for it (regardless of

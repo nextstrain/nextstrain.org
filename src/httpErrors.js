@@ -2,6 +2,7 @@
 import httpErrors from 'http-errors';
 
 export const {
+  BadGateway,
   BadRequest,
   Forbidden,
   InternalServerError,

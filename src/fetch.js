@@ -107,8 +107,12 @@ async function* paginatedFetch(url, options, pageFn) {
   }
 }
 
+const isFetchError = (err) =>
+  err instanceof __fetch.FetchError;
+
 export {
   fetch,
+  isFetchError,
   paginatedFetch,
   Request,
 };
