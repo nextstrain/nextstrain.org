@@ -56,11 +56,20 @@ const coreBuildPaths = [
   "/zika",
 ];
 
+/**
+ * Core build paths whose bare URL (e.g. `/ebola`) should _not_ be handled here
+ * but instead fall through to the Next.js static site, which serves a bespoke
+ * landing page at that path.
+ */
+const staticPagePaths = new Set([
+  "/ebola",
+]);
+
 const coreBuildRoutes = coreBuildPaths.map(path => [
-  path,
+  ...(staticPagePaths.has(path) ? [] : [path]),
   `${path}/*`,
-  `${path}:*`, // Tangletrees at top-level, e.g. /a:/a/b
-  `${path}@*`, // version (date) descriptors for a top-level build
+  ...(staticPagePaths.has(path) ? [] : [`${path}:*`]), // Tangletrees at top-level, e.g. /a:/a/b
+  ...(staticPagePaths.has(path) ? [] : [`${path}@*`]), // version (date) descriptors for a top-level build
 ]);
 
 
