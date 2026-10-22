@@ -1,4 +1,4 @@
-import IndividualGroupPage from "../page"
+import { IndividualGroupPage } from "../page"
 
 // This should only be reached if the server's router (src/routing) does not
 // find an existing resource at the path.

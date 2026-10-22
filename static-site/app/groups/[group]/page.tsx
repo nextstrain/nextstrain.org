@@ -21,10 +21,27 @@ import { canUserEditGroupSettings, canViewGroupMembers } from "./utils";
 import type { AvailableGroups, DataResource } from "../types";
 
 /**
+ * The Next.js page component for an individual Nextstrain group. The
+ * App Router only permits `params`/`searchParams` on a page's default
+ * export, so the implementation lives in the named `IndividualGroupPage`
+ * component, which is also reused by the catch-all `[...path]` route.
+ */
+export default function Page({
+  params,
+}: {
+  params: {
+    /** the name of the group to display */
+    group: string;
+  };
+}): React.ReactElement {
+  return <IndividualGroupPage params={params} />;
+}
+
+/**
  * A React Client component to display a page for an individual
  * Nextstrain group
  */
-export default function IndividualGroupPage({
+export function IndividualGroupPage({
   params,
   nonExistentPath,
 }: {
