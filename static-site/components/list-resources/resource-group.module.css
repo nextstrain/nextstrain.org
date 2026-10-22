@@ -71,6 +71,20 @@
   padding-bottom: 5px; /* leave some space inside the group at the bottom */
 }
 
+.splashPageHeader {
+  align-items: center; /* vertically centre the icon against the title */
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.splashPageLink {
+  color: inherit; /* let <IconContainer> control the icon colour */
+  display: flex;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .rotate {
   display: inline-block;
   max-height: 30px;

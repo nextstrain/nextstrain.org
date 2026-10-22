@@ -1,4 +1,4 @@
-import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory, maybeRestrictedData } from "./types";
+import { ResourceType, Resource, Group, PathVersionsForGroup, FetchGroupHistory, SplashPage, maybeRestrictedData } from "./types";
 import { InternalError } from "../error-boundary";
 import fetchAndParseJSON from "../../util/fetch-and-parse-json";
 
@@ -33,6 +33,7 @@ export async function listResourcesAPI(
     versioned,
     groupNameBuilder = (name: string) => name.split("/")[0]!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
     groupDisplayNames,
+    groupSplashPages,
     groupSortableName,
     groupUrl,
     groupUrlTooltip,
@@ -44,6 +45,7 @@ export async function listResourcesAPI(
     versioned: boolean,
     groupNameBuilder?: (name: string) => string,
     groupDisplayNames?: Record<string, string>,
+    groupSplashPages?: SplashPage[],
     groupSortableName?: (group: Group) => string,
     groupUrl?: (groupName: string) => string,
     groupUrlTooltip?: (groupName: string) => string,
@@ -68,6 +70,9 @@ export async function listResourcesAPI(
       const group = resourceGroup(groupName, resources);
       if (groupDisplayNames && groupName in groupDisplayNames) {
         group.groupDisplayName = groupDisplayNames[groupName];
+      }
+      if (groupSplashPages) {
+        group.splashPage = groupSplashPages.find((s) => s.name === groupName);
       }
       if (groupSortableName) {
         group.sortingGroupName = groupSortableName(group);
