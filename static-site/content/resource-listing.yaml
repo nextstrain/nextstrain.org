@@ -35,6 +35,9 @@ coreQuickLinks:
     display: 'open/global/2y'
   - name: 'ncov/open/global/all-time'
     display: 'open/global/all-time'
+  - name: 'ebola/bdbv-drc-uganda-2026'
+    display: 'Ongoing BDBV outbreak (DRC)'
+
 
 coreGroupDisplayNames:
   "avian-flu": avian-flu (influenza)
@@ -42,6 +45,7 @@ coreGroupDisplayNames:
   WNV: WNV (West Nile Virus)
   ncov: ncov (SARS-CoV-2)
   mpox: mpox
+  ebola: Orthoebolaviruses
 
 
 # Hardcode which core resource groups/sets have their own splash pages
@@ -51,6 +55,9 @@ coreSplashPages:
   - name: ncov
     hoverText: Home page for all Nextstrain SARS-CoV-2 resources
     url: /sars-cov-2
+  - name: ebola
+    hoverText: Home page for all Nextstrain's Orthoebolavirus resources
+    url: /ebola
 
 
 # Tiles must define a filter query which is a list of dataset name "words"
