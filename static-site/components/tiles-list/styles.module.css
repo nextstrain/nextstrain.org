@@ -1,0 +1,69 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+}
+
+.tile {
+  align-items: center;
+  background-color: white;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin: 5px 10px;
+  padding: 5px 10px;
+}
+
+.tileImg {
+  border-radius: 6px;
+  flex: 0 0 auto;
+  height: 198px;
+  object-fit: cover;
+  width: 198px;
+}
+
+/* the title and description are stacked vertically */
+.tileText {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.tileTitle {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: var(--niceLineHeight);
+  margin: 0 0 6px;
+}
+
+.tileDescription {
+  font-size: var(--niceFontSize);
+  font-weight: 300;
+  line-height: var(--niceLineHeight);
+  margin: 0;
+}
+
+.list p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.list ul {
+    margin-top: 5px
+}
+.list li {
+    margin-left: 15px;
+}
+
+/* Hide the tiles on mobile */
+@media (max-width: 768px) {
+  .tileImg {
+    display: none;
+  }
+}

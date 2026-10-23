@@ -21,6 +21,7 @@ export type Group = {
   lastUpdated: string | undefined;
   resources: Resource[];
   groupDisplayName?: string;
+  splashPage?: SplashPage;
   fetchHistory?: FetchGroupHistory;
 } & GroupUrlProperties
 
@@ -134,6 +135,18 @@ export interface QuickLink {
   name: string;
   display: string;
   groupName?: string;
+}
+
+/** See coreSplashPages in static-site/content/resource-listing.yaml */
+export interface SplashPage {
+  /** the `groupName` this splash page applies to */
+  name: string;
+
+  /** text to display in the tooltip when the icon is hovered over */
+  hoverText: string;
+
+  /** the URL the icon links to */
+  url: string;
 }
 
 /**

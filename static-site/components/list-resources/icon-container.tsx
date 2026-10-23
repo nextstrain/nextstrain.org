@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 import { IconType } from "react-icons";
-import { MdFormatListBulleted, MdHistory, MdOutlineWarningAmber } from "react-icons/md";
+import { MdFormatListBulleted, MdHistory, MdOutlineHome, MdOutlineWarningAmber } from "react-icons/md";
 import { RiErrorWarningLine } from "react-icons/ri";
 
 import { InternalError } from "../error-boundary";
@@ -47,7 +47,7 @@ export default function IconContainer({
   const hasOnClick = typeof handleClick === "function";
 
   const col = hovered ? hoverColor || defaultHoverColor : color || defaultColor;
-  const cursor = hasOnClick ? "pointer" : "auto";
+  const cursor = hasOnClick ? "pointer" : "inherit";
   const iconProps = { size: "1.2em", color: col };
 
   let Icon: IconType;
@@ -57,6 +57,9 @@ export default function IconContainer({
       break;
     case "bullet-list":
       Icon = MdFormatListBulleted;
+      break;
+    case "home":
+      Icon = MdOutlineHome;
       break;
     case "restricted":
       Icon = RiErrorWarningLine;

@@ -135,9 +135,8 @@ function ResourceGroupHeader({
   const resourcesByName = Object.fromEntries(
     group.resources.map((r) => [r.name, r]),
   );
-  const quickLinksToDisplay = (quickLinks || []).filter(
-    (ql) => !!resourcesByName[ql.name] || ql.groupName === group.groupName,
-  );
+  const quickLinksToDisplay = (quickLinks || [])
+    .filter((ql) => !!resourcesByName[ql.name]);
 
   const rotateDeg = isCollapsed ? "0" : "90";
 
@@ -151,7 +150,26 @@ function ResourceGroupHeader({
 
       <div className={styles.flexColumnContainer}>
         <div className={styles.headerRow}>
-          {group.groupUrl ? (
+          {group.splashPage ? (
+            <TooltipWrapper description={group.splashPage.hoverText}>
+              <div className={styles.splashPageHeader}>
+                <a
+                  href={group.splashPage.url}
+                  className={styles.splashPageLink}
+                >
+                  <IconContainer
+                    color={"rgb(79, 75, 80)"}
+                    iconName="home"
+                    text=""
+                  />
+                </a>
+                <GroupLink
+                  displayName={group.groupDisplayName || group.groupName}
+                  href={group.splashPage.url}
+                />
+              </div>
+            </TooltipWrapper>
+          ) : group.groupUrl ? (
             <TooltipWrapper
               description={group.groupUrlTooltip}
             >

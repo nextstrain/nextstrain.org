@@ -7,10 +7,15 @@
 # Image paths in this YAML are relative to REPO_ROOT/static-site/static/pathogen_images/
 
 
-- name: Ebola BDBV outbreak
-  description: Ongoing Bundibugyo ebolavirus outbreak in the DRC & Uganda
+- name: Ebolavirus resources
+  description: All available Ebolavirus resources, including BDBV
+  img: ebola_streams.png
+  url: /ebola
+
+- name: BDBV outbreak tree
+  description: Continually updated phylogeographic analysis
   img: bdbv.jpg
-  url: /narratives/ebola/bdbv/drc-uganda-2026/2026-09-01
+  url: /ebola/bdbv-drc-uganda-2026
 
 - name: Measles outbreak
   description: Spread of 2025-2026 North America measles outbreak
@@ -36,11 +41,6 @@
   description: Mycobacterium tuberculosis evolution and spread
   img: tb_tree.png
   url: /tb/global
-
-- name: Ebola (EBOV)
-  description: Evolutionary history of all Zaire ebolavirus outbreaks
-  img: ebola_streams.png
-  url: /ebola/all-outbreaks
 
 - name: HPAI outbreak
   description: "Highly pathogenic avian influenza in North America"

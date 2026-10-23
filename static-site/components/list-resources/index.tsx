@@ -169,7 +169,7 @@ function ListResourcesContent({
 
   useUrlQueries(selectedFilterOptions, setSelectedFilterOptions);
 
-  const [sortMethod, changeSortMethod] = useState<SortMethod>("alphabetical");
+  const [sortMethod, changeSortMethod] = useState<SortMethod>(versioned ? "lastUpdated" : "alphabetical");
 
   const [resourceGroups, setResourceGroups] = useState<Group[]>();
 

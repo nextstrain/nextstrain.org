@@ -30,6 +30,7 @@ async function _coreDatasetResourceGroups() {
   const opts = {
     versioned: true,
     groupDisplayNames: coreResources["coreGroupDisplayNames"],
+    groupSplashPages: coreResources["coreSplashPages"],
     groupUrl: (groupName: string) => `/${groupName}`,
     groupUrlTooltip: (groupName: string) => `Click to load the default (and most recent) analysis for ${coreResources["coreGroupDisplayNames"][groupName] || groupName}`,
     groupImg: () => ({ src: nextstrainLogoSmall.src, alt: "nextstrain logo" }),
