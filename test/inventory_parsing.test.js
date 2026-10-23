@@ -34,7 +34,7 @@ test('parsing of nextstrain-data/zika_meta.json inventory', async () => {
 
   const shuffled = await parseInventory({objects: shuffle(zika_meta), versionsExist: true})
   expect(shuffled.map((el) => el.versionId))
-    .toEqual(should_be.map((el) => el.VersionId))  
+    .toEqual(should_be.map((el) => el.VersionId))
 })
 
 test('back-to-back delete markers', async () => {
@@ -48,7 +48,7 @@ test('back-to-back delete markers', async () => {
 
   const shuffled = await parseInventory({objects: shuffle(test_data), versionsExist: true})
     expect(shuffled.map((el) => el.versionId))
-      .toEqual(should_be.map((el) => el.VersionId))   
+      .toEqual(should_be.map((el) => el.VersionId))
 })
 
 /**
@@ -62,9 +62,11 @@ test('core URL redirects (via our manifest) are correctly obtained', async () =>
   const expected_url_redirects = {
     'dengue/denv1': 'dengue/denv1/genome',
     WNV: 'WNV/all-lineages',
-    'seasonal-flu': 'seasonal-flu/h3n2/ha/2y',
-    'seasonal-flu/h3n2': 'seasonal-flu/h3n2/ha/2y',
-    'seasonal-flu/h3n2/ha': 'seasonal-flu/h3n2/ha/2y',
+    'seasonal-flu': 'seasonal-flu/gisaid/h3n2/ha/2y',
+    'seasonal-flu/h3n2': 'seasonal-flu/gisaid/h3n2/ha/2y',
+    'seasonal-flu/h3n2/ha': 'seasonal-flu/gisaid/h3n2/ha/2y',
+    'seasonal-flu/gisaid': 'seasonal-flu/gisaid/h3n2/ha/2y',
+    'seasonal-flu/open': 'seasonal-flu/open/h3n2/ha/2y',
   }
   Object.entries(expected_url_redirects).forEach(([from, to]) => {
     expect(remapCoreUrl(from)).toEqual(to);
