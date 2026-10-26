@@ -33,11 +33,13 @@ export function setupApp() {
   app.use(nakedRedirect({reverse: true})); // redirect www.nextstrain.org to nextstrain.org
   app.use(middleware.rejectParentTraversals);
 
-  /* Explicitly prevent shared (CDN) caches from storing responses.
-   * Specific handlers (e.g. for static assets) can override this.
+  /* Prevent shared (CDN) caches from storing responses. Exclude hashed build
+   * assets so they retain their default long-lived cache headers in production.
    */
   app.use((req, res, next) => {
-    res.set("Cache-Control", "private, no-cache");
+    if (!req.path.startsWith("/_next/static/") && !req.path.startsWith("/dist/")) {
+      res.set("Cache-Control", "private, no-cache");
+    }
     next();
   });
 
