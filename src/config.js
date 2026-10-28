@@ -476,11 +476,16 @@ export const RESOURCE_INDEX = fromEnvOrConfig("RESOURCE_INDEX", null);
  * here.
  *
  * There is a side-effect to this - if the nextJsApp is set up in "production"
- * mode it will re-set `NODE_ENV=production`. This will have undesired
- * side-effects if any of our code inspects that variable rather than using the
- * canonical PRODUCTION flag set here. 
+ * mode, we re-set `NODE_ENV=production` so that Next.js enables production
+ * optimizations. This will have undesired side-effects if any of our code
+ * inspects that variable rather than using the canonical PRODUCTION flag set
+ * here.
  */
 export const STATIC_SITE_PRODUCTION = PRODUCTION || !!process.env.USE_PREBUILT_STATIC_SITE;
+
+if (STATIC_SITE_PRODUCTION) {
+  process.env.NODE_ENV = "production";
+}
 
 /**
  * Domain in Plausible analytics for which to record server-side analytics
