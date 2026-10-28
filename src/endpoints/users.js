@@ -40,16 +40,7 @@ const groupMemberships = (user) => user?.groups
 
 // Provide the client-side app with info about the current user
 const getWhoami = contentTypesProvided([
-  ["html", (req, res) => {
-    // A bug¹ in the Next.js handler drops the Vary header set by
-    // contentTypesProvided(). Set a no-cache header to prevent Next.js from
-    // adding its permissive default, which would cause shared (CDN) caches to
-    // potentially serve HTML to JSON requests.
-    // TODO: remove once the Next.js bug is fixed.
-    // ¹ <https://github.com/vercel/next.js/issues/85999>
-    res.set("Cache-Control", "private, no-cache");
-    return nextJsApp.handleRequest(req, res);
-}],
+  ["html", nextJsApp.handleRequest],
   ["json", (req, res) =>
     // Express's JSON serialization drops keys with undefined values
     res.json({
