@@ -3,6 +3,7 @@ import contentType from 'content-type';
 
 import fetch from 'node-fetch';
 import fs from 'fs';
+import { url, accept } from './helpers.js';
 
 const auspiceEntrypoint = fs.readFileSync("auspice-client/dist/index.html").toString();
 
@@ -378,16 +379,4 @@ function testBadRequest(path) {
       expect(body.error).toMatch(/paths may not include underscores/);
     });
   });
-}
-
-function url(path) {
-  return new URL(path, BASE_URL);
-}
-
-function accept(mediaType) {
-  return {
-    headers: {
-      Accept: mediaType
-    }
-  };
 }
