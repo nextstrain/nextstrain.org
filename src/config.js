@@ -23,6 +23,37 @@ const __basedir = path.join(__dirname, "..");
 
 
 /**
+ * Supported values:
+ *   - "development": Next.js uses hot-reloading
+ *   - "testing":     Next.js uses pre-built assets
+ *   - "production":  Next.js uses pre-built assets, server enforces strict production requirements
+ *
+ * Defaults to "production" if NODE_ENV is "production", otherwise "development".
+ *
+ * @type {"development" | "testing" | "production"}
+ */
+export const SERVER_MODE =
+  process.env.SERVER_MODE ??
+  (process.env.NODE_ENV === "production"
+    ? "production"
+    : "development");
+
+if (!["development", "testing", "production"].includes(SERVER_MODE)) {
+  throw new Error(`Invalid SERVER_MODE: "${SERVER_MODE}". Expected "development", "testing", or "production".`);
+}
+
+
+/**
+ * When Next.js is running with pre-compiled assets, set `NODE_ENV=production`
+ * to enable production-level optimizations within Next.js. Note that this does
+ * not put the server into production mode, which comes with stricter requirements.
+ */
+if (SERVER_MODE !== "development") {
+  process.env.NODE_ENV = "production";
+}
+
+
+/**
  * Running in production mode?
  *
  * Production mode means "in a production-like environment" and thus includes
@@ -31,7 +62,7 @@ const __basedir = path.join(__dirname, "..");
  *
  * @type {boolean}
  */
-export const PRODUCTION = process.env.NODE_ENV === "production";
+export const PRODUCTION = SERVER_MODE === "production";
 
 
 /**
@@ -463,29 +494,6 @@ export const GROUPS_BUCKET = fromEnvOrConfig("GROUPS_BUCKET", "nextstrain-groups
  * Falsey values result in the resource collection functionality not being used.
  */
 export const RESOURCE_INDEX = fromEnvOrConfig("RESOURCE_INDEX", null);
-
-/**
- * The nextJs route handler can operate in dev mode (hot reloading etc) or in
- * production mode where it serves pre-compiled assets (created via `npx next
- * build`). A common development aim is to test using pre-compiled assets
- * without the overhead of running the entire nextstrain.org server in
- * production mode.
- *
- * The reverse is not true - there's no need to run static-site in dev mode
- * and the overall site in production mode - and that configuration is prevented
- * here.
- *
- * There is a side-effect to this - if the nextJsApp is set up in "production"
- * mode, we re-set `NODE_ENV=production` so that Next.js enables production
- * optimizations. This will have undesired side-effects if any of our code
- * inspects that variable rather than using the canonical PRODUCTION flag set
- * here.
- */
-export const STATIC_SITE_PRODUCTION = PRODUCTION || !!process.env.USE_PREBUILT_STATIC_SITE;
-
-if (STATIC_SITE_PRODUCTION) {
-  process.env.NODE_ENV = "production";
-}
 
 /**
  * Domain in Plausible analytics for which to record server-side analytics

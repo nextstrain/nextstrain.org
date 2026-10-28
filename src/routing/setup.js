@@ -4,7 +4,7 @@ import nakedRedirect from 'express-naked-redirect';
 import express from 'express';
 import compression from 'compression';
 
-import { PRODUCTION, STATIC_SITE_PRODUCTION } from '../config.js';
+import { PRODUCTION, SERVER_MODE } from '../config.js';
 import { addAsync } from '../async.js';
 import * as authn from '../authn/index.js';
 import { replacer as jsonReplacer } from '../json.js';
@@ -20,7 +20,7 @@ export function setupApp() {
   app.set("json replacer", jsonReplacer);
 
   app.locals.production = PRODUCTION;
-  app.locals.STATIC_SITE_PRODUCTION = STATIC_SITE_PRODUCTION;
+  app.locals.SERVER_MODE = SERVER_MODE;
 
   // In production, trust Heroku as a reverse proxy and Express will use request
   // metadata from the proxy.
