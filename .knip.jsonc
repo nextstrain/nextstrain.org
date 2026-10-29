@@ -31,7 +31,11 @@
 
     // Other tools, not used by the server
     "resourceIndexer/main.js",
-    "scripts/*.js"
+    "scripts/*.js",
+
+    // Browser-side script copied into the blog's assets dir and loaded via a
+    // <script> tag by build-static-blog.mjs, rather than imported.
+    "scripts/gazette-blog/whoami-login.js"
   ],
 
   // Future-proof to potential TypeScript conversions

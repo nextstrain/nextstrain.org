@@ -26,9 +26,12 @@ interface BlogPostParams {
  * time, to statically build out all the blog posts
  */
 export function generateStaticParams(): BlogPostParams[] {
-  return getBlogPosts().map((post) => {
-    return { id: post.blogUrlName };
-  });
+  return getBlogPosts()
+    // gazette posts are served as static pages by Express, not rendered here.
+    .filter((post) => !post.isGazette)
+    .map((post) => {
+      return { id: post.blogUrlName };
+    });
 }
 
 type PopulatedMetadata = Metadata & {
@@ -117,6 +120,14 @@ export default async function BlogPost({
 
   // if for some reason we didn't find the post, 404 on out
   if (!blogPost) {
+    notFound();
+  }
+
+  // gazette-authored posts are compiled to static pages and served by Express
+  // outside Next.js (see scripts/gazette-blog/). They are excluded from
+  // generateStaticParams, so this route should never be asked to render one;
+  // guard anyway in case one is requested dynamically.
+  if (blogPost.isGazette) {
     notFound();
   }
 

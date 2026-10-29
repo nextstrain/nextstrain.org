@@ -26,44 +26,71 @@ export interface BlogPost {
 
   /** the post title */
   title: string;
+
+  /**
+   * TEMPORARY
+   * True for gazette-authored posts. These are compiled to static pages served
+   * by Express outside Next.js (see scripts/gazette-blog/), so the Next.js
+   * `/blog/[id]` route does not render them — it only lists them on the index.
+   */
+  isGazette?: boolean;
 }
 
 /**
- * Scans the ./static-site/content/blog directory for .md files and
- * returns a chronologically-sorted array of posts, each with some
- * basic metadata and the raw (unsanitized) markdown contents.
+ * Returns a chronologically-sorted (newest-first) array of blog posts, drawn
+ * from two sources:
+ *
+ *  - Nextstrain markdown posts in ./static-site/content/blog/*.md
+ *  - gazette-authored posts: project directories under the repo-root ./blog/
+ *    directory, each holding an entry Markdown file named after the directory
+ *    (blog/<slug>/<slug>.md). Their title/date/author are read straight from
+ *    the gazette source frontmatter, so a gazette post needs no stub markdown
+ *    file to appear in the blog.
  */
 export function getBlogPosts(): BlogPost[] {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const thisDir = path.dirname(fileURLToPath(import.meta.url));
 
-  const postsDirectory = path.join(__dirname, "..", "..", "content", "blog");
+  const markdownDir = path.join(thisDir, "..", "..", "content", "blog");
+  const gazetteDir = path.join(thisDir, "..", "..", "..", "blog");
 
-  // if this code is running in production, it won't have access to
-  // the postsDirectory, because it doesn't exist there — so check to
-  // see if we can `stat()` that path, and if we get an error, if it's
-  // a "file not found" error, just return an empty list; otherwise,
-  // something else weird is going on, and the best we can do is
-  // re-throw the error
+  const posts = [
+    ...readMarkdownPosts(markdownDir),
+    ...readGazettePosts(gazetteDir),
+  ];
+
+  // Dedupe by slug (keep the first occurrence — markdown posts take precedence)
+  // then sort newest-first; YYYY-MM-DD strings sort lexicographically.
+  const bySlug = new Map<string, BlogPost>();
+  for (const post of posts) {
+    if (!bySlug.has(post.blogUrlName)) bySlug.set(post.blogUrlName, post);
+  }
+  return Array.from(bySlug.values()).sort((a, b) => (a.date > b.date ? -1 : 1));
+}
+
+/**
+ * Whether a directory does not exist. In production the source directories
+ * aren't present (pages are pre-rendered at build time), so a missing
+ * directory means "no posts from here" rather than an error.
+ */
+function directoryMissing(dir: string): boolean {
   try {
-    fs.statSync(postsDirectory);
-  }
-  catch (err: unknown) {
-    if (
-      err instanceof Error &&
-      'code' in err &&
-      err["code"] === "ENOENT"
-    ) {
-      return [];
-    } else {
-      throw err;
+    fs.statSync(dir);
+    return false;
+  } catch (err: unknown) {
+    if (err instanceof Error && "code" in err && err["code"] === "ENOENT") {
+      return true;
     }
+    throw err;
   }
+}
 
-  const markdownFiles = fs
+/** Read the Nextstrain markdown posts (content/blog/*.md). */
+function readMarkdownPosts(postsDirectory: string): BlogPost[] {
+  if (directoryMissing(postsDirectory)) return [];
+
+  return fs
     .readdirSync(postsDirectory)
-    .filter((fileName) => fileName.endsWith(".md"));
-
-  const blogPosts: BlogPost[] = markdownFiles
+    .filter((fileName) => fileName.endsWith(".md"))
     .map((fileName): BlogPost | false => {
       const { data: frontmatter, content: mdstring } = matter(
         fs.readFileSync(path.join(postsDirectory, fileName), "utf8"),
@@ -89,13 +116,72 @@ export function getBlogPosts(): BlogPost[] {
       }
     })
     // type guard to filter out false entries generated because of bad frontmatter
-    .filter((post: false | BlogPost): post is BlogPost => {
-      return !!post;
-    })
-    // YYYY-MM-DD strings sort alphabetically
-    .sort((a, b) => (a.date > b.date ? -1 : 1));
+    .filter((post: false | BlogPost): post is BlogPost => !!post);
+}
 
-  return blogPosts;
+/**
+ * Read gazette-authored posts from the repo-root blog/ directory. Each post is
+ * a project directory whose entry Markdown file is named after the directory
+ * (blog/<slug>/<slug>.md); that file's frontmatter supplies the post metadata.
+ * The directory name is the post slug (and the gazette bundle's base path).
+ */
+function readGazettePosts(blogDir: string): BlogPost[] {
+  if (directoryMissing(blogDir)) return [];
+
+  const posts: BlogPost[] = [];
+
+  for (const dirent of fs.readdirSync(blogDir, { withFileTypes: true })) {
+    if (!dirent.isDirectory()) continue;
+
+    const slug = dirent.name;
+    const entryPath = path.join(blogDir, slug, `${slug}.md`);
+    if (!fs.existsSync(entryPath)) continue;
+
+    const { data: frontmatter, content: mdstring } = matter(
+      fs.readFileSync(entryPath, "utf8"),
+    );
+
+    const title: string = frontmatter.title;
+    const date = normalizeDate(frontmatter.date);
+
+    if (!title || !date) {
+      console.warn(
+        `Gazette blog post ${slug} skipped due to missing title/date frontmatter`,
+      );
+      continue;
+    }
+
+    // gazette frontmatter uses an `authors` list of { name, ... }; fall back to
+    // a plain `author` string if present.
+    const author = Array.isArray(frontmatter.authors)
+      ? frontmatter.authors
+          .map((a: { name?: string }) => a && a.name)
+          .filter(Boolean)
+          .join(", ")
+      : frontmatter.author || "";
+
+    posts.push({
+      author,
+      blogUrlName: slug,
+      date,
+      title,
+      sidebarTitle: frontmatter.sidebarTitle || title,
+      mdstring,
+      isGazette: true,
+    });
+  }
+
+  return posts;
+}
+
+/**
+ * Normalise a frontmatter date to a YYYY-MM-DD string. gazette frontmatter
+ * dates are unquoted YAML dates (parsed to a Date); Nextstrain markdown posts
+ * quote them as strings.
+ */
+function normalizeDate(value: unknown): string {
+  if (value instanceof Date) return value.toISOString().slice(0, 10);
+  return typeof value === "string" ? value : "";
 }
 
 /**
