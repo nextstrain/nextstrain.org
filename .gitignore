@@ -59,3 +59,9 @@ static-site/tsconfig.tsbuildinfo
 static-site/public/blog/atom.xml
 static-site/public/blog/feed.json
 static-site/public/blog/rss2.xml
+
+# gazette integration build output (`npm run build:gazette`; requires the
+# `gazette` CLI, see static-site/components/gazette/README.md): the compiled
+# document bundles and the generated runtime components (the README is kept).
+static-site/public/gazette/
+static-site/components/gazette/*.jsx

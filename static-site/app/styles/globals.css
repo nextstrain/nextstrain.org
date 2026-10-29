@@ -66,6 +66,17 @@ main {
   padding: 0 25px;
 }
 
+/*
+ * A gazette-authored document (see components/gazette/) renders edge-to-edge so
+ * the document itself controls its width and margins. Cancel the 25px
+ * horizontal padding `main` applies above so `.gazette-host` spans the full
+ * browser width.
+ */
+.gazette-host {
+  margin-left: -25px;
+  margin-right: -25px;
+}
+
 a {
   background-color: transparent;
   color: var(--blue);

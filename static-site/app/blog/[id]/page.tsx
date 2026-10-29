@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import React from "react";
 
 import { BigSpacer } from "../../../components/spacers";
+// Vendored gazette companion component (see components/gazette/README.md).
+import { GazettePaper } from "../../../components/gazette/GazettePaper";
 import {
   siteLogo,
   siteTitle,
@@ -10,6 +12,7 @@ import {
   siteUrl,
 } from "../../../data/BaseConfig";
 
+import { gazetteBuildExists, loadGazetteBuild } from "../gazette";
 import type { BlogPost } from "../utils";
 import { getBlogPosts, markdownToHtml } from "../utils";
 
@@ -118,6 +121,21 @@ export default async function BlogPost({
   // if for some reason we didn't find the post, 404 on out
   if (!blogPost) {
     notFound();
+  }
+
+  // If this post was authored as a gazette document and a bundle has been
+  // built for it (public/gazette/<id>/), render that instead of the normal
+  // markdown path. gazette emits its own frontmatter header (title, authors,
+  // date, citation) and confines all of its styling to a shadow root, so we
+  // render it on its own — inside the usual blog container for sensible width.
+  // This is the single integration point; everything below is the unchanged
+  // markdown path.
+  if (gazetteBuildExists(id)) {
+    const { articleHtml, manifest } = loadGazetteBuild(id);
+    // Rendered edge-to-edge: no container/column wrapper and no padding, so the
+    // gazette document controls its own width and margins. `.gazette-host`
+    // cancels the `main` horizontal padding — see app/styles/globals.css.
+    return <GazettePaper articleHtml={articleHtml} manifest={manifest} />;
   }
 
   const mdToHtml = async (md: string, {inline = false}: {inline?: boolean} = {}) => ({

@@ -34,6 +34,11 @@ main() {
 build-static() {
     echo "Building the static Next.JS app (pages defined in static-site/pages, assets written to static-site/.next)"
     npm run build:feeds
+    # Generate the gazette runtime components and compile the gazette blog
+    # bundle(s) before `next build`, since the blog route imports the generated
+    # components and reads the bundles from public/ at build time. Requires the
+    # `gazette` CLI on PATH (see static-site/components/gazette/README.md).
+    npm run build:gazette
     ./node_modules/.bin/next build static-site
 }
 
