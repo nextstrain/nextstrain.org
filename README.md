@@ -80,12 +80,14 @@ In particular, setting `DEBUG=nextstrain:*` is useful to see all output from our
 
 ## Frontend pages other than Auspice
 
-All of the frontend (client) pages in nextstrain.org except for those using Auspice to visualise datasets are built using [Next.JS](https://nextjs.org) and found in `./static-site/`.
-
+Most of the non-Auspice content in nextstrain.org is rendered using [Next.JS](https://nextjs.org) and found in `./static-site/`.
 See [static-site/README.md](./static-site/README.md) for instructions on how to add content.
 See above for how to run the server in development mode which will allow you to develop these pages.
 
 In production, these are compiled (`npm run build`) and served via the nextstrain.org server (`npm run server`).
+
+The **blog** is compiled and statically served by our express server.
+See [blog/README.md](./blog/README.md) for more.
 
 ---
 ## Documentation

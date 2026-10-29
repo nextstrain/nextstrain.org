@@ -13,4 +13,5 @@ export * as openid from './openid.js';
 export * as pathogenRepos from './pathogenRepos.js';
 export * as schemas from './schemas.js';
 export * as staging from './staging.js';
+export * as staticBlog from './staticBlog.js';
 export * as staticSite from './staticSite.js';

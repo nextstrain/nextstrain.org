@@ -19,6 +19,7 @@ const {
   pathogenRepos,
   schemas,
   staging,
+  staticBlog,
   staticSite,
   listResources,
 } = routing;
@@ -187,6 +188,15 @@ auspice.setup(app);
  * catch all routes
  */
 listResources.setup(app);
+
+
+/* Static gazette blog posts (PROTOTYPE).
+ *
+ * Serves gazette-authored blog posts as fully static HTML, outside Next.js.
+ * Must come before staticSite.setup (the next.js catch-all); posts without a
+ * built static shell fall through to Next.js.
+ */
+staticBlog.setup(app);
 
 
 /* static-site (Next.js).

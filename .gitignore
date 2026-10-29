@@ -51,6 +51,8 @@ terraform.tfstate*
 # nextjs
 static-site/next-env.d.ts
 static-site/.next
+# stray Next.js trace dir written to cwd by `next` CLI invocations from the root
+/.next
 
 # TypeScript
 static-site/tsconfig.tsbuildinfo
@@ -59,3 +61,11 @@ static-site/tsconfig.tsbuildinfo
 static-site/public/blog/atom.xml
 static-site/public/blog/feed.json
 static-site/public/blog/rss2.xml
+
+# gazette blog build output (`npm run build:gazette`).
+# .gazette-build/ is the intermediate (gazette's own static output);
+.gazette-build/
+# blog-dist/ is the served tree (static pages + assets) that Express serves outside Next.js.
+blog-dist/
+# assets produced by running `gazette dev <markdown>`
+blog/*/dist/
