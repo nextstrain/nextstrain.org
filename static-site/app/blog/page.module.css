@@ -1,0 +1,43 @@
+.heading {
+  color: black;
+  font-size: 3.5rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+
+.year {
+  color: #555;
+  font-size: 3rem;
+  font-weight: 400;
+  margin: 2.4rem 0 0.8rem;
+  padding-bottom: 0.4rem;
+}
+
+.list {
+  list-style: none;
+}
+
+.item {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.4;
+  margin: 1.2rem 0;
+  padding: 1rem;
+  border: 1px solid #ddd;;
+  border-radius: 0.4rem;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.date {
+  color: #555;
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.5rem;
+}
+
+.authors {
+  color: #555;
+  font-size: 1.6rem;
+}
