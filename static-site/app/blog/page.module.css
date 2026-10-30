@@ -1,0 +1,17 @@
+.heading {
+  color: black;
+  font-size: 3.5rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+
+.list {
+  list-style: none;
+}
+
+.item {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.4;
+  margin: 1.2rem 0;
+}
