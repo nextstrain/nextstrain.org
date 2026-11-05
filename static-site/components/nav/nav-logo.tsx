@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -30,7 +29,7 @@ export default function NavLogo(): React.ReactElement | null {
 function Logo(): React.ReactElement {
   return (
     <a href="/" className={styles.logo}>
-      <Image src={logo} alt="Nextstrain (logo)" width="40" height="40" />
+      <img src={logo.src} alt="Nextstrain (logo)" width="40" height="40" />
     </a>
   );
 }
