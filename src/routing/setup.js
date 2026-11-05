@@ -9,6 +9,7 @@ import { addAsync } from '../async.js';
 import * as authn from '../authn/index.js';
 import { replacer as jsonReplacer } from '../json.js';
 import * as middleware from '../middleware.js';
+import * as utils from '../utils/index.js';
 
 
 export function setupApp() {
@@ -25,6 +26,15 @@ export function setupApp() {
   // In production, trust Heroku as a reverse proxy and Express will use request
   // metadata from the proxy.
   if (PRODUCTION) app.enable("trust proxy");
+
+  /* Log the User-Agent of certain requests.
+   */
+  app.use((req, res, next) => {
+    if (req.path.startsWith("/charon/")) {
+      utils.verbose(`[request] ${req.method} ${req.originalUrl} X-Request-ID=${req.get("X-Request-ID") ?? ""} User-Agent=${JSON.stringify(req.get("User-Agent") ?? "")}`);
+    }
+    next();
+  });
 
   app.use(middleware.rejectPostRequests);
 
