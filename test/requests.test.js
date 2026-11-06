@@ -275,6 +275,16 @@ describe("narratives", () => {
 });
 
 
+describe("Next.js image optimization API is disabled", () => {
+  const path = "/_next/image?url=%2Ffavicon.ico&w=64&q=75";
+
+  test.each(["text/html,*/*;q=0.1", "application/json"])("accept: %s", async (mediaType) => {
+    const res = await fetch(url(path), accept(mediaType));
+    expect(res.status).toBe(404);
+  });
+});
+
+
 function testIsAuspice(path) {
   testPathMediaTypes({
     path,
