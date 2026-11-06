@@ -69,6 +69,12 @@ async function proxyFromUpstream(req, res, url, accept) {
      * decompressing and recompressing ourselves.
      */
     compress: false,
+
+    /* Give up on unresponsive upstreams. Shorter than Heroku's 30s timeout so
+     * our custom HTTP response is sent.
+     * <https://devcenter.heroku.com/articles/preventing-h12-errors-request-timeouts#add-a-timeout-to-the-webserver>
+     */
+    timeout: 20_000,
   }));
 }
 
