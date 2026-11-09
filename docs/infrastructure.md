@@ -70,9 +70,13 @@ Deploys to the production app are performed by manually [promoting](https://devc
   - `CONFIG_FILE` is the path to a JSON file defining the defaults for the required variables below.
     If not provided, the checked-in files `env/production/config.json` and `env/testing/config.json` are used (depending on the value of `NODE_ENV`).
 
-  - `USE_PREBUILT_STATIC_SITE` is useful for development purposes and allows you to run the static site (sometimes referred to as the "frontend" or the "Next.js site") using pre-built assets, which is how it behaves in production mode.
-    In the absence of this variable the `NODE_ENV` is used to decide whether to use pre-built assets ("production mode") or compile assets as requested ("development mode").
-    If `NODE_ENV="production"` then `USE_PREBUILT_STATIC_SITE` has no effect.
+  - `SERVER_MODE` specifies the operational mode of the server as one of the following:
+    - `development`: Next.js uses hot-reloading
+    - `testing`: Next.js uses pre-built assets
+    - `production`: Next.js uses pre-built assets, server enforces strict production requirements
+    If both `SERVER_MODE` and `NODE_ENV` are set, `SERVER_MODE` takes precedence.
+    If both `SERVER_MODE` and `NODE_ENV` are unset, the default is `development`.
+    If `NODE_ENV=production` is set and `SERVER_MODE` is unset, `SERVER_MODE` is set to `production`.
     (P.S. to use prebuilt assets they must first be built, typically via `npm run build`.)
 
   - `DEBUG` controls debug-level logging output from our own codebase as well as many of our deps (e.g. Express and its related packages).

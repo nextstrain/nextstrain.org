@@ -71,7 +71,7 @@ For running locally, you should ensure
   Alternatively, these may be configured using `~/.aws/credentials`.
   If you add a new profile to `~/.aws/credentials`, you can then tell the server to use it by setting `AWS_PROFILE=...`.
 
-If you have built the next.js part of the site (`./static-site`), via `npx next build static-site` or similar, then setting `USE_PREBUILT_STATIC_SITE=1` will use these built assets rather than server-side compilation.
+If you have built the next.js part of the site (`./static-site`), via `npx next build static-site` or similar, then setting `SERVER_MODE=testing` will use these built assets rather than server-side compilation.
 
 Use `DEBUG` to control debug-level logging output.
 In particular, setting `DEBUG=nextstrain:*` is useful to see all output from our own codebase.
