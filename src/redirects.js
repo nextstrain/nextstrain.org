@@ -172,7 +172,13 @@ const datasetRedirectPatterns = [
      * both under flu/ so that avian-flu is more discoverable
      */
    ['/flu/avian(.*)', '/avian-flu(.*)'],
-   ['/flu/seasonal(.*)', '/seasonal-flu(.*)'],
+   /**
+    * Prior to Sept 2026, the core seasonal-flu build were exclusively GISAID builds.
+    * Since we now have GISAID and open builds, add redirects for the old URLs to
+    * point to the new GISAID URLs.
+    */
+   ['/flu/seasonal/:lineage(h3n2|h1n1pdm|vic|yam)/(.*)', '/seasonal-flu/gisaid/:lineage/(.*)'],
+   ['/seasonal-flu/:lineage(h3n2|h1n1pdm|vic|yam)/(.*)', '/seasonal-flu/gisaid/:lineage/(.*)'],
 
    /**
     * Redirect /flu URL itself. We choose seasonal-flu to mimic historical behaviour
