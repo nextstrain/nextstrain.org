@@ -92,7 +92,6 @@ export default function modal_draw(ref, resource, lightGrey) {
     heights.marginBelowAxis;
   let radius = 12;
   const padding = 1;
-  let nextRadius = radius;
   let iterCount = 0;
   let beeswarmData;
   let beeswarmHeight = 0;
@@ -100,21 +99,18 @@ export default function modal_draw(ref, resource, lightGrey) {
   const maxIter = 5;
   const radiusJump = 2;
   while (iterCount++ < maxIter && spareHeight > 50) {
-    const nextBeeswarmData = dodge(flatData, {
-      radius: nextRadius * 2 + padding,
+    beeswarmData = dodge(flatData, {
+      radius: radius * 2 + padding,
       x: (d) => x(d["date"]),
     });
-    const nextBeeswarmHeight = d3.max(nextBeeswarmData.map((d) => d.y));
+    beeswarmHeight = d3.max(beeswarmData.map((d) => d.y));
     const nextSpareHeight =
-      availBeeswarmHeight - nextBeeswarmHeight - nextRadius;
+      availBeeswarmHeight - beeswarmHeight - radius;
     if (nextSpareHeight <= spareHeight && nextSpareHeight > 0) {
-      beeswarmData = nextBeeswarmData;
-      beeswarmHeight = nextBeeswarmHeight;
       spareHeight = nextSpareHeight;
-      radius = nextRadius;
-      nextRadius += radiusJump;
+      radius += radiusJump;
     } else {
-      nextRadius -= radiusJump;
+      radius -= radiusJump;
     }
   }
 
