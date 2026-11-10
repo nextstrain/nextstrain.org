@@ -3,8 +3,6 @@ import matter from "gray-matter";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import parseMarkdown from "./parseMarkdown";
-
 export interface BlogPost {
   /** author(s) name(s) */
   author: string;
@@ -18,59 +16,34 @@ export interface BlogPost {
   /** publication date of the post */
   date: string;
 
-  /** the Markdown-formatted content of the post */
-  mdstring: string;
-
-  /** the string to use in the blog sidebar for this post */
-  sidebarTitle: string;
-
   /** the post title */
   title: string;
-
-  /**
-   * TEMPORARY
-   * True for gazette-authored posts. These are compiled to static pages served
-   * by Express outside Next.js (see scripts/gazette-blog/), so the Next.js
-   * `/blog/[id]` route does not render them — it only lists them on the index.
-   */
-  isGazette?: boolean;
 }
 
 /**
- * Returns a chronologically-sorted (newest-first) array of blog posts, drawn
- * from two sources:
+ * Returns a chronologically-sorted (newest-first) array of blog posts.
  *
- *  - Nextstrain markdown posts in ./static-site/content/blog/*.md
- *  - gazette-authored posts: project directories under the repo-root ./blog/
- *    directory, each holding an entry Markdown file named after the directory
- *    (blog/<slug>/<slug>.md). Their title/date/author are read straight from
- *    the gazette source frontmatter, so a gazette post needs no stub markdown
- *    file to appear in the blog.
+ * Posts are gazette-authored project directories under the repo-root ./blog/
+ * directory, each holding an entry Markdown file named after the directory
+ * (blog/<slug>/<slug>.md). Their title/date/author are read straight from the
+ * gazette source frontmatter.
+ *
+ * The posts are no longer rendered by Next.js — gazette compiles each to a
+ * static page served by Express (see scripts/gazette-blog/). This index page is
+ * the only part of the blog still served by Next.js.
  */
 export function getBlogPosts(): BlogPost[] {
   const thisDir = path.dirname(fileURLToPath(import.meta.url));
-
-  const markdownDir = path.join(thisDir, "..", "..", "content", "blog");
   const gazetteDir = path.join(thisDir, "..", "..", "..", "blog");
 
-  const posts = [
-    ...readMarkdownPosts(markdownDir),
-    ...readGazettePosts(gazetteDir),
-  ];
-
-  // Dedupe by slug (keep the first occurrence — markdown posts take precedence)
-  // then sort newest-first; YYYY-MM-DD strings sort lexicographically.
-  const bySlug = new Map<string, BlogPost>();
-  for (const post of posts) {
-    if (!bySlug.has(post.blogUrlName)) bySlug.set(post.blogUrlName, post);
-  }
-  return Array.from(bySlug.values()).sort((a, b) => (a.date > b.date ? -1 : 1));
+  // YYYY-MM-DD strings sort lexicographically; newest-first.
+  return readGazettePosts(gazetteDir).sort((a, b) => (a.date > b.date ? -1 : 1));
 }
 
 /**
- * Whether a directory does not exist. In production the source directories
- * aren't present (pages are pre-rendered at build time), so a missing
- * directory means "no posts from here" rather than an error.
+ * Whether a directory does not exist. In production the source directory
+ * isn't present (the index is pre-rendered at build time), so a missing
+ * directory means "no posts" rather than an error.
  */
 function directoryMissing(dir: string): boolean {
   try {
@@ -82,41 +55,6 @@ function directoryMissing(dir: string): boolean {
     }
     throw err;
   }
-}
-
-/** Read the Nextstrain markdown posts (content/blog/*.md). */
-function readMarkdownPosts(postsDirectory: string): BlogPost[] {
-  if (directoryMissing(postsDirectory)) return [];
-
-  return fs
-    .readdirSync(postsDirectory)
-    .filter((fileName) => fileName.endsWith(".md"))
-    .map((fileName): BlogPost | false => {
-      const { data: frontmatter, content: mdstring } = matter(
-        fs.readFileSync(path.join(postsDirectory, fileName), "utf8"),
-      );
-
-      // Our blog posts have frontmatter which includes author, date
-      // (YYYY-MM-DD format), post title, and an optional sidebar title.
-      // If the sidebar title isn't provided, the post title will be
-      // used for the sidebar title.
-      const { author, date, title } = frontmatter;
-
-      if (!author || !date || !title) {
-        // console warning printed server-side
-        console.warn(
-          `Blog post ${fileName} skipped due to empty/incomplete frontmatter`,
-        );
-        // we will filter these `false` values out momentarily
-        return false;
-      } else {
-        const blogUrlName = fileName.replace(/\.md$/, "");
-        const sidebarTitle: string = frontmatter.sidebarTitle || title;
-        return { author, date, title, blogUrlName, sidebarTitle, mdstring };
-      }
-    })
-    // type guard to filter out false entries generated because of bad frontmatter
-    .filter((post: false | BlogPost): post is BlogPost => !!post);
 }
 
 /**
@@ -137,9 +75,7 @@ function readGazettePosts(blogDir: string): BlogPost[] {
     const entryPath = path.join(blogDir, slug, `${slug}.md`);
     if (!fs.existsSync(entryPath)) continue;
 
-    const { data: frontmatter, content: mdstring } = matter(
-      fs.readFileSync(entryPath, "utf8"),
-    );
+    const { data: frontmatter } = matter(fs.readFileSync(entryPath, "utf8"));
 
     const title: string = frontmatter.title;
     const date = normalizeDate(frontmatter.date);
@@ -165,9 +101,6 @@ function readGazettePosts(blogDir: string): BlogPost[] {
       blogUrlName: slug,
       date,
       title,
-      sidebarTitle: frontmatter.sidebarTitle || title,
-      mdstring,
-      isGazette: true,
     });
   }
 
@@ -176,45 +109,9 @@ function readGazettePosts(blogDir: string): BlogPost[] {
 
 /**
  * Normalise a frontmatter date to a YYYY-MM-DD string. gazette frontmatter
- * dates are unquoted YAML dates (parsed to a Date); Nextstrain markdown posts
- * quote them as strings.
+ * dates are unquoted YAML dates (parsed to a Date); some are quoted strings.
  */
 function normalizeDate(value: unknown): string {
   if (value instanceof Date) return value.toISOString().slice(0, 10);
   return typeof value === "string" ? value : "";
-}
-
-/**
- * A function to transform a Markdown-formatted string into HTML.
- */
-export async function markdownToHtml({
-  mdString,
-  inline,
-  addHeadingAnchors,
-  headingAnchorClass,
-}: {
-  /** the Markdown-formatted string to transform */
-  mdString: string;
-
-  /** inline or block? **/
-  inline?: boolean;
-
-  /** if to add anchors to headings or not */
-  addHeadingAnchors?: boolean;
-
-  /** the name to use for the CSS class on heading anchors */
-  headingAnchorClass?: string;
-}): Promise<string> {
-  try {
-    return await parseMarkdown({
-      mdString,
-      inline: !!inline,
-      addHeadingAnchors: addHeadingAnchors ?? !inline,
-      headingAnchorClass,
-    })
-  }
-  catch(error) {
-    console.error(`Error parsing markdown: ${error}`);
-    return '<p>There was an error parsing markdown content.</p>';
-  }
 }
