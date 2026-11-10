@@ -1,9 +1,16 @@
 ---
-author: "The Nextstrain team"
 date: "2026-09-02"
 title: "BDBV outbreak resources"
-sidebarTitle: "BDBV outbreak resources"
+authors:
+  - name: "The Nextstrain team"
+    affiliations: [nextstrain]
+affiliations:
+  - id: nextstrain
+    name: Nextstrain
+    url: https://nextstrain.org
+pdf-download: false
 ---
+
 
 Since early May, researchers at the National Institute of Biomedical Research (INRB) and their partners have been sequencing isolates from the ongoing Bundibugyo ebolavirus outbreak in the DRC.
 
