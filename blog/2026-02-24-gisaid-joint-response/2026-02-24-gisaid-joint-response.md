@@ -1,8 +1,10 @@
 ---
-author: "Trevor Bedford, Richard Neher and the Nextstrain team"
+authors:
+  - name: "Trevor Bedford"
+  - name: "Richard Neher and the Nextstrain team"
 date: "2026-02-24"
 title: "Joint response to GISAID regarding termination of SARS-CoV-2 data feeds"
-sidebarTitle: "Joint response to GISAID regarding termination of SARS-CoV-2 data feeds"
+pdf-download: false
 ---
 
 Since our [Nov 6 update](/blog/2025-11-06-gisaid-based-ncov-analyses), we haven't had further correspondence with GISAID Secretariat and the GISAID data feed for SARS-CoV-2 hasn't been updated.

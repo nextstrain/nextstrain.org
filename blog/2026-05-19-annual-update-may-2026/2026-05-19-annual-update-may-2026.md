@@ -1,8 +1,11 @@
 ---
-author: "JT McCrone, Richard Neher, Trevor Bedford"
+authors:
+  - name: "JT McCrone"
+  - name: "Richard Neher"
+  - name: "Trevor Bedford"
 date: "2026-05-19"
 title: "Nextstrain Annual Update May 2026"
-sidebarTitle: "Annual Update May 2026"
+pdf-download: false
 ---
 
 Nextstrain development supports real-time genomic surveillance for two central purposes:

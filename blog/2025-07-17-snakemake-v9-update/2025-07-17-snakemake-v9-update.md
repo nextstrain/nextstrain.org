@@ -1,8 +1,9 @@
 ---
-author: "The Nextstrain team"
+authors:
+  - name: "The Nextstrain team"
 date: "2025-07-17"
 title: "Upgrade to Snakemake v9"
-sidebarTitle: "Upgrade to Snakemake v9"
+pdf-download: false
 ---
 
 The [Nextstrain managed runtimes][] have been pinned to Snakemake version 7 since

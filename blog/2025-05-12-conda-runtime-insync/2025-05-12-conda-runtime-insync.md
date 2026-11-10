@@ -1,8 +1,9 @@
 ---
-author: "The Nextstrain team"
+authors:
+  - name: "The Nextstrain team"
 date: "2025-05-12"
 title: "Conda runtime back in sync"
-sidebarTitle: "Conda runtime back in sync"
+pdf-download: false
 ---
 
 Updates to our Conda runtime were [paused for a few

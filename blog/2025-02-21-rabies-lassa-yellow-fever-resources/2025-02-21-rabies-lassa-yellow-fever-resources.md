@@ -1,8 +1,13 @@
 ---
-author: "Kim Andrews, Jennifer Chang, Richard Daodu, Denise Kühnert, John SJ Anderson"
+authors:
+  - name: "Kim Andrews"
+  - name: "Jennifer Chang"
+  - name: "Richard Daodu"
+  - name: "Denise Kühnert"
+  - name: "John SJ Anderson"
 date: "2025-02-21"
 title: "New Resources for Rabies, Lassa, and Yellow Fever Virus"
-sidebarTitle: "Rabies, Lassa, and Yellow Fever Virus Resources"
+pdf-download: false
 ---
 
 We are continuing to expand the collection of core pathogen datasets
@@ -42,8 +47,10 @@ this pathogen does not demonstrate a consistent clock rate across the
 phylogeny, likely due to variation in evolutionary rates for the virus
 across host species.
 
-![Figure 1](/blog/img/rabies-lassa-yellow-fever-fig1a.png)
-![Figure 1](/blog/img/rabies-lassa-yellow-fever-fig1b.png)
+![Figure 1](rabies-lassa-yellow-fever-fig1a.png)
+
+![Figure 1](rabies-lassa-yellow-fever-fig1b.png)
+
 **Figure 1. Phylogenetic tree of rabies viruses from across the globe
 and from a wide variety of host species alongside a map showing
 distribution of these samples.** The phylogenetic tree and map are
@@ -86,7 +93,8 @@ more prevalent than previously thought ([Daodu et al, preprint][], figure
 in development. Further feedback from other Lassa researchers is
 welcome.
 
-![Figure 2](/blog/img/rabies-lassa-yellow-fever-fig2.png)
+![Figure 2](rabies-lassa-yellow-fever-fig2.png)
+
 **Figure 2. Manual alignment vs. Nextclade alignment.** An indel region
 within the GPC pos 60 region resulted in challenging codon alignment
 for Augur Align (mafft) and Nextclade alignment (despite increasing
@@ -108,7 +116,8 @@ the West Africa region. Apart from this exported case, the
 phylogeography is consistent with Lassa virus being endemic to West
 Africa.
 
-![Figure 3](/blog/img/rabies-lassa-yellow-fever-fig3.png)
+![Figure 3](rabies-lassa-yellow-fever-fig3.png)
+
 **Figure 3. Phylogenetic trees of Lassa virus GPC gene and segments.**
 The phylogenetic trees are colored by country of collection.
 Phylogenies and more detailed views available at [nextstrain/lassa/gpc],
@@ -160,7 +169,8 @@ develop the Nextclade dataset linked above. As new yellow fever virus
 sequences are deposited into GenBank, the Nextstrain phylogenies will
 be automatically updated.
 
-![Figure 4](/blog/img/rabies-lassa-yellow-fever-fig4.png)
+![Figure 4](rabies-lassa-yellow-fever-fig4.png)
+
 **Figure 4. Phylogenetic tree of yellow fever virus prM-E region.**
 The phylogenetic tree is colored by clade assignment, based on clades
 defined in [Mutebi et al. 2001][] and [Bryant et al. 2007][]. Available at

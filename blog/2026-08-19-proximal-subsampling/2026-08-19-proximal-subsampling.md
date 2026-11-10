@@ -1,8 +1,9 @@
 ---
-author: "James Hadfield & the Nextstrain team"
+authors:
+  - name: "James Hadfield & the Nextstrain team"
 date: "2026-08-19"
 title: "Proximal subsampling"
-sidebarTitle: "Proximal subsampling"
+pdf-download: false
 ---
 
 The pandemic spurred an interest in sequencing that has led to an abundance of viral genomes, which makes outbreak tracking and linking feasible.
@@ -49,12 +50,8 @@ The [companion how-to guide (docs.nextstrain.org)](https://docs.nextstrain.org/e
 See the [augur subsample docs](https://docs.nextstrain.org/projects/augur/en/latest/usage/cli/subsample.html), specifically the [proximal sample options available](https://docs.nextstrain.org/projects/augur/en/latest/usage/cli/subsample.html#proximal-sample-options) for more details.
 
 
-<div class="note">
-
-Note that sequences must be aligned to use `augur proximity` or proximal subsampling.
+> Note that sequences must be aligned to use `augur proximity` or proximal subsampling.
 We recommend using `nextclade` to align full datasets due to its speed.
-
-</div>
 
 
 ## Alternate approaches for calculating closeness
@@ -77,20 +74,20 @@ As Nextstrain doesn't maintain reference trees with all available samples we did
 # Performance
 
 
-For most viral pathogens, finding proximal sequences across all available data is feasible on a laptop (Figure 1).
+For most viral pathogens, finding proximal sequences across all available data is feasible on a laptop ([@fig:runtime-memory-for-different-pathogens]).
 
 
-<p/>
-<div class='figure'>
-<img src="/blog/img/proximity-pathogens.png" alt="runtime-memory-for-different-pathogens" />
-
-**Figure 1.**
+:::figure{#fig:runtime-memory-for-different-pathogens}
+```yaml gazette
+image: proximity-pathogens.png
+```
 Runtime and memory usage for 3 viral pathogens, Zika, Influenza H3 (HA segment) and mpox, using all available data as the contextual set and randomly choosing 100 sequences as the focal set and running on 4 cores; all other parameters are default.
 Each pathogen was run 3 times using a different focal set; memory usage is peak memory footprint as measured on MacOS.
 
-</div>
+:::
 
-Performance is mainly affected by the number of sequences involved (Figure 2).
+
+Performance is mainly affected by the number of sequences involved ([@fig:effect-of-parameters-on-runtime-memory]).
 Peak memory usage is essentially determined by the number of contextual sequences x the sequence length (bp), and changes to sequence size (pink) or number of contextual sequences (purple) affect runtime and memory in a linear fashion.
 Changing the number of focal sequences (red) typically does not affect memory (as their numbers are tiny compared to the number of contextual sequences), but affects runtime in a linear fashion.
 The choice of k (teal) or max-distance (yellow) parameters have negligible effects on runtime & memory, however how missing data is handled (orange, blue) does increase runtime and/or memory.
@@ -98,24 +95,20 @@ Finally, parallalisation (green) is extremely good, with no effect on overall me
 
 
 
-<p/>
-<div class='figure'>
-<img src="/blog/img/proximity-param-changes.png" alt="effect-of-parameters-on-runtime-memory" />
-
-**Figure 2.**
+:::figure{#fig:effect-of-parameters-on-runtime-memory}
+```yaml gazette
+image: proximity-param-changes.png
+```
 The effect of parameter choices and input data on runtime and memory.
 Results are of three independent runs using a real-life dataset of Influenza A PB1 sequences (2.3kb), with a focal set of n=800 and a contextual set of n=374k sequences.
 The baseline runs, to which these changes are compared against, were run using 4 cores and took an average of 1m32s runtime and 1.88GB peak memory.
 This experimental setup was chosen to show that finding the genetically closest sequences across the entire available Influenza dataset is possible without the need to first sample to HA/NA types.
-
-</div>
-
-
+:::
 
 
 ## SARS-CoV-2
 
-Full analysis of SARS-CoV-2 datasets is not possible at the moment (Figure 3).
+Full analysis of SARS-CoV-2 datasets is not possible at the moment ([@fig:ncov-analyses]).
 This is primarily due to our implementation storing all contextual genomes in memory using a single NumPy matrix to enable vectorised distance computation.
 There are a number of improvements we could make, such as chunking contextual sequences or representing individual sequences as their differences relative to a canonical / reference sequence.
 We don't think that exhaustively finding proximal sequences over the entire SARS-CoV-2 database is necessary or valid at the moment and thus haven't pursued these optimisations.
@@ -123,18 +116,18 @@ We don't think that exhaustively finding proximal sequences over the entire SARS
 
 If you do want to find proximal sequences for SARS-CoV-2 or similar sized datasets, we recommend first filtering the contextual sequences to a relevant set.
 For instance, filtering contextual sequences to a single Nextstrain clade via [augur filter](https://docs.nextstrain.org/projects/augur/en/latest/usage/cli/filter.html), which is memory efficient for large datasets.
-Figure 3 should help guide the number of contextual sequences your environment can handle.
+[@fig:ncov-analyses] should help guide the number of contextual sequences your environment can handle.
 
 
 
-<p/>
-<div class='figure'>
-<img src="/blog/img/proximity-ncov.png" alt="ncov-analyses" />
-
-**Figure 3.**
+:::figure{#fig:ncov-analyses}
+```yaml gazette
+image: proximity-ncov.png
+```
 Finding proximal sequences for nCoV is memory bound.
 In our current implementation both runtime and memory scale linearly with the number of contextual sequences, making full analysis of SARS-CoV-2 genomes unfeasible as currently there are over 9M genomes available on GenBank.
 Results of 5 replicates, using 16 cores on an AWS EC2 c7a.12xlarge instance and measuring maximum RSS memory usage.
+:::
 
-</div>
+
 

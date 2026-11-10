@@ -1,8 +1,11 @@
 ---
-author: "Trevor Bedford, Emma B Hodcroft, Richard A Neher"
+authors:
+  - name: "Trevor Bedford"
+  - name: "Emma B Hodcroft"
+  - name: "Richard A Neher"
 date: "2021-01-06"
 title: "Updated Nextstrain SARS-CoV-2 clade naming strategy"
-sidebarTitle: "Updated SARS-CoV-2 Clade Naming"
+pdf-download: false
 ---
 
 The emerging 501Y.V1 and 501Y.V2 variants have pushed the Nextstrain team to revise our strategy for Nextstrain clade labels. Here, we propose a backwards-compatible update to make clades more adaptable to the continuing pandemic situation, and more useful to people working on the pandemic today.
@@ -29,7 +32,8 @@ This results in the [updated clade definitions](https://github.com/nextstrain/nc
 
 There are 9 major clades identified for 2020 with 6 new clades being added in addition to the original `20A`, `20B` and `20C`. These are `20A` through `20I`. Ordering is based on estimated TMRCA following our original proposal: "we propose to name major clades by the year they are estimated to have emerged and a letter, e.g. `19A`, `19B`, `20A`." Clade 20E (EU1) is the elevated clade `20A.EU1` where the "EU1" parenthetical is retained to help connect these labels.
 
-![nextstrain-global-ncov-clades](/blog/img/ncov_tree_2020_01_06.png)
+![nextstrain-global-ncov-clades](ncov_tree_2020_01_06.png)
+
 **Fig 1.** Nextstrain 'global' run with the new Nextstrain major clades labelled.
 
 Importantly, we propose to dual label major clades if they correspond to an emerging “variant of concern” (VOC), so that we have `20H/501Y.V2` and `20I/501Y.V1`. We believe it's useful and informative to have the genetic short-hand for these, as it is self-documenting. In a hypothetical example, if we had a future VOC bearing a hallmark spike 484K mutation, then this variant would be labeled 484K.V1. In this case, these variants are labeled by the relevant spike mutation along with V1, V2, etc. to disambiguate. These disambiguating numbers are assigned in order of identification or announcement.
@@ -51,5 +55,6 @@ At this moment, major clades from 2020 onwards are:
 - [`20H/501Y.V2`](/ncov/global?c=clade_membership&f_clade_membership=20H/501Y.V2): derived from 20C bearing S 80A, S 215G, S 484K, S 501Y, S 701V, concentrated in South Africa
 - [`20I/501Y.V1`](/ncov/global?c=clade_membership&f_clade_membership=20I/501Y.V1): derived from 20B bearing S 501Y, S 570D, S 681H, ORF8 27*, concentrated in the United Kingdom
 
-![ncov-clades-schematic](/blog/img/ncov_clades_schematic_2021_01_6.png)
+![ncov-clades-schematic](ncov_clades_schematic_2021_01_6.png)
+
 **Fig 2.** Schematic showing hierarchical relationships among clades. An interactive version of this diagram is available [here](https://bl.ocks.org/trvrb/66b2c193117220200eb8e09190a43c85).

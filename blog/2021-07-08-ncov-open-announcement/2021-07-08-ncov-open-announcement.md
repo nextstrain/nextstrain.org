@@ -1,8 +1,14 @@
 ---
-author: "Trevor Bedford, James Hadfield, Emma Hodcroft, John Huddleston, Richard Neher, Thomas Sibley"
+authors:
+  - name: "Trevor Bedford"
+  - name: "James Hadfield"
+  - name: "Emma Hodcroft"
+  - name: "John Huddleston"
+  - name: "Richard Neher"
+  - name: "Thomas Sibley"
 date: "2021-07-08"
 title: "Extension of SARS-CoV-2 data processing to incorporate Open Data through GenBank"
-sidebarTitle: "Ncov Open Announcement"
+pdf-download: false
 ---
 
 Progress towards large-scale real-time genomic surveillance of SARS-CoV-2 has been remarkable with over 2 million viral genomes shared to [GISAID](https://www.gisaid.org/) from all over the world since Jan 2020. This has allowed detailed tracking of the [emergence and spread of variants of concern](https://www.who.int/en/activities/tracking-SARS-CoV-2-variants/) and is an essential pandemic response activity. In an unprecedented collective effort, these data were shared by hundreds of laboratories from all over the world, often within days or weeks of sample collection, and curated by GISAID. Such early sharing of unpublished data requires certain guarantees that submitters get credit for their contributions and a chance to publish on their data. Sequences submitted to the GISAID EpiCoV database are shared under [Terms of Use](https://www.gisaid.org/registration/terms-of-use/) that restrict resharing of sequence data or metadata.
@@ -11,7 +17,8 @@ With Nextstrain, we’ve done our best to respect these Terms of Use and we enco
 
 Our goal with Nextstrain is to harness the scientific and public health potential of pathogen genome data and we’ve built our software to be agnostic to the source of data. Genomic surveillance efforts particularly in the US, UK, Germany, Switzerland, Australia, Bangladesh, Chile, Egypt, Ghana, India, Kenya, and Peru have been sharing SARS-CoV-2 genomic sequence data to [INSDC](http://www.insdc.org/) databases, which mirror data between [GenBank](https://www.ncbi.nlm.nih.gov/genbank/), [ENA](https://www.ebi.ac.uk/ena/browser/home) and [DDBJ](https://www.ddbj.nig.ac.jp/). Data shared to GenBank and other INSDC databases is shared under Open Data principles. "[Open Data is data that can be freely used, re-used and redistributed by anyone - subject only, at most, to the requirement to attribute and sharealike](https://opendatahandbook.org/guide/en/what-is-open-data/)". This allows us at Nextstrain to share sequence data and metadata from GenBank, as well as intermediate files, in an open fashion and help to facilitate data use by academic and public health bioinformaticians.
 
-![gisaid_vs_open_map](/blog/img/gisaid_vs_open_map.png)
+![gisaid_vs_open_map](gisaid_vs_open_map.png)
+
 **Fig 1.** Geographic distribution of samples included in "global" build with GISAID data and Open Data
 
 Moving forward, we will be simultaneously curating and keeping continually updated analyses for GISAID data at [nextstrain.org/ncov/gisaid](/ncov/gisaid) as well as Open Data at [nextstrain.org/ncov/open](/ncov/open), where we are mirroring the pattern of one "global" build alongside six "regional" builds (Fig. 1). Open data is fetched from NCBI GenBank in a completely separate process from data fetched from GISAID. To maximize the utility and visibility of shared open datasets, we also provide preprocessed files that can serve as a starting point for additional analyses, including flat files of aligned sequences and curated metadata. Please see our [documentation](https://docs.nextstrain.org/projects/ncov/en/latest/reference/remote_inputs.html) on how to use these preprocessed files. Briefly, this allows Nextstrain build config files to point at URLs like [data.nextstrain.org/files/ncov/open/metadata.tsv.gz](https://data.nextstrain.org/files/ncov/open/metadata.tsv.gz), providing an automated starting point which lets users avoid having to click through a web interface to provision data. This should allow for more automated rebuilds of public health dashboards. Following Terms of Use, we keep GISAID data secure and only provide access to these intermediate data files for GenBank data.

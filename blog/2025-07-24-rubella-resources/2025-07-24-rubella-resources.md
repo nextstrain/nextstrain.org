@@ -1,8 +1,9 @@
 ---
-author: John SJ Anderson
+authors:
+  - name: "John SJ Anderson"
 date: "2025-07-24"
 title: "New Resources for Rubella"
-sidebarTitle: "Rubella resources"
+pdf-download: false
 ---
 
 We are pleased to announce the availability of a Rubella phylogenetic
@@ -39,7 +40,8 @@ split into specific genotypes (1A-1J and 2A-2C) based on clades
 observed in trees built with reference samples. (See [WHO genotype
 reference][] for further specifics.)
 
-![Figure 1](/blog/img/rubella_genome.png)
+![Figure 1](rubella_genome.png)
+
 **Figure 1. Phylogenetic tree of rubella virus whole genome.** The
 phylogenetic tree is colored by genotype, based on reference strains
 from the [WHO genotype reference][]. Available at

@@ -1,8 +1,9 @@
 ---
-author: "The Nextstrain team"
+authors:
+  - name: "The Nextstrain team"
 date: "2026-07-09"
 title: "Auspice and auspice.us updates"
-sidebarTitle: "Auspice and auspice.us updates"
+pdf-download: false
 ---
 
 The Nextstrain team has been focused on extending the usability of Auspice and

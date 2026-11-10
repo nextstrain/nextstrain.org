@@ -1,8 +1,9 @@
 ---
 title: Using Nextstrain narratives to explain WNV spread and evolution
-sidebarTitle: Using Narratives To Explain West Nile Virus Spread
 date: "2019-10-31"
-author: James Hadfield
+authors:
+  - name: "James Hadfield"
+pdf-download: false
 ---
 
 > This blog post was cross posted to the [Bedford lab website](https://bedford.io/blog/nextstrain-narratives-for-wnv/).
@@ -40,7 +41,7 @@ At any time you can jump back to a “fully interactive” Nextstrain view & int
 So, the content of the paper we’ve just published is available as an interactive narrative at [nextstrain.org/narratives/twenty-years-of-WNV](/narratives/twenty-years-of-WNV).
 I encourage you to go and read it (by scrolling through each paragraph), interact with the underlying data (click “Explore the data yourself” in the top-right corner), and compare this to the paper we’ve just published.
 
-![WNV Narrative demo](/blog/img/wnv_nextstrain_narrative.gif)
+![WNV Narrative demo](wnv_nextstrain_narrative.gif)
 
 We’re only beginning to scratch the surface of different ways to present scientific data & findings — see [Brett Victor](http://worrydream.com)’s talks for a glimpse into the future.
 In a separate collaboration, we’ve been using narratives to provide situation-reports for the ongoing Ebola outbreak in the DRC every time new samples are sequenced, helping to bridge the gap between genomicists and epidemiologists.

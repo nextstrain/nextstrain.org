@@ -1,8 +1,9 @@
 ---
-author: "The Nextstrain team"
+authors:
+  - name: "The Nextstrain team"
 date: "2026-06-24"
 title: "New location for discussion forum"
-sidebarTitle: "New location for discussion forum"
+pdf-download: false
 ---
 
 Our discussion forum has moved from [discussion.nextstrain.org](https://discussion.nextstrain.org/) to [nextstrain.discourse.group](https://nextstrain.discourse.group/).

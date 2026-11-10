@@ -1,8 +1,13 @@
 ---
-author: "Trevor Bedford, Jover Lee, James Hadfield, John Huddleston, Louise Moncla"
+authors:
+  - name: "Trevor Bedford"
+  - name: "Jover Lee"
+  - name: "James Hadfield"
+  - name: "John Huddleston"
+  - name: "Louise Moncla"
 date: "2024-06-18"
 title: "Phylogenetic analysis of H5N1 cattle outbreak and curated genomic data"
-sidebarTitle: "H5N1 Cattle Outbreak Analysis and Resources"
+pdf-download: false
 ---
 
 # Phylogenetic analysis
@@ -10,7 +15,7 @@ sidebarTitle: "H5N1 Cattle Outbreak Analysis and Resources"
 The 2.3.4.4b clade of influenza subtype H5N1 has been remarkably successful in its global spread with arrival into Europe in mid-2020, into North America in late 2021 and into South America in mid-2022 (**Fig. 1**).
 Although sustained transmission and spread has been largely within birds, these viruses have infected a number of species of non-human mammals, including [foxes, skunks and domestic cats](/groups/moncla-lab/h5nx/north-america/ha?c=species_group&f_species_group=Mammal-%20Terrestrial&r=division&transmissions=hide) which appear to be dead-end hosts to infection, but also [seals in North America](/groups/moncla-lab/h5nx/north-america/ha?c=species_group&f_species_group=Mammal-%20Marine&r=division&transmissions=hide) and [sea lions in South America](https://www.nature.com/articles/s41467-023-41182-0), where sustained transmission outside of birds is highly likely.
 
-[![fig1](/blog/img/h5n1_cattle_outbreak_fig1_ha_all_time_region.png)](/avian-flu/h5n1/ha/all-time@2024-06-18)
+[![fig1](h5n1_cattle_outbreak_fig1_ha_all_time_region.png)](/avian-flu/h5n1/ha/all-time@2024-06-18)
 **Figure 1. Broader context of H5N1 evolution and spread.**
 Available as [nextstrain.org/avian-flu/h5n1/ha/all-time](/avian-flu/h5n1/ha/all-time@2024-06-18).
 
@@ -19,7 +24,7 @@ Consensus genomes from infected dairy cattle have been shared to GenBank primari
 We find, in accordance to results by [Nguyen et al](https://www.biorxiv.org/content/10.1101/2024.05.01.591751v1) and by [Worobey et al](https://virological.org/t/preliminary-report-on-genomic-epidemiology-of-the-2024-h5n1-influenza-a-virus-outbreak-in-u-s-cattle-part-1-of-2/970), that cattle-associated viruses form a distinct monophyletic clade across all 8 segments (**Fig. 2**).
 Comparing phylogenetic structure across segments shows reassortment in birds prior to cattle spillover, but that the [cattle clade appears to be non-reassorting](/avian-flu/h5n1/ha/2y@2024-06-18:avian-flu/h5n1/pb2/2y@2024-06-18?c=host&m=div).
 
-[![fig2](/blog/img/h5n1_cattle_outbreak_fig2_across_segments_2y_host.png)](/avian-flu/h5n1/ha/2y@2024-06-18?c=host)
+[![fig2](h5n1_cattle_outbreak_fig2_across_segments_2y_host.png)](/avian-flu/h5n1/ha/2y@2024-06-18?c=host)
 **Figure 2. Cattle infections form a distinct clade across segments indicative of single spillover and cow-to-cow spread.**
 Segment-level trees available for [HA](/avian-flu/h5n1/ha/2y@2024-06-18?c=host), [PB2](/avian-flu/h5n1/pb2/2y@2024-06-18?c=host), [PA](/avian-flu/h5n1/pa/2y@2024-06-18?c=host), etc...
 
@@ -30,7 +35,7 @@ This difference can be seen in the reduced number of polytomies (identical seque
 With increased phylogenetic resolution, we observe evidence for [clock signal within the cattle outbreak clade](/avian-flu/h5n1-cattle-outbreak/genome?branches=hide&f_data_source=genbank&l=scatter&regression=show&scatterY=div).
 Stronger clock signal and greater phylogenetic resolution allow for more fine-grained estimates of spatiotemporal patterns than available from single segments.
 
-[![fig3](/blog/img/h5n1_cattle_outbreak_fig3_full_genome_div.png)](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18?m=div)
+[![fig3](h5n1_cattle_outbreak_fig3_full_genome_div.png)](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18?m=div)
 **Figure 3. Full genome analysis of concatenated segments provides substantially finer resolution.**
 Available as [nextstrain.org/avian-flu/h5n1-cattle-outbreak/genome?m=div](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18?m=div).
 
@@ -39,7 +44,7 @@ Additionally, we estimate this common ancestor to exist in Texas congruent with 
 However, Texas is more heavily sampled than other states with 52% (136 of 260) of viruses sampled from Texas.
 This sampling bias may result in over-confidence in the inferred Texas location for the common ancestor.
 
-[![fig4](/blog/img/h5n1_cattle_outbreak_fig4_time_admin_division.png)](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18?c=division)
+[![fig4](h5n1_cattle_outbreak_fig4_time_admin_division.png)](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18?c=division)
 **Figure 4. Epizootic origin appears to be Texas congruent with initial cases.**
 Available as [nextstrain.org/avian-flu/h5n1-cattle-outbreak/genome?c=division](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18?c=division).
 
@@ -47,7 +52,7 @@ So far [three human cases](https://www.cdc.gov/flu/avianflu/avian-flu-summary.ht
 The first case has no proximal sequenced viruses which perhaps indicates a gap in sampling around the cattle cases which led to this infection, while the [second case](https://www.cdc.gov/media/releases/2024/s0522-human-case-h5.html), a worker on a dairy farm in Michigan, groups with cattle from Texas suggesting unsampled cattle-cattle transmission from Texas to Michigan which subsequently infected the worker (**Fig. 5**).
 Recently there was a [fatal human case of H5N2 avian flu in Mexico](https://www.who.int/emergencies/disease-outbreak-news/item/2024-DON520) however this is a different influenza subtype from the H5N1 viruses that are related to the cattle outbreak.
 
-[![fig5](/blog/img/h5n1_cattle_outbreak_fig5_time_host.png)](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18)
+[![fig5](h5n1_cattle_outbreak_fig5_time_host.png)](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18)
 **Figure 5. One human case nests outside of sequenced cattle diversity, while the other nests within.**
 Available as [nextstrain.org/avian-flu/h5n1-cattle-outbreak/genome](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18).
 
@@ -55,7 +60,7 @@ Specific mutations to the viral RNA polymerase are associated with the cattle ou
 One-off human infections by H5N1 commonly evolved a similar mutation in PB2 E627K.
 Notably, the human case that outgroups to the cattle clade [evolved E627K](/avian-flu/h5n1-cattle-outbreak/genome@2024-06-18?c=gt-PB2_627&f_host=Human&gmax=2307&gmin=28), while the human case that nests within the cattle clade did not, possibly because M631L is providing a similar benefit to the virus.
 
-[![fig6](/blog/img/h5n1_cattle_outbreak_fig6_pb2_2y_gt631.png)](/avian-flu/h5n1/pb2/2y@2024-06-18?c=gt-PB2_631&l=scatter&m=div&r=division&scatterX=host&scatterY=gt)
+[![fig6](h5n1_cattle_outbreak_fig6_pb2_2y_gt631.png)](/avian-flu/h5n1/pb2/2y@2024-06-18?c=gt-PB2_631&l=scatter&m=div&r=division&scatterX=host&scatterY=gt)
 **Figure 6. Association of PB2 mutation M631L with cattle infections.**
 Sequenced cattle-infecting viruses all possess PB2 mutation M631L.
 
@@ -82,7 +87,7 @@ During our ingest process, we merge these assembled consensus genomes with conse
 GenBank was updated with 280 genomes on May 3 by the USDA corresponding to data described in the [Nyugen et al preprint](https://www.biorxiv.org/content/10.1101/2024.05.01.591751v1), but following this there have been only 27 genomes shared to GenBank by the USDA since May 3 (**Fig. 7**).
 However, sharing to the SRA has continued with 393 submissions since May 3.
 
-![fig7](/blog/img/h5n1_cattle_outbreak_fig7_genbank_vs_sra_release_date.png)
+![fig7](h5n1_cattle_outbreak_fig7_genbank_vs_sra_release_date.png)
 **Figure 7. Release dates for H5N1 genomes from the US in GenBank and in the SRA.**
 
 This [ingest pipeline](https://github.com/nextstrain/avian-flu/tree/master/ingest) is [run daily](https://github.com/nextstrain/avian-flu/actions/workflows/ingest-ncbi.yaml) and resulting sequences files are available as:
