@@ -15,8 +15,10 @@ import { NotFound } from '../httpErrors.js';
  *   - GET /blog/<id>   -> 301 /blog/<id>/   (only when a post is built)
  *   - GET /blog/<id>/  -> blog-dist/<id>/index.html
  *   - GET /blog/<id>/figures/… , /blog/_assets/chrome.css -> the files
- *   - GET /blog , /blog/ , /blog/<markdown-post> , /blog/atom.xml -> fall
- *     through to Next.js (and the static blog-feed files).
+ *   - GET /blog/atom.xml , /blog/rss2.xml , /blog/feed.json -> the blog feeds,
+ *     written to blog-dist/ by `npm run build:feeds` (static-site/src/util/
+ *     blogFeeds.js) and served here by the same express.static middleware.
+ *   - GET /blog , /blog/ -> fall through to Next.js (the /blog index page).
  *
  * We do the /blog/<id> -> /blog/<id>/ redirect ourselves, gated on the post
  * existing, rather than letting express.static's directory redirect do it:
@@ -64,7 +66,15 @@ export function setup(app) {
     return next();
   });
 
-  // Serve the built pages and their assets; fall through for everything else.
+  // Proper MIME types for the blog feeds (express.static would otherwise serve
+  // the .xml files as generic application/xml).
+  const feedContentType = {
+    "atom.xml": "application/atom+xml; charset=utf-8",
+    "rss2.xml": "application/rss+xml; charset=utf-8",
+    "feed.json": "application/feed+json; charset=utf-8",
+  };
+
+  // Serve the built pages, their assets, and the feeds; fall through otherwise.
   app.use(
     "/blog",
     express.static(distDir, {
@@ -72,6 +82,10 @@ export function setup(app) {
       redirect: false,     // we own the /blog/<id> -> /blog/<id>/ redirect
       fallthrough: true,   // unknown paths fall through to Next.js
       maxAge: 0,           // prototype: don't cache while iterating
+      setHeaders: (res, filePath) => {
+        const contentType = feedContentType[path.basename(filePath)];
+        if (contentType) res.setHeader("Content-Type", contentType);
+      },
     }),
   );
 }
