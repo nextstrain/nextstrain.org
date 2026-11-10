@@ -1,12 +1,3 @@
-// DEPRECATED
-
-// `parseMarkdown` in this file has been moved to
-// `/static-site/app/blog/parseMarkdown.ts`; this version is still
-// here because it is used by `/static-site/src/util/blogFeeds.js'
-// which still needs to be ported over.
-
-// DO NOT ADD NEW USES OF THE METHOD IN THIS FILE
-
 import { marked } from "marked";
 import sanitizeHtml from 'sanitize-html';
 
