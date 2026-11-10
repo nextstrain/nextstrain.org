@@ -1,8 +1,12 @@
 ---
-author: "Jennifer Chang, Richard Neher, Jover Lee, Kim Andrews"
+authors:
+  - name: "Jennifer Chang"
+  - name: "Richard Neher"
+  - name: "Jover Lee"
+  - name: "Kim Andrews"
 date: "2025-09-24"
 title: "New Resources for Mumps"
-sidebarTitle: "Mumps resources"
+pdf-download: false
 ---
 
 Expanding the collection of core pathogen datasets, we now provide regularly updated phylogenetic monitoring of mumps virus at:
@@ -18,11 +22,13 @@ _Mumps orthorubulavirus_ causes mumps, a viral disease spread primarily among hu
 
 We provide two views of mumps for genomic analysis, a Global and a North-America filtered dataset.
 
-![Figure 1](/blog/img/mumps-nextstrain-dataset.png)
+![Figure 1](mumps-nextstrain-dataset.png)
+
 **Figure 1. Phylogenetic views of mumps viral genetic diversity.** Views are split out into "global" and "north-america" focused phylogenies. Available at [nextstrain.org/mumps/global][] and [nextstrain.org/mumps/north-america][].
 
 
-![Figure 2](/blog/img/mumps-genotype-colors.png)
+![Figure 2](mumps-genotype-colors.png)
+
 **Figure 2. Annotated by Mumps genotypes.** Samples are annotated by Mumps genotypes based on both GenBank annotations and Nextclade assignments. Tree, map, and frequencies plots of the mumps genome tree are shown and available at [nextstrain.org/mumps/global].
 
 ## Nextclade dataset
@@ -34,7 +40,8 @@ We provide two Nextclade datasets (SH region and genome) to assign genotypes (e.
 |SH region (~316 bp region) | [mumps/sh][] | [D90232][] (Jeryl-Lynn)|
 |Full genome | [mumps/genome][] | [HQ416907][] (Jeryl-Lynn)|
 
-![Figure 3](/blog/img/mumps-nextclade-dataset.png)
+![Figure 3](mumps-nextclade-dataset.png)
+
 **Figure 3. Nextclade datasets of mumps virus based on the ~316 SH region and the full genome.** Scaffold phylogenetic trees were created for a Nextclade dataset and colored by genotype assignment. Below the trees, the SH region is highlighted in a magenta box to highlight the difference between the SH and full genome datasets. The Nextclade datasets are available as [mumps/sh][] and [mumps/genome][].
 
 ## Nextstrain resources

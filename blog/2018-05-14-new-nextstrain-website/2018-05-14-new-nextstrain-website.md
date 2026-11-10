@@ -1,8 +1,9 @@
 ---
-author: "James Hadfield"
+authors:
+  - name: "James Hadfield"
 date: "2018-05-14"
 title: "New nextstrain.org website"
-sidebarTitle: "New Nextstrain Website"
+pdf-download: false
 ---
 
 The data visualisation aspect of nextstrain.org has been under a lot of development over the last year, with new features and new datasets, but we've fallen behind with documentation and explanations of everything that's going on.

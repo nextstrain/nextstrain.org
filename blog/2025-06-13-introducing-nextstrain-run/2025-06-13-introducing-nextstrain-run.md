@@ -1,8 +1,9 @@
 ---
-author: Thomas Sibley
+authors:
+  - name: "Thomas Sibley"
 date: "2025-06-13"
 title: "Introducing `nextstrain run`"
-sidebarTitle: "Introducing `nextstrain run`"
+pdf-download: false
 ---
 
 One of our [planned directions for 2025][] is to facilitate running pathogen

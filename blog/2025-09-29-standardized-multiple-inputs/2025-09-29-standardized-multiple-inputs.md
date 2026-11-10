@@ -1,8 +1,9 @@
 ---
-author: "The Nextstrain team"
+authors:
+  - name: "The Nextstrain team"
 date: "2025-09-29"
 title: "Standardized Multiple Inputs"
-sidebarTitle: "Standardized Multiple Inputs"
+pdf-download: false
 ---
 
 The Nextstrain team is continuing our push to facilitate running pathogens

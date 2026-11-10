@@ -1,8 +1,13 @@
 ---
-author: "Kim Andrews, James Hadfield, Victor Lin, Jover Lee, Jennifer Chang"
+authors:
+  - name: "Kim Andrews"
+  - name: "James Hadfield"
+  - name: "Victor Lin"
+  - name: "Jover Lee"
+  - name: "Jennifer Chang"
 date: "2025-11-17"
 title: "New Resources for Tuberculosis"
-sidebarTitle: "Tuberculosis resources"
+pdf-download: false
 ---
 Nextstrain has now released continually updated genomic surveillance resources for *Mycobacterium tuberculosis*, the bacterium that causes tuberculosis (TB). Results of these resources are available at [nextstrain.org/tb/global](https://nextstrain.org/tb/global) (Fig. 1).
 
@@ -11,9 +16,13 @@ TB is a major global health issue, causing more deaths around the world than any
 Our new Nextstrain *M. tuberculosis* genomic surveillance resources aim to contribute to global monitoring of this pathogen by providing continually updated phylogenetic analyses using publicly available sequence data for strains from across the world. Using community-provided tools, we also predict whether strains are drug resistant and classify strains by phylogenetic lineage (Fig. 1). The analysis is updated every week using a random subset of approximately 1000  *M. tuberculosis* samples from across the world over time from the [NCBI SRA](https://www.ncbi.nlm.nih.gov/sra). The phylogeny includes a random subsample from all lineages in the *M. tuberculosis* complex that have available sequence data, including both human-adapted and animal-adapted lineages. *Mycobacterium canettii* is excluded from the phylogeny due to its high genetic divergence from other lineages.
 
 **A. Drug resistance types**
-![Figure 1A](/blog/img/tb-fig1a.png)
+
+![Figure 1A](tb-fig1a.png)
+
 **B. Lineage assignments**
-![Figure 1B](/blog/img/tb-fig1b.png)
+
+![Figure 1B](tb-fig1b.png)
+
 **Figure 1.** Phylogenetic tree of *Mycobacterium tuberculosis* samples from across the world alongside a map showing distribution of the samples, available at  [nextstrain.org/tb/global](https://nextstrain.org/tb/global). Samples can be colored by A) predicted drug resistance and B) Lineage assignments.
 
 ## Nextstrain's first bacterial real-time analysis
@@ -21,7 +30,8 @@ These *M. tuberculosis* genomic surveillance resources represent Nextstrain's fi
 
 One of the main differences is that the workflow starts from raw Illumina sequence reads for each sample, whereas our viral workflows start from genome assemblies (Fig. 2). The raw sequence reads are aligned to a reference genome and are then used to identify variable sites within each genome using the program [snippy](https://github.com/tseemann/snippy). Variable sites are then summarized in a [VCF file](https://en.wikipedia.org/wiki/Variant_Call_Format) that is used as input for the phylogenetic analysis. This is in contrast to our viral workflows, for which the phylogenetic input is a full genome alignment in a [FASTA file](https://en.wikipedia.org/wiki/FASTA_format).
 
-![Figure 2](/blog/img/tb-fig2.png)
+![Figure 2](tb-fig2.png)
+
 **Figure 2.** Comparison of analysis steps in Nextstrain real-time genomic surveillance resources for a typical viral workflow versus the *Mycobacterium tuberculosis* workflow, focusing on steps conducted prior to phylogenetic analysis.
 
 Our *M. tuberculosis* workflow also uses the program [TBProfiler](https://github.com/jodyphelan/TBProfiler) ([Phelan et al. 2019](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-019-0650-x), [Verboven et al. 2022](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0279644)) to predict resistance to anti-tuberculosis drugs by comparing the genome sequences of each sample against the [tbdb reference database](https://jodyphelan.github.io/tb-profiler-docs/en/mutation-library/), which has a list of mutations associated with drug resistance [published by the World Health Organization](https://www.who.int/publications/i/item/9789240082410) and other sources (Fig. 2). TBProfiler also assigns a phylogenetic lineage to each sample using a [reference database of lineage-specific mutations](https://jodyphelan.github.io/tb-profiler-docs/en/lineages). Drug resistance and lineage classifications are provided as options for coloring on the phylogeny.

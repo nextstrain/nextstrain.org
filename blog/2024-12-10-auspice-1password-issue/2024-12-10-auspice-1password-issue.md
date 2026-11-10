@@ -1,8 +1,9 @@
 ---
-author: "The Nextstrain team"
+authors:
+  - name: "The Nextstrain team"
 date: "2024-12-10"
 title: "Auspice slow/unresponsive with latest 1Password browser extension"
-sidebarTitle: "Externally-caused Auspice performance issues"
+pdf-download: false
 ---
 
 Scope: https://nextstrain.org and https://auspice.us, any other custom Auspice server

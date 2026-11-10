@@ -1,8 +1,10 @@
 ---
-author: "Trevor Bedford, Richard Neher and the Nextstrain team"
+authors:
+  - name: "Trevor Bedford"
+  - name: "Richard Neher and the Nextstrain team"
 date: "2025-11-06"
 title: "Interruption to GISAID-based SARS-CoV-2 sequence analyses"
-sidebarTitle: "Interruption to GISAID-based SARS-CoV-2 analyses"
+pdf-download: false
 ---
 
 On Oct 1, 2025, we received an email from GISAID Secretariat informing us that GISAID has immediately ended updates to the flat file of SARS-CoV-2 genomic sequences and associated metadata that they had provisioned to Trevor Bedford for updating Nextstrain analyses since Feb 2020.

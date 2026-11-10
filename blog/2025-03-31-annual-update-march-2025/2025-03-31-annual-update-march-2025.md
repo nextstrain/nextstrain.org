@@ -1,8 +1,10 @@
 ---
-author: "Trevor Bedford, Richard Neher"
+authors:
+  - name: "Trevor Bedford"
+  - name: "Richard Neher"
 date: "2025-03-31"
 title: "Nextstrain Annual Update March 2025"
-sidebarTitle: "Annual Update March 2025"
+pdf-download: false
 ---
 
 We continue to follow a model of genomic surveillance in which our central conceit has two pillars:
@@ -21,7 +23,7 @@ We've continued our tracking of evolution of **SARS-CoV-2** at [/ncov](/ncov/gis
 
 In response to the **H5N1 cattle outbreak**, [we set up an automated analysis](/blog/2024-06-18-h5n1-cattle-outbreak-analysis-and-resources) that sources data from SRA and GenBank. The USDA does not immediately upload complete genomes with US state and collection date metadata and instead uploads unannotated raw reads to SRA. The [Andersen Lab](https://andersen-lab.com/) has been assembling these reads into consensus genomes. We ingest and deduplicate across these data sources. More recent zoonoses of [genotype D1.1 into cattle](/avian-flu/h5n1-d1.1/genome) have also been automated and shared in a similar fashion. In addition, [Moncla Lab](https://lmoncla.github.io/monclalab/) has continued to keep pace with **H5N1 evolution in birds**, including a narrative showcasing the [evolution and spread of H5N1 in North America](/community/narratives/moncla-lab/nextstrain-narrative-hpai-north-america@main/HPAI-in-North-America).
 
-[![Cards UI](/blog/img/annual-update-march-2025-cattle-outbreak.png)]()
+[![Cards UI](annual-update-march-2025-cattle-outbreak.png)]()
 
 This past year, we devoted a fair amount of effort to constructing **baseline analyses across endemic and emerging viral pathogens**. For each pathogen we provide a GitHub repository that contains workflows for automated data ingest from NCBI GenBank, a pipeline to generate Nextclade datasets, and automated phylogenetic analysis. This year we completed automated builds for
 
@@ -35,7 +37,7 @@ This past year, we devoted a fair amount of effort to constructing **baseline an
 - West Nile virus at [/WNV](/WNV/all-lineages)  
 - Yellow Fever virus at [/yellow-fever](/yellow-fever/genome?c=clade)
 
-[![New pathogens](/blog/img/annual-update-march-2025-pathogens.png)]()
+[![New pathogens](annual-update-march-2025-pathogens.png)]()
 
 The INRB of the Democratic Republic of the Congo shared an [mpox clade I analysis](/groups/inrb-mpox/clade-I?c=clade_membership) using their genomic surveillance data.
 
@@ -47,13 +49,13 @@ In **Augur**, we've added the additional command `augur merge` to combine across
 
 In **Auspice**, we've added a [focus on selected toggle](/blog/2024-12-16-auspice-2024#focus-on-selected) to highlight selected tips on the tree and [linkouts to other platforms](/blog/2024-12-16-auspice-2024#view-in-other-platforms) including Taxonium, MicrobeTrace and for ad hoc Nextclade datasets. Additionally, we've made improvements to [display of measurements data](https://github.com/nextstrain/auspice/pull/1924), to display of tangletrees, to [display of trait confidence values](/blog/2024-12-16-auspice-2024#convey-tip-confidence-through-saturation) and to general Auspice performance. Finally, we've done considerable work to implement a big new visualization feature we're calling ["streamtrees"](https://github.com/nextstrain/auspice/pull/1902) that allows collapsing of clades / lineages into streams highlighting samples through time and sample metadata. This is designed to improve scaling and visual legibility when there are many thousands of samples in an analysis. This is not yet shipped, but we hope it will be soon.
 
-[![Streamtrees](/blog/img/annual-update-march-2025-streamtrees.png)]()
+[![Streamtrees](annual-update-march-2025-streamtrees.png)]()
 
 ## Other work to highlight
 
 With **nextstrain.org**, we've sought to surface timely and relevant analyses and also to improve UI behind dataset search. This has manifested as a revamp to the splash page particularly to include a set of "showcase tiles" highlighting recent and relevant analysis from the Nextstrain team and external groups. We've provided similar tiles for all core pathogens listed at [/pathogens](/pathogens). Additionally, we've provided a "cards" UI for all datasets listed at [/pathogens](/pathogens) and [/groups](/groups) that surfaces dataset hierarchy and frequency / history of dataset specific updates.
 
-[![Cards UI](/blog/img/annual-update-march-2025-cards-ui.png)]()
+[![Cards UI](annual-update-march-2025-cards-ui.png)]()
 
 This year, we conducted training at [VEME in Brazil](https://veme.climade.health/veme2024/28th-international-bioinformatics-workshop-on-virus-evolution-and-molecular-epidemiology-veme/) and presented work at [Virus Genomics, Evolution and Bioinformatics in the UK](https://coursesandconferences.wellcomeconnectingscience.org/event/virus-genomics-evolution-and-bioinformatics-20241106/).
 

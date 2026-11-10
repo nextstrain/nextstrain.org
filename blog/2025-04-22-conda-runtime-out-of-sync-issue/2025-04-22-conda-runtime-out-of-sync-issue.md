@@ -1,8 +1,9 @@
 ---
-author: "The Nextstrain team"
+authors:
+  - name: "The Nextstrain team"
 date: "2025-04-22"
 title: "Conda runtime out-of-sync"
-sidebarTitle: "Conda runtime out-of-sync"
+pdf-download: false
 ---
 
 **Update (12 May)**: Updates to our Conda runtime have [now

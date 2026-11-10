@@ -1,8 +1,12 @@
 ---
-author: "Cornelius Roemer, Emma B Hodcroft, Richard A Neher, Trevor Bedford"
+authors:
+  - name: "Cornelius Roemer"
+  - name: "Emma B Hodcroft"
+  - name: "Richard A Neher"
+  - name: "Trevor Bedford"
 date: "2022-04-29"
 title: "SARS-CoV-2 clade naming strategy for 2022"
-sidebarTitle: "SARS-CoV-2 clade naming 2022"
+pdf-download: false
 ---
 
 The rapid dominance and increased diversity of the Omicron variant and its constituent sub-lineages has triggered another update of the Nextstrain clade naming guidelines and labels. Once again, we propose a backwards-compatible update, this time to allow more flexible and faster designation of clades as new variants appear and spread.
@@ -32,5 +36,6 @@ You can view updated clade definitions and detailed rationale behind elevating t
 
 An updated version of our clade schema diagram is now:
 
-![ncov-clades-schematic-apr-2022](/blog/img/ncov_clades_schematic_2022_04_29.png)
+![ncov-clades-schematic-apr-2022](ncov_clades_schematic_2022_04_29.png)
+
 **Fig 1.** Schematic showing hierarchical relationships among clades. The code behind this diagram is available [here](https://github.com/nextstrain/ncov-clades-schema).
