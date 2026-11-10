@@ -30,4 +30,5 @@ We use `gazette`
 1. `npm run build:gazette` uses `gazette` to render interactive HTML versions of the blogposts
 2. `npm run snapshot:chrome` renders a (hidden) next.js page with the header & footer and snapshots the HTML & CSS
 3. `npm run build:static-blog` combines the gazette HTML pages with the header & footer elements to produce the final blog posts
-4. TKTK build RSS feeds
+4. `npm run build:feeds` to build RSS feeds of the blog
+

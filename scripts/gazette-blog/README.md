@@ -2,9 +2,12 @@
 
 > Entirely LLM generated; for LLM consumption
 
-Serve gazette-authored blog posts as **fully static, self-contained pages
-served by Express, entirely outside Next.js**, while the rest of the site
-(the markdown-authored blog posts and the `/blog` index) stays on Next.
+Serve blog posts as **fully static, self-contained pages served by Express,
+entirely outside Next.js**. Every post now lives as a gazette project under
+`blog/<id>/`, so Next.js no longer renders individual posts — the only blog
+surfaces still on Next are the `/blog` index page and the RSS/Atom/JSON feeds,
+both generated from the `blog/` sources (see "The `/blog` index and feeds"
+below).
 
 A gazette post needs no Next.js: gazette's `static` target already emits a
 complete, self-hydrating page, and the only site chrome a post needs is the
@@ -12,8 +15,10 @@ header + footer, whose only dynamic part (the logged-in state) is fetched
 client-side from `/whoami`. So a post is just gazette's static page with the
 chrome injected into it.
 
-This is a **prototype**. It covers the gazette post(s) under `blog/` and leaves
-the Next-rendered blog posts alone.
+This is a **prototype**. All posts have been moved under `blog/`, but only the
+natively gazette-authored ones render correctly yet; the posts ported from the
+old Next.js markdown blog still need their bodies converted to gazette syntax
+(figures, cross-references, tables) before they will build as gazette pages.
 
 ## Pipeline
 
@@ -37,10 +42,28 @@ blog-dist/_assets/         chrome.css (scoped Next CSS + module CSS), whoami-log
         ▼
   GET /blog/<id>/  -> blog-dist/<id>/index.html     (/blog/<id> 301s to it)
   GET /blog/<id>/figures/… , /blog/_assets/…         relative + shared assets
-  GET /blog , /blog/<markdown-post> , /blog/atom.xml  fall through to Next.js
+  GET /blog/atom.xml , /blog/rss2.xml , /blog/feed.json  -> blog-dist/<feed>  (the feeds)
+  GET /blog , /blog/                                  fall through to Next.js (the index)
 ```
 
 `.gazette-build/` (intermediate) and `blog-dist/` (served) are both gitignored.
+
+## The `/blog` index and feeds
+
+Both read the gazette post sources directly from `blog/<id>/<id>.md`:
+
+- the **`/blog` index page** (`static-site/app/blog/page.tsx`) is still rendered
+  by Next.js; it lists every post by its `title`/`date`/`authors` frontmatter,
+  linking to `/blog/<id>` (served by Express per the pipeline above).
+- the **RSS/Atom/JSON feeds** (`static-site/src/util/blogFeeds.js`, run by
+  `npm run build:feeds` → `scripts/generate-blog-feeds.js`) are written to
+  `blog-dist/{atom.xml,rss2.xml,feed.json}` and served by Express (the same
+  `express.static` middleware as the posts, which also sets their feed MIME
+  types). Each entry carries the post's abstract — extracted by the
+  `gazette abstract <file>` CLI — as a short excerpt plus a link to the post.
+  The full gazette body is deliberately *not* embedded, because its
+  `:::figure` directives, ```` ```yaml gazette ```` blocks and `[@fig:id]`
+  cross-references do not render as plain Markdown.
 
 ## The chrome is generated from the real components (no drift)
 
@@ -144,5 +167,6 @@ static-site`) first.
   (`USE_PREBUILT_STATIC_SITE=1`).
 - Caching headers on the served files are disabled for iteration; set real
   `Cache-Control` (and content hashing) for production.
-- `<head>` metadata is gazette's defaults; richer OpenGraph/JSON-LD (as the Next
-  path emits) could be injected from the gazette frontmatter.
+- `<head>` metadata is gazette's defaults; richer OpenGraph/JSON-LD (as the old
+  Next.js blog-post renderer emitted) could be injected from the gazette
+  frontmatter.
