@@ -57,6 +57,7 @@
     "express-session": "^1.16.2",
     "express-static-gzip": "^0.2.2",
     "finalhandler": "^2.1.1",
+    "gazette": "github:jameshadfield/gazette#597ce43b4b60d13626ad3381950163644382bac4",
     "gray-matter": "^4.0.3",
     "heroku-ssl-redirect": "0.0.4",
     "http-errors": "^1.8.0",

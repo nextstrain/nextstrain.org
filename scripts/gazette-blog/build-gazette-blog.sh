@@ -20,9 +20,16 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 blog_src_dir="${repo_root}/blog"
 build_dir="${repo_root}/.gazette-build"
 
-if ! command -v gazette >/dev/null 2>&1; then
-    echo "error: the 'gazette' CLI is not on PATH." >&2
-    echo "       Activate the project conda environment and try again." >&2
+# gazette is a project dependency (installed from GitHub; see package.json). Use
+# the installed binary explicitly — as this repo does for next/auspice — rather
+# than a bare `gazette` resolved from $PATH, so the build is deterministic and
+# never picks up a globally-linked copy.
+gazette="${repo_root}/node_modules/.bin/gazette"
+
+if [ ! -x "${gazette}" ]; then
+    echo "error: ${gazette} not found." >&2
+    echo "       Install dependencies first ('npm ci' or 'npm install')." >&2
+    echo "       To develop against a local gazette checkout, see blog/README.md." >&2
     exit 1
 fi
 
@@ -40,17 +47,17 @@ for doc in "${blog_src_dir}"/*/; do
 
     # snapshot the figures (i.e. generate static fallbacks)
     # for use with the PDF and the static HTML
-    gazette snapshot "${entry}"
-    
+    "${gazette}" snapshot "${entry}"
+
     # Only produce the PDF if requested:
     # The PDF must exist before the static build (the page links it for download)
     if grep -qi 'pdf-download: true' "${entry}"; then
         echo "[generating PDF version as requested]"
-        gazette build "${entry}" --target pdf --out "${out}"
+        "${gazette}" build "${entry}" --target pdf --out "${out}"
     fi
 
     # The static HTML page
-    gazette build "${entry}" --target static --out "${out}"
+    "${gazette}" build "${entry}" --target static --out "${out}"
 done
 
 if [ "${found}" -eq 0 ]; then

@@ -10,6 +10,14 @@ import { blogDescription, blogFeeds, blogFeedUrls, blogUrl, siteLogo, siteTitle,
 
 const NUMBER_OF_POSTS_IN_FEED = 10;
 
+// The installed gazette binary (a project dependency; see package.json). Invoke
+// it by explicit path rather than a bare "gazette" on $PATH, so feed generation
+// is deterministic and doesn't depend on a globally-linked copy being present.
+const GAZETTE_BIN = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../../node_modules/.bin/gazette"
+);
+
 /**
  * Writes RSS2, Atom, and JSON feeds into the top-level `blog-dist/` directory
  * (served by Express at /blog/<feed>, alongside the built gazette posts; see
@@ -137,7 +145,7 @@ function getGazetteBlogPosts() {
  */
 function getAbstract(entryPath) {
   try {
-    return execFileSync("gazette", ["abstract", entryPath], {
+    return execFileSync(GAZETTE_BIN, ["abstract", entryPath], {
       encoding: "utf8",
     }).trim();
   } catch (error) {

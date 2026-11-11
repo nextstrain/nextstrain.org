@@ -84,5 +84,5 @@ console.log(`blog:init: created blog/${id}/`);
 console.log(`  - ${path.relative(repoRoot, mdPath)}  (date "${date}", title "${title}")`);
 console.log(`  - blog/${id}/figures/`);
 console.log(`Edit the markdown to write the post (see blog/README.md).`);
-console.log(`Run 'gazette dev ${path.relative(repoRoot, mdPath)}' to render the blogpost (with hotreloading etc)`)
+console.log(`Run 'npx gazette dev ${path.relative(repoRoot, mdPath)}' to render the blogpost (with hotreloading etc)`)
 console.log(`See blog/README.md for how to build the entire blog section of the nextstrain.org site`)
