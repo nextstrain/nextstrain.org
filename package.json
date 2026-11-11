@@ -14,6 +14,10 @@
   "scripts": {
     "build": "./build.sh",
     "build:feeds": "node scripts/generate-blog-feeds.js",
+    "build:gazette": "./scripts/gazette-blog/build-gazette-blog.sh",
+    "snapshot:chrome": "./scripts/gazette-blog/snapshot-chrome.sh",
+    "build:static-blog": "node scripts/gazette-blog/build-static-blog.mjs",
+    "blog:init": "node scripts/gazette-blog/init-blogpost.mjs",
     "lint": "DEBUG=eslint:cli-engine npx eslint --max-warnings=0 .",
     "type-check": "cd static-site && tsc",
     "type-check:ci": "npm run build && cd static-site && tsc",
@@ -53,6 +57,7 @@
     "express-session": "^1.16.2",
     "express-static-gzip": "^0.2.2",
     "finalhandler": "^2.1.1",
+    "gazette": "github:jameshadfield/gazette#597ce43b4b60d13626ad3381950163644382bac4",
     "gray-matter": "^4.0.3",
     "heroku-ssl-redirect": "0.0.4",
     "http-errors": "^1.8.0",
