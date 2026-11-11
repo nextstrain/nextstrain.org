@@ -17,6 +17,7 @@
     "build:gazette": "./scripts/gazette-blog/build-gazette-blog.sh",
     "snapshot:chrome": "./scripts/gazette-blog/snapshot-chrome.sh",
     "build:static-blog": "node scripts/gazette-blog/build-static-blog.mjs",
+    "blog:init": "node scripts/gazette-blog/init-blogpost.mjs",
     "lint": "DEBUG=eslint:cli-engine npx eslint --max-warnings=0 .",
     "type-check": "cd static-site && tsc",
     "type-check:ci": "npm run build && cd static-site && tsc",
