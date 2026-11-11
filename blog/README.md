@@ -8,20 +8,18 @@ We post-process these HTML pages to add our typical nextstrain.org header / foot
 
 #### Initialise a new blogpost
 
-TKTK
+```sh
+npm run blog:init -- YYYY-MM-DD-TITLE
+```
+
+For example `npm run blog:init -- 2026-11-11-measles-update`.
+The resulting markdown file will have some boilerplate YAML frontmatter and details about markdown functionality available.
+Additionally an empty `blog/<ID>/figures/` directory is created for static figures / interactive code.
 
 #### Edit (with live reloading) a blogpost
 
-TKTK
+`gazette dev blog/YYYY-MM-DD-TITLE/YYYY-MM-DD-TITLE.md`
 
-#### How to use interactive figures
-
-TKTK
-
-
-## How is the blog constructed?
-
-We use `gazette`
 
 ## Steps to building the blogposts for the live site:
 
