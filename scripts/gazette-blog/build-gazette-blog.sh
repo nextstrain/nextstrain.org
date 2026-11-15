@@ -19,6 +19,7 @@ set -eEuo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 blog_src_dir="${repo_root}/blog"
 build_dir="${repo_root}/.gazette-build"
+bibtex_file="${blog_src_dir}/references.bib"
 
 # gazette is a project dependency (installed from GitHub; see package.json). Use
 # the installed binary explicitly — as this repo does for next/auspice — rather
@@ -53,11 +54,11 @@ for doc in "${blog_src_dir}"/*/; do
     # The PDF must exist before the static build (the page links it for download)
     if grep -qi 'pdf-download: true' "${entry}"; then
         echo "[generating PDF version as requested]"
-        "${gazette}" build "${entry}" --target pdf --out "${out}"
+        "${gazette}" build "${entry}" --target pdf --bib "${bibtex_file}" --out "${out}"
     fi
 
     # The static HTML page
-    "${gazette}" build "${entry}" --target static --out "${out}"
+    "${gazette}" build "${entry}" --target static --bib "${bibtex_file}" --out "${out}"
 done
 
 if [ "${found}" -eq 0 ]; then
