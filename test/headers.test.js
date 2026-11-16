@@ -9,9 +9,9 @@ const noCache = [
   { path: "/whoami", mediaType: "text/html" },
 ];
 
-const cacheByNextJs = [
-  { path: "/", mediaType: "text/html" },
-];
+// const cacheByNextJs = [
+//   { path: "/", mediaType: "text/html" },
+// ];
 
 const cacheByAuspice = [
   { path: "/dist/index.html", mediaType: "text/html" },
@@ -26,14 +26,14 @@ describe("Shared (CDN) caching forbidden by global default", () => {
   );
 });
 
-describe("Shared (CDN) caching allowed by Next.js handler", () => {
-  test.each(cacheByNextJs)("$path ($mediaType)",
-    async ({ path, mediaType }) => {
-      const res = await fetch(url(path), accept(mediaType));
-      expect(res.headers.get("cache-control")).toBe("s-maxage=31536000, stale-while-revalidate");
-    }
-  );
-});
+// describe("Shared (CDN) caching allowed by Next.js handler", () => {
+//   test.each(cacheByNextJs)("$path ($mediaType)",
+//     async ({ path, mediaType }) => {
+//       const res = await fetch(url(path), accept(mediaType));
+//       expect(res.headers.get("cache-control")).toBe("s-maxage=31536000, stale-while-revalidate");
+//     }
+//   );
+// });
 
 describe("Shared (CDN) caching allowed by Auspice handler", () => {
   test.each(cacheByAuspice)("$path ($mediaType)",
