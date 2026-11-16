@@ -43,9 +43,11 @@ echo "     SOURCE_VERSION=${SOURCE_VERSION:=$(git describe --always --dirty --ab
 echo "     SOURCE_DESCRIPTION=${SOURCE_DESCRIPTION:=$(git log -1 --format=%s)}"
 
 if [[ ! -d build/pack ]]; then
+  # get the latest version (git tag) of the buildpack (git clone's --branch argument accepts tags)
+  LATEST_TAG=$(curl https://api.github.com/repos/heroku/heroku-buildpack-nodejs/releases/latest | jq -r .tag_name)
   echo
-  echo "---> Cloning buildpack into build/pack/"
-  git clone --depth 1 https://github.com/heroku/heroku-buildpack-nodejs build/pack --branch latest
+  echo "---> Cloning heroku-buildpack-nodejs ${LATEST_TAG} into build/pack/"
+  git clone --depth 1 https://github.com/heroku/heroku-buildpack-nodejs build/pack --branch ${LATEST_TAG}
 else
   echo
   echo "---> Using buildpack in build/pack/"
