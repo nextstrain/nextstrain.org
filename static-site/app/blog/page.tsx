@@ -1,19 +1,66 @@
-import { notFound, redirect } from "next/navigation";
+import type { Metadata } from "next";
+import Link from "next/link";
+import React from "react";
+
+import { BigSpacer } from "../../components/spacers";
 
 import { getBlogPosts } from "./utils";
+import styles from "./page.module.css";
+
+export const metadata: Metadata = {
+  title: "Blog",
+};
 
 /**
- * A React Server component that handles redirecting requests for
- * /blog to the most recent blog post
+ * The blog index: a standalone page listing every blogpost.
+ * Posts are returned newest-first.
  */
-export default function Index(): void {
-  const mostRecentPost = getBlogPosts()[0];
+export default function BlogIndex(): React.ReactElement {
+  const posts = getBlogPosts();
 
-  // _technically_ getBlogPosts() could return an empty array and then
-  // mostRecentPost would be undefined -- to make the type checker
-  // happy, if for some reason mostRecentPost is undefined, we will
-  // detect that and throw a not_found error
-  mostRecentPost
-    ? redirect(`/blog/${mostRecentPost.blogUrlName}`)
-    : notFound();
+  // Posts arrive newest-first; group them by publication year so each year's
+  // set of posts can be introduced by a YYYY heading.
+  const postsByYear = new Map<string, typeof posts>();
+  for (const post of posts) {
+    const year = post.date.slice(0, 4);
+    const yearPosts = postsByYear.get(year);
+    if (yearPosts) {
+      yearPosts.push(post);
+    } else {
+      postsByYear.set(year, [post]);
+    }
+  }
+
+  return (
+    <>
+      <BigSpacer count={2} />
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-8 offset-lg-2">
+            <h1 className={styles.heading}>Nextstrain blog</h1>
+            {Array.from(postsByYear.entries()).map(([year, yearPosts]) => (
+              <React.Fragment key={year}>
+                <h2 className={styles.year}>{year}</h2>
+                <ul className={styles.list}>
+                  {yearPosts.map((post) => (
+                    <li key={post.blogUrlName} className={styles.item}>
+                      <div className={styles.title}>
+                        <span className={styles.date}>{post.date}</span>{" "}
+                        <Link href={`/blog/${post.blogUrlName}`}>
+                          {post.title}
+                        </Link>
+                      </div>
+                      {post.author && (
+                        <div className={styles.authors}>{post.author}</div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

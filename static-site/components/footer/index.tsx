@@ -1,18 +1,26 @@
 import React from "react";
 
+import Line from "../line";
 import Logos from "../logos";
 import { BigSpacer, SmallSpacer } from "../spacers";
 
 import SiteMap from "./site-map";
 import TeamList from "./team-list";
 
+interface FooterProps {
+  /* Render a horizontal <Line /> at the top of the footer. */
+  topLine?: boolean;
+}
+
 /**
  * A React Server Component that renders the site footer, used at the
  * bottom of all our pages.
  */
-export default function Footer(): React.ReactElement {
+export default function Footer({ topLine = false }: FooterProps = {}): React.ReactElement {
   return (
     <div>
+      {topLine && <Line />}
+
       <SiteMap />
 
       <BigSpacer />

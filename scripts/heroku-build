@@ -1,6 +1,14 @@
 #!/bin/bash
 # Build a Heroku app slug using the Heroku (classic) buildpack interface.
 # <https://devcenter.heroku.com/articles/buildpack-api>
+# 
+# The slug is used (via CI) to deploy the canary and dev apps (servers).
+# (It is also used for the production server by promoting the canary one.)
+# Review apps _do not use this slug_ - they are built on Heroku and use
+# config from `app.json`. **It is important to keep the buildpacks in app.json
+# in-sync with the ones used here.** In the future we could also build
+# review app slugs using this script, but that requires more engineering,
+# including stopping / removing the review app.          - james 2026
 #
 # XXX TODO: Switch to the Heroku Cloud Native buildpacks (CNB) once they're
 # well-supported by Heroku's platform (or if we move off Heroku).  The use of
@@ -42,27 +50,53 @@ export SOURCE_VERSION SOURCE_DESCRIPTION
 echo "     SOURCE_VERSION=${SOURCE_VERSION:=$(git describe --always --dirty --abbrev=40)}"
 echo "     SOURCE_DESCRIPTION=${SOURCE_DESCRIPTION:=$(git log -1 --format=%s)}"
 
+# Buildpacks to apply, in order. Each entry is "<name> <git-org>/<git-repo>"
+# (name is used for printing helpful messages, it's not part of the final slug)
+# P.S. check each repo can resolve a tag name associated with the latest release (via the curl command below)
+buildpacks=(
+  "puppeteer jontewks/puppeteer-heroku-buildpack" # installs the shared libraries Puppeteer's bundled Chrome (browser) needs
+  "nodejs    heroku/heroku-buildpack-nodejs"
+)
+
 if [[ ! -d build/pack ]]; then
-  # get the latest version (git tag) of the buildpack (git clone's --branch argument accepts tags)
-  LATEST_TAG=$(curl https://api.github.com/repos/heroku/heroku-buildpack-nodejs/releases/latest | jq -r .tag_name)
-  echo
-  echo "---> Cloning heroku-buildpack-nodejs ${LATEST_TAG} into build/pack/"
-  git clone --depth 1 https://github.com/heroku/heroku-buildpack-nodejs build/pack --branch ${LATEST_TAG}
+    # install (clone) each buildpack into a numbered subdirectory inside `build/pack/`
+    i=0
+    for entry in "${buildpacks[@]}"; do
+        read -r buildpack_name buildpack_git_org_repo <<<"$entry"
+        latest_tag=$(curl -fsSL https://api.github.com/repos/${buildpack_git_org_repo}/releases/latest | jq -r .tag_name)
+        dir=build/pack/$(printf '%02d' "$i")-"$buildpack_name"
+        echo "---> Cloning ${buildpack_git_org_repo} ${latest_tag} into ${dir}"
+        # advice.detachedHead=false silences the (expected) detached-HEAD notice from cloning a tag
+        git -c advice.detachedHead=false clone --depth 1 https://github.com/${buildpack_git_org_repo} ${dir} --branch ${latest_tag}
+        i=$((i + 1))
+    done
 else
   echo
-  echo "---> Using buildpack in build/pack/"
+  echo "---> Using buildpacks in build/pack/"
+  echo "     NOTE: this script assumes these are up-to-date & complete"
 fi
 
 echo
-echo "---> Buildpack version is $(git -C build/pack describe --always --dirty)"
+echo "---> Buildpack versions"
+for dir in build/pack/*/; do
+  echo "     $dir -> $(git -C "$dir" describe --always --dirty)"
+done
 
 echo
-echo "---> Running buildpack"
+echo "---> Running buildpacks"
+# build/pack is mounted read-write (not read-only) because a buildpack's bin/compile may write
+# an "export" file into its own directory; see the sourcing step below.
+# The in-container script is fed via `bash -s` and a QUOTED heredoc
+# (<<'DOCKER_SCRIPT') rather than `bash -c '...'`.  The quoted delimiter stops
+# the host shell from expanding $, ${...} and $(...) (so they reach the
+# container's bash verbatim), and, unlike a single-quoted -c argument, the body
+# may contain apostrophes freely — an apostrophe in a comment or string would
+# otherwise silently terminate the -c string and drop everything after it.
 docker run \
-  --rm --interactive $(tty -s && echo --tty) \
+  --rm --interactive \
   --user $(id -u):$(id -g) \
   --volume "$(realpath build/app)":/build/app:rw \
-  --volume "$(realpath build/pack)":/build/pack:ro \
+  --volume "$(realpath build/pack)":/build/pack:rw \
   --volume "$(realpath build/cache)":/build/cache:rw \
   --volume "$(realpath build/env)":/build/env:ro \
   --env HOME=/tmp \
@@ -70,10 +104,24 @@ docker run \
   --env SOURCE_VERSION \
   --env SOURCE_DESCRIPTION \
   --env NODE_MODULES_CACHE=false \
-  heroku/heroku:24-build bash -c '
-       /build/pack/bin/detect  /build/app \
-    && /build/pack/bin/compile /build/app /build/cache /build/env
-  '
+  heroku/heroku:24-build bash -s <<'DOCKER_SCRIPT'
+    set -euo pipefail
+    shopt -s nullglob
+    packs=(/build/pack/*/)
+    (( ${#packs[@]} )) || { echo "ERROR: no buildpacks found in /build/pack" >&2; exit 1; }
+    # Run each buildpack's compile in listed (lexical) order.  For each, source
+    # its "export" file if present so build-time env vars (e.g. LD_LIBRARY_PATH)
+    # propagate to subsequent buildpacks.  We don't run the buildpacks' bin/detect
+    # scripts because our list of buildpacks to apply is explicit.
+    for pack in "${packs[@]}"; do
+      echo "---> Running ${pack}bin/compile"
+      "${pack}bin/compile" /build/app /build/cache /build/env
+      if [[ -f "${pack}export" ]]; then
+        echo "---> Sourcing ${pack}export"
+        source "${pack}export"
+      fi
+    done
+DOCKER_SCRIPT
 
 # The remaining steps are part of the unpublished (but somewhat documented)
 # "slug compiler"¹ for classic Heroku buildpacks.
