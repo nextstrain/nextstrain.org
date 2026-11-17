@@ -5,6 +5,7 @@ export const {
   BadGateway,
   BadRequest,
   Forbidden,
+  GatewayTimeout,
   InternalServerError,
   MethodNotAllowed,
   NotAcceptable,

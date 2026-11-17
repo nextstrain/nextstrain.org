@@ -110,9 +110,21 @@ async function* paginatedFetch(url, options, pageFn) {
 const isFetchError = (err) =>
   err instanceof __fetch.FetchError;
 
+const isFetchTimeoutError = (err) =>
+  isFetchError(err) && (
+    // connected but no response
+    // from <https://github.com/npm/minipass-fetch/blob/v3.0.5/lib/index.js#L109>
+    err.type === "request-timeout" ||
+
+    // connection never completes
+    // from <https://github.com/node-modules/agentkeepalive/blob/4.2.1/lib/agent.js#L347>
+    err.code === "ERR_SOCKET_TIMEOUT"
+  );
+
 export {
   fetch,
   isFetchError,
+  isFetchTimeoutError,
   paginatedFetch,
   Request,
 };
