@@ -19,6 +19,8 @@ export async function handleRequest(req, res) {
     verbose(`next.js handling request for "${req.path}"`)
   }
   await prepared;
+  // Let Next.js set its own Cache-Control header.
+  res.removeHeader("Cache-Control");
   await _handleRequest(req, res);
   return res.end();
 }

@@ -10,7 +10,15 @@ export function setup(app) {
    * so we must use that prefix here too.
    */
   app.route("/dist/*")
-    .all(endpoints.auspice.auspiceAssets, (req, res, next) => next(new NotFound()));
+    .all(
+      (req, res, next) => {
+        // Let express-static-gzip set its own Cache-Control header.
+        res.removeHeader("Cache-Control");
+        next();
+      },
+      endpoints.auspice.auspiceAssets,
+      (req, res, next) => next(new NotFound())
+    );
 
   /* Auspice has a special /edit/narratives route -
    * It is not backed by a dataset, and only exists for GET requests

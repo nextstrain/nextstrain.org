@@ -12,6 +12,30 @@ const nextConfig = {
      */
     unoptimized: true,
   },
+  async headers() {
+    return [
+      /* TODO: remove this once the Next.js bug¹ is fixed.
+       *
+       * Context:
+       * 1. The /whoami route serves both HTML (from Next.js) and JSON (from server).
+       * 2. For static pages, Next.js adds a default permissive Cache-Control header.
+       *
+       * These two behaviors are typically fine, but a Next.js bug¹ drops the Vary
+       * header set by contentTypesProvided() that instructs shared (CDN) caches to
+       * NOT serve cached HTML to JSON requests.
+       *
+       * We work around this by sending a restrictive Cache-Control header.
+       *
+       * ¹ <https://github.com/vercel/next.js/issues/85999>
+       */
+      {
+        source: '/whoami',
+        headers: [
+          { key: 'Cache-Control', value: 'private, no-cache' },
+        ],
+      },
+    ];
+  },
   transpilePackages: [
     'react-virtualized'
   ],
