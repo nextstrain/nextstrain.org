@@ -28,12 +28,9 @@ not be the codebase's root directory.
 Configuration
 =============
 
-The Node.js server must be run with::
-
-    NODE_ENV=production
-
-set in the environment to put the server into production mode.  The default
-development mode is not suitable nor secured for production.
+The Node.js server must be run with either ``NODE_ENV`` or ``SERVER_MODE`` set
+to ``production`` to put the server into production mode.  Other modes are not
+suitable nor secured for production.
 
 Additional configuration is done with environment variables and/or fields in a
 JSON config file.  All configuration variables take their values from the
