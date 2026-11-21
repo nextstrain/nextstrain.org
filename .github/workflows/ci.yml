@@ -97,6 +97,8 @@ jobs:
       # The image's default user does not have access to the working directory.
       # <https://devcenter.heroku.com/articles/heroku-24-stack>
       options: --user root
+    permissions:
+      contents: read
     env:
       # Override NODE_ENV=production default in production build (slug)
       NODE_ENV: development
