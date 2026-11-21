@@ -518,6 +518,7 @@
           "genome": {
             "region": {
               "global": "",
+              "north-america": "",
               "default": "global"
             }
           },

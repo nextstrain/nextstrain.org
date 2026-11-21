@@ -20,7 +20,7 @@
 - name: Measles outbreak
   description: Spread of 2025-2026 North America measles outbreak
   img: measles_northamerica.jpg
-  url: /groups/blab/measles/north-america
+  url: /measles/genome/north-america
 
 - name: SARS-CoV-2
   description: Ongoing evolution and spread of SARS-CoV-2
