@@ -418,5 +418,9 @@
   {
     "name": "MoviStrains",
     "isPublic": false
+  },
+  {
+    "name": "holotypebio",
+    "isPublic": true
   }
 ]
