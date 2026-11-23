@@ -422,5 +422,9 @@
   {
     "name": "holotypebio",
     "isPublic": true
+  },
+  {
+    "name": "cdphe-gsp-private",
+    "isPublic": false
   }
 ]
