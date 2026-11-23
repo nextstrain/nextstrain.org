@@ -2,14 +2,12 @@ name: Dependabot automation
 
 on: pull_request
 
-permissions:
-  pull-requests: write
-  contents: write
-
 jobs:
   merge-auspice-bump:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read  # for dependabot/fetch-metadata
     steps:
       - id: metadata
         uses: dependabot/fetch-metadata@v3
