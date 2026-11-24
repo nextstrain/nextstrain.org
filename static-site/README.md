@@ -39,10 +39,10 @@ Please don't do this!
 
 ## Pages are statically generated
 
-In production mode all pages are statically generated at build time.
+With `SERVER_MODE=testing` or `production`, all pages are statically generated at build time.
 Pages may make API requests to the server for information, and the use of App Router and React Server Components means some things are rendered server-side.
 
-In development mode the pages are dynamically served by the server to allow hot-reloading etc (this is the default situation if you don't specify `NODE_ENV=production` or `USE_PREBUILT_STATIC_SITE=1`)
+With `SERVER_MODE=testing` or unset, the pages are dynamically served by the server to allow hot-reloading etc.
 
 ### public directory
 

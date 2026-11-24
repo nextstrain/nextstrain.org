@@ -15,11 +15,18 @@ export async function startupMessage(server, app) {
   console.log('                             NEXTSTRAIN SERVER');
   console.log(nextstrainAbout);
   console.log(`  Server listening on port ${server.address().port}, accessible at http://localhost:${server.address().port}`);
-  console.log(`  Server is running in ${app.locals.production ? 'production' : 'development'} mode`);
-  if (app.locals.STATIC_SITE_PRODUCTION) {
-    console.log(`  Next.js frontend is running in production mode (statically generated assets)`)
-  } else {
-    console.log(`  Next.js frontend is running in development mode (hot reloading etc)`)
+  switch (app.locals.SERVER_MODE) {
+    case 'production':
+      console.log(`  Running in production mode`);
+      break;
+    case 'testing':
+      console.log(`  Running in testing mode (development backend with production Next.js assets)`);
+      break;
+    case 'development':
+      console.log(`  Running in development mode (hot reloading enabled)`);
+      break;
+    default:
+      throw new Error(`Unknown SERVER_MODE: "${app.locals.SERVER_MODE}"`);
   }
   console.log(`  AWS credentials: ${awsId}`)
   console.log("  " + groupsSummary());
